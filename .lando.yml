@@ -1,0 +1,9 @@
+name: parentbuddy
+recipe: drupal8
+config:
+  webroot: .
+
+tooling:
+  blt:
+    service: appserver
+cmd: /app/vendor/bin/blt
