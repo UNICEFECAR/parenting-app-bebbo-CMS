@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# This file is managed by Composer and should not be modified by end users. To
+# override its default behavior, copy it into your project and modify
+# acquia-pipelines.yml to call your custom version.
+
+set -ev
+
+export PATH=${COMPOSER_BIN}:$PATH
+
+# Set git info.
+git config --global user.name "Acquia Cloud"
+git config --global user.email "noreply@acquia.com"
+
+# Create MySQL DB.
+mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS drupal"
+
+set +v

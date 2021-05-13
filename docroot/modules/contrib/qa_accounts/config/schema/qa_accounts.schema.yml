@@ -1,0 +1,10 @@
+qa_accounts.settings:
+  type: config_object
+  label: 'QA Accounts settings'
+  mapping:
+    auto_create_user_per_new_role:
+      type: boolean
+      label: 'Automatically create QA user when role is created'
+    auto_delete_user_per_deleted_role:
+      type: boolean
+      label: 'Automatically delete QA user when role is deleted'

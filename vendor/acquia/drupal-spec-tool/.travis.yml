@@ -1,0 +1,66 @@
+---
+language: php
+
+php: "7.2"
+
+addons:
+  chrome: stable
+
+cache:
+  directories:
+    - "$HOME/.composer/cache"
+    - "$HOME/.drush/cache"
+    - "${TMPDIR:-/tmp}/phpstan/cache"
+
+branches:
+  only:
+    - master
+    - develop
+    - wip
+
+env:
+  global:
+    - ORCA_SUT_NAME=acquia/drupal-spec-tool
+    - ORCA_SUT_BRANCH=master
+    - ORCA_VERSION=dev-master
+    - ORCA_TELEMETRY_ENABLE=TRUE
+
+matrix:
+  fast_finish: true
+  include:
+    # Standard ORCA jobs.
+    - { name: "Static code analysis", env: ORCA_JOB=STATIC_CODE_ANALYSIS }
+    - { name: "Isolated test w/ recommended package versions", env: ORCA_JOB=ISOLATED_RECOMMENDED }
+    - { name: "Integrated test w/ recommended package versions", env: ORCA_JOB=INTEGRATED_RECOMMENDED }
+    - { name: "Integrated test w/ recommended package versions & previous minor release of Drupal core", env: ORCA_JOB=CORE_PREVIOUS }
+    - { name: "Isolated test w/ dev package versions", env: ORCA_JOB=ISOLATED_DEV }
+    - { name: "Integrated test w/ dev package versions", env: ORCA_JOB=INTEGRATED_DEV }
+    - { name: "Integrated test w/ dev package versions & next minor dev version of Drupal core", env: ORCA_JOB=CORE_NEXT }
+    # Custom job.
+    - { name: "Lightning/Spreadsheet/Behat integration test", env: BEHAT=TRUE ORCA_PACKAGES_CONFIG=../drupal-spec-tool/config/packages.yml }
+  allow_failures:
+    - env: ORCA_JOB=ISOLATED_DEV
+    - env: ORCA_JOB=INTEGRATED_DEV
+    - env: ORCA_JOB=CORE_NEXT
+
+before_install:
+  - composer create-project --no-dev acquia/orca ../orca "$ORCA_VERSION"
+  - ../orca/bin/travis/before_install.sh
+
+install:
+  - ../orca/bin/travis/install.sh
+  - ./bin/travis/install.sh
+
+before_script: ../orca/bin/travis/before_script.sh
+
+script:
+  - ../orca/bin/travis/script.sh
+  - ./bin/travis/script.sh
+
+before_cache: ../orca/bin/travis/before_cache.sh
+
+after_success: ../orca/bin/travis/after_success.sh
+
+after_failure: ../orca/bin/travis/after_failure.sh
+
+after_script: ../orca/bin/travis/after_script.sh

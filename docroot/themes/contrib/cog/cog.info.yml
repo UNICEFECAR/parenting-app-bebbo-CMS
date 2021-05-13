@@ -1,0 +1,23 @@
+name: Cog
+type: theme
+description: 'An Acquia-maintained base theme.'
+base theme: stable
+package: Core
+core: 8.x
+core_version_requirement: '^8 || ^9'
+libraries:
+  - cog/lib
+regions:
+  branding: Branding
+  header: Header
+  pre_content: Pre content
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  post_content: Post content
+  footer: Footer
+
+# Information added by Drupal.org packaging script on 2020-03-17
+version: '8.x-1.15'
+project: 'cog'
+datestamp: 1584454091

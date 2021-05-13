@@ -1,0 +1,38 @@
+{
+    "name": "traviscarden/behat-table-comparison",
+    "description": "Provides an equality assertion for comparing Behat TableNode tables.",
+    "type": "library",
+    "keywords": ["Behat", "Gherkin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Travis Carden",
+            "email": "travis.carden@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0",
+        "behat/gherkin": "^4.4.4",
+        "sebastian/diff": ">=1.4"
+    },
+    "require-dev": {
+        "behat/behat": "^3.3",
+        "codeclimate/php-test-reporter": "^0.4.2",
+        "phpunit/phpunit": "^4.8",
+        "squizlabs/php_codesniffer": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "TravisCarden\\BehatTableComparison\\": "src/BehatTableComparison/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@install-pre-commit"
+        ],
+        "install-pre-commit": "if [ ! -x .git/hooks/pre-commit ]; then ln -s ../../resources/pre-commit .git/hooks/pre-commit; fi"
+    }
+}

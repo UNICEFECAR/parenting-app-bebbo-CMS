@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="blt">
+  <description>BLT PHP_CodeSniffer standards.</description>
+
+  <!-- Use colors in output. -->
+  <arg name="colors"/>
+  <!-- Show progress. -->
+  <arg value="p"/>
+  <!-- Run in parallel. -->
+  <arg name="parallel" value="10"/>
+
+  <rule ref="AcquiaDrupalStrict" />
+
+  <file>.</file>
+
+  <exclude-pattern>vendor/*</exclude-pattern>
+  <exclude-pattern>tests/**/*.md</exclude-pattern>
+
+</ruleset>

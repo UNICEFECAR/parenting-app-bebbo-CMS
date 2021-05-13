@@ -1,0 +1,107 @@
+# Ignore blted8 files
+blted8/composer.lock
+blted8/vendor
+
+# Ignore config files
+/blt.yml
+local.*
+
+build
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpathk
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# PHPStorm
+.idea
+
+#XHProf
+xhprof_*
+
+#Composer vendor
+vendor/
+vendor/.git
+
+#Sass
+.sass-cache
+*.css.map
+
+#Netbeans IDE
+nbproject
+nbproject/*
+
+#Exports
+*.gz
+*.sql
+*.zip
+
+# Some files should be excluded from blt but not from the projects it
+# generates, so they must be specified here rather than blt-project .gitignore.
+subtree-splits/blt-project/.idea/.name
+subtree-splits/blt-project/composer.lock
+
+CHANGELOG.partial
+build
+cache/commands/*
+
+# Ignore the local deployment identifier.
+deployment_identifier
+
+# Ignore phpunit.xml, only phpunit.xml.dist should be committed.
+phpunit.xml

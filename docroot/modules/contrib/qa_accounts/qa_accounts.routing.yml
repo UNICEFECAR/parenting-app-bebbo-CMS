@@ -1,0 +1,9 @@
+qa_accounts.settings:
+  path: '/admin/config/people/qa-accounts'
+  defaults:
+    _form: '\Drupal\qa_accounts\Form\QaAccountsSettingsForm'
+    _title: 'QA Accounts settings'
+  requirements:
+    _permission: 'administer qa_accounts'
+  options:
+    _admin_route: TRUE

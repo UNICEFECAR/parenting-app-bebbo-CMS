@@ -1,0 +1,4 @@
+services:
+  qa_accounts.create_delete:
+    class: '\Drupal\qa_accounts\QaAccountsCreateDelete'
+    arguments: ['@entity_type.manager', '@logger.factory']

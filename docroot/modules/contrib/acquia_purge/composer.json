@@ -1,0 +1,22 @@
+{
+    "name": "drupal/acquia_purge",
+    "type": "drupal-module",
+    "description": "Top-notch cache invalidation on Acquia Cloud!",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Acquia",
+            "homepage": "http://www.acquia.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "drupal/core": "^8.8.6 || ^9",
+        "drupal/purge": "^3.0.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-8.x-1.x": "1.x-dev"
+        }
+    }
+}

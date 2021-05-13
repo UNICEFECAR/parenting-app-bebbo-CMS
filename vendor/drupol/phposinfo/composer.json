@@ -1,0 +1,41 @@
+{
+    "name": "drupol/phposinfo",
+    "type": "library",
+    "description": "Try to guess the host operating system.",
+    "keywords": [
+        "operating system detection"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pol Dellaiera",
+            "email": "pol.dellaiera@protonmail.com"
+        }
+    ],
+    "require": {
+        "php": ">= 7.1.3"
+    },
+    "require-dev": {
+        "drupol/php-conventions": "^1.7.1",
+        "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
+        "infection/infection": "^0.13.6 || ^0.15.0",
+        "phpspec/phpspec": "^5.1.2 || ^6.1.1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "drupol\\phposinfo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "drupol\\phposinfo\\tests\\": "tests/src/"
+        }
+    },
+    "scripts": {
+        "grumphp": "./vendor/bin/grumphp run",
+        "infection": "./vendor/bin/infection run"
+    }
+}

@@ -1,0 +1,13 @@
+services:
+  acquia_purge.platforminfo:
+    class: Drupal\acquia_purge\AcquiaCloud\PlatformInfo
+    arguments: ['@request_stack', '@settings', '@state']
+    public: true
+  http_client_middleware.acquia_purge_balancer_middleware:
+    class: Drupal\acquia_purge\Http\AcquiaCloudBalancerMiddleware
+    tags:
+      - { name: http_client_middleware }
+  http_client_middleware.acquia_purge_debugger_middleware:
+    class: Drupal\acquia_purge\Http\DebuggerMiddleware
+    tags:
+      - { name: http_client_middleware }
