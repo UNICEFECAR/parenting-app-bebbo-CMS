@@ -804,7 +804,7 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
  *
  * @link https://docs.acquia.com/blt/
  */
-
+$settings["rebuild_access"] = TRUE;
 $databases['default']['default'] = array (
   'database' => 'parentbuddy2fz6bm64mba',
   'username' => 's324529',
