@@ -2,4 +2,4 @@
 docroot/files
 docroot/sites/*/files
 docroot/sites/*/private
-docroot/sites/default/settings.php
+#docroot/sites/default/settings.php
