@@ -27,7 +27,8 @@
         "platform": {
             "php": "7.2"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "vendor-dir": "vendor"
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
