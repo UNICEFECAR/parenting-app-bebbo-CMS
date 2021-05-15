@@ -1,0 +1,41 @@
+uuid: 9f00adb4-de4c-422e-bbbb-29163181f3ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.child_development.body
+    - field.field.node.child_development.field_child_age
+    - field.field.node.child_development.field_mandatory_content
+    - field.field.node.child_development.field_milestone_instructions
+    - field.field.node.child_development.field_pinned_article_for_boy
+    - field.field.node.child_development.field_pinned_article_for_girl
+    - node.type.child_development
+  module:
+    - text
+    - user
+id: node.child_development.teaser
+targetEntityType: node
+bundle: child_development
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_child_age: true
+  field_mandatory_content: true
+  field_milestone_instructions: true
+  field_pinned_article_for_boy: true
+  field_pinned_article_for_girl: true
+  langcode: true

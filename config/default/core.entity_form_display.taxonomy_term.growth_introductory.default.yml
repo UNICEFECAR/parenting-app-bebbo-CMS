@@ -1,0 +1,67 @@
+uuid: c7910159-53de-4ce3-bab4-c9c460ce27a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_introductory.field_days_from
+    - field.field.taxonomy_term.growth_introductory.field_days_to
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - path
+    - text
+id: taxonomy_term.growth_introductory.default
+targetEntityType: taxonomy_term
+bundle: growth_introductory
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_days_from:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_days_to:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 2
+    region: content
+    third_party_settings: {  }
+hidden: {  }

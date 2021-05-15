@@ -1,0 +1,73 @@
+uuid: 5fa914a9-2356-4759-85cb-3acd35271fa4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_period.field_days_from
+    - field.field.taxonomy_term.growth_period.field_days_to
+    - field.field.taxonomy_term.growth_period.field_show_on_top
+    - field.field.taxonomy_term.growth_period.field_weeks_from
+    - field.field.taxonomy_term.growth_period.field_weeks_to
+    - taxonomy.vocabulary.growth_period
+  module:
+    - text
+id: taxonomy_term.growth_period.default
+targetEntityType: taxonomy_term
+bundle: growth_period
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_days_from:
+    weight: 1
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_days_to:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_show_on_top:
+    weight: 5
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_weeks_from:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_weeks_to:
+    weight: 4
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+hidden:
+  langcode: true

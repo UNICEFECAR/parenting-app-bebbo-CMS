@@ -1,0 +1,21 @@
+uuid: 699bd8b2-d085-4278-a5af-e70abb682251
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_language
+    - group.type.country
+  module:
+    - options
+id: group.country.field_language
+field_name: field_language
+entity_type: group
+bundle: country
+label: Language
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

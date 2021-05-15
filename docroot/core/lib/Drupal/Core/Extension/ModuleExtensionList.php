@@ -41,7 +41,7 @@ class ModuleExtensionList extends ExtensionList {
   /**
    * The profile list needed by this module list.
    *
-   * @var \Drupal\Core\Extension\ExtensionList
+   * @var \Drupal\Core\Extension\ProfileExtensionList
    */
   protected $profileList;
 
@@ -62,14 +62,14 @@ class ModuleExtensionList extends ExtensionList {
    *   The state.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Core\Extension\ExtensionList $profile_list
+   * @param \Drupal\Core\Extension\ProfileExtensionList $profile_list
    *   The site profile listing.
    * @param string $install_profile
    *   The install profile used by the site.
    * @param array[] $container_modules_info
    *   (optional) The module locations coming from the compiled container.
    */
-  public function __construct($root, $type, CacheBackendInterface $cache, InfoParserInterface $info_parser, ModuleHandlerInterface $module_handler, StateInterface $state, ConfigFactoryInterface $config_factory, ExtensionList $profile_list, $install_profile, array $container_modules_info = []) {
+  public function __construct($root, $type, CacheBackendInterface $cache, InfoParserInterface $info_parser, ModuleHandlerInterface $module_handler, StateInterface $state, ConfigFactoryInterface $config_factory, ProfileExtensionList $profile_list, $install_profile, array $container_modules_info = []) {
     parent::__construct($root, $type, $cache, $info_parser, $module_handler, $state, $install_profile);
 
     $this->configFactory = $config_factory;
@@ -94,6 +94,11 @@ class ModuleExtensionList extends ExtensionList {
     return $discovery;
   }
 
+  private function getInstalledProfiles() {
+    $installed_extensions = $this->getInstalledExtensionNames();
+    return array_intersect_key($this->profileList->getList(), array_flip($installed_extensions));
+  }
+
   /**
    * Finds all installation profile paths.
    *
@@ -105,9 +110,10 @@ class ModuleExtensionList extends ExtensionList {
    */
   protected function getProfileDirectories(ExtensionDiscovery $discovery) {
     $discovery->setProfileDirectories([]);
-    $all_profiles = $discovery->scan('profile');
-    $active_profile = $all_profiles[$this->installProfile];
-    $profiles = array_intersect_key($all_profiles, $this->configFactory->get('core.extension')->get('module') ?: [$active_profile->getName() => 0]);
+    $profiles = array_merge(
+      $this->profileList->getAncestors($this->installProfile),
+      $this->getInstalledProfiles()
+    );
 
     $profile_directories = array_map(function (Extension $profile) {
       return $profile->getPath();
@@ -134,16 +140,10 @@ class ModuleExtensionList extends ExtensionList {
    * {@inheritdoc}
    */
   protected function doScanExtensions() {
-    $extensions = parent::doScanExtensions();
-
-    $profiles = $this->profileList->getList();
-    // Modify the active profile object that was previously added to the module
-    // list.
-    if ($this->installProfile && isset($profiles[$this->installProfile])) {
-      $extensions[$this->installProfile] = $profiles[$this->installProfile];
-    }
-
-    return $extensions;
+    return array_merge(
+      parent::doScanExtensions(),
+      $this->profileList->getList()
+    );
   }
 
   /**

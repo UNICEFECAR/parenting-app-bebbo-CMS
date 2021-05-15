@@ -1,0 +1,31 @@
+uuid: 0dd8c702-9e4b-406d-8ad4-43aefcb10521
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cover_video
+    - media.type.remote_video
+    - media.type.video
+    - node.type.video_article
+id: node.video_article.field_cover_video
+field_name: field_cover_video
+entity_type: node
+bundle: video_article
+label: 'Cover Video'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      remote_video: remote_video
+      video: video
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: remote_video
+field_type: entity_reference

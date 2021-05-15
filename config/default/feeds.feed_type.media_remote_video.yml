@@ -1,0 +1,80 @@
+uuid: 04ef1e5d-48cb-48b8-a967-b51f1c11d9f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.media.remote_video.name
+    - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_video_embed_url
+    - media.type.remote_video
+  module:
+    - media
+    - video_embed_field
+id: media_remote_video
+label: 'Media - Remote Video'
+description: 'Media - Remote Video'
+help: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:media'
+processor_configuration:
+  langcode: en
+  update_existing: 0
+  update_non_existent: _keep
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+  authorize: true
+  skip_hash_check: false
+  values:
+    bundle: remote_video
+custom_sources:
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  name:
+    label: Name
+    value: Name
+    machine_name: name
+  video_embed_url:
+    label: Video_embed_url
+    value: Video_embed_url
+    machine_name: video_embed_url
+mappings:
+  -
+    target: mid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: name
+    unique: {  }
+    settings:
+      language: null
+  -
+    target: field_video_embed_url
+    map:
+      value: video_embed_url
+    unique: {  }
+    settings:
+      language: null
+  -
+    target: field_media_oembed_video
+    map:
+      value: video_embed_url
+    unique: {  }
+    settings:
+      language: null

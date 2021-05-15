@@ -1,0 +1,59 @@
+uuid: dfdfb66c-c092-4cb2-a375-8f6d57b11543
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.parent_gender.name
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - taxonomy
+id: taxonomy_parents_gender_serbia_s
+label: 'Taxonomy - Parents Gender - serbia-serbian'
+description: 'Taxonomy - Parents Gender - serbia-serbian'
+help: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: rs-sr
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: parent_gender
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  term_id:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id
+  term_name:
+    label: Term_name
+    value: Term_name
+    machine_name: term_name
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: term_name
+    unique: {  }
+    settings:
+      language: rs-sr

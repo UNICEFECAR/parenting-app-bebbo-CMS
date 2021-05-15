@@ -1,0 +1,29 @@
+uuid: cf41f08e-6cf7-43ba-8457-4af6c30587c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_activity_category
+    - node.type.activities
+    - taxonomy.vocabulary.activity_category
+id: node.activities.field_activity_category
+field_name: field_activity_category
+entity_type: node
+bundle: activities
+label: Domain
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      activity_category: activity_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

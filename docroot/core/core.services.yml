@@ -309,7 +309,7 @@ services:
       - { name: event_subscriber }
   config.installer:
     class: Drupal\Core\Config\ConfigInstaller
-    arguments: ['@config.factory', '@config.storage', '@config.typed', '@config.manager', '@event_dispatcher', '%install_profile%']
+    arguments: ['@config.factory', '@config.storage', '@config.typed', '@config.manager', '@event_dispatcher', '%install_profile%', '@extension.list.profile']
     lazy: true
   config.storage:
     class: Drupal\Core\Config\CachedStorage

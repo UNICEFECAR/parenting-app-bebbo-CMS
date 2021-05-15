@@ -1,0 +1,6 @@
+name: 'Child profile module'
+core: 8.x
+type: module
+description: 'A module contained in a child profile, for testing.'
+package: Testing
+version: VERSION

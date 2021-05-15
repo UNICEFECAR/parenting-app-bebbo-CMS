@@ -1,0 +1,23 @@
+uuid: f15eb12d-7496-4f1a-94ad-a2f63075d604
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_sd0
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.field_sd0
+field_name: field_sd0
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: SD0
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

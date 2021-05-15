@@ -1,0 +1,8 @@
+uuid: b82aa62c-4735-4f02-a8c1-2907e1c4347d
+langcode: en
+status: true
+dependencies: {  }
+name: 'Type of Support'
+vid: type_of_support
+description: 'Type of Support'
+weight: 0

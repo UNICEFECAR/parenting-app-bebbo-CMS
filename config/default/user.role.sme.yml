@@ -1,0 +1,11 @@
+uuid: 841b6a52-c36e-435e-bb0c-08aadd6416bd
+langcode: en
+status: true
+dependencies: {  }
+id: sme
+label: SME
+weight: 5
+is_admin: null
+permissions:
+  - 'use group_workflow transition sme_to_reviewer_review'
+  - 'view any unpublished content'

@@ -1,0 +1,23 @@
+uuid: f45da747-66a7-4848-8a9e-64eea56f31ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vaccination_closes
+    - node.type.vaccinations
+id: node.vaccinations.field_vaccination_closes
+field_name: field_vaccination_closes
+entity_type: node
+bundle: vaccinations
+label: 'Vaccination Closes'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

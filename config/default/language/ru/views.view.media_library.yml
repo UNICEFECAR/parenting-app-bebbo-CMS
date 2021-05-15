@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      title: Мультимедиа
+  widget_table:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Миниатюра

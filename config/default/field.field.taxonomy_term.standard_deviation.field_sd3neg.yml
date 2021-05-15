@@ -1,0 +1,23 @@
+uuid: f4e8093c-2f3b-4581-b308-847b30e16a6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_sd3neg
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.field_sd3neg
+field_name: field_sd3neg
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: SD3neg
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

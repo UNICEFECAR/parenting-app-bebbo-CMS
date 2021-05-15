@@ -1,0 +1,45 @@
+uuid: 03d3a80a-b681-43c6-8c5a-ab6de387096b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.faq.body
+    - field.field.node.faq.field_child_age
+    - field.field.node.faq.field_child_gender
+    - field.field.node.faq.field_content_category
+    - field.field.node.faq.field_keywords
+    - field.field.node.faq.field_mandatory_content
+    - field.field.node.faq.field_parent_gender
+    - field.field.node.faq.field_seasons
+    - node.type.faq
+  module:
+    - text
+    - user
+id: node.faq.teaser
+targetEntityType: node
+bundle: faq
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_child_age: true
+  field_child_gender: true
+  field_content_category: true
+  field_keywords: true
+  field_mandatory_content: true
+  field_parent_gender: true
+  field_seasons: true
+  langcode: true

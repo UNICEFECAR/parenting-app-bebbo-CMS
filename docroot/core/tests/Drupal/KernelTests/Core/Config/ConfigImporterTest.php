@@ -736,9 +736,9 @@ class ConfigImporterTest extends KernelTestBase {
       $error_log = $this->configImporter->getErrors();
       // Install profiles can not be changed. Note that KernelTestBase currently
       // does not use an install profile. This situation should be impossible
-      // to get in but site's can removed the install profile setting from
+      // to get into but sites can change the install profile value in config or
       // settings.php so the test is valid.
-      $this->assertEqual(['Cannot change the install profile from <em class="placeholder"></em> to <em class="placeholder">this_will_not_work</em> once Drupal is installed.'], $error_log);
+      $this->assertEqual($error_log, ['Cannot change the install profile from <em class="placeholder"></em> to <em class="placeholder">this_will_not_work</em> once Drupal is installed.']);
     }
   }
 

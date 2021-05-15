@@ -1,0 +1,8 @@
+uuid: 99483a6a-c0d3-4a55-aae4-4bf7f7615958
+langcode: en
+status: true
+dependencies: {  }
+name: Domain
+vid: activity_category
+description: Domain
+weight: 0

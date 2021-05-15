@@ -1,0 +1,43 @@
+uuid: c5885c2b-fe29-4a50-87cf-3fc59164ba99
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.field_growth_period
+    - field.field.node.vaccinations.field_notification_from
+    - field.field.node.vaccinations.field_notification_to
+    - field.field.node.vaccinations.field_pinned_article
+    - field.field.node.vaccinations.field_vaccination_closes
+    - field.field.node.vaccinations.field_vaccination_opens
+    - node.type.vaccinations
+  module:
+    - text
+    - user
+id: node.vaccinations.teaser
+targetEntityType: node
+bundle: vaccinations
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_growth_period: true
+  field_notification_from: true
+  field_notification_to: true
+  field_pinned_article: true
+  field_vaccination_closes: true
+  field_vaccination_opens: true
+  langcode: true

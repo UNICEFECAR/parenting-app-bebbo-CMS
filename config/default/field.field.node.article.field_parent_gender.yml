@@ -1,0 +1,29 @@
+uuid: 59f3ce65-9a48-4997-babc-ac4b604f94c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_parent_gender
+    - node.type.article
+    - taxonomy.vocabulary.parent_gender
+id: node.article.field_parent_gender
+field_name: field_parent_gender
+entity_type: node
+bundle: article
+label: 'Parent Gender'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      parent_gender: parent_gender
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,29 @@
+uuid: 2503ae06-6200-4700-8eee-e0be02ca31b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_growth_period
+    - node.type.vaccinations
+    - taxonomy.vocabulary.growth_period
+id: node.vaccinations.field_growth_period
+field_name: field_growth_period
+entity_type: node
+bundle: vaccinations
+label: 'Growth Period'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      growth_period: growth_period
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

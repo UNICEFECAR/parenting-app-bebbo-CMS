@@ -1,0 +1,18 @@
+uuid: 080c5512-507d-4c21-8fa0-570de9b57c16
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.health_check_ups
+target_entity_type_id: node
+target_bundle: health_check_ups
+default_langcode: current_interface
+language_alterable: true

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '8c3997e5d95ddee47d84e9595399b8eb8f95104e',
+    'reference' => 'adc6c872363d1c946f0af5c9e372149a7cba04ba',
     'name' => 'acquia/blt-project',
   ),
   'versions' => 
@@ -51,7 +51,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '8c3997e5d95ddee47d84e9595399b8eb8f95104e',
+      'reference' => 'adc6c872363d1c946f0af5c9e372149a7cba04ba',
     ),
     'acquia/blt-require-dev' => 
     array (
@@ -451,6 +451,15 @@ private static $installed = array (
       array (
         0 => '8.9.14',
       ),
+    ),
+    'drupal/admin_toolbar' => 
+    array (
+      'pretty_version' => '3.0.0',
+      'version' => '3.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '3.0.0',
     ),
     'drupal/aggregator' => 
     array (
@@ -869,12 +878,12 @@ private static $installed = array (
     ),
     'drupal/devel' => 
     array (
-      'pretty_version' => '2.1.0',
-      'version' => '2.1.0.0',
+      'pretty_version' => '4.1.1',
+      'version' => '4.1.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '8.x-2.1',
+      'reference' => '4.1.1',
     ),
     'drupal/drupal-driver' => 
     array (
@@ -908,6 +917,15 @@ private static $installed = array (
         0 => '8.9.14',
       ),
     ),
+    'drupal/entity' => 
+    array (
+      'pretty_version' => '1.2.0',
+      'version' => '1.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.2',
+    ),
     'drupal/entity_reference' => 
     array (
       'replaced' => 
@@ -923,6 +941,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '8.x-3.12',
+    ),
+    'drupal/feeds' => 
+    array (
+      'pretty_version' => '3.0.0-alpha10',
+      'version' => '3.0.0.0-alpha10',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-3.0-alpha10',
     ),
     'drupal/field' => 
     array (
@@ -966,6 +993,15 @@ private static $installed = array (
         0 => '8.9.14',
       ),
     ),
+    'drupal/group' => 
+    array (
+      'pretty_version' => '1.3.0',
+      'version' => '1.3.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.3',
+    ),
     'drupal/hal' => 
     array (
       'replaced' => 
@@ -1007,6 +1043,15 @@ private static $installed = array (
       array (
         0 => '8.9.14',
       ),
+    ),
+    'drupal/json_field' => 
+    array (
+      'pretty_version' => '1.0.0-rc3',
+      'version' => '1.0.0.0-RC3',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.0-rc3',
     ),
     'drupal/jsonapi' => 
     array (
@@ -1353,6 +1398,33 @@ private static $installed = array (
       array (
         0 => '8.9.14',
       ),
+    ),
+    'drupal/variationcache' => 
+    array (
+      'pretty_version' => '1.0.0',
+      'version' => '1.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-1.0',
+    ),
+    'drupal/video_embed_field' => 
+    array (
+      'pretty_version' => '2.4.0',
+      'version' => '2.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8.x-2.4',
+    ),
+    'drupal/video_embed_media' => 
+    array (
+      'pretty_version' => '2.4.0',
+      'version' => '2.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => NULL,
     ),
     'drupal/views' => 
     array (

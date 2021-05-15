@@ -1,0 +1,167 @@
+uuid: 05e9027d-969f-431f-8d65-d60c4c7b0b4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.article.body
+    - field.field.node.article.field_australian_article
+    - field.field.node.article.field_child_age
+    - field.field.node.article.field_child_gender
+    - field.field.node.article.field_content_category
+    - field.field.node.article.field_cover_image
+    - field.field.node.article.field_generic_content
+    - field.field.node.article.field_keywords
+    - field.field.node.article.field_licensed_content
+    - field.field.node.article.field_mandatory_content
+    - field.field.node.article.field_parent_gender
+    - field.field.node.article.field_premature_content
+    - field.field.node.article.field_references_and_comments
+    - field.field.node.article.field_related_articles
+    - field.field.node.article.field_seasons
+    - node.type.article
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: ChmU3AVqDKU32A_fyChG0W9dTRKmVBR58B6OClCLvZI
+id: node.article.default
+targetEntityType: node
+bundle: article
+mode: default
+content:
+  body:
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    label: hidden
+  field_australian_article:
+    weight: 111
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_child_age:
+    weight: 115
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_child_gender:
+    weight: 116
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_content_category:
+    weight: 114
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_cover_image:
+    type: entity_reference_entity_view
+    weight: 112
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_generic_content:
+    weight: 121
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_keywords:
+    weight: 113
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 122
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_mandatory_content:
+    weight: 124
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_parent_gender:
+    weight: 117
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_premature_content:
+    weight: 123
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_references_and_comments:
+    weight: 119
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_related_articles:
+    weight: 120
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_seasons:
+    weight: 118
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ * Install/update/uninstall hooks.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function feeds_uninstall() {
+  // @todo remove keyvalue store and queue things.
+}
+
+/**
+ * Implements hook_schema().
+ */
+function feeds_schema() {
+  $schema['feeds_clean_list'] = [
+    'description' => 'Keeps a list of items to clean after the process stage.',
+    'fields' => [
+      'feed_id' => [
+        'description' => 'The ID of the feed.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'entity_id' => [
+        'description' => 'The ID of the entity to clean.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Resave all feed types to recalculate config dependencies.
+ */
+function feeds_update_8001() {
+  foreach (\Drupal::entityTypeManager()->getStorage('feeds_feed_type')->loadMultiple() as $feed_type) {
+    $feed_type->save();
+  }
+}
+
+/**
+ * Installs new table 'feeds_clean_list'.
+ */
+function feeds_update_8002() {
+  $database = \Drupal::database();
+  $schema = $database->schema();
+  if (!$schema->tableExists('feeds_clean_list')) {
+    // Add feeds_clean_list table.
+    $schema->createTable('feeds_clean_list', [
+      'description' => 'Keeps a list of items to clean after the process stage.',
+      'fields' => [
+        'feed_id' => [
+          'description' => 'The ID of the feed.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+        'entity_id' => [
+          'description' => 'The ID of the entity to clean.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ],
+      ],
+    ]);
+  }
+}

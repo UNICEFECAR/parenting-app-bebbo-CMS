@@ -1,0 +1,31 @@
+uuid: 1253c680-c65c-4452-b7cf-a2c61439d00e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_articles
+    - node.type.article
+    - node.type.child_growth
+    - node.type.video_article
+id: node.child_growth.field_related_articles
+field_name: field_related_articles
+entity_type: node
+bundle: child_growth
+label: 'Pinned Articles'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+      video_article: video_article
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference

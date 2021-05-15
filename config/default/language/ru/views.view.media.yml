@@ -1,0 +1,13 @@
+label: Мультимедиа
+display:
+  default:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Миниатюра
+      title: Мультимедиа
+  media_page_list:
+    display_title: Мультимедиа
+    display_options:
+      menu:
+        title: Мультимедиа

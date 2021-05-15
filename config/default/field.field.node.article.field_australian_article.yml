@@ -1,0 +1,23 @@
+uuid: 021ef4aa-baa5-4125-99a8-1a24ea14cecd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_australian_article
+    - node.type.article
+id: node.article.field_australian_article
+field_name: field_australian_article
+entity_type: node
+bundle: article
+label: 'Australian Article'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

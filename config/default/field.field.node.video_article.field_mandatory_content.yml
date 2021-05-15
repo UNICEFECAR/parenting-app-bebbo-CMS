@@ -1,0 +1,23 @@
+uuid: 9c6d9e46-deee-4616-9814-f26c0938a6ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.video_article
+id: node.video_article.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: video_article
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

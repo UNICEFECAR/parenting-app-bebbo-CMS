@@ -62,6 +62,7 @@ class InstallerServiceProvider implements ServiceProviderInterface, ServiceModif
 
     // Use a performance optimised module extension list.
     $container->getDefinition('extension.list.module')->setClass('Drupal\Core\Installer\InstallerModuleExtensionList');
+    $container->getDefinition('extension.list.profile')->setClass('Drupal\Core\Installer\InstallerProfileExtensionList');
   }
 
   /**

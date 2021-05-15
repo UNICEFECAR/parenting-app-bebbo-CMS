@@ -1,0 +1,25 @@
+uuid: 82068105-b690-4149-a0d5-1d4223f4326b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_video_embed_url
+    - media.type.remote_video
+  module:
+    - video_embed_field
+id: media.remote_video.field_video_embed_url
+field_name: field_video_embed_url
+entity_type: media
+bundle: remote_video
+label: 'Video Embed URL'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_providers:
+    vimeo: '0'
+    youtube: '0'
+    youtube_playlist: '0'
+field_type: video_embed_field

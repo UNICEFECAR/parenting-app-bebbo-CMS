@@ -1,0 +1,18 @@
+uuid: 0338fccc-2b25-427c-abff-fd11888325e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_period
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.growth_period
+target_entity_type_id: taxonomy_term
+target_bundle: growth_period
+default_langcode: site_default
+language_alterable: false

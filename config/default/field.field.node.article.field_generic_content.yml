@@ -1,0 +1,23 @@
+uuid: 2427dd95-1d30-4a11-9f64-a89c26f48c82
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_generic_content
+    - node.type.article
+id: node.article.field_generic_content
+field_name: field_generic_content
+entity_type: node
+bundle: article
+label: 'Generic Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

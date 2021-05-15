@@ -1,0 +1,87 @@
+uuid: 941613f5-a697-4714-95d7-7baa6b63ee77
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.media.image.name
+    - field.field.media.image.field_media_image
+    - media.type.image
+  module:
+    - media
+id: media_image_import
+label: 'Media - Image'
+description: 'Media image import'
+help: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:media'
+processor_configuration:
+  langcode: en
+  update_existing: 0
+  update_non_existent: _keep
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+  authorize: true
+  skip_hash_check: false
+  values:
+    bundle: image
+custom_sources:
+  '':
+    label: ''
+    value: ''
+    machine_name: ''
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  name:
+    label: Name
+    value: Name
+    machine_name: name
+  image_id:
+    label: Image_ID
+    value: Image_ID
+    machine_name: image_id
+  alt_text:
+    label: Alt_text
+    value: Alt_text
+    machine_name: alt_text
+  thumbnail:
+    label: Thumbnail
+    value: Thumbnail
+    machine_name: thumbnail
+mappings:
+  -
+    target: mid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: name
+    unique: {  }
+    settings:
+      language: null
+  -
+    target: field_media_image
+    map:
+      target_id: thumbnail
+      alt: alt_text
+      title: name
+    settings:
+      existing: 2
+      language: null
+      reference_by: filename
+      autocreate: false

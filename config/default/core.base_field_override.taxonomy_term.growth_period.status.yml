@@ -1,0 +1,22 @@
+uuid: a998865c-64c5-4341-8522-2dd756bc6e30
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_period
+id: taxonomy_term.growth_period.status
+field_name: status
+entity_type: taxonomy_term
+bundle: growth_period
+label: Published
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

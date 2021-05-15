@@ -1,0 +1,23 @@
+uuid: 1911458f-fb82-4f03-9658-1f9383c7c477
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_make_available_for_mobile
+    - group.type.country
+id: group.country.field_make_available_for_mobile
+field_name: field_make_available_for_mobile
+entity_type: group
+bundle: country
+label: 'Make available for mobile App'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

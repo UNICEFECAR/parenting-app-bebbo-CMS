@@ -1,0 +1,69 @@
+uuid: 9b74decd-e3ee-4e0c-be02-b1657d150e66
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.category.name
+    - taxonomy.vocabulary.category
+  module:
+    - taxonomy
+id: taxonomy_categories
+label: 'Taxonomy - Categories'
+description: 'Taxonomy - Categories'
+help: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: en
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: category
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  term_id:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id
+  term_name:
+    label: Term_name
+    value: Term_name
+    machine_name: term_name
+  language_code:
+    label: Language_code
+    value: Language_code
+    machine_name: language_code
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: term_name
+    unique: {  }
+    settings:
+      language: null
+  -
+    target: langcode
+    map:
+      value: language_code
+    settings:
+      language: null

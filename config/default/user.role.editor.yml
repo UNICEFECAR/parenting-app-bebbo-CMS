@@ -1,0 +1,25 @@
+uuid: 81a0900a-8fd4-4dc4-b09f-ed1014b9f229
+langcode: en
+status: true
+dependencies: {  }
+id: editor
+label: Editor
+weight: 4
+is_admin: null
+permissions:
+  - 'create activities content'
+  - 'create article content'
+  - 'create child_development content'
+  - 'create child_growth content'
+  - 'create daily_homescreen_messages content'
+  - 'create faq content'
+  - 'create health_check_ups content'
+  - 'create milestone content'
+  - 'create page content'
+  - 'create survey content'
+  - 'create vaccinations content'
+  - 'create video_article content'
+  - 'use group_workflow transition create_new_draft'
+  - 'use group_workflow transition draft_to_reviewer_review'
+  - 'use group_workflow transition draft_to_sme_review'
+  - 'view any unpublished content'

@@ -1,0 +1,29 @@
+uuid: 396bb548-958b-45de-916b-fa7e0ac60acd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_growth_type
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.field_growth_type
+field_name: field_growth_type
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: 'Growth Type'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      growth_type: growth_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

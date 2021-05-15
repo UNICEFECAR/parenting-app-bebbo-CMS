@@ -1,0 +1,23 @@
+uuid: e0e5651b-2a8e-49f4-a833-f39e8cc1bc3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_sd4
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.field_sd4
+field_name: field_sd4
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: SD4
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

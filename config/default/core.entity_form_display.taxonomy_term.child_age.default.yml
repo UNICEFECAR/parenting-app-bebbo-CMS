@@ -1,0 +1,90 @@
+uuid: 1f26824e-5cfb-4ec2-80d2-d7f30e3b9d66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.child_age.field_age_bracket
+    - field.field.taxonomy_term.child_age.field_buffers_days
+    - field.field.taxonomy_term.child_age.field_days_from
+    - field.field.taxonomy_term.child_age.field_days_to
+    - field.field.taxonomy_term.child_age.field_weeks_from
+    - field.field.taxonomy_term.child_age.field_weeks_to
+    - taxonomy.vocabulary.child_age
+  module:
+    - path
+id: taxonomy_term.child_age.default
+targetEntityType: taxonomy_term
+bundle: child_age
+mode: default
+content:
+  field_age_bracket:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_buffers_days:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_days_from:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_days_to:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_weeks_from:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_weeks_to:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 8
+    region: content
+    third_party_settings: {  }
+hidden:
+  description: true

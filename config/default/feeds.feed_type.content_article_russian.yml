@@ -1,0 +1,259 @@
+uuid: 59672474-358d-42c7-b1e4-255379622e53
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.article.body
+    - field.field.node.article.field_australian_article
+    - field.field.node.article.field_child_age
+    - field.field.node.article.field_child_gender
+    - field.field.node.article.field_content_category
+    - field.field.node.article.field_cover_image
+    - field.field.node.article.field_keywords
+    - field.field.node.article.field_mandatory_content
+    - field.field.node.article.field_parent_gender
+    - field.field.node.article.field_references_and_comments
+    - field.field.node.article.field_related_articles
+    - field.field.node.article.field_seasons
+    - node.type.article
+  module:
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      09d36b46-23c4-4856-ab57-d95753610b23:
+        separator: ','
+        limit: null
+        plugin: explode
+        source: child_age
+        weight: 0
+        label: Explode
+        uuid: 09d36b46-23c4-4856-ab57-d95753610b23
+      b537b9e6-d9b2-408d-ab44-98a72ecce961:
+        separator: ','
+        limit: null
+        plugin: explode
+        source: keywords
+        weight: 0
+        label: Explode
+        uuid: b537b9e6-d9b2-408d-ab44-98a72ecce961
+      c332d524-1058-4049-bcda-31fe080c7e37:
+        separator: ','
+        limit: null
+        plugin: explode
+        source: related_articles
+        weight: 0
+        label: Explode
+        uuid: c332d524-1058-4049-bcda-31fe080c7e37
+id: content_article_russian
+label: 'Content - Article - russian'
+description: 'Content - Article - russian'
+help: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  langcode: ru
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+  authorize: true
+  skip_hash_check: false
+  values:
+    type: article
+custom_sources:
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  body:
+    label: Body
+    value: Body
+    machine_name: body
+  summary:
+    label: Summary
+    value: Summary
+    machine_name: summary
+  cover_image:
+    label: Cover_image
+    value: Cover_image
+    machine_name: cover_image
+  category:
+    label: Category
+    value: Category
+    machine_name: category
+  child_age:
+    label: Child_age
+    value: Child_age
+    machine_name: child_age
+  child_gender:
+    label: Child_gender
+    value: Child_gender
+    machine_name: child_gender
+  parent_gender:
+    label: Parent_gender
+    value: Parent_gender
+    machine_name: parent_gender
+  season:
+    label: Season
+    value: Season
+    machine_name: season
+  keywords:
+    label: Keywords
+    value: Keywords
+    machine_name: keywords
+  related_articles:
+    label: Related_articles
+    value: Related_articles
+    machine_name: related_articles
+  australian_article:
+    label: Australian_article
+    value: Australian_article
+    machine_name: australian_article
+  mandatory_content:
+    label: Mandatory_content
+    value: Mandatory_content
+    machine_name: mandatory_content
+  references_and_comments:
+    label: References_and_comments
+    value: References_and_comments
+    machine_name: references_and_comments
+  translation_language:
+    label: Translation_language
+    value: Translation_language
+    machine_name: translation_language
+mappings:
+  -
+    target: nid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: title
+    map:
+      value: title
+    unique: {  }
+    settings:
+      language: ru
+  -
+    target: body
+    map:
+      value: body
+      summary: summary
+    settings:
+      language: ru
+      format: plain_text
+  -
+    target: field_cover_image
+    map:
+      target_id: cover_image
+    settings:
+      language: ru
+      reference_by: mid
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_content_category
+    map:
+      target_id: category
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_child_age
+    map:
+      target_id: child_age
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_child_gender
+    map:
+      target_id: child_gender
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_parent_gender
+    map:
+      target_id: parent_gender
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_seasons
+    map:
+      target_id: season
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_keywords
+    map:
+      target_id: keywords
+    settings:
+      language: ru
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_related_articles
+    map:
+      target_id: related_articles
+    settings:
+      language: ru
+      reference_by: nid
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_australian_article
+    map:
+      value: australian_article
+    settings:
+      language: ru
+  -
+    target: field_mandatory_content
+    map:
+      value: mandatory_content
+    settings:
+      language: ru
+  -
+    target: field_references_and_comments
+    map:
+      value: references_and_comments
+    settings:
+      language: ru
+      format: plain_text
+  -
+    target: langcode
+    map:
+      value: translation_language
+    settings:
+      language: null

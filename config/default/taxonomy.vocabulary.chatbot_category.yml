@@ -1,0 +1,8 @@
+uuid: 185bec87-9074-47f9-9d17-faec9c46c170
+langcode: en
+status: true
+dependencies: {  }
+name: 'Chatbot Category'
+vid: chatbot_category
+description: 'Chatbot Category'
+weight: 0

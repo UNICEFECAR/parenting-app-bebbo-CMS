@@ -1,0 +1,23 @@
+uuid: baa12b19-6c61-4155-87c6-c77f854cce86
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_notification_from
+    - node.type.health_check_ups
+id: node.health_check_ups.field_notification_from
+field_name: field_notification_from
+entity_type: node
+bundle: health_check_ups
+label: 'Notification From'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

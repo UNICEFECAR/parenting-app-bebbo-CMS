@@ -1,0 +1,23 @@
+uuid: fd63ec06-5d01-4bed-908e-656559103a97
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_notification_to
+    - node.type.health_check_ups
+id: node.health_check_ups.field_notification_to
+field_name: field_notification_to
+entity_type: node
+bundle: health_check_ups
+label: 'Notification To'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

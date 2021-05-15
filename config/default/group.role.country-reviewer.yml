@@ -1,0 +1,14 @@
+uuid: 71809a8f-5218-4475-91ba-2747dd7ce554
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-reviewer
+label: Reviewer
+weight: 103
+internal: false
+audience: member
+group_type: country
+permissions_ui: true
+permissions: {  }

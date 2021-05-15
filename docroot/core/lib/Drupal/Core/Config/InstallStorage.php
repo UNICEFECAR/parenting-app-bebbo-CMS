@@ -4,6 +4,8 @@ namespace Drupal\Core\Config;
 
 use Drupal\Core\Extension\ExtensionDiscovery;
 use Drupal\Core\Extension\Extension;
+use Drupal\Core\Extension\ProfileExtensionList;
+use Drupal\Core\Extension\ProfileHandlerInterface;
 
 /**
  * Storage used by the Drupal installer.
@@ -48,6 +50,13 @@ class InstallStorage extends FileStorage {
   protected $directory;
 
   /**
+   * The profile list, used to find additional folders to scan for config.
+   *
+   * @var \Drupal\Core\Extension\ProfileExtensionList
+   */
+  protected $profileList;
+
+  /**
    * Constructs an InstallStorage object.
    *
    * @param string $directory
@@ -56,9 +65,14 @@ class InstallStorage extends FileStorage {
    * @param string $collection
    *   (optional) The collection to store configuration in. Defaults to the
    *   default collection.
+   * @param \Drupal\Core\Extension\ProfileExtensionList $profile_list
+   *   (optional) The profile list.
    */
-  public function __construct($directory = self::CONFIG_INSTALL_DIRECTORY, $collection = StorageInterface::DEFAULT_COLLECTION) {
+  public function __construct($directory = self::CONFIG_INSTALL_DIRECTORY, $collection = StorageInterface::DEFAULT_COLLECTION, ProfileExtensionList $profile_list = NULL) {
     parent::__construct($directory, $collection);
+    if (\Drupal::hasService('extension.list.profile')) {
+      $this->profileList = $profile_list ?: \Drupal::service('extension.list.profile');
+    }
   }
 
   /**
@@ -151,20 +165,22 @@ class InstallStorage extends FileStorage {
     if (!isset($this->folders)) {
       $this->folders = [];
       $this->folders += $this->getCoreNames();
+      // Get dependent profiles and add the extension components.
+      $this->folders += $this->getComponentNames($this->profileList->getAncestors());
       // Perform an ExtensionDiscovery scan as we cannot use drupal_get_path()
       // yet because the system module may not yet be enabled during install.
       // @todo Remove as part of https://www.drupal.org/node/2186491
       $listing = new ExtensionDiscovery(\Drupal::root());
       if ($profile = \Drupal::installProfile()) {
-        $profile_list = $listing->scan('profile');
-        if (isset($profile_list[$profile])) {
+        $profiles = $this->profileList->getAncestors($profile);
+        foreach ($profiles as $p) {
           // Prime the drupal_get_filename() static cache with the profile info
           // file location so we can use drupal_get_path() on the active profile
           // during the module scan.
           // @todo Remove as part of https://www.drupal.org/node/2186491
-          drupal_get_filename('profile', $profile, $profile_list[$profile]->getPathname());
-          $this->folders += $this->getComponentNames([$profile_list[$profile]]);
+          drupal_get_filename('profile', $profile, $p->getPathname());
         }
+        $this->folders += $this->getComponentNames($profiles);
       }
       // @todo Remove as part of https://www.drupal.org/node/2186491
       $this->folders += $this->getComponentNames($listing->scan('module'));

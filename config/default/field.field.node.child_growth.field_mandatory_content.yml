@@ -1,0 +1,23 @@
+uuid: dead1313-841e-447a-a785-b743307eeae8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.child_growth
+id: node.child_growth.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: child_growth
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

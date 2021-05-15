@@ -1,0 +1,23 @@
+uuid: aea1e67e-525d-4f36-ba69-a7f9f98849cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_days_to
+    - taxonomy.vocabulary.growth_introductory
+id: taxonomy_term.growth_introductory.field_days_to
+field_name: field_days_to
+entity_type: taxonomy_term
+bundle: growth_introductory
+label: 'Days To'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

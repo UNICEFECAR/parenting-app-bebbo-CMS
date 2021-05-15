@@ -1,0 +1,8 @@
+uuid: 6acc84d6-ee47-4f01-94ac-9cc885029389
+langcode: en
+status: true
+dependencies: {  }
+name: 'Parent Gender'
+vid: parent_gender
+description: 'Parent Gender'
+weight: 0

@@ -1,0 +1,15 @@
+name: JSON Field
+type: module
+description: Provides a JSON field, formatter and views integration.
+# core: 8.x
+package: Field types
+dependencies:
+  - drupal:field
+  - drupal:text
+  - drupal:serialization
+
+# Information added by Drupal.org packaging script on 2019-03-04
+version: '8.x-1.0-rc3'
+core: '8.x'
+project: 'json_field'
+datestamp: 1551708498

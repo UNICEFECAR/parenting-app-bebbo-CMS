@@ -1,0 +1,28 @@
+uuid: 52e0ea01-cfba-4b2c-8e9b-7ca5a8185253
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_country_flag
+    - group.type.country
+    - media.type.image
+id: group.country.field_country_flag
+field_name: field_country_flag
+entity_type: group
+bundle: country
+label: 'Country Flag'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

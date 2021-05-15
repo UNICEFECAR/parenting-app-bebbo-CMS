@@ -1,0 +1,8 @@
+uuid: ad603b92-1f80-4e13-b13f-c2e0f9768fea
+langcode: en
+status: true
+dependencies: {  }
+name: 'Standard Deviation'
+vid: standard_deviation
+description: 'Standard Deviation'
+weight: 0

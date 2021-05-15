@@ -1,0 +1,11 @@
+label: Содержимое
+display:
+  default:
+    display_options:
+      title: Содержимое
+  page_1:
+    display_options:
+      menu:
+        title: Содержимое
+      tab_options:
+        title: Содержимое

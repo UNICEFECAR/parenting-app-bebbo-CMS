@@ -1,0 +1,8 @@
+uuid: afa54b56-a901-4555-acbf-68506586397c
+langcode: en
+status: true
+dependencies: {  }
+name: 'Daily Home Screen Message Category'
+vid: daily_home_screen_message_catego
+description: 'Daily Home Screen Message Category'
+weight: 0

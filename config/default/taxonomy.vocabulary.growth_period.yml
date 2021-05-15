@@ -1,0 +1,8 @@
+uuid: 65e4f341-a107-4294-8980-7f0e8c998ba2
+langcode: en
+status: true
+dependencies: {  }
+name: 'Growth Period'
+vid: growth_period
+description: 'Growth Period'
+weight: 0

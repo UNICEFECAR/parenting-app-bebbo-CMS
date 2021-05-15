@@ -1,0 +1,8 @@
+uuid: bd4dcb88-5716-4366-a4a0-705e96b0a363
+langcode: en
+status: true
+dependencies: {  }
+name: 'Growth Type'
+vid: growth_type
+description: 'Growth Type'
+weight: 0

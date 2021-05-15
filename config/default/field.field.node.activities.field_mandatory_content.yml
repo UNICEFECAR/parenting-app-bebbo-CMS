@@ -1,0 +1,23 @@
+uuid: 670d2e2f-b709-42eb-b82d-7871e7136e7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.activities
+id: node.activities.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: activities
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

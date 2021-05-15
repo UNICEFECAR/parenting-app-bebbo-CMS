@@ -1,0 +1,39 @@
+uuid: 4c035f0c-92c9-4af3-acce-4149b7e6da32
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_notification_from
+    - field.field.node.health_check_ups.field_notification_to
+    - field.field.node.health_check_ups.field_pinned_article
+    - node.type.health_check_ups
+  module:
+    - text
+    - user
+id: node.health_check_ups.teaser
+targetEntityType: node
+bundle: health_check_ups
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_growth_period: true
+  field_notification_from: true
+  field_notification_to: true
+  field_pinned_article: true
+  langcode: true

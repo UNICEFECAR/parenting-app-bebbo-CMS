@@ -1,0 +1,18 @@
+json_field.formatter:
+#  version: VERSION
+  js:
+    # Core.
+    assets/js/json_field.js: {}
+    # jquery-jsonview Library: https://github.com/yesmeck/jquery-jsonview/releases.
+    /libraries/jsonview/dist/jquery.jsonview.js: {}
+  css:
+    component:
+      # Core.
+      assets/css/json_field.css: {}
+      # jquery-jsonview Library: https://github.com/yesmeck/jquery-jsonview/releases.
+      /libraries/jsonview/dist/jquery.jsonview.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings

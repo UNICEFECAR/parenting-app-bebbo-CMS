@@ -1,0 +1,23 @@
+uuid: 6c79c3ab-d6ec-4a5d-a9f4-f40acc218fa5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_notification_to
+    - node.type.vaccinations
+id: node.vaccinations.field_notification_to
+field_name: field_notification_to
+entity_type: node
+bundle: vaccinations
+label: 'Notification To'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,18 @@
+uuid: e1d4805d-8b0f-4cb2-be70-bcc8f045717f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'Child Development'
+type: child_development
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: true

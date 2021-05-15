@@ -1,0 +1,83 @@
+uuid: 099600ad-f20d-4451-a10f-d3a7649ce56c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_period.field_days_from
+    - field.field.taxonomy_term.growth_period.field_days_to
+    - field.field.taxonomy_term.growth_period.field_show_on_top
+    - field.field.taxonomy_term.growth_period.field_weeks_from
+    - field.field.taxonomy_term.growth_period.field_weeks_to
+    - taxonomy.vocabulary.growth_period
+  module:
+    - path
+id: taxonomy_term.growth_period.default
+targetEntityType: taxonomy_term
+bundle: growth_period
+mode: default
+content:
+  field_days_from:
+    weight: 1
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_days_to:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_show_on_top:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_weeks_from:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_weeks_to:
+    weight: 4
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 7
+    region: content
+    third_party_settings: {  }
+hidden:
+  description: true

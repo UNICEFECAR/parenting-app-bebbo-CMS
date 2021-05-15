@@ -1,0 +1,20 @@
+{
+  "name": "drupal/json_field",
+  "description": "Provides a JSON field, formatter and views integration",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "keywords": ["Drupal"],
+  "minimum-stability": "dev",
+  "homepage": "https://www.drupal.org/project/json_field",
+  "authors": [
+    {
+      "name": "See contributors",
+      "homepage": "https://www.drupal.org/node/2653746/committers",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/json_field",
+    "source": "http://cgit.drupalcode.org/json_field"
+  }
+}

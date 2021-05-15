@@ -1,0 +1,29 @@
+uuid: 3a0b129a-a86b-4933-8068-7119538510c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_growth_period
+    - node.type.health_check_ups
+    - taxonomy.vocabulary.growth_period
+id: node.health_check_ups.field_growth_period
+field_name: field_growth_period
+entity_type: node
+bundle: health_check_ups
+label: 'Growth Period'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      growth_period: growth_period
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

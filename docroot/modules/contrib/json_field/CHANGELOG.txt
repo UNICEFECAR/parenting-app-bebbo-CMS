@@ -1,0 +1,36 @@
+JSON Field 8.x-1.0-rc3, 2019-03-03
+----------------------------------
+#2955173 by kruhak, garphy, Sharique, pifagor: Got a fatal error after module
+  installation about using $this not in object context.
+#3006999 by chipway, voleger: Apply new {project}:{module} format for
+  dependencies.
+#3000278 by lamp5, RAFA3L: Library path.
+#3004726 by jackbravo: Add default value to storage settings form.
+#3030770 by miiimooo: Jsonview in paragraph.
+
+
+JSON Field 8.x-1.0-rc1, 2018-03-19
+----------------------------------
+#2712243 by GGH: Code quality improvements in json_field.js per ESLint.
+#2703889 by pashupathi nath gajawada: Deprecated \Drupal::service method
+  replaced.
+#2765707 by marcoliver, jefuri: Not working with image_widget_crop.
+#2941865 by DamienMcKenna: Add a CHANGELOG.txt file.
+#2880415 by garphy, DamienMcKenna, jefuri: Add support for JSON and JSONB
+  database field types.
+#2941860 by DamienMcKenna, Jaesin: Codebase cleanup.
+#2941872 by sravya_12, DamienMcKenna, Jaesin: Add a composer.json file.
+
+
+JSON Field 8.x-1.0-beta2, 2017-02-24
+------------------------------------
+#2692535: Add travis testing.
+#2656414 by tbfisher: Add validation constraint for size.
+#2657046 by tbfisher: JsonItemTest::testValidation() fails.
+#2656580 by tbfisher: Field setting max size = 64KB uncaught exception
+
+
+JSON Field 8.x-1.0-beta1, 2016-01-20
+------------------------------------
+Remove the jsonview library and point to sites/all/libraries instead.
+Initial commit.

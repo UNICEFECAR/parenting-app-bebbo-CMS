@@ -1,0 +1,14 @@
+name: 'Group test views'
+description: 'Provides default views for group views tests.'
+package: 'Testing'
+type: 'module'
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - 'group:group'
+  - 'drupal:views'
+  - 'drupal:language'
+
+# Information added by Drupal.org packaging script on 2020-10-06
+version: '8.x-1.3'
+project: 'group'
+datestamp: 1601990198

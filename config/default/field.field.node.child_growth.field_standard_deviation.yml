@@ -1,0 +1,29 @@
+uuid: 26bf12cc-1f77-4b06-befc-79636ef9f435
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_standard_deviation
+    - node.type.child_growth
+    - taxonomy.vocabulary.standard_deviation
+id: node.child_growth.field_standard_deviation
+field_name: field_standard_deviation
+entity_type: node
+bundle: child_growth
+label: 'Standard Deviation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      standard_deviation: standard_deviation
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

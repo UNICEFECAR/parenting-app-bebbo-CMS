@@ -1,0 +1,17 @@
+uuid: 06746adb-9d8e-4b0f-be8b-63524d8fc06d
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.reviewer
+id: country-d360ff30e
+label: Reviewer
+weight: 6
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

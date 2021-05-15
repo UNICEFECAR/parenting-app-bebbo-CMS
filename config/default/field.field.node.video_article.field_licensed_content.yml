@@ -1,0 +1,23 @@
+uuid: f0e46cd8-c0f9-42f7-9ca6-d7b2aab91a21
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.video_article
+id: node.video_article.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: video_article
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
