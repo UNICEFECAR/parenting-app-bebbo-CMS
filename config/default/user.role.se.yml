@@ -28,4 +28,5 @@ permissions:
   - 'use group_workflow transition reviewer_to_publish'
   - 'use group_workflow transition reviewer_to_sme_review'
   - 'use group_workflow transition sme_to_reviewer_review'
+  - 'use text format full_html'
   - 'view any unpublished content'

@@ -11,7 +11,7 @@ field_name: field_parent_gender
 entity_type: node
 bundle: video_article
 label: 'Parent Gender'
-description: ''
+description: 'To Specify under which parent gender this article falls'
 required: false
 translatable: true
 default_value: {  }

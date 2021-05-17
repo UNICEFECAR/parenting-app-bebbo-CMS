@@ -10,7 +10,7 @@ field_name: field_premature_content
 entity_type: node
 bundle: video_article
 label: 'Premature Content'
-description: ''
+description: 'Enable this filed if this content is related to Premature child'
 required: false
 translatable: true
 default_value:

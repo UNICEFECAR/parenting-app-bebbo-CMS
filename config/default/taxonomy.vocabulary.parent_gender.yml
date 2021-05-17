@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Parent Gender'
 vid: parent_gender
-description: 'Parent Gender'
+description: 'Used for Article & Video Article Content types'
 weight: 0

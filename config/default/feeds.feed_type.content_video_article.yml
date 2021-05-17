@@ -46,6 +46,50 @@ third_party_settings:
         weight: 0
         label: Explode
         uuid: 3ad3d814-f5f9-41a5-bb6c-5ed6c9d22a99
+      e7fa7afa-6ced-4594-9468-1f9d39bcba3f:
+        find: review_after_translation
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 0
+        label: 'review_after_translation into draft'
+        word_boundaries: false
+        uuid: e7fa7afa-6ced-4594-9468-1f9d39bcba3f
+      e3656091-5d2c-4030-b9b2-363025f277d0:
+        find: Draft
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 1
+        label: 'Draft into draft'
+        word_boundaries: false
+        uuid: e3656091-5d2c-4030-b9b2-363025f277d0
+      72e655ff-8b38-4299-af4c-58822f5e1de2:
+        find: Published
+        replace: published
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 2
+        label: 'Published into published'
+        word_boundaries: false
+        uuid: 72e655ff-8b38-4299-af4c-58822f5e1de2
+      1ef57688-7be1-4464-96ea-16ecd49f36e1:
+        find: 'In review'
+        replace: reviewer_review
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 3
+        label: 'In review into reviewer_review'
+        word_boundaries: false
+        uuid: 1ef57688-7be1-4464-96ea-16ecd49f36e1
 id: content_video_article
 label: 'Content - Video Article'
 description: 'Content - Video Article'
@@ -137,6 +181,10 @@ custom_sources:
     label: Translation_language
     value: Translation_language
     machine_name: translation_language
+  moderation_state:
+    label: Moderation_state
+    value: Moderation_state
+    machine_name: moderation_state
 mappings:
   -
     target: nid
@@ -255,5 +303,12 @@ mappings:
     target: langcode
     map:
       value: translation_language
+    settings:
+      language: en
+  -
+    target: moderation_state
+    map:
+      value: moderation_state
+    unique: {  }
     settings:
       language: en

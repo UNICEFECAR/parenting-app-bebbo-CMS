@@ -40,6 +40,7 @@ permissions:
   - 'create terms in chatbot_category'
   - 'create terms in child_age'
   - 'create terms in child_gender'
+  - 'create terms in daily_home_screen_message_catego'
   - 'create terms in growth_introductory'
   - 'create terms in growth_period'
   - 'create terms in growth_type'

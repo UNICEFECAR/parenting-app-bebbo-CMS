@@ -11,4 +11,5 @@ permissions:
   - 'use group_workflow transition reject'
   - 'use group_workflow transition reviewer_to_publish'
   - 'use group_workflow transition reviewer_to_sme_review'
+  - 'use text format full_html'
   - 'view any unpublished content'

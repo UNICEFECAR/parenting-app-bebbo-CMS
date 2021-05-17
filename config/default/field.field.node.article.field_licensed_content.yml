@@ -10,7 +10,7 @@ field_name: field_licensed_content
 entity_type: node
 bundle: article
 label: 'Licensed Content'
-description: ''
+description: 'Enable this filed if this content is country specific so that other countries could not add this content to their country'
 required: false
 translatable: true
 default_value:

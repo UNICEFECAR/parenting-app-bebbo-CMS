@@ -12,7 +12,7 @@ entity_type: taxonomy_term
 bundle: standard_deviation
 label: 'Child Gender'
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

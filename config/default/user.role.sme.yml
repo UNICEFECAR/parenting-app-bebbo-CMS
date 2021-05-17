@@ -8,4 +8,5 @@ weight: 5
 is_admin: null
 permissions:
   - 'use group_workflow transition sme_to_reviewer_review'
+  - 'use text format full_html'
   - 'view any unpublished content'

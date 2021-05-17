@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Child Gender'
 vid: child_gender
-description: 'Child Gender'
+description: 'Used in Video Article, Article content type and  Standard Deviation Taxonomy Term'
 weight: 0

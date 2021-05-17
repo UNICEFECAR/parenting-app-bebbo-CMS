@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Growth Type'
 vid: growth_type
-description: 'Growth Type'
+description: 'Used in Child Growth content type and Standard deviation Taxonomy terms'
 weight: 0

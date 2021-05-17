@@ -10,7 +10,7 @@ field_name: field_generic_content
 entity_type: node
 bundle: article
 label: 'Generic Content'
-description: ''
+description: 'To Specify this content is generic to all country'
 required: false
 translatable: true
 default_value:

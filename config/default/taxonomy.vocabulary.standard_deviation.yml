@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Standard Deviation'
 vid: standard_deviation
-description: 'Standard Deviation'
+description: 'Used to provide master data for Standard Deviation based on child weight, age and gender'
 weight: 0

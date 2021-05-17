@@ -11,7 +11,7 @@ field_name: field_activity_child_age
 entity_type: node
 bundle: activities
 label: 'Child Age'
-description: ''
+description: 'Press Shift to select multiple values'
 required: false
 translatable: true
 default_value: {  }

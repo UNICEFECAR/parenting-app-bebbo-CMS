@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Growth Period'
 vid: growth_period
-description: 'Growth Period'
+description: 'Used in Vaccination and Health check-ups content type for choosing'
 weight: 0

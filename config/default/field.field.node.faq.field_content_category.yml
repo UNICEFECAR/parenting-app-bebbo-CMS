@@ -5,14 +5,14 @@ dependencies:
   config:
     - field.storage.node.field_content_category
     - node.type.faq
-    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
 id: node.faq.field_content_category
 field_name: field_content_category
 entity_type: node
 bundle: faq
-label: Category
+label: 'Sub Category'
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
@@ -20,10 +20,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      category: category
+      chatbot_category: chatbot_category
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: category
 field_type: entity_reference

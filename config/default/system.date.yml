@@ -1,8 +1,8 @@
 country:
-  default: IN
+  default: RS
 first_day: 0
 timezone:
-  default: Asia/Kolkata
+  default: Europe/Belgrade
   user:
     configurable: true
     warn: false

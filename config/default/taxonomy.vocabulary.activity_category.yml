@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: Domain
 vid: activity_category
-description: Domain
+description: 'Used in Activity Content type'
 weight: 0

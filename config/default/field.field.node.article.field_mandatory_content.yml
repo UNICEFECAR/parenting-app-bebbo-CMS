@@ -10,7 +10,7 @@ field_name: field_mandatory_content
 entity_type: node
 bundle: article
 label: 'Mandatory Content'
-description: ''
+description: 'To identify the content as mandatory for all onboarding countries'
 required: false
 translatable: true
 default_value:
