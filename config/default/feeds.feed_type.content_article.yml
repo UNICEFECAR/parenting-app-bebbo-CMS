@@ -90,6 +90,17 @@ third_party_settings:
         label: 'In review into reviewer_review'
         word_boundaries: false
         uuid: f3b96e9d-01a1-44a2-93da-b3c10cd599e1
+      e45aa4c1-cdfd-4f63-b294-75872d9352da:
+        find: 'Review after translation'
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 4
+        label: 'Review after translation into draft'
+        word_boundaries: false
+        uuid: e45aa4c1-cdfd-4f63-b294-75872d9352da
 id: content_article
 label: 'Content - Article'
 description: 'Content - Article'

@@ -7,7 +7,17 @@ dependencies:
     - field.field.media.image.field_media_image
     - media.type.image
   module:
+    - feeds_tamper
     - media
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      22bb1332-d836-443d-9a30-58e434489a13:
+        plugin: html_entity_decode
+        source: name
+        weight: 0
+        label: 'HTML entity decode'
+        uuid: 22bb1332-d836-443d-9a30-58e434489a13
 id: media_image_import
 label: 'Media - Image'
 description: 'Media image import'
@@ -25,7 +35,7 @@ parser_configuration:
 processor: 'entity:media'
 processor_configuration:
   langcode: en
-  update_existing: 0
+  update_existing: 1
   update_non_existent: _keep
   expire: -1
   owner_feed_author: false

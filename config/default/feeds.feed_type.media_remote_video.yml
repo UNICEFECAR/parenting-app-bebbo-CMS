@@ -8,8 +8,18 @@ dependencies:
     - field.field.media.remote_video.field_video_embed_url
     - media.type.remote_video
   module:
+    - feeds_tamper
     - media
     - video_embed_field
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      f8dde7f2-06ab-4ea9-89b8-b7dd2c693127:
+        plugin: html_entity_decode
+        source: name
+        weight: 0
+        label: 'HTML entity decode'
+        uuid: f8dde7f2-06ab-4ea9-89b8-b7dd2c693127
 id: media_remote_video
 label: 'Media - Remote Video'
 description: 'Media - Remote Video'
@@ -27,7 +37,7 @@ parser_configuration:
 processor: 'entity:media'
 processor_configuration:
   langcode: en
-  update_existing: 0
+  update_existing: 1
   update_non_existent: _keep
   expire: -1
   owner_feed_author: false
