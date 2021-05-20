@@ -1,0 +1,23 @@
+uuid: dc85ab86-988f-47be-8871-94244751df8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_equipment
+    - node.type.activities
+id: node.activities.field_equipment
+field_name: field_equipment
+entity_type: node
+bundle: activities
+label: Equipment
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

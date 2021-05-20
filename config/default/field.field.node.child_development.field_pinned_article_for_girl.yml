@@ -1,0 +1,28 @@
+uuid: 342e50cd-6d81-4fae-8963-79fcb22988d5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_article_for_girl
+    - node.type.article
+    - node.type.child_development
+id: node.child_development.field_pinned_article_for_girl
+field_name: field_pinned_article_for_girl
+entity_type: node
+bundle: child_development
+label: 'Pinned Article for Girl Baby'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,28 @@
+uuid: 4c304be0-1a1c-453a-b05b-7ae5809a04bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_articles
+    - node.type.activities
+    - node.type.milestone
+id: node.activities.field_related_articles
+field_name: field_related_articles
+entity_type: node
+bundle: activities
+label: 'Pinned Milestone'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      milestone: milestone
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

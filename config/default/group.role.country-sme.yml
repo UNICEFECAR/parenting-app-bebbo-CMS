@@ -1,0 +1,25 @@
+uuid: b0e484e9-5f6d-4d93-b41b-92ec96463d0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-sme
+label: SME
+weight: 102
+internal: false
+audience: member
+group_type: country
+permissions_ui: true
+permissions:
+  - 'update any group_node:activities entity'
+  - 'update any group_node:article entity'
+  - 'update any group_node:child_development entity'
+  - 'update any group_node:child_growth entity'
+  - 'update any group_node:daily_homescreen_messages entity'
+  - 'update any group_node:faq entity'
+  - 'update any group_node:health_check_ups entity'
+  - 'update any group_node:milestone entity'
+  - 'update any group_node:page entity'
+  - 'update any group_node:survey entity'
+  - 'update any group_node:vaccinations entity'

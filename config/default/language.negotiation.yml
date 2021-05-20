@@ -1,0 +1,58 @@
+session:
+  parameter: language
+url:
+  source: path_prefix
+  prefixes:
+    en: ''
+    sr: sr
+    ru: ru
+    rs-sr: rs-sr
+    '': null
+    sq: sq
+    al-sq: al-sq
+    by-be: by-be
+    by-ru: by-ru
+    bg-bg: bg-bg
+    gr-arb: gr-arb
+    gr-el: gr-el
+    gr-fa: gr-fa
+    xk-sq: xk-sq
+    xk-rs: xk-rs
+    kg-ky: kg-ky
+    kg-ru: kg-ru
+    me-cnr: me-cnr
+    mk-sq: mk-sq
+    mk-mk: mk-mk
+    rs-en: rs-en
+    tj-ru: tj-ru
+    tj-tg: tj-tg
+    uz-ru: uz-ru
+    uz-uz: uz-uz
+  domains:
+    en: ''
+    sr: ''
+    ru: ''
+    rs-sr: ''
+    sq: ''
+    al-sq: ''
+    by-be: ''
+    by-ru: ''
+    bg-bg: ''
+    gr-arb: ''
+    gr-el: ''
+    gr-fa: ''
+    xk-sq: ''
+    xk-rs: ''
+    kg-ky: ''
+    kg-ru: ''
+    me-cnr: ''
+    mk-sq: ''
+    mk-mk: ''
+    rs-en: ''
+    tj-ru: ''
+    tj-tg: ''
+    uz-ru: ''
+    uz-uz: ''
+selected_langcode: site_default
+_core:
+  default_config_hash: uEePITI9tV6WqzmsTb7MfPCi5yPWXSxAN1xeLcYFQbM

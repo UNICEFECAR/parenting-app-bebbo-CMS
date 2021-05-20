@@ -1,0 +1,30 @@
+uuid: b765d4d4-5543-4852-8fca-f30fe4fe3aa4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_article
+    - node.type.article
+    - node.type.vaccinations
+    - node.type.video_article
+id: node.vaccinations.field_pinned_article
+field_name: field_pinned_article
+entity_type: node
+bundle: vaccinations
+label: 'Pinned Article'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+      video_article: video_article
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference

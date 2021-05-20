@@ -1,0 +1,18 @@
+uuid: 5e010830-8673-4ce6-9c71-cec52384dac6
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.child_growth
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.child_growth
+target_entity_type_id: node
+target_bundle: child_growth
+default_langcode: current_interface
+language_alterable: true

@@ -1,0 +1,23 @@
+uuid: be01e9f1-3b2b-48bb-922a-b36f64bb376b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_days_from
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.field_days_from
+field_name: field_days_from
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Days From'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

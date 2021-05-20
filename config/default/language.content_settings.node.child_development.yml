@@ -1,0 +1,18 @@
+uuid: 38701da3-b830-47f3-b852-d33a6561fecc
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.child_development
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.child_development
+target_entity_type_id: node
+target_bundle: child_development
+default_langcode: current_interface
+language_alterable: true

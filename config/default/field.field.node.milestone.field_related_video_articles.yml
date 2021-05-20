@@ -1,0 +1,28 @@
+uuid: b9dfebf8-54c8-42ff-81f6-e1cbfc1cd289
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_video_articles
+    - node.type.milestone
+    - node.type.video_article
+id: node.milestone.field_related_video_articles
+field_name: field_related_video_articles
+entity_type: node
+bundle: milestone
+label: 'Related Video Articles'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      video_article: video_article
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,29 @@
+uuid: e466b658-d579-4a1c-84ba-56293a609665
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-member
+label: Member
+weight: -100
+internal: true
+audience: member
+group_type: country
+permissions_ui: true
+permissions:
+  - 'access group_node overview'
+  - 'view group'
+  - 'view group_membership content'
+  - 'view group_node:activities entity'
+  - 'view group_node:article entity'
+  - 'view group_node:child_development entity'
+  - 'view group_node:child_growth entity'
+  - 'view group_node:daily_homescreen_messages entity'
+  - 'view group_node:faq entity'
+  - 'view group_node:health_check_ups entity'
+  - 'view group_node:milestone entity'
+  - 'view group_node:page entity'
+  - 'view group_node:survey entity'
+  - 'view group_node:vaccinations entity'
+  - 'view group_node:video_article entity'

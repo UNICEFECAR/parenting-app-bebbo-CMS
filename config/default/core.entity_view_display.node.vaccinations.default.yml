@@ -1,0 +1,87 @@
+uuid: 3a9c6061-083f-4629-bb59-f50dbd76103c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.field_growth_period
+    - field.field.node.vaccinations.field_notification_from
+    - field.field.node.vaccinations.field_notification_to
+    - field.field.node.vaccinations.field_pinned_article
+    - field.field.node.vaccinations.field_vaccination_closes
+    - field.field.node.vaccinations.field_vaccination_opens
+    - node.type.vaccinations
+  module:
+    - text
+    - user
+id: node.vaccinations.default
+targetEntityType: node
+bundle: vaccinations
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_growth_period:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_notification_from:
+    weight: 105
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_notification_to:
+    weight: 106
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_pinned_article:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_vaccination_closes:
+    weight: 107
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_vaccination_opens:
+    weight: 104
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

@@ -1,0 +1,15 @@
+uuid: 6cd6f32a-e417-497d-ad1c-5a45f838e4ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-outsider
+label: Outsider
+weight: -101
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: true
+permissions:
+  - 'view group_node:child_development entity'

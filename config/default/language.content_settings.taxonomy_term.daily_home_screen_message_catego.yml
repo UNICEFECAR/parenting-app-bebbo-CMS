@@ -1,0 +1,16 @@
+uuid: 47ad1df3-d0d8-436c-aee7-4fe0bef4a6d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.daily_home_screen_message_catego
+target_entity_type_id: taxonomy_term
+target_bundle: daily_home_screen_message_catego
+default_langcode: current_interface
+language_alterable: true

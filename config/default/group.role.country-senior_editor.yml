@@ -1,0 +1,14 @@
+uuid: 2a115213-aa69-4eb4-a95c-6ccbb444dfaf
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-senior_editor
+label: 'Senior Editor'
+weight: 104
+internal: false
+audience: member
+group_type: country
+permissions_ui: true
+permissions: {  }

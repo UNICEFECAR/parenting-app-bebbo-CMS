@@ -1,0 +1,62 @@
+uuid: 93a8e65f-b014-41fd-89cd-cc5aeee3dc87
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-editor
+label: Editor
+weight: 101
+internal: false
+audience: member
+group_type: country
+permissions_ui: true
+permissions:
+  - 'create group_node:activities content'
+  - 'create group_node:activities entity'
+  - 'create group_node:article content'
+  - 'create group_node:article entity'
+  - 'create group_node:child_development content'
+  - 'create group_node:child_development entity'
+  - 'create group_node:child_growth content'
+  - 'create group_node:child_growth entity'
+  - 'create group_node:daily_homescreen_messages content'
+  - 'create group_node:daily_homescreen_messages entity'
+  - 'create group_node:faq content'
+  - 'create group_node:faq entity'
+  - 'create group_node:health_check_ups content'
+  - 'create group_node:health_check_ups entity'
+  - 'create group_node:milestone content'
+  - 'create group_node:milestone entity'
+  - 'create group_node:page content'
+  - 'create group_node:page entity'
+  - 'create group_node:survey content'
+  - 'create group_node:survey entity'
+  - 'create group_node:vaccinations content'
+  - 'create group_node:vaccinations entity'
+  - 'create group_node:video_article content'
+  - 'create group_node:video_article entity'
+  - 'update any group_node:activities entity'
+  - 'update any group_node:article entity'
+  - 'update any group_node:child_development entity'
+  - 'update any group_node:child_growth entity'
+  - 'update any group_node:daily_homescreen_messages entity'
+  - 'update any group_node:faq entity'
+  - 'update any group_node:health_check_ups entity'
+  - 'update any group_node:milestone entity'
+  - 'update any group_node:page entity'
+  - 'update any group_node:survey entity'
+  - 'update any group_node:video_article entity'
+  - 'update own group_node:activities entity'
+  - 'update own group_node:article entity'
+  - 'update own group_node:child_development entity'
+  - 'update own group_node:child_growth entity'
+  - 'update own group_node:daily_homescreen_messages entity'
+  - 'update own group_node:faq entity'
+  - 'update own group_node:health_check_ups entity'
+  - 'update own group_node:milestone entity'
+  - 'update own group_node:page entity'
+  - 'update own group_node:survey entity'
+  - 'update own group_node:vaccinations entity'
+  - 'update own group_node:video_article entity'
+  - 'view group'

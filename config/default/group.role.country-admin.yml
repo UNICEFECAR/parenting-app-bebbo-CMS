@@ -1,0 +1,46 @@
+uuid: b7f41830-ac1d-4586-9448-97c1d6b90058
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-admin
+label: Admin
+weight: 100
+internal: false
+audience: member
+group_type: country
+permissions_ui: true
+permissions:
+  - 'access content overview'
+  - 'access group_node overview'
+  - 'administer group'
+  - 'create group_node:daily_homescreen_messages entity'
+  - 'delete any group_node:child_development entity'
+  - 'delete any group_node:faq entity'
+  - 'delete any group_node:survey entity'
+  - 'delete own group_node:daily_homescreen_messages content'
+  - 'delete own group_node:survey entity'
+  - 'view group'
+  - 'view group_membership content'
+  - 'view group_node:activities entity'
+  - 'view group_node:article entity'
+  - 'view group_node:daily_homescreen_messages entity'
+  - 'view group_node:faq entity'
+  - 'view group_node:health_check_ups entity'
+  - 'view group_node:milestone entity'
+  - 'view group_node:survey entity'
+  - 'view group_node:vaccinations entity'
+  - 'view group_node:video_article entity'
+  - 'view unpublished group_node:activities entity'
+  - 'view unpublished group_node:article entity'
+  - 'view unpublished group_node:child_development entity'
+  - 'view unpublished group_node:child_growth entity'
+  - 'view unpublished group_node:daily_homescreen_messages entity'
+  - 'view unpublished group_node:faq entity'
+  - 'view unpublished group_node:health_check_ups entity'
+  - 'view unpublished group_node:milestone entity'
+  - 'view unpublished group_node:page entity'
+  - 'view unpublished group_node:survey entity'
+  - 'view unpublished group_node:vaccinations entity'
+  - 'view unpublished group_node:video_article entity'

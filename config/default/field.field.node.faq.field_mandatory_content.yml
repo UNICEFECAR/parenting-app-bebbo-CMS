@@ -1,0 +1,23 @@
+uuid: 598aaa73-8a97-4963-867d-39e07792540a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.faq
+id: node.faq.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: faq
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

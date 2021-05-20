@@ -1,0 +1,18 @@
+uuid: f58cff46-22ce-463f-8323-86254c123208
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.title
+field_name: title
+entity_type: node
+bundle: daily_homescreen_messages
+label: Message
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

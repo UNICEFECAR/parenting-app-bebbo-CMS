@@ -1,0 +1,120 @@
+uuid: f39237e3-a5a9-42be-9303-96aac8645b47
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.activities
+    - node.type.article
+    - node.type.child_development
+    - node.type.child_growth
+    - node.type.daily_homescreen_messages
+    - node.type.faq
+    - node.type.health_check_ups
+    - node.type.milestone
+    - node.type.page
+    - node.type.survey
+    - node.type.vaccinations
+    - node.type.video_article
+  module:
+    - content_moderation
+id: group_workflow
+label: 'Group workflow'
+type: content_moderation
+type_settings:
+  states:
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: -3
+    published:
+      label: Published
+      published: true
+      default_revision: true
+      weight: 1
+    reject:
+      published: false
+      default_revision: true
+      label: Reject
+      weight: 0
+    reviewer_review:
+      published: false
+      default_revision: false
+      label: 'Reviewer Review'
+      weight: -1
+    sme_review:
+      published: false
+      default_revision: false
+      label: 'SME Review'
+      weight: -2
+  transitions:
+    create_new_draft:
+      label: 'Create New Draft'
+      to: draft
+      weight: 0
+      from:
+        - draft
+    draft_to_reviewer_review:
+      label: 'Draft to Reviewer Review'
+      from:
+        - draft
+      to: reviewer_review
+      weight: 2
+    draft_to_sme_review:
+      label: 'Draft to SME Review'
+      from:
+        - draft
+      to: sme_review
+      weight: 4
+    publish:
+      label: Publish
+      to: published
+      weight: 1
+      from:
+        - draft
+        - published
+    publish_to_draft:
+      label: 'Publish to Draft'
+      from:
+        - published
+      to: draft
+      weight: 8
+    reject:
+      label: Reject
+      from:
+        - reviewer_review
+      to: reject
+      weight: 3
+    reviewer_to_publish:
+      label: 'Reviewer to Publish'
+      from:
+        - reviewer_review
+      to: published
+      weight: 7
+    reviewer_to_sme_review:
+      label: 'Reviewer to SME Review'
+      from:
+        - reviewer_review
+      to: sme_review
+      weight: 6
+    sme_to_reviewer_review:
+      label: 'SME to Reviewer Review'
+      from:
+        - sme_review
+      to: reviewer_review
+      weight: 5
+  entity_types:
+    node:
+      - activities
+      - article
+      - child_development
+      - child_growth
+      - daily_homescreen_messages
+      - faq
+      - health_check_ups
+      - milestone
+      - page
+      - survey
+      - vaccinations
+      - video_article
+  default_moderation_state: draft

@@ -1,0 +1,59 @@
+uuid: a9729cb7-6149-40cc-aced-95884a27525b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.video_article.body
+    - field.field.node.video_article.field_australian_article
+    - field.field.node.video_article.field_child_age
+    - field.field.node.video_article.field_child_gender
+    - field.field.node.video_article.field_content_category
+    - field.field.node.video_article.field_cover_video
+    - field.field.node.video_article.field_generic_content
+    - field.field.node.video_article.field_keywords
+    - field.field.node.video_article.field_licensed_content
+    - field.field.node.video_article.field_mandatory_content
+    - field.field.node.video_article.field_parent_gender
+    - field.field.node.video_article.field_premature_content
+    - field.field.node.video_article.field_references_and_comments
+    - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_seasons
+    - node.type.video_article
+  module:
+    - text
+    - user
+id: node.video_article.teaser
+targetEntityType: node
+bundle: video_article
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_australian_article: true
+  field_child_age: true
+  field_child_gender: true
+  field_content_category: true
+  field_cover_video: true
+  field_generic_content: true
+  field_keywords: true
+  field_licensed_content: true
+  field_mandatory_content: true
+  field_parent_gender: true
+  field_premature_content: true
+  field_references_and_comments: true
+  field_related_articles: true
+  field_seasons: true
+  langcode: true

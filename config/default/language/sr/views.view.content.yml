@@ -1,0 +1,11 @@
+label: Садржај
+display:
+  default:
+    display_options:
+      title: Садржај
+  page_1:
+    display_options:
+      menu:
+        title: Садржај
+      tab_options:
+        title: Садржај

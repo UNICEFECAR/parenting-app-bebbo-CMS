@@ -1,0 +1,30 @@
+uuid: bf9636e4-dc08-4110-a9dc-8369423aedbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_article
+    - node.type.article
+    - node.type.health_check_ups
+    - node.type.video_article
+id: node.health_check_ups.field_pinned_article
+field_name: field_pinned_article
+entity_type: node
+bundle: health_check_ups
+label: 'Pinned Article'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+      video_article: video_article
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference

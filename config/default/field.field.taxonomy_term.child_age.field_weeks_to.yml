@@ -1,0 +1,23 @@
+uuid: a616f780-6529-4f1d-9cdd-81dc5653b53f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_weeks_to
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.field_weeks_to
+field_name: field_weeks_to
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Weeks To'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

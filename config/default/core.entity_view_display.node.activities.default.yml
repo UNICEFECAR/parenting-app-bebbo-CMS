@@ -1,0 +1,98 @@
+uuid: aa348092-8d8c-4a45-aaa4-954f7b15a628
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.activities.body
+    - field.field.node.activities.field_activity_category
+    - field.field.node.activities.field_activity_child_age
+    - field.field.node.activities.field_child_age
+    - field.field.node.activities.field_cover_image
+    - field.field.node.activities.field_equipment
+    - field.field.node.activities.field_mandatory_content
+    - field.field.node.activities.field_related_articles
+    - field.field.node.activities.field_type_of_support
+    - node.type.activities
+  module:
+    - text
+    - user
+id: node.activities.default
+targetEntityType: node
+bundle: activities
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_activity_category:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_activity_child_age:
+    weight: 110
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_cover_image:
+    weight: 111
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_equipment:
+    weight: 103
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_mandatory_content:
+    weight: 108
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_related_articles:
+    weight: 107
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_type_of_support:
+    weight: 104
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_child_age: true
+  langcode: true

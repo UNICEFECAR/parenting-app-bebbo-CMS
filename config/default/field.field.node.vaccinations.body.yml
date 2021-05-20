@@ -1,0 +1,23 @@
+uuid: b1b7584d-7686-40b5-b8b2-3492ee9cf4b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.vaccinations
+  module:
+    - text
+id: node.vaccinations.body
+field_name: body
+entity_type: node
+bundle: vaccinations
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

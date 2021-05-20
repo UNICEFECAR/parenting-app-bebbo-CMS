@@ -1,0 +1,23 @@
+uuid: 1ee3de77-408c-4816-8276-b5f4db558736
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_buffers_days
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.field_buffers_days
+field_name: field_buffers_days
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Buffers days'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

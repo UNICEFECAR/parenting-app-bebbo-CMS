@@ -1,0 +1,28 @@
+uuid: b03fc29a-d13f-4441-8369-4c69fb4865c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_article_for_boy
+    - node.type.article
+    - node.type.child_development
+id: node.child_development.field_pinned_article_for_boy
+field_name: field_pinned_article_for_boy
+entity_type: node
+bundle: child_development
+label: 'Pinned Article for Boy Baby'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

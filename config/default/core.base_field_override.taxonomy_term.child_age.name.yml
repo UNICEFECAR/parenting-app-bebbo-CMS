@@ -1,0 +1,18 @@
+uuid: c8975c63-d712-4c21-97be-9518ceb91c42
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.name
+field_name: name
+entity_type: taxonomy_term
+bundle: child_age
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

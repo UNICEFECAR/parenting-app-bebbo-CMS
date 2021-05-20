@@ -1,0 +1,18 @@
+uuid: 4226c8cb-b1f4-460f-9c75-9622bb769f4f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.video_article
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: node.video_article
+target_entity_type_id: node
+target_bundle: video_article
+default_langcode: current_interface
+language_alterable: true

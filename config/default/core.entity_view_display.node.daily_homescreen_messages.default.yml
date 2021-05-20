@@ -1,0 +1,38 @@
+uuid: 19846d63-1df7-42c2-8bb5-07877beb6260
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.daily_homescreen_messages.body
+    - field.field.node.daily_homescreen_messages.field_daily_message_category
+    - node.type.daily_homescreen_messages
+  module:
+    - text
+    - user
+id: node.daily_homescreen_messages.default
+targetEntityType: node
+bundle: daily_homescreen_messages
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_daily_message_category:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true

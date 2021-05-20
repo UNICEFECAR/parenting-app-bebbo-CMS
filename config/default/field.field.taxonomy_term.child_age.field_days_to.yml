@@ -1,0 +1,23 @@
+uuid: 52a58710-2216-4570-b06f-9ddd5ea79fab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_days_to
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.field_days_to
+field_name: field_days_to
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Days To'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
