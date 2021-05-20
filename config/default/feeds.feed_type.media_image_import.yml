@@ -22,7 +22,7 @@ id: media_image_import
 label: 'Media - Image'
 description: 'Media image import'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

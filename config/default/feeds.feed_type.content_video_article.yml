@@ -105,7 +105,7 @@ id: content_video_article
 label: 'Content - Video Article'
 description: 'Content - Video Article'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

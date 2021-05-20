@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: Category
 vid: category
-description: 'Used for Article & Video Article Content types'
+description: 'Thematic categories related to all articles'
 weight: 0

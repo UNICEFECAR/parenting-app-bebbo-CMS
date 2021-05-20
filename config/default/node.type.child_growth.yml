@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Child Growth'
 type: child_growth
-description: ''
+description: 'Growth scenario corresponding to measures of weight and height/length in relation to WHO Growth charts '
 help: ''
 new_revision: true
 preview_mode: 0

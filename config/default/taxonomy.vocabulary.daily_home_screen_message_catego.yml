@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Daily Home Screen Message Category'
 vid: daily_home_screen_message_catego
-description: 'Used in Daily Home Screen Message Content type'
+description: 'Daily messages for parents '
 weight: 0

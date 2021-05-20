@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Child Development'
 type: child_development
-description: ''
+description: 'Features key development article for each age period'
 help: ''
 new_revision: true
 preview_mode: 0

@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Child Age'
 vid: child_age
-description: 'Used in Video Article, Milestone, Child Growth, Child Development, Article, Activities'
+description: 'Child age as per the defined age periods'
 weight: 0

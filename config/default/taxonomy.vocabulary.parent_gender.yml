@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Parent Gender'
 vid: parent_gender
-description: 'Used for Article & Video Article Content types'
+description: 'Gender of a parent or a caregiver using the app, tagging category'
 weight: 0

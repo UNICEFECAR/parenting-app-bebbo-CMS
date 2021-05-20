@@ -11,7 +11,7 @@ id: taxonomy_child_age_serbia_serbia
 label: 'Taxonomy - Child Age - serbia-serbian'
 description: 'Taxonomy - Child Age - serbia-serbian'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

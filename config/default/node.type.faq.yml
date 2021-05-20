@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: FAQ
 type: faq
-description: ''
+description: 'Short responses to questions featured through the Chatbot '
 help: ''
 new_revision: true
 preview_mode: 0

@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: Domain
 vid: activity_category
-description: 'Used in Activity Content type'
+description: '4 Child development domains linked to Activities'
 weight: 0

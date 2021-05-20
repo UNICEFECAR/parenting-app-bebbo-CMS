@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: Keywords
 vid: keywords
-description: 'Used for Article & Video Article Content types'
+description: 'Distinct words/terms characteristic for a content of a given article '
 weight: 0

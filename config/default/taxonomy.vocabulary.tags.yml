@@ -6,5 +6,5 @@ _core:
   default_config_hash: yoNVreoTdTZTY7GuE8fI9Jmxqdz8vlo4ZJKixMNSosw
 name: Tags
 vid: tags
-description: 'Not used anywhere in the portal'
+description: 'Predetermined variables used to tag content'
 weight: 0

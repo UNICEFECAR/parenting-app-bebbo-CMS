@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Health Check-ups'
 type: health_check_ups
-description: ''
+description: 'Title and the age period of each health check-up'
 help: ''
 new_revision: true
 preview_mode: 0

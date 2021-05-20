@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Video Article'
 type: video_article
-description: ''
+description: 'Video articles grouped under 6 thematic categories and videos supporting Milestones'
 help: ''
 new_revision: true
 preview_mode: 0

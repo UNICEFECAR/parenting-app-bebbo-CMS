@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: Seasons
 vid: seasons
-description: 'Used for Article & Video Article Content types'
+description: 'Season of the year'
 weight: 0

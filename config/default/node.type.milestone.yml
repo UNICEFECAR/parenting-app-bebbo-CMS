@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Milestone
 type: milestone
-description: ''
+description: 'Developmental milestones specific to child age periods'
 help: ''
 new_revision: true
 preview_mode: 0

@@ -3,9 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.growth_period.field_checkup_notification_from
+    - field.field.taxonomy_term.growth_period.field_checkup_notification_to
     - field.field.taxonomy_term.growth_period.field_days_from
     - field.field.taxonomy_term.growth_period.field_days_to
     - field.field.taxonomy_term.growth_period.field_show_on_top
+    - field.field.taxonomy_term.growth_period.field_vaccine_notification_from
+    - field.field.taxonomy_term.growth_period.field_vaccine_notification_to
     - field.field.taxonomy_term.growth_period.field_weeks_from
     - field.field.taxonomy_term.growth_period.field_weeks_to
     - taxonomy.vocabulary.growth_period
@@ -24,28 +28,7 @@ content:
     type: number
     region: content
   field_days_to:
-    weight: 2
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_show_on_top:
-    weight: 5
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_weeks_from:
     weight: 3
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_weeks_to:
-    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -68,7 +51,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -76,8 +59,15 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 5
     region: content
     third_party_settings: {  }
 hidden:
   description: true
+  field_checkup_notification_from: true
+  field_checkup_notification_to: true
+  field_show_on_top: true
+  field_vaccine_notification_from: true
+  field_vaccine_notification_to: true
+  field_weeks_from: true
+  field_weeks_to: true

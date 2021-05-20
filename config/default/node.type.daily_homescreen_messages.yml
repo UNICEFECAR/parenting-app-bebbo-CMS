@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Daily Homescreen Messages'
 type: daily_homescreen_messages
-description: ''
+description: 'Daily messages to parents featured on the home page of the app'
 help: ''
 new_revision: true
 preview_mode: 0

@@ -11,7 +11,7 @@ id: taxonomy_seasons_serbia_serbian
 label: 'Taxonomy - Seasons - serbia-serbian'
 description: 'Taxonomy - Seasons - serbia-serbian'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

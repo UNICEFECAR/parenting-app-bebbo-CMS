@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Survey
 type: survey
-description: ''
+description: 'Feature that allows running of short surveys with app users'
 help: ''
 new_revision: true
 preview_mode: 0

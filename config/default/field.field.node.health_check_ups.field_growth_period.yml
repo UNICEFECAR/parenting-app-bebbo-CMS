@@ -10,7 +10,7 @@ id: node.health_check_ups.field_growth_period
 field_name: field_growth_period
 entity_type: node
 bundle: health_check_ups
-label: 'Growth Period'
+label: 'Age periods for vaccinations and health check-ups'
 description: ''
 required: true
 translatable: true

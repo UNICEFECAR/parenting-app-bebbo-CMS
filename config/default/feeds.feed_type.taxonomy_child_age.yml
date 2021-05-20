@@ -4,14 +4,30 @@ status: true
 dependencies:
   config:
     - core.base_field_override.taxonomy_term.child_age.name
+    - field.field.taxonomy_term.child_age.field_age_bracket
+    - field.field.taxonomy_term.child_age.field_buffers_days
+    - field.field.taxonomy_term.child_age.field_days_from
+    - field.field.taxonomy_term.child_age.field_days_to
     - taxonomy.vocabulary.child_age
   module:
+    - feeds_tamper
     - taxonomy
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      55247208-540f-4a41-8a40-3638db1729d3:
+        separator: ','
+        limit: null
+        plugin: explode
+        source: age_bracket
+        weight: 0
+        label: Explode
+        uuid: 55247208-540f-4a41-8a40-3638db1729d3
 id: taxonomy_child_age
 label: 'Taxonomy - Child Age'
 description: 'Taxonomy - Child Age'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'
@@ -46,6 +62,26 @@ custom_sources:
     label: Language_code
     value: Language_code
     machine_name: language_code
+  days_from:
+    label: Days_from
+    value: Days_from
+    machine_name: days_from
+  days_to:
+    label: Days_to
+    value: Days_to
+    machine_name: days_to
+  age_bracket:
+    label: Age_bracket
+    value: Age_bracket
+    machine_name: age_bracket
+  buffers_days:
+    label: Buffers_days
+    value: Buffers_days
+    machine_name: buffers_days
+  weight:
+    label: Weight
+    value: Weight
+    machine_name: weight
 mappings:
   -
     target: tid
@@ -61,3 +97,39 @@ mappings:
     unique: {  }
     settings:
       language: en
+  -
+    target: field_days_from
+    map:
+      value: days_from
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: field_days_to
+    map:
+      value: days_to
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: field_age_bracket
+    map:
+      target_id: age_bracket
+    settings:
+      language: en
+      reference_by: name
+      feeds_item: guid
+      autocreate: 0
+  -
+    target: field_buffers_days
+    map:
+      value: buffers_days
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: weight
+    map:
+      value: weight
+    unique: {  }
+    settings: {  }

@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Type of Support'
 vid: type_of_support
-description: 'Used on Article content Type'
+description: 'Type of support required to implement an Activity'
 weight: 0

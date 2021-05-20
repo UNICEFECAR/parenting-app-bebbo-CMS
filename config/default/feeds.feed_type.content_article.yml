@@ -105,7 +105,7 @@ id: content_article
 label: 'Content - Article'
 description: 'Content - Article'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

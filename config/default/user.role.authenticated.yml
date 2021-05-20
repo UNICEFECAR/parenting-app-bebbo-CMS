@@ -30,7 +30,6 @@ permissions:
   - 'search content'
   - 'skip comment approval'
   - 'translate any entity'
-  - 'translate configuration'
   - 'update content translations'
   - 'use text format basic_html'
   - 'view media'

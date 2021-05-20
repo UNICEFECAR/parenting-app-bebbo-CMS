@@ -4,5 +4,5 @@ status: true
 dependencies: {  }
 name: 'Growth Introductory'
 vid: growth_introductory
-description: 'Used to provide master data for Growth Introductory notes based on child age'
+description: 'Introductory message about typical growth in a given age period'
 weight: 0

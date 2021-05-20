@@ -114,7 +114,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -122,8 +122,13 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 3
+    weight: 14
     region: content
+    third_party_settings: {  }
+  translation:
+    weight: 15
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   description: true

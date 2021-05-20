@@ -2,10 +2,13 @@ uuid: f4ac7bb8-c14b-4dc5-99b7-9a62bd6f081b
 langcode: en
 status: true
 dependencies:
+  config:
+    - workflows.workflow.group_workflow
   enforced:
     module:
       - content_moderation
   module:
+    - content_moderation
     - node
     - user
 _core:
@@ -723,9 +726,13 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: 'not in'
+          operator: in
           value:
-            editorial-published: editorial-published
+            group_workflow-draft: group_workflow-draft
+            group_workflow-sme_review: group_workflow-sme_review
+            group_workflow-reviewer_review: group_workflow-reviewer_review
+            group_workflow-reject: group_workflow-reject
+            group_workflow-published: group_workflow-published
           group: 1
           exposed: false
           expose:
@@ -734,6 +741,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -741,8 +750,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -811,7 +818,8 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:workflow_list'
   moderated_content:
     display_plugin: page
     id: moderated_content
@@ -830,4 +838,5 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:workflow_list'

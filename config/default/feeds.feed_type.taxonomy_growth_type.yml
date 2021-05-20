@@ -1,0 +1,68 @@
+uuid: c2801963-e85b-4724-888d-6e47ad1349a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.growth_type.name
+    - taxonomy.vocabulary.growth_type
+  module:
+    - taxonomy
+id: taxonomy_growth_type
+label: 'Taxonomy - Growth Type'
+description: 'Taxonomy - Growth Type'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: en
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: growth_type
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  term_name:
+    label: Term_name
+    value: Term_name
+    machine_name: term_name
+  language_code:
+    label: Language_code
+    value: Language_code
+    machine_name: language_code
+  weight:
+    label: Weight
+    value: Weight
+    machine_name: weight
+mappings:
+  -
+    target: name
+    map:
+      value: term_name
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: langcode
+    map:
+      value: language_code
+    settings:
+      language: null
+  -
+    target: weight
+    map:
+      value: weight
+    unique: {  }
+    settings: {  }

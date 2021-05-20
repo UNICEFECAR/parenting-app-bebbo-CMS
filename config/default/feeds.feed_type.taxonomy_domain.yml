@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.base_field_override.taxonomy_term.activity_category.name
     - taxonomy.vocabulary.activity_category
   module:
     - taxonomy
@@ -10,7 +11,7 @@ id: taxonomy_domain
 label: 'Taxonomy - Domain'
 description: 'Taxonomy - Domain'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

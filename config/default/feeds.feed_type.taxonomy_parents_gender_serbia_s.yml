@@ -11,7 +11,7 @@ id: taxonomy_parents_gender_serbia_s
 label: 'Taxonomy - Parents Gender - serbia-serbian'
 description: 'Taxonomy - Parents Gender - serbia-serbian'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'
