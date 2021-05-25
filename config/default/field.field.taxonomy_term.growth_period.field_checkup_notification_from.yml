@@ -9,7 +9,7 @@ id: taxonomy_term.growth_period.field_checkup_notification_from
 field_name: field_checkup_notification_from
 entity_type: taxonomy_term
 bundle: growth_period
-label: 'Health Checkup Notification From'
+label: 'Health Checkup Notification Starts'
 description: ''
 required: false
 translatable: false

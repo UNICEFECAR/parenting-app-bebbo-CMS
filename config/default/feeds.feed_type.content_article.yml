@@ -117,7 +117,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:node'
 processor_configuration:
-  langcode: en
+  langcode: rs-sr
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -218,13 +218,13 @@ mappings:
       summary: summary
     settings:
       language: en
-      format: basic_html
+      format: full_html
   -
     target: field_cover_image
     map:
       target_id: cover_image
     settings:
-      language: ''
+      language: en
       reference_by: mid
       feeds_item: guid
       autocreate: 0
@@ -309,13 +309,7 @@ mappings:
       value: references_and_comments
     settings:
       language: en
-      format: basic_html
-  -
-    target: langcode
-    map:
-      value: translation_language
-    settings:
-      language: en
+      format: full_html
   -
     target: moderation_state
     map:

@@ -1,0 +1,25 @@
+uuid: 30b33907-f16f-4996-85e6-7925be57c73d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_languages
+    - group.type.country
+  module:
+    - languagefield
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_languages
+field_name: field_languages
+entity_type: group
+bundle: country
+label: Languages
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: language_field

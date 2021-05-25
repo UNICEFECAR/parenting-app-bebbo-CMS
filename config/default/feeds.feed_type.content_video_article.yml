@@ -31,7 +31,7 @@ third_party_settings:
         label: Explode
         uuid: eff4cd60-88db-42fe-b989-e680c34708e5
       fca1942d-3780-49eb-ae0c-93649d123794:
-        separator: ','
+        separator: ', '
         limit: null
         plugin: explode
         source: keywords
@@ -39,7 +39,7 @@ third_party_settings:
         label: Explode
         uuid: fca1942d-3780-49eb-ae0c-93649d123794
       3ad3d814-f5f9-41a5-bb6c-5ed6c9d22a99:
-        separator: ','
+        separator: ', '
         limit: null
         plugin: explode
         source: related_articles
@@ -218,7 +218,7 @@ mappings:
       summary: summary
     settings:
       language: en
-      format: basic_html
+      format: full_html
   -
     target: field_cover_video
     map:
@@ -309,7 +309,7 @@ mappings:
       value: references_and_comments
     settings:
       language: en
-      format: basic_html
+      format: full_html
   -
     target: langcode
     map:

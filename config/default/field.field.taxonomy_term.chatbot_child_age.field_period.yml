@@ -1,0 +1,19 @@
+uuid: c60b4847-e611-42e4-a6d7-591c397bc433
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_period
+    - taxonomy.vocabulary.chatbot_child_age
+id: taxonomy_term.chatbot_child_age.field_period
+field_name: field_period
+entity_type: taxonomy_term
+bundle: chatbot_child_age
+label: Period
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

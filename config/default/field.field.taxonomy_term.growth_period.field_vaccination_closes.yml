@@ -1,0 +1,23 @@
+uuid: 636106ca-dcdb-4453-b30f-8b6395bca84f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_vaccination_closes
+    - taxonomy.vocabulary.growth_period
+id: taxonomy_term.growth_period.field_vaccination_closes
+field_name: field_vaccination_closes
+entity_type: taxonomy_term
+bundle: growth_period
+label: 'Vaccination Closes'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -8,6 +8,8 @@ dependencies:
     - field.field.taxonomy_term.growth_period.field_days_from
     - field.field.taxonomy_term.growth_period.field_days_to
     - field.field.taxonomy_term.growth_period.field_show_on_top
+    - field.field.taxonomy_term.growth_period.field_vaccination_closes
+    - field.field.taxonomy_term.growth_period.field_vaccination_opens
     - field.field.taxonomy_term.growth_period.field_vaccine_notification_from
     - field.field.taxonomy_term.growth_period.field_vaccine_notification_to
     - field.field.taxonomy_term.growth_period.field_weeks_from
@@ -20,6 +22,13 @@ targetEntityType: taxonomy_term
 bundle: growth_period
 mode: default
 content:
+  field_checkup_notification_from:
+    type: number
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_days_from:
     weight: 1
     settings:
@@ -29,6 +38,20 @@ content:
     region: content
   field_days_to:
     weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_vaccination_closes:
+    weight: 5
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_vaccination_opens:
+    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -51,7 +74,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -59,12 +82,11 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 8
     region: content
     third_party_settings: {  }
 hidden:
   description: true
-  field_checkup_notification_from: true
   field_checkup_notification_to: true
   field_show_on_top: true
   field_vaccine_notification_from: true

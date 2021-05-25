@@ -5,7 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.faq.body
-    - field.field.node.faq.field_child_age
+    - field.field.node.faq.field_chatbot_child_age
     - field.field.node.faq.field_child_gender
     - field.field.node.faq.field_content_category
     - field.field.node.faq.field_keywords
@@ -29,13 +29,18 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
-  field_child_age: true
+  field_chatbot_child_age: true
   field_child_gender: true
   field_content_category: true
   field_keywords: true

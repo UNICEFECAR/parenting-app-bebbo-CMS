@@ -1,0 +1,23 @@
+uuid: 5a15e46d-3e99-4bc9-a495-3b6503e69eab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group_content.feeds_item
+    - group.content_type.country-group_node-article
+  module:
+    - feeds
+id: group_content.country-group_node-article.feeds_item
+field_name: feeds_item
+entity_type: group_content
+bundle: country-group_node-article
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

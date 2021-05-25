@@ -1,0 +1,23 @@
+uuid: feb355ff-1d06-44b4-9bd3-ee45c4986092
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - tmgmt_demo
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+_core:
+  default_config_hash: a504fA8IOa9Ty5CswtVNsKn-fhpZdvr9QpS1BOiBzL8
+name: 'Translatable node'
+type: translatable_node
+description: 'Content type for translatable content.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: true

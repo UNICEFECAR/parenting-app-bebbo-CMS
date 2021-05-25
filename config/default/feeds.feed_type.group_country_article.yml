@@ -59,7 +59,7 @@ mappings:
     map:
       value: translation_language
     settings:
-      language: null
+      language: en
   -
     target: gid
     map:

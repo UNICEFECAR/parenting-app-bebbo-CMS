@@ -36,6 +36,7 @@ module:
   image: 0
   json_field: 0
   language: 0
+  languagefield: 0
   link: 0
   locale: 0
   media: 0
@@ -57,6 +58,15 @@ module:
   tamper: 0
   taxonomy: 0
   text: 0
+  tmgmt: 0
+  tmgmt_config: 0
+  tmgmt_content: 0
+  tmgmt_demo: 0
+  tmgmt_file: 0
+  tmgmt_language_combination: 0
+  tmgmt_local: 0
+  tmgmt_locale: 0
+  tmgmt_memsource: 0
   toolbar: 0
   tour: 0
   user: 0

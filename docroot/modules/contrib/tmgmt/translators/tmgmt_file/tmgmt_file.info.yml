@@ -1,0 +1,14 @@
+name: 'Export / Import File'
+description: 'A translator which allows you to export source data into a file and import the translated in return.'
+package: 'Translation Management'
+core_version_requirement: ^8.8 || ^9
+type: module
+dependencies:
+  - tmgmt:tmgmt
+  - drupal:file
+configure: entity.tmgmt_translator.collection
+
+# Information added by Drupal.org packaging script on 2021-02-09
+version: '8.x-1.12'
+project: 'tmgmt'
+datestamp: 1612891041

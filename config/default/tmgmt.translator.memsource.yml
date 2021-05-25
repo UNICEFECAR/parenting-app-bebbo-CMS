@@ -1,0 +1,45 @@
+uuid: 6f95917d-9988-4bcb-8cea-9fb821387821
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_memsource
+name: memsource
+label: Memsource
+description: 'Memsource translator service.'
+auto_accept: false
+weight: null
+plugin: memsource
+settings:
+  service_url: 'https://cloud.memsource.com/web'
+  memsource_user_name: ajovic
+  memsource_change_password: 0
+  memsource_password: MEMSOURCE_V2___6b2356534333755e392a52796632
+  memsource_update_job_status: 0
+remote_languages_mappings:
+  en: en
+  de: de
+  sr: sr
+  fr: fr
+  ru: ru
+  rs-sr: ''
+  sq: sq
+  al-sq: ''
+  by-be: byn
+  by-ru: byn
+  bg-bg: bg
+  gr-arb: ''
+  gr-el: ''
+  gr-fa: ''
+  xk-sq: ''
+  xk-rs: ''
+  kg-ky: kg
+  kg-ru: kg
+  me-cnr: ''
+  mk-sq: mk
+  mk-mk: mk
+  rs-en: ''
+  tj-ru: ''
+  tj-tg: ''
+  uz-ru: uz
+  uz-uz: uz
