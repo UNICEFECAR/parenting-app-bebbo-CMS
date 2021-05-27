@@ -1,0 +1,60 @@
+label: Feeds
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      fields:
+        feeds_feed_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        title:
+          label: Title
+          separator: ', '
+        type:
+          label: Type
+          separator: ', '
+        name:
+          label: Author
+          separator: ', '
+        changed:
+          label: Updated
+          separator: ', '
+        imported:
+          label: Imported
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: Type
+      title: Feeds
+      empty:
+        result:
+          content: 'There are no feeds yet.'
+  page_1:
+    display_title: Page
+    display_options:
+      menu:
+        title: Feeds

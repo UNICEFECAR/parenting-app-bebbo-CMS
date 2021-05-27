@@ -15,6 +15,7 @@ dependencies:
     - options
     - rest
     - serialization
+    - user
 id: sponsors_list
 label: 'Sponsors List'
 module: views
@@ -30,8 +31,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access content'
       cache:
         type: tag
         options: {  }
@@ -694,6 +696,7 @@ display:
         - request_format
         - url
         - url.query_args
+        - user.permissions
       tags:
         - 'config:field.storage.group.field_country_flag'
         - 'config:field.storage.group.field_country_national_partner'
@@ -747,6 +750,8 @@ display:
               alias: language
               raw_output: false
       display_description: ''
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -754,6 +759,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - user.permissions
       tags:
         - 'config:field.storage.group.field_country_flag'
         - 'config:field.storage.group.field_country_national_partner'

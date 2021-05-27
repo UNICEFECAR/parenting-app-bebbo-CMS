@@ -87,6 +87,7 @@ content:
     third_party_settings: {  }
 hidden:
   description: true
+  feeds_item: true
   field_checkup_notification_to: true
   field_show_on_top: true
   field_vaccine_notification_from: true

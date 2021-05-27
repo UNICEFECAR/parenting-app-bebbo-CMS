@@ -96,4 +96,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_child_age: true
   langcode: true

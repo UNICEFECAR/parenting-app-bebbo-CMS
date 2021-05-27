@@ -86,4 +86,5 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  feeds_item: true
   field_daily_message_category: true

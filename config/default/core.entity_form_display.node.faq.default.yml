@@ -121,6 +121,7 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  field_child_age: true
   field_child_gender: true
   field_keywords: true
   field_parent_gender: true

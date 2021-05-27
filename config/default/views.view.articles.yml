@@ -2967,6 +2967,8 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -4382,6 +4384,8 @@ display:
         operator: AND
         groups:
           1: AND
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -5105,6 +5109,8 @@ display:
         operator: AND
         groups:
           1: AND
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -5941,6 +5947,8 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -6528,6 +6536,8 @@ display:
         operator: AND
         groups:
           1: AND
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:
@@ -7400,6 +7410,8 @@ display:
         operator: AND
         groups:
           1: AND
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:

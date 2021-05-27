@@ -41,6 +41,7 @@ content:
     region: content
 hidden:
   field_chatbot_child_age: true
+  field_child_age: true
   field_child_gender: true
   field_content_category: true
   field_keywords: true
