@@ -804,11 +804,21 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
  *
  * @link https://docs.acquia.com/blt/
  */
-
-$databases['default']['default'] = array (
+/********** DEV *******************/
+/*$databases['default']['default'] = array (
   'database' => 'parentbuddy2fz6bm64mba',
   'username' => 's324529',
   'password' => 'Ya4UbX2Pkx2hJfw',
+  'prefix' => '',
+  'host' => 'srv-8543',
+  'port' => '3306',
+  'driver' => 'mysql',
+);*/
+/********** STAGE *******************/
+$databases['default']['default'] = array (
+  'database' => 'parentbuddy2uyawgitzuw',
+  'username' => 's324528',
+  'password' => 'SLcoNKFrgAuUgmf',
   'prefix' => '',
   'host' => 'srv-8543',
   'port' => '3306',
