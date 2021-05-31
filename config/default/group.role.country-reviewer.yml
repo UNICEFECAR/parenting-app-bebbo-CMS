@@ -11,4 +11,28 @@ internal: false
 audience: member
 group_type: country
 permissions_ui: true
-permissions: {  }
+permissions:
+  - 'update any group_node:activities entity'
+  - 'update any group_node:article entity'
+  - 'update any group_node:child_development entity'
+  - 'update any group_node:child_growth entity'
+  - 'update any group_node:daily_homescreen_messages entity'
+  - 'update any group_node:faq entity'
+  - 'update any group_node:health_check_ups entity'
+  - 'update any group_node:milestone entity'
+  - 'update any group_node:page entity'
+  - 'update any group_node:survey entity'
+  - 'update any group_node:vaccinations entity'
+  - 'update any group_node:video_article entity'
+  - 'view unpublished group_node:activities entity'
+  - 'view unpublished group_node:article entity'
+  - 'view unpublished group_node:child_development entity'
+  - 'view unpublished group_node:child_growth entity'
+  - 'view unpublished group_node:daily_homescreen_messages entity'
+  - 'view unpublished group_node:faq entity'
+  - 'view unpublished group_node:health_check_ups entity'
+  - 'view unpublished group_node:milestone entity'
+  - 'view unpublished group_node:page entity'
+  - 'view unpublished group_node:survey entity'
+  - 'view unpublished group_node:vaccinations entity'
+  - 'view unpublished group_node:video_article entity'

@@ -8,7 +8,6 @@ dependencies:
     - taxonomy.vocabulary.child_age
     - taxonomy.vocabulary.child_gender
     - taxonomy.vocabulary.parent_gender
-    - taxonomy.vocabulary.seasons
   module:
     - node
     - taxonomy
@@ -901,53 +900,54 @@ display:
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
-        field_seasons_target_id:
-          id: field_seasons_target_id
-          table: node__field_seasons
-          field: field_seasons_target_id
+        field_mandatory_content_value:
+          id: field_mandatory_content_value
+          table: node__field_mandatory_content
+          field: field_mandatory_content_value
           relationship: none
           group_type: group
           admin_label: ''
-          operator: or
-          value: {  }
+          operator: '='
+          value: All
           group: 1
           exposed: true
           expose:
-            operator_id: field_seasons_target_id_op
-            label: Seasons
+            operator_id: ''
+            label: 'Mandatory Content (field_mandatory_content)'
             description: ''
             use_operator: false
-            operator: field_seasons_target_id_op
+            operator: field_mandatory_content_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_seasons_target_id
+            identifier: field_mandatory_content_value
             required: false
             remember: false
-            multiple: true
+            multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
-            reduce: false
+              global_admin: '0'
+              editor: '0'
+              sme: '0'
+              reviewer: '0'
+              se: '0'
           is_grouped: false
           group_info:
-            label: ''
-            description: ''
-            identifier: ''
+            label: 'Mandatory Content (field_mandatory_content)'
+            description: null
+            identifier: field_mandatory_content_value
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: seasons
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
+          plugin_id: boolean
       sorts: {  }
       title: Content
       empty:

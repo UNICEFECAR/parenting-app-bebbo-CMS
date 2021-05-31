@@ -85,6 +85,18 @@ type_settings:
         - reviewer_review
       to: reject
       weight: 3
+    reject_to_draft:
+      label: 'Reject to draft'
+      from:
+        - reject
+      to: draft
+      weight: 9
+    reviewer_review_to_review:
+      label: 'Reviewer Review to review'
+      from:
+        - reviewer_review
+      to: reviewer_review
+      weight: 10
     reviewer_to_publish:
       label: 'Reviewer to Publish'
       from:
