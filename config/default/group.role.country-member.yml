@@ -15,7 +15,6 @@ permissions:
   - 'access group_node overview'
   - 'view group'
   - 'view group_membership content'
-  - 'view group_node:activities entity'
   - 'view group_node:article entity'
   - 'view group_node:child_development entity'
   - 'view group_node:child_growth entity'
