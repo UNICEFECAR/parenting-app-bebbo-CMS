@@ -7,14 +7,18 @@ dependencies:
     - group.type.country
   module:
     - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: group.country.field_language
 field_name: field_language
 entity_type: group
 bundle: country
-label: Language
+label: 'Country Language'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

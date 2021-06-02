@@ -12,7 +12,7 @@ bundle: country
 label: 'Make available for mobile App'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0
