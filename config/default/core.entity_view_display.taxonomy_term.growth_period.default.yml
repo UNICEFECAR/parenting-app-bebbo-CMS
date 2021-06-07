@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.growth_period.feeds_item
-    - field.field.taxonomy_term.growth_period.field_checkup_notification_to
     - field.field.taxonomy_term.growth_period.field_days_from
     - field.field.taxonomy_term.growth_period.field_days_to
     - field.field.taxonomy_term.growth_period.field_vaccination_opens
@@ -23,15 +22,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_checkup_notification_to:
-    weight: 9
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
   field_days_from:
     weight: 1
     label: above
@@ -52,24 +42,6 @@ content:
     region: content
   field_vaccination_opens:
     weight: 10
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_vaccine_notification_from:
-    weight: 6
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_vaccine_notification_to:
-    weight: 7
     label: above
     settings:
       thousand_separator: ''
