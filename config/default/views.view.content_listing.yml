@@ -9,6 +9,7 @@ dependencies:
     - taxonomy.vocabulary.child_age
     - taxonomy.vocabulary.child_gender
     - taxonomy.vocabulary.parent_gender
+    - workflows.workflow.group_workflow
   module:
     - content_moderation
     - node
@@ -149,6 +150,62 @@ display:
       row:
         type: fields
       fields:
+        node_bulk_form:
+          id: node_bulk_form
+          table: node
+          field: node_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          action_title: Action
+          include_exclude: include
+          selected_actions:
+            - node_delete_action
+            - node_publish_action
+            - node_unpublish_action
+          plugin_id: node_bulk_form
+          entity_type: node
         nid:
           id: nid
           table: node_field_data
@@ -215,62 +272,6 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-        node_bulk_form:
-          id: node_bulk_form
-          table: node
-          field: node_bulk_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          action_title: Action
-          include_exclude: include
-          selected_actions:
-            - node_delete_action
-            - node_publish_action
-            - node_unpublish_action
-          plugin_id: node_bulk_form
-          entity_type: node
         title:
           id: title
           table: node_field_data
@@ -897,7 +898,37 @@ display:
           admin_label: ''
           operator: in
           value:
+            all: all
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
             en: en
+            de: de
+            sr: sr
+            fr: fr
+            ru: ru
+            rs-sr: rs-sr
+            sq: sq
+            al-sq: al-sq
+            by-be: by-be
+            by-ru: by-ru
+            bg-bg: bg-bg
+            gr-arb: gr-arb
+            gr-el: gr-el
+            gr-fa: gr-fa
+            xk-sq: xk-sq
+            xk-rs: xk-rs
+            kg-ky: kg-ky
+            kg-ru: kg-ru
+            me-cnr: me-cnr
+            mk-sq: mk-sq
+            mk-mk: mk-mk
+            rs-en: rs-en
+            tj-ru: tj-ru
+            tj-tg: tj-tg
+            uz-ru: uz-ru
+            uz-uz: uz-uz
+            und: und
+            zxx: zxx
           group: 1
           exposed: true
           expose:
@@ -916,6 +947,11 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+              global_admin: '0'
+              editor: '0'
+              sme: '0'
+              reviewer: '0'
+              se: '0'
             reduce: true
           is_grouped: false
           group_info:
@@ -932,18 +968,6 @@ display:
           plugin_id: language
           entity_type: node
           entity_field: langcode
-        status_extra:
-          id: status_extra
-          table: node_field_data
-          field: status_extra
-          operator: '='
-          value: false
-          plugin_id: node_status
-          group: 1
-          entity_type: node
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
         field_content_category_target_id:
           id: field_content_category_target_id
           table: node__field_content_category
@@ -1179,6 +1203,18 @@ display:
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
+        status_extra:
+          id: status_extra
+          table: node_field_data
+          field: status_extra
+          operator: '='
+          value: false
+          plugin_id: node_status
+          group: 1
+          entity_type: node
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
         field_mandatory_content_value:
           id: field_mandatory_content_value
           table: node__field_mandatory_content
@@ -1192,7 +1228,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: 'Mandatory Content (field_mandatory_content)'
+            label: 'Mandatory Content'
             description: ''
             use_operator: false
             operator: field_mandatory_content_value_op
@@ -1227,6 +1263,58 @@ display:
               2: {  }
               3: {  }
           plugin_id: boolean
+        moderation_state_1:
+          id: moderation_state_1
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            group_workflow-draft: group_workflow-draft
+            group_workflow-sme_review: group_workflow-sme_review
+            group_workflow-reviewer_review: group_workflow-reviewer_review
+            group_workflow-reject: group_workflow-reject
+            group_workflow-published: group_workflow-published
+          group: 1
+          exposed: true
+          expose:
+            operator_id: moderation_state_1_op
+            label: 'Moderation state'
+            description: ''
+            use_operator: false
+            operator: moderation_state_1_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: moderation_state_1
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              global_admin: '0'
+              editor: '0'
+              sme: '0'
+              reviewer: '0'
+              se: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          plugin_id: moderation_state_filter
       sorts: {  }
       title: Content
       empty:
@@ -1268,6 +1356,7 @@ display:
       max-age: 0
       tags:
         - 'config:field.storage.node.field_content_category'
+        - 'config:workflow_list'
   page_1:
     display_options:
       path: admin/content
@@ -1303,3 +1392,4 @@ display:
       max-age: 0
       tags:
         - 'config:field.storage.node.field_content_category'
+        - 'config:workflow_list'
