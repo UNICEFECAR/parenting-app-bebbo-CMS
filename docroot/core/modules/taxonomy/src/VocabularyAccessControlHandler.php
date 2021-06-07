@@ -21,7 +21,7 @@ class VocabularyAccessControlHandler extends EntityAccessControlHandler {
     switch ($operation) {
       case 'access taxonomy overview':
       case 'view':
-        return AccessResult::allowedIfHasPermissions($account, ['access taxonomy overview', 'administer taxonomy'], 'OR');
+        return AccessResult::allowedIfHasPermissions($account, ['access taxonomy overview', 'administer taxonomy', 'view vocabulary ' . $entity->id()], 'OR');
 
       default:
         return parent::checkAccess($entity, $operation, $account);
