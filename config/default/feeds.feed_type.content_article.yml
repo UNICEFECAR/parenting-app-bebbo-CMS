@@ -14,7 +14,6 @@ dependencies:
     - field.field.node.article.field_parent_gender
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
-    - field.field.node.article.field_seasons
     - node.type.article
   module:
     - feeds_tamper
@@ -259,15 +258,6 @@ mappings:
     target: field_parent_gender
     map:
       target_id: parent_gender
-    settings:
-      language: en
-      reference_by: name
-      feeds_item: guid
-      autocreate: 0
-  -
-    target: field_seasons
-    map:
-      target_id: season
     settings:
       language: en
       reference_by: name

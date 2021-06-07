@@ -5,12 +5,12 @@ dependencies:
   config:
     - field.field.node.faq.body
     - field.field.node.faq.field_chatbot_child_age
+    - field.field.node.faq.field_child_age
     - field.field.node.faq.field_child_gender
     - field.field.node.faq.field_content_category
     - field.field.node.faq.field_keywords
     - field.field.node.faq.field_mandatory_content
     - field.field.node.faq.field_parent_gender
-    - field.field.node.faq.field_seasons
     - node.type.faq
     - workflows.workflow.group_workflow
   module:
@@ -125,4 +125,3 @@ hidden:
   field_child_gender: true
   field_keywords: true
   field_parent_gender: true
-  field_seasons: true
