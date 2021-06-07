@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.growth_period.feeds_item
-    - field.field.taxonomy_term.growth_period.field_checkup_notification_to
     - field.field.taxonomy_term.growth_period.field_days_from
     - field.field.taxonomy_term.growth_period.field_days_to
     - field.field.taxonomy_term.growth_period.field_vaccination_opens
@@ -54,8 +53,5 @@ content:
 hidden:
   description: true
   feeds_item: true
-  field_checkup_notification_to: true
   field_days_from: true
   field_days_to: true
-  field_vaccine_notification_from: true
-  field_vaccine_notification_to: true
