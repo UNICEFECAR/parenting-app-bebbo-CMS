@@ -1,5 +1,5 @@
-name: my-lando-app
-recipe: drupal9
+name: parentbuddy
+recipe: drupal8
 config:
   webroot: .
 
