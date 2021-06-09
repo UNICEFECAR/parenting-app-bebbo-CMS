@@ -134,4 +134,6 @@ content:
       match_limit: 10
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_activity_child_age: true
+  field_pinned_article: true
