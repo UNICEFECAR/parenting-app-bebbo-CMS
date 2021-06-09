@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.child_development.body
-    - field.field.node.child_development.field_child_age
+    - field.field.node.child_development.field_activity_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
@@ -34,8 +34,8 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_child_age:
-    weight: 102
+  field_activity_child_age:
+    weight: 111
     label: above
     settings:
       link: true
