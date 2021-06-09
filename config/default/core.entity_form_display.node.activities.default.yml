@@ -145,4 +145,5 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  field_activity_child_age: true
   field_equipment: true

@@ -62,6 +62,23 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
       $form['gtitle']['#size'] = 1;
     }
   }
+  /* group membership form - alter the roles checkbox */
+  if($form['#id'] == "group-content-country-group-membership-add-form" || $form['#id'] == "group-content-country-group-membership-edit-form")
+  {
+    $role_options = $form['group_roles']['widget']['#options'];
+    $options = [];
+    foreach($role_options as $key=>$val)
+    {
+      if($key != "country-admin")
+      {
+        /* if($key == "country-senior_editor")
+            $val = $val." ( Country Admin )"; */
+
+        $options[$key] = $val;
+      }
+    }
+    $form['group_roles']['widget']['#options'] = $options;
+  }
 }
 
 
