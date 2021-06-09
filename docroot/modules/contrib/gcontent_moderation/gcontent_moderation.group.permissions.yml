@@ -1,0 +1,6 @@
+view latest version:
+  title: 'View the latest version'
+  description: 'Requires the "View any unpublished ... entities" or "view own unpublished ... entities" permission'
+
+permission_callbacks:
+  - '\Drupal\gcontent_moderation\Access\GroupContentModerationPermissions::groupPermissions'

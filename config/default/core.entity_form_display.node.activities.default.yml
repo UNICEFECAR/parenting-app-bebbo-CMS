@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.node.activities.body
     - field.field.node.activities.field_activity_category
-    - field.field.node.activities.field_activity_child_age
     - field.field.node.activities.field_child_age
     - field.field.node.activities.field_cover_image
     - field.field.node.activities.field_equipment
@@ -46,12 +45,12 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_activity_child_age:
+  field_child_age:
+    type: options_select
     weight: 12
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_cover_image:
     weight: 13
     settings:
@@ -146,5 +145,4 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  field_child_age: true
   field_equipment: true

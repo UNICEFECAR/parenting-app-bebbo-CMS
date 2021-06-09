@@ -40,7 +40,7 @@ display:
       query:
         type: views_query
         options:
-          disable_sql_rewrite: true
+          disable_sql_rewrite: false
           distinct: false
           replica: false
           query_comment: ''
@@ -765,7 +765,8 @@ display:
               alias: language
               raw_output: false
       display_description: ''
-      auth: {  }
+      auth:
+        - basic_auth
     cache_metadata:
       max-age: -1
       contexts:

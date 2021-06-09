@@ -1,0 +1,21 @@
+uuid: 31c19faf-218f-4df1-a52c-6fac16079ee5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_activity_child_age
+    - node.type.child_development
+id: node.child_development.field_activity_child_age
+field_name: field_activity_child_age
+entity_type: node
+bundle: child_development
+label: 'Child Age'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings: {  }
+field_type: entity_reference

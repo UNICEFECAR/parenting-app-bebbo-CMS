@@ -24,6 +24,8 @@ permissions:
   - 'update any group_node:survey entity'
   - 'update any group_node:vaccinations entity'
   - 'update any group_node:video_article entity'
+  - 'use group_workflow transition sme_to_reviewer_review'
+  - 'view latest version'
   - 'view unpublished group_node:activities entity'
   - 'view unpublished group_node:article entity'
   - 'view unpublished group_node:child_development entity'

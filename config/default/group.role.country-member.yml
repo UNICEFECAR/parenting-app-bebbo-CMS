@@ -26,3 +26,4 @@ permissions:
   - 'view group_node:survey entity'
   - 'view group_node:vaccinations entity'
   - 'view group_node:video_article entity'
+  - 'view latest version'

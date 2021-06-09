@@ -33,6 +33,7 @@ permissions:
   - 'translate any entity'
   - 'update content translations'
   - 'use text format basic_html'
+  - 'view latest version'
   - 'view media'
   - 'view own unpublished content'
   - 'view own unpublished media'
