@@ -9,12 +9,14 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
+  - 'access all views'
   - 'access comments'
   - 'access content'
   - 'access site-wide contact form'
   - 'search content'
   - 'use text format restricted_html'
   - 'view media'
+  - 'view terms in growth_period'
   - 'view vocabulary activity_category'
   - 'view vocabulary category'
   - 'view vocabulary chatbot_category'

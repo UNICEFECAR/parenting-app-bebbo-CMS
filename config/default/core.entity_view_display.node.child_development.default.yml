@@ -125,5 +125,6 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  feeds_item: true
   field_child_age: true
   langcode: true

@@ -107,6 +107,7 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  feeds_item: true
   field_notification_from: true
   field_notification_to: true
   field_vaccination_closes: true
