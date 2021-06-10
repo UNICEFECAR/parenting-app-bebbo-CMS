@@ -1,0 +1,23 @@
+uuid: c101e2d8-fff4-4496-8d76-4f4e6f515a46
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.vaccinations
+  module:
+    - feeds
+id: node.vaccinations.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: vaccinations
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

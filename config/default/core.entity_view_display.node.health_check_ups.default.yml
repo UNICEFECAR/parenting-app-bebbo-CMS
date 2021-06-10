@@ -24,6 +24,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_growth_period:
     weight: 102
     label: above
@@ -64,4 +69,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  feeds_item: true
   langcode: true

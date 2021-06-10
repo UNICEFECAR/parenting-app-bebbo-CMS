@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.child_development.body
+    - field.field.node.child_development.feeds_item
     - field.field.node.child_development.field_activity_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
@@ -145,6 +146,7 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  feeds_item: true
   field_child_age: true
   field_home_message_after_end: true
   field_home_message_after_start: true
