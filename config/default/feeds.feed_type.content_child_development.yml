@@ -103,6 +103,10 @@ custom_sources:
     label: Activity_child_age
     value: Activity_child_age
     machine_name: activity_child_age
+  moderation_state:
+    label: Moderation_state
+    value: Moderation_state
+    machine_name: moderation_state
 mappings:
   -
     target: title
@@ -187,3 +191,10 @@ mappings:
       reference_by: name
       feeds_item: guid
       autocreate: 0
+  -
+    target: moderation_state
+    map:
+      value: moderation_state
+    unique: {  }
+    settings:
+      language: en

@@ -15,6 +15,7 @@ permissions:
   - 'access content overview'
   - 'access group_node overview'
   - 'administer group'
+  - 'use group_workflow transition draft_to_published'
   - 'view group'
   - 'view group_membership content'
   - 'view group_node:activities entity'
