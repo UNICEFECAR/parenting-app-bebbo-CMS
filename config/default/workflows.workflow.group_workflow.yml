@@ -65,6 +65,12 @@ type_settings:
       weight: 0
       from:
         - draft
+    draft_to_published:
+      label: 'Draft to Published'
+      from:
+        - draft
+      to: published
+      weight: 13
     draft_to_reviewer_review:
       label: 'Draft to Reviewer Review'
       from:

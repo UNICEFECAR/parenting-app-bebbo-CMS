@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.health_check_ups.field_growth_period
     - field.field.node.health_check_ups.field_notification_from
+    - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
     - node.type.health_check_ups
   module:
@@ -60,6 +61,10 @@ custom_sources:
     label: Notification_to
     value: Notification_to
     machine_name: notification_to
+  moderation_state:
+    label: Moderation_state
+    value: Moderation_state
+    machine_name: moderation_state
 mappings:
   -
     target: title
@@ -97,6 +102,13 @@ mappings:
     target: field_notification_to
     map:
       value: notification_to
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: moderation_state
+    map:
+      value: moderation_state
     unique: {  }
     settings:
       language: en

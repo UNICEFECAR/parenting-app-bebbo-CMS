@@ -91,6 +91,10 @@ custom_sources:
     label: Mandatory_content
     value: Mandatory_content
     machine_name: mandatory_content
+  moderation_state:
+    label: Moderation_state
+    value: Moderation_state
+    machine_name: moderation_state
 mappings:
   -
     target: title
@@ -147,5 +151,12 @@ mappings:
     target: field_mandatory_content
     map:
       value: mandatory_content
+    settings:
+      language: en
+  -
+    target: moderation_state
+    map:
+      value: moderation_state
+    unique: {  }
     settings:
       language: en

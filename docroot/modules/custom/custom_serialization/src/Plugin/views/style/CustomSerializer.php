@@ -167,7 +167,7 @@ class CustomSerializer extends Serializer {
     }
     if(isset($request[4]) && !empty($request[4]))
     {            
-      if(strpos($request_uri, "taxonomies") !== false){
+      if(strpos($request_uri, "taxonomies") !== false || $request[4] == "all"){
         return "";
       }
       else
