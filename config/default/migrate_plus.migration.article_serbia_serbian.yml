@@ -1,9 +1,7 @@
-uuid: 6035957f-71f5-4ba6-872a-27de25f3c0bf
+uuid: beaad610-db0c-40cc-8952-a28bda2e9b58
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: YH0f9lN32cbrqenASqNttUI4yPpj2746QK1HB7-JggY
 id: article_serbia_serbian
 class: null
 field_plugin_method: null
@@ -34,7 +32,7 @@ process:
   field_content_category:
     plugin: entity_lookup
     source: Category
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: category
     entity_type: taxonomy_term
@@ -45,7 +43,7 @@ process:
       source: Child_age
     -
       plugin: entity_lookup
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
@@ -53,14 +51,14 @@ process:
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: child_gender
     entity_type: taxonomy_term
   field_parent_gender:
     plugin: entity_lookup
     source: Parent_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: parent_gender
     entity_type: taxonomy_term
@@ -78,7 +76,7 @@ process:
       source: Keywords
     -
       plugin: entity_lookup
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
