@@ -1,11 +1,11 @@
 langcode: en
-id: homescreen_serbia_serbian
-migration_tags: homescreen_serbia_serbian
-migration_group: homescreen_serbia_serbian
-label: 'Homescreen Serbia Serbian'
+id: basic_page_montenegro_montenegrin
+migration_tags: basic_page_montenegro_montenegrin
+migration_group: basic_page
+label: 'basic_page_montenegro_montenegrin'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/homescreen_serbia_serbian.csv
+  path: modules/custom/pb_custom_migrate/sources/basic_page_montenegro_montenegrin.csv
   header_row_count: 1
   ids:
     - ID
@@ -13,7 +13,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: rs-sr
+    default_value: me-cnr
   
   uid:
     plugin: default_value
@@ -22,10 +22,12 @@ process:
 
   nid: ID
   title: Title
+  body/summary: Summary
+  body/value: Body
   moderation_state: Moderation_state
 destination:
   plugin: 'entity:node'
-  default_bundle: daily_homescreen_messages
+  default_bundle: page
   translations: true
 migration_dependencies:
   required: {  }

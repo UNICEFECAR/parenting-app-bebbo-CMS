@@ -1,7 +1,7 @@
 langcode: en
 id: basic_page_serbia_serbian
 migration_tags: basic_page_serbia_serbian
-migration_group: basic_page_serbia_serbian
+migration_group: basic_page
 label: 'Basic Page Serbia Serbian'
 source:
   plugin: csv
