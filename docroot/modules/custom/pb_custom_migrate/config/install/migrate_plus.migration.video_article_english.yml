@@ -1,11 +1,11 @@
 langcode: en
-id: article_kyrgyzstan_kyrgyz
-migration_tags: article_kyrgyzstan_kyrgyz
-migration_group: article
-label: 'Article Kyrgyzstan Kyrgyz'
+id: video_article_english
+migration_tags: video_article_english
+migration_group: video_article_english
+label: 'Video Article English'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_kyrgyzstan_kyrgyz.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article_english.csv
   header_row_count: 1
   ids:
     - ID
@@ -13,7 +13,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: kg-ky
+    default_value: en
   
   uid:
     plugin: default_value
@@ -21,15 +21,14 @@ process:
     default_value: 1
 
   nid: ID
-  title: Title
+  title: Title  
   body/summary: Summary
   body/value: Body
-  field_cover_image: Cover_image
-
+  field_cover_video: Cover_video
   field_content_category:
     plugin: entity_lookup
     source: Category
-    value_key: tid
+    value_key: name
     bundle_key: vid
     bundle: category
     entity_type: taxonomy_term
@@ -41,15 +40,16 @@ process:
       source: Child_age
     -
       plugin: entity_lookup      
-      value_key: tid
+      value_key: name
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
+      ignore_case: true
 
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
-    value_key: tid
+    value_key: name
     bundle_key: vid
     bundle: child_gender
     entity_type: taxonomy_term
@@ -57,9 +57,17 @@ process:
   field_parent_gender: 
     plugin: entity_lookup
     source: Parent_gender
-    value_key: tid
+    value_key: name
     bundle_key: vid
     bundle: parent_gender
+    entity_type: taxonomy_term
+
+  field_seasons: 
+    plugin: entity_lookup
+    source: Season
+    value_key: name
+    bundle_key: vid
+    bundle: seasons
     entity_type: taxonomy_term
 
   field_keywords:
@@ -69,12 +77,24 @@ process:
       source: Keywords
     -
       plugin: entity_lookup      
-      value_key: tid
+      value_key: name
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
       ignore_case: true
 
+  field_related_articles:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_articles
+    -
+     plugin: entity_lookup
+     entity_type: node
+     bundle_key: type
+     bundle: video_article
+     value_key: nid
+     
   field_related_articles:
     -
       plugin: explode
@@ -95,8 +115,7 @@ process:
 
 destination:
   plugin: 'entity:node'
-  default_bundle: article
-  translations: true
+  default_bundle: video_article
 migration_dependencies:
   required: {  }
   optional: {  }

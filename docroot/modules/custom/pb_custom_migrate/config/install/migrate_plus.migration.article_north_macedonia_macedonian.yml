@@ -1,11 +1,11 @@
 langcode: en
-id: article_kyrgyzstan_kyrgyz
-migration_tags: article_kyrgyzstan_kyrgyz
+id: article_north_macedonia_macedonian
+migration_tags: article_north_macedonia_macedonian
 migration_group: article
-label: 'Article Kyrgyzstan Kyrgyz'
+label: 'Article North Macedonia Macedonian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_kyrgyzstan_kyrgyz.csv
+  path: modules/custom/pb_custom_migrate/sources/article_north_macedonia_macedonian.csv
   header_row_count: 1
   ids:
     - ID
@@ -13,13 +13,11 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: kg-ky
-  
+    default_value: mk-mk
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   body/summary: Summary
@@ -40,7 +38,7 @@ process:
       delimiter: ','
       source: Child_age
     -
-      plugin: entity_lookup      
+      plugin: entity_lookup
       value_key: tid
       bundle_key: vid
       bundle: child_age
@@ -54,7 +52,7 @@ process:
     bundle: child_gender
     entity_type: taxonomy_term
 
-  field_parent_gender: 
+  field_parent_gender:
     plugin: entity_lookup
     source: Parent_gender
     value_key: tid
@@ -68,12 +66,11 @@ process:
       delimiter: ', '
       source: Keywords
     -
-      plugin: entity_lookup      
+      plugin: entity_lookup
       value_key: tid
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
-      ignore_case: true
 
   field_related_articles:
     -
@@ -81,18 +78,17 @@ process:
       delimiter: ', '
       source: Related_articles
     -
-     plugin: entity_lookup
-     entity_type: node
-     bundle_key: type
-     bundle: article
-     value_key: nid
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: article
+      value_key: nid
 
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
-
   moderation_state: Moderation_state
-
+  
 destination:
   plugin: 'entity:node'
   default_bundle: article

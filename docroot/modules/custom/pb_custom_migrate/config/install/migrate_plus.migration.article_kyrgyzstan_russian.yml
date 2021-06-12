@@ -1,8 +1,8 @@
 langcode: en
 id: article_kyrgyzstan_russian
 migration_tags: article_kyrgyzstan_russian
-migration_group: article_kyrgyzstan_russian
-label: 'Article Russian'
+migration_group: article
+label: 'Article Kyrgyzstan Russian'
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/article_kyrgyzstan_russian.csv
@@ -25,10 +25,11 @@ process:
   body/summary: Summary
   body/value: Body
   field_cover_image: Cover_image
+
   field_content_category:
     plugin: entity_lookup
     source: Category
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: category
     entity_type: taxonomy_term
@@ -40,16 +41,15 @@ process:
       source: Child_age
     -
       plugin: entity_lookup      
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
-      ignore_case: true
 
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: child_gender
     entity_type: taxonomy_term
@@ -57,17 +57,9 @@ process:
   field_parent_gender: 
     plugin: entity_lookup
     source: Parent_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: parent_gender
-    entity_type: taxonomy_term
-
-  field_seasons: 
-    plugin: entity_lookup
-    source: Season
-    value_key: name
-    bundle_key: vid
-    bundle: seasons
     entity_type: taxonomy_term
 
   field_keywords:
@@ -77,7 +69,7 @@ process:
       source: Keywords
     -
       plugin: entity_lookup      
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
