@@ -11,7 +11,7 @@ migration_group: basic_page_english
 label: 'Basic Page English'
 source:
   plugin: csv
-  path: sites/default/files/basic_page_english.csv
+  path: modules/custom/pb_custom_migrate/sources/basic_page_english.csv
   header_row_count: 1
   ids:
     - ID
