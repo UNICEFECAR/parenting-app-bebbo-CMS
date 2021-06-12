@@ -1,14 +1,14 @@
-uuid: 6c27ca44-e5e5-46cd-a840-1021c624106e
+uuid: 2a169798-96ab-4dd7-890f-b17eab902459
 langcode: en
 status: true
 dependencies:
   config:
-    - group.content_type.country-group_node-video_article
+    - group.content_type.country-group_node-article
   module:
     - group
-id: group_video_article
-label: 'Group - Video Article'
-description: 'Group - Video Article'
+id: group_article
+label: 'Group - Article'
+description: 'Group - Article'
 help: ''
 import_period: -1
 fetcher: upload
@@ -26,21 +26,17 @@ processor_configuration:
   update_existing: 1
   update_non_existent: _keep
   expire: -1
-  owner_feed_author: true
+  owner_feed_author: false
   owner_id: 0
   authorize: true
   skip_hash_check: false
   values:
-    type: country-group_node-video_article
+    type: country-group_node-article
 custom_sources:
   id:
     label: ID
     value: ID
     machine_name: id
-  translation_language:
-    label: Translation_language
-    value: Translation_language
-    machine_name: translation_language
   group_id:
     label: Group_ID
     value: Group_ID
@@ -54,12 +50,6 @@ mappings:
       reference_by: nid
       feeds_item: guid
       autocreate: 0
-  -
-    target: langcode
-    map:
-      value: translation_language
-    settings:
-      language: en
   -
     target: gid
     map:
