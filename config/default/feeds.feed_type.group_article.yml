@@ -55,5 +55,5 @@ mappings:
     map:
       target_id: group_id
     settings:
-      reference_by: id
+      reference_by: label
       autocreate: 0
