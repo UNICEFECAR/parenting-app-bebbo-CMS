@@ -1,11 +1,11 @@
 langcode: en
-id: milestone_russian
-migration_tags: milestone_russian
+id: milestone_serbia_english
+migration_tags: milestone_serbia_english
 migration_group: milestone
-label: 'Milestone Russian'
+label: 'Milestone Serbia English'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/milestone/milestone_russian.csv
+  path: modules/custom/pb_custom_migrate/sources/milestone/milestone_serbia_english.csv
   header_row_count: 1
   ids:
     - ID
@@ -13,7 +13,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: ru
+    default_value: rs-en
   uid:
     plugin: default_value
     source: node_uid
