@@ -1,17 +1,17 @@
-uuid: 86276620-cf2e-4c50-b689-66b0a7ab9cdc
-langcode: en
+uuid: 85d6ba76-6a65-4fce-a3fb-6c4f10edc3f6
+langcode: by-be
 status: true
 dependencies: {  }
-id: video_article_english
+id: video_article_belarusian
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags: video_article_english
-migration_group: video_article
-label: 'Video Article English'
+migration_tags: video_article_belarusian
+migration_group: video_article_belarusian
+label: 'Video Article Belarusian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_english.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article_belarusian.csv
   header_row_count: 1
   ids:
     - ID
@@ -19,7 +19,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: en
+    default_value: by-be
   uid:
     plugin: default_value
     source: node_uid
@@ -62,6 +62,13 @@ process:
     bundle_key: vid
     bundle: parent_gender
     entity_type: taxonomy_term
+  field_seasons:
+    plugin: entity_lookup
+    source: Season
+    value_key: tid
+    bundle_key: vid
+    bundle: seasons
+    entity_type: taxonomy_term
   field_keywords:
     -
       plugin: explode
@@ -73,6 +80,7 @@ process:
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
+      ignore_case: true
   field_related_articles:
     -
       plugin: explode

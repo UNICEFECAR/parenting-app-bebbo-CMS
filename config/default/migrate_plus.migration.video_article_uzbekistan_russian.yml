@@ -1,17 +1,17 @@
-uuid: 86276620-cf2e-4c50-b689-66b0a7ab9cdc
+uuid: a6930409-84bf-46f5-a70c-560b47e73517
 langcode: en
 status: true
 dependencies: {  }
-id: video_article_english
+id: video_article_uzbekistan_russian
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags: video_article_english
+migration_tags: video_article_uzbekistan_russian
 migration_group: video_article
-label: 'Video Article English'
+label: 'Video Article Uzbekistan-Russian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_english.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_uzbekistan_russian.csv
   header_row_count: 1
   ids:
     - ID
@@ -19,7 +19,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: en
+    default_value: uz-ru
   uid:
     plugin: default_value
     source: node_uid
@@ -47,7 +47,6 @@ process:
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
-      ignore_case: true
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
