@@ -1,11 +1,11 @@
 langcode: en
 id: video_article_english
 migration_tags: video_article_english
-migration_group: video_article_english
+migration_group: video_article
 label: 'Video Article English'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article_english.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_english.csv
   header_row_count: 1
   ids:
     - ID
@@ -25,10 +25,11 @@ process:
   body/summary: Summary
   body/value: Body
   field_cover_video: Cover_video
+
   field_content_category:
     plugin: entity_lookup
     source: Category
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: category
     entity_type: taxonomy_term
@@ -40,7 +41,7 @@ process:
       source: Child_age
     -
       plugin: entity_lookup      
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
@@ -49,7 +50,7 @@ process:
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: child_gender
     entity_type: taxonomy_term
@@ -57,17 +58,9 @@ process:
   field_parent_gender: 
     plugin: entity_lookup
     source: Parent_gender
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: parent_gender
-    entity_type: taxonomy_term
-
-  field_seasons: 
-    plugin: entity_lookup
-    source: Season
-    value_key: name
-    bundle_key: vid
-    bundle: seasons
     entity_type: taxonomy_term
 
   field_keywords:
@@ -77,11 +70,10 @@ process:
       source: Keywords
     -
       plugin: entity_lookup      
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
-      ignore_case: true
 
   field_related_articles:
     -
@@ -89,28 +81,16 @@ process:
       delimiter: ', '
       source: Related_articles
     -
-     plugin: entity_lookup
-     entity_type: node
-     bundle_key: type
-     bundle: video_article
-     value_key: nid
-     
-  field_related_articles:
-    -
-      plugin: explode
-      delimiter: ', '
-      source: Related_articles
-    -
-     plugin: entity_lookup
-     entity_type: node
-     bundle_key: type
-     bundle: article
-     value_key: nid
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
 
+   
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
-
   moderation_state: Moderation_state
 
 destination:

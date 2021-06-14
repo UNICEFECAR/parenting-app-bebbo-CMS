@@ -1,17 +1,17 @@
-uuid: 86276620-cf2e-4c50-b689-66b0a7ab9cdc
-langcode: en
+uuid: be08b8c9-3b1c-448f-b77a-2cc5f49e4f23
+langcode: me-cnr
 status: true
 dependencies: {  }
-id: video_article_english
+id: video_article_montenegro
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags: video_article_english
-migration_group: video_article
-label: 'Video Article English'
+migration_tags: video_article_montenegro
+migration_group: video_article_montenegro
+label: 'Video Article montenegro'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_english.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article_montenegro.csv
   header_row_count: 1
   ids:
     - ID
@@ -19,7 +19,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: en
+    default_value: me-cnr
   uid:
     plugin: default_value
     source: node_uid
@@ -62,6 +62,13 @@ process:
     bundle_key: vid
     bundle: parent_gender
     entity_type: taxonomy_term
+  field_seasons:
+    plugin: entity_lookup
+    source: Season
+    value_key: tid
+    bundle_key: vid
+    bundle: seasons
+    entity_type: taxonomy_term
   field_keywords:
     -
       plugin: explode
@@ -73,6 +80,7 @@ process:
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
+      ignore_case: true
   field_related_articles:
     -
       plugin: explode
