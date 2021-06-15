@@ -5,7 +5,7 @@ migration_group: basic_page
 label: 'basic_page_belarus_belarusian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/basic_page_belarus_belarusian.csv
+  path: modules/custom/pb_custom_migrate/sources/basic_page/basic_page_belarus_belarusian.csv
   header_row_count: 1
   ids:
     - ID

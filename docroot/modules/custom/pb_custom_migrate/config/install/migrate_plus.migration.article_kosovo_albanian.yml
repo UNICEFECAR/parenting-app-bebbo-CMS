@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Kosovo Albanian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_kosovo_albanian.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_kosovo_albanian.csv
   header_row_count: 1
   ids:
     - ID

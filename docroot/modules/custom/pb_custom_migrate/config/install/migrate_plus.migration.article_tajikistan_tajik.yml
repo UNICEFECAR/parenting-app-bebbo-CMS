@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Tajikistan Tajik'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_tajikistan_tajik.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_tajikistan_tajik.csv
   header_row_count: 1
   ids:
     - ID

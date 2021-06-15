@@ -1,17 +1,17 @@
-uuid: 14d852c6-d17e-46f1-bc49-cbc1ef50eb20
+uuid: 58be00b9-0afe-401d-910c-afc87efd7001
 langcode: en
 status: true
 dependencies: {  }
-id: video_article_greek
+id: video_article_greece_persian
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags: video_article_greek
-migration_group: video_article_greek
-label: 'Video Article Greek'
+migration_tags: video_article_greece_persian
+migration_group: video_article
+label: video_article_greece_persian
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_greek.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_greece_persian.csv
   header_row_count: 1
   ids:
     - ID
@@ -19,7 +19,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: gr-el
+    default_value: gr-fa
   uid:
     plugin: default_value
     source: node_uid

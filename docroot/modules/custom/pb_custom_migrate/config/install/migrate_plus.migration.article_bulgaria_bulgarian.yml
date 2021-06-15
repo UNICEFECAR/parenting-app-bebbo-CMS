@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Bulgaria Bulgarian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_bulgaria_bulgarian.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_bulgaria_bulgarian.csv
   header_row_count: 1
   ids:
     - ID

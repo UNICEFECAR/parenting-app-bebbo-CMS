@@ -1,11 +1,11 @@
 langcode: en
 id: homescreen_serbia_serbian
 migration_tags: homescreen_serbia_serbian
-migration_group: homescreen_serbia_serbian
+migration_group: homescreen
 label: 'Homescreen Serbia Serbian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/homescreen_serbia_serbian.csv
+  path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_serbia_serbian.csv
   header_row_count: 1
   ids:
     - ID

@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Belarus Belarusian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_belarus_belarusian.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_belarus_belarusian.csv
   header_row_count: 1
   ids:
     - ID

@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Greece Arab'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_greece_arab.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_greece_arab.csv
   header_row_count: 1
   ids:
     - ID

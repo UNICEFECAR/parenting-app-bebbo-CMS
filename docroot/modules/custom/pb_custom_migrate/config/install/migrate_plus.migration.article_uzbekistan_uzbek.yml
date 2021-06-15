@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Uzbekistan Uzbek'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_uzbekistan_uzbek.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_uzbekistan_uzbek.csv
   header_row_count: 1
   ids:
     - ID

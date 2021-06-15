@@ -5,7 +5,7 @@ migration_group: basic_page
 label: 'basic_page_greece_greek'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/basic_page_greece_greek.csv
+  path: modules/custom/pb_custom_migrate/sources/basic_page/basic_page_greece_greek.csv
   header_row_count: 1
   ids:
     - ID
