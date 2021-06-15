@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Montenegro Montenegrin'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_montenegro_montenegrin.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_montenegro_montenegrin.csv
   header_row_count: 1
   ids:
     - ID

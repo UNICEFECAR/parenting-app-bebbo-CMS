@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article Kyrgyzstan Russian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_kyrgyzstan_russian.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_kyrgyzstan_russian.csv
   header_row_count: 1
   ids:
     - ID

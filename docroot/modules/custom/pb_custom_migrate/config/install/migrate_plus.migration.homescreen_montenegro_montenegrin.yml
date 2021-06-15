@@ -1,11 +1,11 @@
 langcode: en
 id: homescreen_montenegro_montenegrin
 migration_tags: homescreen_montenegro_montenegrin
-migration_group: homescreen_montenegro_montenegrin
+migration_group: homescreen
 label: 'Homescreen Montenegro Montenegrin'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/homescreen_montenegro_montenegrin.csv
+  path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_montenegro_montenegrin.csv
   header_row_count: 1
   ids:
     - ID

@@ -5,7 +5,7 @@ migration_group: article
 label: 'Article North Macedonia Macedonian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/article_north_macedonia_macedonian.csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_north_macedonia_macedonian.csv
   header_row_count: 1
   ids:
     - ID

@@ -1,11 +1,17 @@
+uuid: 42ba9be4-f3d5-4221-96d4-ebb4a81a5ef5
 langcode: en
+status: true
+dependencies: {  }
 id: basic_page_greece_arab
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: basic_page_greece_arab
 migration_group: basic_page
-label: 'basic_page_greece_arab'
+label: basic_page_greece_arab
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/basic_page_greece_arab.csv
+  path: modules/custom/pb_custom_migrate/sources/basic_page/basic_page_greece_arab.csv
   header_row_count: 1
   ids:
     - ID
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: gr-arb
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   body/summary: Summary

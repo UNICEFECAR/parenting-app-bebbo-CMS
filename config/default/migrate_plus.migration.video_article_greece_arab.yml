@@ -1,17 +1,17 @@
-uuid: 8c738d1d-12c6-4a82-95c5-4fe09262a5a5
+uuid: 7b5b8b28-ba04-42da-be7a-bb53ee74eb1b
 langcode: en
 status: true
 dependencies: {  }
-id: video_article_serbian
+id: video_article_greece_arab
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags: video_article_serbian
+migration_tags: video_article_greece_arab
 migration_group: video_article
-label: 'Video Article Serbian'
+label: 'Video Article greece Arab'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_serbian.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_greece_arab.csv
   header_row_count: 1
   ids:
     - ID
@@ -19,7 +19,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: rs-sr
+    default_value: gr-arb
   uid:
     plugin: default_value
     source: node_uid
