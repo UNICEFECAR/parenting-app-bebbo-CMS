@@ -35,7 +35,8 @@ class CustomSerializer extends Serializer {
     {
       $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities"];
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
-      
+      $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
+
       $rows = array();
       $data = array();
       $url = '';
@@ -52,8 +53,25 @@ class CustomSerializer extends Serializer {
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, true);   
+          // error_log("rendered array =>".print_r($rendered_data, true));
+          // error_log("type =>".$rendered_data['type']);
+          //Custom pinned api formatter
+          if(strpos($request_uri, "pinned-contents") !== false && isset($request[5]) && in_array($request[5], $pinned_content))
+          {
+            if($rendered_data['type'] === "Article")
+            {
+              unset($rendered_data['cover_video']);
+              unset($rendered_data['cover_video_image']);
+            }
+            else if($rendered_data['type'] === "Video Article")
+            {
+              unset($rendered_data['cover_image']);
+              $rendered_data['cover_image'] = $rendered_data['cover_video_image'];
+              unset($rendered_data['cover_video_image']);
+            }
+          }
           foreach($rendered_data as $key => $values)
-          {          
+          {                      
             //Custom image & video formattter
             if (in_array($key,$media_fields)) //To check media image field exist
             { 
@@ -65,7 +83,7 @@ class CustomSerializer extends Serializer {
             }
             
             //Custom array formatter
-            if (in_array($key,$array_of_multiple_values)) //To check mulitple field 
+            if(in_array($key,$array_of_multiple_values)) //To check mulitple field 
             {          
               $array_formatted_data = $this->custom_array_formatter($values);   
               $rendered_data[$key] = $array_formatted_data;
@@ -90,6 +108,7 @@ class CustomSerializer extends Serializer {
           else
           {
             $data[] = $rendered_data;
+            $rows['status'] = 200;
             // To get total no of records
             $rows['total'] = count($data);
           }
@@ -122,7 +141,7 @@ class CustomSerializer extends Serializer {
       else
       {   
         $rows = [];
-        $rows['error_code'] = 204;
+        $rows['status'] = 204;
         $rows['message'] = "No Records Found";
 
         return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
@@ -158,7 +177,7 @@ class CustomSerializer extends Serializer {
       {
         if(!in_array($request[3],$languages_arr))
         {
-          $respons_arr['error_code'] = 400;
+          $respons_arr['status'] = 400;
           $respons_arr['message'] = "Request language is wrong";
 
           return $respons_arr;
@@ -179,7 +198,7 @@ class CustomSerializer extends Serializer {
         } 
         if(!in_array($request[4],$gids))
         {
-          $respons_arr['error_code'] = 400;
+          $respons_arr['status'] = 400;
           $respons_arr['message'] = "Request country code is wrong";
 
           return $respons_arr;
