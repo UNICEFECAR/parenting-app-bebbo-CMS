@@ -11,7 +11,6 @@ dependencies:
     - group.type.country
   module:
     - media_library
-    - path
 id: group.country.default
 targetEntityType: group
 bundle: country
@@ -19,33 +18,33 @@ mode: default
 content:
   field_country_flag:
     type: media_library_widget
-    weight: 31
+    weight: 2
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_country_national_partner:
     type: media_library_widget
-    weight: 33
+    weight: 4
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_country_sponsor_logo:
     type: media_library_widget
-    weight: 32
+    weight: 3
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_language:
-    weight: 35
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_make_available_for_mobile:
-    weight: 34
+    weight: 6
     settings:
       display_label: true
     third_party_settings: {  }
@@ -53,7 +52,7 @@ content:
     region: content
   label:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -61,16 +60,16 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 1
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
-  path:
-    type: path
-    weight: 30
+  translation:
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  path: true
   uid: true

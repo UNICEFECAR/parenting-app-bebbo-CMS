@@ -14,7 +14,7 @@ settings:
     -
       value: en
       label: English
-  allowed_values_function: ''
+  allowed_values_function: pb_custom_field_allowed_values_function
 module: options
 locked: false
 cardinality: -1

@@ -13,9 +13,9 @@ group_type: country
 permissions_ui: true
 permissions:
   - 'access group_node overview'
+  - 'use group_workflow transition draft_to_published'
   - 'view group'
   - 'view group_membership content'
-  - 'view group_node:activities entity'
   - 'view group_node:article entity'
   - 'view group_node:child_development entity'
   - 'view group_node:child_growth entity'
@@ -27,3 +27,4 @@ permissions:
   - 'view group_node:survey entity'
   - 'view group_node:vaccinations entity'
   - 'view group_node:video_article entity'
+  - 'view latest version'

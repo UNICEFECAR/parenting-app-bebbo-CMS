@@ -11,5 +11,4 @@ internal: true
 audience: outsider
 group_type: country
 permissions_ui: true
-permissions:
-  - 'view group_node:child_development entity'
+permissions: {  }

@@ -10,7 +10,7 @@ id: node.faq.field_content_category
 field_name: field_content_category
 entity_type: node
 bundle: faq
-label: 'Sub Category'
+label: 'Chatbot Subcategory'
 description: ''
 required: true
 translatable: true

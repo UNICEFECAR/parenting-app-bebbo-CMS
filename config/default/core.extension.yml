@@ -4,6 +4,7 @@ module:
   admin_toolbar_search: 0
   admin_toolbar_tools: 0
   automated_cron: 0
+  basic_auth: 0
   big_pipe: 0
   block: 0
   block_content: 0
@@ -16,6 +17,7 @@ module:
   contact: 0
   content_moderation: 0
   contextual: 0
+  csv_serialization: 0
   custom_serialization: 0
   datetime: 0
   dblog: 0
@@ -29,6 +31,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  gcontent_moderation: 0
   gnode: 0
   group: 0
   help: 0
@@ -36,17 +39,26 @@ module:
   image: 0
   json_field: 0
   language: 0
+  languagefield: 0
   link: 0
   locale: 0
   media: 0
   media_library: 0
   menu_link_content: 0
   menu_ui: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_source_csv: 0
+  migrate_tools: 0
+  migrate_upgrade: 0
   node: 0
   options: 0
   page_cache: 0
   path: 0
   path_alias: 0
+  pb_custom_field: 0
+  pb_custom_migrate: 0
   quickedit: 0
   rdf: 0
   rest: 0
@@ -57,12 +69,22 @@ module:
   tamper: 0
   taxonomy: 0
   text: 0
+  tmgmt: 0
+  tmgmt_config: 0
+  tmgmt_content: 0
+  tmgmt_demo: 0
+  tmgmt_file: 0
+  tmgmt_language_combination: 0
+  tmgmt_local: 0
+  tmgmt_locale: 0
+  tmgmt_memsource: 0
   toolbar: 0
   tour: 0
   user: 0
   variationcache: 0
   video_embed_field: 0
   video_embed_media: 0
+  views_data_export: 0
   views_ui: 0
   workflows: 0
   content_translation: 10

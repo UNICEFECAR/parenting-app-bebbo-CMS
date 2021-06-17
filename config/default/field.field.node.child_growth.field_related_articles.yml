@@ -7,13 +7,18 @@ dependencies:
     - node.type.article
     - node.type.child_growth
     - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.child_growth.field_related_articles
 field_name: field_related_articles
 entity_type: node
 bundle: child_growth
 label: 'Pinned Articles'
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

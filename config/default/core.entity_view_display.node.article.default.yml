@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
+    - field.field.node.article.feeds_item
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
     - field.field.node.article.field_child_gender
@@ -17,7 +18,6 @@ dependencies:
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
-    - field.field.node.article.field_seasons
     - node.type.article
   module:
     - text
@@ -36,6 +36,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     label: hidden
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_australian_article:
     weight: 111
     label: above
@@ -150,18 +155,11 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_seasons:
-    weight: 118
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   links:
     weight: 100
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  feeds_item: true
   langcode: true
