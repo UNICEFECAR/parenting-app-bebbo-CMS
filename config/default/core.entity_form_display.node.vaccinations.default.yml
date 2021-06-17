@@ -11,7 +11,9 @@ dependencies:
     - field.field.node.vaccinations.field_vaccination_closes
     - field.field.node.vaccinations.field_vaccination_opens
     - node.type.vaccinations
+    - workflows.workflow.group_workflow
   module:
+    - content_moderation
     - path
 id: node.vaccinations.default
 targetEntityType: node
@@ -31,7 +33,7 @@ content:
     type: options_select
     region: content
   field_pinned_article:
-    weight: 12
+    weight: 10
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -40,26 +42,18 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_vaccination_closes:
-    weight: 10
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_vaccination_opens:
-    weight: 9
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
   langcode:
     type: language_select
     weight: 2
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 11
+    settings: {  }
+    region: content
     third_party_settings: {  }
   path:
     type: path
@@ -97,7 +91,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 11
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -113,5 +107,8 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  feeds_item: true
   field_notification_from: true
   field_notification_to: true
+  field_vaccination_closes: true
+  field_vaccination_opens: true

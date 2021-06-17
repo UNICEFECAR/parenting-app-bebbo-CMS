@@ -4,7 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.child_development.body
-    - field.field.node.child_development.field_child_age
+    - field.field.node.child_development.feeds_item
+    - field.field.node.child_development.field_activity_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
@@ -26,7 +27,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 10
+    weight: 9
     settings:
       rows: 9
       summary_rows: 3
@@ -40,21 +41,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_child_age:
-    weight: 11
+  field_activity_child_age:
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_mandatory_content:
-    weight: 15
+    weight: 14
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_milestone_instructions:
-    weight: 14
+    weight: 13
     settings:
       rows: 5
       placeholder: ''
@@ -62,7 +63,7 @@ content:
     type: text_textarea
     region: content
   field_pinned_article_for_boy:
-    weight: 12
+    weight: 11
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -72,7 +73,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_pinned_article_for_girl:
-    weight: 13
+    weight: 12
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -111,7 +112,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 9
+    weight: 15
     region: content
     third_party_settings: {  }
   sticky:
@@ -145,6 +146,8 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  feeds_item: true
+  field_child_age: true
   field_home_message_after_end: true
   field_home_message_after_start: true
   field_home_message_before_end: true

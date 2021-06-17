@@ -14,7 +14,6 @@ dependencies:
     - field.field.node.article.field_parent_gender
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
-    - field.field.node.article.field_seasons
     - node.type.article
   module:
     - feeds_tamper
@@ -31,7 +30,7 @@ third_party_settings:
         label: Explode
         uuid: 29e6b6c5-12c3-4460-b1ad-803cc41123b8
       1c93c5ed-a7a5-44f5-a529-1d7b1f37ed35:
-        separator: ','
+        separator: ', '
         limit: null
         plugin: explode
         source: related_articles
@@ -39,7 +38,7 @@ third_party_settings:
         label: Explode
         uuid: 1c93c5ed-a7a5-44f5-a529-1d7b1f37ed35
       9f9ec9f9-8292-4afb-a06e-e871dedb05bf:
-        separator: ','
+        separator: ', '
         limit: null
         plugin: explode
         source: keywords
@@ -121,8 +120,8 @@ processor_configuration:
   update_existing: 1
   update_non_existent: _keep
   expire: -1
-  owner_feed_author: false
-  owner_id: 0
+  owner_feed_author: true
+  owner_id: 1
   authorize: true
   skip_hash_check: false
   values:
@@ -218,13 +217,13 @@ mappings:
       summary: summary
     settings:
       language: en
-      format: basic_html
+      format: full_html
   -
     target: field_cover_image
     map:
       target_id: cover_image
     settings:
-      language: ''
+      language: en
       reference_by: mid
       feeds_item: guid
       autocreate: 0
@@ -259,15 +258,6 @@ mappings:
     target: field_parent_gender
     map:
       target_id: parent_gender
-    settings:
-      language: en
-      reference_by: name
-      feeds_item: guid
-      autocreate: 0
-  -
-    target: field_seasons
-    map:
-      target_id: season
     settings:
       language: en
       reference_by: name
@@ -309,17 +299,17 @@ mappings:
       value: references_and_comments
     settings:
       language: en
-      format: basic_html
-  -
-    target: langcode
-    map:
-      value: translation_language
-    settings:
-      language: en
+      format: full_html
   -
     target: moderation_state
     map:
       value: moderation_state
     unique: {  }
+    settings:
+      language: en
+  -
+    target: langcode
+    map:
+      value: translation_language
     settings:
       language: en

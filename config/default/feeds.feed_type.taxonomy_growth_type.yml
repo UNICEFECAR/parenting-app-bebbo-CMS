@@ -59,7 +59,7 @@ mappings:
     map:
       value: language_code
     settings:
-      language: null
+      language: en
   -
     target: weight
     map:

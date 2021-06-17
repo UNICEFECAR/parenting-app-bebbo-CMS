@@ -6,6 +6,11 @@ dependencies:
     - field.storage.node.field_related_video_articles
     - node.type.milestone
     - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.milestone.field_related_video_articles
 field_name: field_related_video_articles
 entity_type: node
@@ -22,7 +27,8 @@ settings:
     target_bundles:
       video_article: video_article
     sort:
-      field: _none
+      field: title
+      direction: ASC
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: article
 field_type: entity_reference
