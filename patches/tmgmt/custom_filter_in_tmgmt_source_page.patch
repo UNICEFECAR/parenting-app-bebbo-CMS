@@ -1,0 +1,69 @@
+diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/content/src/ContentEntitySourcePluginUi.php
+index e32c33e..9a7b8c2 100644
+--- a/sources/content/src/ContentEntitySourcePluginUi.php
++++ b/sources/content/src/ContentEntitySourcePluginUi.php
+@@ -50,6 +50,47 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+       );
+     }
+ 
++     ## node id custom filter
++
++    $form['search_wrapper']['search']['node_id'] = array(
++        '#type' => 'textfield',
++        '#title' => 'Node',
++        '#size' => 25,
++        '#default_value' => isset($_GET['node_id']) ? $_GET['node_id'] : NULL,
++      );
++
++
++    ## country filter
++    $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
++    $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
++    $options = ['' => 'All'];
++
++    foreach($groups as $gid => $group) {
++      $value = $group->get('label')->getString();
++      $id = $group->get('id')->getString();
++
++      if (isset($value)) {
++        $options[$id] = $value;
++      }
++    }
++
++    if (count($options) > 1) {
++      $form['search_wrapper']['search']['country'] = array(
++        '#type' => 'select',
++        '#title' => 'Country',
++        '#options' => $options,
++        '#empty_option' => t('- Any -'),
++        '#default_value' => isset($_GET['country']) ? $_GET['country'] : NULL,
++      );
++    }
++    // In case country is not enabled 
++    // display appropriate message.
++    elseif (count($options) == 0) {
++      $this->messenger()->addWarning($this->t('Country is not enabled for any of existing content types.'));
++      unset($form['search_wrapper']);
++      return $form;
++    }
++
+     $form['search_wrapper']['search']['langcode'] = array(
+       '#type' => 'language_select',
+       '#title' => t('Source Language'),
+@@ -436,6 +477,16 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+ 
+     $property_conditions += array('langcode' => $langcodes);
+ 
++     #### condition for node id and country filter
++
++    if(isset($_GET['node_id']) && !empty($_GET['node_id'])){
++      $query->condition('e.nid', $_GET['node_id']);
++    }
++
++    if(isset($_GET['country']) && !empty($_GET['country'])){
++      $query->innerJoin('group_content_field_data', 'g', "g.type LIKE '%country-group_node%' AND g.gid = ".$_GET['country']." AND g. entity_id = e." . $id_key);
++    }
++
+     // Searching for sources with missing translation.
+     if (!empty($property_conditions['target_status']) && !empty($property_conditions['target_language']) && in_array($property_conditions['target_language'], $languages)) {
+ 
