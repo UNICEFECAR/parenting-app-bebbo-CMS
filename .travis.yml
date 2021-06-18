@@ -47,7 +47,7 @@ install:
 script:
   # Uncomment these lines to test database updates using live content.
   # - blt drupal:sync:default:site
-  - source ${BLT_DIR}/scripts/travis/run_tests
+  # - source ${BLT_DIR}/scripts/travis/run_tests
   - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
 deploy:
@@ -55,13 +55,13 @@ deploy:
      script: "${BLT_DIR}/scripts/travis/deploy_branch"
      skip_cleanup: true
      on:
-       branch: develop
+       branch: dev
        php: 7.3
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_branch"
      skip_cleanup: true
      on:
-       branch: master
+       branch: main
        php: 7.3
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_tag"
