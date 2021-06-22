@@ -25,6 +25,11 @@ settings:
   items_per_page: none
   context_mapping: {  }
 visibility:
+  request_path:
+    id: request_path
+    pages: /admin/dashboard
+    negate: false
+    context_mapping: {  }
   user_role:
     id: user_role
     roles:
@@ -32,8 +37,3 @@ visibility:
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
-  request_path:
-    id: request_path
-    pages: /admin/dashboard
-    negate: false
-    context_mapping: {  }

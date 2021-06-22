@@ -31,7 +31,7 @@ type_settings:
       label: Draft
       published: false
       default_revision: false
-      weight: -3
+      weight: -4
     published:
       label: Published
       published: true
@@ -42,27 +42,32 @@ type_settings:
       default_revision: true
       label: Reject
       weight: 0
-    reviewer_review:
+    review_after_translation:
       published: false
       default_revision: false
-      label: 'Reviewer Review'
-      weight: -1
+      label: Review_after_translation
+      weight: 3
+    senior_editor_review:
+      published: false
+      default_revision: false
+      label: 'Senior Editor Review'
+      weight: -2
     sme_review:
       published: false
       default_revision: false
       label: 'SME Review'
-      weight: -2
+      weight: -3
   transitions:
     archive_to_draft:
       label: 'Archive to Draft'
       from:
         - archive
       to: draft
-      weight: 12
+      weight: 2
     create_new_draft:
-      label: 'Create New Draft'
+      label: 'Create a new Draft'
       to: draft
-      weight: 0
+      weight: -4
       from:
         - draft
     draft_to_published:
@@ -70,67 +75,85 @@ type_settings:
       from:
         - draft
       to: published
-      weight: 13
-    draft_to_reviewer_review:
-      label: 'Draft to Reviewer Review'
+      weight: 3
+    draft_to_senior_editor_review:
+      label: 'Draft to Senior Editor Review'
       from:
         - draft
-      to: reviewer_review
-      weight: 2
+      to: senior_editor_review
+      weight: -2
     draft_to_sme_review:
       label: 'Draft to SME Review'
       from:
         - draft
       to: sme_review
-      weight: 4
+      weight: -3
     publish_to_archive:
-      label: 'Publish to Archive'
+      label: 'Published to Archive'
       from:
         - published
       to: archive
-      weight: 11
+      weight: 1
     publish_to_draft:
       label: 'Publish to Draft'
       from:
         - published
       to: draft
-      weight: 8
-    reject:
-      label: Reject
+      weight: -1
+    published_to_review_after_translation:
+      label: 'Published to Review_after_translation'
       from:
-        - reviewer_review
-      to: reject
-      weight: 3
+        - published
+      to: review_after_translation
+      weight: 10
     reject_to_draft:
       label: 'Reject to draft'
       from:
         - reject
       to: draft
-      weight: 9
-    reviewer_review_to_review:
-      label: 'Reviewer Review to review'
+      weight: 0
+    review_after_translation_to_published:
+      label: 'Review_after_translation to Published'
       from:
-        - reviewer_review
-      to: reviewer_review
-      weight: 10
-    reviewer_to_publish:
-      label: 'Reviewer to Publish'
-      from:
-        - reviewer_review
+        - review_after_translation
       to: published
-      weight: 7
-    reviewer_to_sme_review:
-      label: 'Reviewer to SME Review'
+      weight: 13
+    review_after_translation_to_senior_editor_review:
+      label: 'Review_after_translation to Senior Editor Review'
       from:
-        - reviewer_review
+        - review_after_translation
+      to: senior_editor_review
+      weight: 12
+    review_after_translation_to_sme_review:
+      label: 'Review_after_translation to SME Review'
+      from:
+        - review_after_translation
       to: sme_review
+      weight: 11
+    senior_editor_review_to_published:
+      label: 'Senior Editor Review to Published'
+      from:
+        - senior_editor_review
+      to: published
+      weight: 8
+    senior_editor_review_to_reject:
+      label: 'Senior Editor Review to Reject'
+      from:
+        - senior_editor_review
+      to: reject
       weight: 6
-    sme_to_reviewer_review:
-      label: 'SME to Reviewer Review'
+    sme_review_to_reject:
+      label: 'SME Review to Reject'
       from:
         - sme_review
-      to: reviewer_review
+      to: reject
       weight: 5
+    sme_review_to_senior_editor_review:
+      label: 'SME Review to Senior Editor Review'
+      from:
+        - sme_review
+      to: senior_editor_review
+      weight: 4
   entity_types:
     node:
       - activities

@@ -63,7 +63,7 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
     }
   }
   /* group membership form - alter the roles checkbox */
-  if($form['#id'] == "group-content-country-group-membership-add-form" || $form['#id'] == "group-content-country-group-membership-edit-form")
+  /*if($form['#id'] == "group-content-country-group-membership-add-form" || $form['#id'] == "group-content-country-group-membership-edit-form")
   {
     $role_options = $form['group_roles']['widget']['#options'];
     $options = [];
@@ -74,11 +74,47 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
         /* if($key == "country-senior_editor")
             $val = $val." ( Country Admin )"; */
 
-        $options[$key] = $val;
+        /*$options[$key] = $val;
       }
     }
     $form['group_roles']['widget']['#options'] = $options;
+  }*/
+  $route_match = \Drupal::routeMatch();
+  if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form")
+  {
+      /* Get the logged in user details */
+      $currentAccount = \Drupal::currentUser();
+      $cur_user_roles = $currentAccount->getRoles();
+      $authorized_roles = array('se','sme','editor');
+      /* Check the user roles */
+      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
+     
+        /* get the content type details */
+        $node = $form_state->getFormObject()->getEntity();
+        $content_type_arr = array('article');
+        /* get the group details based on logged in user id */
+        $grp_membership_service = \Drupal::service('group.membership_loader');
+        $grps = $grp_membership_service->loadByUser($currentAccount);
+        foreach ($grps as $grp) {
+          $groups = $grp->getGroup();
+        } 
+        $languages = $groups->get('field_language')->getString();
+        $language_arr = explode(",",$languages);
+        $language_arr = array_map('trim', explode(',', $languages));
+        $language_options = [];
+        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if(in_array($langcode,$language_arr)){
+            $language_options[$langcode] = $language->getName();
+          }
+        }
+        $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+      
+    }
+       
+      
   }
+
+
 }
 
 

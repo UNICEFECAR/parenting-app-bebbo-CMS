@@ -132,3 +132,4 @@ content:
     third_party_settings: {  }
 hidden:
   description: true
+  feeds_item: true

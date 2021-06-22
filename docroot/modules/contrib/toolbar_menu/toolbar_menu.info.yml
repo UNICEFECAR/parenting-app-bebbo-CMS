@@ -1,0 +1,12 @@
+name: Toolbar Menu
+description: Add your favorite menu (Structure > Menu) in the Drupal Toolbar
+core_version_requirement: ^8.8 || ^9
+type: module
+dependencies:
+  - drupal:toolbar
+configure: entity.toolbar_menu_element.collection
+
+# Information added by Drupal.org packaging script on 2020-05-11
+version: '8.x-2.2'
+project: 'toolbar_menu'
+datestamp: 1589214938

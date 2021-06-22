@@ -1,0 +1,12 @@
+name: 'Toolbar Menu Clean'
+type: module
+description: 'Clean up Toolbar menu for user'
+core: 8.x
+package: 'Other'
+dependencies:
+  - toolbar_menu
+
+# Information added by Drupal.org packaging script on 2019-09-18
+version: '8.x-1.2'
+project: 'toolbar_menu_clean'
+datestamp: 1568775488

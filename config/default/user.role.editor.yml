@@ -4,20 +4,17 @@ status: true
 dependencies: {  }
 id: editor
 label: Editor
-weight: 4
+weight: -5
 is_admin: null
 permissions:
+  - 'access group overview'
   - 'create activities content'
   - 'create article content'
-  - 'create child_development content'
-  - 'create child_growth content'
   - 'create daily_homescreen_messages content'
   - 'create faq content'
-  - 'create health_check_ups content'
   - 'create milestone content'
   - 'create page content'
   - 'create survey content'
-  - 'create vaccinations content'
   - 'create video_article content'
   - 'edit any activities content'
   - 'edit any article content'
@@ -45,8 +42,15 @@ permissions:
   - 'edit own survey content'
   - 'edit own vaccinations content'
   - 'edit own video_article content'
+  - 'translate child_development node'
+  - 'translate child_growth node'
+  - 'translate daily_homescreen_messages node'
+  - 'translate health_check_ups node'
+  - 'translate vaccinations node'
+  - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition create_new_draft'
   - 'use group_workflow transition draft_to_reviewer_review'
+  - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
   - 'use text format full_html'
   - 'view activities revisions'
@@ -58,6 +62,7 @@ permissions:
   - 'view child_development revisions'
   - 'view child_growth revisions'
   - 'view daily_homescreen_messages revisions'
+  - 'view editorial_menu in toolbar'
   - 'view faq revisions'
   - 'view health_check_ups revisions'
   - 'view milestone revisions'

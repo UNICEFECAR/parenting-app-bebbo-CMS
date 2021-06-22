@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * Add menu entries in the Drupal Toolbar.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\toolbar_menu\ToolbarMenuPrerender;
+
+/**
+ * Implements hook_help().
+ */
+function toolbar_menu_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.toolbar_menu':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Add your favorite menu in the Drupal Toolbar');
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('Manage your menus (Structure > Menu)') . '</li>';
+      $output .= '<li>' . t('Go to Config > User interface > Toolbar Menu settings') . '</li>';
+      $output .= '<li>' . t('Check all menus you want to appear in your toolbar') . '</li>';
+      $output .= '<li>' . t('Re-order the menu entries if you want') . '</li>';
+      $output .= '<li>' . t('Save the configuration') . '</li>';
+      $output .= '<li>' . t('Your selected menus must appears in the toolbar') . '</li>';
+      $output .= '</ul>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_page_top().
+ *
+ * Add a new cache tag for the toolbar cache.
+ */
+function toolbar_menu_page_top(array &$page_top) {
+  $page_top['toolbar']['#cache']['tags'][] = 'toolbar_menu';
+}
+
+/**
+ * Implements hook_toolbar().
+ */
+function toolbar_menu_toolbar() {
+  $items = [];
+
+  /** @var \Drupal\toolbar_menu\ToolbarMenuManager $toolbar_manager */
+  $toolbar_manager = \Drupal::service('toolbar_menu.manager');
+  foreach ($toolbar_manager->getToolbarMenuElements() as $element_id => $element) {
+    $items['toolbar_menu_' . $element_id] = [
+      '#type' => 'toolbar_item',
+      'tab' => [
+        '#type' => 'link',
+        '#title' => $element->getDisplayLabel(),
+        '#url' => Url::fromRoute('<front>'),
+        '#attributes' => [
+          'title' => $element->getDisplayLabel(),
+          'class' => [
+            'toolbar-icon',
+            'toolbar-icon-toolbar-menu',
+            'toolbar-icon-toolbar-menu-' . $element_id,
+          ],
+          'data-drupal-subtrees' => '',
+        ],
+      ],
+      'tray' => [
+        '#heading' => t('@menu_label actions', ['@menu_label' => $element->getDisplayLabel()]),
+        'toolbar_menu_' . $element_id . '_links' => [
+          '#type' => 'container',
+          '#id' => $element->loadMenu()->id(),
+          '#pre_render' => [[ToolbarMenuPrerender::class, 'prerenderToolbarTray']],
+          '#attributes' => [
+            'class' => ['toolbar-menu-administration'],
+          ],
+        ],
+      ],
+      '#weight' => $element->weight(),
+      '#attached' => [
+        'library' => [
+          'toolbar_menu/icons',
+        ],
+      ],
+      '#cache' => [
+        'tags' => array_merge($element->getCacheTags(), $element->loadMenu()->getCacheTags(), ['toolbar_menu']),
+      ],
+    ];
+  }
+  return $items;
+}
+
+/**
+ * Pre-render the toolbar_menu tray element.
+ *
+ * @param array $element
+ *   The tray element to pre-render.
+ *
+ * @deprecated in toolbar_menu:8.x-2.2 and is removed from toolbar_menu:8.x-3.0.
+ * Use \Drupal\toolbar_menu\ToolbarMenuPrerender::prerenderToolbarTray instead.
+ * @see https://www.drupal.org/project/toolbar_menu/issues/3072454
+ *
+ * @return array
+ *   The pre-rendered tray element.
+ */
+function toolbar_menu_prerender_toolbar_tray(array $element) {
+  @trigger_error('toolbar_menu_prerender_toolbar_tray() is deprecated in toolbar_menu:8.x-2.2 and is removed from toolbar_menu:8.x-3.0. Use \Drupal\toolbar_menu\ToolbarMenuPrerender::prerenderToolbarTray() instead. See https://www.drupal.org/project/toolbar_menu/issues/3072454', E_USER_DEPRECATED);
+  return ToolbarMenuPrerender::prerenderToolbarTray($element);
+}
