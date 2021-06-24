@@ -70,6 +70,15 @@ class CustomSerializer extends Serializer {
               unset($rendered_data['cover_video_image']);
             }
           }
+          //Add unique field to Basic page API
+          if(strpos($request_uri, "basic-pages") !== false && $rendered_data['type'] === "Basic page")
+          {
+            $basic_page = strtolower($rendered_data['title']);
+            $basic_page = str_replace(' ', '_', $basic_page);
+
+            $rendered_data['unique_name'] = $basic_page;
+          }
+
           foreach($rendered_data as $key => $values)
           {                      
             //Custom image & video formattter

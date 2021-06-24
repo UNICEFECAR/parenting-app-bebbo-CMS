@@ -17,10 +17,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\TypedData\OptionsProviderInterface;
 use Drupal\Core\Language\LanguageManager;
 
-
-
-
-
 /* 
  * Group Module - Country Type
  * Language Field - Multiselect Option Customization 
@@ -40,7 +36,6 @@ function pb_custom_field_allowed_values_function(FieldStorageConfig $definition,
  * Group Content List Page 
  * Country Field - dropdown option
  */
-
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 if($form['#id'] == "views-exposed-form-content-listing-page-3")
   {
@@ -53,7 +48,7 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
       $id = $group->get('id')->getString();
 
       if (isset($value)) {
-        $options[strtolower($value)] = $value;
+        $options[$id] = $value;
       }
     }
     if (isset($form['gtitle'])) {
@@ -62,23 +57,6 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
       $form['gtitle']['#size'] = 1;
     }
   }
-  /* group membership form - alter the roles checkbox */
-  /*if($form['#id'] == "group-content-country-group-membership-add-form" || $form['#id'] == "group-content-country-group-membership-edit-form")
-  {
-    $role_options = $form['group_roles']['widget']['#options'];
-    $options = [];
-    foreach($role_options as $key=>$val)
-    {
-      if($key != "country-admin")
-      {
-        /* if($key == "country-senior_editor")
-            $val = $val." ( Country Admin )"; */
-
-        /*$options[$key] = $val;
-      }
-    }
-    $form['group_roles']['widget']['#options'] = $options;
-  }*/
   $route_match = \Drupal::routeMatch();
   if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form")
   {
@@ -108,15 +86,89 @@ if($form['#id'] == "views-exposed-form-content-listing-page-3")
           }
         }
         $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-      
-    }
-       
-      
+    }   
   }
-
-
 }
 
+function user_update_func($form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  $currentUser = \Drupal::currentUser();
+  $node = $form_state->getFormObject();
+  $entity = $node->getEntity();
+  $uid = $form_state->getValue('entity_id')[0]['target_id'];
+  $user = \Drupal\user\Entity\User::load($uid);
+  $roles = $user->getRoles();
+  $group_roles = $form_state->getValue('group_roles');
+
+  if(!empty($group_roles)){
+    foreach ($roles as $role) {
+      $user->removeRole($role);   
+      $user->save();
+    }
+
+    foreach ($group_roles as $group_role) {
+      if($group_role['target_id'] == "country-admin"){
+        $new_role = "reviewer";      
+      }else if($group_role['target_id'] == "country-sme"){     
+        $new_role = "sme";
+      }else if($group_role['target_id'] == "country-editor"){
+        $new_role = "editor";
+      }else if($group_role['target_id'] == "country-senior_editor"){
+        $new_role = "se";
+      }
+      $user->addRole($new_role);    
+      $user->save();
+    }
+  }
+}
+
+function pb_custom_field_link_alter(&$variables) {
+
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    $uid = $user->id();
+    $groups = array();
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    foreach ($grps as $grp) {
+            $groups[] = $grp->getGroup();
+    }
+   
+    if(!empty($groups) && $groups[0]->bundle() == "country" && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {           
+      $group_url = 'internal:/group/'.$groups[0]->id() .'/members';
+      $country_url = 'internal:/group-content-list/'.$groups[0]->id();
+      if($group_url){
+        $menu_link_parents = \Drupal::entityTypeManager()
+          ->getStorage('menu_link_content')
+          ->loadByProperties([
+            'title' => 'Assign Users To Country',
+            'menu_name' => 'editorial-menu',
+          ]);
+
+        $entity = reset($menu_link_parents);
+
+        if ($entity) {     
+          $entity->set('link', $group_url);
+          $entity->save();         
+        }
+      }
+
+      if($country_url){      
+        $menu_link_country = \Drupal::entityTypeManager()
+          ->getStorage('menu_link_content')
+          ->loadByProperties([
+            'title' => 'Country Content',
+            'menu_name' => 'editorial-menu',
+          ]);
+
+        $entitys = reset($menu_link_country);
+
+        if ($entitys) {     
+          $entitys->set('link', $country_url);
+          $entitys->save();         
+        }
+      }
+    } 
+}
 
 
 

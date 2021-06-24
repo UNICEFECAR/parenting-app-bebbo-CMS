@@ -1,0 +1,45 @@
+langcode: en
+id: vaccinations_bulgaria_bulgarian
+migration_tags: vaccinations_bulgaria_bulgarian
+migration_group: vaccinations
+label: 'Vaccinations Bulgaria Bulgarian'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/vaccinations/vaccinations_bulgaria_bulgarian.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: bg-bg
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+  nid: ID
+  title: Title
+  field_growth_period:
+    plugin: entity_lookup
+    source: Growth_period
+    value_key: tid
+    bundle_key: vid
+    bundle: growth_period
+    entity_type: taxonomy_term
+  field_pinned_article:
+    plugin: entity_lookup
+    source: Pinned_articles
+    entity_type: node
+    bundle_key: type
+    bundle: article
+    value_key: nid
+  moderation_state: Moderation_state
+  
+destination:
+  plugin: 'entity:node'
+  default_bundle: vaccinations
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }
