@@ -970,7 +970,7 @@ display:
       tags: {  }
   page_1:
     display_options:
-      path: admin/content-list
+      path: content-list
       menu:
         type: tab
         title: 'Content List'
@@ -2335,9 +2335,9 @@ display:
         - 'config:workflow_list'
   page_2:
     display_options:
-      path: admin/global-content-list
+      path: global-content-list
       menu:
-        type: tab
+        type: none
         title: 'Global Content List'
         description: ''
         expanded: false
@@ -2370,6 +2370,7 @@ display:
         filters: false
         filter_groups: false
         arguments: false
+        title: false
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -3627,6 +3628,7 @@ display:
           1: AND
       display_description: ''
       arguments: {  }
+      title: 'Global Content'
     display_plugin: page
     display_title: 'Global Content List Page'
     id: page_2
@@ -3646,9 +3648,9 @@ display:
         - 'config:workflow_list'
   page_3:
     display_options:
-      path: admin/group-content-list/%
+      path: group-content-list/%
       menu:
-        type: tab
+        type: none
         title: 'Group Content List'
         description: ''
         expanded: false
@@ -3719,6 +3721,7 @@ display:
         filter_groups: false
         arguments: false
         query: false
+        title: false
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -4812,52 +4815,6 @@ display:
             group_items: {  }
           entity_type: node
           plugin_id: moderation_state_filter
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: numeric
       filter_groups:
         operator: AND
         groups:
@@ -4908,6 +4865,7 @@ display:
           replica: false
           query_comment: ''
           query_tags: null
+      title: 'Country Content'
     display_plugin: page
     display_title: 'Country Based Content List'
     id: page_3
