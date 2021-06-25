@@ -33,6 +33,15 @@
 /vendor/
 /docroot/.csslintrc
 /docroot/.eslintignore
+
+# Ignore build artifacts
+deployment_identifier
+/deploy
+bin/*
+tmp
+reports
+/travis_wait*
+
 /docroot/.eslintrc.json
 /docroot/.ht.router.php
 /docroot/.htaccess
