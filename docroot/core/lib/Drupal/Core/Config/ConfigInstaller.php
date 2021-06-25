@@ -4,7 +4,6 @@ namespace Drupal\Core\Config;
 
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\Entity\ConfigDependencyManager;
-use Drupal\Core\Extension\ProfileExtensionList;
 use Drupal\Core\Installer\InstallerKernel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -53,13 +52,6 @@ class ConfigInstaller implements ConfigInstallerInterface {
   protected $sourceStorage;
 
   /**
-   * The profile list.
-   *
-   * @var \Drupal\Core\Extension\ProfileExtensionList
-   */
-  protected $profileList;
-
-  /**
    * Is configuration being created as part of a configuration sync.
    *
    * @var bool
@@ -88,17 +80,14 @@ class ConfigInstaller implements ConfigInstallerInterface {
    *   The event dispatcher.
    * @param string $install_profile
    *   The name of the currently active installation profile.
-   * @param \Drupal\Core\Extension\ProfileExtensionList|null $profile_list
-   *   (optional) The profile list.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $active_storage, TypedConfigManagerInterface $typed_config, ConfigManagerInterface $config_manager, EventDispatcherInterface $event_dispatcher, $install_profile, ProfileExtensionList $profile_list = NULL) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $active_storage, TypedConfigManagerInterface $typed_config, ConfigManagerInterface $config_manager, EventDispatcherInterface $event_dispatcher, $install_profile) {
     $this->configFactory = $config_factory;
     $this->activeStorages[$active_storage->getCollectionName()] = $active_storage;
     $this->typedConfig = $typed_config;
     $this->configManager = $config_manager;
     $this->eventDispatcher = $event_dispatcher;
     $this->installProfile = $install_profile;
-    $this->profileList = $profile_list ?: \Drupal::service('extension.list.profile');
   }
 
   /**
@@ -522,8 +511,7 @@ class ConfigInstaller implements ConfigInstallerInterface {
 
     // Install profiles can not have config clashes. Configuration that
     // has the same name as a module's configuration will be used instead.
-    $profiles = $this->profileList->getAncestors($this->installProfile);
-    if (!isset($profiles[$name])) {
+    if ($name != $this->drupalGetProfile()) {
       // Throw an exception if the module being installed contains configuration
       // that already exists. Additionally, can not continue installing more
       // modules because those may depend on the current module being installed.

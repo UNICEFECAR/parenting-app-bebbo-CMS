@@ -92,15 +92,6 @@ class ExtensionDiscovery {
   protected $sitePath;
 
   /**
-   * The profile list.
-   *
-   * Used to determine the directories in which we want to scan for modules.
-   *
-   * @var \Drupal\Core\Extension\ProfileExtensionList
-   */
-  protected $profileList;
-
-  /**
    * Constructs a new ExtensionDiscovery object.
    *
    * @param string $root
@@ -111,24 +102,12 @@ class ExtensionDiscovery {
    *   The available profile directories
    * @param string $site_path
    *   The path to the site.
-   * @param \Drupal\Core\Extension\ProfileExtensionList|null $profile_list
-   *   (optional) The profile list.
    */
-  public function __construct($root, $use_file_cache = TRUE, $profile_directories = NULL, $site_path = NULL, ProfileExtensionList $profile_list = NULL) {
+  public function __construct($root, $use_file_cache = TRUE, $profile_directories = NULL, $site_path = NULL) {
     $this->root = $root;
     $this->fileCache = $use_file_cache ? FileCacheFactory::get('extension_discovery') : NULL;
     $this->profileDirectories = $profile_directories;
     $this->sitePath = $site_path;
-
-    // ExtensionDiscovery can be used without a service container
-    // (@drupalKernel::moduleData), so only use the profile list service if it
-    // is available to us.
-    if ($profile_list) {
-      $this->profileList = $profile_list;
-    }
-    elseif (\Drupal::hasService('extension.list.profile')) {
-      $this->profileList = \Drupal::service('extension.list.profile');
-    }
   }
 
   /**
@@ -250,19 +229,7 @@ class ExtensionDiscovery {
   public function setProfileDirectoriesFromSettings() {
     $this->profileDirectories = [];
     if ($profile = \Drupal::installProfile()) {
-      if ($this->profileList) {
-        $profiles = $this->profileList->getAncestors($profile);
-      }
-      else {
-        $profiles = [
-          $profile => new Extension($this->root, 'profile', drupal_get_path('profile', $profile)),
-        ];
-      }
-
-      $profile_directories = array_map(function(Extension $extension) {
-        return $extension->getPath();
-      }, $profiles);
-      $this->profileDirectories = array_unique(array_merge($profile_directories, $this->profileDirectories));
+      $this->profileDirectories[] = drupal_get_path('profile', $profile);
     }
     return $this;
   }

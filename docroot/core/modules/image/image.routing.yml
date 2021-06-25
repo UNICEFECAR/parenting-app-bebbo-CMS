@@ -80,7 +80,6 @@ image.upload:
     parameters:
       entity:
         type: entity:{entity_type}
-        load_latest_revision: true
   requirements:
     _permission: 'access in-place editing'
     _access_quickedit_entity_field: 'TRUE'
@@ -94,7 +93,6 @@ image.info:
     parameters:
       entity:
         type: entity:{entity_type}
-        load_latest_revision: true
   requirements:
     _permission: 'access in-place editing'
     _access_quickedit_entity_field: 'TRUE'

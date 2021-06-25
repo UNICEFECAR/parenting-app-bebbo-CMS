@@ -1,47 +1,10 @@
 label: Мультимедиа
 display:
   default:
-    display_title: Master
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
       fields:
         thumbnail__target_id:
           label: Миниатюра
-          separator: ', '
-        name:
-          separator: ', '
-        bundle:
-          label: Type
-          separator: ', '
-        uid:
-          label: Author
-          separator: ', '
-        status:
-          label: Status
-          separator: ', '
-        changed:
-          label: Updated
-          separator: ', '
-        operations:
-          label: Operations
-      filters:
-        bundle:
-          expose:
-            label: Type
-        langcode:
-          expose:
-            label: Language
       title: Мультимедиа
   media_page_list:
     display_title: Мультимедиа

@@ -3,8 +3,6 @@
 namespace Drupal\Tests\image\Functional;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Url;
-use Drupal\file\Entity\File;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\image\Kernel\ImageFieldCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
@@ -167,79 +165,6 @@ class QuickEditImageControllerTest extends BrowserTestBase {
     $this->drupalLogin($this->contentAuthorUser);
     $this->uploadImage($invalid_image, $node->id(), $this->fieldName, $node->language()->getId());
     $this->assertStringContainsString('"main_error":"The image failed validation."', $this->getSession()->getPage()->getContent(), 'Invalid upload returned errors.');
-  }
-
-  /**
-   * Test the latest revision of an entity is loaded for editing.
-   */
-  public function testLatestRevisionLoaded() {
-    $node = $this->drupalCreateNode([
-      'type' => 'article',
-      'title' => t('Test Node'),
-    ]);
-
-    // Create an image which only exists on a pending revision to make sure the
-    // latest revision is loaded for the quickedit info route.
-    $file = File::create([
-      'uri' => 'public://example.png',
-      'filename' => 'example.png',
-    ]);
-    $file->save();
-    $node->{$this->fieldName} = [
-      'target_id' => $file->id(),
-      'alt' => 'test alt',
-      'title' => 'test title',
-      'width' => 10,
-      'height' => 11,
-    ];
-    $node->setNewRevision(TRUE);
-    $node->isDefaultRevision(FALSE);
-    $node->save();
-
-    $url = Url::fromRoute('image.info')
-      ->setRouteParameter('entity_type', 'node')
-      ->setRouteParameter('entity', $node->id())
-      ->setRouteParameter('field_name', $this->fieldName)
-      ->setRouteParameter('langcode', $node->language()->getId())
-      ->setRouteParameter('view_mode_id', 'default')
-      ->setOption('query', [
-        '_format' => 'json',
-      ]);
-
-    $info = Json::decode($this->drupalGet($url));
-    $this->assertSame('test alt', $info['alt']);
-    $this->assertSame('test title', $info['title']);
-
-    // Find an image that passes field validation and upload it.
-    $image_factory = $this->container->get('image.factory');
-    foreach ($this->drupalGetTestFiles('image') as $image) {
-      $image_file = $image_factory->get($image->uri);
-      if ($image_file->getWidth() > 50 && $image_file->getWidth() < 100) {
-        $valid_image = $image;
-        break;
-      }
-    }
-    $this->assertNotNull($valid_image);
-    $this->uploadImage($valid_image, $node->id(), $this->fieldName, $node->language()->getId());
-
-    // Save the tempstore changes.
-    $this->container
-      ->get('tempstore.private')
-      ->get('quickedit')
-      ->get($node->uuid())
-      ->save();
-
-    // Load the default and latest revision.
-    /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-    $storage = $this->container->get('entity_type.manager')->getStorage('node');
-    $default = $storage->load($node->id());
-    $latest_revision_id = $storage->getLatestRevisionId($node->id());
-    $latest_revision = $storage->loadRevision($latest_revision_id);
-
-    // Ensure that the file was uploaded to the latest revision.
-    $this->assertSame($latest_revision->{$this->fieldName}->entity->filename->value, $valid_image->filename);
-    // Ensure that the default revision was unchanged.
-    $this->assertTrue($default->{$this->fieldName}->isEmpty());
   }
 
   /**

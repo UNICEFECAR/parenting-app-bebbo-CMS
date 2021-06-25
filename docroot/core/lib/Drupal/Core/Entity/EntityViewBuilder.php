@@ -367,30 +367,20 @@ class EntityViewBuilder extends EntityHandlerBase implements EntityHandlerInterf
     if ($entity->isNew()) {
       return;
     }
-    $links = [];
-    // Only attach one of either the revision or canonical contextual link
-    // group.
+    $key = $entity->getEntityTypeId();
+    $rel = 'canonical';
     if ($entity instanceof ContentEntityInterface && !$entity->isDefaultRevision()) {
-      $links[$entity->getEntityTypeId() . '_revision'] = 'revision';
+      $rel = 'revision';
+      $key .= '_revision';
     }
-    else {
-      $links[$entity->getEntityTypeId()] = 'canonical';
-    }
-    // For entities which are non-default and are the latest version, add an
-    // additional group of contextual links.
-    if ($entity instanceof ContentEntityInterface && !$entity->isDefaultRevision() && $entity->isLatestRevision()) {
-      $links[$entity->getEntityTypeId() . '_latest_version'] = 'revision';
-    }
-    foreach ($links as $group => $link_template) {
-      if ($entity->hasLinkTemplate($link_template)) {
-        $build['#contextual_links'][$group] = [
-          'route_parameters' => $entity->toUrl($link_template)->getRouteParameters(),
+    if ($entity->hasLinkTemplate($rel)) {
+      $build['#contextual_links'][$key] = [
+        'route_parameters' => $entity->toUrl($rel)->getRouteParameters(),
+      ];
+      if ($entity instanceof EntityChangedInterface) {
+        $build['#contextual_links'][$key]['metadata'] = [
+          'changed' => $entity->getChangedTime(),
         ];
-        if ($entity instanceof EntityChangedInterface) {
-          $build['#contextual_links'][$group]['metadata'] = [
-            'changed' => $entity->getChangedTime(),
-          ];
-        }
       }
     }
   }

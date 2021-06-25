@@ -1,55 +1,9 @@
 display:
   default:
-    display_title: Master
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
-      filters:
-        name:
-          expose:
-            label: Name
-        langcode:
-          expose:
-            label: Language
       title: Мультимедиа
-  page:
-    display_title: Page
-    display_options:
-      fields:
-        name:
-          separator: ', '
-        edit_media:
-          text: Edit
-        delete_media:
-          text: Delete
-  widget:
-    display_options:
-      filters:
-        name:
-          expose:
-            label: Name
   widget_table:
     display_options:
       fields:
         thumbnail__target_id:
           label: Миниатюра
-        name:
-          label: Name
-        uid:
-          label: Author
-        changed:
-          label: Updated
-      filters:
-        name:
-          expose:
-            label: Name

@@ -12,7 +12,7 @@ bundle: video_article
 label: Seasons
 description: 'To Specify under which season this article falls'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

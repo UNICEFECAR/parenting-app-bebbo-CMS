@@ -1,5 +1,11 @@
+uuid: 25545c42-4a81-40e2-9812-64f033e0a59b
 langcode: en
+status: true
+dependencies: {  }
 id: vaccinations_belarus_russian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: vaccinations_belarus_russian
 migration_group: vaccinations
 label: 'Vaccinations Belarus Russian'
@@ -35,7 +41,6 @@ process:
     bundle: article
     value_key: nid
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: vaccinations
