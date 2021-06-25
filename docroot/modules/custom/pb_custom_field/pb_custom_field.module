@@ -63,6 +63,37 @@ if($form['#id'] == "views-exposed-form-content-listing-page-2")
   
 }
 
+function user_update_func($form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  $currentUser = \Drupal::currentUser();
+  $node = $form_state->getFormObject();
+  $entity = $node->getEntity();
+  $uid = $form_state->getValue('entity_id')[0]['target_id'];
+  $user = \Drupal\user\Entity\User::load($uid);
+  $roles = $user->getRoles();
+  $group_roles = $form_state->getValue('group_roles');
+
+  if(!empty($group_roles)){
+    foreach ($roles as $role) {
+      $user->removeRole($role);   
+      $user->save();
+    }
+
+    foreach ($group_roles as $group_role) {
+      if($group_role['target_id'] == "country-admin"){
+        $new_role = "reviewer";      
+      }else if($group_role['target_id'] == "country-sme"){     
+        $new_role = "sme";
+      }else if($group_role['target_id'] == "country-editor"){
+        $new_role = "editor";
+      }else if($group_role['target_id'] == "country-senior_editor"){
+        $new_role = "se";
+      }
+      $user->addRole($new_role);    
+      $user->save();
+    }
+  }
+}
+
 // function user_update_func($form, \Drupal\Core\Form\FormStateInterface $form_state) {
 //   $currentUser = \Drupal::currentUser();
 //   $node = $form_state->getFormObject();

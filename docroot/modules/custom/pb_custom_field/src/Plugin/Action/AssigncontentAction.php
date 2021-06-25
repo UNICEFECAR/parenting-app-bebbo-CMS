@@ -127,8 +127,8 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
        {
         $nid = $entity->get('nid')->getString();
         $node = node_load($nid);
-        $node->addTranslation($langoption, $node->toArray());
-        $node->set('moderation_state', "draft");
+        $node_es = $node->addTranslation($langoption, $node->toArray());
+        $node_es->set('moderation_state', 'draft');
         $node->save();
         $etype = $node->getType();
         $pluginId = 'group_node:' .$etype;
