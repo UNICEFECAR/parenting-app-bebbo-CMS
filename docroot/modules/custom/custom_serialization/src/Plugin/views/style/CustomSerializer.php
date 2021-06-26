@@ -33,7 +33,7 @@ class CustomSerializer extends Serializer {
     $validate_params_res = $this->check_request_params($request_uri);
     if(empty($validate_params_res))
     {
-      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities"];
+      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities", "language"];
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
       $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
 

@@ -7,6 +7,7 @@ label: Editor
 weight: -5
 is_admin: null
 permissions:
+  - 'access content'
   - 'access group overview'
   - 'access media overview'
   - 'create activities content'
@@ -63,6 +64,7 @@ permissions:
   - 'use group_workflow transition draft_to_reviewer_review'
   - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
+  - 'use group_workflow transition publish_to_draft'
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'
@@ -78,6 +80,7 @@ permissions:
   - 'view health_check_ups revisions'
   - 'view latest version'
   - 'view milestone revisions'
+  - 'view own unpublished content'
   - 'view page revisions'
   - 'view survey revisions'
   - 'view translatable_node revisions'

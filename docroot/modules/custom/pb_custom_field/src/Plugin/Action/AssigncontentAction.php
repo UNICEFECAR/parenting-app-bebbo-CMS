@@ -59,6 +59,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
           $grps = $grp_membership_service->loadByUser($currentAccount);
           if(!empty($grps))
           {
+            $country_list = [];
             foreach ($grps as $grp) {
               $groups = $grp->getGroup();
               $country_list[]=$groups->label();

@@ -70,12 +70,6 @@ type_settings:
       weight: -4
       from:
         - draft
-    draft_to_published:
-      label: 'Draft to Published'
-      from:
-        - draft
-      to: published
-      weight: 3
     draft_to_senior_editor_review:
       label: 'Draft to Senior Editor Review'
       from:
@@ -112,12 +106,6 @@ type_settings:
         - reject
       to: draft
       weight: 0
-    review_after_translation_to_published:
-      label: 'Review_after_translation to Published'
-      from:
-        - review_after_translation
-      to: published
-      weight: 13
     review_after_translation_to_senior_editor_review:
       label: 'Review_after_translation to Senior Editor Review'
       from:
@@ -142,12 +130,6 @@ type_settings:
         - senior_editor_review
       to: reject
       weight: 6
-    sme_review_to_reject:
-      label: 'SME Review to Reject'
-      from:
-        - sme_review
-      to: reject
-      weight: 5
     sme_review_to_senior_editor_review:
       label: 'SME Review to Senior Editor Review'
       from:

@@ -5,7 +5,7 @@ dependencies: {  }
 id: country
 label: Country
 description: ''
-creator_membership: true
+creator_membership: false
 creator_wizard: false
 creator_roles:
   - country-admin

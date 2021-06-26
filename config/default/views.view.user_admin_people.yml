@@ -3,7 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - user.role.administrator
     - user.role.editor
+    - user.role.global_admin
     - user.role.reviewer
     - user.role.se
     - user.role.sme
@@ -1373,9 +1375,9 @@ display:
         - user.permissions
       max-age: 0
       tags: {  }
-  page_2:
+  page_3:
     display_plugin: page
-    id: page_2
+    id: page_3
     display_title: 'Country Page'
     position: 1
     display_options:
@@ -1482,7 +1484,6 @@ display:
           include_exclude: include
           selected_actions:
             - user_block_user_action
-            - user_cancel_user_action
             - user_unblock_user_action
           plugin_id: user_bulk_form
           entity_type: user
@@ -1937,7 +1938,112 @@ display:
           plugin_id: field
           entity_type: user
           entity_field: mail
-      arguments: {  }
+        id:
+          id: id
+          table: groups_field_data
+          field: id
+          relationship: gid
+          group_type: group
+          admin_label: ''
+          label: ID
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: group
+          entity_field: id
+          plugin_id: field
+      arguments:
+        id:
+          id: id
+          table: groups_field_data
+          field: id
+          relationship: gid
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: query_parameter
+          default_argument_options:
+            query_param: gid
+            fallback: all
+            multiple: and
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+          entity_type: group
+          entity_field: id
+          plugin_id: group_id
       filters:
         combine:
           id: combine
@@ -2040,7 +2146,8 @@ display:
           group_type: group
           admin_label: ''
           operator: or
-          value: {  }
+          value:
+            all: all
           group: 1
           exposed: true
           expose:
@@ -2049,6 +2156,8 @@ display:
             description: ''
             use_operator: false
             operator: roles_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: role
             required: false
             remember: false
@@ -2056,10 +2165,13 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
               administrator: '0'
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -2163,12 +2275,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: or
+          operator: not
           value:
-            reviewer: reviewer
-            editor: editor
-            sme: sme
-            se: se
+            global_admin: global_admin
+            administrator: administrator
           group: 1
           exposed: false
           expose:
