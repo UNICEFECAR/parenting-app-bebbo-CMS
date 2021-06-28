@@ -34,6 +34,7 @@ module:
   gcontent_moderation: 0
   gnode: 0
   group: 0
+  group_country_field: 0
   help: 0
   history: 0
   image: 0

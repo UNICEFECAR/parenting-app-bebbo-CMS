@@ -1,11 +1,15 @@
 .toolbar-tray-open .toolbar-menu .menu-item--expanded:hover ul {
-    display: block;
-    position: absolute;
-    width: 200px;
-    z-index: 1;
+  display: block;
+  position: absolute;
+  width: 200px;
+  z-index: 1;
 }
 
 .user-logged-in .breadcrumb 
 {
-  display:none;
+display:none;
+}
+.user-logged-in .js-form-item.form-item.js-form-type-checkbox.form-type--checkbox.form-type--boolean.js-form-item-select-all.form-item--select-all , .user-logged-in details#edit-multipage
+{
+  display: none;
 }

@@ -187,6 +187,7 @@ function pb_custom_field_link_alter(&$variables) {
       $group_url = 'internal:/group/'.$groups[0]->id().'/members';
       $country_url = 'internal:/group-content-list/'.$groups[0]->id();
       $addcontent_url = 'internal:/group/'.$groups[0]->id() .'/node/create';
+      $users_list_url = 'internal:/users?gid='.$groups[0]->id();
       if($group_url){
         $menu_link_parents = \Drupal::entityTypeManager()
           ->getStorage('menu_link_content')
@@ -212,6 +213,20 @@ function pb_custom_field_link_alter(&$variables) {
         }
       }
 
+      if($users_list_url)
+      {
+        $menu_link_users = \Drupal::entityTypeManager()
+          ->getStorage('menu_link_content')
+          ->loadByProperties([
+            'title' => 'User List',
+            'menu_name' => 'editorial-menu',
+          ]);
+        $entitys = reset($menu_link_users);
+        if ($entitys) {     
+          $entitys->set('link', $users_list_url);
+          $entitys->save();         
+        }
+      }
       if($country_url){      
         $menu_link_country = \Drupal::entityTypeManager()
           ->getStorage('menu_link_content')
