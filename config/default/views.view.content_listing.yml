@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_content_category
+    - field.storage.node.field_licensed_content
     - node.type.activities
     - node.type.article
     - node.type.child_development
@@ -4076,6 +4077,71 @@ display:
           type: user_name
           entity_type: user
           entity_field: name
+        field_licensed_content:
+          id: field_licensed_content
+          table: node__field_licensed_content
+          field: field_licensed_content
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Licensed Content'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         changed:
           id: changed
           table: node_field_data
@@ -4753,6 +4819,52 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        field_licensed_content_value:
+          id: field_licensed_content_value
+          table: node__field_licensed_content
+          field: field_licensed_content_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Licensed Content (field_licensed_content)'
+            description: null
+            use_operator: false
+            operator: field_licensed_content_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_licensed_content_value
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: 'Licensed content'
+            description: ''
+            identifier: field_licensed_content_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'On'
+                operator: '='
+                value: '1'
+              2:
+                title: 'Off'
+                operator: '='
+                value: '0'
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
@@ -4820,4 +4932,5 @@ display:
         - user.permissions
       max-age: 0
       tags:
+        - 'config:field.storage.node.field_licensed_content'
         - 'config:workflow_list'

@@ -15,6 +15,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\group\Entity\Group;
 use \Drupal\group\Entity\GroupContent;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\AjaxResponse;
 /**
  * Action description.
  *
@@ -34,35 +36,37 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
    
-
+         /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
-         $authorized_roles = array('reviewer');
+         $authorized_roles = array('reviewer');       
           
         /* get all the country list */
         $country_list = [];
+        $country_list[''] = "Select Country";
         $group = \Drupal\group\Entity\Group::loadMultiple();
         foreach ($group as $grp) {
             $country_list[$grp->id()]=$grp->label();
         } 
 
-        /* get all the languages list */
         $language_options = [];
+        /* get all the languages list 
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
             $language_options[$langcode] = $language->getName();
         }
-
+        */
         /* Check the user roles */
         if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
           
           $grp_membership_service = \Drupal::service('group.membership_loader');
           $grps = $grp_membership_service->loadByUser($currentAccount);
+
           if(!empty($grps))
           {
             $country_list = [];
             foreach ($grps as $grp) {
               $groups = $grp->getGroup();
-              $country_list[]=$groups->label();
+              $country_list[$groups->id()]=$groups->label();
             } 
          
             $languages = $groups->get('field_language')->getString();
@@ -80,16 +84,62 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
           '#title' => t('Select Country'),
           '#type' => 'select',
           '#options' => $country_list,
+          '#required' => TRUE,
+          '#default_value' => '',
+          '#ajax' => ['callback' => [$this, 'getlanguages'],  'event' => 'change',
+                        'method' => 'html',
+                        'wrapper' => 'language_option',
+                        'progress' => [
+                          'type' => 'throbber',
+                          'message' => NULL,
+                        ],
+                      ],
         ];
 
         $form['language_option'] = [
           '#title' => t('Select Language'),
           '#type' => 'select',
-          '#options' => $language_options,
+          '#options' => $language_options,                    
+          '#required' => TRUE,
+          '#attributes' => ["id" => 'language_option'],
+          '#validated' => TRUE,
+          '#placeholder' => 'Select Language'
         ];
    
       return $form;  
   }
+
+  
+  /* ajax method to get the language data */
+  
+public function getlanguages(array &$element, FormStateInterface $form_state) {
+  $triggeringElement = $form_state->getTriggeringElement();
+  $value = $triggeringElement['#value'];
+  $renderedField = '';
+  $language_options = [];
+  $language_options[''] = "Select Language";
+  if(!empty($value)) 
+  {
+        /* load group */
+        $groups = Group::load($value);
+        $languages = $groups->get('field_language')->getString();
+        $language_arr = explode(",",$languages);
+        $language_arr = array_map('trim', explode(',', $languages));
+       foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if(in_array($langcode,$language_arr)){
+            $language_options[$langcode] = $language->getName();
+          }
+        }
+      
+        foreach ($language_options as $key => $value) {
+          $renderedField .= "<option value='".$key."'>".$value."</option>";
+        }
+  }
+  $wrapper_id = $triggeringElement["#ajax"]["wrapper"];
+  $response = new AjaxResponse();
+  $response->addCommand(new HtmlCommand("#".$wrapper_id, $renderedField));
+  return $response;
+}
 
    /**
    * {@inheritdoc}

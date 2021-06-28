@@ -40,7 +40,7 @@ type_settings:
     reject:
       published: false
       default_revision: true
-      label: Reject
+      label: 'Require Modification'
       weight: 0
     review_after_translation:
       published: false
@@ -58,6 +58,12 @@ type_settings:
       label: 'SME Review'
       weight: -3
   transitions:
+    _sme_review_to_require_modification:
+      label: ' SME Review to Require Modification'
+      from:
+        - sme_review
+      to: reject
+      weight: 14
     archive_to_draft:
       label: 'Archive to Draft'
       from:
@@ -70,6 +76,12 @@ type_settings:
       weight: -4
       from:
         - draft
+    draft_to_published:
+      label: 'Draft to Published'
+      from:
+        - draft
+      to: published
+      weight: 13
     draft_to_senior_editor_review:
       label: 'Draft to Senior Editor Review'
       from:
@@ -101,7 +113,7 @@ type_settings:
       to: review_after_translation
       weight: 10
     reject_to_draft:
-      label: 'Reject to draft'
+      label: 'Require Modification to draft'
       from:
         - reject
       to: draft
@@ -125,7 +137,7 @@ type_settings:
       to: published
       weight: 8
     senior_editor_review_to_reject:
-      label: 'Senior Editor Review to Reject'
+      label: 'Senior Editor Review to Require Modification'
       from:
         - senior_editor_review
       to: reject

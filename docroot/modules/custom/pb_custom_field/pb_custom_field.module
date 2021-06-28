@@ -61,13 +61,28 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       $form['gtitle']['#size'] = 1;
     }
   }
-
-  if($form['#id'] == "group-content-country-group-membership-add-form" || $form['#id'] == "group-content-country-group-membership-edit-form"){
-    
+  
+  if($form['#id'] == "group-content-country-group-membership-add-form"){  
+    $form['group_roles']['widget']['#required'] = TRUE;  
     $roles = \Drupal::currentUser()->getRoles();
     if(!in_array('administrator', $roles)) {    
       $form['#validate'][] = 'group_user_validate';       
-      $form['actions']['submit']['#submit'][] = 'user_update_func';        
+      $form['actions']['submit']['#submit'][] = 'user_update_function';        
+    }
+    if(in_array("reviewer", $roles) ){        
+      $uid = \Drupal::request()->query->get('uid');
+      if(!empty($uid)) { 
+        $user = \Drupal\user\Entity\User::load($uid);
+        $form['entity_id']['widget'][0]['target_id']['#default_value'] = $user;      
+      }
+    }
+  }
+
+  if($form['#id'] == "group-content-country-group-membership-edit-form"){ 
+    $form['group_roles']['widget']['#required'] = TRUE;  
+    $roles = \Drupal::currentUser()->getRoles();
+    if(!in_array('administrator', $roles)) {           
+      $form['actions']['submit']['#submit'][] = 'user_update_function';        
     }
   }
   
@@ -79,6 +94,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     }
   }
   
+
   if($form['#id'] == "views-exposed-form-content-listing-page-5")
   {
     $user = \Drupal::currentUser();
@@ -116,6 +132,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
         $form['langcode']['#options'] = $language_options;
       }
     }      
+
   }
 
   /* Check the current url is related node add or edit */
@@ -300,10 +317,12 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
     foreach ($grps as $grp) {
        $groups[] = $grp->getGroup();
     }
-   
-    if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {   
-      $url = url::fromUserInput('/group/' . $groups[0]->id() . '/members');     
+    $uids = $form_state->getValue('uid');
+    if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {        
+      $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/add/group_membership?uid='.$uids);     
       $form_state->setRedirectUrl($url);      
     }
 }
+
+
 
