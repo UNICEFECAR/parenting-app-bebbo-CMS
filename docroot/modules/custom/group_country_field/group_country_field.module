@@ -24,8 +24,9 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
 if($form['#id'] == "views-exposed-form-content-listing-page-4")
   {
 
-    $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
-    $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
+    $groups = Group::loadMultiple(); 
+    // $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
+    // $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
     // dump($groups);
     // die();
     $options = ['' => 'All'];

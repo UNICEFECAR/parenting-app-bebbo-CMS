@@ -39,8 +39,8 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
-         $authorized_roles = array('reviewer');       
-          
+         $authorized_roles = array('se','sme','editor','reviewer');
+                   
         /* get all the country list */
         $country_list = [];
         $country_list[''] = "Select Country";
