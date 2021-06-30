@@ -1,0 +1,7 @@
+pb_custom_form.form_api:
+  path: '/forcefull-update-check'
+  defaults:
+    _form:  '\Drupal\pb_custom_form\Form\CustomForm'
+    _title: 'Force Full Update Check Form'
+  requirements:
+    _permission: 'access content'

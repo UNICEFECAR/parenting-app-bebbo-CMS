@@ -41,7 +41,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: true
-          distinct: false
+          distinct: true
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -591,7 +591,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: ','
           field_api_classes: false
           plugin_id: field
       filters:
@@ -645,52 +645,11 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
-      sorts:
-        created:
-          id: created
-          table: groups_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: group
-          entity_field: created
-          plugin_id: date
+      sorts: {  }
       header: {  }
       footer: {  }
       empty: {  }
-      relationships:
-        group_content_id:
-          id: group_content_id
-          table: groups_field_data
-          field: group_content_id
-          relationship: none
-          group_type: group
-          admin_label: 'Group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:translatable_node': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-            group_membership: '0'
-          entity_type: group
-          plugin_id: group_to_group_content
+      relationships: {  }
       arguments:
         langcode:
           id: langcode
@@ -728,11 +687,11 @@ display:
           entity_type: group
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content_id
+        id:
+          id: id
+          table: groups_field_data
+          field: id
+          relationship: none
           group_type: group
           admin_label: ''
           default_action: default
@@ -763,11 +722,11 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: group_content
-          entity_field: gid
+          entity_type: group
+          entity_field: id
           plugin_id: group_id
       display_extenders: {  }
-      group_by: true
+      group_by: false
     cache_metadata:
       max-age: -1
       contexts:

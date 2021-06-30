@@ -805,12 +805,39 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
  * @link https://docs.acquia.com/blt/
  */
 /*  $databases['default']['default'] = array (
-  'database' => 'drupal8',
-  'username' => "",
-  'password' => "",
+  'database' => getenv('MYSQL_DATABASE'),
+  'username' => getenv('MYSQL_USER'),
+  'password' => getenv('MYSQL_PASSWORD'),
+  'prefix' => '',
+  'host' => '192.168.4.125',
+  'port' => '3306',
+  'driver' => 'mysql',
+);*/
+  $databases['default']['default'] = array (
+  'database' => 'pb_local',
+  'username' => 'root',
+  'password' => '',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '3306',
+  'driver' => 'mysql',
+);
+
+/*$databases['default']['default'] = array (
+  'database' => 'parent_buddy',
+  'username' => 'root',
+  'password' => 'p@ssw0rd',
+  'prefix' => '',
+  'host' => 'localhost',
+  'port' => '3306',
+  'driver' => 'mysql',
+);*/
+/*$databases['default']['default'] = array (
+  'database' => 'drupal9',
+  'username' => 'drupal9',
+  'password' => 'drupal9',
   'prefix' => '',
   'host' => 'database',
   'port' => '3306',
   'driver' => 'mysql',
 );*/
-

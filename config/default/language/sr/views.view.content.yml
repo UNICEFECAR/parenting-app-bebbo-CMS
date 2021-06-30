@@ -2,28 +2,6 @@ label: Садржај
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
-      fields:
-        title:
-          label: Title
-        name:
-          label: Author
-        status:
-          label: Status
-        operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
-        status:
-          expose:
-            label: Status
-        langcode:
-          expose:
-            label: Language
       title: Садржај
   page_1:
     display_options:

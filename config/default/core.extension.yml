@@ -34,6 +34,7 @@ module:
   gcontent_moderation: 0
   gnode: 0
   group: 0
+  group_country_field: 0
   help: 0
   history: 0
   image: 0
@@ -45,6 +46,7 @@ module:
   media: 0
   media_library: 0
   menu_link_content: 0
+  menu_per_role: 0
   menu_ui: 0
   migrate: 0
   migrate_drupal: 0
@@ -58,10 +60,14 @@ module:
   path: 0
   path_alias: 0
   pb_custom_field: 0
+  pb_custom_form: 0
   pb_custom_migrate: 0
+  pb_custom_rest_api: 0
+  pb_custom_standard_deviation: 0
   quickedit: 0
   rdf: 0
   rest: 0
+  restui: 0
   search: 0
   serialization: 0
   shortcut: 0
@@ -79,11 +85,14 @@ module:
   tmgmt_locale: 0
   tmgmt_memsource: 0
   toolbar: 0
+  toolbar_menu: 0
+  toolbar_menu_clean: 0
   tour: 0
   user: 0
   variationcache: 0
   video_embed_field: 0
   video_embed_media: 0
+  views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0
   workflows: 0

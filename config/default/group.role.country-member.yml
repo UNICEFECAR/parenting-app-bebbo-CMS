@@ -13,7 +13,6 @@ group_type: country
 permissions_ui: true
 permissions:
   - 'access group_node overview'
-  - 'use group_workflow transition draft_to_published'
   - 'view group'
   - 'view group_membership content'
   - 'view group_node:article entity'

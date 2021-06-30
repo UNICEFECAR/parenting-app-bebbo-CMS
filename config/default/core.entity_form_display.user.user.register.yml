@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.user.register
+    - field.field.user.user.feeds_item
     - field.field.user.user.tmgmt_translation_skills
     - field.field.user.user.user_picture
   module:
-    - tmgmt_language_combination
     - user
 id: user.user.register
 targetEntityType: user
@@ -15,31 +15,15 @@ bundle: user
 mode: register
 content:
   account:
-    weight: -10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  contact:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  language:
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-  timezone:
-    weight: 6
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  tmgmt_translation_skills:
-    type: tmgmt_language_combination_default
-    weight: 7
-    settings: {  }
-    third_party_settings: {  }
-    region: content
 hidden:
+  contact: true
+  feeds_item: true
   langcode: true
+  language: true
+  timezone: true
+  tmgmt_translation_skills: true
   user_picture: true

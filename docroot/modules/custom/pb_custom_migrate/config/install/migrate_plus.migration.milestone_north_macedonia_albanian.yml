@@ -1,0 +1,69 @@
+langcode: en
+id: milestone_north_macedonia_albanian
+migration_tags: milestone_north_macedonia_albanian
+migration_group: milestone
+label: 'Milestone North Macedonia Albanian'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/milestone/milestone_north_macedonia_albanian.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: mk-sq
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+  nid: ID
+  title: Title
+  body/value: Body
+  
+  field_child_age:
+    -
+      plugin: explode
+      delimiter: ','
+      source: Child_age
+    -
+      plugin: entity_lookup
+      value_key: tid
+      bundle_key: vid
+      bundle: child_age
+      entity_type: taxonomy_term
+
+  field_related_video_articles:   
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_video_articles
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
+
+  field_related_activities:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_activities
+    -
+      plugin: entity_lookup   
+      entity_type: node
+      bundle_key: type
+      bundle: activities
+      value_key: nid
+
+  moderation_state: Moderation_state
+  
+destination:
+  plugin: 'entity:node'
+  default_bundle: milestone
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

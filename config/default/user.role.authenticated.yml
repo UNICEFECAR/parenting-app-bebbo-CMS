@@ -6,19 +6,17 @@ _core:
   default_config_hash: btW6TFHajhy7Eo6YUvdFiPh4TcPggo8GBXYctjV6zag
 id: authenticated
 label: 'Authenticated user'
-weight: 1
+weight: -9
 is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
   - 'access content overview'
-  - 'access group overview'
   - 'access shortcuts'
   - 'access site-wide contact form'
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
-  - 'create content translations'
   - 'create image media'
   - 'create remote_video media'
   - 'create terms in tags'
@@ -27,11 +25,8 @@ permissions:
   - 'edit any remote_video media'
   - 'edit any video media'
   - 'post comments'
-  - 'provide translation services'
   - 'search content'
   - 'skip comment approval'
-  - 'translate any entity'
-  - 'update content translations'
   - 'use text format basic_html'
   - 'view latest version'
   - 'view media'

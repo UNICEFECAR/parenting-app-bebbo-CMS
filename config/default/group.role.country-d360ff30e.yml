@@ -8,7 +8,7 @@ dependencies:
     config:
       - user.role.reviewer
 id: country-d360ff30e
-label: Reviewer
+label: 'Country Admin'
 weight: 6
 internal: true
 audience: outsider

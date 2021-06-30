@@ -1,0 +1,32 @@
+langcode: en
+id: homescreen_serbia_serbian
+migration_tags: homescreen_serbia_serbian
+migration_group: homescreen
+label: 'Homescreen Serbia Serbian'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_serbia_serbian.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: rs-sr
+  
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+
+  nid: ID
+  title: Title
+  moderation_state: Moderation_state
+destination:
+  plugin: 'entity:node'
+  default_bundle: daily_homescreen_messages
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

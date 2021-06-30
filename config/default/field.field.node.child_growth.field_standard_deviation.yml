@@ -5,7 +5,12 @@ dependencies:
   config:
     - field.storage.node.field_standard_deviation
     - node.type.child_growth
-    - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.standard_deviation_category
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.child_growth.field_standard_deviation
 field_name: field_standard_deviation
 entity_type: node
@@ -13,17 +18,17 @@ bundle: child_growth
 label: 'Standard Deviation'
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      standard_deviation: standard_deviation
+      standard_deviation_category: standard_deviation_category
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: standard_deviation
 field_type: entity_reference

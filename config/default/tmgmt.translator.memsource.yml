@@ -18,28 +18,26 @@ settings:
   memsource_update_job_status: 0
 remote_languages_mappings:
   en: en
-  de: de
   sr: sr
-  fr: fr
-  ru: ru
-  rs-sr: ''
+  ru: ru_ru
+  rs-sr: sr_latn_rs
   sq: sq
-  al-sq: ''
+  al-sq: sq_al
   by-be: byn
   by-ru: byn
-  bg-bg: bg
+  bg-bg: bg_bg
   gr-arb: ''
-  gr-el: ''
+  gr-el: el_gr
   gr-fa: ''
   xk-sq: ''
   xk-rs: ''
-  kg-ky: kg
+  kg-ky: ky_kg
   kg-ru: kg
   me-cnr: ''
   mk-sq: mk
-  mk-mk: mk
+  mk-mk: mk_mk
   rs-en: ''
   tj-ru: ''
-  tj-tg: ''
+  tj-tg: tg_cyrl_tj
   uz-ru: uz
-  uz-uz: uz
+  uz-uz: uz_latn_uz

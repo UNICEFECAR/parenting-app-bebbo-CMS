@@ -26,6 +26,7 @@ content:
     region: content
 hidden:
   created: true
+  feeds_item: true
   langcode: true
   name: true
   thumbnail: true
