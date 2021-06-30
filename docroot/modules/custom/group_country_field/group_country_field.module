@@ -27,22 +27,34 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
 
   if($form['#id'] == "views-exposed-form-global-content-listing-page-4")
   {
-    // $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
-    // $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
-    $groups = Group::loadMultiple();
-    $options = ['' => 'All'];
-    foreach($groups as $gid => $group) {
-      $value = $group->get('label')->getString();
-      $id = $group->get('id')->getString();
+    $currentAccount = \Drupal::currentUser();
+    $cur_user_roles = $currentAccount->getRoles();
+    $authorized_roles = array('se','sme','editor','reviewer');
 
-      if (isset($value)) {
-        //$options[strtolower($value)] = $value;
-        $options[$id] = $value;
-      }
+    $country_list = [];
+    $country_list[''] = "All";
+    $group = \Drupal\group\Entity\Group::loadMultiple();
+    foreach ($group as $grp) {
+       $country_list[$grp->id()]=$grp->label();
     }
-    if (isset($form['gtitle1'])) {
+
+    if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
+          
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($currentAccount);
+         $country_list = [];
+        if(!empty($grps))
+          {
+            $country_list[''] = "All";
+            foreach ($grps as $grp) {
+              $groups = $grp->getGroup();                       
+              $country_list[$groups->id()]=$groups->label();
+            } 
+          }
+      }  
+      if (isset($form['gtitle1'])) {
       $form['gtitle1']['#type'] = 'select';
-      $form['gtitle1']['#options'] = $options;
+      $form['gtitle1']['#options'] = $country_list;
       $form['gtitle1']['#size'] = 1;
       return $form;
     }
