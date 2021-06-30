@@ -17,6 +17,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\TypedData\OptionsProviderInterface;
 use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Url;
+use Drupal\Core\Entity\EntityInterface;
+
 
 /* 
  * Group Module - Country Type
@@ -41,7 +43,7 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Country Field - dropdown option
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  if($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-content-listing-page-5")  
+  if($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5")  
   {  
     $groups = Group::loadMultiple(); 
     $roles = \Drupal::currentUser()->getRoles();
@@ -99,7 +101,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   }
   
 
-  if($form['#id'] == "views-exposed-form-content-listing-page-5")
+  if($form['#id'] == "views-exposed-form-country-content-listing-page-5")
   {
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
@@ -357,5 +359,19 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
     }
 }
 
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function pb_custom_field_entity_operation_alter(array &$operations, EntityInterface $entity) {  
+  $user_data = \Drupal::currentUser();
+  $user_roles = $user_data->getRoles();  
+  if($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/group-content-list" && in_array('reviewer', $user_roles)) {
+    if (isset($operations['edit'])) {
+        unset($operations['edit']);      
+    }
 
-
+    if (isset($operations['delete'])) {
+      unset($operations['delete']);      
+    }
+  }      
+}

@@ -9,7 +9,6 @@ dependencies:
     - image.style.thumbnail
   module:
     - image
-    - tmgmt_language_combination
     - user
 _core:
   default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
@@ -19,31 +18,22 @@ bundle: user
 mode: default
 content:
   account:
-    weight: -10
-    region: content
-  contact:
-    weight: 5
-    region: content
-  language:
     weight: 0
     region: content
-  timezone:
-    weight: 6
-    region: content
-  tmgmt_translation_skills:
-    type: tmgmt_language_combination_default
-    weight: 7
     settings: {  }
     third_party_settings: {  }
-    region: content
   user_picture:
     type: image_image
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-    weight: -1
+    weight: 1
     region: content
 hidden:
+  contact: true
   feeds_item: true
   langcode: true
+  language: true
+  timezone: true
+  tmgmt_translation_skills: true
