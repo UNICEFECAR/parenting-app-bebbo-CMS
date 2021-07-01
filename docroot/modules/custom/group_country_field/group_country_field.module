@@ -51,7 +51,7 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
 
 function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
 
-      if ($view->id() == 'global_content_listing') {  
+      if ($view->id() == '123') { 
 
         $currentAccount = \Drupal::currentUser();
         $cur_user_roles = $currentAccount->getRoles();
