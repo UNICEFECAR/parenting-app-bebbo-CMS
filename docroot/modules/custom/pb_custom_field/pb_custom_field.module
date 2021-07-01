@@ -379,6 +379,9 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
   }
   
   if($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
+    if (isset($operations['edit'])) {
+      unset($operations['edit']);      
+    }
     if (isset($operations['delete'])) {
       unset($operations['delete']);      
     }
