@@ -376,7 +376,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
     if (isset($operations['delete'])) {
       unset($operations['delete']);      
     }
-  }      
+  }
+  
+  if($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
+    if (isset($operations['delete'])) {
+      unset($operations['delete']);      
+    }
+  }    
 }
 
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
