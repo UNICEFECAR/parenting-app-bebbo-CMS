@@ -48,9 +48,11 @@ function pb_custom_field_preprocess_page(&$variables) {
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   if($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5")  
   {  
-    $groups = Group::loadMultiple(); 
     $roles = \Drupal::currentUser()->getRoles();
-    if(!in_array('administrator', $roles) && !in_array('global_admin', $roles)) { 
+    $authorized_roles = array('se','sme','editor','reviewer');
+    $groups = Group::loadMultiple(); 
+    /* Check the user roles */
+    if (count(array_intersect($roles, $authorized_roles)) != 0) {
       $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
       $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
     }
