@@ -15,7 +15,6 @@ permissions:
   - 'access content overview'
   - 'access group_node overview'
   - 'administer group'
-  - 'view group'
   - 'view group_membership content'
   - 'view group_node:activities entity'
   - 'view unpublished group_node:activities entity'

@@ -53,7 +53,7 @@ class CustomSerializer extends Serializer {
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, true);   
-          // error_log("rendered array =>".print_r($rendered_data, true));
+           //error_log("rendered array =>".print_r($rendered_data, true));
           // error_log("type =>".$rendered_data['type']);
           //Custom pinned api formatter
           if(strpos($request_uri, "pinned-contents") !== false && isset($request[5]) && in_array($request[5], $pinned_content))
@@ -73,10 +73,21 @@ class CustomSerializer extends Serializer {
           //Add unique field to Basic page API
           if(strpos($request_uri, "basic-pages") !== false && $rendered_data['type'] === "Basic page")
           {
-            $basic_page = strtolower($rendered_data['title']);
-            $basic_page = str_replace(' ', '_', $basic_page);
-
-            $rendered_data['unique_name'] = $basic_page;
+            $query = db_select('node_field_data')
+            ->condition('nid', $rendered_data['id'])
+            ->fields('node_field_data');
+            $result = $query->execute()->fetchAll();
+            for($i = 0; $i < count($result); $i++)
+            {            
+              $language = $result[$i]->langcode;
+              if($language == "en")
+              {
+                $basic_title = $result[$i]->title;
+                $basic_page = strtolower($basic_title);
+                $basic_page = str_replace(' ', '_', $basic_page);
+                $rendered_data['unique_name'] = $basic_page;
+              }
+            }                 
           }
 
           foreach($rendered_data as $key => $values)
