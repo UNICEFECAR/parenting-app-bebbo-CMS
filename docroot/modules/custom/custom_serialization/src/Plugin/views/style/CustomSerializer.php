@@ -56,6 +56,7 @@ class CustomSerializer extends Serializer {
            //error_log("rendered array =>".print_r($rendered_data, true));
           // error_log("type =>".$rendered_data['type']);
           //Custom pinned api formatter
+          $rendered_data['id'] = (int)$rendered_data['id'];
           if(strpos($request_uri, "pinned-contents") !== false && isset($request[5]) && in_array($request[5], $pinned_content))
           {
             if($rendered_data['type'] === "Article")
