@@ -8,8 +8,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_child_age_serbia_serbia
-label: 'Taxonomy - Child Age - serbia-serbian'
-description: 'Taxonomy - Child Age - serbia-serbian'
+label: 'Taxonomy - Child Age - Language'
+description: 'Child Age - Language'
 help: ''
 import_period: -1
 fetcher: upload

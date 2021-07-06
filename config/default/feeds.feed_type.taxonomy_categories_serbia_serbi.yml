@@ -8,8 +8,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_categories_serbia_serbi
-label: 'Taxonomy - Categories - serbia-serbian'
-description: 'Taxonomy - Categories - serbia-serbian'
+label: 'Taxonomy - Categories - Language'
+description: 'Categories - Language'
 help: ''
 import_period: -1
 fetcher: upload

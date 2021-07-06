@@ -63,30 +63,26 @@ custom_sources:
     label: Vaccination_opens
     value: Vaccination_opens
     machine_name: vaccination_opens
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  id:
+    label: ID
+    value: ID
+    machine_name: id
 mappings:
   -
     target: name
     map:
-      value: term_name
+      value: title
     unique: {  }
     settings:
       language: en
-  -
-    target: langcode
-    map:
-      value: language_code
-    settings:
-      language: en
-  -
-    target: weight
-    map:
-      value: weight
-    unique: {  }
-    settings: {  }
   -
     target: tid
     map:
-      value: term_id
+      value: id
     unique:
       value: '1'
     settings: {  }
