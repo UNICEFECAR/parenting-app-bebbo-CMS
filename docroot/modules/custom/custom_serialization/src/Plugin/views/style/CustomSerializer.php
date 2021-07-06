@@ -6,6 +6,7 @@ use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\group\Entity\Group;
+use Drupal\custom_serialization\Plugin\views\style\stdClass;
 
 /**
  * The style plugin for serialized output formats.
