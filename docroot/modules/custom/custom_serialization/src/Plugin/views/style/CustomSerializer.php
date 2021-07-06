@@ -56,7 +56,6 @@ class CustomSerializer extends Serializer {
            //error_log("rendered array =>".print_r($rendered_data, true));
           // error_log("type =>".$rendered_data['type']);
           //Custom pinned api formatter
-          $rendered_data['id'] = (int)$rendered_data['id'];
           if(strpos($request_uri, "pinned-contents") !== false && isset($request[5]) && in_array($request[5], $pinned_content))
           {
             if($rendered_data['type'] === "Article")
@@ -92,7 +91,11 @@ class CustomSerializer extends Serializer {
           }
 
           foreach($rendered_data as $key => $values)
-          {                      
+          {                 
+            if($key == "id")
+            {
+              $rendered_data[$key] = (int)$values;
+            }
             //Custom image & video formattter
             if (in_array($key,$media_fields)) //To check media image field exist
             { 
@@ -100,6 +103,10 @@ class CustomSerializer extends Serializer {
               { 
                 $media_formatted_data = $this->custom_media_formatter($key, $values);   
                 $rendered_data[$key] = $media_formatted_data;
+              }
+              else
+              {
+                $rendered_data[$key] = json_encode (new stdClass);
               }
             }
             
@@ -117,7 +124,7 @@ class CustomSerializer extends Serializer {
                 $formatted_data = explode(',',$values);
                 $vocabulary_name = $formatted_data[1];
                 $vocabulary_machine_name = $formatted_data[0];
-                $taxonomy_data = $this->custom_taxonomy_field_formatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name);
+                $taxonomy_data = $this->custom_taxonomy_field_formatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name);                
                 $field_formatter[$formatted_data[0]] = $taxonomy_data;
               }
             }         
@@ -125,6 +132,7 @@ class CustomSerializer extends Serializer {
           
           if(strpos($request_uri, "vocabularies") !== false || strpos($request_uri, "taxonomies") !== false){
             $data = $field_formatter;
+            $rows['status'] = 200;
           }        
           else
           {
@@ -365,7 +373,7 @@ class CustomSerializer extends Serializer {
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
           $term_data[] = array(   
-            'id' => $term->tid,
+            'id' => (int)$term->tid,
             'name' => $term->name,        
             'vaccination_opens' => $term_obj->get('field_vaccination_opens')->value
           );
@@ -374,7 +382,7 @@ class CustomSerializer extends Serializer {
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
           $term_data[] = array(   
-            'id' => $term->tid,
+            'id' => (int)$term->tid,
             'name' => $term->name,        
             'days_from' => $term_obj->get('field_days_from')->value,
             'days_to' => $term_obj->get('field_days_to')->value,
@@ -388,7 +396,7 @@ class CustomSerializer extends Serializer {
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
           $term_data[] = array(   
-            'id' => $term->tid,
+            'id' => (int)$term->tid,
             'name' => $term->name,        
             'days_from' => $term_obj->get('field_days_from')->value,
             'days_to' => $term_obj->get('field_days_to')->value
@@ -398,7 +406,7 @@ class CustomSerializer extends Serializer {
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
           $term_data[] = array(     
-            'id' => $term->tid,
+            'id' => (int)$term->tid,
             'name' => $term->name,      
             'child_gender' => $term_obj->get('field_child_gender')->target_id,
             'growth_type' => $term_obj->get('field_growth_type')->target_id,
@@ -416,7 +424,7 @@ class CustomSerializer extends Serializer {
         else
         {
           $term_data[] = array(
-            'id' => $term->tid,
+            'id' => (int)$term->tid,
             'name' => $term->name
           ); 
         }                   
