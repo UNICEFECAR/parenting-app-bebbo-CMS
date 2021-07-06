@@ -6,7 +6,6 @@ use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\group\Entity\Group;
-use Drupal\custom_serialization\Plugin\views\style\stdClass;
 
 /**
  * The style plugin for serialized output formats.
@@ -99,16 +98,9 @@ class CustomSerializer extends Serializer {
             }
             //Custom image & video formattter
             if (in_array($key,$media_fields)) //To check media image field exist
-            { 
-              if(!empty($values))
-              { 
-                $media_formatted_data = $this->custom_media_formatter($key, $values);   
-                $rendered_data[$key] = $media_formatted_data;
-              }
-              else
-              {
-                $rendered_data[$key] = json_encode (new stdClass);
-              }
+            {                
+              $media_formatted_data = $this->custom_media_formatter($key, $values);   
+              $rendered_data[$key] = $media_formatted_data;                                    
             }
             
             //Custom array formatter
@@ -136,7 +128,7 @@ class CustomSerializer extends Serializer {
             $rows['status'] = 200;
           }        
           else
-          {
+          {            
             $data[] = $rendered_data;
             $rows['status'] = 200;
             // To get total no of records
@@ -269,83 +261,107 @@ class CustomSerializer extends Serializer {
     To get media files details from db
   */
   public function custom_media_formatter($key, $values) {    
-    $media_entity = Media::load($values);
-    // get entity type and proceed accordingly
-    $media_type = $media_entity->bundle();            
-    if ($media_type === 'image') {                
-      $mid = $media_entity->get('field_media_image')->target_id;                
-      if (!empty($mid)) {
-        $mname = $media_entity->get('name')->value;                      
-        $malt = $media_entity->get('field_media_image')->alt;          
-  
-        /** @var File $image */
-        $file = File::load($mid);    
-        $url = $file->url();                  
+    
+    if(!empty($values))
+    {
+      $media_entity = Media::load($values);
+      // get entity type and proceed accordingly
+      $media_type = $media_entity->bundle();            
+      if ($media_type === 'image') {                
+        $mid = $media_entity->get('field_media_image')->target_id;                
+        if (!empty($mid)) {
+          $mname = $media_entity->get('name')->value;                      
+          $malt = $media_entity->get('field_media_image')->alt;          
+    
+          /** @var File $image */
+          $file = File::load($mid);    
+          $url = $file->url();                  
+        }
+        $media_data = [
+          'url'  => $url,
+          'name' => $mname,
+          'alt'  => $malt,
+        ];
       }
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'alt'  => $malt,
-      ];
-    }
-    elseif($media_type === "remote_video")
-    {
-      $url = $media_entity->get('field_media_oembed_video')->value;
-      $mname = $media_entity->get('name')->value;
-      $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'site'  => $site,
-      ];
-
-      if($key == "cover_image")
+      elseif($media_type === "remote_video")
       {
-        $tid = $media_entity->get('thumbnail')->target_id;
-        if (!empty($tid)) {
-          $thumbnail = File::load($tid);
-          $thumbnail_url = $thumbnail->url();  
-        }              
+        $url = $media_entity->get('field_media_oembed_video')->value;
+        $mname = $media_entity->get('name')->value;
+        $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
         $media_data = [
-          'url'  => $thumbnail_url,
+          'url'  => $url,
           'name' => $mname,
+          'site'  => $site,
+        ];
+
+        if($key == "cover_image")
+        {
+          $tid = $media_entity->get('thumbnail')->target_id;
+          if (!empty($tid)) {
+            $thumbnail = File::load($tid);
+            $thumbnail_url = $thumbnail->url();  
+          }              
+          $media_data = [
+            'url'  => $thumbnail_url,
+            'name' => $mname,
+            'alt'  => '',
+          ];
+        }              
+      }                        
+      elseif($media_type === "video")
+      {
+        //$url = $media_entity->get('field_media_video_file')->value;
+        $mname = $media_entity->get('name')->value;
+        $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
+        $mid = $media_entity->get('field_media_video_file')->target_id;                     
+        if (!empty($mid)) {                
+          /** @var File $image */
+          $file = File::load($mid);    
+          $url = $file->url();                  
+        }              
+
+        $media_data = [
+          'url'  => $url,
+          'name' => $mname,
+          'site'  => $site,
+        ];                
+        
+        if($key == "cover_image")
+        {
+          $tid = $media_entity->get('thumbnail')->target_id;
+          if (!empty($tid)) {
+            $thumbnail = File::load($tid);
+            $thumbnail_url = $thumbnail->url();  
+          }              
+          $media_data = [
+            'url'  => $thumbnail_url,
+            'name' => $mname,
+            'alt'  => '',
+          ];
+        }    
+      }            
+      return $media_data;
+    }  
+    else
+    {
+      if($key == "cover_image")
+      {            
+        $media_data = [
+          'url'  => '',
+          'name' => '',
           'alt'  => '',
         ];
-      }              
-    }                        
-    elseif($media_type === "video")
-    {
-      //$url = $media_entity->get('field_media_video_file')->value;
-      $mname = $media_entity->get('name')->value;
-      $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-      $mid = $media_entity->get('field_media_video_file')->target_id;                     
-      if (!empty($mid)) {                
-        /** @var File $image */
-        $file = File::load($mid);    
-        $url = $file->url();                  
-      }              
-
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'site'  => $site,
-      ];                
-      
-      if($key == "cover_image")
+      }  
+      elseif($key == "cover_video")
       {
-        $tid = $media_entity->get('thumbnail')->target_id;
-        if (!empty($tid)) {
-          $thumbnail = File::load($tid);
-          $thumbnail_url = $thumbnail->url();  
-        }              
         $media_data = [
-          'url'  => $thumbnail_url,
-          'name' => $mname,
-          'alt'  => '',
+          'url'  => '',
+          'name' => '',
+          'site'  => '',
         ];
-      }    
-    }            
-    return $media_data;
+      }   
+      return $media_data;
+    }  
   }
 
   /**
