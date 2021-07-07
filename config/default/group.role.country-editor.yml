@@ -64,6 +64,7 @@ permissions:
   - 'use group_workflow transition reject_to_draft'
   - 'use group_workflow transition review_after_translation_to_senior_editor_review'
   - 'use group_workflow transition review_after_translation_to_sme_review'
+  - 'view group'
   - 'view latest version'
   - 'view unpublished group_node:activities entity'
   - 'view unpublished group_node:article entity'

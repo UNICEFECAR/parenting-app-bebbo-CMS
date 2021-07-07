@@ -47,7 +47,6 @@ class GroupContentForm extends ContentEntityForm {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
-
     // Do not allow to edit the group content subject through the UI. Also hide
     // the field when we are on step 2 of a creation wizard.
     if ($this->operation !== 'add' || $form_state->get('group_wizard')) {
@@ -62,7 +61,6 @@ class GroupContentForm extends ContentEntityForm {
    */
   protected function actions(array $form, FormStateInterface $form_state) {
     $actions = parent::actions($form, $form_state);
-
     // If we are on step 2 of a wizard, we need to alter the actions.
     if ($form_state->get('group_wizard')) {
       $wizard_id = $form_state->get('group_wizard_id');
@@ -176,6 +174,14 @@ class GroupContentForm extends ContentEntityForm {
     if ($entity->getEntityType()->getFormClass('add')) {
       $operation = 'add';
     }
+    elseif ($form_state->get('group_content_enabler') == 'group_membership' && $entity->getEntityType()->getFormClass('register')) {
+      // Processing create user in the right way.
+      $operation = 'register';
+      if ($store->get("$store_id:user_notify")) {
+        $form_state->setValue('notify', TRUE);
+      }
+      $form_state->setValue('administer_users', $store->get("$store_id:administer_users"));
+    }
 
     // Replicate the form from step 1 and call the save method.
     $form_object = $this->entityTypeManager->getFormObject($entity->getEntityTypeId(), $operation);
@@ -185,6 +191,11 @@ class GroupContentForm extends ContentEntityForm {
     // Add the newly saved entity's ID to the group content entity.
     $property = $wizard_id == 'group_creator' ? 'gid' : 'entity_id';
     $this->entity->set($property, $entity->id());
+
+    // Process autologout.
+    if ($timeout = $store->get("$store_id:autologout")) {
+      \Drupal::service('user.data')->set('autologout', $entity->id(), 'timeout', $timeout);
+    }
 
     // We also clear the temp store so we can start fresh next time around.
     $store->delete("$store_id:step");

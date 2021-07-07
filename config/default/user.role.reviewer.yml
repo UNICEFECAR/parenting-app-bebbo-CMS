@@ -10,7 +10,6 @@ permissions:
   - 'access content'
   - 'access user profiles'
   - 'administer users'
-  - 'cancel account'
   - 'edit any chatbot content'
   - 'edit own chatbot content'
   - 'use group_workflow transition publish'

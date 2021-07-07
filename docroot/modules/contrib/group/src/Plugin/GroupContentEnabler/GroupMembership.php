@@ -23,12 +23,13 @@ use Drupal\Core\Session\AccountInterface;
  *   label = @Translation("Group membership"),
  *   description = @Translation("Adds users to groups as members."),
  *   entity_type_id = "user",
+ *   entity_access = TRUE,
  *   pretty_path_key = "member",
  *   reference_label = @Translation("User"),
  *   reference_description = @Translation("The user you want to make a member"),
  *   enforced = TRUE,
  *   handlers = {
- *     "access" = "Drupal\group\Plugin\GroupContentAccessControlHandler",
+ *     "access" = "Drupal\group\Plugin\GroupMembershipContentAccessControlHandler",
  *     "permission_provider" = "Drupal\group\Plugin\GroupMembershipPermissionProvider",
  *   },
  *   admin_permission = "administer members"

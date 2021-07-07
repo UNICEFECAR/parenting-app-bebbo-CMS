@@ -343,6 +343,10 @@ class GroupContentController extends ControllerBase {
       if ($entity_type->getFormClass('add')) {
         $operation = 'add';
       }
+      // If group membership for user entity the add form is called register.
+      if ($plugin_id == 'group_membership') {
+        $operation = 'register';
+      }
     }
     // Wizard step 2: Group content form.
     else {

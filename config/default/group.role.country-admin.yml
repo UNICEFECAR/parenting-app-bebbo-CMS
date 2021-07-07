@@ -12,10 +12,15 @@ audience: member
 group_type: country
 permissions_ui: true
 permissions:
-  - 'access content overview'
   - 'access group_node overview'
   - 'administer group'
+  - 'administer members'
+  - 'create group_membership entity'
+  - 'update any group_membership entity'
+  - 'update own group_membership content'
+  - 'view group'
   - 'view group_membership content'
+  - 'view group_membership entity'
   - 'view group_node:activities entity'
   - 'view unpublished group_node:activities entity'
   - 'view unpublished group_node:article entity'

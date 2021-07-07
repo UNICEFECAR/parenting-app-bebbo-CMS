@@ -1,6 +1,6 @@
 uuid: 3a31b21d-7c72-4ddb-a1c1-18e3c7a5c21c
 name: 'Parent Buddy'
-mail: punam.beedkar@datamatics.com
+mail: bharathi@unimity.com
 slogan: ''
 page:
   403: /user/login
@@ -12,4 +12,4 @@ langcode: en
 default_langcode: en
 _core:
   default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE
-mail_notification: ''
+mail_notification: bharathi@unimity.com

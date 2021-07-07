@@ -21,7 +21,17 @@ group.add_member:
   route_parameters:
     plugin_id: 'group_membership'
   class: '\Drupal\group\Plugin\Menu\LocalAction\WithDestination'
-  title: 'Add member'
+  title: 'Add existing member'
+  appears_on:
+    - 'view.group_members.page_1'
+  requirements:
+    _role: 'global_admin'
+
+group.create_member:
+  route_name: 'entity.group_content.create_form'
+  route_parameters:
+    plugin_id: 'group_membership'
+  title: 'Add new member'
   appears_on:
     - 'view.group_members.page_1'
 

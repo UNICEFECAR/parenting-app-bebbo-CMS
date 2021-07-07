@@ -17,6 +17,8 @@ use Drupal\group\Entity\Group;
 use \Drupal\group\Entity\GroupContent;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+
+use Drupal\group\Entity;
 /**
  * Action description.
  *
@@ -35,7 +37,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   use StringTranslationTrait;
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-   
+    
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
@@ -174,19 +176,53 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
     $countryoption = $this->configuration['country_option'];
     if(!empty($langoption) && !empty($countryoption) ) {
        $current_language = $entity->get('langcode')->value;
-       if($current_language != $langoption)
+       $nid = $entity->get('nid')->getString();
+       $node = node_load($nid);
+       $total_translation = 0;
+       $total_assigning = 0;
+       /* check the translation available in this content */
+       if(!$node->hasTranslation($langoption))
        {
-        $nid = $entity->get('nid')->getString();
-        $node = node_load($nid);
         $node_es = $node->addTranslation($langoption, $node->toArray());
         $node_es->set('moderation_state', 'draft');
+        $node_es->set('langcode',$langoption);
         $node->save();
         $etype = $node->getType();
         $pluginId = 'group_node:' .$etype;
         $group = Group::load($countryoption);
-        $group->addContent($node, $pluginId);
-        return $this->t('Content assigned to country');
+        $group->addContent($node, $pluginId,['langcode'=>$langoption]);
+        $total_translation++;
        }
+       else
+       {
+         /* if the translated content available check the content available in group */
+        $etype = $node->getType();
+        $pluginId = 'group_node:' .$etype;
+        $group = Group::load($countryoption);
+        $grp_obj = $group->getContentByEntityId($pluginId,$nid);
+        $alexists_langcode = false;
+        foreach($grp_obj as $key=>$val)
+        {
+          $language_code =  $grp_obj[$key]->langcode->value;
+          if($language_code == $langoption)
+          {
+            $alexists_langcode = true;
+          }
+        }
+        if(!$alexists_langcode)
+        {
+          $group->addContent($node, $pluginId,['langcode'=>$langoption]);
+        }
+        
+       }
+       $message = "Content assigned to country";
+       if($total_translation > 0)
+        $message = $total_translation."Content translated to Country";
+     /* if($total_assigning > 0)
+        $message.= $total_assigning."Content Assigned to Country";
+        */
+
+       return $this->t($message);
     }
   }
 

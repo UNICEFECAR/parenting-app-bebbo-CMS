@@ -382,6 +382,28 @@ function group_entity_field_access($operation, FieldDefinitionInterface $field_d
     return AccessResult::neutral();
   }
 
+  // Status in user add/edit from group.
+  if ($field_definition->getName() == 'status' && $items->getEntity()->getEntityTypeId() == 'user') {
+    $entity = $items->getEntity();
+    if (!$entity->isAnonymous()) {
+      $group_content_entities = \Drupal::entityTypeManager()->getStorage('group_content')->loadByProperties(['entity_id' => $entity->id()]);
+      foreach ($group_content_entities as $group_content) {
+        // Allow if can edit any.
+        $allowed = $group_content->getGroup()->hasPermission('update any group_membership entity', $account);
+        // Allow if can edit own.
+        if (!$allowed  && $group_content->getOwnerId() == $account->id()) {
+          $allowed = $group_content->getGroup()->hasPermission('update own group_membership entity', $account);
+        }
+        if ($allowed) {
+          return AccessResult::allowed();
+        }
+      }
+    }
+    elseif ($group = \Drupal::routeMatch()->getParameters()->get('group')) {
+      return AccessResult::allowedIf($group->hasPermission('create group_membership entity', $account));
+    }
+  }
+
   // We only care about the group_roles field when on a form.
   if ($field_definition->getName() != 'group_roles' || $operation !== 'edit') {
     return AccessResult::neutral();
@@ -600,6 +622,37 @@ function group_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       ];
     }
   }
+  // User creation alters.
+  // Doing this alterations here because these fields does not pass by entity
+  // field access, check following core files
+  // \Drupal\user\AccountForm and \Drupal\user\RegisterForm.
+  if ($form_id == 'user_register_form' && $form_state->has('group')) {
+    $account = \Drupal::currentUser()->getAccount();
+    /** @var Drupal\group\Entity\GroupInterface $group */
+    $group = $form_state->get('group');
+    if ($group->hasPermission('create group_membership entity', $account)) {
+      $form['account']['pass'] = [
+        '#type' => 'password_confirm',
+        '#size' => 25,
+        '#description' => t('Provide a password for the new account in both fields.'),
+        '#required' => TRUE,
+      ];
+      $form['account']['notify']['#access'] = TRUE;
+      // Drupal assumes you are editing your own account if you don't have
+      // administer user permissions and prefill some fields, this behavior
+      // is undesired in this case.
+      $form['#attributes']['data-user-info-from-browser'] = FALSE;
+      // Drupal does not allow you to set user passwords if you don't have
+      // administer user permissions.
+      $form['administer_users']['#value'] = TRUE;
+    }
+    // Removing autologout submit to prevent errors.
+    if (\Drupal::moduleHandler()->moduleExists('autologout')) {
+      if (($key = array_search('autologout_user_profile_submit', $form['actions']['submit']['#submit'])) !== FALSE) {
+        unset($form['actions']['submit']['#submit'][$key]);
+      }
+    }
+  }
 }
 
 /**
@@ -617,6 +670,16 @@ function group_content_wizard_store($form, FormStateInterface $form_state) {
   $store_id = $form_state->get('store_id');
   $store->set("$store_id:entity", $entity);
   $store->set("$store_id:step", 2);
+
+  // For users the notify option is not a field, so we need to store it
+  // to use it in further steps.
+  if ($form_state->hasValue('notify')) {
+    $store->set("$store_id:administer_users", $form_state->getValue('administer_users'));
+    $store->set("$store_id:user_notify", $form_state->getValue('notify'));
+  }
+  if ($form_state->hasValue('user_')) {
+    $store->set("$store_id:autologout", $form_state->getValue('user_'));
+  }
 
   // Disable any URL-based redirect until the final step.
   $request = \Drupal::service('request_stack')->getCurrentRequest();
