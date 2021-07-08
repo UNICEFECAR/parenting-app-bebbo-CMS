@@ -1,0 +1,16 @@
+services:
+  allowed_languages.allowed_languages_manager:
+    class: Drupal\allowed_languages\AllowedLanguagesManager
+    arguments: ['@current_user', '@entity_type.manager']
+
+  allowed_languages.content_translation_access_check:
+    class: Drupal\allowed_languages\Access\ContentTranslationAccessCheck
+    arguments: ['@allowed_languages.allowed_languages_manager', '@language_manager']
+    tags:
+      - { name: access_check, applies_to: _access_content_translation_manage }
+
+  allowed_languages.route_subscriber:
+    class: Drupal\allowed_languages\Routing\AllowedLanguagesRouteSubscriber
+    arguments: ['@content_translation.manager']
+    tags:
+      - { name: event_subscriber }

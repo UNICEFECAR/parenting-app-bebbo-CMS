@@ -1,0 +1,26 @@
+{
+    "name": "drupal/allowed_languages",
+    "type": "drupal-module",
+    "description": "Lets you limit the languages a user may use when managing content.",
+    "keywords": ["Drupal", "Language"],
+    "license": "MIT",
+    "homepage": "https://www.drupal.org/project/allowed_languages",
+    "minimum-stability": "stable",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/allowed_languages",
+        "source": "http://cgit.drupalcode.org/allowed_languages"
+    },
+    "authors": [
+        {
+            "name": "Christoffer Palm",
+            "email": "christoffer.palm@oddhill.se",
+            "role": "Developer"
+        },
+        {
+            "name": "Leander Lindahl",
+            "email": "leander.lindahl@axis.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {}
+}

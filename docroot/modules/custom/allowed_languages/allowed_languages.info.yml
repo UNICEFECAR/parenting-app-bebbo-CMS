@@ -1,0 +1,13 @@
+name: Allowed Languages
+type: module
+description: Lets you limit the languages a user may use when managing content.
+core_version_requirement: ^8.8 || ^9
+package: Custom
+dependencies:
+  - drupal:content_translation
+  - drupal:user
+
+# Information added by Drupal.org packaging script on 2020-10-27
+version: '2.0.0-alpha1'
+project: 'allowed_languages'
+datestamp: 1603766991
