@@ -189,8 +189,8 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
         $node->save();
         $etype = $node->getType();
         $pluginId = 'group_node:' .$etype;
-        $group = Group::load($countryoption);
-        $group->addContent($node, $pluginId,['langcode'=>$langoption]);
+        // $group = Group::load($countryoption);
+        // $group->addContent($node, $pluginId,['langcode'=>$langoption]);
         $total_translation++;
        }
        else
@@ -201,19 +201,18 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
         $group = Group::load($countryoption);
         $grp_obj = $group->getContentByEntityId($pluginId,$nid);
         $alexists_langcode = false;
-        foreach($grp_obj as $key=>$val)
-        {
-          $language_code =  $grp_obj[$key]->langcode->value;
-          if($language_code == $langoption)
-          {
-            $alexists_langcode = true;
-          }
-        }
-        if(!$alexists_langcode)
-        {
-          $group->addContent($node, $pluginId,['langcode'=>$langoption]);
-        }
-        
+        // foreach($grp_obj as $key=>$val)
+        // {
+        //   $language_code =  $grp_obj[$key]->langcode->value;
+        //   if($language_code == $langoption)
+        //   {
+        //     $alexists_langcode = true;
+        //   }
+        // }
+        // if(!$alexists_langcode)
+        // {
+        //   $group->addContent($node, $pluginId,['langcode'=>$langoption]);
+        // }        
        }
        $message = "Content assigned to country";
        if($total_translation > 0)
