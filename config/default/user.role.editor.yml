@@ -7,6 +7,7 @@ label: Editor
 weight: -5
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access content'
   - 'access group overview'
   - 'access media overview'

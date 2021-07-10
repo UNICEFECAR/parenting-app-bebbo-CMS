@@ -20,12 +20,13 @@ dependencies:
     - taxonomy.vocabulary.child_age
     - taxonomy.vocabulary.child_gender
     - taxonomy.vocabulary.parent_gender
+    - workflows.workflow.group_workflow
   module:
+    - content_moderation
     - group
     - node
     - taxonomy
     - user
-    - views_bulk_operations
 _core:
   default_config_hash: P7F4DFe8BL31DRVqsvS-ix9KZZqvvaPjZ7zEvGo9yNM
 id: global_content_listing_country_users
@@ -983,7 +984,7 @@ display:
           empty: false
           content: 'Total Count - @total'
           plugin_id: result
-      group_by: true
+      group_by: false
     display_plugin: default
     display_title: Master
     id: default
@@ -1060,67 +1061,6 @@ display:
         arguments: false
         title: false
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Actions
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          batch: true
-          batch_size: 10
-          form_step: true
-          buttons: false
-          clear_on_exposed: true
-          action_title: Action
-          selected_actions:
-            9:
-              action_id: pb_custom_field_assign_action
-              preconfiguration:
-                add_confirmation: 0
-          force_selection_info: false
-          plugin_id: views_bulk_operations_bulk_form
         nid:
           id: nid
           table: node_field_data
@@ -1540,6 +1480,69 @@ display:
           hide_alter_empty: true
           destination: true
           plugin_id: entity_operations
+        moderation_state:
+          id: moderation_state
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Moderation state'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: content_moderation_state
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          plugin_id: moderation_state_field
       filters:
         nid:
           id: nid
@@ -2046,59 +2049,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: gid_op
-            label: Country
-            description: ''
-            use_operator: false
-            operator: gid_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: gtitle1
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: numeric
         field_licensed_content_value:
           id: field_licensed_content_value
           table: node__field_licensed_content
@@ -2137,6 +2087,47 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
+        moderation_state:
+          id: moderation_state
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            group_workflow-published: group_workflow-published
+          group: 1
+          exposed: false
+          expose:
+            operator_id: moderation_state_op
+            label: 'Moderation state'
+            description: null
+            use_operator: false
+            operator: moderation_state_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: moderation_state
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          plugin_id: moderation_state_filter
       filter_groups:
         operator: AND
         groups:
@@ -2156,6 +2147,6 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-      max-age: 0
-      tags: {  }
-
+      max-age: -1
+      tags:
+        - 'config:workflow_list'

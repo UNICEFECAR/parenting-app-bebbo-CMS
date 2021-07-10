@@ -7,6 +7,7 @@ label: 'Country Admin'
 weight: -6
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access content'
   - 'access user profiles'
   - 'administer users'

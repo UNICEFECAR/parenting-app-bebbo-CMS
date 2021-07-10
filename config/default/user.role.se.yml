@@ -7,6 +7,7 @@ label: 'Senior Editor'
 weight: -3
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access media overview'
   - 'create activities content'
   - 'create article content'

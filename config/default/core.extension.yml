@@ -3,6 +3,7 @@ module:
   admin_toolbar_links_access_filter: 0
   admin_toolbar_search: 0
   admin_toolbar_tools: 0
+  allowed_languages: 0
   automated_cron: 0
   basic_auth: 0
   big_pipe: 0
@@ -31,7 +32,6 @@ module:
   field_ui: 0
   file: 0
   filter: 0
-  gcontent_moderation: 0
   gnode: 0
   group: 0
   group_country_field: 0
