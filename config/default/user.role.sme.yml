@@ -45,7 +45,6 @@ permissions:
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'
-  - 'view all revisions'
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view chatbot revisions'
