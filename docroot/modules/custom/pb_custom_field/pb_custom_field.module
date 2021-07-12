@@ -160,16 +160,25 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $is_ajax = $request->isXmlHttpRequest();
     if(!$is_ajax) {
       /* Get the logged in user details */
-      $node = $form_state->getFormObject()->getEntity();
-      $ntype = $node->getType();
-      $chk_type = "node-".$ntype."-edit-form";
-      if($form['#id'] == $chk_type)
-      {
-        $form['#validate'][]='user_access_validation_chk';
-      }
-      /* Get the logged in user details */
+     
       $currentAccount = \Drupal::currentUser();
       $cur_user_roles = $currentAccount->getRoles();
+      $authorized_roles = array('se','sme','editor');
+      /* check the country admin check */
+      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) 
+      {
+        $node = $form_state->getFormObject()->getEntity();
+        $ntype = $node->getType();
+        $chk_type = "node-".$ntype."-edit-form";
+        if($form['#id'] == $chk_type)
+        {
+          $form['#validate'][]='user_access_validation_chk';
+        }
+      }
+
+      /* Get the logged in user details */
+      // $currentAccount = \Drupal::currentUser();
+      // $cur_user_roles = $currentAccount->getRoles();
       $authorized_roles = array('se','sme','editor','reviewer');
       /* Check the user roles */
       if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) 
