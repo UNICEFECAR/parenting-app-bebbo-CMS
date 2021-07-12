@@ -17,6 +17,7 @@ permissions:
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
+  - 'administer allowed languages'
   - 'administer languages'
   - 'administer nodes'
   - 'administer tmgmt'

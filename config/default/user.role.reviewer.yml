@@ -10,6 +10,7 @@ permissions:
   - 'accept translation jobs'
   - 'access content'
   - 'access user profiles'
+  - 'administer allowed languages'
   - 'administer users'
   - 'edit any chatbot content'
   - 'edit own chatbot content'
