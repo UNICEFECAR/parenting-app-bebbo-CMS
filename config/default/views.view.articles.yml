@@ -5633,26 +5633,26 @@ display:
             body:
               alias: ''
               raw_output: false
-            field_child_age:
-              alias: child_age
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
             field_activity_category:
               alias: activity_category
               raw_output: false
             field_equipment:
               alias: equipment
               raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_related_articles:
-              alias: related_articles
-              raw_output: false
             field_type_of_support:
               alias: type_of_support
+              raw_output: false
+            field_child_age:
+              alias: child_age
+              raw_output: false
+            field_cover_image:
+              alias: cover_image
+              raw_output: false
+            field_related_articles:
+              alias: related_milestone
+              raw_output: false
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
       display_description: ''
       arguments:
@@ -7813,8 +7813,20 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: id
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
             created:
               alias: created_at
+              raw_output: false
+            changed:
+              alias: updated_at
               raw_output: false
             body:
               alias: ''
@@ -7822,47 +7834,35 @@ display:
             field_content_category:
               alias: category
               raw_output: false
-            changed:
-              alias: updated_at
-              raw_output: false
             field_child_age:
               alias: child_age
               raw_output: false
             field_child_gender:
               alias: child_gender
               raw_output: false
-            type:
-              alias: ''
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
-            field_cover_video:
-              alias: cover_video
-              raw_output: false
-            nid:
-              alias: id
+            field_parent_gender:
+              alias: parent_gender
               raw_output: false
             field_keywords:
               alias: keywords
               raw_output: false
+            field_related_articles:
+              alias: related_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
-              raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_parent_gender:
-              alias: parent_gender
               raw_output: false
             field_premature_content:
               alias: premature
               raw_output: false
-            field_related_articles:
-              alias: related_articles
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
-            title:
-              alias: ''
+            field_cover_video:
+              alias: cover_video
+              raw_output: false
+            field_cover_video_1:
+              alias: cover_image
               raw_output: false
       display_description: ''
       arguments:
@@ -8625,10 +8625,72 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-        field_cover_image:
-          id: field_cover_image
-          table: node__field_cover_image
-          field: field_cover_image
+        field_cover_video:
+          id: field_cover_video
+          table: node__field_cover_video
+          field: field_cover_video
+          relationship: field_pinned_article_for_girl
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_cover_video_1:
+          id: field_cover_video_1
+          table: node__field_cover_video
+          field: field_cover_video
           relationship: field_pinned_article_for_girl
           group_type: group
           admin_label: ''
@@ -8636,7 +8698,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_cover_image__target_id }}'
+            text: '{{ field_cover_video_1__target_id }}'
             make_link: false
             path: ''
             absolute: false
@@ -9033,7 +9095,7 @@ display:
         - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_child_gender'
         - 'config:field.storage.node.field_content_category'
-        - 'config:field.storage.node.field_cover_image'
+        - 'config:field.storage.node.field_cover_video'
         - 'config:field.storage.node.field_keywords'
         - 'config:field.storage.node.field_licensed_content'
         - 'config:field.storage.node.field_mandatory_content'
@@ -11813,8 +11875,20 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: id
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
             created:
               alias: created_at
+              raw_output: false
+            changed:
+              alias: updated_at
               raw_output: false
             body:
               alias: ''
@@ -11822,47 +11896,35 @@ display:
             field_content_category:
               alias: category
               raw_output: false
-            changed:
-              alias: updated_at
-              raw_output: false
             field_child_age:
               alias: child_age
               raw_output: false
             field_child_gender:
               alias: child_gender
               raw_output: false
-            type:
-              alias: ''
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
-            field_cover_video:
-              alias: cover_video
-              raw_output: false
-            nid:
-              alias: id
+            field_parent_gender:
+              alias: parent_gender
               raw_output: false
             field_keywords:
               alias: keywords
               raw_output: false
+            field_related_articles:
+              alias: related_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
-              raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_parent_gender:
-              alias: parent_gender
               raw_output: false
             field_premature_content:
               alias: premature
               raw_output: false
-            field_related_articles:
-              alias: related_articles
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
-            title:
-              alias: ''
+            field_cover_video:
+              alias: cover_video
+              raw_output: false
+            field_cover_video_1:
+              alias: cover_image
               raw_output: false
       display_description: ''
       arguments:
@@ -12625,10 +12687,72 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-        field_cover_image:
-          id: field_cover_image
-          table: node__field_cover_image
-          field: field_cover_image
+        field_cover_video:
+          id: field_cover_video
+          table: node__field_cover_video
+          field: field_cover_video
+          relationship: field_pinned_article_for_boy
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_cover_video_1:
+          id: field_cover_video_1
+          table: node__field_cover_video
+          field: field_cover_video
           relationship: field_pinned_article_for_boy
           group_type: group
           admin_label: ''
@@ -12636,7 +12760,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_cover_image__target_id }}'
+            text: '{{ field_cover_video_1__target_id }}'
             make_link: false
             path: ''
             absolute: false
@@ -13033,7 +13157,7 @@ display:
         - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_child_gender'
         - 'config:field.storage.node.field_content_category'
-        - 'config:field.storage.node.field_cover_image'
+        - 'config:field.storage.node.field_cover_video'
         - 'config:field.storage.node.field_keywords'
         - 'config:field.storage.node.field_licensed_content'
         - 'config:field.storage.node.field_mandatory_content'
@@ -18478,10 +18602,10 @@ display:
               alias: child_age
               raw_output: false
             field_pinned_article_for_boy:
-              alias: boy_article
+              alias: boy_video_article
               raw_output: false
             field_pinned_article_for_girl:
-              alias: girl_article
+              alias: girl_video_article
               raw_output: false
             field_milestone_instructions:
               alias: milestone

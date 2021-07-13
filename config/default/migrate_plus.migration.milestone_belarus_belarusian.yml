@@ -1,11 +1,5 @@
-uuid: c472308c-b27a-4eef-a6ec-b2c689ad1c5d
 langcode: en
-status: true
-dependencies: {  }
 id: milestone_belarus_belarusian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: milestone_belarus_belarusian
 migration_group: milestone
 label: 'Milestone Belarus Belarusian'
@@ -27,6 +21,7 @@ process:
   nid: ID
   title: Title
   body/value: Body
+  
   field_child_age:
     -
       plugin: explode
@@ -38,7 +33,8 @@ process:
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
-  field_related_video_articles:
+
+  field_related_video_articles:   
     -
       plugin: explode
       delimiter: ', '
@@ -49,18 +45,21 @@ process:
       bundle_key: type
       bundle: video_article
       value_key: nid
+
   field_related_activities:
     -
       plugin: explode
       delimiter: ', '
       source: Related_activities
     -
-      plugin: entity_lookup
+      plugin: entity_lookup   
       entity_type: node
       bundle_key: type
       bundle: activities
       value_key: nid
+
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: milestone

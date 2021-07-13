@@ -1,14 +1,8 @@
-uuid: b96b9f5f-3dcc-457c-9f23-1565b0a664e7
 langcode: en
-status: true
-dependencies: {  }
 id: activity_kosovo_serbian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: activity_kosovo_serbian
 migration_group: activity
-label: activity_kosovo_serbian
+label: 'activity_kosovo_serbian'
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/activity/activity_kosovo_serbian.csv
@@ -20,15 +14,19 @@ process:
     plugin: default_value
     source: language
     default_value: xk-rs
+  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
-  title: Title
+  title: Title  
   body/value: Body
   field_cover_image: Cover_image
+
   field_equipment: Equipment
+
   field_type_of_support:
     plugin: entity_lookup
     source: Type_of_support
@@ -36,17 +34,19 @@ process:
     bundle_key: vid
     bundle: type_of_support
     entity_type: taxonomy_term
+
   field_child_age:
     -
       plugin: explode
       delimiter: ','
       source: Child_age
     -
-      plugin: entity_lookup
+      plugin: entity_lookup      
       value_key: tid
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
+
   field_activity_category:
     -
       plugin: explode
@@ -58,6 +58,7 @@ process:
       bundle_key: vid
       bundle: activity_category
       entity_type: taxonomy_term
+
   field_related_articles:
     -
       plugin: explode
@@ -69,8 +70,10 @@ process:
       bundle_key: type
       bundle: milestone
       value_key: nid
+   
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
+
 destination:
   plugin: 'entity:node'
   default_bundle: activities

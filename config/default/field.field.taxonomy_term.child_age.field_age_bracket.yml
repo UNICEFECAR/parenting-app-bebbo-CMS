@@ -12,7 +12,7 @@ bundle: child_age
 label: 'Content to be downloaded for the age bracket'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

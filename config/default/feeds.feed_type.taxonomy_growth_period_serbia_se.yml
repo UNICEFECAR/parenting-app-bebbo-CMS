@@ -23,7 +23,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sq
+  langcode: uz-uz
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -76,4 +76,4 @@ mappings:
       value: title
     unique: {  }
     settings:
-      language: sq
+      language: uz-uz

@@ -141,10 +141,10 @@ class CustomSerializer extends Serializer {
         {
           $rows['langcode'] = $request[3];
         }
-        if(isset($request[4]) && !empty($request[4]))
-        {
-          $rows['country'] = $request[4];
-        }
+        // if(isset($request[4]) && !empty($request[4]))
+        // {
+        //   $rows['country'] = $request[4];
+        // }
 
         $rows['data'] = $data;
         unset($this->view->row_index);
@@ -206,27 +206,27 @@ class CustomSerializer extends Serializer {
         }      
       }
     }
-    if(isset($request[4]) && !empty($request[4]))
-    {            
-      if(strpos($request_uri, "taxonomies") !== false || $request[4] == "all"){
-        return "";
-      }
-      else
-      {
-        $groups = Group::loadMultiple(); 	
-        foreach($groups as $gid => $group) {
-          $id = $group->get('id')->getString();    
-          $gids[] = $id;      
-        } 
-        if(!in_array($request[4],$gids))
-        {
-          $respons_arr['status'] = 400;
-          $respons_arr['message'] = "Request country code is wrong";
+    // if(isset($request[4]) && !empty($request[4]))
+    // {            
+    //   if(strpos($request_uri, "taxonomies") !== false || $request[4] == "all"){
+    //     return "";
+    //   }
+    //   else
+    //   {
+    //     $groups = Group::loadMultiple(); 	
+    //     foreach($groups as $gid => $group) {
+    //       $id = $group->get('id')->getString();    
+    //       $gids[] = $id;      
+    //     } 
+    //     if(!in_array($request[4],$gids))
+    //     {
+    //       $respons_arr['status'] = 400;
+    //       $respons_arr['message'] = "Request country code is wrong";
 
-          return $respons_arr;
-        } 
-      }      
-    }    
+    //       return $respons_arr;
+    //     } 
+    //   }      
+    // }    
     return "";  
   }
 

@@ -12,7 +12,7 @@ id: taxonomy_growth_introductory_lan
 label: 'Taxonomy - Growth Introductory - Language'
 description: 'Growth Introductory - Language'
 help: ''
-import_period: 3600
+import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'
@@ -24,7 +24,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: xk-sq
+  langcode: uz-uz
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -69,11 +69,11 @@ mappings:
       value: title
     unique: {  }
     settings:
-      language: xk-sq
+      language: uz-uz
   -
     target: description
     map:
       value: body
     settings:
-      language: xk-sq
+      language: uz-uz
       format: plain_text
