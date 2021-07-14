@@ -147,6 +147,10 @@ class CustomSerializer extends Serializer {
         // }
 
         $rows['data'] = $data;
+        if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
+        {
+          $rows['data'] = array_unique($data);
+        }        
         unset($this->view->row_index);
         // if(strpos($request_uri, "taxonomies") !== false){
         // unset($rows['country']);
