@@ -33,7 +33,7 @@ class CustomSerializer extends Serializer {
     $validate_params_res = $this->check_request_params($request_uri);
     if(empty($validate_params_res))
     {
-      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities", "language"];
+      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities","language","pinned_article"];
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
       $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
 
@@ -56,7 +56,7 @@ class CustomSerializer extends Serializer {
            //error_log("rendered array =>".print_r($rendered_data, true));
           // error_log("type =>".$rendered_data['type']);
           //Custom pinned api formatter
-          if(strpos($request_uri, "pinned-contents") !== false && isset($request[5]) && in_array($request[5], $pinned_content))
+          if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
           {
             if($rendered_data['type'] === "Article")
             {
@@ -148,9 +148,9 @@ class CustomSerializer extends Serializer {
 
         $rows['data'] = $data;
         unset($this->view->row_index);
-        if(strpos($request_uri, "taxonomies") !== false){
-        unset($rows['country']);
-        }
+        // if(strpos($request_uri, "taxonomies") !== false){
+        // unset($rows['country']);
+        // }
         // json output
         if ((empty($this->view->live_preview))) {
           $content_type = $this->displayHandler->getContentType();
