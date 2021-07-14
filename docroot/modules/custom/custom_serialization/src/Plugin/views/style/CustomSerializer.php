@@ -130,6 +130,10 @@ class CustomSerializer extends Serializer {
           else
           {            
             $data[] = $rendered_data;
+            if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
+            {
+              $data = array_unique($data);
+            }  
             $rows['status'] = 200;
             // To get total no of records
             $rows['total'] = count($data);
@@ -146,11 +150,7 @@ class CustomSerializer extends Serializer {
         //   $rows['country'] = $request[4];
         // }
 
-        $rows['data'] = $data;
-        if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
-        {
-          $rows['data'] = array_unique($data);
-        }        
+        $rows['data'] = $data;              
         unset($this->view->row_index);
         // if(strpos($request_uri, "taxonomies") !== false){
         // unset($rows['country']);
