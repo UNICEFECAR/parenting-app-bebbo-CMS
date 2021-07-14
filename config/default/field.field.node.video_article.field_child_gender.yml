@@ -13,7 +13,7 @@ bundle: video_article
 label: 'Child Gender'
 description: 'To Specify under which child gender this article falls'
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

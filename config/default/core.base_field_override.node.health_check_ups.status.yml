@@ -11,7 +11,7 @@ bundle: health_check_ups
 label: Published
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0

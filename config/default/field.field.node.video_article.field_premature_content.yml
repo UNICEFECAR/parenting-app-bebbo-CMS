@@ -12,7 +12,7 @@ bundle: video_article
 label: 'Premature Content'
 description: 'Enable this filed if this content is related to Premature child'
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     value: 0

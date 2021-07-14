@@ -1,8 +1,14 @@
+uuid: 01c02599-d924-4057-917f-315673a359a7
 langcode: en
+status: true
+dependencies: {  }
 id: basic_page_north_macedonia_macedonian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: basic_page_north_macedonia_macedonian
 migration_group: basic_page
-label: 'basic_page_north_macedonia_macedonian'
+label: basic_page_north_macedonia_macedonian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/basic_page/basic_page_north_macedonia_macedonian.csv
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: mk-mk
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   body/summary: Summary

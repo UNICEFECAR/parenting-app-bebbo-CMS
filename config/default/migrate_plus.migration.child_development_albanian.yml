@@ -1,8 +1,14 @@
+uuid: d1636832-1950-4afc-83bf-8ed5f83113e4
 langcode: en
+status: true
+dependencies: {  }
 id: child_development_albanian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: child_development_albanian
 migration_group: child_development
-label: 'child_development_albanian'
+label: child_development_albanian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/child_development/child_development_albanian.csv
@@ -56,7 +62,6 @@ process:
   field_milestone_instructions: Milestone_instructions
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: child_development

@@ -4,8 +4,13 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_related_activities
-    - node.type.article
+    - node.type.activities
     - node.type.milestone
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.milestone.field_related_activities
 field_name: field_related_activities
 entity_type: node
@@ -20,9 +25,9 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      article: article
+      activities: activities
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: activities
 field_type: entity_reference

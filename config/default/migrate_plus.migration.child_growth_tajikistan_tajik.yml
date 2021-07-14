@@ -1,5 +1,11 @@
+uuid: 2bc6bd22-f651-4e20-b7b1-a47d9eb886be
 langcode: en
+status: true
+dependencies: {  }
 id: child_growth_tajikistan_tajik
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: child_growth_tajikistan_tajik
 migration_group: child_growth
 label: child_growth_tajikistan_tajik
@@ -46,7 +52,7 @@ process:
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
-  field_related_articles: 
+  field_related_articles:
     -
       plugin: explode
       delimiter: ', '
