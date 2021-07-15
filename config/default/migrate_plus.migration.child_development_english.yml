@@ -24,19 +24,16 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
   title: Title
   field_activity_child_age:
-    -
-      plugin: explode
-      delimiter: ','
-      source: Child_age
-    -
-      plugin: entity_lookup
-      value_key: name
-      bundle_key: vid
-      bundle: child_age
-      entity_type: taxonomy_term
+    source: Child_age
+    plugin: entity_lookup
+    value_key: name
+    bundle_key: vid
+    bundle: child_age
+    entity_type: taxonomy_term
   field_pinned_article_for_boy:
     -
       plugin: explode
@@ -46,7 +43,7 @@ process:
       plugin: entity_lookup
       entity_type: node
       bundle_key: type
-      bundle: article
+      bundle: video_article
       value_key: nid
   field_pinned_article_for_girl:
     -
@@ -57,11 +54,12 @@ process:
       plugin: entity_lookup
       entity_type: node
       bundle_key: type
-      bundle: article
+      bundle: video_article
       value_key: nid
   field_milestone_instructions: Milestone_instructions
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: child_development

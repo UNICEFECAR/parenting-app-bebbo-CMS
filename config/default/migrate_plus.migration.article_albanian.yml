@@ -1,11 +1,5 @@
-uuid: 309d0547-e60a-4fef-ab93-e8a49cdb4a47
 langcode: en
-status: true
-dependencies: {  }
 id: article_albanian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: article_albanian
 migration_group: article
 label: 'Article Albanian'
@@ -29,6 +23,7 @@ process:
   body/summary: Summary
   body/value: Body
   field_cover_image: Cover_image
+
   field_content_category:
     plugin: entity_lookup
     source: Category
@@ -36,6 +31,7 @@ process:
     bundle_key: vid
     bundle: category
     entity_type: taxonomy_term
+
   field_child_age:
     -
       plugin: explode
@@ -47,6 +43,7 @@ process:
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term
+
   field_child_gender:
     plugin: entity_lookup
     source: Child_gender
@@ -54,6 +51,7 @@ process:
     bundle_key: vid
     bundle: child_gender
     entity_type: taxonomy_term
+
   field_parent_gender:
     plugin: entity_lookup
     source: Parent_gender
@@ -61,6 +59,7 @@ process:
     bundle_key: vid
     bundle: parent_gender
     entity_type: taxonomy_term
+
   field_keywords:
     -
       plugin: explode
@@ -72,6 +71,7 @@ process:
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
+
   field_related_articles:
     -
       plugin: explode
@@ -83,10 +83,12 @@ process:
       bundle_key: type
       bundle: article
       value_key: nid
+
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: article

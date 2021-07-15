@@ -18,6 +18,7 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
   title: Title
   body/value: body
@@ -38,7 +39,7 @@ process:
   field_child_age:
     -
       plugin: explode
-      delimiter: ','
+      delimiter: ', '
       source: Child_age
     -
       plugin: entity_lookup
@@ -59,6 +60,7 @@ process:
       value_key: nid
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: child_growth

@@ -3306,7 +3306,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: ','
           field_api_classes: false
           plugin_id: field
         created:
@@ -3593,7 +3593,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/health-checkup-data/%/%
+      path: api/health-checkup-data/%
       pager:
         type: none
         options:
@@ -13422,7 +13422,7 @@ display:
             type: none
             fail: 'not found'
           validate_options: {  }
-          break_phrase: false
+          break_phrase: true
           not: false
           plugin_id: numeric
       defaults:
