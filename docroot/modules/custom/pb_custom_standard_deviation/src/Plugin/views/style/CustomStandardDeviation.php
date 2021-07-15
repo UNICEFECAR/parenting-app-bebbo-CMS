@@ -48,7 +48,7 @@ class CustomStandardDeviation extends Serializer {
             $weight_for_height[] = $rendered_data;
           }
 
-          if($key === 'growth_type' && $values ===  "6456")
+          if($key === 'growth_type' && $values ===  "32786")
           {
             $height_for_age[] = $rendered_data;
           } 
@@ -63,7 +63,7 @@ class CustomStandardDeviation extends Serializer {
 
       for($i = 0; $i < count($weight_for_height); $i++)
       {
-        if($weight_for_height[$i]['child_age'] === "43,44,45,46")
+        if($weight_for_height[$i]['child_age'] === "46,45,44,43")
         {
           $child_1[] = $weight_for_height[$i];
         }
@@ -78,12 +78,12 @@ class CustomStandardDeviation extends Serializer {
           $child_3[] = $weight_for_height[$i];
         }
 
-        if($weight_for_height[$i]['child_age'] === "49,50")
+        if($weight_for_height[$i]['child_age'] === "50,49")
         {
           $child_4[] = $weight_for_height[$i];
         }
 
-        if($weight_for_height[$i]['child_age'] === "51,52,57,58")
+        if($weight_for_height[$i]['child_age'] === "58,57,52,51")
         {
           $child_5[] = $weight_for_height[$i];
         }              
@@ -121,7 +121,7 @@ class CustomStandardDeviation extends Serializer {
       $child_5 = array();
       for($i = 0; $i <= count($height_for_age); $i++)
       {
-        if($height_for_age[$i]['child_age'] === "43,44,45,46")
+        if($height_for_age[$i]['child_age'] === "46,45,44,43")
         {
           $child_1[] = $height_for_age[$i];
         }
@@ -136,12 +136,12 @@ class CustomStandardDeviation extends Serializer {
           $child_3[] = $height_for_age[$i];
         }
 
-        if($height_for_age[$i]['child_age'] === "49,50")
+        if($height_for_age[$i]['child_age'] === "50,49")
         {
           $child_4[] = $height_for_age[$i];
         }
 
-        if($height_for_age[$i]['child_age'] === "51,52,57,58")
+        if($height_for_age[$i]['child_age'] === "58,57,52,51")
         {
           $child_5[] = $height_for_age[$i];
         }

@@ -418,9 +418,10 @@ class CustomSerializer extends Serializer {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
           $term_data[] = array(   
             'id' => (int)$term->tid,
-            'name' => $term->name,        
+            'name' => $term->name,
+            'body' => $term->description__value,        
             'days_from' => $term_obj->get('field_days_from')->value,
-            'days_to' => $term_obj->get('field_days_to')->value
+            'days_to' => $term_obj->get('field_days_to')->value             
           );
         } 
         else if($vocabulary_machine_name === "standard_deviation")
