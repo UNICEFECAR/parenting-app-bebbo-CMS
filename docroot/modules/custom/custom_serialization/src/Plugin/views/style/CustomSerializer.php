@@ -425,20 +425,30 @@ class CustomSerializer extends Serializer {
         else if($vocabulary_machine_name === "standard_deviation")
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
+          $sd0 = $term_obj->get('field_sd0')->value;
+          $sd1 = $term_obj->get('field_sd1')->value;
+          $sd2 = $term_obj->get('field_sd2')->value;
+          $sd3 = $term_obj->get('field_sd3')->value;
+          $sd4 = $term_obj->get('field_sd4')->value;
+          $sd1neg = $term_obj->get('field_sd1neg')->value;
+          $sd2neg = $term_obj->get('field_sd2neg')->value;
+          $sd3neg = $term_obj->get('field_sd3neg')->value;
+          $sd4neg = $term_obj->get('field_sd4neg')->value;
+          
           $term_data[] = array(     
             'id' => (int)$term->tid,
             'name' => $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' => floatval($term_obj->get('field_sd0')->value),
-            'sd1' => floatval($term_obj->get('field_sd1')->value),
-            'sd2' => floatval($term_obj->get('field_sd2')->value),
-            'sd3' => floatval($term_obj->get('field_sd3')->value),
-            'sd4' => floatval($term_obj->get('field_sd4')->value),
-            'sd1neg' => floatval($term_obj->get('field_sd1neg')->value),
-            'sd2neg' => floatval($term_obj->get('field_sd2neg')->value),
-            'sd3neg' => floatval($term_obj->get('field_sd3neg')->value),
-            'sd4neg' => floatval($term_obj->get('field_sd4neg')->value)
+            'sd0' => floatval($sd0),
+            'sd1' => floatval($sd1),
+            'sd2' => floatval($sd2),
+            'sd3' => floatval($sd3),
+            'sd4' => floatval($sd4),
+            'sd1neg' => floatval($sd1neg),
+            'sd2neg' => floatval($sd2neg),
+            'sd3neg' => floatval($sd3neg),
+            'sd4neg' => floatval($sd4neg)
           );
         }
         else
