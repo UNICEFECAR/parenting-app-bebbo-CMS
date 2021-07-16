@@ -396,7 +396,7 @@ class CustomSerializer extends Serializer {
           $term_data[] = array(   
             'id' => (int)$term->tid,
             'name' => $term->name,        
-            'vaccination_opens' => $term_obj->get('field_vaccination_opens')->value
+            'vaccination_opens' => (int)$term_obj->get('field_vaccination_opens')->value
           );
         }  
         else if($vocabulary_machine_name === "child_age")
@@ -405,12 +405,10 @@ class CustomSerializer extends Serializer {
           $term_data[] = array(   
             'id' => (int)$term->tid,
             'name' => $term->name,        
-            'days_from' => $term_obj->get('field_days_from')->value,
-            'days_to' => $term_obj->get('field_days_to')->value,
-            'buffers_days' => $term_obj->get('field_buffers_days')->value,
-            'age_bracket' => $term_obj->get('field_age_bracket')->target_id,
-            'weeks_from' => $term_obj->get('field_weeks_from')->value,
-            'weeks_to' => $term_obj->get('field_weeks_to')->value
+            'days_from' => (int)$term_obj->get('field_days_from')->value,
+            'days_to' => (int)$term_obj->get('field_days_to')->value,
+            'buffers_days' => (int)$term_obj->get('field_buffers_days')->value,
+            'age_bracket' => $term_obj->get('field_age_bracket')->target_id           
           );
         }   
         else if($vocabulary_machine_name === "growth_introductory")
@@ -420,8 +418,8 @@ class CustomSerializer extends Serializer {
             'id' => (int)$term->tid,
             'name' => $term->name,
             'body' => $term->description__value,        
-            'days_from' => $term_obj->get('field_days_from')->value,
-            'days_to' => $term_obj->get('field_days_to')->value             
+            'days_from' => (int)$term_obj->get('field_days_from')->value,
+            'days_to' => (int)$term_obj->get('field_days_to')->value             
           );
         } 
         else if($vocabulary_machine_name === "standard_deviation")
@@ -430,17 +428,17 @@ class CustomSerializer extends Serializer {
           $term_data[] = array(     
             'id' => (int)$term->tid,
             'name' => $term->name,      
-            'child_gender' => $term_obj->get('field_child_gender')->target_id,
-            'growth_type' => $term_obj->get('field_growth_type')->target_id,
-            'sd0' => (double)$term_obj->get('field_sd0')->value,
-            'sd1' => (double)$term_obj->get('field_sd1')->value,
-            'sd2' => (double)$term_obj->get('field_sd2')->value,
-            'sd3' => (double)$term_obj->get('field_sd3')->value,
-            'sd4' => (double)$term_obj->get('field_sd4')->value,
-            'sd1neg' => (double)$term_obj->get('field_sd1neg')->value,
-            'sd2neg' => (double)$term_obj->get('field_sd2neg')->value,
-            'sd3neg' => (double)$term_obj->get('field_sd3neg')->value,
-            'sd4neg' => (double)$term_obj->get('field_sd4neg')->value
+            'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
+            'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
+            'sd0' => (float)$term_obj->get('field_sd0')->value,
+            'sd1' => (float)$term_obj->get('field_sd1')->value,
+            'sd2' => (float)$term_obj->get('field_sd2')->value,
+            'sd3' => (float)$term_obj->get('field_sd3')->value,
+            'sd4' => (float)$term_obj->get('field_sd4')->value,
+            'sd1neg' => (float)$term_obj->get('field_sd1neg')->value,
+            'sd2neg' => (float)$term_obj->get('field_sd2neg')->value,
+            'sd3neg' => (float)$term_obj->get('field_sd3neg')->value,
+            'sd4neg' => (float)$term_obj->get('field_sd4neg')->value
           );
         }
         else
