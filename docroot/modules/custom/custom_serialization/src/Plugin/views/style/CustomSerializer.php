@@ -430,15 +430,15 @@ class CustomSerializer extends Serializer {
             'name' => $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' => (float)$term_obj->get('field_sd0')->value,
-            'sd1' => (float)$term_obj->get('field_sd1')->value,
-            'sd2' => (float)$term_obj->get('field_sd2')->value,
-            'sd3' => (float)$term_obj->get('field_sd3')->value,
-            'sd4' => (float)$term_obj->get('field_sd4')->value,
-            'sd1neg' => (float)$term_obj->get('field_sd1neg')->value,
-            'sd2neg' => (float)$term_obj->get('field_sd2neg')->value,
-            'sd3neg' => (float)$term_obj->get('field_sd3neg')->value,
-            'sd4neg' => (float)$term_obj->get('field_sd4neg')->value
+            'sd0' => floatval($term_obj->get('field_sd0')->value),
+            'sd1' => floatval($term_obj->get('field_sd1')->value),
+            'sd2' => floatval($term_obj->get('field_sd2')->value),
+            'sd3' => floatval($term_obj->get('field_sd3')->value),
+            'sd4' => floatval($term_obj->get('field_sd4')->value),
+            'sd1neg' => floatval($term_obj->get('field_sd1neg')->value),
+            'sd2neg' => floatval($term_obj->get('field_sd2neg')->value),
+            'sd3neg' => floatval($term_obj->get('field_sd3neg')->value),
+            'sd4neg' => floatval($term_obj->get('field_sd4neg')->value)
           );
         }
         else
