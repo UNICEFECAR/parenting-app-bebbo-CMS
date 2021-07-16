@@ -130,10 +130,10 @@ class CustomSerializer extends Serializer {
           else
           {            
             $data[] = $rendered_data;
-            if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
-            {
-              $data = array_unique($data);
-            }  
+            // if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
+            // {
+            //   $data = array_unique($data);
+            // }  
             $rows['status'] = 200;
             // To get total no of records
             $rows['total'] = count($data);
@@ -432,15 +432,15 @@ class CustomSerializer extends Serializer {
             'name' => $term->name,      
             'child_gender' => $term_obj->get('field_child_gender')->target_id,
             'growth_type' => $term_obj->get('field_growth_type')->target_id,
-            'sd0' => $term_obj->get('field_sd0')->value,
-            'sd1' => $term_obj->get('field_sd1')->value,
-            'sd2' => $term_obj->get('field_sd2')->value,
-            'sd3' => $term_obj->get('field_sd3')->value,
-            'sd4' => $term_obj->get('field_sd4')->value,
-            'sd1neg' => $term_obj->get('field_sd1neg')->value,
-            'sd2neg' => $term_obj->get('field_sd2neg')->value,
-            'sd3neg' => $term_obj->get('field_sd3neg')->value,
-            'sd4neg' => $term_obj->get('field_sd4neg')->value
+            'sd0' => (double)$term_obj->get('field_sd0')->value,
+            'sd1' => (double)$term_obj->get('field_sd1')->value,
+            'sd2' => (double)$term_obj->get('field_sd2')->value,
+            'sd3' => (double)$term_obj->get('field_sd3')->value,
+            'sd4' => (double)$term_obj->get('field_sd4')->value,
+            'sd1neg' => (double)$term_obj->get('field_sd1neg')->value,
+            'sd2neg' => (double)$term_obj->get('field_sd2neg')->value,
+            'sd3neg' => (double)$term_obj->get('field_sd3neg')->value,
+            'sd4neg' => (double)$term_obj->get('field_sd4neg')->value
           );
         }
         else

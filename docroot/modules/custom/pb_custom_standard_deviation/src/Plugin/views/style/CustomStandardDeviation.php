@@ -106,7 +106,7 @@ class CustomStandardDeviation extends Serializer {
         $sd_data['child_age'] = $formatted_data;
         for($j = 0; $j < count($$temp); $j++)
         { 
-          $sd_field_data['id'] = $$temp[$j]['id'];
+          $sd_field_data['id'] = (int)$$temp[$j]['id'];
           $sd_field_data['name'] = $$temp[$j]['title'];
           $sd_field_data['text'] = $$temp[$j]['body'];
           $sd_data[$sd_weight_for_height_fields[$j]] = $sd_field_data;
@@ -165,7 +165,7 @@ class CustomStandardDeviation extends Serializer {
         $sd_data['child_age'] = $formatted_data;
         for($j = 0; $j < count($$temp); $j++)
         { 
-          $sd_field_data['id'] = $$temp[$j]['id'];
+          $sd_field_data['id'] = (int)$$temp[$j]['id'];
           $sd_field_data['name'] = $$temp[$j]['title'];
           $sd_field_data['text'] = $$temp[$j]['body'];
           $sd_data[$sd_height_for_age_fields[$j]] = $sd_field_data;

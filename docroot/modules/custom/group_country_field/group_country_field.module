@@ -50,12 +50,13 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
   if($form['#id'] == "tmgmt-job-item-edit-form"){
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
-    $roles_permissions = user_role_permissions($user_roles);
+    $roles_permissions = user_role_permissions($user_roles);    
 
     $new_default_state = array("review_after_translation" => "Review_after_translation");
 
     if(!empty($roles_permissions['global_admin'])){      
-      if (in_array("access content", $roles_permissions['global_admin'])) {
+      if (in_array("administer nodes", $roles_permissions['global_admin'])) {
+
         $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];    
        }      
     }
