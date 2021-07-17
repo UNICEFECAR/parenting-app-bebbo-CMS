@@ -17,7 +17,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
  *     "canonical" = "/api/check-update/{country}"
  *   }
  * )
- */
+ */ 
 
 class CustomRestResource extends ResourceBase {
 	/**

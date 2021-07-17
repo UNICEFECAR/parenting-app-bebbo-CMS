@@ -37,7 +37,7 @@ class CustomSerializer extends Serializer {
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
       $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
       $string_to_int = ["id", "category", "child_gender", "parent_gender", "licensed", "premature", "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article", "growth_period", "activity_category", "equipment", "type_of_support", "make_available_for_mobile", "flag"];
-      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "pinned_article", "related_milestone"];
+      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "pinned_article", "related_milestone"]; 
       
       $rows = array();
       $data = array();
