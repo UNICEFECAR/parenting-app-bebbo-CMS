@@ -191,7 +191,7 @@ class CustomStandardDeviation extends Serializer {
   public function custom_array_formatter($values) {
     if(!empty($values) && strpos($values, ',') !== false) // if the field have comma
     {          
-      $formatted_data = [$values];
+      $formatted_data = explode(',',$values);
     }   
     elseif(!empty($values))
     {
