@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.base_field_override.node.daily_homescreen_messages.title
-    - field.field.node.daily_homescreen_messages.field_daily_message_category
     - node.type.daily_homescreen_messages
   module:
     - feeds_tamper
@@ -131,21 +130,6 @@ mappings:
     map:
       value: title
     unique: {  }
-    settings:
-      language: en
-  -
-    target: field_daily_message_category
-    map:
-      target_id: message_category
-    settings:
-      language: en
-      reference_by: name
-      feeds_item: guid
-      autocreate: 0
-  -
-    target: langcode
-    map:
-      value: translation_language
     settings:
       language: en
   -

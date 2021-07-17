@@ -1,8 +1,14 @@
+uuid: 91099721-1d5b-4f4a-9925-fc52a4a686a1
 langcode: en
+status: true
+dependencies: {  }
 id: basic_page_uzbekistan_russian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: basic_page_uzbekistan_russian
 migration_group: basic_page
-label: 'basic_page_uzbekistan_russian'
+label: basic_page_uzbekistan_russian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/basic_page/basic_page_uzbekistan_russian.csv
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: uz-ru
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   body/summary: Summary

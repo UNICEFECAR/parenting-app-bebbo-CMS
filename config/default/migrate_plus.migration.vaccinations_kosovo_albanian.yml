@@ -1,5 +1,11 @@
+uuid: 540e2ad3-617e-4464-9e20-eaeca3e5ffe6
 langcode: en
+status: true
+dependencies: {  }
 id: vaccinations_kosovo_albanian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: vaccinations_kosovo_albanian
 migration_group: vaccinations
 label: 'Vaccinations Kosovo Albanian'
@@ -35,7 +41,6 @@ process:
     bundle: article
     value_key: nid
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: vaccinations

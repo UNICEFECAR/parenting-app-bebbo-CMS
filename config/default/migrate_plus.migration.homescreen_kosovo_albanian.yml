@@ -1,8 +1,14 @@
+uuid: 56142aad-a9d5-4dd2-b0fa-bf018110c450
 langcode: en
+status: true
+dependencies: {  }
 id: homescreen_kosovo_albanian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: homescreen_kosovo_albanian
 migration_group: homescreen
-label: 'homescreen_kosovo_albanian'
+label: homescreen_kosovo_albanian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_kosovo_albanian.csv
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: xk-sq
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   moderation_state: Moderation_state

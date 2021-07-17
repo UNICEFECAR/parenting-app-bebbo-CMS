@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.video_article.body
-    - field.field.node.video_article.feeds_item
     - field.field.node.video_article.field_australian_article
     - field.field.node.video_article.field_child_age
     - field.field.node.video_article.field_child_gender
@@ -198,6 +197,5 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  feeds_item: true
   field_generic_content: true
   field_seasons: true

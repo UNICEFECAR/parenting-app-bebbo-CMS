@@ -1,8 +1,14 @@
+uuid: 8e7d1096-688d-4c53-8ff0-e56a08c20bf8
 langcode: en
+status: true
+dependencies: {  }
 id: homescreen_albania_albanian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: homescreen_albania_albanian
 migration_group: homescreen
-label: 'homescreen_albania_albanian'
+label: homescreen_albania_albanian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_albania_albanian.csv
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: al-sq
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   moderation_state: Moderation_state

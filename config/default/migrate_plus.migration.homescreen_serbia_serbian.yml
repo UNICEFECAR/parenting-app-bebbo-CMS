@@ -1,5 +1,11 @@
+uuid: d615a5bb-8cd3-4485-bacc-113ee0afd7fb
 langcode: en
+status: true
+dependencies: {  }
 id: homescreen_serbia_serbian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: homescreen_serbia_serbian
 migration_group: homescreen
 label: 'Homescreen Serbia Serbian'
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: rs-sr
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   moderation_state: Moderation_state

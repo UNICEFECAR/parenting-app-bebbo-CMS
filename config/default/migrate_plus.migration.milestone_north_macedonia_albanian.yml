@@ -1,5 +1,11 @@
+uuid: 543d6649-3bc9-4a28-8567-33503cdbe826
 langcode: en
+status: true
+dependencies: {  }
 id: milestone_north_macedonia_albanian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: milestone_north_macedonia_albanian
 migration_group: milestone
 label: 'Milestone North Macedonia Albanian'
@@ -18,12 +24,10 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
-  body/value: Body  
+  body/value: Body
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: milestone

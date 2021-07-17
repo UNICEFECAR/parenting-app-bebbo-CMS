@@ -1,8 +1,14 @@
+uuid: c297aa1c-15d4-48fc-b725-00c20d288e8f
 langcode: en
+status: true
+dependencies: {  }
 id: activity_belarus_russian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: activity_belarus_russian
 migration_group: activity
-label: 'activity_belarus_russian'
+label: activity_belarus_russian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/activity/activity_belarus_russian.csv
@@ -14,18 +20,15 @@ process:
     plugin: default_value
     source: language
     default_value: by-ru
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
-  title: Title  
-  body/value: Body  
+  title: Title
+  body/value: Body
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: activities

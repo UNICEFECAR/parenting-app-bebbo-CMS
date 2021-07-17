@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.rss
     - field.field.node.article.body
-    - field.field.node.article.feeds_item
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
     - field.field.node.article.field_child_gender
@@ -39,7 +38,6 @@ content:
     region: content
 hidden:
   body: true
-  feeds_item: true
   field_australian_article: true
   field_child_age: true
   field_child_gender: true

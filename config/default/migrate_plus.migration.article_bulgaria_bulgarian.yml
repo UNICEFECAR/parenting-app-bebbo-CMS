@@ -1,5 +1,11 @@
+uuid: 34ae8fc7-099e-465e-b4fc-ea82fb3db001
 langcode: en
+status: true
+dependencies: {  }
 id: article_bulgaria_bulgarian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: article_bulgaria_bulgarian
 migration_group: article
 label: 'Article Bulgaria Bulgarian'
@@ -14,21 +20,18 @@ process:
     plugin: default_value
     source: language
     default_value: bg-bg
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   title: Title
   body/summary: Summary
-  body/value: Body 
+  body/value: Body
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: article

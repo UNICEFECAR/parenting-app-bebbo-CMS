@@ -1,8 +1,14 @@
+uuid: 99c1f819-b516-4c30-811a-51e0137d3595
 langcode: en
+status: true
+dependencies: {  }
 id: activity_serbia_english
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: activity_serbia_english
 migration_group: activity
-label: 'activity_serbia_english'
+label: activity_serbia_english
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/activity/activity_serbia_english.csv
@@ -14,18 +20,15 @@ process:
     plugin: default_value
     source: language
     default_value: rs-en
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
-  title: Title  
-  body/value: Body  
+  title: Title
+  body/value: Body
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: activities

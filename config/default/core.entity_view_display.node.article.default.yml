@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
-    - field.field.node.article.feeds_item
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
     - field.field.node.article.field_child_gender
@@ -161,5 +160,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  feeds_item: true
   langcode: true

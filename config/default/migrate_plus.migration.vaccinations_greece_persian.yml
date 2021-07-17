@@ -1,5 +1,11 @@
+uuid: b9e31326-5450-4942-9e2e-221835b1788e
 langcode: en
+status: true
+dependencies: {  }
 id: vaccinations_greece_persian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: vaccinations_greece_persian
 migration_group: vaccinations
 label: 'Vaccinations Greece Persian'
@@ -35,7 +41,6 @@ process:
     bundle: article
     value_key: nid
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: vaccinations

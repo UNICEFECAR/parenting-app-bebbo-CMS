@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_related_video_articles
+    - node.type.article
     - node.type.milestone
     - node.type.video_article
   module:
@@ -25,6 +26,7 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
+      article: article
       video_article: video_article
     sort:
       field: title

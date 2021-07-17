@@ -1,5 +1,11 @@
+uuid: 9ad34575-be83-48ec-8f9f-c6d0470aa9e6
 langcode: by-ru
+status: true
+dependencies: {  }
 id: video_article_belarus_russian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: video_article_belarus_russian
 migration_group: video_article_belarus_russian
 label: 'Video Article Belarus Russian'
@@ -14,21 +20,18 @@ process:
     plugin: default_value
     source: language
     default_value: by-ru
-  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
-  title: Title  
+  title: Title
   body/summary: Summary
-  body/value: Body 
+  body/value: Body
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: video_article
