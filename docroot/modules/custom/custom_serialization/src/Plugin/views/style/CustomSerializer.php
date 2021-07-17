@@ -36,7 +36,9 @@ class CustomSerializer extends Serializer {
       $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities","language","pinned_article","related_milestone"];
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
       $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
-
+      $string_to_int = ["id", "category", "child_gender", "parent_gender", "licensed", "premature", "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article", "growth_period", "activity_category", "equipment", "type_of_support", "make_available_for_mobile", "flag"];
+      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "pinned_article", "related_milestone"];
+      
       $rows = array();
       $data = array();
       $url = '';
@@ -53,7 +55,6 @@ class CustomSerializer extends Serializer {
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, true);   
-           //error_log("rendered array =>".print_r($rendered_data, true));
           // error_log("type =>".$rendered_data['type']);
           //Custom pinned api formatter
           if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
@@ -91,11 +92,7 @@ class CustomSerializer extends Serializer {
           }
 
           foreach($rendered_data as $key => $values)
-          {                 
-            if($key == "id")
-            {
-              $rendered_data[$key] = (int)$values;
-            }
+          {                             
             //Custom image & video formattter
             if (in_array($key,$media_fields)) //To check media image field exist
             {                
@@ -106,10 +103,27 @@ class CustomSerializer extends Serializer {
             //Custom array formatter
             if(in_array($key,$array_of_multiple_values)) //To check mulitple field 
             {          
-              $array_formatted_data = $this->custom_array_formatter($values);   
-              $rendered_data[$key] = $array_formatted_data;
+              $array_formatted_data = $this->custom_array_formatter($values); 
+              //Convert array to array of int
+              if(in_array($key,$string_to_array_of_int))
+              {
+                $rendered_data[$key] = array_map(function($elem) { return intval($elem); }, $array_formatted_data);
+              }              
             }   
             
+            //Convert string to int
+            if(in_array($key,$string_to_int))
+            {
+              if(!empty($values))
+              {
+                $rendered_data[$key] = (int)$values;
+              }
+              else
+              {
+                $rendered_data[$key] = 0;
+              }
+            }            
+
             //Custom Taxonomy Field Formatter
             if(strpos($request_uri, "vocabularies") !== false || strpos($request_uri, "taxonomies") !== false){   
               if(!empty($values) && strpos($values, ',') !== false) // if the field have comma
@@ -129,11 +143,7 @@ class CustomSerializer extends Serializer {
           }        
           else
           {            
-            $data[] = $rendered_data;
-            // if(strpos($request_uri, "pinned-contents") !== false && isset($request[4]) && in_array($request[4], $pinned_content))
-            // {
-            //   $data = array_unique($data);
-            // }  
+            $data[] = $rendered_data;            
             $rows['status'] = 200;
             // To get total no of records
             $rows['total'] = count($data);
@@ -144,17 +154,10 @@ class CustomSerializer extends Serializer {
         if(isset($request[3]) && !empty($request[3]))
         {
           $rows['langcode'] = $request[3];
-        }
-        // if(isset($request[4]) && !empty($request[4]))
-        // {
-        //   $rows['country'] = $request[4];
-        // }
+        }        
 
         $rows['data'] = $data;              
-        unset($this->view->row_index);
-        // if(strpos($request_uri, "taxonomies") !== false){
-        // unset($rows['country']);
-        // }
+        unset($this->view->row_index);        
         // json output
         if ((empty($this->view->live_preview))) {
           $content_type = $this->displayHandler->getContentType();
@@ -210,27 +213,6 @@ class CustomSerializer extends Serializer {
         }      
       }
     }
-    // if(isset($request[4]) && !empty($request[4]))
-    // {            
-    //   if(strpos($request_uri, "taxonomies") !== false || $request[4] == "all"){
-    //     return "";
-    //   }
-    //   else
-    //   {
-    //     $groups = Group::loadMultiple(); 	
-    //     foreach($groups as $gid => $group) {
-    //       $id = $group->get('id')->getString();    
-    //       $gids[] = $id;      
-    //     } 
-    //     if(!in_array($request[4],$gids))
-    //     {
-    //       $respons_arr['status'] = 400;
-    //       $respons_arr['message'] = "Request country code is wrong";
-
-    //       return $respons_arr;
-    //     } 
-    //   }      
-    // }    
     return "";  
   }
 
@@ -401,14 +383,28 @@ class CustomSerializer extends Serializer {
         }  
         else if($vocabulary_machine_name === "child_age")
         {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
+          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                              
+          $age_bracket = $term_obj->get('field_age_bracket')->getValue();
+          $ageBracket = [];
+          foreach($age_bracket as $agekey => $agevalue)
+          {           
+            $ageBracket[] = $agevalue['target_id'];
+          }
+          if(!empty($ageBracket))
+          {
+            $age_bracket_arr = array_map(function($elem) { return intval($elem); }, $ageBracket);
+          }
+          else
+          {
+            $age_bracket_arr = [];
+          }
           $term_data[] = array(   
             'id' => (int)$term->tid,
             'name' => $term->name,        
             'days_from' => (int)$term_obj->get('field_days_from')->value,
             'days_to' => (int)$term_obj->get('field_days_to')->value,
             'buffers_days' => (int)$term_obj->get('field_buffers_days')->value,
-            'age_bracket' => $term_obj->get('field_age_bracket')->target_id           
+            'age_bracket' => $age_bracket_arr        
           );
         }   
         else if($vocabulary_machine_name === "growth_introductory")
@@ -440,15 +436,15 @@ class CustomSerializer extends Serializer {
             'name' => $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' => floatval($sd0),
-            'sd1' => floatval($sd1),
-            'sd2' => floatval($sd2),
-            'sd3' => floatval($sd3),
-            'sd4' => floatval($sd4),
-            'sd1neg' => floatval($sd1neg),
-            'sd2neg' => floatval($sd2neg),
-            'sd3neg' => floatval($sd3neg),
-            'sd4neg' => floatval($sd4neg)
+            'sd0' => (float) $sd0,
+            'sd1' => (float) $sd1,
+            'sd2' => (float) $sd2,
+            'sd3' => (float) $sd3,
+            'sd4' => (float) $sd4,
+            'sd1neg' => (float) $sd1neg,
+            'sd2neg' => (float) $sd2neg,
+            'sd3neg' => (float) $sd3neg,
+            'sd4neg' => (float) $sd4neg,
           );
         }
         else
