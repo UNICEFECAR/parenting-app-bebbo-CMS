@@ -32,7 +32,6 @@ class CustomStandardDeviation extends Serializer {
       $array_of_multiple_values = ["child_age"];
       $sd_weight_for_height_fields = ["goodText", "warrningSmallHeightText", "emergencySmallHeightText", "warrningBigHeightText", "emergencyBigHeightText"];
       $sd_height_for_age_fields = ["goodText", "warrningSmallLengthText", "emergencySmallLengthText", "warrningBigLengthText"];
-      $string_to_array_of_int = ["child_age", "articleID"];
 
       $rows = array();
       $data = array();    
@@ -101,10 +100,11 @@ class CustomStandardDeviation extends Serializer {
         {        
           $temp = "child_".$i;          
           $formatted_data = $this->custom_array_formatter($$temp[0]['child_age']);          
-          $sd_data['child_age'] = $formatted_data;
+          $sd_data['child_age'] = array_map(function($elem) { return intval($elem); }, $formatted_data);
           for($j = 0; $j < count($$temp); $j++)
           { 
-            $sd_field_data['articleID'] = $this->custom_array_formatter($$temp[$j]['pinned_article']);
+            $pinned_data = $this->custom_array_formatter($$temp[$j]['pinned_article']);
+            $sd_field_data['articleID'] = array_map(function($elem) { return intval($elem); }, $pinned_data);
             $sd_field_data['name'] = $$temp[$j]['title'];
             $sd_field_data['text'] = $$temp[$j]['body'];
             $sd_data[$sd_weight_for_height_fields[$j]] = $sd_field_data;
