@@ -13,7 +13,7 @@ bundle: milestone
 label: 'Child Age'
 description: 'Press Shift to select multiple values'
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

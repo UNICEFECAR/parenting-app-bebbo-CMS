@@ -20,8 +20,6 @@ dependencies:
     - field.storage.node.field_licensed_content
     - field.storage.node.field_mandatory_content
     - field.storage.node.field_milestone_instructions
-    - field.storage.node.field_notification_from
-    - field.storage.node.field_notification_to
     - field.storage.node.field_parent_gender
     - field.storage.node.field_pinned_article
     - field.storage.node.field_pinned_article_for_boy
@@ -2711,7 +2709,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/child-growth-data/%/%
+      path: api/child-growth-data/%
       pager:
         type: none
         options:
@@ -2796,44 +2794,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -2841,31 +2801,7 @@ display:
         filters: false
         filter_groups: false
         title: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:child_growth': 'group_node:child_growth'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -3370,7 +3306,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: ','
           field_api_classes: false
           plugin_id: field
         created:
@@ -3634,6 +3570,7 @@ display:
           1: AND
       auth: {  }
       title: 'Child Growth'
+      enabled: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -3657,7 +3594,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/health-checkup-data/%/%
+      path: api/health-checkup-data/%
       pager:
         type: none
         options:
@@ -3745,44 +3682,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -3790,31 +3689,7 @@ display:
         filters: false
         filter_groups: false
         title: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:health_check_ups': 'group_node:health_check_ups'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -4012,68 +3887,6 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        body:
-          id: body
-          table: node__body
-          field: body
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: text_default
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         field_growth_period:
           id: field_growth_period
           table: node__field_growth_period
@@ -4188,134 +4001,6 @@ display:
           type: entity_reference_entity_id
           settings: {  }
           group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_notification_from:
-          id: field_notification_from
-          table: node__field_notification_from
-          field: field_notification_from
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_notification_to:
-          id: field_notification_to
-          table: node__field_notification_to
-          field: field_notification_to
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4460,71 +4145,6 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-        field_mandatory_content:
-          id: field_mandatory_content
-          table: node__field_mandatory_content
-          field: field_mandatory_content
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: boolean
-            format_custom_true: ''
-            format_custom_false: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         status:
           value: '1'
@@ -4597,11 +4217,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_growth_period'
-        - 'config:field.storage.node.field_mandatory_content'
-        - 'config:field.storage.node.field_notification_from'
-        - 'config:field.storage.node.field_notification_to'
         - 'config:field.storage.node.field_pinned_article'
   rest_export_12:
     display_plugin: rest_export
@@ -4610,7 +4226,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/pinned-contents/%/%/vaccinations
+      path: api/pinned-contents/%/vaccinations
       pager:
         type: none
         options:
@@ -4684,7 +4300,7 @@ display:
           id: langcode
           table: node_field_data
           field: langcode
-          relationship: none
+          relationship: field_pinned_article
           group_type: group
           admin_label: ''
           default_action: default
@@ -4716,44 +4332,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -4765,30 +4343,6 @@ display:
         filters: false
         filter_groups: false
       relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
         field_pinned_article:
           id: field_pinned_article
           table: node__field_pinned_article
@@ -6048,7 +5602,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/activities/%/%
+      path: api/activities/%
       pager:
         type: none
         options:
@@ -6080,26 +5634,26 @@ display:
             body:
               alias: ''
               raw_output: false
-            field_child_age:
-              alias: child_age
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
             field_activity_category:
               alias: activity_category
               raw_output: false
             field_equipment:
               alias: equipment
               raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_related_articles:
-              alias: related_articles
-              raw_output: false
             field_type_of_support:
               alias: type_of_support
+              raw_output: false
+            field_child_age:
+              alias: child_age
+              raw_output: false
+            field_cover_image:
+              alias: cover_image
+              raw_output: false
+            field_related_articles:
+              alias: related_milestone
+              raw_output: false
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
       display_description: ''
       arguments:
@@ -6139,44 +5693,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -6184,31 +5700,7 @@ display:
         filters: false
         filter_groups: false
         title: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': 'group_node:activities'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -7129,7 +6621,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/surveys/%/%
+      path: api/surveys/%
       pager:
         type: none
         options:
@@ -7202,44 +6694,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -7247,31 +6701,7 @@ display:
         filters: false
         filter_groups: false
         title: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:survey': 'group_node:survey'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -7584,7 +7014,7 @@ display:
           settings:
             trim_length: 80
             url_only: true
-            url_plain: false
+            url_plain: true
             rel: '0'
             target: '0'
           group_column: ''
@@ -7813,7 +7243,7 @@ display:
     position: 19
     display_options:
       display_extenders: {  }
-      path: api/standard_deviation/%/%
+      path: api/standard_deviation/%
       filters:
         status:
           value: '1'
@@ -7919,44 +7349,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       style:
         type: pb_custom_standard_deviation
         options:
@@ -7983,6 +7375,9 @@ display:
               raw_output: false
             field_child_age:
               alias: child_age
+              raw_output: false
+            field_related_articles:
+              alias: pinned_article
               raw_output: false
       fields:
         nid:
@@ -8365,31 +7760,69 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
+        field_related_articles:
+          id: field_related_articles
+          table: node__field_related_articles
+          field: field_related_articles
           relationship: none
           group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:child_growth': 'group_node:child_growth'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
+      relationships: {  }
       pager:
         type: none
         options:
@@ -8424,6 +7857,7 @@ display:
         - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_growth_type'
+        - 'config:field.storage.node.field_related_articles'
         - 'config:field.storage.node.field_standard_deviation'
   rest_export_16:
     display_plugin: rest_export
@@ -8432,7 +7866,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/pinned-contents/%/%/child_development/girl
+      path: api/pinned-contents/%/child_development/41
       pager:
         type: none
         options:
@@ -8446,8 +7880,20 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: id
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
             created:
               alias: created_at
+              raw_output: false
+            changed:
+              alias: updated_at
               raw_output: false
             body:
               alias: ''
@@ -8455,47 +7901,35 @@ display:
             field_content_category:
               alias: category
               raw_output: false
-            changed:
-              alias: updated_at
-              raw_output: false
             field_child_age:
               alias: child_age
               raw_output: false
             field_child_gender:
               alias: child_gender
               raw_output: false
-            type:
-              alias: ''
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
-            field_cover_video:
-              alias: cover_video
-              raw_output: false
-            nid:
-              alias: id
+            field_parent_gender:
+              alias: parent_gender
               raw_output: false
             field_keywords:
               alias: keywords
               raw_output: false
+            field_related_articles:
+              alias: related_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
-              raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_parent_gender:
-              alias: parent_gender
               raw_output: false
             field_premature_content:
               alias: premature
               raw_output: false
-            field_related_articles:
-              alias: related_articles
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
-            title:
-              alias: ''
+            field_cover_video:
+              alias: cover_video
+              raw_output: false
+            field_cover_video_1:
+              alias: cover_image
               raw_output: false
       display_description: ''
       arguments:
@@ -8503,7 +7937,7 @@ display:
           id: langcode
           table: node_field_data
           field: langcode
-          relationship: none
+          relationship: field_pinned_article_for_girl
           group_type: group
           admin_label: ''
           default_action: default
@@ -8535,44 +7969,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -8584,39 +7980,6 @@ display:
         filters: false
         filter_groups: false
       relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
-        field_pinned_article_for_boy:
-          id: field_pinned_article_for_boy
-          table: node__field_pinned_article_for_boy
-          field: field_pinned_article_for_boy
-          relationship: none
-          group_type: group
-          admin_label: 'field_pinned_article_for_boy: Content'
-          required: false
-          plugin_id: standard
         field_pinned_article_for_girl:
           id: field_pinned_article_for_girl
           table: node__field_pinned_article_for_girl
@@ -9329,10 +8692,72 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-        field_cover_image:
-          id: field_cover_image
-          table: node__field_cover_image
-          field: field_cover_image
+        field_cover_video:
+          id: field_cover_video
+          table: node__field_cover_video
+          field: field_cover_video
+          relationship: field_pinned_article_for_girl
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_cover_video_1:
+          id: field_cover_video_1
+          table: node__field_cover_video
+          field: field_cover_video
           relationship: field_pinned_article_for_girl
           group_type: group
           admin_label: ''
@@ -9340,7 +8765,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_cover_image__target_id }}'
+            text: '{{ field_cover_video_1__target_id }}'
             make_link: false
             path: ''
             absolute: false
@@ -9737,7 +9162,7 @@ display:
         - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_child_gender'
         - 'config:field.storage.node.field_content_category'
-        - 'config:field.storage.node.field_cover_image'
+        - 'config:field.storage.node.field_cover_video'
         - 'config:field.storage.node.field_keywords'
         - 'config:field.storage.node.field_licensed_content'
         - 'config:field.storage.node.field_mandatory_content'
@@ -9751,7 +9176,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/pinned-contents/%/%/health_check_ups
+      path: api/pinned-contents/%/health_check_ups
       pager:
         type: none
         options:
@@ -9825,7 +9250,7 @@ display:
           id: langcode
           table: node_field_data
           field: langcode
-          relationship: none
+          relationship: field_pinned_article
           group_type: group
           admin_label: ''
           default_action: default
@@ -9857,44 +9282,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -9906,30 +9293,6 @@ display:
         filters: false
         filter_groups: false
       relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
         field_pinned_article:
           id: field_pinned_article
           table: node__field_pinned_article
@@ -11189,7 +10552,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/pinned-contents/%/%/child_growth
+      path: api/pinned-contents/%/child_growth
       pager:
         type: none
         options:
@@ -11263,7 +10626,7 @@ display:
           id: langcode
           table: node_field_data
           field: langcode
-          relationship: none
+          relationship: field_related_articles
           group_type: group
           admin_label: ''
           default_action: default
@@ -11295,44 +10658,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -11344,30 +10669,6 @@ display:
         filters: false
         filter_groups: false
       relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
         field_related_articles:
           id: field_related_articles
           table: node__field_related_articles
@@ -12627,7 +11928,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/pinned-contents/%/%/child_development/boy
+      path: api/pinned-contents/%/child_development/40
       pager:
         type: none
         options:
@@ -12641,8 +11942,20 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: id
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
             created:
               alias: created_at
+              raw_output: false
+            changed:
+              alias: updated_at
               raw_output: false
             body:
               alias: ''
@@ -12650,47 +11963,35 @@ display:
             field_content_category:
               alias: category
               raw_output: false
-            changed:
-              alias: updated_at
-              raw_output: false
             field_child_age:
               alias: child_age
               raw_output: false
             field_child_gender:
               alias: child_gender
               raw_output: false
-            type:
-              alias: ''
-              raw_output: false
-            field_cover_image:
-              alias: cover_image
-              raw_output: false
-            field_cover_video:
-              alias: cover_video
-              raw_output: false
-            nid:
-              alias: id
+            field_parent_gender:
+              alias: parent_gender
               raw_output: false
             field_keywords:
               alias: keywords
               raw_output: false
+            field_related_articles:
+              alias: related_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
-              raw_output: false
-            field_mandatory_content:
-              alias: mandatory
-              raw_output: false
-            field_parent_gender:
-              alias: parent_gender
               raw_output: false
             field_premature_content:
               alias: premature
               raw_output: false
-            field_related_articles:
-              alias: related_articles
+            field_mandatory_content:
+              alias: mandatory
               raw_output: false
-            title:
-              alias: ''
+            field_cover_video:
+              alias: cover_video
+              raw_output: false
+            field_cover_video_1:
+              alias: cover_image
               raw_output: false
       display_description: ''
       arguments:
@@ -12698,7 +11999,7 @@ display:
           id: langcode
           table: node_field_data
           field: langcode
-          relationship: none
+          relationship: field_pinned_article_for_boy
           group_type: group
           admin_label: ''
           default_action: default
@@ -12730,44 +12031,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -12779,30 +12042,6 @@ display:
         filters: false
         filter_groups: false
       relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
         field_pinned_article_for_boy:
           id: field_pinned_article_for_boy
           table: node__field_pinned_article_for_boy
@@ -13515,10 +12754,72 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
-        field_cover_image:
-          id: field_cover_image
-          table: node__field_cover_image
-          field: field_cover_image
+        field_cover_video:
+          id: field_cover_video
+          table: node__field_cover_video
+          field: field_cover_video
+          relationship: field_pinned_article_for_boy
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_cover_video_1:
+          id: field_cover_video_1
+          table: node__field_cover_video
+          field: field_cover_video
           relationship: field_pinned_article_for_boy
           group_type: group
           admin_label: ''
@@ -13526,7 +12827,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_cover_image__target_id }}'
+            text: '{{ field_cover_video_1__target_id }}'
             make_link: false
             path: ''
             absolute: false
@@ -13923,7 +13224,7 @@ display:
         - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_child_gender'
         - 'config:field.storage.node.field_content_category'
-        - 'config:field.storage.node.field_cover_image'
+        - 'config:field.storage.node.field_cover_video'
         - 'config:field.storage.node.field_keywords'
         - 'config:field.storage.node.field_licensed_content'
         - 'config:field.storage.node.field_mandatory_content'
@@ -13937,7 +13238,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/articles/%/%
+      path: api/articles/%
       pager:
         type: none
         options:
@@ -14043,44 +13344,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
         field_child_age_target_id:
           id: field_child_age_target_id
           table: node__field_child_age
@@ -14192,6 +13455,43 @@ display:
           break_phrase: true
           not: false
           plugin_id: numeric
+        field_content_category_target_id:
+          id: field_content_category_target_id
+          table: node__field_content_category
+          field: field_content_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: query_parameter
+          default_argument_options:
+            query_param: category
+            fallback: all
+            multiple: and
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: true
+          not: false
+          plugin_id: numeric
       defaults:
         arguments: false
         relationships: false
@@ -14199,31 +13499,9 @@ display:
         group_by: false
         query: false
         access: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:article': 'group_node:article'
-            'group_node:activities': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+        filters: false
+        filter_groups: false
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -15262,6 +14540,37 @@ display:
         type: perm
         options:
           perm: 'access content'
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            article: article
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -15290,7 +14599,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/video-articles/%/%
+      path: api/video-articles/%
       pager:
         type: none
         options:
@@ -15399,75 +14708,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         fields: false
         filters: false
         filter_groups: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:video_article': 'group_node:video_article'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -16643,7 +15890,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/basic-pages/%/%
+      path: api/basic-pages/%
       pager:
         type: none
         options:
@@ -16749,44 +15996,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
@@ -16794,31 +16003,7 @@ display:
         filters: false
         filter_groups: false
         query: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:page': 'group_node:page'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -17366,7 +16551,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/faqs/%/%
+      path: api/faqs/%
       pager:
         type: none
         options:
@@ -17399,10 +16584,10 @@ display:
               alias: ''
               raw_output: false
             field_chatbot_child_age:
-              alias: child_age
+              alias: chatbot_child_age
               raw_output: false
             field_content_category:
-              alias: category
+              alias: chatbot_sub_category
               raw_output: false
             field_mandatory_content:
               alias: mandatory
@@ -17445,75 +16630,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         filters: false
         filter_groups: false
         fields: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:faq': 'group_node:faq'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       filters:
         status:
           value: '1'
@@ -18178,7 +17301,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/daily-homescreen-messages/%/%
+      path: api/daily-homescreen-messages/%
       pager:
         type: none
         options:
@@ -18284,75 +17407,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         fields: false
         filters: false
         filter_groups: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:daily_homescreen_messages': 'group_node:daily_homescreen_messages'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -18762,7 +17823,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/milestones/%/%
+      path: api/milestones/%
       pager:
         type: none
         options:
@@ -18844,75 +17905,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         fields: false
         filters: false
         filter_groups: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:milestone': 'group_node:milestone'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -19640,7 +18639,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/child-development-data/%/%
+      path: api/child-development-data/%
       pager:
         type: none
         options:
@@ -19670,10 +18669,10 @@ display:
               alias: child_age
               raw_output: false
             field_pinned_article_for_boy:
-              alias: boy_article
+              alias: boy_video_article
               raw_output: false
             field_pinned_article_for_girl:
-              alias: girl_article
+              alias: girl_video_article
               raw_output: false
             field_milestone_instructions:
               alias: milestone
@@ -19725,76 +18724,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         fields: false
         filters: false
         filter_groups: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:child_development': 'group_node:child_development'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:translatable_node': '0'
-            'group_node:vaccinations': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid
@@ -19991,68 +18927,6 @@ display:
           field_api_classes: false
           entity_type: node
           entity_field: title
-          plugin_id: field
-        body:
-          id: body
-          table: node__body
-          field: body
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: text_default
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
           plugin_id: field
         field_activity_child_age:
           id: field_activity_child_age
@@ -20572,7 +19446,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.body'
         - 'config:field.storage.node.field_activity_child_age'
         - 'config:field.storage.node.field_mandatory_content'
         - 'config:field.storage.node.field_milestone_instructions'
@@ -20585,7 +19458,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: api/vaccinations/%/%
+      path: api/vaccinations/%
       pager:
         type: none
         options:
@@ -20658,76 +19531,13 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        gid:
-          id: gid
-          table: group_content_field_data
-          field: gid
-          relationship: group_content
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: raw
-          default_argument_options:
-            index: 3
-            use_alias: false
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: group_id
       defaults:
         arguments: false
         relationships: false
         fields: false
         filters: false
         filter_groups: false
-      relationships:
-        group_content:
-          id: group_content
-          table: node_field_data
-          field: group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Content group content'
-          required: false
-          group_content_plugins:
-            'group_node:vaccinations': 'group_node:vaccinations'
-            'group_node:activities': '0'
-            'group_node:article': '0'
-            'group_node:chatbot': '0'
-            'group_node:child_development': '0'
-            'group_node:child_growth': '0'
-            'group_node:daily_homescreen_messages': '0'
-            'group_node:faq': '0'
-            'group_node:health_check_ups': '0'
-            'group_node:milestone': '0'
-            'group_node:page': '0'
-            'group_node:survey': '0'
-            'group_node:translatable_node': '0'
-            'group_node:video_article': '0'
-          entity_type: node
-          plugin_id: group_content_to_entity_reverse
+      relationships: {  }
       fields:
         nid:
           id: nid

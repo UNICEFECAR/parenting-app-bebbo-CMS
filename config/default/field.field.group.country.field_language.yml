@@ -17,7 +17,7 @@ entity_type: group
 bundle: country
 label: 'Country Language'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

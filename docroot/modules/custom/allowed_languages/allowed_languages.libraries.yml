@@ -1,0 +1,7 @@
+user:
+  js:
+    js/user.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once

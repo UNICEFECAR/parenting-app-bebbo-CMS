@@ -8,8 +8,10 @@ dependencies:
     - field.field.group.country.field_country_sponsor_logo
     - field.field.group.country.field_language
     - field.field.group.country.field_make_available_for_mobile
+    - field.field.group.country.field_master_language
     - group.type.country
   module:
+    - languagefield
     - options
 id: group.country.default
 targetEntityType: group
@@ -59,6 +61,16 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    region: content
+  field_master_language:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+      format:
+        name: name
+    third_party_settings: {  }
+    type: languagefield_default
     region: content
   label:
     label: hidden

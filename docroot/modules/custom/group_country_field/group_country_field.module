@@ -47,38 +47,55 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
       return $form;
     }
   }
-}
+  if($form['#id'] == "tmgmt-job-item-edit-form"){
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    $roles_permissions = user_role_permissions($user_roles);    
 
-function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+    $new_default_state = array("review_after_translation" => "Review_after_translation");
 
-      if ($view->id() == 'global_content_listing') {  
+    if(!empty($roles_permissions['global_admin'])){      
+      if (in_array("administer nodes", $roles_permissions['global_admin'])) {
 
-        $currentAccount = \Drupal::currentUser();
-        $cur_user_roles = $currentAccount->getRoles();
-        $authorized_roles = array('se','sme','editor','reviewer');
-      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0){
-          $type = array('0' => 'article', '1' => 'video_article');
-
-          $configuration = array(
-          'type'       => 'LEFT',
-          'table'      => 'node__field_licensed_content',
-          'field'      => 'entity_id',
-          'left_table' => 'node_field_data',
-          'left_field' => 'nid',
-          'operator'   => '=',
-          'extra' => array(
-           array('table' => 'node_field_data','field' => 'type', 'value' => $type, 'operator' => 'IN'),
-           array('field' => 'field_licensed_content_value', 'value' => 0, 'operator' => '='),
-           ),
-        );
-
-        $join = \Drupal\views\Views::pluginManager('join')
-          ->createInstance('standard', $configuration);
-        $rel = $query->addRelationship('l', $join, 'node_field_data');
-        $query->addTable('node__field_licensed_content', $rel, $join, 'l');        
-        $query->addWhere(0, 'node_field_data.status', 1, '=');
+        $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];    
+       }      
+    }
+     else{
+        $form['moderation_state']['new_state']['#options'] = $new_default_state;
       }
-
    }
-          
 }
+
+// function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+
+//       if ($view->id() == 'global_content_listing') {  
+
+//         $currentAccount = \Drupal::currentUser();
+//         $cur_user_roles = $currentAccount->getRoles();
+//         $authorized_roles = array('se','sme','editor','reviewer');
+//       if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0){
+//           $type = array('0' => 'article', '1' => 'video_article');
+
+//           $configuration = array(
+//           'type'       => 'LEFT',
+//           'table'      => 'node__field_licensed_content',
+//           'field'      => 'entity_id',
+//           'left_table' => 'node_field_data',
+//           'left_field' => 'nid',
+//           'operator'   => '=',
+//           'extra' => array(
+//            array('table' => 'node_field_data','field' => 'type', 'value' => $type, 'operator' => 'IN'),
+//            array('field' => 'field_licensed_content_value', 'value' => 0, 'operator' => '='),
+//            ),
+//         );
+
+//         $join = \Drupal\views\Views::pluginManager('join')
+//           ->createInstance('standard', $configuration);
+//         $rel = $query->addRelationship('l', $join, 'node_field_data');
+//         $query->addTable('node__field_licensed_content', $rel, $join, 'l');        
+//         $query->addWhere(0, 'node_field_data.status', 1, '=');
+//       }
+
+//    }
+          
+// }

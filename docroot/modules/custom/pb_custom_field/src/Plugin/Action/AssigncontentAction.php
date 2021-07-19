@@ -17,6 +17,8 @@ use Drupal\group\Entity\Group;
 use \Drupal\group\Entity\GroupContent;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+
+use Drupal\group\Entity;
 /**
  * Action description.
  *
@@ -35,7 +37,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   use StringTranslationTrait;
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-   
+    
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
@@ -174,19 +176,28 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
     $countryoption = $this->configuration['country_option'];
     if(!empty($langoption) && !empty($countryoption) ) {
        $current_language = $entity->get('langcode')->value;
-       if($current_language != $langoption)
+       $nid = $entity->get('nid')->getString();
+       $node = node_load($nid);
+       /* check the translation available in this content */
+       if(!$node->hasTranslation($langoption))
        {
-        $nid = $entity->get('nid')->getString();
-        $node = node_load($nid);
-        $node_es = $node->addTranslation($langoption, $node->toArray());
+        $node_lang = $node->getTranslation($current_language);
+        $node_es = $node->addTranslation($langoption, $node_lang->toArray());
         $node_es->set('moderation_state', 'draft');
+        $node_es->set('langcode',$langoption);
         $node->save();
+       }
+       else
+       {
+        /* if the translated content available check the content available in group */
         $etype = $node->getType();
         $pluginId = 'group_node:' .$etype;
         $group = Group::load($countryoption);
-        $group->addContent($node, $pluginId);
-        return $this->t('Content assigned to country');
+        $grp_obj = $group->getContentByEntityId($pluginId,$nid);
+        $alexists_langcode = false;
        }
+       $message = "Content assigned to country";
+       return $this->t($message);
     }
   }
 

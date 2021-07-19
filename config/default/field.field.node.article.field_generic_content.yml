@@ -12,7 +12,7 @@ bundle: article
 label: 'Generic Content'
 description: 'To Specify this content is generic to all country'
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0

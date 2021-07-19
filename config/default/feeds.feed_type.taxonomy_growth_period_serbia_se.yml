@@ -4,13 +4,12 @@ status: true
 dependencies:
   config:
     - core.base_field_override.taxonomy_term.growth_period.name
-    - field.field.taxonomy_term.growth_period.field_vaccination_opens
     - taxonomy.vocabulary.growth_period
   module:
     - taxonomy
 id: taxonomy_growth_period_serbia_se
-label: 'Taxonomy - Growth Period - Serbia Serbian'
-description: 'Taxonomy - Growth Period - Serbia Serbian'
+label: 'Taxonomy - Growth Period - Language'
+description: 'Growth Period - Language'
 help: ''
 import_period: -1
 fetcher: upload
@@ -24,7 +23,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: rs-sr
+  langcode: uz-uz
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -55,31 +54,26 @@ custom_sources:
     label: Language_code
     value: Language_code
     machine_name: language_code
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  title:
+    label: Title
+    value: Title
+    machine_name: title
 mappings:
   -
     target: tid
     map:
-      value: term_id
+      value: id
     unique:
       value: '1'
     settings: {  }
   -
     target: name
     map:
-      value: term_name
+      value: title
     unique: {  }
     settings:
-      language: rs-sr
-  -
-    target: field_vaccination_opens
-    map:
-      value: vaccination_opens
-    unique: {  }
-    settings:
-      language: rs-sr
-  -
-    target: weight
-    map:
-      value: weight
-    unique: {  }
-    settings: {  }
+      language: uz-uz

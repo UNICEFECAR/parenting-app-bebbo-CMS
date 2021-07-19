@@ -1,0 +1,79 @@
+uuid: bff87d57-e487-4500-a236-2e74e6a7db9c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.growth_introductory.description
+    - core.base_field_override.taxonomy_term.growth_introductory.name
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - taxonomy
+id: taxonomy_growth_introductory_lan
+label: 'Taxonomy - Growth Introductory - Language'
+description: 'Growth Introductory - Language'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: uz-uz
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: growth_introductory
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  body:
+    label: body
+    value: body
+    machine_name: body
+  days_from:
+    label: days_from
+    value: days_from
+    machine_name: days_from
+  days_to:
+    label: days_to
+    value: days_to
+    machine_name: days_to
+mappings:
+  -
+    target: tid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: title
+    unique: {  }
+    settings:
+      language: uz-uz
+  -
+    target: description
+    map:
+      value: body
+    settings:
+      language: uz-uz
+      format: plain_text

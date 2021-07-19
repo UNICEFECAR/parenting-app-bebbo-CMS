@@ -11,4 +11,17 @@ internal: true
 audience: outsider
 group_type: country
 permissions_ui: true
-permissions: {  }
+permissions:
+  - 'view group'
+  - 'view group_node:activities entity'
+  - 'view group_node:article entity'
+  - 'view group_node:child_development entity'
+  - 'view group_node:child_growth entity'
+  - 'view group_node:daily_homescreen_messages entity'
+  - 'view group_node:faq entity'
+  - 'view group_node:health_check_ups entity'
+  - 'view group_node:milestone entity'
+  - 'view group_node:page entity'
+  - 'view group_node:survey entity'
+  - 'view group_node:vaccinations entity'
+  - 'view group_node:video_article entity'

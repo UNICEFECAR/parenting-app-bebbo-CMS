@@ -8,8 +8,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_parents_gender_serbia_s
-label: 'Taxonomy - Parents Gender - serbia-serbian'
-description: 'Taxonomy - Parents Gender - serbia-serbian'
+label: 'Taxonomy - Parents Gender - Language'
+description: 'Parents Gender - Language'
 help: ''
 import_period: -1
 fetcher: upload

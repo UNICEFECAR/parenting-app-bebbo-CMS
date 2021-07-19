@@ -38,7 +38,7 @@ class CustomRestResource extends ResourceBase {
 		if(!empty($result))
 		{
 			$response_array['status'] = 200;
-			$response_array['flag'] = $result[0]->flag;
+			$response_array['flag'] = (int)$result[0]->flag;
 			$response_array['updated_at'] = $result[0]->updated_at;							
 		}													
 		else 
