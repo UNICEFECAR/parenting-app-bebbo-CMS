@@ -421,30 +421,30 @@ class CustomSerializer extends Serializer {
         else if($vocabulary_machine_name === "standard_deviation")
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
-          $sd0 = $term_obj->get('field_sd0')->value;
-          $sd1 = $term_obj->get('field_sd1')->value;
-          $sd2 = $term_obj->get('field_sd2')->value;
-          $sd3 = $term_obj->get('field_sd3')->value;
-          $sd4 = $term_obj->get('field_sd4')->value;
-          $sd1neg = $term_obj->get('field_sd1neg')->value;
-          $sd2neg = $term_obj->get('field_sd2neg')->value;
-          $sd3neg = $term_obj->get('field_sd3neg')->value;
-          $sd4neg = $term_obj->get('field_sd4neg')->value;
+          $sd0 = (float)$term_obj->get('field_sd0')->value;
+          $sd1 = (float)$term_obj->get('field_sd1')->value;
+          $sd2 = (float)$term_obj->get('field_sd2')->value;
+          $sd3 = (float)$term_obj->get('field_sd3')->value;
+          $sd4 = (float)$term_obj->get('field_sd4')->value;
+          $sd1neg = (float)$term_obj->get('field_sd1neg')->value;
+          $sd2neg = (float)$term_obj->get('field_sd2neg')->value;
+          $sd3neg = (float)$term_obj->get('field_sd3neg')->value;
+          $sd4neg = (float)$term_obj->get('field_sd4neg')->value;
           
           $term_data[] = array(     
             'id' => (int)$term->tid,
             'name' => $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' => (float) $sd0,
-            'sd1' => (float) $sd1,
-            'sd2' => (float) $sd2,
-            'sd3' => (float) $sd3,
-            'sd4' => (float) $sd4,
-            'sd1neg' => (float) $sd1neg,
-            'sd2neg' => (float) $sd2neg,
-            'sd3neg' => (float) $sd3neg,
-            'sd4neg' => (float) $sd4neg,
+            'sd0' =>  round($sd0, 3),
+            'sd1' => round($sd1, 3),
+            'sd2' => round($sd2, 3),
+            'sd3' => round($sd3, 3),
+            'sd4' => round($sd4, 3),
+            'sd1neg' => round($sd1neg, 3),
+            'sd2neg' => round($sd2neg, 3),
+            'sd3neg' => round($sd3neg, 3),
+            'sd4neg' => round($sd4neg, 3),
           );
         }
         else
