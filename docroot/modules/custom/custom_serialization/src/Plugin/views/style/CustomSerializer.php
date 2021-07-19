@@ -47,6 +47,7 @@ class CustomSerializer extends Serializer {
       $site = '';
       $thumbnail_url = '';    
       $field_formatter = array();    
+      $uniques = [];
       if(isset($this->view->result) && !empty($this->view->result))
       {    
         foreach ($this->view->result as $row_index => $row) {
@@ -142,11 +143,23 @@ class CustomSerializer extends Serializer {
             $rows['status'] = 200;
           }        
           else
-          {            
-            $data[] = $rendered_data;            
-            $rows['status'] = 200;
-            // To get total no of records
-            $rows['total'] = count($data);
+          {       
+            //error_log("data =>".print_r($rendered_data, true));
+            $rows['status'] = 200;     
+            if(strpos($request_uri, "pinned-contents") !== false){          
+              if(!in_array($rendered_data['id'], $uniques)){
+                $uniques[] = $rendered_data['id'];
+                $data[] = $rendered_data; 
+              }              
+              // To get total no of records
+              $rows['total'] = count($data);          
+            }
+            else
+            {
+              $data[] = $rendered_data;  
+              // To get total no of records
+              $rows['total'] = count($data);          
+            }                                    
           }
         }    
     
