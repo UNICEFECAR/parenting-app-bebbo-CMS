@@ -1,24 +1,24 @@
-uuid: 1253c680-c65c-4452-b7cf-a2c61439d00e
+uuid: 78e199e3-3f75-43cd-824a-4fc219dc812d
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_related_articles
     - node.type.article
-    - node.type.child_growth
+    - node.type.milestone
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.child_growth.field_related_articles
+id: node.milestone.field_related_articles
 field_name: field_related_articles
 entity_type: node
-bundle: child_growth
-label: 'Pinned Articles'
+bundle: milestone
+label: 'Related Articles'
 description: ''
-required: true
-translatable: false
+required: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -30,5 +30,5 @@ settings:
       field: title
       direction: ASC
     auto_create: false
-    auto_create_bundle: article
+    auto_create_bundle: ''
 field_type: entity_reference

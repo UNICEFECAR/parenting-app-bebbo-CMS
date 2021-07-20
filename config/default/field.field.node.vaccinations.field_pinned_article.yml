@@ -6,7 +6,11 @@ dependencies:
     - field.storage.node.field_pinned_article
     - node.type.article
     - node.type.vaccinations
-    - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.vaccinations.field_pinned_article
 field_name: field_pinned_article
 entity_type: node
@@ -14,7 +18,7 @@ bundle: vaccinations
 label: 'Pinned Article'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -22,9 +26,9 @@ settings:
   handler_settings:
     target_bundles:
       article: article
-      video_article: video_article
     sort:
-      field: _none
+      field: title
+      direction: ASC
     auto_create: false
     auto_create_bundle: article
 field_type: entity_reference
