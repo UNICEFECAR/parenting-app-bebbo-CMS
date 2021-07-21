@@ -1,0 +1,9 @@
+uuid: aae4f812-4299-4edc-8c32-9737139c8902
+langcode: en
+status: true
+dependencies: {  }
+id: me-cnr
+label: Montenegro-Montenegrin
+direction: ltr
+weight: 16
+locked: false

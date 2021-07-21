@@ -1,0 +1,14 @@
+uuid: 9c3abe4b-2725-4850-8749-2d092c86a52d
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-anonymous
+label: Anonymous
+weight: -102
+internal: true
+audience: anonymous
+group_type: country
+permissions_ui: true
+permissions: {  }

@@ -1,0 +1,20 @@
+uuid: 62b79369-6c29-4066-9925-46fa6c7ad15f
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-activities
+  module:
+    - path
+id: group_content.country-group_node-activities.path
+field_name: path
+entity_type: group_content
+bundle: country-group_node-activities
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

@@ -1,0 +1,31 @@
+uuid: 92320c19-dec2-44ba-8ad3-e63345477d43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.chatbot_category.field_content_category
+    - taxonomy.vocabulary.chatbot_category
+  module:
+    - text
+id: taxonomy_term.chatbot_category.default
+targetEntityType: taxonomy_term
+bundle: chatbot_category
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_content_category:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  langcode: true

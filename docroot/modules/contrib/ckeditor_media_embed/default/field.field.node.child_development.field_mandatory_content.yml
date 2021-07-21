@@ -1,0 +1,23 @@
+uuid: bcd80f0f-d064-4826-9bf8-2fa319e71f24
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.child_development
+id: node.child_development.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: child_development
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

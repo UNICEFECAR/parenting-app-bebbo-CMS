@@ -1,0 +1,73 @@
+uuid: c8469ce9-78de-4054-99b4-7680ee87384a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.chatbot_child_age.field_days_from
+    - field.field.taxonomy_term.chatbot_child_age.field_days_to
+    - field.field.taxonomy_term.chatbot_child_age.field_period
+    - taxonomy.vocabulary.chatbot_child_age
+  module:
+    - path
+id: taxonomy_term.chatbot_child_age.default
+targetEntityType: taxonomy_term
+bundle: chatbot_child_age
+mode: default
+content:
+  field_days_from:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_days_to:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_period:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 7
+    region: content
+    third_party_settings: {  }
+  translation:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true

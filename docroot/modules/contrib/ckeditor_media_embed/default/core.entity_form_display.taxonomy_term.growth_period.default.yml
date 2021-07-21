@@ -1,0 +1,57 @@
+uuid: 099600ad-f20d-4451-a10f-d3a7649ce56c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_period.feeds_item
+    - field.field.taxonomy_term.growth_period.field_days_from
+    - field.field.taxonomy_term.growth_period.field_days_to
+    - field.field.taxonomy_term.growth_period.field_vaccination_opens
+    - taxonomy.vocabulary.growth_period
+  module:
+    - path
+id: taxonomy_term.growth_period.default
+targetEntityType: taxonomy_term
+bundle: growth_period
+mode: default
+content:
+  field_vaccination_opens:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+hidden:
+  description: true
+  feeds_item: true
+  field_days_from: true
+  field_days_to: true

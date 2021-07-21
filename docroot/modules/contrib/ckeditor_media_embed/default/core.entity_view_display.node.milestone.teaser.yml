@@ -1,0 +1,39 @@
+uuid: 9df0ccf0-35ae-4931-ba36-57e31799de83
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.milestone.body
+    - field.field.node.milestone.field_child_age
+    - field.field.node.milestone.field_mandatory_content
+    - field.field.node.milestone.field_related_activities
+    - field.field.node.milestone.field_related_video_articles
+    - node.type.milestone
+  module:
+    - text
+    - user
+id: node.milestone.teaser
+targetEntityType: node
+bundle: milestone
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_child_age: true
+  field_mandatory_content: true
+  field_related_activities: true
+  field_related_video_articles: true
+  langcode: true

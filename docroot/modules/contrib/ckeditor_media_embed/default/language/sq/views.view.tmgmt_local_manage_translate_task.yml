@@ -1,0 +1,72 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      fields:
+        title:
+          label: Title
+  assigned:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  closed:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  completed:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  pending:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  rejected:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  unassigned:
+    display_options:
+      fields:
+        title:
+          label: Title
+        operations:
+          label: Operations
