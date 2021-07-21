@@ -1,0 +1,17 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
+      filters:
+        langcode:
+          expose:
+            label: Language
+  widget_table:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: 'Умањени приказ'
+        uid:
+          label: Author

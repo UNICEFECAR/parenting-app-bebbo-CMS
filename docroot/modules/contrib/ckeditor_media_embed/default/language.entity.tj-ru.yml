@@ -1,0 +1,9 @@
+uuid: 71784e94-a7eb-49d9-baff-992b11fefefe
+langcode: en
+status: true
+dependencies: {  }
+id: tj-ru
+label: Tajikistan-Russian
+direction: ltr
+weight: 20
+locked: false

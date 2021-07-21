@@ -75,9 +75,9 @@ class CustomSerializer extends Serializer {
           //Add unique field to Basic page API
           if(strpos($request_uri, "basic-pages") !== false && $rendered_data['type'] === "Basic page")
           {
-            $query = db_select('node_field_data')
-            ->condition('nid', $rendered_data['id'])
-            ->fields('node_field_data');
+            $query = \Drupal::database()->select('node_field_data');
+            $query->condition('nid', $rendered_data['id']);
+            $query->fields('node_field_data');
             $result = $query->execute()->fetchAll();
             for($i = 0; $i < count($result); $i++)
             {            
@@ -438,30 +438,30 @@ class CustomSerializer extends Serializer {
         else if($vocabulary_machine_name === "standard_deviation")
         {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term->tid);                                    
-          $sd0 = (float)$term_obj->get('field_sd0')->value;
-          $sd1 = (float)$term_obj->get('field_sd1')->value;
-          $sd2 = (float)$term_obj->get('field_sd2')->value;
-          $sd3 = (float)$term_obj->get('field_sd3')->value;
-          $sd4 = (float)$term_obj->get('field_sd4')->value;
-          $sd1neg = (float)$term_obj->get('field_sd1neg')->value;
-          $sd2neg = (float)$term_obj->get('field_sd2neg')->value;
-          $sd3neg = (float)$term_obj->get('field_sd3neg')->value;
-          $sd4neg = (float)$term_obj->get('field_sd4neg')->value;
+          $sd0 = $term_obj->get('field_sd0')->value;
+          $sd1 = $term_obj->get('field_sd1')->value;
+          $sd2 = $term_obj->get('field_sd2')->value;
+          $sd3 = $term_obj->get('field_sd3')->value;
+          $sd4 = $term_obj->get('field_sd4')->value;
+          $sd1neg = $term_obj->get('field_sd1neg')->value;
+          $sd2neg = $term_obj->get('field_sd2neg')->value;
+          $sd3neg = $term_obj->get('field_sd3neg')->value;
+          $sd4neg = $term_obj->get('field_sd4neg')->value;
           
           $term_data[] = array(     
             'id' => (int)$term->tid,
-            'name' => (float)$term->name,      
+            'name' => (double) $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' =>  round($sd0, 3),
-            'sd1' => round($sd1, 3),
-            'sd2' => round($sd2, 3),
-            'sd3' => round($sd3, 3),
-            'sd4' => round($sd4, 3),
-            'sd1neg' => round($sd1neg, 3),
-            'sd2neg' => round($sd2neg, 3),
-            'sd3neg' => round($sd3neg, 3),
-            'sd4neg' => round($sd4neg, 3),
+            'sd0' =>  (double) round($sd0, 3),
+            'sd1' => (double) round($sd1, 3),
+            'sd2' => (double) round($sd2, 3),
+            'sd3' => (double) round($sd3, 3),
+            'sd4' => (double) round($sd4, 3),
+            'sd1neg' => (double) round($sd1neg, 3),
+            'sd2neg' => (double) round($sd2neg, 3),
+            'sd3neg' => (double) round($sd3neg, 3),
+            'sd4neg' => (double) round($sd4neg, 3),
           );
         }
         else

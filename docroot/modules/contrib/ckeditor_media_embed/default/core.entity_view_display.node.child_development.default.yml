@@ -1,0 +1,130 @@
+uuid: 85e46be1-8d3b-4eef-ac35-a975eaad7899
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.child_development.body
+    - field.field.node.child_development.field_activity_child_age
+    - field.field.node.child_development.field_home_message_after_end
+    - field.field.node.child_development.field_home_message_after_start
+    - field.field.node.child_development.field_home_message_before_end
+    - field.field.node.child_development.field_home_message_before_start
+    - field.field.node.child_development.field_mandatory_content
+    - field.field.node.child_development.field_milestone_instructions
+    - field.field.node.child_development.field_pinned_article_for_boy
+    - field.field.node.child_development.field_pinned_article_for_girl
+    - node.type.child_development
+  module:
+    - text
+    - user
+id: node.child_development.default
+targetEntityType: node
+bundle: child_development
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_activity_child_age:
+    weight: 111
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_home_message_after_end:
+    weight: 109
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_home_message_after_start:
+    weight: 110
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_home_message_before_end:
+    weight: 108
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_home_message_before_start:
+    weight: 107
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_mandatory_content:
+    weight: 106
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_milestone_instructions:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_pinned_article_for_boy:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_pinned_article_for_girl:
+    weight: 104
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  feeds_item: true
+  field_child_age: true
+  langcode: true

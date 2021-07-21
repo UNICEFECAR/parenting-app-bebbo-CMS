@@ -1,0 +1,94 @@
+uuid: 86782423-4338-42eb-9ebc-2db9adeea5fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user_import
+label: 'User Import'
+description: 'User Import Through CSV'
+help: ''
+import_period: 0
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:user'
+processor_configuration:
+  langcode: en
+  update_existing: 0
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  owner_id: 0
+  values: {  }
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  email:
+    label: Email
+    value: Email
+    machine_name: email
+  user_name:
+    label: 'User Name'
+    value: 'User Name'
+    machine_name: user_name
+  password:
+    label: password
+    value: password
+    machine_name: password
+  roles:
+    label: Roles
+    value: Roles
+    machine_name: roles
+  status:
+    label: Status
+    value: Status
+    machine_name: status
+mappings:
+  -
+    target: mail
+    map:
+      value: email
+    unique:
+      value: '1'
+    settings:
+      defuse: false
+  -
+    target: name
+    map:
+      value: user_name
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: pass
+    map:
+      value: password
+    settings:
+      pass_encryption: plain
+  -
+    target: roles
+    map:
+      target_id: roles
+    settings:
+      reference_by: label
+      allowed_roles:
+        administrator: administrator
+        global_admin: global_admin
+        editor: editor
+        sme: sme
+        reviewer: reviewer
+        se: se
+      autocreate: 0
+      revoke_roles: 0
+  -
+    target: status
+    map:
+      value: status
+    settings: {  }

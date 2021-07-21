@@ -235,9 +235,9 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     if(!empty($groups) && $groups[0]->bundle() == "country" && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {           
       
       $gid = $groups[0]->id();
-      $query = db_select('group__field_language')
-      ->condition('entity_id', $gid)
-      ->fields('group__field_language');
+      $query = \Drupal::database()->select('group__field_language');
+      $query->condition('entity_id', $gid);
+      $query->fields('group__field_language');
       $result = $query->execute()->fetchAll();
 
       $language_arr = [];
@@ -383,19 +383,19 @@ function pb_custom_field_link_alter(&$variables) {
         }
       }
             
-      if($addcontent_url){
-        $menu_link_parents = \Drupal::entityTypeManager()
-          ->getStorage('menu_link_content')
-          ->loadByProperties([
-            'title' => 'Add Content',
-            'menu_name' => 'editorial-menu',
-          ]);
-        $entity = reset($menu_link_parents);
-        if ($entity) {     
-          $entity->set('link', $addcontent_url);
-          $entity->save();         
-        }
-      }
+      // if($addcontent_url){
+      //   $menu_link_parents = \Drupal::entityTypeManager()
+      //     ->getStorage('menu_link_content')
+      //     ->loadByProperties([
+      //       'title' => 'Add Content',
+      //       'menu_name' => 'editorial-menu',
+      //     ]);
+      //   $entity = reset($menu_link_parents);
+      //   if ($entity) {     
+      //     $entity->set('link', $addcontent_url);
+      //     $entity->save();         
+      //   }
+      // }
 
       if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {           
        $group_url = 'internal:/group/'.$groups[0]->id().'/members';
@@ -501,8 +501,6 @@ function group_user_validate($form, FormStateInterface $form_state){
 }
 
 function redirect_to_add_member_page($form, FormStateInterface $form_state) {
-
-    error_log("called ");
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
     $uid = $user->id();
@@ -517,22 +515,15 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
       $nid = $form_state->getformObject()->getEntity()->id();
     }    
 
-    $query = db_select('group_content_field_data')
-    ->condition('entity_id', $nid)
-    ->orderBy('id', 'DESC')
-    ->range(0, 1)
-    ->fields('group_content_field_data');
+    $query = \Drupal::database()->select('group_content_field_data');
+    $query->condition('entity_id', $nid);
+    $query->orderBy('id', 'DESC');
+    $query->range(0, 1);
+    $query->fields('group_content_field_data');
     $result = $query->execute()->fetchAll();
     $group_content_id = $result[0]->id;   
 
-    // error_log("groups =>".print_r($groups[0]))
-    // error_log("group id =>".$groups[0]->id());
-    // error_log("group bundle =>".$groups[0]->bundle());
-    error_log("users roles =>".print_r($user_roles, true));
-    error_log("group content id =>".$group_content_id);
-
     if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) { 
-      error_log("called inside");
       $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/'.$group_content_id.'/edit');     
       $form_state->setRedirectUrl($url);      
     }
@@ -543,12 +534,7 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
       $request = explode('/', $request_uri);
       $url = url::fromUserInput('/group/' . $request[2] . '/content/'.$group_content_id.'/edit');     
       $form_state->setRedirectUrl($url);      
-    }
-    
-    // if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {        
-    //   $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/add/group_membership?uid='.$uids);     
-    //   $form_state->setRedirectUrl($url);      
-    // }
+    }   
 }
 
 /**

@@ -1,0 +1,50 @@
+uuid: 8a4f34f2-5025-4b4b-8b2c-6f7e67eb6545
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.parent_gender.feeds_item
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - path
+id: taxonomy_term.parent_gender.default
+targetEntityType: taxonomy_term
+bundle: parent_gender
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  translation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true
+  feeds_item: true

@@ -1,0 +1,19 @@
+uuid: 44377636-a53d-4fe8-93ea-44780f50aa40
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+    - node.type.child_growth
+  module:
+    - gnode
+    - node
+id: country-group_node-child_growth
+label: 'Country: Group node (Child Growth)'
+description: 'Adds <em class="placeholder">Child Growth</em> content to groups both publicly and privately.'
+group_type: country
+content_plugin: 'group_node:child_growth'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

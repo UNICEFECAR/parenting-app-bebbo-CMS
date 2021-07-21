@@ -1,0 +1,18 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      fields:
+        thumbnail__target_id:
+          label: 'Умањени приказ'
+        uid:
+          label: Author
+        operations:
+          label: Operations
+      filters:
+        langcode:
+          expose:
+            label: Language

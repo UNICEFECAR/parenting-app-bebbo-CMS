@@ -1,0 +1,18 @@
+uuid: 752ef818-49e9-497f-a40c-91cf2fa3569f
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-vaccinations
+id: group_content.country-group_node-vaccinations.label
+field_name: label
+entity_type: group_content
+bundle: country-group_node-vaccinations
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

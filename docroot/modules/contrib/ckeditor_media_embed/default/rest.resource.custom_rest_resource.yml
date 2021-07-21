@@ -1,0 +1,18 @@
+uuid: 1c96e81b-67d5-4686-8ba6-ac1d28c7927f
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - pb_custom_rest_api
+    - serialization
+id: custom_rest_resource
+plugin_id: custom_rest_resource
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

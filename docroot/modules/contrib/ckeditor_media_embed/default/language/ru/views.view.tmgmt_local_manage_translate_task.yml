@@ -1,0 +1,152 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      fields:
+        title:
+          label: Title
+          separator: ', '
+  assigned:
+    display_options:
+      fields:
+        status:
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  closed:
+    display_options:
+      fields:
+        status:
+          separator: ', '
+        created:
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  completed:
+    display_options:
+      fields:
+        status:
+          separator: ', '
+        created:
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  pending:
+    display_options:
+      fields:
+        tuid:
+          separator: ', '
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  rejected:
+    display_options:
+      fields:
+        created:
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+  unassigned:
+    display_options:
+      fields:
+        title:
+          label: Title
+          separator: ', '
+        source_language:
+          separator: ', '
+        target_language:
+          separator: ', '
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operations
