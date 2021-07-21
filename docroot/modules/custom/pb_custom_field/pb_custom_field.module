@@ -383,19 +383,19 @@ function pb_custom_field_link_alter(&$variables) {
         }
       }
             
-      // if($addcontent_url){
-      //   $menu_link_parents = \Drupal::entityTypeManager()
-      //     ->getStorage('menu_link_content')
-      //     ->loadByProperties([
-      //       'title' => 'Add Content',
-      //       'menu_name' => 'editorial-menu',
-      //     ]);
-      //   $entity = reset($menu_link_parents);
-      //   if ($entity) {     
-      //     $entity->set('link', $addcontent_url);
-      //     $entity->save();         
-      //   }
-      // }
+      if($addcontent_url){
+        $menu_link_parents = \Drupal::entityTypeManager()
+          ->getStorage('menu_link_content')
+          ->loadByProperties([
+            'title' => 'Add Content',
+            'menu_name' => 'editorial-menu',
+          ]);
+        $entity = reset($menu_link_parents);
+        if ($entity) {     
+          $entity->set('link', $addcontent_url);
+          $entity->save();         
+        }
+      }
 
       if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {           
        $group_url = 'internal:/group/'.$groups[0]->id().'/members';
