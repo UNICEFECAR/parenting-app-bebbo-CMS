@@ -1,8 +1,0 @@
-uuid: 6296f124-1cfe-42d5-9fcd-a6eb6a0671cc
-langcode: en
-status: true
-dependencies: {  }
-name: Keywords
-vid: keywords
-description: 'Distinct words/terms characteristic for a content of a given article '
-weight: 0
