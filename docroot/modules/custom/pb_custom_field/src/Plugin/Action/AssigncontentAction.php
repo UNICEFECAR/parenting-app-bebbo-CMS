@@ -184,11 +184,17 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
        {
         $node_lang = $node->getTranslation($current_language);
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
-        $node_es->set('moderation_state', 'draft');
+        //$node_es->set('moderation_state', 'draft');
+        $node_es->set('status', 0);
         $node_es->set('langcode',$langoption);
-        $node_es->set('content_translation_source',$current_language);
+        //$node_es->set('content_translation_source',$current_language);
         $node_es->set('uid',$uid);
         $node->save();
+
+        $tnode = node_load($nid);
+        $node_cur_lang = $tnode->getTranslation($langoption);
+        $node_cur_lang->set('moderation_state', 'draft');
+        $tnode->save();
        }
        else
        {
