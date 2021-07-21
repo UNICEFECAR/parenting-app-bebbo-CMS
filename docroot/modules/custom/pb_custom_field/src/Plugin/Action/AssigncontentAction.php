@@ -178,6 +178,7 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
        $current_language = $entity->get('langcode')->value;
        $nid = $entity->get('nid')->getString();
        $node = node_load($nid);
+       $uid = \Drupal::currentUser()->id();
        /* check the translation available in this content */
        if(!$node->hasTranslation($langoption))
        {
@@ -185,6 +186,8 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
         $node_es->set('moderation_state', 'draft');
         $node_es->set('langcode',$langoption);
+        $node_es->set('content_translation_source',$current_language);
+        $node_es->set('uid',$uid);
         $node->save();
        }
        else

@@ -7,6 +7,7 @@ label: SME
 weight: -4
 is_admin: null
 permissions:
+  - 'access group overview'
   - 'access media overview'
   - 'edit any activities content'
   - 'edit any article content'
@@ -38,13 +39,18 @@ permissions:
   - 'edit own vaccinations content'
   - 'edit own video media'
   - 'edit own video_article content'
-  - 'use group_workflow transition _sme_review_to_require_modification'
+  - 'translate child_development node'
+  - 'translate child_growth node'
+  - 'translate daily_homescreen_messages node'
+  - 'translate health_check_ups node'
+  - 'translate vaccinations node'
   - 'use group_workflow transition sme_review_to_reject'
   - 'use group_workflow transition sme_review_to_senior_editor_review'
   - 'use group_workflow transition sme_to_reviewer_review'
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'
+  - 'view all revisions'
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view chatbot revisions'

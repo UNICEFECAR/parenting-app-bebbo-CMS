@@ -7,6 +7,8 @@ use Drupal\file\Entity\File;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\group\Entity\Group;
 
+ini_set('precision', 14);
+
 /**
  * The style plugin for serialized output formats.
  *

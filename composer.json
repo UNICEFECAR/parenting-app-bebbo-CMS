@@ -11,6 +11,7 @@
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0-beta3",
         "drupal/admin_toolbar": "^3.0",
+        "drupal/ckeditor_media_embed": "^1.10",
         "drupal/cog": "^1.0.0",
         "drupal/config_split": "^1.0.0",
         "drupal/core-composer-scaffold": "^8.8",
