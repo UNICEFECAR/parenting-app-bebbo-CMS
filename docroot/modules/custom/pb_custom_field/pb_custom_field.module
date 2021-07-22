@@ -348,25 +348,14 @@ function pb_custom_field_link_alter(&$variables) {
       $menu_link_parents = \Drupal::entityTypeManager()
         ->getStorage('menu_link_content')
         ->loadByProperties([
-          'title' => 'Assign Users',
+          'title' => 'Country Users',
           'menu_name' => 'editorial-menu',
         ]);
       $entity = reset($menu_link_parents);
       if ($entity) {     
         $entity->set('link', $group_url);
         $entity->save();         
-      }
-      $menu_link_parents = \Drupal::entityTypeManager()
-        ->getStorage('menu_link_content')
-        ->loadByProperties([
-          'title' => 'Group Users',
-          'menu_name' => 'editorial-menu',
-        ]);
-      $entity = reset($menu_link_parents);
-      if ($entity) {     
-        $entity->set('link', $group_url);
-        $entity->save();         
-      }
+      }      
     }
   }
 }
