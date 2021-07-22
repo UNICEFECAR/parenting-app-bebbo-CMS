@@ -1983,27 +1983,26 @@ display:
             group_items: {  }
           entity_type: node
           plugin_id: allowed_languages
-        moderation_state:
-          id: moderation_state
+        langcode:
+          id: langcode
           table: node_field_data
-          field: moderation_state
+          field: langcode
           relationship: none
           group_type: group
           admin_label: ''
           operator: in
-          value:
-            all: all
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: moderation_state_op
-            label: 'Moderation state'
+            operator_id: langcode_op
+            label: 'Language - Country'
             description: ''
             use_operator: false
-            operator: moderation_state_op
+            operator: langcode_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: moderation_state
+            identifier: langcode
             required: false
             remember: false
             multiple: false
@@ -2030,7 +2029,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           entity_type: node
-          plugin_id: moderation_state_filter
+          entity_field: langcode
+          plugin_id: language
       filter_groups:
         operator: AND
         groups:
@@ -2063,4 +2063,3 @@ display:
       max-age: 0
       tags:
         - 'config:field.storage.node.field_licensed_content'
-        - 'config:workflow_list'
