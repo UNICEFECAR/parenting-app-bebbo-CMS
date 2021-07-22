@@ -6,7 +6,6 @@ dependencies:
     - field.storage.node.field_related_articles
     - node.type.article
     - node.type.child_growth
-    - node.type.video_article
   module:
     - tmgmt_content
 third_party_settings:
@@ -27,7 +26,6 @@ settings:
   handler_settings:
     target_bundles:
       article: article
-      video_article: video_article
     sort:
       field: title
       direction: ASC

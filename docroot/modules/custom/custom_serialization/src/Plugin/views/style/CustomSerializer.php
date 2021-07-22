@@ -7,6 +7,8 @@ use Drupal\file\Entity\File;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\group\Entity\Group;
 
+ini_set('precision', 14);
+
 /**
  * The style plugin for serialized output formats.
  *
@@ -33,11 +35,11 @@ class CustomSerializer extends Serializer {
     $validate_params_res = $this->check_request_params($request_uri);
     if(empty($validate_params_res))
     {
-      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities","language","pinned_article","related_milestone"];
+      $array_of_multiple_values = ["child_age","keywords","related_articles","related_video_articles","related_activities","language","related_milestone"];
       $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];    
       $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
-      $string_to_int = ["id", "category", "child_gender", "parent_gender", "licensed", "premature", "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article", "growth_period", "activity_category", "equipment", "type_of_support", "make_available_for_mobile", "flag"];
-      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "pinned_article", "related_milestone"]; 
+      $string_to_int = ["id", "category", "child_gender", "parent_gender", "licensed", "premature", "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article", "growth_period", "activity_category", "equipment", "type_of_support", "make_available_for_mobile", "pinned_article", "pinned_video_article"];
+      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "related_milestone"];
       
       $rows = array();
       $data = array();
@@ -47,6 +49,7 @@ class CustomSerializer extends Serializer {
       $site = '';
       $thumbnail_url = '';    
       $field_formatter = array();    
+      $uniques = [];
       if(isset($this->view->result) && !empty($this->view->result))
       {    
         foreach ($this->view->result as $row_index => $row) {
@@ -74,9 +77,9 @@ class CustomSerializer extends Serializer {
           //Add unique field to Basic page API
           if(strpos($request_uri, "basic-pages") !== false && $rendered_data['type'] === "Basic page")
           {
-            $query = db_select('node_field_data')
-            ->condition('nid', $rendered_data['id'])
-            ->fields('node_field_data');
+            $query = \Drupal::database()->select('node_field_data');
+            $query->condition('nid', $rendered_data['id']);
+            $query->fields('node_field_data');
             $result = $query->execute()->fetchAll();
             for($i = 0; $i < count($result); $i++)
             {            
@@ -102,13 +105,17 @@ class CustomSerializer extends Serializer {
             
             //Custom array formatter
             if(in_array($key,$array_of_multiple_values)) //To check mulitple field 
-            {          
+            {         
               $array_formatted_data = $this->custom_array_formatter($values); 
               //Convert array to array of int
               if(in_array($key,$string_to_array_of_int))
               {
                 $rendered_data[$key] = array_map(function($elem) { return intval($elem); }, $array_formatted_data);
-              }              
+              }  
+              else
+              {
+                $rendered_data[$key] = $array_formatted_data;
+              }
             }   
             
             //Convert string to int
@@ -123,7 +130,7 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = 0;
               }
             }            
-
+           
             //Custom Taxonomy Field Formatter
             if(strpos($request_uri, "vocabularies") !== false || strpos($request_uri, "taxonomies") !== false){   
               if(!empty($values) && strpos($values, ',') !== false) // if the field have comma
@@ -142,11 +149,23 @@ class CustomSerializer extends Serializer {
             $rows['status'] = 200;
           }        
           else
-          {            
-            $data[] = $rendered_data;            
-            $rows['status'] = 200;
-            // To get total no of records
-            $rows['total'] = count($data);
+          {       
+            //error_log("data =>".print_r($rendered_data, true));
+            $rows['status'] = 200;     
+            if(strpos($request_uri, "pinned-contents") !== false){          
+              if(!in_array($rendered_data['id'], $uniques)){
+                $uniques[] = $rendered_data['id'];
+                $data[] = $rendered_data; 
+              }              
+              // To get total no of records
+              $rows['total'] = count($data);          
+            }
+            else
+            {
+              $data[] = $rendered_data;  
+              // To get total no of records
+              $rows['total'] = count($data);          
+            }                                    
           }
         }    
     
@@ -433,18 +452,18 @@ class CustomSerializer extends Serializer {
           
           $term_data[] = array(     
             'id' => (int)$term->tid,
-            'name' => $term->name,      
+            'name' => (double) $term->name,      
             'child_gender' => (int)$term_obj->get('field_child_gender')->target_id,
             'growth_type' => (int)$term_obj->get('field_growth_type')->target_id,
-            'sd0' => (float) $sd0,
-            'sd1' => (float) $sd1,
-            'sd2' => (float) $sd2,
-            'sd3' => (float) $sd3,
-            'sd4' => (float) $sd4,
-            'sd1neg' => (float) $sd1neg,
-            'sd2neg' => (float) $sd2neg,
-            'sd3neg' => (float) $sd3neg,
-            'sd4neg' => (float) $sd4neg,
+            'sd0' =>  (double) round($sd0, 3),
+            'sd1' => (double) round($sd1, 3),
+            'sd2' => (double) round($sd2, 3),
+            'sd3' => (double) round($sd3, 3),
+            'sd4' => (double) round($sd4, 3),
+            'sd1neg' => (double) round($sd1neg, 3),
+            'sd2neg' => (double) round($sd2neg, 3),
+            'sd3neg' => (double) round($sd3neg, 3),
+            'sd4neg' => (double) round($sd4neg, 3),
           );
         }
         else

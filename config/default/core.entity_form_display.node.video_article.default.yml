@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_related_video_articles
     - field.field.node.video_article.field_seasons
     - node.type.video_article
     - workflows.workflow.group_workflow
@@ -125,6 +126,16 @@ content:
     region: content
   field_related_articles:
     weight: 9
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_related_video_articles:
+    weight: 26
     settings:
       match_operator: CONTAINS
       match_limit: 10

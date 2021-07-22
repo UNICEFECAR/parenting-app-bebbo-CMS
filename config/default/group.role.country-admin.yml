@@ -12,6 +12,7 @@ audience: member
 group_type: country
 permissions_ui: true
 permissions:
+  - 'access content overview'
   - 'access group_node overview'
   - 'administer group'
   - 'administer members'

@@ -30,6 +30,18 @@ process:
     bundle: child_age
     entity_type: taxonomy_term
 
+  field_related_articles:   
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_articles
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: article
+      value_key: nid
+
   field_related_video_articles:   
     -
       plugin: explode
