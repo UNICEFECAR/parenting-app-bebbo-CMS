@@ -140,8 +140,7 @@ class CustomSerializer extends Serializer {
                 $vocabulary_name = $formatted_data[1];
                 $vocabulary_machine_name = $formatted_data[0];
                 $taxonomy_data = $this->custom_taxonomy_field_formatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);                
-                // \Drupal::logger('custom')->error($taxonomy_data);
-                \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>');
+                //\Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>');
                 $field_formatter[$formatted_data[0]] = $taxonomy_data;
               }
             }         
@@ -408,8 +407,8 @@ class CustomSerializer extends Serializer {
       $tax_query->condition('status', 1);
       $tax_query->fields('taxonomy_term_field_data');
       $tax_result = $tax_query->execute()->fetchAll();
-      //for($tax = 0; $tax < count($tax_result); $tax++)
-      for($tax = 0; $tax < 2; $tax++)
+      for($tax = 0; $tax < count($tax_result); $tax++)
+      //for($tax = 0; $tax < 2; $tax++)
       {                            
         if($vocabulary_machine_name === "growth_period")
         {
