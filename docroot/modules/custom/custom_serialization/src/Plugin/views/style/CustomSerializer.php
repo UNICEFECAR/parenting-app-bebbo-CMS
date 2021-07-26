@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\custom_serialization\Plugin\views\style;
 
-ini_set('serialize_precision',2);
+ini_set('serialize_precision',6);
 
 use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\media\Entity\Media;
