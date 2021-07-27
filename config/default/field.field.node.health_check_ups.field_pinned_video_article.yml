@@ -1,23 +1,23 @@
-uuid: 1253c680-c65c-4452-b7cf-a2c61439d00e
+uuid: ee13f55b-bca4-4627-ae97-4b4b07c5bb0b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_related_articles
-    - node.type.article
-    - node.type.child_growth
+    - field.storage.node.field_pinned_video_article
+    - node.type.health_check_ups
+    - node.type.video_article
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.child_growth.field_related_articles
-field_name: field_related_articles
+id: node.health_check_ups.field_pinned_video_article
+field_name: field_pinned_video_article
 entity_type: node
-bundle: child_growth
-label: 'Pinned Articles'
+bundle: health_check_ups
+label: 'Pinned Video Article'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -25,10 +25,10 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      article: article
+      video_article: video_article
     sort:
       field: title
       direction: ASC
     auto_create: false
-    auto_create_bundle: article
+    auto_create_bundle: ''
 field_type: entity_reference

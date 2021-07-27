@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_related_video_articles
     - field.field.node.video_article.field_seasons
     - node.type.video_article
   module:
@@ -61,5 +62,6 @@ hidden:
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true
+  field_related_video_articles: true
   field_seasons: true
   langcode: true

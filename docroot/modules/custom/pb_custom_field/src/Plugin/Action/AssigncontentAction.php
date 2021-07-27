@@ -38,6 +38,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     
+   
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
@@ -178,23 +179,21 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
        $current_language = $entity->get('langcode')->value;
        $nid = $entity->get('nid')->getString();
        $node = node_load($nid);
+       $uid = \Drupal::currentUser()->id();
        /* check the translation available in this content */
        if(!$node->hasTranslation($langoption))
        {
+        //$current_timestamp = strtotime(date('Y-m-d H:i:s'));
         $node_lang = $node->getTranslation($current_language);
+        $node->setRevisionTranslationAffected(FALSE);
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
         $node_es->set('moderation_state', 'draft');
         $node_es->set('langcode',$langoption);
+        $node_es->set('uid',$uid);
+        $node_es->set('content_translation_source',$current_language);
+      //  $node_es->set('changed',$current_timestamp);
         $node->save();
-       }
-       else
-       {
-        /* if the translated content available check the content available in group */
-        $etype = $node->getType();
-        $pluginId = 'group_node:' .$etype;
-        $group = Group::load($countryoption);
-        $grp_obj = $group->getContentByEntityId($pluginId,$nid);
-        $alexists_langcode = false;
+        
        }
        $message = "Content assigned to country";
        return $this->t($message);

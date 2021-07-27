@@ -11,6 +11,8 @@
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0-beta3",
         "drupal/admin_toolbar": "^3.0",
+        "drupal/allowed_languages": "^2.0@alpha",
+        "drupal/ckeditor_media_embed": "^1.10",
         "drupal/cog": "^1.0.0",
         "drupal/config_split": "^1.0.0",
         "drupal/core-composer-scaffold": "^8.8",
@@ -19,19 +21,20 @@
         "drupal/features": "^3.8.0",
         "drupal/feeds": "^3.0@alpha",
         "drupal/feeds_tamper": "^2.0@beta",
+        "drupal/google_analytics": "^2.3",
         "drupal/group": "^1.3",
         "drupal/json_field": "^1.0@RC",
         "drupal/menu_per_role": "^1.3",
         "drupal/migrate_source_csv": "^3.4",
         "drupal/migrate_tools": "^5.0",
         "drupal/migrate_upgrade": "^3.2",
+        "drupal/phpmailer": "^3.0@beta",
         "drupal/qa_accounts": "^1.0.0-alpha1",
         "drupal/seckit": "^1.0.0-alpha2",
         "drupal/shield": "^1.2.0",
         "drupal/smtp": "^1.0",
         "drupal/tmgmt": "^1.12",
         "drupal/toolbar_menu_clean": "^1.2",
-        "drupal/usernotification": "^1.6",
         "drupal/video_embed_media": "^2.4",
         "drupal/views_bulk_operations": "^3.13"
     },
@@ -114,6 +117,12 @@
             },
             "drupal/group": {
                 "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
+            },
+            "drupal/taxonomy": {
+                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch"
+            },
+            "drupal/content_moderation": {
+                "Added translated draft status content into node_field table":"patches/content_moderation/content_moderation_revision.patch"
             }
         }
     },

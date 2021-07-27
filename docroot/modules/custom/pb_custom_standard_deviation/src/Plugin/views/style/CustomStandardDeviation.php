@@ -14,7 +14,7 @@ use Drupal\rest\Plugin\views\style\Serializer;
  *   help = @Translation("Serializes views row data using the Serializer
  *   component."), display_types = {"data"}
  * )
- */
+ */ 
 class CustomStandardDeviation extends Serializer {
 
   /**

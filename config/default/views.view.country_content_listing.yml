@@ -68,18 +68,25 @@ display:
           summary: ''
           description: ''
           columns:
-            node_bulk_form: node_bulk_form
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
+            nid: nid
             title: title
             type: type
+            field_licensed_content: field_licensed_content
+            langcode_1: langcode_1
             name: name
-            status: status
             changed: changed
-            edit_node: edit_node
-            delete_node: delete_node
-            dropbutton: dropbutton
-            timestamp: title
+            moderation_state: moderation_state
+            operations: operations
           info:
-            node_bulk_form:
+            views_bulk_operations_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nid:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
@@ -98,20 +105,27 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            name:
+            field_licensed_content:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: priority-low
-            status:
+              responsive: ''
+            langcode_1:
               sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
+            name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
             changed:
               sortable: true
               default_sort_order: desc
@@ -119,30 +133,14 @@ display:
               separator: ''
               empty_column: false
               responsive: priority-low
-            edit_node:
+            moderation_state:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            delete_node:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            dropbutton:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            timestamp:
-              sortable: false
-              default_sort_order: asc
+            operations:
               align: ''
               separator: ''
               empty_column: false
@@ -1665,6 +1663,58 @@ display:
           plugin_id: bundle
           entity_type: node
           entity_field: type
+        field_content_category_target_id:
+          id: field_content_category_target_id
+          table: node__field_content_category
+          field: field_content_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_category_target_id_op
+            label: Category
+            description: ''
+            use_operator: false
+            operator: field_content_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_category_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: category
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
         field_activity_category_target_id:
           id: field_activity_category_target_id
           table: node__field_activity_category
@@ -1983,27 +2033,26 @@ display:
             group_items: {  }
           entity_type: node
           plugin_id: allowed_languages
-        moderation_state:
-          id: moderation_state
+        langcode:
+          id: langcode
           table: node_field_data
-          field: moderation_state
+          field: langcode
           relationship: none
           group_type: group
           admin_label: ''
           operator: in
-          value:
-            all: all
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: moderation_state_op
-            label: 'Moderation state'
+            operator_id: langcode_op
+            label: 'Language - Country'
             description: ''
             use_operator: false
-            operator: moderation_state_op
+            operator: langcode_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: moderation_state
+            identifier: langcode
             required: false
             remember: false
             multiple: false
@@ -2030,7 +2079,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           entity_type: node
-          plugin_id: moderation_state_filter
+          entity_field: langcode
+          plugin_id: language
       filter_groups:
         operator: AND
         groups:
@@ -2063,4 +2113,3 @@ display:
       max-age: 0
       tags:
         - 'config:field.storage.node.field_licensed_content'
-        - 'config:workflow_list'
