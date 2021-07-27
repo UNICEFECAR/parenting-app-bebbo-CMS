@@ -15,7 +15,6 @@ permissions:
   - 'create article content'
   - 'create chatbot content'
   - 'create content translations'
-  - 'create daily_homescreen_messages content'
   - 'create document media'
   - 'create faq content'
   - 'create image media'
