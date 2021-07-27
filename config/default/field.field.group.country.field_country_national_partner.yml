@@ -6,12 +6,17 @@ dependencies:
     - field.storage.group.field_country_national_partner
     - group.type.country
     - media.type.image
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: group.country.field_country_national_partner
 field_name: field_country_national_partner
 entity_type: group
 bundle: country
 label: 'Country National Partner Image'
-description: ''
+description: "Image size: min width 350 px to 500 px<br>\r\nThe preferred color of the image is White with transparent background"
 required: false
 translatable: false
 default_value: {  }

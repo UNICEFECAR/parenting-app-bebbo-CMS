@@ -87,12 +87,9 @@ display:
             nid: nid
             title: title
             type: type
-            gid: gid
+            langcode: langcode
             name: name
             changed: changed
-            operations: operations
-            moderation_state: moderation_state
-            langcode: langcode
           info:
             views_bulk_operations_bulk_form:
               align: ''
@@ -120,15 +117,15 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            gid:
-              sortable: false
+            langcode:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             name:
-              sortable: false
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -141,25 +138,6 @@ display:
               separator: ''
               empty_column: false
               responsive: priority-low
-            operations:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            moderation_state:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            langcode:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
           default: langcode
           empty_table: true
       row:
