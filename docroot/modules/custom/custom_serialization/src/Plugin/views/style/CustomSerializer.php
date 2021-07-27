@@ -30,6 +30,7 @@ class CustomSerializer extends Serializer {
 
     $request_uri = \Drupal::service('path.current')->getPath(); //gives request path e.x (api/articles/en/1)
     $request = explode('/', $request_uri);
+    $request_path = \Drupal::request()->getSchemeAndHttpHost();
 
     //Validating request params to response error code
     $validate_params_res = $this->check_request_params($request_uri);
@@ -97,6 +98,12 @@ class CustomSerializer extends Serializer {
 
           foreach($rendered_data as $key => $values)
           {                             
+
+            //change video or image actual path to absolute path
+            if($key === "body")
+            {
+              $rendered_data[$key] = str_replace('src="/sites/default/files/', 'src="'.$request_path.'/sites/default/files/', $values);
+            }
             //Custom image & video formattter
             if (in_array($key,$media_fields)) //To check media image field exist
             {                
