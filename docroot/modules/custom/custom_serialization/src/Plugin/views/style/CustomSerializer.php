@@ -288,7 +288,7 @@ class CustomSerializer extends Serializer {
           }                 
           else
           {
-            $malt = "";
+            $malt = $media_entity->get('field_media_image')->alt;
           }
           /** @var File $image */
           $file = File::load($mid);    

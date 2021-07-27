@@ -49,7 +49,7 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Group Content List Page 
  * Country Field - dropdown option
  */
-function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {  
+function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {   
   if($form['#id'] == "user-register-form" || $form['#id'] == "user-form")
   {
     /* New User Creation form */
@@ -361,7 +361,16 @@ function pb_custom_field_link_alter(&$variables) {
 }
 
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
+
   $roles = \Drupal::currentUser()->getRoles();
+  $roles_permissions = user_role_permissions($roles);
+  $current_path = \Drupal::service('path.current')->getPath();
+  $current_url = Url::fromRoute('<current>');
+  $path = $current_url->toString();
+  $langcode = explode('node', $path);  
+  $split_url = explode('/', $langcode['0']);
+  $languagecode =  str_replace("/","",$split_url['1']);
+
   if(in_array("reviewer", $roles) ){  
     unset($data['tabs'][0]['devel.entities:group.devel_tab']);    
     unset($data['tabs'][0]['group.view']);
@@ -371,7 +380,33 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
     unset($data['tabs'][0]['views_view:view.group_nodes.page_1']);
     unset($data['tabs'][0]['views_view:view.duplicate_of_moderated_group_content.moderated_content']);
     unset($data['tabs'][0]['content_translation.local_tasks:entity.group.content_translation_overview']);
+  } 
+  if(!in_array("global_admin", $roles) && !in_array("administrator", $roles)){
+          $user = \Drupal::currentUser();
+          $uid = $user->id();
+          $groups = array();
+          $grp_membership_service = \Drupal::service('group.membership_loader');
+          $grps = $grp_membership_service->loadByUser($user);
+          foreach ($grps as $grp) {
+                  $groups = $grp->getGroup();
+          }
+          $country_languages = $groups->get('field_language')->getValue();
+          $clanguage = array();
+          foreach($country_languages as $mlangkey=>$mlangval)
+          {
+            $clanguage[]=$mlangval['value'];            
+          }
+        
+          
+  ##need to put languages condition
+  if(!in_array($languagecode, $clanguage)){
+    unset($data['tabs'][0]['entity.node.edit_form']);
+    unset($data['tabs'][0]['entity.node.delete_form']);
+    unset($data['tabs'][0]['entity.node.version_history']);
+    unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);    
   }
+}
+
 }
 
 function user_update_function($form, FormStateInterface $form_state) {
@@ -471,15 +506,16 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
  * Implements hook_entity_operation_alter().
  */
 function pb_custom_field_entity_operation_alter(array &$operations, EntityInterface $entity) {  
-  $user_data = \Drupal::currentUser();
-  $user_roles = $user_data->getRoles();  
-  if($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/group-content-list" && in_array('reviewer', $user_roles)) {
-    if (isset($operations['edit'])) {
-        unset($operations['edit']);      
-    }
+  $roles = \Drupal::currentUser()->getRoles();
+  $roles_permissions = user_role_permissions($roles);
 
-    if (isset($operations['delete'])) {
+  if(!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {   
+
+        if (isset($operations['delete'])) {
       unset($operations['delete']);      
+    }
+     if (isset($operations['translate'])) {
+      unset($operations['translate']);      
     }
   }
   
