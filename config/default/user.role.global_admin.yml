@@ -19,6 +19,7 @@ permissions:
   - 'access user profiles'
   - 'administer allowed languages'
   - 'administer content translation'
+  - 'administer google analytics'
   - 'administer languages'
   - 'administer nodes'
   - 'administer tmgmt'
