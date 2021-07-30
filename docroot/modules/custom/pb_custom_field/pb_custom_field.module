@@ -550,7 +550,10 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
     $query->range(0, 1);
     $query->fields('group_content_field_data');
     $result = $query->execute()->fetchAll();
-    $group_content_id = $result[0]->id;   
+    if(!empty($result))
+    {
+      $group_content_id = $result[0]->id;   
+    }
 
     if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) { 
       $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/'.$group_content_id.'/edit');     
@@ -558,13 +561,15 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
     }
 
     if(in_array("global_admin", $user_roles))
-    {
-      $request_uri = \Drupal::service('path.current')->getPath();
-      $request = explode('/', $request_uri);
-      $url = url::fromUserInput('/group/' . $request[2] . '/content/'.$group_content_id.'/edit');     
-      $form_state->setRedirectUrl($url);      
+    {      
+      if(Drupal::service('path.current')->getPath() != "/admin/people/create")
+      {
+        $request_uri = \Drupal::service('path.current')->getPath();
+        $request = explode('/', $request_uri);
+        $url = url::fromUserInput('/group/' . $request[2] . '/content/'.$group_content_id.'/edit');     
+        $form_state->setRedirectUrl($url);     
+      }       
     }
-    
     // if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {        
     //   $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/add/group_membership?uid='.$uids);     
     //   $form_state->setRedirectUrl($url);      

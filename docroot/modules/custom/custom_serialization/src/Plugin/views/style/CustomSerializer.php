@@ -100,7 +100,7 @@ class CustomSerializer extends Serializer {
           {                             
 
             //change video or image actual path to absolute path
-            if($key === "body")
+            if($key === "body" || $key === "summary")
             {
               $rendered_data[$key] = str_replace('src="/sites/default/files/', 'src="'.$request_path.'/sites/default/files/', $values);
             }
