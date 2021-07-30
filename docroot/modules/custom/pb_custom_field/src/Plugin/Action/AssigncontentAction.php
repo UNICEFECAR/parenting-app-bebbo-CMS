@@ -17,7 +17,7 @@ use Drupal\group\Entity\Group;
 use \Drupal\group\Entity\GroupContent;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-
+use Drupal\Core\Url;
 use Drupal\group\Entity;
 /**
  * Action description.
@@ -37,8 +37,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   use StringTranslationTrait;
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    
-   
+
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
@@ -180,10 +179,10 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
        $nid = $entity->get('nid')->getString();
        $node = node_load($nid);
        $uid = \Drupal::currentUser()->id();
-       /* check the translation available in this content */
+       $assigned = 0;
+       $non_assigned = 0;
        if(!$node->hasTranslation($langoption))
        {
-        //$current_timestamp = strtotime(date('Y-m-d H:i:s'));
         $node_lang = $node->getTranslation($current_language);
         $node->setRevisionTranslationAffected(FALSE);
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
@@ -191,12 +190,26 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
         $node_es->set('langcode',$langoption);
         $node_es->set('uid',$uid);
         $node_es->set('content_translation_source',$current_language);
-      //  $node_es->set('changed',$current_timestamp);
+        $node_es->set('changed',time());
+        $node_es->set('created',time());
         $node->save();
-        
+        $assigned++;
        }
-       $message = "Content assigned to country";
-       return $this->t($message);
+       else
+       {
+         $non_assigned++;
+       }
+       $message.="";
+       if($assigned > 0)
+        $message.= "Content assigned to country (".$assigned.") <br/>";
+       if($non_assigned > 0)
+        $message.= "Content already exists in country (".$non_assigned.") <br/>";
+       
+      /* $message.="Please visit Country content page to view.";*/
+
+       drupal_set_message(t($message), 'status'); 
+       $set_msg = "Total content selected";
+       return $this->t($set_msg);
     }
   }
 

@@ -40,6 +40,7 @@ settings:
             - Blockquote
             - DrupalImage
             - Table
+            - Embed
             - HorizontalRule
             - DrupalMediaLibrary
         -
@@ -52,10 +53,12 @@ settings:
             - ShowBlocks
             - Source
   plugins:
-    language:
-      language_list: un
     stylescombo:
       styles: ''
+    language:
+      language_list: un
+    autoembed:
+      status: ''
 image_upload:
   status: true
   scheme: public
