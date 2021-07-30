@@ -290,8 +290,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
               $language_options[$langcode] = $language->getName();
             }
           }
-          $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-          $form['#validate'][]='user_access_validation_chk';
+          
+          
           if($form['#id'] == "media-image-edit-form") { 
             $form_language = $form_state->get('langcode');
             if(!in_array($form_language,$clanguage))
@@ -300,9 +300,87 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
               $form['actions']['submit']['#access'] = FALSE;
               drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
             }
+            else
+            {
+          $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+        }
+        $form['actions']['delete']['#access'] = FALSE;
+        $form['actions']['delete']['#disabled'] = true;
+      }
+      else
+      {
+        $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+      }
+      $form['#validate'][]='user_access_validation_chk';
+   }
+  }
+
+}
+
+/* SET THE language dropdown for remote video and video type */
+if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video-add-form" || $form['#id'] == "media-video-add-form" || $form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form")
+{
+   /* get the user role based permission list */
+   $user = \Drupal::currentUser();
+   $roles = $user->getRoles();
+   $bypass_access = false;
+   foreach($roles as $rkey=>$rval)
+   {
+     if($rval != "authenticated")
+     {
+       $roles_permissions = user_role_permissions(array($rval));
+       if(in_array('bypass node access',$roles_permissions[$rval]))
+       {
+         $bypass_access = true;
+       }
+     }
+   }
+   if(!$bypass_access)
+   {
+     $uid = $user->id();
+     $groups = array();
+     $grp_membership_service = \Drupal::service('group.membership_loader');
+     $grps = $grp_membership_service->loadByUser($user);
+     if(!empty($grps)) 
+     {
+       foreach ($grps as $grp) {
+         $groups = $grp->getGroup();
+       }
+       $country_languages = $groups->get('field_language')->getValue();
+       $clanguage = array();
+       foreach($country_languages as $mlangkey=>$mlangval)
+       {
+         $clanguage[]=$mlangval['value'];
+       }
+       $language_options = [];
+       foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+         if(in_array($langcode,$clanguage)){
+           $language_options[$langcode] = $language->getName();
+         }
+       }
+
+          $form['#validate'][]='user_access_validation_chk';
+          if($form['#id'] == "media-image-edit-form") { 
+            $form_language = $form_state->get('langcode');
+
+            if(!in_array($form_language,$clanguage))
+            {
+              $form['actions']['submit']['#disabled'] = true;
+              $form['actions']['submit']['#access'] = FALSE;
+              drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
+            }
+            else
+            {
+             $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+            }
+
             $form['actions']['delete']['#access'] = FALSE;
             $form['actions']['delete']['#disabled'] = true;
           }
+          else
+          {
+             $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+          } 
        }
       }
 
@@ -431,6 +509,7 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
   $langcode = explode('node', $path);  
   $split_url = explode('/', $langcode['0']);
   $languagecode =  str_replace("/","",$split_url['1']);
+
 
   if(in_array("reviewer", $roles) ){  
     unset($data['tabs'][0]['devel.entities:group.devel_tab']);    
@@ -648,7 +727,6 @@ function user_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface
 {
 
   //$form_language = $form_state->get('langcode');
-  //echo "Coming";die;
   
   /* Check the user validation */
   $user = \Drupal::currentUser();
