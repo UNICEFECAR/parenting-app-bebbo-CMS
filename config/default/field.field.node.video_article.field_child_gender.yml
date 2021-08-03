@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_child_gender
     - node.type.video_article
     - taxonomy.vocabulary.child_gender
+  content:
+    - 'taxonomy_term:child_gender:77a7290b-4611-40eb-8400-b955cd12501c'
   module:
     - tmgmt_content
 third_party_settings:
@@ -17,9 +19,11 @@ entity_type: node
 bundle: video_article
 label: 'Child Gender'
 description: 'To Specify under which child gender this article falls'
-required: true
+required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_uuid: 77a7290b-4611-40eb-8400-b955cd12501c
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'

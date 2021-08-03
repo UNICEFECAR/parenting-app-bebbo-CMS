@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_parent_gender
     - node.type.video_article
     - taxonomy.vocabulary.parent_gender
+  content:
+    - 'taxonomy_term:parent_gender:b4385c6b-2609-4c8e-a85c-cfe58439712e'
   module:
     - tmgmt_content
 third_party_settings:
@@ -17,9 +19,11 @@ entity_type: node
 bundle: video_article
 label: 'Parent Gender'
 description: 'To Specify under which parent gender this article falls'
-required: true
+required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_uuid: b4385c6b-2609-4c8e-a85c-cfe58439712e
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
