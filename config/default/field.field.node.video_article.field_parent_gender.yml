@@ -19,7 +19,7 @@ entity_type: node
 bundle: video_article
 label: 'Parent Gender'
 description: 'To Specify under which parent gender this article falls'
-required: false
+required: true
 translatable: false
 default_value:
   -
