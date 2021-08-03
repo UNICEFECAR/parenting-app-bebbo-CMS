@@ -360,7 +360,8 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
        }
 
           $form['#validate'][]='user_access_validation_chk';
-          if($form['#id'] == "media-image-edit-form") { 
+          if($form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form") 
+          { 
             $form_language = $form_state->get('langcode');
 
             if(!in_array($form_language,$clanguage))
@@ -553,7 +554,13 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
 
   ## hide delete tab  and translate tab in media page
   if($route_name = 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
-    unset($data['tabs'][0]['media.tasks:entity.media.delete_form']);    
+    unset($data['tabs'][0]['media.tasks:entity.media.delete_form']); 
+    $media_id = \Drupal::routeMatch()->getParameter('media')->Id();
+    $entity = Drupal::entityManager()->getStorage('media')->load($media_id);
+    $media_type = $entity->bundle();
+    if($media_type != "image") {
+      unset($data['tabs'][0]['content_translation.local_tasks:entity.media.content_translation_overview']); 
+    }   
   }
 }
 
@@ -675,6 +682,11 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
   if(!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/admin/content/media" && $entity->getEntityTypeId() == "media") {   
     if (isset($operations['delete'])) {
       unset($operations['delete']);      
+    }
+    if($entity->bundle() != "image") {
+      if (isset($operations['translate'])) {
+        unset($operations['translate']);      
+      }
     }
   }
   

@@ -6,13 +6,18 @@ dependencies:
     - field.storage.node.field_parent_gender
     - node.type.video_article
     - taxonomy.vocabulary.parent_gender
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.video_article.field_parent_gender
 field_name: field_parent_gender
 entity_type: node
 bundle: video_article
 label: 'Parent Gender'
 description: 'To Specify under which parent gender this article falls'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
