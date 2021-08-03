@@ -553,7 +553,7 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
   }
 
   ## hide delete tab  and translate tab in media page
-  if($route_name = 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
+  if($route_name == 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
     unset($data['tabs'][0]['media.tasks:entity.media.delete_form']); 
     $media_id = \Drupal::routeMatch()->getParameter('media')->Id();
     $entity = Drupal::entityManager()->getStorage('media')->load($media_id);
