@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.chatbot_child_age.feeds_item
     - field.field.taxonomy_term.chatbot_child_age.field_days_from
     - field.field.taxonomy_term.chatbot_child_age.field_days_to
     - field.field.taxonomy_term.chatbot_child_age.field_period
@@ -71,3 +72,4 @@ content:
     third_party_settings: {  }
 hidden:
   description: true
+  feeds_item: true

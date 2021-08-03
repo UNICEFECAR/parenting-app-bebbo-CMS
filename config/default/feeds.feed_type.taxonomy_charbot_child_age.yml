@@ -1,15 +1,14 @@
-uuid: 97e240fd-16af-4839-b921-b5ba6ab04aa4
+uuid: d8b03d24-3541-420d-8b25-9718856d3c50
 langcode: en
 status: true
 dependencies:
   config:
-    - core.base_field_override.taxonomy_term.growth_period.name
-    - taxonomy.vocabulary.growth_period
+    - taxonomy.vocabulary.chatbot_child_age
   module:
     - taxonomy
-id: taxonomy_growth_period_serbia_se
-label: 'Taxonomy - Growth Period - Language'
-description: 'Growth Period - Language'
+id: taxonomy_charbot_child_age
+label: 'Taxonomy - Charbot Child Age'
+description: 'Taxonomy - Charbot Child Age'
 help: ''
 import_period: -1
 fetcher: upload
@@ -23,13 +22,13 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: rs-sr
+  langcode: en
   update_existing: 1
   update_non_existent: _keep
   expire: -1
   skip_hash_check: false
   values:
-    vid: growth_period
+    vid: chatbot_child_age
   owner_id: 0
   authorize: false
   owner_feed_author: false
@@ -42,38 +41,18 @@ custom_sources:
     label: Term_name
     value: Term_name
     machine_name: term_name
-  vaccination_opens:
-    label: Vaccination_opens
-    value: Vaccination_opens
-    machine_name: vaccination_opens
-  weight:
-    label: Weight
-    value: Weight
-    machine_name: weight
-  language_code:
-    label: Language_code
-    value: Language_code
-    machine_name: language_code
-  id:
-    label: ID
-    value: ID
-    machine_name: id
-  title:
-    label: Title
-    value: Title
-    machine_name: title
 mappings:
   -
     target: tid
     map:
-      value: id
+      value: term_id
     unique:
       value: '1'
     settings: {  }
   -
     target: name
     map:
-      value: title
+      value: term_name
     unique: {  }
     settings:
-      language: rs-sr
+      language: en

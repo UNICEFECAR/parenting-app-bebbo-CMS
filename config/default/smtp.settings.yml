@@ -1,14 +1,14 @@
 smtp_on: true
-smtp_host: smtp.gmail.com
+smtp_host: smtp.office365.com
 smtp_hostbackup: ''
-smtp_port: '465'
-smtp_protocol: ssl
+smtp_port: '587'
+smtp_protocol: tls
 smtp_autotls: true
 smtp_timeout: 30
-smtp_username: bharathi@unimity.com
+smtp_username: admin@bebbo.app
 smtp_password: Monish@123@
-smtp_from: bharathi@unimity.com
-smtp_fromname: 'PB Support'
+smtp_from: admin@bebbo.app
+smtp_fromname: 'Bebbo Admin'
 smtp_client_hostname: ''
 smtp_client_helo: ''
 smtp_allowhtml: '0'
