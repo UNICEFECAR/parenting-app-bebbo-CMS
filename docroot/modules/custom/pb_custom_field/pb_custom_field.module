@@ -51,6 +51,8 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Country Field - dropdown option
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {  
+  
+  /* add & edit user language dropdown */
   if($form['#id'] == "user-register-form" || $form['#id'] == "user-form")
   {
     /* New User Creation form */
@@ -163,6 +165,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       }
     }
   }
+  /* Listing page - Language dropdown filter */
   if($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5")  
   {  
     $roles = \Drupal::currentUser()->getRoles();
@@ -249,6 +252,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
   }
 
+  /* Media Image Page - Validation */
    $route_match = \Drupal::routeMatch();
    if($form['#id'] == "media-image-add-form" || $form['#id'] == "media-image-edit-form")
    {
@@ -317,7 +321,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
 }
 
-/* SET THE language dropdown for remote video and video type */
+/*language dropdown for remote video and video type */
 if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video-add-form" || $form['#id'] == "media-video-add-form" || $form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form")
 {
    /* get the user role based permission list */
@@ -388,7 +392,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
  }
   /* Check the current url is related node add or edit */
 
-  if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form" || $route_match->getRouteName() == "entity.group_content.create_form")
+  if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form")
   {
     
     $request = \Drupal::request();
