@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.remote_video.feeds_item
     - field.field.media.remote_video.field_media_oembed_video
     - field.field.media.remote_video.field_video_embed_url
     - media.type.remote_video
@@ -23,11 +24,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_video_embed_url:
+    type: video_embed_field_textfield
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: video_embed_field_textfield
-    region: content
   langcode:
     type: language_select
     weight: 1
@@ -47,6 +48,11 @@ content:
       display_label: true
     weight: 5
     region: content
+    third_party_settings: {  }
+  translation:
+    weight: 6
+    region: content
+    settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete

@@ -9,7 +9,7 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: Activities
+name: Games
 type: activities
 description: 'Play activities/games to stimulate child development, linked with development domains and milestones'
 help: ''

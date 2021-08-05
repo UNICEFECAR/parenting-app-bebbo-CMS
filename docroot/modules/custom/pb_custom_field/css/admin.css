@@ -1,4 +1,4 @@
-.toolbar-tray-open .toolbar-menu .menu-item--expanded:hover ul {
+.toolbar-tray-open .toolbar-tray-horizontal .toolbar-menu .menu-item--expanded:hover ul {
   display: block;
   position: absolute;
   width: 200px;

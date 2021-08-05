@@ -8,6 +8,7 @@ weight: -4
 is_admin: null
 permissions:
   - 'access media overview'
+  - 'bypass group access'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any chatbot content'
@@ -38,6 +39,7 @@ permissions:
   - 'edit own vaccinations content'
   - 'edit own video media'
   - 'edit own video_article content'
+  - 'translate any entity'
   - 'use group_workflow transition _sme_review_to_require_modification'
   - 'use group_workflow transition sme_review_to_reject'
   - 'use group_workflow transition sme_review_to_senior_editor_review'
