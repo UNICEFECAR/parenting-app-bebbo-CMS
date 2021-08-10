@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.page.body
+    - field.field.node.page.field_licensed_content
     - field.field.node.page.field_mandatory_content
     - node.type.page
   module:
@@ -25,9 +26,15 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 101
     region: content
 hidden:
+  field_licensed_content: true
   field_mandatory_content: true
   langcode: true

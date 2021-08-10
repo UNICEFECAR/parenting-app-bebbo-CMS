@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
     - field.field.node.child_development.field_home_message_before_start
+    - field.field.node.child_development.field_licensed_content
     - field.field.node.child_development.field_mandatory_content
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
@@ -85,6 +86,16 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_decimal
+    region: content
+  field_licensed_content:
+    weight: 112
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_mandatory_content:
     weight: 106

@@ -1,18 +1,23 @@
-uuid: f0e46cd8-c0f9-42f7-9ca6-d7b2aab91a21
+uuid: 99afc0f3-94ce-4ad4-a1fb-a9f62ebc31ef
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_licensed_content
-    - node.type.video_article
-id: node.video_article.field_licensed_content
+    - node.type.child_development
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.child_development.field_licensed_content
 field_name: field_licensed_content
 entity_type: node
-bundle: video_article
+bundle: child_development
 label: 'Licensed Content'
-description: 'Enable this filed if this content is country specific so that other countries could not add this content to their country'
+description: ''
 required: false
-translatable: false
+translatable: true
 default_value:
   -
     value: 0

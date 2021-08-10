@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
     - field.field.node.child_development.field_home_message_before_start
+    - field.field.node.child_development.field_licensed_content
     - field.field.node.child_development.field_mandatory_content
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
@@ -150,3 +151,4 @@ hidden:
   field_home_message_after_start: true
   field_home_message_before_end: true
   field_home_message_before_start: true
+  field_licensed_content: true

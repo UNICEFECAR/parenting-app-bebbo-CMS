@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.survey.body
+    - field.field.node.survey.field_licensed_content
     - field.field.node.survey.field_survey_link
     - node.type.survey
   module:
@@ -21,6 +22,21 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_licensed_content:
+    weight: 103
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_survey_link:
     weight: 102
