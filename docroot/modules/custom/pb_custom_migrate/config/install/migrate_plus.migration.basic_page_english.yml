@@ -14,9 +14,13 @@ process:
     plugin: default_value
     source: language
     default_value: en
-  title: Title
+
   nid: ID
+  title: Title
+  body/summary: Summary
+  body/value: Body
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: page
