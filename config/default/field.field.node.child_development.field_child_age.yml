@@ -1,0 +1,34 @@
+uuid: 0b7250a5-1df6-4337-b940-8ae9f6e3083d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_child_age
+    - node.type.child_development
+    - taxonomy.vocabulary.child_age
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.child_development.field_child_age
+field_name: field_child_age
+entity_type: node
+bundle: child_development
+label: 'Child Age'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      child_age: child_age
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

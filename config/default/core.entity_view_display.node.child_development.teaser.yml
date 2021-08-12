@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.child_development.body
     - field.field.node.child_development.field_activity_child_age
+    - field.field.node.child_development.field_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end

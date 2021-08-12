@@ -60,10 +60,4 @@ mappings:
       value: term_name
     unique: {  }
     settings:
-      language: null
-  -
-    target: langcode
-    map:
-      value: language_code
-    settings:
-      language: null
+      language: en
