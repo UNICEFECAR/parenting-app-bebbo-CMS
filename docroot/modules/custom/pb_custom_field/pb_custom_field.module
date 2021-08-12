@@ -319,6 +319,23 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
    }
   }
 
+  /* Article & Video Article Contenttype - Remove Australian Article checkbox field */
+  if($form['#id'] == "node-article-form" || $form['#id'] == "node-video-article-form"){
+    $user_roles = \Drupal::currentUser()->getRoles();
+	  if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+		   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
+           $form['field_australian_article']['#attributes']['class'][] = 'hide';
+           $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';		   
+	  }
+  }
+  
+  /* All Contenttype - Disable Mandatory content checkbox field */
+  if($form['#id'] == "node-activities-form" || $form['#id'] == "node-child-development-form" || $form['#id'] == "node-child-growth-form" || $form['#id'] == "node-faq-form" || $form['#id'] == "node-milestone-form" || $form['#id'] == "node-page-form"){
+    $user_roles = \Drupal::currentUser()->getRoles();
+	  if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+           $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';
+	  }  
+  }
 }
 
 /*language dropdown for remote video and video type */
@@ -472,6 +489,52 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
               }
         }
       }
+    }
+	if($form['#id'] == "content-moderation-entity-moderation-form")
+    { 
+       /* get the user role based permission list */
+        $user = \Drupal::currentUser();
+        $roles = $user->getRoles();
+        $bypass_access = false;
+        foreach($roles as $rkey=>$rval)
+        {
+          if($rval != "authenticated")
+          {
+            $roles_permissions = user_role_permissions(array($rval));
+            if(in_array('bypass node access',$roles_permissions[$rval]))
+            {
+              $bypass_access = true;
+            }
+          }
+        }
+        if(!$bypass_access)
+        {
+          $uid = $user->id();
+          $groups = array();
+          $grp_membership_service = \Drupal::service('group.membership_loader');
+          $grps = $grp_membership_service->loadByUser($user);
+          if(!empty($grps)) 
+          {
+            foreach ($grps as $grp) {
+              $groups = $grp->getGroup();
+            }
+            $country_languages = $groups->get('field_language')->getValue();
+            $clanguage = array();
+            foreach($country_languages as $mlangkey=>$mlangval)
+            {
+              $clanguage[]=$mlangval['value'];
+            }
+            
+          $node = \Drupal::routeMatch()->getParameter('node');
+          $nid =  $node->id();
+          $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+          if(!in_array($current_language,$clanguage))
+          {
+            $form['submit']['#disabled'] = true;
+            $form['submit']['#access'] = FALSE;
+          }
+          }
+        }
     }
 }
 
