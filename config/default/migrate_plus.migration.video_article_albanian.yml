@@ -1,11 +1,5 @@
-uuid: 6cdaf693-2c6e-4c3a-8af9-053f75506017
 langcode: en
-status: true
-dependencies: {  }
 id: video_article_albanian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: video_article_albanian
 migration_group: video_article
 label: 'Video Article Albanian'
@@ -20,21 +14,25 @@ process:
     plugin: default_value
     source: language
     default_value: sq
+  
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
-  title: Title
+  title: Title  
   body/summary: Summary
-  body/value: Body
+  body/value: Body   
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
   moderation_state: Moderation_state
+
 destination:
   plugin: 'entity:node'
   default_bundle: video_article
+  translations: true
 migration_dependencies:
   required: {  }
   optional: {  }
