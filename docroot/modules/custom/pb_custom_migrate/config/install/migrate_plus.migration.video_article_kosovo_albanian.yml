@@ -32,6 +32,7 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: video_article
+  translations: true
 migration_dependencies:
   required: {  }
   optional: {  }

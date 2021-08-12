@@ -5,7 +5,7 @@ migration_group: video_article
 label: 'Video Article North Macedonia-Macedonian'
 source:
   plugin: csv
-  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_north_macedonia_macedonian.csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_north_macedonian.csv
   header_row_count: 1
   ids:
     - ID
@@ -32,6 +32,7 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: video_article
+  translations: true
 migration_dependencies:
   required: {  }
   optional: {  }

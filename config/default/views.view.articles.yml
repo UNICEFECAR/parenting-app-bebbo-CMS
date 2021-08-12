@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.body
     - field.storage.node.field_activity_category
-    - field.storage.node.field_activity_child_age
     - field.storage.node.field_chatbot_child_age
     - field.storage.node.field_child_age
     - field.storage.node.field_child_gender
@@ -19262,10 +19261,7 @@ display:
             title:
               alias: ''
               raw_output: false
-            body:
-              alias: ''
-              raw_output: false
-            field_activity_child_age:
+            field_child_age:
               alias: child_age
               raw_output: false
             field_pinned_article_for_boy:
@@ -19528,10 +19524,10 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_activity_child_age:
-          id: field_activity_child_age
-          table: node__field_activity_child_age
-          field: field_activity_child_age
+        field_child_age:
+          id: field_child_age
+          table: node__field_child_age
+          field: field_child_age
           relationship: none
           group_type: group
           admin_label: ''
@@ -19587,7 +19583,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: ','
           field_api_classes: false
           plugin_id: field
         field_pinned_article_for_boy:
@@ -20046,7 +20042,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_activity_child_age'
+        - 'config:field.storage.node.field_child_age'
         - 'config:field.storage.node.field_mandatory_content'
         - 'config:field.storage.node.field_milestone_instructions'
         - 'config:field.storage.node.field_pinned_article_for_boy'
