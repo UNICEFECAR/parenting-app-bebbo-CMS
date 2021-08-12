@@ -13,3 +13,11 @@ display:none;
 {
   display: none;
 }
+
+.hide {
+  display: none;
+}
+
+#edit-delete-translation{
+	display: none;
+}

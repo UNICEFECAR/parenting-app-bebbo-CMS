@@ -1,5 +1,5 @@
 ID,Title,Body,Translation_language,Moderation_state
-4516,"About Us","<p>UNICEF is on the ground in over 150 countries and territories to help children survive and thrive, from early childhood through adolescence.</p>
+4516,About Us,"<p>UNICEF is on the ground in over 150 countries and territories to help children survive and thrive, from early childhood through adolescence.</p>
 
 <p>UNICEF’s work on early childhood development in Europe and Central Asia (ECA) recognizes that every growing child need nurturing care, good health, optimal nutrition and a stimulating and safe environment that offers plenty of support for early learning. To ensure the best start for their children, all families need some support. Vulnerable families, who face additional challenges such as poverty, disability or social exclusion, need more help than others and they are in the focus of our attention.</p>
 
@@ -11,7 +11,7 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p>ParentBuddy is an application that supports responsive, positive parenting. Its aim is to provide comprehensive information about early childhood development and parental care in a parent-friendly format. The ParentBuddy also supports dissemination of messages and information related to COVID-19 prevention and protection for children.</p>
 
-<div alt=""Parents and children"" data-embed-button=""media_browser"" data-entity-embed-display=""media_image"" data-entity-type=""media"" data-entity-uuid=""8fd1adbd-5f17-48b0-8986-1851afa09a7e"" data-langcode=""en"" title=""Parents and children"" class=""embedded-entity"">  <img src=""/project/PB/parent-buddy-cms/docroot/sites/default/files/2020-06/Parents%20with%20two%20children%402x.png"" alt=""Parents and children"" title=""Parents and children"" typeof=""foaf:Image"" />
+<div alt=""Parents and children"" data-embed-button=""media_browser"" data-entity-embed-display=""media_image"" data-entity-type=""media"" data-entity-uuid=""8fd1adbd-5f17-48b0-8986-1851afa09a7e"" data-langcode=""en"" title=""Parents and children"" class=""embedded-entity"">  <img src=""/sites/default/files/2020-06/Parents%20with%20two%20children%402x.png"" alt=""Parents and children"" title=""Parents and children"" typeof=""foaf:Image"" />
 
 </div>
 
@@ -21,9 +21,9 @@ ID,Title,Body,Translation_language,Moderation_state
 <p>The app contains a rich library of articles and videos grouped under thematic categories of:</p>
 
 <ul>
-	<li>Play and Learning                          - Nutrition and breastfeeding</li>
-	<li>Responsive parenting                   - Safety and protection</li>
-	<li>Health and wellbeing                    - Parental wellbeing</li>
+        <li>Play and Learning                          - Nutrition and breastfeeding</li>
+        <li>Responsive parenting                   - Safety and protection</li>
+        <li>Health and wellbeing                    - Parental wellbeing</li>
 </ul>
 
 <p>The app is using the information on child’s date of birth, gender, season of the year and other information entered by a parent to recommend suitable content and tailored guidance.</p>
@@ -31,10 +31,10 @@ ID,Title,Body,Translation_language,Moderation_state
 <p>Parents also have a possibility to use some or all four functional features of the app:</p>
 
 <ul>
-	<li>Child growth </li>
-	<li>Developmental diary</li>
-	<li>Vaccination</li>
-	<li>Health check-ups</li>
+        <li>Child growth </li>
+        <li>Developmental diary</li>
+        <li>Vaccination</li>
+        <li>Health check-ups</li>
 </ul>
 
 <p>The contents of the application are complemented by a database of questions and answers from many years of parental, pedagogical and medical experience. The parent can search the contents and find answers to all questions regarding the child and parenthood - the answers are organized by age and thematic categories for better visibility and easier navigation.</p>
@@ -47,15 +47,15 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p>Download the app and let the ParentBuddy be your companion in the parenting journey!</p>
 
-<p> </p>",en,published
-4836,"Terms and Conditions","<p>By using ParentBuddy application you accept these terms. These Terms and Conditions are in line with the Privacy Policy of the application<strong>.</strong></p>
+<p> </p>",en,
+4836,Terms and Conditions,"<p>By using ParentBuddy application you accept these terms. These Terms and Conditions are in line with the Privacy Policy of the application<strong>.</strong></p>
 
 <p>The ParentBuddy is an app providing information and guidance to parents of young children, 0-6 years old, on different aspects of child health and development. It also supports parents to track child’s growth and development and receive relevant information and guidance on how to support them. Lastly, the app enables tracking of vaccination and health check-ups and can send notifications to remind parents of these important events.</p>
 
 <p>All information and guidance in this app serve solely for informational and educational purposes.</p>
 
-<p>The content of this app is not a substitute for health check-ups, medical examinations,assessments or diagnostic procedures. If you are concerned for your child’s health or development, we recommend that you consult your doctor or nurse. If the use of any information contained in the app leads to or causes loss or damage, UNICEF is not and cannot be responsible.</p>",en,published
-5911,"Privacy Policy","<p><strong>Halo Beba/Parentbuddy Application Privacy Policy</strong></p>
+<p>The content of this app is not a substitute for health check-ups, medical examinations,assessments or diagnostic procedures. If you are concerned for your child’s health or development, we recommend that you consult your doctor or nurse. If the use of any information contained in the app leads to or causes loss or damage, UNICEF is not and cannot be responsible.</p>",en,
+5911,Privacy Policy,"<p><strong>Halo Beba/Parentbuddy Application Privacy Policy</strong></p>
 
 <p>This Privacy Policy applies to the HaloBeba/Parentbuddy application (hereinafter: The Application), a parenting application, that serves to provide information and guidance to parents of young children, 0-6 years old. It sets out how we collect, use and store your information and what steps we take to protect your information. </p>
 
@@ -161,4 +161,4 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p> </p>
 
-<p><strong>Last Updated: 04 August-2020</strong></p>",en,published
+<p><strong>Last Updated: 04 August-2020</strong></p>",en,

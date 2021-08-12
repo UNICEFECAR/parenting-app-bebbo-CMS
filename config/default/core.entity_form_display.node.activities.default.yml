@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.activities.field_child_age
     - field.field.node.activities.field_cover_image
     - field.field.node.activities.field_equipment
+    - field.field.node.activities.field_licensed_content
     - field.field.node.activities.field_mandatory_content
     - field.field.node.activities.field_related_articles
     - field.field.node.activities.field_type_of_support
@@ -147,3 +148,4 @@ content:
 hidden:
   field_activity_child_age: true
   field_equipment: true
+  field_licensed_content: true

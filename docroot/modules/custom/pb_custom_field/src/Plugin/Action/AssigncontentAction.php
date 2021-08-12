@@ -35,9 +35,12 @@ use Drupal\group\Entity;
 class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
   use StringTranslationTrait;
+  public $assigned = 0;
+  public $non_assigned = 0;
+  public $process_item = 0;
 
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-
+		
          /* get the logged in user details */
          $currentAccount = \Drupal::currentUser();
          $cur_user_roles = $currentAccount->getRoles();
@@ -172,8 +175,13 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
-    $langoption = $this->configuration['language_option'];
+	$context = $this->context;
+	$total_selected = $context['sandbox']['total'];
+	$langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
+	$this->process_item = $this->process_item+1;
+	$message = "";
+	$error_message = "";
     if(!empty($langoption) && !empty($countryoption) ) {
        $current_language = $entity->get('langcode')->value;
        $nid = $entity->get('nid')->getString();
@@ -193,24 +201,34 @@ public function getlanguages(array &$element, FormStateInterface $form_state) {
         $node_es->set('changed',time());
         $node_es->set('created',time());
         $node->save();
-        $assigned++;
+        $this->assigned=$this->assigned+1;
        }
        else
        {
-         $non_assigned++;
+         $this->non_assigned=$this->non_assigned+1;
        }
-       $message.="";
-       if($assigned > 0)
-        $message.= "Content assigned to country (".$assigned.") <br/>";
-       if($non_assigned > 0)
-        $message.= "Content already exists in country (".$non_assigned.") <br/>";
        
-      /* $message.="Please visit Country content page to view.";*/
-
-       drupal_set_message(t($message), 'status'); 
-       $set_msg = "Total content selected";
-       return $this->t($set_msg);
+       if($this->assigned > 0) {
+        $message = "Content assigned to country (".$this->assigned.") <br/>";
+	   }
+       if($this->non_assigned > 0) {
+        $error_message = "Content already exists in country (".$this->non_assigned.") <br/>";
+	   }
+      
+	 
     }
+	 
+	   /* $message.="Please visit Country content page to view.";*/
+	   if($total_selected == $this->process_item) {
+		   if(!empty($message)) { 
+			   drupal_set_message(t($message), 'status'); 
+		   }
+		   if(!empty($error_message)) { 
+			   drupal_set_message(t($error_message), 'error'); 
+		   }
+	   }
+       $set_msg = "Total content selected";
+	   return $this->t($set_msg);
   }
 
   /**

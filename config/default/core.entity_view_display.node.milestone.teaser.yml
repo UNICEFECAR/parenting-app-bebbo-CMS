@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.milestone.body
     - field.field.node.milestone.field_child_age
+    - field.field.node.milestone.field_licensed_content
     - field.field.node.milestone.field_mandatory_content
     - field.field.node.milestone.field_related_activities
     - field.field.node.milestone.field_related_articles
@@ -39,6 +40,7 @@ content:
     region: content
 hidden:
   field_child_age: true
+  field_licensed_content: true
   field_mandatory_content: true
   field_related_activities: true
   field_related_articles: true

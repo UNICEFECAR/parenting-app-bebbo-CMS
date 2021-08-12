@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.health_check_ups.body
     - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_licensed_content
     - field.field.node.health_check_ups.field_notification_from
     - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
@@ -37,6 +38,16 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 107
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_notification_from:
     weight: 104

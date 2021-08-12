@@ -4,7 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.daily_homescreen_messages.body
+    - field.field.node.daily_homescreen_messages.feeds_item
     - field.field.node.daily_homescreen_messages.field_daily_message_category
+    - field.field.node.daily_homescreen_messages.field_licensed_content
     - node.type.daily_homescreen_messages
   module:
     - text
@@ -33,6 +35,16 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 103
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   links:
     weight: 100

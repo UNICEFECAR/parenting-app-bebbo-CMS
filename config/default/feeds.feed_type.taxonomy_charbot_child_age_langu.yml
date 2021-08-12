@@ -7,8 +7,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_charbot_child_age_langu
-label: 'Taxonomy - Charbot Child Age - Language'
-description: 'Taxonomy - Charbot Child Age - Language'
+label: 'Taxonomy - Chatbot Child Age - Language'
+description: 'Taxonomy - Chatbot Child Age - Language'
 help: ''
 import_period: -1
 fetcher: upload
@@ -22,7 +22,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: rs-sr
+  langcode: uz-uz
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -55,4 +55,4 @@ mappings:
       value: term_name
     unique: {  }
     settings:
-      language: rs-sr
+      language: uz-uz

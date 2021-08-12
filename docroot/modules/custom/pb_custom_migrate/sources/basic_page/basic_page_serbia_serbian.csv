@@ -1,5 +1,5 @@
 ID,Title,Body,Translation_language,Moderation_state
-4516,"O nama","<p>Mobilna aplikacija „HaloBeba – Vaš saputnik u roditeljstvu“, novi interaktivni vodič za roditelje novorođenih beba i male dece, proistekla je iz poznatog telefonskog savetovališta <strong>„HaloBeba“ </strong>dostupnom na dobro poznatom broju <a href=""tel: 011 7158 444"">011 7158 444</a>, i to 24 časa, svakog dana u godini.</p>
+4516,O nama,"<p>Mobilna aplikacija „HaloBeba – Vaš saputnik u roditeljstvu“, novi interaktivni vodič za roditelje novorođenih beba i male dece, proistekla je iz poznatog telefonskog savetovališta <strong>„HaloBeba“ </strong>dostupnom na dobro poznatom broju <a href=""tel: 011 7158 444"">011 7158 444</a>, i to 24 časa, svakog dana u godini.</p>
 
 <p>Pored aplikacije i telefonskog savetovališta, roditeljima su i dalje dostupni saveti, sadržaji i podrška na koju su navikli preko vebsajta <a href=""http://www.halobeba.rs"">www.halobeba.rs</a>. </p>
 
@@ -48,7 +48,7 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p> </p>
 
-<div alt=""Roditelji i deca"" data-embed-button=""media_browser"" data-entity-embed-display=""media_image"" data-entity-type=""media"" data-entity-uuid=""8fd1adbd-5f17-48b0-8986-1851afa09a7e"" data-langcode=""sr"" title=""Roditelji i deca"" class=""embedded-entity"">  <img src=""/project/PB/parent-buddy-cms/docroot/sites/default/files/2020-06/Parents%20with%20two%20children%402x.png"" alt=""Roditelji i deca"" title=""Roditelji i deca"" typeof=""foaf:Image"" />
+<div alt=""Roditelji i deca"" data-embed-button=""media_browser"" data-entity-embed-display=""media_image"" data-entity-type=""media"" data-entity-uuid=""8fd1adbd-5f17-48b0-8986-1851afa09a7e"" data-langcode=""sr"" title=""Roditelji i deca"" class=""embedded-entity"">  <img src=""/sites/default/files/2020-06/Parents%20with%20two%20children%402x.png"" alt=""Roditelji i deca"" title=""Roditelji i deca"" typeof=""foaf:Image"" />
 
 </div>
 
@@ -94,8 +94,8 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p>Kada nije dostupna internet veza, aplikacija će raditi na <em>offline</em> režimu i omogućavaće pristup svim člancima, najčešćim pitanjima i odgovorima, kao i njihovo filtriranje, dok interaktivne mogućnosti praćenja neće biti dostupne. Preduslov za to je da ste <strong>bar jednom</strong> pre toga bili na internet mreži, kada ste preuzeli aplikaciju, prijavili se za njeno korišćenje i kada su na vaš telefon skinuti svi sadržaji aplikacije (tekstualni članci i najčešća pitanja i odgovori).</p>
 
-<p> </p>",rs-sr,published
-4836,"Uslovi korišćenja aplikacije","<p>Opšti uslovi korišćenja namenjeni su svim korisnicima mobilne aplikacije ""<strong>Halobeba - Vaš saputnik u roditeljstvu</strong>"", koja je vlasništvo savetovališta „Halo beba“ Gradskog zavoda za javno zdravlje Beograd (u daljem tekstu GZZJZ).</p>
+<p> </p>",rs-sr,
+4836,Uslovi korišćenja aplikacije,"<p>Opšti uslovi korišćenja namenjeni su svim korisnicima mobilne aplikacije ""<strong>Halobeba - Vaš saputnik u roditeljstvu</strong>"", koja je vlasništvo savetovališta „Halo beba“ Gradskog zavoda za javno zdravlje Beograd (u daljem tekstu GZZJZ).</p>
 
 <p>Pristupom i korišćenjem ove mobilne aplikacije prihvatate, bez ograničenja, sve uslove korišćenja navedene u daljem tekstu. Opšti uslovi korišćenja su u skladu sa Politikom privatnosti ove aplikacije</p>
 
@@ -103,8 +103,8 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p><strong>""Halobeba - Vaš saputnik u roditeljstvu""</strong> je mobilna aplikacija koja pruža informacije i smernice roditeljima male dece, starosti 0-6 godina, o različitim aspektima dečijeg zdravlja i razvoja. Takođe podržava roditelje da prate rast i razvoj deteta i nudeći relevantne informacije i smernice o tome kako da ih u tome podstiču. I na kraju, aplikacija omogućava praćenje vakcinacije i preventivnih pregleda kod izabranog pedijatra i podseća roditelje na ove važne događaje.</p>
 
-<p>Svi sadržaji koji se nalaze u mobilnoj aplikaciji su obrazovnog i informativnog karaktera. Ni jedan savet ili preporuka koji se mogu naći u ovoj aplikaciji ne mogu zameniti savet ili terapiju prepisanu od strane izabranog lekara ili drugih kompetentnih stručnjaka. Ukoliko preuzimanje i dalje korišćenje bilo koje informacije koja se nalazi u ovoj mobilnoj aplikaciji, dovede do ili prouzrokuje gubitak ili štetu, GZZJZ nije i ne može biti odgovoran, odnosno svako preuzimanje i korišćenje istih vršite u potpunosti na sopstvenu odgovornost.</p>",rs-sr,published
-5911,"Politika privatnosti","<p><strong>Politika privatnosti aplikacije Halo Beba – Vaš saputnik u roditeljstvu </strong></p>
+<p>Svi sadržaji koji se nalaze u mobilnoj aplikaciji su obrazovnog i informativnog karaktera. Ni jedan savet ili preporuka koji se mogu naći u ovoj aplikaciji ne mogu zameniti savet ili terapiju prepisanu od strane izabranog lekara ili drugih kompetentnih stručnjaka. Ukoliko preuzimanje i dalje korišćenje bilo koje informacije koja se nalazi u ovoj mobilnoj aplikaciji, dovede do ili prouzrokuje gubitak ili štetu, GZZJZ nije i ne može biti odgovoran, odnosno svako preuzimanje i korišćenje istih vršite u potpunosti na sopstvenu odgovornost.</p>",rs-sr,
+5911,Politika privatnosti,"<p><strong>Politika privatnosti aplikacije Halo Beba – Vaš saputnik u roditeljstvu </strong></p>
 
 <p>Ova Politika privatnosti odnosi se na aplikaciju Halo Beba – Vaš saputnik u roditeljstvu (u daljem tekstu: aplikacija), aplikaciju za roditelje koja služi za pružanje informacija i smernica roditeljima male dece, starosti 0-6 godina. Ona utvrđuje kako prikupljamo, koristimo i skladištimo Vaše podatke i koje korake preduzimamo da bismo zaštitili Vaše podatke.</p>
 
@@ -208,4 +208,4 @@ ID,Title,Body,Translation_language,Moderation_state
 
 <p> </p>
 
-<p><strong>Poslednje ažuriranje: 2. mart 2021.</strong></p>",rs-sr,published
+<p><strong>Poslednje ažuriranje: 2. mart 2021.</strong></p>",rs-sr,

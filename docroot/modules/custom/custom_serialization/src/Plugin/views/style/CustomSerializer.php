@@ -184,6 +184,10 @@ class CustomSerializer extends Serializer {
           $rows['langcode'] = $request[3];
         }        
 
+        if(strpos($request_uri, "sponsors") !== false){
+          unset($rows['langcode']);   
+        }
+
         $rows['data'] = $data;              
         unset($this->view->row_index);        
         // json output
@@ -222,24 +226,48 @@ class CustomSerializer extends Serializer {
     
     if(isset($request[3]) && !empty($request[3]))
     {
-      $languages = \Drupal::languageManager()->getLanguages(); // get all enabled languages
-      $languages = json_encode($languages);
-      $languages = json_decode($languages, true);   
-      $languages_arr = array(); 
-      foreach($languages as $lang_code => $lang_name)
-      {
-        $languages_arr[] = $lang_code;
-      }
-      if(isset($languages_arr) && !empty($languages_arr))
-      {
-        if(!in_array($request[3],$languages_arr))
+      if(strpos($request_uri, "sponsors") !== false){
+        if($request[3] == "all")
         {
-          $respons_arr['status'] = 400;
-          $respons_arr['message'] = "Request language is wrong";
+          return "";
+        }
+        else
+        {
+          $groups = Group::loadMultiple(); 	
+          foreach($groups as $gid => $group) {
+            $id = $group->get('id')->getString();    
+            $gids[] = $id;      
+          } 
+          if(!in_array($request[3],$gids))
+          {
+            $respons_arr['status'] = 400;
+            $respons_arr['message'] = "Request country code is wrong";
 
-          return $respons_arr;
-        }      
+            return $respons_arr;
+          } 
+        }        
       }
+      else
+      {
+        $languages = \Drupal::languageManager()->getLanguages(); // get all enabled languages
+        $languages = json_encode($languages);
+        $languages = json_decode($languages, true);   
+        $languages_arr = array(); 
+        foreach($languages as $lang_code => $lang_name)
+        {
+          $languages_arr[] = $lang_code;
+        }
+        if(isset($languages_arr) && !empty($languages_arr))
+        {
+          if(!in_array($request[3],$languages_arr))
+          {
+            $respons_arr['status'] = 400;
+            $respons_arr['message'] = "Request language is wrong";
+
+            return $respons_arr;
+          }      
+        }
+      }      
     }
     return "";  
   }
