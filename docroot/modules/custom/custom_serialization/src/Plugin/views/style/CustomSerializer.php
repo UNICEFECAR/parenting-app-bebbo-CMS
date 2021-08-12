@@ -97,7 +97,16 @@ class CustomSerializer extends Serializer {
           }
 
           foreach($rendered_data as $key => $values)
-          {                             
+          {                   
+            
+            //replace special charater into normal
+            if($key === "title")
+            {
+              $title = str_replace("&#039;","'", $values);
+              $title = str_replace("&quot;",'"', $title);
+
+              $rendered_data[$key] = $title;
+            }
 
             //change video or image actual path to absolute path
             if($key === "body" || $key === "summary")
