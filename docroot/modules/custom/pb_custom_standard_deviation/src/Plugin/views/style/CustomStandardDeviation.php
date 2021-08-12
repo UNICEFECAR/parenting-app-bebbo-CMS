@@ -14,7 +14,7 @@ use Drupal\rest\Plugin\views\style\Serializer;
  *   help = @Translation("Serializes views row data using the Serializer
  *   component."), display_types = {"data"}
  * )
- */ 
+ */
 class CustomStandardDeviation extends Serializer {
 
   /**
@@ -67,7 +67,7 @@ class CustomStandardDeviation extends Serializer {
 
         for($i = 0; $i < count($weight_for_height); $i++)
         {
-          if($weight_for_height[$i]['child_age'] === "46,45,44,43")
+          if($weight_for_height[$i]['child_age'] === "43,44,45,46")
           {
             $child_1[] = $weight_for_height[$i];
           }
@@ -120,7 +120,7 @@ class CustomStandardDeviation extends Serializer {
         $child_5 = array();
         for($i = 0; $i <= count($height_for_age); $i++)
         {
-          if($height_for_age[$i]['child_age'] === "46,45,44,43")
+          if($height_for_age[$i]['child_age'] === "43,44,45,46")
           {
             $child_1[] = $height_for_age[$i];
           }
