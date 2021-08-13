@@ -55,17 +55,13 @@ process:
     bundle: activity_category
     entity_type: taxonomy_term
 
-  field_related_articles:
-    -
-      plugin: explode
-      delimiter: ', '
-      source: Related_milestones
-    -
-      plugin: entity_lookup
-      entity_type: node
-      bundle_key: type
-      bundle: milestone
-      value_key: nid
+  field_related_articles:   
+    source: Related_milestones  
+    plugin: entity_lookup
+    entity_type: node
+    bundle_key: type
+    bundle: milestone
+    value_key: nid
    
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
