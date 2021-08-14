@@ -505,31 +505,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
                 $form['#validate'][]='user_access_validation_chk';
               }
         }
-      }
-	  else{
-		  /* Check the validation time */
-		$node = $form_state->getFormObject()->getEntity();
-        $ntype = $node->getType();
-        $ntype = str_replace("_","-",$ntype);
-        $chk_type = "node-".$ntype."-edit-form";
-		$chk_content_types = array("article","video-article");
-		if(in_array($ntype,$chk_content_types)){
-		   $user_roles = \Drupal::currentUser()->getRoles();
-		   if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-			   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
-			   $form['field_australian_article']['#attributes']['class'][] = 'hide';
-			   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';		   
-		   }
-		}
-		
-		$chk_mandatory_ctype = array('activities','child-development','child-growth','faq','milestone','page');
-		if(in_array($ntype,$chk_mandatory_ctype)){
-			$user_roles = \Drupal::currentUser()->getRoles();
-			  if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-				   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';
-			  }  
-		}
-	  }
+      }	  
     }
 	if($form['#id'] == "content-moderation-entity-moderation-form")
     { 
