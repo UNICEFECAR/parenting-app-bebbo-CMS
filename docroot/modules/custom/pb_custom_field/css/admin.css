@@ -21,3 +21,6 @@ display:none;
 #edit-delete-translation{
 	display: none;
 }
+#widget_lang{
+	color: red;
+}

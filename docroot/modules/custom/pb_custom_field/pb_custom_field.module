@@ -52,6 +52,14 @@ function pb_custom_field_preprocess_page(&$variables) {
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {  
   
+  if($form_id ==  "media_library_add_form_upload"){
+    $form['cutomtext'] = array(
+        '#type' => 'item',
+        '#markup' => '<div class="error_language" id="widget_lang"> Note: Please choose only languages associated with your country while creating Alt text. </div>',
+        '#weight' => 1, // Adjust so that you can place it whereever 
+        );
+  } 
+  
   /* add & edit user language dropdown */
   if($form['#id'] == "user-register-form" || $form['#id'] == "user-form")
   {
@@ -398,6 +406,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
     
     $request = \Drupal::request();
     $is_ajax = $request->isXmlHttpRequest();
+	
     if(!$is_ajax) {
       /* Get the logged in user details */
      
@@ -497,6 +506,30 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
               }
         }
       }
+	  else{
+		  /* Check the validation time */
+		$node = $form_state->getFormObject()->getEntity();
+        $ntype = $node->getType();
+        $ntype = str_replace("_","-",$ntype);
+        $chk_type = "node-".$ntype."-edit-form";
+		$chk_content_types = array("article","video-article");
+		if(in_array($ntype,$chk_content_types)){
+		   $user_roles = \Drupal::currentUser()->getRoles();
+		   if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+			   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
+			   $form['field_australian_article']['#attributes']['class'][] = 'hide';
+			   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';		   
+		   }
+		}
+		
+		$chk_mandatory_ctype = array('activities','child-development','child-growth','faq','milestone','page');
+		if(in_array($ntype,$chk_mandatory_ctype)){
+			$user_roles = \Drupal::currentUser()->getRoles();
+			  if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+				   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';
+			  }  
+		}
+	  }
     }
 	if($form['#id'] == "content-moderation-entity-moderation-form")
     { 
