@@ -59,6 +59,14 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
         '#weight' => 1, // Adjust so that you can place it whereever 
         );
   } 
+
+  if($form_id ==  "media_library_add_form_upload"){
+    $form['cutomtext'] = array(
+        '#type' => 'item',
+        '#markup' => '<div class="error_language" id="widget_lang"> Note: Please choose only languages associated with your country while creating Alt text. </div>',
+        '#weight' => 1, // Adjust so that you can place it whereever 
+        );
+  }
   
   /* add & edit user language dropdown */
   if($form['#id'] == "user-register-form" || $form['#id'] == "user-form")
@@ -310,7 +318,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
             {
               $form['actions']['submit']['#disabled'] = true;
               $form['actions']['submit']['#access'] = FALSE;
-              drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
+              drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
             }
             else
             {
@@ -323,7 +331,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       {
         $form['langcode']['widget'][0]['value']['#options'] = $language_options;
       }
-      $form['#validate'][]='user_access_validation_chk';
+      $form['#validate'][]='user_media_access_validation_chk';
    }
   }
 }
@@ -372,7 +380,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
          }
        }
 
-          $form['#validate'][]='user_access_validation_chk';
+          $form['#validate'][]='user_media_access_validation_chk';
           if($form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form") 
           { 
             $form_language = $form_state->get('langcode');
@@ -381,7 +389,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
             {
               $form['actions']['submit']['#disabled'] = true;
               $form['actions']['submit']['#access'] = FALSE;
-              drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
+             drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
             }
             else
             {
@@ -867,6 +875,62 @@ function user_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface
         if(!in_array($form_language,$clanguage))
         {
           $form_state->setErrorByName('','This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
+        }
+      }
+     
+    }
+
+  }
+ 
+}
+
+
+/* validation for all add image media form */
+function user_media_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface $form_state)
+{
+
+  /* Check the user validation */
+  $user = \Drupal::currentUser();
+  $roles = $user->getRoles();
+  $bypass_access = false;
+  /* check the bypass content access*/
+  foreach($roles as $rkey=>$rval)
+  {
+    if($rval != "authenticated")
+    {
+      $roles_permissions = user_role_permissions(array($rval));
+      if(in_array('bypass node access',$roles_permissions[$rval]))
+      {
+        $bypass_access = true;
+      }
+    }
+  }
+ 
+  /* global admin have bypass node access other user doesn't have 
+   * check the country user have this language permission 
+   * if they dont have access show the error message
+   */
+  if(!$bypass_access)
+  {
+    $groups = array();
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    if(!empty($grps))
+    {
+	  foreach ($grps as $grp) {
+              $groups = $grp->getGroup();
+      }
+      $country_languages = $groups->get('field_language')->getValue();
+      $form_language = $form_state->get('langcode');
+      $clanguage = array();
+      if(!empty($form_language)) {
+        foreach($country_languages as $mlangkey=>$mlangval)
+        {
+          $clanguage[]=$mlangval['value'];
+        }
+        if(!in_array($form_language,$clanguage))
+        {
+	       $form_state->setErrorByName('','This content is associated with another language. It cannot be edited.');
         }
       }
      
