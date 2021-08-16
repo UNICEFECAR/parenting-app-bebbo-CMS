@@ -7,7 +7,7 @@ dependencies:
     - node.type.video_article
     - taxonomy.vocabulary.parent_gender
   content:
-    - 'taxonomy_term:parent_gender:b4385c6b-2609-4c8e-a85c-cfe58439712e'
+    - 'taxonomy_term:parent_gender:bcd7d165-6c08-4ecb-9c50-ebf056da4aac'
   module:
     - tmgmt_content
 third_party_settings:
@@ -23,7 +23,7 @@ required: true
 translatable: false
 default_value:
   -
-    target_uuid: b4385c6b-2609-4c8e-a85c-cfe58439712e
+    target_uuid: bcd7d165-6c08-4ecb-9c50-ebf056da4aac
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'

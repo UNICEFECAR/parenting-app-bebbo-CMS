@@ -407,6 +407,26 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
       }
 
  }
+ 
+ $chk_mandatory_ctype = array('activities','child-development','child-growth','faq','milestone','page');
+  $form_details = array("node_activities_edit_form","node_faq_edit_form","node_milestone_edit_form","node_page_edit_form","node_child-development_edit_form","node_child-growth_edit_form","node_activities_form","node_faq_form","node_milestone_form","node_page_form","node_child_development_form","node_child_growth_form");
+  if(in_array($form_id,$form_details)){
+	$user_roles = \Drupal::currentUser()->getRoles();
+	if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+		$form['field_mandatory_content']['#disabled'] = TRUE;
+	}  
+		
+  }
+  
+  $australian_type = array("node_video_article_form","node_article_form","node_video_article_edit_form","node_article_edit_form");
+  if(in_array($form_id,$australian_type)){
+	$user_roles = \Drupal::currentUser()->getRoles();
+	if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
+	   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
+	   $form['field_australian_article']['#attributes']['class'][] = 'hide';
+	   $form['field_mandatory_content']['#disabled'] = TRUE;	   
+	}
+  }
   /* Check the current url is related node add or edit */
 
   if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form")
@@ -460,28 +480,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
       }
 	  
 	   
-	  /* australian content */
-	    $node = $form_state->getFormObject()->getEntity();
-        $ntype = $node->getType();
-        $ntype = str_replace("_","-",$ntype);
-        $chk_type = "node-".$ntype."-edit-form";
-		$chk_content_types = array("article","video-article");
-		if(in_array($ntype,$chk_content_types)){
-		   $user_roles = \Drupal::currentUser()->getRoles();
-		   if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-			   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
-			   $form['field_australian_article']['#attributes']['class'][] = 'hide';
-			   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';		   
-		   }
-		}
-		
-		$chk_mandatory_ctype = array('activities','child-development','child-growth','faq','milestone','page');
-		if(in_array($ntype,$chk_mandatory_ctype)){
-			$user_roles = \Drupal::currentUser()->getRoles();
-			  if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-				   $form['field_mandatory_content']['widget']['value']['#attributes']['disabled'] = 'disabled';
-			  }  
-		}
+	  
 
       /* Get the logged in user details */
       $authorized_roles = array('se','sme','editor','reviewer');

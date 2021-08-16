@@ -960,7 +960,7 @@ display:
           empty: false
           content: 'Total Count - @total'
           plugin_id: result
-      group_by: false
+      group_by: true
     display_plugin: default
     display_title: Master
     id: default

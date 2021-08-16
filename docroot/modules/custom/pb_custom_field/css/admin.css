@@ -14,7 +14,7 @@ display:none;
   display: none;
 }
 
-.hide {
+.hide, table.tmgmt-ui-review input.unreviewed, .tmgmt-ui-data-item-actions div input {
   display: none;
 }
 
