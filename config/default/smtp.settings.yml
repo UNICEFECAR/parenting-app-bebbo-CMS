@@ -3,10 +3,8 @@ smtp_host: smtp.office365.com
 smtp_hostbackup: ''
 smtp_port: '587'
 smtp_protocol: tls
-smtp_autotls: true
-smtp_timeout: 30
 smtp_username: admin@bebbo.app
-smtp_password: Monish@123@
+smtp_password: Parenting@Ecaro
 smtp_from: admin@bebbo.app
 smtp_fromname: 'Bebbo Admin'
 smtp_client_hostname: ''
@@ -15,6 +13,5 @@ smtp_allowhtml: '0'
 smtp_test_address: ''
 smtp_debugging: false
 prev_mail_system: php_mail
-smtp_keepalive: false
 _core:
-  default_config_hash: 2v5R3I9tNatGzKQjuZWh1y_955xK09313Vn-IIuedyI
+  default_config_hash: WEa5Ex_IeAcm6Bm0hmQ4vU_nDwJDB8hW-vxT1qpGIbM
