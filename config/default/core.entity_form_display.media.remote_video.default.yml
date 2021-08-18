@@ -9,7 +9,6 @@ dependencies:
     - media.type.remote_video
   module:
     - path
-    - video_embed_field
 _core:
   default_config_hash: DfbjvjtGEMGLvm-1Zm7-MCRZj3wpGokUWZOuaK5-1Po
 id: media.remote_video.default
@@ -23,11 +22,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_video_embed_url:
-    type: video_embed_field_textfield
+  field_media_oembed_video:
+    type: string_textfield
     weight: 0
     region: content
-    settings: {  }
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   langcode:
     type: language_select
@@ -66,5 +67,5 @@ content:
     third_party_settings: {  }
 hidden:
   feeds_item: true
-  field_media_oembed_video: true
+  field_video_embed_url: true
   name: true
