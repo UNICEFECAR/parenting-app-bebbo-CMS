@@ -405,7 +405,7 @@ class CustomSerializer extends Serializer {
     }  
     else
     {
-      if($key == "cover_image")
+      if($key == "cover_image" || $key == "country_flag" || $key == "country_sponsor_logo" || $key == "country_national_partner")
       {            
         $media_data = [
           'url'  => '',
@@ -435,9 +435,10 @@ class CustomSerializer extends Serializer {
   {
     $taxonomy_vocabulary_machine_name = ["growth_period", "child_age", "growth_introductory", "standard_deviation"];
     //Vocabularies Field formatter
-    if(strpos($request_uri, "vocabularies") !== false){                     
+    if(strpos($request_uri, "vocabularies") !== false){    
+      $termName = str_replace("&#039;","'", $vocabulary_name);                   
       $vocabulary_data = [    
-        $key => html_entity_decode($vocabulary_name)
+        $key => $termName
       ];       
       return $vocabulary_data;
     }
@@ -452,7 +453,6 @@ class CustomSerializer extends Serializer {
       $tax_query->fields('taxonomy_term_field_data');
       $tax_result = $tax_query->execute()->fetchAll();
       for($tax = 0; $tax < count($tax_result); $tax++)
-      //for($tax = 0; $tax < 2; $tax++)
       {                            
         if($vocabulary_machine_name === "growth_period")
         {
