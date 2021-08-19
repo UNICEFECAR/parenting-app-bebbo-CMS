@@ -19,7 +19,7 @@ bundle: video_article
 label: 'Cover Video'
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
