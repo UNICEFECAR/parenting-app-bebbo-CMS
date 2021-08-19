@@ -9,7 +9,7 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: Survey
+name: 'Survey / Feedback'
 type: survey
 description: 'Feature that allows running of short surveys with app users'
 help: ''

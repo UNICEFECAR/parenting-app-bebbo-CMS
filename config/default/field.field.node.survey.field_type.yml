@@ -1,27 +1,25 @@
-uuid: 950359b5-e167-45a9-bb67-2b202c7bad72
+uuid: b73c536e-dc5c-4419-ab4c-ee99997410a2
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_survey_link
+    - field.storage.node.field_type
     - node.type.survey
   module:
-    - link
+    - options
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.survey.field_survey_link
-field_name: field_survey_link
+id: node.survey.field_type
+field_name: field_type
 entity_type: node
 bundle: survey
-label: 'Survey / Feedback Link'
+label: Type
 description: ''
 required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
-settings:
-  link_type: 16
-  title: 0
-field_type: link
+settings: {  }
+field_type: list_string
