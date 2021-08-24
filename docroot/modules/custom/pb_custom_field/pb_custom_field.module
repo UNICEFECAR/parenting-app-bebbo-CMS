@@ -435,7 +435,7 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
     $request = \Drupal::request();
     $is_ajax = $request->isXmlHttpRequest();
 	
-    if(!$is_ajax) {
+    if(!$is_ajax && $form['#id'] != "lang-dropdown-form") {
       /* Get the logged in user details */
      
       $currentAccount = \Drupal::currentUser();
@@ -457,25 +457,27 @@ if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video
           $grp_membership_service = \Drupal::service('group.membership_loader');
           $grps = $grp_membership_service->loadByUser($user);
           foreach ($grps as $grp) {
-                  $groups = $grp->getGroup();
+            $groups = $grp->getGroup();
           }
-          $country_languages = $groups->get('field_master_language')->getValue();
-          $form_language = $form_state->get('langcode');
-          $clanguage = array();
-          foreach($country_languages as $mlangkey=>$mlangval)
+          if(!empty($groups))
           {
-            $clanguage[]=$mlangval['value'];
-          }
-         if(in_array($form_language,$clanguage))
-          {
-             
-             $form['actions']['submit']['#disabled'] = true;
-             $form['actions']['submit']['#access'] = FALSE;
-             drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
-          }
-          $form['#validate'][]='user_access_validation_chk';
-          $form['actions']['delete']['#access'] = FALSE;
-          $form['actions']['delete']['#disabled'] = true;
+            $country_languages = $groups->get('field_master_language')->getValue();
+            $form_language = $form_state->get('langcode');
+            $clanguage = array();
+            foreach($country_languages as $mlangkey=>$mlangval)
+            {
+              $clanguage[]=$mlangval['value'];
+            }
+            if(in_array($form_language,$clanguage))
+            {              
+              $form['actions']['submit']['#disabled'] = true;
+              $form['actions']['submit']['#access'] = FALSE;
+              drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
+            }
+            $form['#validate'][]='user_access_validation_chk';
+            $form['actions']['delete']['#access'] = FALSE;
+            $form['actions']['delete']['#disabled'] = true;
+          }          
         }
       }
 	  
