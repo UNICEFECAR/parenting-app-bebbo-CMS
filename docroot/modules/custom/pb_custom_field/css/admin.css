@@ -24,3 +24,17 @@ display:none;
 #widget_lang{
 	color: red;
 }
+
+.block-lang-dropdown {
+  position: fixed;
+  top: -25px;
+  right: 0;
+  z-index: 9999;
+}
+
+.block-lang-dropdown .lang-dropdown-select-element {
+  padding: 7px;
+  padding-right: 40px;
+  width: 100% !important;
+  min-height: auto;
+}
