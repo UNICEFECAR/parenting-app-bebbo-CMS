@@ -51,7 +51,6 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Country Field - dropdown option
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {  
-  
   if($form_id ==  "media_library_add_form_upload"){
     $form['cutomtext'] = array(
         '#type' => 'item',
@@ -73,6 +72,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   {
     /* New User Creation form */
     $form['account']['mail']['#required'] = TRUE;
+    $form['account']['status']['#default_value'] = 1;
     $user = \Drupal::currentUser();
     $roles = $user->getRoles();
     $authorized_roles = array('reviewer');
@@ -211,7 +211,6 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   
   if($form['#id'] == "group-content-country-group-membership-add-form"){  
     $form['group_roles']['widget']['#required'] = TRUE;  
-    $form['account']['status']['#default_value'] = 1;
     $roles = \Drupal::currentUser()->getRoles();
     if(!in_array('administrator', $roles)) {    
       $form['#validate'][] = 'group_user_validate';       
@@ -228,7 +227,6 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
   if($form['#id'] == "group-content-country-group-membership-edit-form"){ 
     $form['group_roles']['widget']['#required'] = TRUE;  
-    $form['account']['status']['#default_value'] = 1;
     $roles = \Drupal::currentUser()->getRoles();
     if(!in_array('administrator', $roles)) {           
       $form['actions']['submit']['#submit'][] = 'user_update_function';        
