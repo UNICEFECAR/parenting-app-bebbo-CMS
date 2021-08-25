@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.feeds_item
     - field.field.node.health_check_ups.field_growth_period
     - field.field.node.health_check_ups.field_licensed_content
     - field.field.node.health_check_ups.field_notification_from

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.feeds_item
     - field.field.node.vaccinations.field_growth_period
     - field.field.node.vaccinations.field_licensed_content
     - field.field.node.vaccinations.field_notification_from
