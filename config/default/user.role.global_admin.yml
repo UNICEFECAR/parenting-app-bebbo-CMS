@@ -22,6 +22,7 @@ permissions:
   - 'administer google analytics'
   - 'administer languages'
   - 'administer nodes'
+  - 'administer permissions'
   - 'administer tmgmt'
   - 'administer users'
   - 'bypass group access'
