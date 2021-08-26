@@ -1018,9 +1018,14 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
     else {
       // Removes the elements related to _user_role_N roles from the Roles form on the admin/people/create page    
       foreach ($roles as $role) {
-        if($role->id() != "global_admin") 
+        if($role->id() == "authenticated" || $role->id() == "administrator") 
         {
           unset($form['account']['roles']['#options'][$role->id()]);  
+        }
+        if($role->id() != "global_admin") 
+        {
+          //unset($form['account']['roles']['#options'][$role->id()]);  
+          $form['account']['roles'][$role->id()]['#disabled'] = TRUE;
         }
       }
     }
