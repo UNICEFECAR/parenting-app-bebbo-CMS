@@ -97,7 +97,16 @@ class CustomSerializer extends Serializer {
           }
 
           foreach($rendered_data as $key => $values)
-          {                             
+          {                   
+            
+            //replace special charater into normal
+            if($key === "title")
+            {
+              $title = str_replace("&#039;","'", $values);
+              $title = str_replace("&quot;",'"', $title);
+
+              $rendered_data[$key] = $title;
+            }
 
             //change video or image actual path to absolute path
             if($key === "body" || $key === "summary")
@@ -184,6 +193,10 @@ class CustomSerializer extends Serializer {
           $rows['langcode'] = $request[3];
         }        
 
+        if(strpos($request_uri, "sponsors") !== false){
+          unset($rows['langcode']);   
+        }
+
         $rows['data'] = $data;              
         unset($this->view->row_index);        
         // json output
@@ -222,24 +235,48 @@ class CustomSerializer extends Serializer {
     
     if(isset($request[3]) && !empty($request[3]))
     {
-      $languages = \Drupal::languageManager()->getLanguages(); // get all enabled languages
-      $languages = json_encode($languages);
-      $languages = json_decode($languages, true);   
-      $languages_arr = array(); 
-      foreach($languages as $lang_code => $lang_name)
-      {
-        $languages_arr[] = $lang_code;
-      }
-      if(isset($languages_arr) && !empty($languages_arr))
-      {
-        if(!in_array($request[3],$languages_arr))
+      if(strpos($request_uri, "sponsors") !== false){
+        if($request[3] == "all")
         {
-          $respons_arr['status'] = 400;
-          $respons_arr['message'] = "Request language is wrong";
+          return "";
+        }
+        else
+        {
+          $groups = Group::loadMultiple(); 	
+          foreach($groups as $gid => $group) {
+            $id = $group->get('id')->getString();    
+            $gids[] = $id;      
+          } 
+          if(!in_array($request[3],$gids))
+          {
+            $respons_arr['status'] = 400;
+            $respons_arr['message'] = "Request country code is wrong";
 
-          return $respons_arr;
-        }      
+            return $respons_arr;
+          } 
+        }        
       }
+      else
+      {
+        $languages = \Drupal::languageManager()->getLanguages(); // get all enabled languages
+        $languages = json_encode($languages);
+        $languages = json_decode($languages, true);   
+        $languages_arr = array(); 
+        foreach($languages as $lang_code => $lang_name)
+        {
+          $languages_arr[] = $lang_code;
+        }
+        if(isset($languages_arr) && !empty($languages_arr))
+        {
+          if(!in_array($request[3],$languages_arr))
+          {
+            $respons_arr['status'] = 400;
+            $respons_arr['message'] = "Request language is wrong";
+
+            return $respons_arr;
+          }      
+        }
+      }      
     }
     return "";  
   }
@@ -368,7 +405,7 @@ class CustomSerializer extends Serializer {
     }  
     else
     {
-      if($key == "cover_image")
+      if($key == "cover_image" || $key == "country_flag" || $key == "country_sponsor_logo" || $key == "country_national_partner")
       {            
         $media_data = [
           'url'  => '',
@@ -398,9 +435,10 @@ class CustomSerializer extends Serializer {
   {
     $taxonomy_vocabulary_machine_name = ["growth_period", "child_age", "growth_introductory", "standard_deviation"];
     //Vocabularies Field formatter
-    if(strpos($request_uri, "vocabularies") !== false){                     
+    if(strpos($request_uri, "vocabularies") !== false){    
+      $termName = str_replace("&#039;","'", $vocabulary_name);                   
       $vocabulary_data = [    
-        $key => html_entity_decode($vocabulary_name)
+        $key => $termName
       ];       
       return $vocabulary_data;
     }
@@ -415,7 +453,6 @@ class CustomSerializer extends Serializer {
       $tax_query->fields('taxonomy_term_field_data');
       $tax_result = $tax_query->execute()->fetchAll();
       for($tax = 0; $tax < count($tax_result); $tax++)
-      //for($tax = 0; $tax < 2; $tax++)
       {                            
         if($vocabulary_machine_name === "growth_period")
         {

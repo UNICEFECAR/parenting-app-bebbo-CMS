@@ -4,7 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.feeds_item
     - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_licensed_content
     - field.field.node.health_check_ups.field_notification_from
     - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
@@ -117,5 +119,6 @@ content:
 hidden:
   body: true
   feeds_item: true
+  field_licensed_content: true
   field_notification_from: true
   field_notification_to: true

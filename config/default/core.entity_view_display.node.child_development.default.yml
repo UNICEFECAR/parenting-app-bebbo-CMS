@@ -5,10 +5,12 @@ dependencies:
   config:
     - field.field.node.child_development.body
     - field.field.node.child_development.field_activity_child_age
+    - field.field.node.child_development.field_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
     - field.field.node.child_development.field_home_message_before_start
+    - field.field.node.child_development.field_licensed_content
     - field.field.node.child_development.field_mandatory_content
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
@@ -31,11 +33,19 @@ content:
     region: content
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_activity_child_age:
     weight: 111
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_child_age:
+    weight: 113
     label: above
     settings:
       link: true
@@ -86,6 +96,16 @@ content:
     third_party_settings: {  }
     type: number_decimal
     region: content
+  field_licensed_content:
+    weight: 112
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_mandatory_content:
     weight: 106
     label: above
@@ -121,10 +141,9 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   feeds_item: true
-  field_child_age: true
   langcode: true

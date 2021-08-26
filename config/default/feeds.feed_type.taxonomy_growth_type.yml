@@ -46,6 +46,10 @@ custom_sources:
     label: Weight
     value: Weight
     machine_name: weight
+  term_id2:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id2
 mappings:
   -
     target: name
@@ -55,14 +59,9 @@ mappings:
     settings:
       language: en
   -
-    target: langcode
+    target: tid
     map:
-      value: language_code
-    settings:
-      language: en
-  -
-    target: weight
-    map:
-      value: weight
-    unique: {  }
+      value: term_id2
+    unique:
+      value: '1'
     settings: {  }

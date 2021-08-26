@@ -1,11 +1,5 @@
-uuid: b191b6ed-fd76-4c61-936f-403ab52c41a1
 langcode: en
-status: true
-dependencies: {  }
 id: child_growth_uzbekistan_russian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: child_growth_uzbekistan_russian
 migration_group: child_growth
 label: child_growth_uzbekistan_russian
@@ -24,11 +18,13 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
   title: Title
-  body/value: body
+  body/value: Body
   field_mandatory_content: Mandatory_content
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: child_growth

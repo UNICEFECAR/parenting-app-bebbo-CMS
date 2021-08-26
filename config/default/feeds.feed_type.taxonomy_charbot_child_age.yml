@@ -7,8 +7,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_charbot_child_age
-label: 'Taxonomy - Charbot Child Age'
-description: 'Taxonomy - Charbot Child Age'
+label: 'Taxonomy - Chatbot Child Age'
+description: 'Taxonomy - Chatbot Child Age'
 help: ''
 import_period: -1
 fetcher: upload

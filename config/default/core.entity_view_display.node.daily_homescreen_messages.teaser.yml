@@ -5,7 +5,9 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.daily_homescreen_messages.body
+    - field.field.node.daily_homescreen_messages.feeds_item
     - field.field.node.daily_homescreen_messages.field_daily_message_category
+    - field.field.node.daily_homescreen_messages.field_licensed_content
     - node.type.daily_homescreen_messages
   module:
     - text
@@ -36,4 +38,5 @@ content:
 hidden:
   feeds_item: true
   field_daily_message_category: true
+  field_licensed_content: true
   langcode: true

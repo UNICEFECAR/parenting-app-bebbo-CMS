@@ -50,11 +50,15 @@ custom_sources:
     label: Language_code
     value: Language_code
     machine_name: language_code
+  term_id3:
+    label: Term_id
+    value: Term_id
+    machine_name: term_id3
 mappings:
   -
     target: tid
     map:
-      value: term_id
+      value: term_id3
     unique:
       value: '1'
     settings: {  }
@@ -63,11 +67,5 @@ mappings:
     map:
       value: term_name
     unique: {  }
-    settings:
-      language: null
-  -
-    target: langcode
-    map:
-      value: language_code
     settings:
       language: null

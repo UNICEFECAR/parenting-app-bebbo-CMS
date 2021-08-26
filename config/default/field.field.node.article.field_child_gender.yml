@@ -7,7 +7,7 @@ dependencies:
     - node.type.article
     - taxonomy.vocabulary.child_gender
   content:
-    - 'taxonomy_term:child_gender:77a7290b-4611-40eb-8400-b955cd12501c'
+    - 'taxonomy_term:child_gender:558010e1-3983-448c-8976-5d227facd13f'
   module:
     - tmgmt_content
 third_party_settings:
@@ -23,7 +23,7 @@ required: true
 translatable: false
 default_value:
   -
-    target_uuid: 77a7290b-4611-40eb-8400-b955cd12501c
+    target_uuid: 558010e1-3983-448c-8976-5d227facd13f
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'

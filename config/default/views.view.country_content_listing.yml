@@ -967,7 +967,7 @@ display:
           empty: false
           tokenize: true
           content:
-            value: "<br>This page lists all the Content that belong to your Country {{ label_1 }}<br>\r\nYou can filter Licensed content <br>"
+            value: "<br>This page lists all the Content that belong to your Country {{ label_1 }}<br>\r\n"
             format: full_html
           plugin_id: text
         result:
@@ -1762,10 +1762,10 @@ display:
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
-        field_activity_child_age_target_id:
-          id: field_activity_child_age_target_id
-          table: node__field_activity_child_age
-          field: field_activity_child_age_target_id
+        field_child_age_target_id:
+          id: field_child_age_target_id
+          table: node__field_child_age
+          field: field_child_age_target_id
           relationship: none
           group_type: group
           admin_label: ''
@@ -1774,34 +1774,42 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: field_activity_child_age_target_id_op
-            label: 'Child Age'
+            operator_id: field_child_age_target_id_op
+            label: 'Child Age '
             description: ''
             use_operator: false
-            operator: field_activity_child_age_target_id_op
+            operator: field_child_age_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_activity_child_age_target_id
+            identifier: field_child_age_target_id
             required: false
             remember: false
             multiple: true
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
               administrator: '0'
             reduce: false
           is_grouped: false
           group_info:
-            label: ''
-            description: ''
-            identifier: ''
+            label: 'Child Age (field_child_age)'
+            description: null
+            identifier: field_child_age_target_id
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
           reduce_duplicates: false
           type: select
           limit: true
@@ -2081,6 +2089,54 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
+        moderation_state:
+          id: moderation_state
+          table: node_field_data
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            all: all
+          group: 1
+          exposed: true
+          expose:
+            operator_id: moderation_state_op
+            label: 'Moderation state'
+            description: ''
+            use_operator: false
+            operator: moderation_state_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: moderation_state
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          plugin_id: moderation_state_filter
       filter_groups:
         operator: AND
         groups:
@@ -2113,3 +2169,4 @@ display:
       max-age: 0
       tags:
         - 'config:field.storage.node.field_licensed_content'
+        - 'config:workflow_list'

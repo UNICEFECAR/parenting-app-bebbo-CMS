@@ -14,7 +14,7 @@ use Drupal\rest\Plugin\views\style\Serializer;
  *   help = @Translation("Serializes views row data using the Serializer
  *   component."), display_types = {"data"}
  * )
- */ 
+ */
 class CustomStandardDeviation extends Serializer {
 
   /**
@@ -67,6 +67,7 @@ class CustomStandardDeviation extends Serializer {
 
         for($i = 0; $i < count($weight_for_height); $i++)
         {
+          //\Drupal::logger('pb_custom_standard_deviation')->notice('<pre><code>' . $weight_for_height[$i]['child_age'] . '</code></pre>');
           if($weight_for_height[$i]['child_age'] === "46,45,44,43")
           {
             $child_1[] = $weight_for_height[$i];
@@ -105,7 +106,9 @@ class CustomStandardDeviation extends Serializer {
           { 
             $pinned_data = $this->custom_array_formatter($$temp[$j]['pinned_article']);
             $sd_field_data['articleID'] = array_map(function($elem) { return intval($elem); }, $pinned_data);
-            $sd_field_data['name'] = $$temp[$j]['title'];
+            $title = str_replace("&#039;","'", $$temp[$j]['title']);
+            $title = str_replace("&quot;",'"', $title);
+            $sd_field_data['name'] = $title;
             $sd_field_data['text'] = $$temp[$j]['body'];
             $sd_data[$sd_weight_for_height_fields[$j]] = $sd_field_data;
           }    
@@ -120,6 +123,7 @@ class CustomStandardDeviation extends Serializer {
         $child_5 = array();
         for($i = 0; $i <= count($height_for_age); $i++)
         {
+          //\Drupal::logger('pb_custom_standard_deviation')->notice('<pre><code>' . $height_for_age[$i]['child_age'] . '</code></pre>');
           if($height_for_age[$i]['child_age'] === "46,45,44,43")
           {
             $child_1[] = $height_for_age[$i];
@@ -158,7 +162,9 @@ class CustomStandardDeviation extends Serializer {
           { 
             $pinned_data = $this->custom_array_formatter($$temp[$j]['pinned_article']);
             $sd_field_data['articleID'] = array_map(function($elem) { return intval($elem); }, $pinned_data);
-            $sd_field_data['name'] = $$temp[$j]['title'];
+            $title = str_replace("&#039;","'", $$temp[$j]['title']);
+            $title = str_replace("&quot;",'"', $title);
+            $sd_field_data['name'] = $title;
             $sd_field_data['text'] = $$temp[$j]['body'];
             $sd_data[$sd_height_for_age_fields[$j]] = $sd_field_data;
           }    
@@ -174,7 +180,15 @@ class CustomStandardDeviation extends Serializer {
         }
         $rows['data'] = $sd_final_data;
         return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
-      }    
+      }  
+      else
+      {   
+        $rows = [];
+        $rows['status'] = 204;
+        $rows['message'] = "No Records Found";
+
+        return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
+      }  
     }
     else
     {   

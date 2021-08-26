@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - user.role.administrator
-    - user.role.global_admin
   module:
     - group
     - user
@@ -2234,7 +2233,6 @@ display:
           admin_label: ''
           operator: not
           value:
-            global_admin: global_admin
             administrator: administrator
           group: 1
           exposed: false

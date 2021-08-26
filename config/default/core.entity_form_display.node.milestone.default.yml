@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.milestone.body
     - field.field.node.milestone.field_child_age
+    - field.field.node.milestone.field_licensed_content
     - field.field.node.milestone.field_mandatory_content
     - field.field.node.milestone.field_related_activities
     - field.field.node.milestone.field_related_articles
@@ -142,4 +143,5 @@ content:
       match_limit: 10
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_licensed_content: true

@@ -75,7 +75,7 @@ mappings:
   -
     target: name
     map:
-      value: title
+      value: term_name
     unique: {  }
     settings:
       language: en

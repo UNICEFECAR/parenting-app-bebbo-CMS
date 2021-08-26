@@ -12,7 +12,7 @@ bundle: article
 label: 'Mandatory Content'
 description: 'To identify the content as mandatory for all onboarding countries'
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0

@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.faq.field_child_gender
     - field.field.node.faq.field_content_category
     - field.field.node.faq.field_keywords
+    - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
     - field.field.node.faq.field_parent_gender
     - node.type.faq
@@ -29,14 +30,14 @@ content:
     region: content
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_chatbot_child_age:
     weight: 109
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -52,7 +53,7 @@ content:
     weight: 106
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -63,6 +64,16 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 110
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_mandatory_content:
     weight: 107
@@ -84,9 +95,9 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   field_child_age: true
   langcode: true

@@ -12,7 +12,7 @@ bundle: article
 label: 'Licensed Content'
 description: 'Enable this filed if this content is country specific so that other countries could not add this content to their country'
 required: false
-translatable: true
+translatable: false
 default_value:
   -
     value: 0

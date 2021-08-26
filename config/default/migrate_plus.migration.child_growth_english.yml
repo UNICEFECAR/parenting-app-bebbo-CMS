@@ -26,29 +26,29 @@ process:
     default_value: 1
   nid: ID
   title: Title
-  body/value: body
+  body/value: Body
   field_growth_type:
     plugin: entity_lookup
     source: Growth_type
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: growth_type
     entity_type: taxonomy_term
   field_standard_deviation:
     plugin: entity_lookup
     source: Standard_deviation
-    value_key: name
+    value_key: tid
     bundle_key: vid
     bundle: standard_deviation_category
     entity_type: taxonomy_term
   field_child_age:
     -
       plugin: explode
-      delimiter: ', '
+      delimiter: ','
       source: Child_age
     -
       plugin: entity_lookup
-      value_key: name
+      value_key: tid
       bundle_key: vid
       bundle: child_age
       entity_type: taxonomy_term

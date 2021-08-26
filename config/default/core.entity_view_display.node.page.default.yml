@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_licensed_content
     - field.field.node.page.field_mandatory_content
     - node.type.page
   module:
@@ -23,6 +24,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_licensed_content:
+    weight: 103
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_mandatory_content:
     weight: 102
     label: above

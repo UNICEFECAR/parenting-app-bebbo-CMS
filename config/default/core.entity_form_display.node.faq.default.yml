@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.faq.field_child_gender
     - field.field.node.faq.field_content_category
     - field.field.node.faq.field_keywords
+    - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
     - field.field.node.faq.field_parent_gender
     - node.type.faq
@@ -124,4 +125,5 @@ hidden:
   field_child_age: true
   field_child_gender: true
   field_keywords: true
+  field_licensed_content: true
   field_parent_gender: true

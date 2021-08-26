@@ -9,7 +9,7 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'Child Development'
+name: 'Child Development - Age Periods'
 type: child_development
 description: 'Features key development article for each age period'
 help: ''
