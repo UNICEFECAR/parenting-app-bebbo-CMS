@@ -603,7 +603,9 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
   $langcode = explode('node', $path);  
   $split_url = explode('/', $langcode['0']);
   /* $languagecode =  str_replace("/","",$split_url['1']); */
-  $languagecode =  $split_url['3'];
+  //$languagecode =  $split_url['3'];
+  $languagecode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
 
 
   if(in_array("reviewer", $roles) ){  
@@ -643,6 +645,7 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
       }
       ##Remove  delete tab for country users       
       unset($data['tabs'][0]['entity.node.delete_form']);
+       unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
       ##Remove tabs for edit, delete and translate fo other languages.
       if(!in_array($languagecode, $clanguage)){
         unset($data['tabs'][0]['entity.node.edit_form']);
@@ -967,7 +970,7 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
 /**
  * Alters user_profile_form
  */
-function pb_custom_field_form_user_form_alter(&$form, &$form_state, $form_id) {
+function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $current_uri = \Drupal::request()->getRequestUri();
   $roles = \Drupal\user\Entity\Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
@@ -975,23 +978,43 @@ function pb_custom_field_form_user_form_alter(&$form, &$form_state, $form_id) {
   $path_args = explode('/', $current_uri);
   if($form_id == "user_form" && in_array("global_admin", $currentUser_roles)){
     if(isset($path_args[count($path_args)-3]) && $path_args[count($path_args)-3] == "group" && isset($path_args[count($path_args)-1]) && $path_args[count($path_args)-1] == "members") {
-      $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {      
-        unset($form['account']['roles']['#options'][$role->id()]);       
-      }
+      $form['account']['roles']['#access'] = false;  
+      // $form['account']['roles']['#title_display'] = 'invisible';
+      // foreach ($roles as $role) {      
+      //   unset($form['account']['roles']['#options'][$role->id()]);       
+      // }
     }
     else {
-      // Removes the elements related to _user_role_N roles from the Roles form on the admin/people/create page        
-      foreach ($roles as $role) {
-        if($role->id() == "authenticated" || $role->id() == "administrator") 
-        {
-          unset($form['account']['roles']['#options'][$role->id()]);  
+      $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
+      $user_path_args = explode('/', $current_path);
+      if(isset($user_path_args[1]))
+      {
+        $uid = $user_path_args[1];
+        $user = \Drupal\user\Entity\User::load($uid);
+        $user_roles = $user->getRoles();
+        foreach ($user_roles as $user_role) {
+          if($user_role != "global_admin")
+          {
+            //$form['account']['roles']['#title_display'] = 'invisible';
+            $form['account']['roles']['#access'] = false;  
+          }
+          elseif($user_role == "global_admin")
+          {
+            //$form['account']['roles']['#title_display'] = 'visible';
+            $form['account']['roles']['#access'] = true;
+            foreach ($roles as $role) {
+              if($role->id() == "authenticated" || $role->id() == "administrator") 
+              {
+                unset($form['account']['roles']['#options'][$role->id()]);  
+              }
+              if($role->id() != "global_admin") 
+              {
+                unset($form['account']['roles']['#options'][$role->id()]);  
+              }
+            }
+          }         
         }
-        if($role->id() != "global_admin") 
-        {
-          $form['account']['roles'][$role->id()]['#disabled'] = TRUE;
-        }
-      }
+      }      
     }
   }
 }
@@ -1007,17 +1030,22 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
   $path_args = explode('/', $current_path);
   if($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
     if(isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
-      $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {      
-        unset($form['account']['roles']['#options'][$role->id()]);        
-      }
+      $form['account']['roles']['#access'] = false;  
+      // $form['account']['roles']['#title_display'] = 'invisible';
+      // foreach ($roles as $role) {      
+      //   unset($form['account']['roles']['#options'][$role->id()]);        
+      // }
     }
     else {
-      // Removes the elements related to _user_role_N roles from the Roles form on the admin/people/create page    
       foreach ($roles as $role) {
+        if($role->id() == "authenticated" || $role->id() == "administrator") 
+        {
+          unset($form['account']['roles']['#options'][$role->id()]);  
+        }
         if($role->id() != "global_admin") 
         {
           unset($form['account']['roles']['#options'][$role->id()]);  
+          //$form['account']['roles'][$role->id()]['#disabled'] = TRUE;
         }
       }
     }
