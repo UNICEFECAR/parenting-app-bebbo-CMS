@@ -42,6 +42,60 @@ function pb_custom_field_allowed_values_function(FieldStorageConfig $definition,
   return $options;
 }
 
+
+
+/**
+ * Implements media widget language dropdown alter.      ``
+ */
+function allowed_languages_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state) {
+  if (isset($form['media'][0]['fields']['langcode']['widget'])) {
+	
+	$user = \Drupal::currentUser();
+	$roles = $user->getRoles();
+	$bypass_access = false;
+	/* check the bypass content access*/
+	foreach($roles as $rkey=>$rval)
+	{
+	  if($rval != "authenticated")
+		{
+		  $roles_permissions = user_role_permissions(array($rval));
+		  if(in_array('bypass node access',$roles_permissions[$rval]))
+		  {
+			$bypass_access = true;
+		  }
+		}
+	}
+ 
+	if(!$bypass_access)
+	{
+	  $groups = array();
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($user);
+      foreach ($grps as $grp) {
+              $groups = $grp->getGroup();
+      }
+      if(!empty($groups))
+      {
+        $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options'];
+        $country_languages = $groups->get('field_language')->getValue();
+        $clanguage = array();
+        foreach($country_languages as $mlangkey=>$mlangval)
+        {
+           $clanguage[]=$mlangval['value'];
+        }
+        $language_options = [];
+        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if(in_array($langcode,$clanguage)){
+            $language_options[$langcode] = $language->getName();
+          }
+        }
+        $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options'] = $language_options;
+      }
+    }
+  }
+}
+
+
 function pb_custom_field_preprocess_page(&$variables) {
    $variables['#attached']['library'][] = 'pb_custom_field/mylib';
 }

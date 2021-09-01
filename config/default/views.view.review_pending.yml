@@ -639,6 +639,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      css_class: common_table
     cache_metadata:
       max-age: -1
       contexts:

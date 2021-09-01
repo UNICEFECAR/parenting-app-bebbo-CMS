@@ -2,6 +2,8 @@ uuid: 05e65af2-22b7-4226-ad53-30da40a43aad
 langcode: en
 status: true
 dependencies:
+  config:
+    - user.role.authenticated
   module:
     - node
     - search
@@ -277,9 +279,10 @@ display:
         style: false
         row: false
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            authenticated: authenticated
       style:
         type: default
         options:
@@ -296,5 +299,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
-        - user.permissions
+        - user.roles
       tags: {  }

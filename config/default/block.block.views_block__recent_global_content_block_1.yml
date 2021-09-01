@@ -6,6 +6,7 @@ dependencies:
     - views.view.recent_global_content
   module:
     - system
+    - user
     - views
   theme:
     - claro
@@ -28,3 +29,10 @@ visibility:
     pages: /dashboard
     negate: false
     context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
