@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - lang_dropdown
+    - user
   theme:
     - claro
 id: languagedropdownswitcher
@@ -41,4 +42,11 @@ settings:
   languageicons:
     flag_position: 1
   hidden_languages: {  }
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

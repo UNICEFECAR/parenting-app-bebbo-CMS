@@ -1,0 +1,39 @@
+uuid: a3597b57-c018-480b-a952-7bf976305e09
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:fe7055fc-74f7-4a3b-bd75-875417247276'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - claro
+id: quicklinkssme
+theme: claro
+region: pre_content
+weight: -12
+provider: null
+plugin: 'block_content:fe7055fc-74f7-4a3b-bd75-875417247276'
+settings:
+  id: 'block_content:fe7055fc-74f7-4a3b-bd75-875417247276'
+  label: 'Quick Links'
+  provider: block_content
+  label_display: visible
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /dashboard
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      sme: sme
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

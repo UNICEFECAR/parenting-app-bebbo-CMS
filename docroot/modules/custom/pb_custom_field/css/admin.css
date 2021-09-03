@@ -38,3 +38,6 @@ display:none;
   width: 100% !important;
   min-height: auto;
 }
+.common-table .view-header a{
+  float: right;
+}
