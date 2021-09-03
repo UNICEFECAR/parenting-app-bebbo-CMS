@@ -13,7 +13,7 @@ dependencies:
 id: quicklinks
 theme: claro
 region: pre_content
-weight: -1
+weight: -11
 provider: null
 plugin: 'block_content:2c92ed4a-f95c-4070-b649-af27c4f0eccb'
 settings:

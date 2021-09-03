@@ -13,12 +13,12 @@ dependencies:
 id: quicklinkssme
 theme: claro
 region: pre_content
-weight: -2
+weight: -12
 provider: null
 plugin: 'block_content:fe7055fc-74f7-4a3b-bd75-875417247276'
 settings:
   id: 'block_content:fe7055fc-74f7-4a3b-bd75-875417247276'
-  label: 'Quick Links SME'
+  label: 'Quick Links'
   provider: block_content
   label_display: visible
   status: true

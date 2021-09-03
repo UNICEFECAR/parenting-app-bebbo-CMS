@@ -13,7 +13,7 @@ dependencies:
 id: views_block__recent_logged_in_users_block_1
 theme: claro
 region: pre_content
-weight: -6
+weight: 0
 provider: null
 plugin: 'views_block:recent_logged_in_users-block_1'
 settings:
@@ -23,6 +23,7 @@ settings:
   label_display: visible
   views_label: ''
   items_per_page: none
+  context_mapping: {  }
 visibility:
   request_path:
     id: request_path
@@ -32,9 +33,7 @@ visibility:
   user_role:
     id: user_role
     roles:
-      global_admin: global_admin
       reviewer: reviewer
-      administrator: administrator
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'

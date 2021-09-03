@@ -13,12 +13,12 @@ dependencies:
 id: quicklinkglobal
 theme: claro
 region: pre_content
-weight: -3
+weight: -13
 provider: null
 plugin: 'block_content:fa51b6d0-de8e-4163-ab0d-20dc15c90770'
 settings:
   id: 'block_content:fa51b6d0-de8e-4163-ab0d-20dc15c90770'
-  label: 'Quick Link Global'
+  label: 'Quick Links'
   provider: block_content
   label_display: visible
   status: true

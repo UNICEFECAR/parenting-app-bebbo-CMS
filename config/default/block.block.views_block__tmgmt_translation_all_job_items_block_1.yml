@@ -1,23 +1,23 @@
-uuid: 9fd77fb2-cd24-487b-88ff-162734dc006e
+uuid: 05683da1-935d-4c6f-a004-63575fb41087
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.translation_review_pending
+    - views.view.tmgmt_translation_all_job_items
   module:
     - system
     - user
     - views
   theme:
     - claro
-id: views_block__translation_review_pending_block_1
+id: views_block__tmgmt_translation_all_job_items_block_1
 theme: claro
 region: pre_content
-weight: -3
+weight: -2
 provider: null
-plugin: 'views_block:translation_review_pending-block_1'
+plugin: 'views_block:tmgmt_translation_all_job_items-block_1'
 settings:
-  id: 'views_block:translation_review_pending-block_1'
+  id: 'views_block:tmgmt_translation_all_job_items-block_1'
   label: ''
   provider: views
   label_display: visible
@@ -32,7 +32,8 @@ visibility:
   user_role:
     id: user_role
     roles:
-      global_admin: global_admin
+      editor: editor
+      se: se
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
