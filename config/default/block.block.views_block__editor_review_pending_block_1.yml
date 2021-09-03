@@ -12,8 +12,8 @@ dependencies:
     - claro
 id: views_block__editor_review_pending_block_1
 theme: claro
-region: pre_content
-weight: -7
+region: content
+weight: 1
 provider: null
 plugin: 'views_block:editor_review_pending-block_1'
 settings:

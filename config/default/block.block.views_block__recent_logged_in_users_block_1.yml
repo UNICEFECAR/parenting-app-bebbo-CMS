@@ -12,8 +12,8 @@ dependencies:
     - claro
 id: views_block__recent_logged_in_users_block_1
 theme: claro
-region: pre_content
-weight: 0
+region: content
+weight: 7
 provider: null
 plugin: 'views_block:recent_logged_in_users-block_1'
 settings:
