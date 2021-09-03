@@ -66,36 +66,58 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
    }
 }
 
-// function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {  
+  if($view->id() == "recent_logged_in_users")
+  {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    $groups = array();
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+     foreach ($grps as $grp) {
+       $groups[] = $grp->getGroup();
+     }
+      if(!empty($groups)){
+        $title = $groups[0]->label();
+        foreach ($query->where as &$condition_group) {        
+        foreach ($condition_group['conditions'] as &$condition) {
+          if($condition['field'] == "groups_field_data_group_content_field_data.label"){
+            $condition['value'] = $title;
+            //$condition['operator'] = "IN";
+          }
+        }
+      }
+    }
+  }
 
-//       if ($view->id() == 'global_content_listing') {  
+   //    if ($view->id() == 'global_content_listing') {  
 
-//         $currentAccount = \Drupal::currentUser();
-//         $cur_user_roles = $currentAccount->getRoles();
-//         $authorized_roles = array('se','sme','editor','reviewer');
-//       if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0){
-//           $type = array('0' => 'article', '1' => 'video_article');
+   //      $currentAccount = \Drupal::currentUser();
+   //      $cur_user_roles = $currentAccount->getRoles();
+   //      $authorized_roles = array('se','sme','editor','reviewer');
+   //    if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0){
+   //        $type = array('0' => 'article', '1' => 'video_article');
 
-//           $configuration = array(
-//           'type'       => 'LEFT',
-//           'table'      => 'node__field_licensed_content',
-//           'field'      => 'entity_id',
-//           'left_table' => 'node_field_data',
-//           'left_field' => 'nid',
-//           'operator'   => '=',
-//           'extra' => array(
-//            array('table' => 'node_field_data','field' => 'type', 'value' => $type, 'operator' => 'IN'),
-//            array('field' => 'field_licensed_content_value', 'value' => 0, 'operator' => '='),
-//            ),
-//         );
+   //        $configuration = array(
+   //        'type'       => 'LEFT',
+   //        'table'      => 'node__field_licensed_content',
+   //        'field'      => 'entity_id',
+   //        'left_table' => 'node_field_data',
+   //        'left_field' => 'nid',
+   //        'operator'   => '=',
+   //        'extra' => array(
+   //         array('table' => 'node_field_data','field' => 'type', 'value' => $type, 'operator' => 'IN'),
+   //         array('field' => 'field_licensed_content_value', 'value' => 0, 'operator' => '='),
+   //         ),
+   //      );
 
-//         $join = \Drupal\views\Views::pluginManager('join')
-//           ->createInstance('standard', $configuration);
-//         $rel = $query->addRelationship('l', $join, 'node_field_data');
-//         $query->addTable('node__field_licensed_content', $rel, $join, 'l');        
-//         $query->addWhere(0, 'node_field_data.status', 1, '=');
-//       }
+   //      $join = \Drupal\views\Views::pluginManager('join')
+   //        ->createInstance('standard', $configuration);
+   //      $rel = $query->addRelationship('l', $join, 'node_field_data');
+   //      $query->addTable('node__field_licensed_content', $rel, $join, 'l');        
+   //      $query->addWhere(0, 'node_field_data.status', 1, '=');
+   //    }
 
-//    }
+   // }
           
-// }
+}
