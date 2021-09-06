@@ -1,9 +1,9 @@
-uuid: 020470ad-f201-420b-856f-36d123a25fed
+uuid: 53955fc8-901f-4c85-ad63-d32d08792d2b
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:339861d0-4682-4bc7-a9e9-7832241a24ab'
+    - 'block_content:basic:379fefee-5292-42de-be82-3d1a6289f68b'
   module:
     - block_content
     - system
@@ -13,11 +13,11 @@ dependencies:
 id: quicklinkssme
 theme: claro
 region: content
-weight: -4
+weight: -9
 provider: null
-plugin: 'block_content:339861d0-4682-4bc7-a9e9-7832241a24ab'
+plugin: 'block_content:379fefee-5292-42de-be82-3d1a6289f68b'
 settings:
-  id: 'block_content:339861d0-4682-4bc7-a9e9-7832241a24ab'
+  id: 'block_content:379fefee-5292-42de-be82-3d1a6289f68b'
   label: 'Quick Links'
   provider: block_content
   label_display: visible

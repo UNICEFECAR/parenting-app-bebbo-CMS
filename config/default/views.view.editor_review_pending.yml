@@ -558,7 +558,6 @@ display:
           admin_label: ''
           operator: in
           value:
-            group_workflow-draft: group_workflow-draft
             group_workflow-reject: group_workflow-reject
           group: 1
           exposed: false
