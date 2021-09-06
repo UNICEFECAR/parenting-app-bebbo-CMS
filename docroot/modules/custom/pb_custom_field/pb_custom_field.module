@@ -145,12 +145,12 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /*if ($form_id == "media_library_add_form_upload") {
+  /* if ($form_id == "media_library_add_form_upload") {
   $form['cutomtext'] = [
   '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note: Please
-  choose only languages associated with your country while creating
-  Alt text. </div>',
+  '#markup' => '<div class="error_language" id="widget_lang"> Note:
+  Please choose only languages associated with your country
+  while creating Alt text. </div>',
   '#weight' => 1,
   ];
   }
@@ -159,13 +159,11 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   $form['cutomtext'] = [
   '#type' => 'item',
   '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country while
-  creating Alt text. </div>',
+  Please choose only languages associated with your country
+  while creating Alt text. </div>',
   '#weight' => 1,
-  /* Adjust so that you can place it whereever. */
   ];
-  }
-   */
+  } */
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
