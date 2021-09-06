@@ -16,6 +16,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\user\Entity\User;
+use Drupal\user\Entity\Role;
 
 /*
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -295,7 +297,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     if (in_array("reviewer", $roles)) {
       $uid = \Drupal::request()->query->get('uid');
       if (!empty($uid)) {
-        $user = \Drupal\user\Entity\User::load($uid);
+        $user = User::load($uid);
         $form['entity_id']['widget'][0]['target_id']['#default_value'] = $user;
       }
     }
@@ -334,6 +336,29 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       if (isset($form['langcode'])) {
         /* $form['langcode']['#type'] = 'select'; */
         $form['langcode']['#options'] = $language_options;
+      }
+    }
+
+  }
+
+  if ($form['#id'] == "views-exposed-form-user-admin-people-page-2") {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    if (in_array('administrator', $user_roles) || in_array('global_admin', $user_roles)) {
+      $user_groups = [];
+      $user_groups[''] = "- Any -";
+      $groups = Group::loadMultiple();
+      if (!empty($groups)) {
+        foreach ($groups as $group) {
+          $id = $group->get('id')->getString();
+          $title = $group->get('label')->getString();
+          $user_groups[$title] = $title;
+        }
+      }
+      if (isset($form['country'])) {
+        $form['country']['#type'] = 'select';
+        $form['country']['#options'] = $user_groups;
+        $form['country']['#size'] = 1;
       }
     }
 
@@ -705,7 +730,7 @@ function user_update_function($form, FormStateInterface $form_state) {
   $entity = $node->getEntity();
    */
   $uid = $form_state->getValue('entity_id')[0]['target_id'];
-  $user = \Drupal\user\Entity\User::load($uid);
+  $user = User::load($uid);
   $roles = $user->getRoles();
   $group_roles = $form_state->getValue('group_roles');
 
@@ -739,7 +764,7 @@ function user_update_function($form, FormStateInterface $form_state) {
  */
 function group_user_validate($form, FormStateInterface $form_state) {
   $uid = $form_state->getValue('entity_id')[0]['target_id'];
-  $user = \Drupal\user\Entity\User::load($uid);
+  $user = User::load($uid);
   $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
@@ -891,7 +916,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
 /**
  * Validation for all node and add image media form.
  */
-function user_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+function user_access_validation_chk(&$form, FormStateInterface $form_state) {
   /* Check the user validation.*/
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
@@ -1002,7 +1027,7 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
  */
 function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $current_uri = \Drupal::request()->getRequestUri();
-  $roles = \Drupal\user\Entity\Role::loadMultiple();
+  $roles = Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $path_args = explode('?', $current_uri);
   $path_args = explode('/', $current_uri);
@@ -1019,7 +1044,7 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
       $user_path_args = explode('/', $current_path);
       if (isset($user_path_args[1])) {
         $uid = $user_path_args[1];
-        $user = \Drupal\user\Entity\User::load($uid);
+        $user = User::load($uid);
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
@@ -1048,7 +1073,7 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
  * Alters user_register_form.
  */
 function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $form_id) {
-  $roles = \Drupal\user\Entity\Role::loadMultiple();
+  $roles = Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
   $path_args = explode('/', $current_path);

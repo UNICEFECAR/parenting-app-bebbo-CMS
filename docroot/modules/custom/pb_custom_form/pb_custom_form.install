@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Force update check api schema.
+ */
+
+/**
+ * Implements hook_schema().
+ */
 function pb_custom_form_schema() {
   $schema['forcefull_check_update_api'] = [
     'description' => 'Stores value in custom table',
