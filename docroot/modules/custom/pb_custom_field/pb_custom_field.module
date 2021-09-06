@@ -47,6 +47,49 @@ function pb_custom_field_allowed_values_function(FieldStorageConfig $definition,
 }
 
 /**
+ * {@inheritdoc}
+ */
+function allowed_languages_form_media_library_add_form_oembed_alter(array &$form, FormStateInterface $form_state) {
+  if (isset($form['media'][0]['fields']['langcode']['widget'])) {
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+    /* check the bypass content access*/
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $roles_permissions = user_role_permissions([$rval]);
+        if (in_array('bypass node access', $roles_permissions[$rval])) {
+          $bypass_access = TRUE;
+        }
+      }
+    }
+    if (!$bypass_access) {
+      $groups = [];
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($user);
+      foreach ($grps as $grp) {
+        $groups = $grp->getGroup();
+      }
+      if (!empty($groups)) {
+        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
+        $country_languages = $groups->get('field_language')->getValue();
+        $clanguage = [];
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
+        }
+        $language_options = [];
+        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if (in_array($langcode, $clanguage)) {
+            $language_options[$langcode] = $language->getName();
+          }
+        }
+        $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options'] = $language_options;
+      }
+    }
+  }
+}
+
+/**
  * Implements media widget language dropdown alter.
  */
 function allowed_languages_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state) {
@@ -100,23 +143,27 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == "media_library_add_form_upload") {
-    $form['cutomtext'] = [
-      '#type' => 'item',
-      '#markup' => '<div class="error_language" id="widget_lang"> Note: Please choose only languages associated with your country while creating Alt text. </div>',
-      '#weight' => 1,
-      /* Adjust so that you can place it whereever. */
-    ];
+  /*if ($form_id == "media_library_add_form_upload") {
+  $form['cutomtext'] = [
+  '#type' => 'item',
+  '#markup' => '<div class="error_language" id="widget_lang"> Note: Please
+  choose only languages associated with your country while creating
+  Alt text. </div>',
+  '#weight' => 1,
+  ];
   }
 
   if ($form_id == "media_library_add_form_oembed") {
-    $form['cutomtext'] = [
-      '#type' => 'item',
-      '#markup' => '<div class="error_language" id="widget_lang"> Note: Please choose only languages associated with your country while creating Alt text. </div>',
-      '#weight' => 1,
-      /* Adjust so that you can place it whereever. */
-    ];
+  $form['cutomtext'] = [
+  '#type' => 'item',
+  '#markup' => '<div class="error_language" id="widget_lang"> Note:
+  Please choose only languages associated with your country while
+  creating Alt text. </div>',
+  '#weight' => 1,
+  /* Adjust so that you can place it whereever. */
+  ];
   }
+   */
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
