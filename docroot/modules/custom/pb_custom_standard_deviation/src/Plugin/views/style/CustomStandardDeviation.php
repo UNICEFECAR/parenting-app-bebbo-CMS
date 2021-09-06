@@ -26,15 +26,17 @@ class CustomStandardDeviation extends Serializer {
     $request_uri = \Drupal::service('path.current')->getPath(); /* Gives request path e.x (api/articles/en/1) */
     $request = explode('/', $request_uri);
     /* Validating request params to response error code */
-    $validate_params_res = $this->check_request_params($request_uri);
+    $validate_params_res = $this->checkRequestParams($request_uri);
     if (empty($validate_params_res)) {
-      $array_of_multiple_values = ["child_age"];
-      $sd_weight_for_height_fields = ["goodText", "warrningSmallHeightText", "emergencySmallHeightText",
-      "warrningBigHeightText", "emergencyBigHeightText"];
-      $sd_height_for_age_fields = ["goodText", "warrningSmallLengthText", "emergencySmallLengthText",
-      "warrningBigLengthText"];
+      $sd_weight_for_height_fields = [
+        "goodText", "warrningSmallHeightText",
+        "emergencySmallHeightText", "warrningBigHeightText", "emergencyBigHeightText",
+      ];
+      $sd_height_for_age_fields = [
+        "goodText", "warrningSmallLengthText",
+        "emergencySmallLengthText", "warrningBigLengthText",
+      ];
       $rows = [];
-      $data = [];
       $weight_for_height = [];
       $height_for_age = [];
       if (isset($this->view->result) && !empty($this->view->result)) {
@@ -88,11 +90,17 @@ class CustomStandardDeviation extends Serializer {
         $sd_arr = [];
         for ($i = 1; $i <= 5; $i++) {
           $temp = "child_" . $i;
-          $formatted_data = $this->custom_array_formatter($$temp[0]['child_age']);
-          $sd_data['child_age'] = array_map(function ($elem) {return intval($elem);}, $formatted_data);
+          $formatted_data = $this->customArrayFormatter($$temp[0]['child_age']);
+          $sd_data['child_age'] = array_map(
+            function ($elem) {
+              return intval($elem);
+            }, $formatted_data);
           for ($j = 0; $j < count($$temp); $j++) {
-            $pinned_data = $this->custom_array_formatter($$temp[$j]['pinned_article']);
-            $sd_field_data['articleID'] = array_map(function ($elem) {return intval($elem);}, $pinned_data);
+            $pinned_data = $this->customArrayFormatter($$temp[$j]['pinned_article']);
+            $sd_field_data['articleID'] = array_map(
+              function ($elem) {
+                return intval($elem);
+              }, $pinned_data);
             $title = str_replace("&#039;", "'", $$temp[$j]['title']);
             $title = str_replace("&quot;", '"', $title);
             $sd_field_data['name'] = $title;
@@ -136,11 +144,17 @@ class CustomStandardDeviation extends Serializer {
         $sd_arr = [];
         for ($i = 1; $i <= 5; $i++) {
           $temp = "child_" . $i;
-          $formatted_data = $this->custom_array_formatter($$temp[0]['child_age']);
-          $sd_data['child_age'] = array_map(function ($elem) {return intval($elem);}, $formatted_data);
+          $formatted_data = $this->customArrayFormatter($$temp[0]['child_age']);
+          $sd_data['child_age'] = array_map(
+            function ($elem) {
+              return intval($elem);
+            }, $formatted_data);
           for ($j = 0; $j < count($$temp); $j++) {
-            $pinned_data = $this->custom_array_formatter($$temp[$j]['pinned_article']);
-            $sd_field_data['articleID'] = array_map(function ($elem) {return intval($elem);}, $pinned_data);
+            $pinned_data = $this->customArrayFormatter($$temp[$j]['pinned_article']);
+            $sd_field_data['articleID'] = array_map(
+              function ($elem) {
+                return intval($elem);
+              }, $pinned_data);
             $title = str_replace("&#039;", "'", $$temp[$j]['title']);
             $title = str_replace("&quot;", '"', $title);
             $sd_field_data['name'] = $title;
@@ -175,7 +189,7 @@ class CustomStandardDeviation extends Serializer {
   /**
    * To convert comma seperated string into array.
    */
-  public function custom_array_formatter($values) {
+  public function customArrayFormatter($values) {
 
     /* If the field have comma, */
     if (!empty($values) && strpos($values, ',') !== FALSE) {
@@ -194,7 +208,7 @@ class CustomStandardDeviation extends Serializer {
   /**
    * To check request params is correct.
    */
-  public function check_request_params($request_uri) {
+  public function checkRequestParams($request_uri) {
 
     $request = explode('/', $request_uri);
 
