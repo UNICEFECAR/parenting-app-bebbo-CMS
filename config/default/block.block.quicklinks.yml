@@ -1,40 +1,30 @@
-uuid: fe87a873-c60f-4fae-b1e6-2479ed34baa6
+uuid: 6883cf2a-62f3-45ac-a394-a344bae2bec8
 langcode: en
 status: true
 dependencies:
-  content:
-    - 'block_content:basic:1bcbe307-6dcb-4ca6-bf63-aa0d0beabd25'
+  config:
+    - system.menu.quick-links
   module:
-    - block_content
     - system
-    - user
   theme:
     - claro
 id: quicklinks
 theme: claro
 region: content
-weight: -12
+weight: -7
 provider: null
-plugin: 'block_content:1bcbe307-6dcb-4ca6-bf63-aa0d0beabd25'
+plugin: 'system_menu_block:quick-links'
 settings:
-  id: 'block_content:1bcbe307-6dcb-4ca6-bf63-aa0d0beabd25'
+  id: 'system_menu_block:quick-links'
   label: 'Quick Links'
-  provider: block_content
+  provider: system
   label_display: visible
-  status: true
-  info: ''
-  view_mode: full
+  level: 1
+  depth: 0
+  expand_all_items: false
 visibility:
   request_path:
     id: request_path
     pages: /dashboard
     negate: false
     context_mapping: {  }
-  user_role:
-    id: user_role
-    roles:
-      editor: editor
-      se: se
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'

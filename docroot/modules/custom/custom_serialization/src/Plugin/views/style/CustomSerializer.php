@@ -7,7 +7,6 @@ ini_set('serialize_precision', 6);
 use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\group\Entity\Group;
 
 /**
@@ -34,21 +33,32 @@ class CustomSerializer extends Serializer {
     $request_path = \Drupal::request()->getSchemeAndHttpHost();
 
     /* Validating request params to response error code. */
-    $validate_params_res = $this->check_request_params($request_uri);
+    $validate_params_res = $this->checkRequestParams($request_uri);
     if (empty($validate_params_res)) {
-      $array_of_multiple_values = ["child_age", "keywords", "related_articles", "related_video_articles", "related_activities", "language", "related_milestone"];
-      $media_fields = ["cover_image", "country_flag", "country_sponsor_logo", "country_national_partner", "cover_video"];
-      $pinned_content = ["vaccinations", "child_growth", "health_check_ups", "child_development"];
-      $string_to_int = ["id", "category", "child_gender", "parent_gender", "licensed", "premature", "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article", "growth_period", "activity_category", "equipment", "type_of_support", "make_available_for_mobile", "pinned_article", "pinned_video_article"];
-      $string_to_array_of_int = ["related_articles", "keywords", "child_age", "related_activities", "related_video_articles", "related_milestone"];
+      $array_of_multiple_values = [
+        "child_age", "keywords", "related_articles", "related_video_articles", "related_activities",
+        "language", "related_milestone",
+      ];
+      $media_fields = [
+        "cover_image", "country_flag", "country_sponsor_logo", "country_national_partner",
+        "cover_video",
+      ];
+      $pinned_content = [
+        "vaccinations", "child_growth", "health_check_ups", "child_development",
+      ];
+      $string_to_int = [
+        "id", "category", "child_gender", "parent_gender", "licensed", "premature",
+        "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
+        "growth_period", "activity_category", "equipment", "type_of_support",
+        "make_available_for_mobile", "pinned_article", "pinned_video_article",
+      ];
+      $string_to_array_of_int = [
+        "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
+        "related_milestone",
+      ];
 
       $rows = [];
       $data = [];
-      $url = '';
-      $mname = '';
-      $malt = '';
-      $site = '';
-      $thumbnail_url = '';
       $field_formatter = [];
       $uniques = [];
       if (isset($this->view->result) && !empty($this->view->result)) {
@@ -103,12 +113,12 @@ class CustomSerializer extends Serializer {
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
-              $media_formatted_data = $this->custom_media_formatter($key, $values, $language_code);
+              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
               $rendered_data[$key] = $media_formatted_data;
             }
             /* Custom array formatter.To check mulitple field.  */
             if (in_array($key, $array_of_multiple_values)) {
-              $array_formatted_data = $this->custom_array_formatter($values);
+              $array_formatted_data = $this->customArrayFormatter($values);
               /* Convert array to array of int. */
               if (in_array($key, $string_to_array_of_int)) {
                 $rendered_data[$key] = array_map(function ($elem) {
@@ -137,7 +147,7 @@ class CustomSerializer extends Serializer {
                 $formatted_data = explode(',', $values);
                 $vocabulary_name = $formatted_data[1];
                 $vocabulary_machine_name = $formatted_data[0];
-                $taxonomy_data = $this->custom_taxonomy_field_formatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);
+                $taxonomy_data = $this->customTaxonomyFieldFormatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);
                 /* \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
                 $field_formatter[$formatted_data[0]] = $taxonomy_data;
               }
@@ -202,7 +212,7 @@ class CustomSerializer extends Serializer {
   /**
    * To check request params is correct.
    */
-  public function check_request_params($request_uri) {
+  public function checkRequestParams($request_uri) {
     $request = explode('/', $request_uri);
     if (isset($request[3]) && !empty($request[3])) {
       if (strpos($request_uri, "sponsors") !== FALSE) {
@@ -211,7 +221,7 @@ class CustomSerializer extends Serializer {
         }
         else {
           $groups = Group::loadMultiple();
-          foreach ($groups as $gid => $group) {
+          foreach ($groups as $group) {
             $id = $group->get('id')->getString();
             $gids[] = $id;
           }
@@ -248,7 +258,7 @@ class CustomSerializer extends Serializer {
   /**
    * To convert comma seperated string into array.
    */
-  public function custom_array_formatter($values) {
+  public function customArrayFormatter($values) {
     if (!empty($values) && strpos($values, ',') !== FALSE) {
       /* If the field have comma. */
       $formatted_data = explode(',', $values);
@@ -265,7 +275,7 @@ class CustomSerializer extends Serializer {
   /**
    * To get media files details from db.
    */
-  public function custom_media_formatter($key, $values, $language_code) {
+  public function customMediaFormatter($key, $values, $language_code) {
 
     if (!empty($values)) {
       $media_entity = Media::load($values);
@@ -380,9 +390,7 @@ class CustomSerializer extends Serializer {
   /**
    * {@inheritdoc}
    */
-  public function custom_taxonomy_field_formatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code) {
-    /* To get taxonomy terms details from db. */
-    $taxonomy_vocabulary_machine_name = ["growth_period", "child_age", "growth_introductory", "standard_deviation"];
+  public function customTaxonomyFieldFormatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code) {
     /* Vocabularies Field formatter. */
     if (strpos($request_uri, "vocabularies") !== FALSE) {
       $termName = str_replace("&#039;", "'", $vocabulary_name);
@@ -414,7 +422,7 @@ class CustomSerializer extends Serializer {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $age_bracket = $term_obj->get('field_age_bracket')->getValue();
           $ageBracket = [];
-          foreach ($age_bracket as $agekey => $agevalue) {
+          foreach ($age_bracket as $agevalue) {
             $ageBracket[] = $agevalue['target_id'];
           }
           if (!empty($ageBracket)) {

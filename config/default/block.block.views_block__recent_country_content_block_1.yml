@@ -13,7 +13,7 @@ dependencies:
 id: views_block__recent_country_content_block_1
 theme: claro
 region: content
-weight: -3
+weight: -4
 provider: null
 plugin: 'views_block:recent_country_content-block_1'
 settings:

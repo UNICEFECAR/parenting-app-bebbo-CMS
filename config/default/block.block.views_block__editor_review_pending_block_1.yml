@@ -13,7 +13,7 @@ dependencies:
 id: views_block__editor_review_pending_block_1
 theme: claro
 region: content
-weight: 0
+weight: -1
 provider: null
 plugin: 'views_block:editor_review_pending-block_1'
 settings:
