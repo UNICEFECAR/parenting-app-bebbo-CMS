@@ -629,6 +629,7 @@ function pb_custom_field_link_alter(&$variables) {
 
   if (!empty($groups) && $groups[0]->bundle() == "country" && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
     $group_url = 'internal:/group/' . $groups[0]->id() . '/members';
+    $add_group_members_url = 'internal:/group/' . $groups[0]->id() . '/content/create/group_membership';
     if ($group_url) {
       $menu_link_parents = \Drupal::entityTypeManager()
         ->getStorage('menu_link_content')
@@ -641,7 +642,36 @@ function pb_custom_field_link_alter(&$variables) {
         $entity->set('link', $group_url);
         $entity->save();
       }
+
+    /* Dashboard - Manage Users for Country Admin. */
+      $menu_link_parents = \Drupal::entityTypeManager()
+        ->getStorage('menu_link_content')
+        ->loadByProperties([
+          'title' => 'Manage Users',
+          'menu_name' => 'quick-links',
+        ]);
+      $entity = reset($menu_link_parents);
+      if ($entity) {
+        $entity->set('link', $group_url);
+        $entity->save();
+      }
     }
+    /* Dashboard - add members. */
+
+    if ($add_group_members_url) {
+      $menu_link_members = \Drupal::entityTypeManager()
+        ->getStorage('menu_link_content')
+        ->loadByProperties([
+          'title' => 'Add Members',
+          'menu_name' => 'quick-links',
+        ]);
+      $entity = reset($menu_link_members);
+      if ($entity) {
+        $entity->set('link', $add_group_members_url);
+        $entity->save();
+      }
+    }
+
   }
 }
 
