@@ -14,19 +14,26 @@ process:
     plugin: default_value
     source: language
     default_value: tj-ru
-  
+
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
 
   nid: ID
-  title: Title  
-  body/summary: Summary
-  body/value: Body  
-  field_australian_article: Australian_article
-  field_mandatory_content: Mandatory_content
-  field_references_and_comments: References_and_comments
+  field_keywords:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Keywords
+    -
+      plugin: entity_lookup
+      value_key: tid
+      bundle_key: vid
+      bundle: keywords
+      entity_type: taxonomy_term
+
+  field_cover_image: Cover_image
   moderation_state: Moderation_state
 
 destination:
