@@ -20,7 +20,7 @@ process:
     source: node_uid
     default_value: 1
 
- nid: ID
+  nid: ID
   field_keywords:
     -
       plugin: explode
