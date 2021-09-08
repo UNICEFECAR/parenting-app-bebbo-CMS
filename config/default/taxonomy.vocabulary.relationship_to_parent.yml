@@ -1,0 +1,8 @@
+uuid: e6b3af79-f4e0-49fc-89cd-dbc5e5b571d1
+langcode: en
+status: true
+dependencies: {  }
+name: 'Relationship to Parent'
+vid: relationship_to_parent
+description: 'Relationship to Parent'
+weight: 0
