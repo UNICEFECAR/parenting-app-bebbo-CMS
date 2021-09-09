@@ -1,20 +1,28 @@
-uuid: 8a4f34f2-5025-4b4b-8b2c-6f7e67eb6545
+uuid: ca2701aa-bc1e-4eaa-af1f-a6a51a13a4bf
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.parent_gender.feeds_item
-    - field.field.taxonomy_term.parent_gender.field_unique_name
-    - taxonomy.vocabulary.parent_gender
+    - field.field.taxonomy_term.relationship_to_parent.field_unique_name
+    - taxonomy.vocabulary.relationship_to_parent
   module:
     - path
-id: taxonomy_term.parent_gender.default
+    - text
+id: taxonomy_term.relationship_to_parent.default
 targetEntityType: taxonomy_term
-bundle: parent_gender
+bundle: relationship_to_parent
 mode: default
 content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_unique_name:
-    weight: 5
+    weight: 101
     settings:
       size: 60
       placeholder: ''
@@ -23,14 +31,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 1
+    weight: 2
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: 0
+    weight: -5
     region: content
     settings:
       size: 60
@@ -38,7 +46,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 3
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -46,14 +54,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 4
+    weight: 100
     region: content
     third_party_settings: {  }
   translation:
-    weight: 2
-    region: content
+    weight: 10
     settings: {  }
     third_party_settings: {  }
-hidden:
-  description: true
-  feeds_item: true
+    region: content
+hidden: {  }

@@ -1,0 +1,33 @@
+uuid: 1185bdef-586f-4dea-b691-c469570ccb30
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.parent_gender.feeds_item
+    - field.field.taxonomy_term.parent_gender.field_unique_name
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - text
+id: taxonomy_term.parent_gender.default
+targetEntityType: taxonomy_term
+bundle: parent_gender
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_unique_name:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

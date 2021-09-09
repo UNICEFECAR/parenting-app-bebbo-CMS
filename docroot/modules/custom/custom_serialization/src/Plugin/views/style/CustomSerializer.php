@@ -481,6 +481,14 @@ class CustomSerializer extends Serializer {
             'sd4neg' => round($sd4neg, 3),
           ];
         }
+        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent") {
+          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_data[] = [
+            'id' => (int) $tax_result[$tax]->tid,
+            'name' => $tax_result[$tax]->name,
+            'unique_name' => $term_obj->get('field_unique_name')->value,
+          ];
+        }
         else {
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,

@@ -1,0 +1,31 @@
+uuid: 2b69ba9d-a731-4e94-ac65-5ed188a52354
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.relationship_to_parent.field_unique_name
+    - taxonomy.vocabulary.relationship_to_parent
+  module:
+    - text
+id: taxonomy_term.relationship_to_parent.default
+targetEntityType: taxonomy_term
+bundle: relationship_to_parent
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_unique_name:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  langcode: true
