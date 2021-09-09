@@ -34,6 +34,19 @@ process:
       entity_type: taxonomy_term
 
   field_cover_image: Cover_image
+
+  field_related_articles:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_articles
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: article
+      value_key: nid
+
   moderation_state: Moderation_state
 
 destination:
