@@ -354,6 +354,29 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
   }
 
+  if ($form['#id'] == "views-exposed-form-user-admin-people-page-2") {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    if (in_array('administrator', $user_roles) || in_array('global_admin', $user_roles)) {
+      $user_groups = [];
+      $user_groups[''] = "- Any -";
+      $groups = Group::loadMultiple();
+      if (!empty($groups)) {
+        foreach ($groups as $group) {
+          $id = $group->get('id')->getString();
+          $title = $group->get('label')->getString();
+          $user_groups[$title] = $title;
+        }
+      }
+      if (isset($form['country'])) {
+        $form['country']['#type'] = 'select';
+        $form['country']['#options'] = $user_groups;
+        $form['country']['#size'] = 1;
+      }
+    }
+
+  }
+
   /* Media Image Page - Validation */
    $route_match = \Drupal::routeMatch();
    if($form['#id'] == "media-image-add-form" || $form['#id'] == "media-image-edit-form")
