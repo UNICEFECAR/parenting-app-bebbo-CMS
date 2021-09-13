@@ -37,6 +37,7 @@
         "drupal/smtp": "^1.0",
         "drupal/tmgmt": "^1.12",
         "drupal/toolbar_menu_clean": "^1.2",
+        "drupal/upgrade_status": "^3.10",
         "drupal/video_embed_media": "^2.4",
         "drupal/views_bulk_operations": "^3.13"
     },
