@@ -33,7 +33,7 @@ process:
       bundle: keywords
       entity_type: taxonomy_term
 
-  field_cover_image: Cover_image
+  field_cover_video: Cover_video
   moderation_state: Moderation_state
 
 destination:
