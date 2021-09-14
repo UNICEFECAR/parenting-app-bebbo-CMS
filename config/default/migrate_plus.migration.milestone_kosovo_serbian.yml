@@ -1,11 +1,5 @@
-uuid: 65801892-90af-436d-99ce-4821355c81e8
 langcode: en
-status: true
-dependencies: {  }
 id: milestone_kosovo_serbian
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags: milestone_kosovo_serbian
 migration_group: milestone
 label: 'Milestone Kosovo Serbian'
@@ -24,10 +18,23 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
+
   nid: ID
-  title: Title
-  body/value: Body
+
+  field_related_video_articles:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_video_articles
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
+
   moderation_state: Moderation_state
+  
 destination:
   plugin: 'entity:node'
   default_bundle: milestone
