@@ -14,14 +14,14 @@ process:
     plugin: default_value
     source: language
     default_value: en
-  
+
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
 
   nid: ID
-  title: Title  
+  title: Title
   body/summary: Summary
   body/value: Body
   field_cover_video: Cover_video
@@ -40,7 +40,7 @@ process:
       delimiter: ','
       source: Child_age
     -
-      plugin: entity_lookup      
+      plugin: entity_lookup
       value_key: tid
       bundle_key: vid
       bundle: child_age
@@ -55,7 +55,7 @@ process:
     bundle: child_gender
     entity_type: taxonomy_term
 
-  field_parent_gender: 
+  field_parent_gender:
     plugin: entity_lookup
     source: Parent_gender
     value_key: tid
@@ -69,7 +69,7 @@ process:
       delimiter: ', '
       source: Keywords
     -
-      plugin: entity_lookup      
+      plugin: entity_lookup
       value_key: tid
       bundle_key: vid
       bundle: keywords
@@ -87,7 +87,7 @@ process:
       bundle: video_article
       value_key: nid
 
-   
+
   field_australian_article: Australian_article
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments

@@ -20,8 +20,19 @@ process:
     default_value: 1
 
   nid: ID
-  title: Title
-  body/value: Body 
+
+  field_related_video_articles:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Related_video_articles
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
+
   moderation_state: Moderation_state
   
 destination:
