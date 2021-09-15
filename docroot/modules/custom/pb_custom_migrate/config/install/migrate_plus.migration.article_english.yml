@@ -88,7 +88,7 @@ process:
   field_mandatory_content: Mandatory_content
   field_references_and_comments: References_and_comments
   moderation_state: Moderation_state
-  
+
 destination:
   plugin: 'entity:node'
   default_bundle: article

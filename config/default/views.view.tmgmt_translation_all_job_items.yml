@@ -1065,6 +1065,8 @@ display:
         sorts: false
         pager: false
         footer: false
+        header: false
+        css_class: false
       fields:
         item_id:
           id: item_id
@@ -1484,6 +1486,21 @@ display:
           items_per_page: 5
           offset: 0
       footer: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<a href="/admin/tmgmt/job_items">View More</a>'
+            format: full_html
+          plugin_id: text
+      css_class: common_table
     cache_metadata:
       max-age: -1
       contexts:

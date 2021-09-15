@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.activity_category.feeds_item
+    - field.field.taxonomy_term.activity_category.field_unique_name
     - taxonomy.vocabulary.activity_category
   module:
     - path
@@ -12,6 +13,14 @@ targetEntityType: taxonomy_term
 bundle: activity_category
 mode: default
 content:
+  field_unique_name:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   langcode:
     type: language_select
     weight: 1

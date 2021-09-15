@@ -1,39 +1,53 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\pb_custom_form\Form\CustomForm.
- */
-
 namespace Drupal\pb_custom_form\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\group\Entity\Group;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
+/*
+use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\group\Entity\Group;
+ */
 /**
- * Implements a Custom Form
+ * Action description.
+ *
+ * @Action(
+ *   id = "pb_custom_form_action",
+ *   label = @Translation("Force Update API Check"),
+ *   type = "node",
+ *   confirm = FALSE
+ * )
  */
 class CustomForm extends FormBase {
-  /**
-   * @return string
-   */
 
+  use StringTranslationTrait;
+
+  /**
+   * Get force check update api.
+   */
   public function getFormId() {
     return 'forcefull_check_update_api';
   }
 
   /**
+   * Force update check build form.
+   *
    * @param array $form
-   * @param FormStateInterface $form_state
-   * @return array
+   *   The custom form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The custom form state.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $groups = Group::loadMultiple();
-    foreach ($groups as $gid => $group) {
+    foreach ($groups as $group) {
       $id = $group->get('id')->getString();
       $label = $group->get('label')->getString();
       $coutry_group[$id] = $label;
@@ -69,19 +83,23 @@ class CustomForm extends FormBase {
   }
 
   /**
+   * Force update check build form validation.
+   *
    * @param array $form
-   * @param FormStateInterface $form_state
+   *   The custom form validation.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The custom form state validation.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    /* $title = $form_state->getValue('title');
-    if (strlen($title) < 15) {
-    $form_state->setErrorByName('title', $this->t('The title must be at least 15 characters long.'));
-    } */
   }
 
   /**
+   * Force update check build submit form.
+   *
    * @param array $form
-   * @param FormStateInterface $form_state
+   *   The custom form submit.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The custom form state.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $date = new DrupalDateTime();
@@ -95,11 +113,11 @@ class CustomForm extends FormBase {
     )->execute();
 
     $checkbox = $form_state->getValue('checkbox');
-    $text_msg = "Disabled";
+    $text_msg = $this->t("Force Check Update API Disabled");
     if ($checkbox == 1) {
-      $text_msg = "Enbled";
+      $text_msg = $this->t("Force Check Update API Enbled");
     }
-    drupal_set_message("Force Check Update API " . $text_msg);
+    drupal_set_message($text_msg, 'status');
   }
 
 }

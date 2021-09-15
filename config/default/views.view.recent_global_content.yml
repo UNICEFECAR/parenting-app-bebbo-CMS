@@ -221,7 +221,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: true
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -410,22 +410,125 @@ display:
             group_items: {  }
           entity_type: node
           plugin_id: moderation_state_filter
-      sorts:
-        created:
-          id: created
+        langcode:
+          id: langcode
           table: node_field_data
-          field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
+          field: langcode
           relationship: none
           group_type: group
           admin_label: ''
+          operator: in
+          value:
+            en: en
+            sr: sr
+            ru: ru
+            rs-sr: rs-sr
+            sq: sq
+            al-sq: al-sq
+            by-be: by-be
+            by-ru: by-ru
+            bg-bg: bg-bg
+            gr-arb: gr-arb
+            gr-el: gr-el
+            gr-fa: gr-fa
+            xk-sq: xk-sq
+            xk-rs: xk-rs
+            kg-ky: kg-ky
+            kg-ru: kg-ru
+            me-cnr: me-cnr
+            mk-sq: mk-sq
+            mk-mk: mk-mk
+            rs-en: rs-en
+            tj-ru: tj-ru
+            tj-tg: tj-tg
+            uz-ru: uz-ru
+            uz-uz: uz-uz
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: langcode
+          plugin_id: language
+        field_licensed_content_value:
+          id: field_licensed_content_value
+          table: node__field_licensed_content
+          field: field_licensed_content_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+      sorts:
+        changed:
+          id: changed
+          table: node_field_data
+          field: changed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
           exposed: false
           expose:
             label: ''
           granularity: second
+          entity_type: node
+          entity_field: changed
+          plugin_id: date
       title: 'Recent Global Content'
       header:
         result:
@@ -436,7 +539,7 @@ display:
           group_type: group
           admin_label: ''
           empty: false
-          content: 'Total: @total'
+          content: 'Total : @total'
           plugin_id: result
         area:
           id: area
@@ -470,6 +573,7 @@ display:
       arguments: {  }
       display_extenders: {  }
       css_class: common_table
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:

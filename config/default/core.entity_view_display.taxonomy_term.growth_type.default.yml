@@ -1,0 +1,33 @@
+uuid: ed6f1bef-650f-43be-8f45-76b480d1f38d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_type.feeds_item
+    - field.field.taxonomy_term.growth_type.field_unique_name
+    - taxonomy.vocabulary.growth_type
+  module:
+    - text
+id: taxonomy_term.growth_type.default
+targetEntityType: taxonomy_term
+bundle: growth_type
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_unique_name:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

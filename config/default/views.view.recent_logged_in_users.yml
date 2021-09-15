@@ -405,7 +405,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<a href="users">View More</a>'
+            value: '<a href="">View More</a>'
             format: full_html
           plugin_id: text
       footer: {  }
