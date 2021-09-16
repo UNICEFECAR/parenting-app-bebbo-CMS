@@ -676,6 +676,42 @@ function pb_custom_field_link_alter(&$variables) {
 }
 
 /**
+ * Implements hook_views_pre_view().
+ *
+ * Dashboard - Recent users - View header link.
+ */
+function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+
+  if ($view->id() == 'recent_logged_in_users' && $display_id === 'block_1') {
+    $user = \Drupal::currentUser();
+    $groups = [];
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    foreach ($grps as $grp) {
+      $groups[] = $grp->getGroup();
+    }
+    $options = [
+      'id' => 'area',
+      'table' => 'views',
+      'field' => 'area',
+      'relationship' => 'none',
+      'group_type' => 'none',
+      'admin_label' => '',
+      'empty' => NULL,
+      'tokenize' => NULL,
+      'content' => [
+        'value' => '<a href="group/' . $groups[0]->id() . '/members">View More</a>',
+        'format' => "full_html",
+      ],
+      'plugin_id' => 'text',
+    ];
+    $view->setHandler('block_1', 'header', 'area', $options);
+
+  }
+
+}
+
+/**
  * {@inheritdoc}
  */
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
