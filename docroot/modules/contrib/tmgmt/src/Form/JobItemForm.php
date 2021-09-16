@@ -983,7 +983,7 @@ class JobItemForm extends TmgmtFormBase {
     }
     elseif ($form_state->has('accept_item')) {
       $item_element['translation'] = array(
-        '#type' => 'textarea',
+        '#type' => 'text_format',
         '#title' => t('Translation'),
         '#value' => t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'),
         '#disabled' => TRUE,
@@ -992,7 +992,7 @@ class JobItemForm extends TmgmtFormBase {
     }
     else {
       $item_element['translation'] = array(
-        '#type' => 'textarea',
+        '#type' => 'text_format',
         '#default_value' => $translation_text,
         '#title' => t('Translation'),
         '#disabled' => $this->entity->isAccepted() || $is_preliminary,

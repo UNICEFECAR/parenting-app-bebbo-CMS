@@ -1,0 +1,75 @@
+diff --git a/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php b/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
+index a0cc02ef..cb4f4ca6 100644
+--- a/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
++++ b/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
+@@ -983,7 +983,7 @@ protected function buildTranslation($item_element, $translation_text, $data_item
+     }
+     elseif ($form_state->has('accept_item')) {
+       $item_element['translation'] = array(
+-        '#type' => 'textarea',
++        '#type' => 'text_format',
+         '#title' => t('Translation'),
+         '#value' => t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'),
+         '#disabled' => TRUE,
+@@ -992,7 +992,7 @@ protected function buildTranslation($item_element, $translation_text, $data_item
+     }
+     else {
+       $item_element['translation'] = array(
+-        '#type' => 'textarea',
+:...skipping...
+diff --git a/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php b/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
+index a0cc02ef..cb4f4ca6 100644
+--- a/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
++++ b/docroot/modules/contrib/tmgmt/src/Form/JobItemForm.php
+@@ -983,7 +983,7 @@ protected function buildTranslation($item_element, $translation_text, $data_item
+     }
+     elseif ($form_state->has('accept_item')) {
+       $item_element['translation'] = array(
+-        '#type' => 'textarea',
++        '#type' => 'text_format',
+         '#title' => t('Translation'),
+         '#value' => t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'),
+         '#disabled' => TRUE,
+@@ -992,7 +992,7 @@ protected function buildTranslation($item_element, $translation_text, $data_item
+     }
+     else {
+       $item_element['translation'] = array(
+-        '#type' => 'textarea',
++        '#type' => 'text_format',
+         '#default_value' => $translation_text,
+         '#title' => t('Translation'),
+         '#disabled' => $this->entity->isAccepted() || $is_preliminary,
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~

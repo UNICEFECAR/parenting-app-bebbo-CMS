@@ -126,7 +126,10 @@
             },
             "drupal/content_moderation": {
                 "Added translated draft status content into node_field table":"patches/content_moderation/content_moderation_revision.patch"
-            }
+            },
+            "drupal/tmgmt": {
+                "Added ckeditor for jobitem review page": "patches/tmgmt/support_for_ckeditor-tmgmt.patch"
+            } 
         }
     },
     "autoload": {
