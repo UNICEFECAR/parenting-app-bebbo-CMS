@@ -646,7 +646,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'No Data Available'
+            value: "<p style=\"text-align:center\">No Data Available</p>\r\n\r\n"
             format: full_html
           plugin_id: text
       relationships: {  }
