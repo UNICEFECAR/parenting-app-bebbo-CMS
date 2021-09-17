@@ -7,38 +7,44 @@
 
 use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\languagefield\Entity;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\TypedData\OptionsProviderInterface;
-use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\user\Entity\User;
+use Drupal\user\Entity\Role;
+
+/*
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\languagefield\Entity;
+use Drupal\Core\TypedData\OptionsProviderInterface;
+use Drupal\Core\Language\LanguageManager;
 use Drupal\views\Plugin\views\query\Sql;
 use Drupal\Core\Menu\LocalActionInterface;
 use Drupal\Core\Menu\LocalActionManager;
-use \Drupal\user\UserInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\user\UserInterface;
+ */
 
-
-/* 
- * Group Module - Country Type
- * Language Field - Multiselect Option Customization 
+/**
+ * {@inheritdoc}
  */
 function pb_custom_field_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
- $standard_languages = \Drupal::languageManager()->getLanguages();
- $options = [];
- foreach($standard_languages as $lkey=>$lval)
- {
-    $options[$lkey] = t($lval->getName());
- }
+  /*
+   * Group Module - Country Type.
+   * Language Field - Multiselect Option Customization.
+   */
+  $standard_languages = \Drupal::languageManager()->getLanguages();
+  $options = [];
+  foreach ($standard_languages as $lkey => $lval) {
+    $options[$lkey] = $lval->getName();
+  }
   return $options;
 }
 
@@ -86,47 +92,39 @@ function allowed_languages_form_media_library_add_form_oembed_alter(array &$form
 }
 
 /**
- * Implements media widget language dropdown alter.      ``
+ * Implements media widget language dropdown alter.
  */
 function allowed_languages_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state) {
   if (isset($form['media'][0]['fields']['langcode']['widget'])) {
-	
-	$user = \Drupal::currentUser();
-	$roles = $user->getRoles();
-	$bypass_access = false;
-	/* check the bypass content access*/
-	foreach($roles as $rkey=>$rval)
-	{
-	  if($rval != "authenticated")
-		{
-		  $roles_permissions = user_role_permissions(array($rval));
-		  if(in_array('bypass node access',$roles_permissions[$rval]))
-		  {
-			$bypass_access = true;
-		  }
-		}
-	}
- 
-	if(!$bypass_access)
-	{
-	  $groups = array();
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+    /* check the bypass content access*/
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $roles_permissions = user_role_permissions([$rval]);
+        if (in_array('bypass node access', $roles_permissions[$rval])) {
+          $bypass_access = TRUE;
+        }
+      }
+    }
+    if (!$bypass_access) {
+      $groups = [];
       $grp_membership_service = \Drupal::service('group.membership_loader');
       $grps = $grp_membership_service->loadByUser($user);
       foreach ($grps as $grp) {
-              $groups = $grp->getGroup();
+        $groups = $grp->getGroup();
       }
-      if(!empty($groups))
-      {
-        $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options'];
+      if (!empty($groups)) {
+        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
         $country_languages = $groups->get('field_language')->getValue();
-        $clanguage = array();
-        foreach($country_languages as $mlangkey=>$mlangval)
-        {
-           $clanguage[]=$mlangval['value'];
+        $clanguage = [];
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
         }
         $language_options = [];
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
-          if(in_array($langcode,$clanguage)){
+          if (in_array($langcode, $clanguage)) {
             $language_options[$langcode] = $language->getName();
           }
         }
@@ -136,17 +134,18 @@ function allowed_languages_form_media_library_add_form_upload_alter(array &$form
   }
 }
 
-
+/**
+ * Implements Create Content Page - Checkbox css library include method.
+ */
 function pb_custom_field_preprocess_page(&$variables) {
-   $variables['#attached']['library'][] = 'pb_custom_field/mylib';
+  $variables['#attached']['library'][] = 'pb_custom_field/mylib';
 }
 
-/*
- * Group Content List Page 
- * Country Field - dropdown option
+/**
+ * Implements Group Content List Page - Country Field - dropdown option.
  */
-function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {  
- /* if ($form_id == "media_library_add_form_upload") {
+function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /* if ($form_id == "media_library_add_form_upload") {
   $form['cutomtext'] = [
   '#type' => 'item',
   '#markup' => '<div class="error_language" id="widget_lang"> Note:
@@ -165,135 +164,113 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   '#weight' => 1,
   ];
   } */
-  
-  /* add & edit user language dropdown */
-  if($form['#id'] == "user-register-form" || $form['#id'] == "user-form")
-  {
+  /* Add & edit user language dropdown. */
+  if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
     $form['account']['mail']['#required'] = TRUE;
     $form['account']['status']['#default_value'] = 1;
     $user = \Drupal::currentUser();
     $roles = $user->getRoles();
-    $authorized_roles = array('reviewer');
-    $global_user = array('global_admin');
+    $authorized_roles = ['reviewer'];
+    $global_user = ['global_admin'];
     if (count(array_intersect($roles, $authorized_roles)) != 0) {
       $uid = $user->id();
-      $groups = array();
+      $groups = [];
       $grp_membership_service = \Drupal::service('group.membership_loader');
       $grps = $grp_membership_service->loadByUser($user);
       foreach ($grps as $grp) {
-              $groups = $grp->getGroup();
+        $groups = $grp->getGroup();
       }
-      if(!empty($groups))
-      {
+      if (!empty($groups)) {
         $alexist_option = $form['allowed_languages']['languages']['#options'];
         $master_languages = $groups->get('field_master_language')->getValue();
         $country_languages = $groups->get('field_language')->getValue();
-        
-        foreach($master_languages as $mlangkey=>$mlangval)
-        {
-          $languages[]=$mlangval['value'];
+        foreach ($master_languages as $mlangval) {
+          $languages[] = $mlangval['value'];
         }
-        foreach($country_languages as $clangkey=>$clangval)
-        {
-          $languages[]=$clangval['value'];
+        foreach ($country_languages as $clangval) {
+          $languages[] = $clangval['value'];
         }
         $languages = array_unique($languages);
-        $user_language = array();
-        foreach($alexist_option as $key => $value)
-        {
-         if(in_array($key,$languages))
-          {
+        $user_language = [];
+        foreach ($alexist_option as $key => $value) {
+          if (in_array($key, $languages)) {
             $user_language[$key] = $value;
           }
-
         }
         $form['allowed_languages']['languages']['#options'] = $user_language;
       }
     }
-    else if (count(array_intersect($roles, $global_user)) != 0) 
-    {
+    elseif (count(array_intersect($roles, $global_user)) != 0) {
       /* if global admin adding users to the group */
       $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
       $path_args = explode('/', $current_path);
-      $languages = array();
-      if($path_args[0] == "group" && $path_args[4] == "group_membership") {
+      $languages = [];
+      if ($path_args[0] == "group" && $path_args[4] == "group_membership") {
         $grp_id = $path_args[1];
-        $groups = Group::load($grp_id); 
+        $groups = Group::load($grp_id);
         $master_languages = $groups->get('field_master_language')->getValue();
         $country_languages = $groups->get('field_language')->getValue();
-        foreach($master_languages as $mlangkey=>$mlangval)
-        {
-          $languages[]=$mlangval['value'];
+        foreach ($master_languages as $mlangval) {
+          $languages[] = $mlangval['value'];
         }
-        foreach($country_languages as $clangkey=>$clangval)
-        {
-          $languages[]=$clangval['value'];
+        foreach ($country_languages as $clangval) {
+          $languages[] = $clangval['value'];
         }
         $languages = array_unique($languages);
         $alexist_option = $form['allowed_languages']['languages']['#options'];
-        $user_language = array();
-        foreach($alexist_option as $key => $value)
-        {
-         if(in_array($key,$languages))
-          {
+        $user_language = [];
+        foreach ($alexist_option as $key => $value) {
+          if (in_array($key, $languages)) {
             $user_language[$key] = $value;
           }
-
         }
         $form['allowed_languages']['languages']['#options'] = $user_language;
       }
-      else if($path_args[0] == "user" && $path_args[2] == "edit"){
+      elseif ($path_args[0] == "user" && $path_args[2] == "edit") {
         $user_id = $path_args[1];
         $user = user_load($user_id);
-         /* get the group details based on logged in user id */
-         $grp_membership_service = \Drupal::service('group.membership_loader');
-         $grps = $grp_membership_service->loadByUser($user);
-             if(!empty($grps))
-             {
-               foreach ($grps as $grp) {
-                 $groups = $grp->getGroup();
-               }
-               $master_languages = $groups->get('field_master_language')->getValue();
-               $country_languages = $groups->get('field_language')->getValue();
-               foreach($master_languages as $mlangkey=>$mlangval)
-               {
-                 $languages[]=$mlangval['value'];
-               }
-               foreach($country_languages as $clangkey=>$clangval)
-               {
-                 $languages[]=$clangval['value'];
-               }
-               $languages = array_unique($languages);
-               $alexist_option = $form['allowed_languages']['languages']['#options'];
-               $user_language = array();
-               foreach($alexist_option as $key => $value)
-               {
-                if(in_array($key,$languages))
-                 {
-                   $user_language[$key] = $value;
-                 }
-       
-               }
-               $form['allowed_languages']['languages']['#options'] = $user_language;
-             }
+        /* get the group details based on logged in user id */
+        $grp_membership_service = \Drupal::service('group.membership_loader');
+        $grps = $grp_membership_service->loadByUser($user);
+        if (!empty($grps)) {
+          foreach ($grps as $grp) {
+            $groups = $grp->getGroup();
+          }
+          $master_languages = $groups->get('field_master_language')->getValue();
+          $country_languages = $groups->get('field_language')->getValue();
+          foreach ($master_languages as $mlangval) {
+            $languages[] = $mlangval['value'];
+          }
+          foreach ($country_languages as $clangval) {
+            $languages[] = $clangval['value'];
+          }
+          $languages = array_unique($languages);
+          $alexist_option = $form['allowed_languages']['languages']['#options'];
+          $user_language = [];
+          foreach ($alexist_option as $key => $value) {
+            if (in_array($key, $languages)) {
+              $user_language[$key] = $value;
+            }
+          }
+          $form['allowed_languages']['languages']['#options'] = $user_language;
+        }
       }
     }
   }
   /* Listing page - Language dropdown filter */
-  if($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5")  
-  {  
+  if ($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5") {
     $roles = \Drupal::currentUser()->getRoles();
-    $authorized_roles = array('se','sme','editor','reviewer');
-    $groups = Group::loadMultiple(); 
+    $authorized_roles = ['se', 'sme', 'editor', 'reviewer'];
+    $groups = Group::loadMultiple();
     /* Check the user roles */
     if (count(array_intersect($roles, $authorized_roles)) != 0) {
-      $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
-      $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
+      $gids = \Drupal::entityQuery('group')->condition('type', 'country')->execute();
+      $groups = Group::loadMultiple($gids);
     }
     $options = ['' => 'All'];
 
-    foreach($groups as $gid => $group) {
+    foreach ($groups as $group) {
       $value = $group->get('label')->getString();
       $id = $group->get('id')->getString();
 
@@ -307,63 +284,81 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       $form['gtitle']['#size'] = 1;
     }
   }
-  
-  if($form['#id'] == "group-content-country-group-membership-add-form"){  
-    $form['group_roles']['widget']['#required'] = TRUE;  
+
+  if ($form['#id'] == "group-content-country-group-membership-add-form") {
+    $form['group_roles']['widget']['#required'] = TRUE;
     $roles = \Drupal::currentUser()->getRoles();
-    if(!in_array('administrator', $roles)) {    
-      $form['#validate'][] = 'group_user_validate';       
-      $form['actions']['submit']['#submit'][] = 'user_update_function';        
+    if (!in_array('administrator', $roles)) {
+      $form['#validate'][] = 'group_user_validate';
+      $form['actions']['submit']['#submit'][] = 'user_update_function';
     }
-    if(in_array("reviewer", $roles) ){        
+    if (in_array("reviewer", $roles)) {
       $uid = \Drupal::request()->query->get('uid');
-      if(!empty($uid)) { 
-        $user = \Drupal\user\Entity\User::load($uid);
-        $form['entity_id']['widget'][0]['target_id']['#default_value'] = $user;      
+      if (!empty($uid)) {
+        $user = User::load($uid);
+        $form['entity_id']['widget'][0]['target_id']['#default_value'] = $user;
       }
     }
   }
 
-  if($form['#id'] == "group-content-country-group-membership-edit-form"){ 
-    $form['group_roles']['widget']['#required'] = TRUE;  
+  if ($form['#id'] == "group-content-country-group-membership-edit-form") {
+    $form['group_roles']['widget']['#required'] = TRUE;
     $roles = \Drupal::currentUser()->getRoles();
-    if(!in_array('administrator', $roles)) {           
-      $form['actions']['submit']['#submit'][] = 'user_update_function';        
+    if (!in_array('administrator', $roles)) {
+      $form['actions']['submit']['#submit'][] = 'user_update_function';
     }
   }
-  
 
-  if($form_id == "user_register_form") {     
+  if ($form_id == "user_register_form") {
     $roles = \Drupal::currentUser()->getRoles();
-    if(in_array("reviewer", $roles) || in_array("global_admin", $roles)){           
-    $form['actions']['submit']['#submit'][] = "redirect_to_add_member_page";
-    }    
+    if (in_array("reviewer", $roles) || in_array("global_admin", $roles)) {
+      $form['actions']['submit']['#submit'][] = "redirect_to_add_member_page";
+    }
   }
-  
 
-  if($form['#id'] == "views-exposed-form-country-content-listing-page-5")
-  {
+  if ($form['#id'] == "views-exposed-form-country-content-listing-page-5") {
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
     $uid = $user->id();
-    $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();    
+    $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
 
-    if(!in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {                 
-      $alexist_options = $form['langcode']['#options'];   
+    if (!in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+      $alexist_options = $form['langcode']['#options'];
       $language_options = [];
       $language_options['All'] = "- Any -";
-      foreach($alexist_options as $key => $value)
-      {
-        if(in_array($key,$user_lang))
-        {
+      foreach ($alexist_options as $key => $value) {
+        if (in_array($key, $user_lang)) {
           $language_options[$key] = $value;
         }
-      }         
+      }
       if (isset($form['langcode'])) {
-        //$form['langcode']['#type'] = 'select';
+        /* $form['langcode']['#type'] = 'select'; */
         $form['langcode']['#options'] = $language_options;
       }
-    }      
+    }
+
+  }
+
+  if ($form['#id'] == "views-exposed-form-user-admin-people-page-2") {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    if (in_array('administrator', $user_roles) || in_array('global_admin', $user_roles)) {
+      $user_groups = [];
+      $user_groups[''] = "- Any -";
+      $groups = Group::loadMultiple();
+      if (!empty($groups)) {
+        foreach ($groups as $group) {
+          $id = $group->get('id')->getString();
+          $title = $group->get('label')->getString();
+          $user_groups[$title] = $title;
+        }
+      }
+      if (isset($form['country'])) {
+        $form['country']['#type'] = 'select';
+        $form['country']['#options'] = $user_groups;
+        $form['country']['#size'] = 1;
+      }
+    }
 
   }
 
@@ -392,315 +387,274 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   }
 
   /* Media Image Page - Validation */
-   $route_match = \Drupal::routeMatch();
-   if($form['#id'] == "media-image-add-form" || $form['#id'] == "media-image-edit-form")
-   {
-      /* get the user role based permission list */
-      $user = \Drupal::currentUser();
-      $roles = $user->getRoles();
-      $bypass_access = false;
-      foreach($roles as $rkey=>$rval)
-      {
-        if($rval != "authenticated")
-        {
-          $roles_permissions = user_role_permissions(array($rval));
-          if(in_array('bypass node access',$roles_permissions[$rval]))
-          {
-            $bypass_access = true;
-          }
+  $route_match = \Drupal::routeMatch();
+  if ($form['#id'] == "media-image-add-form" || $form['#id'] == "media-image-edit-form") {
+    /* get the user role based permission list */
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $roles_permissions = user_role_permissions([$rval]);
+        if (in_array('bypass node access', $roles_permissions[$rval])) {
+          $bypass_access = TRUE;
         }
       }
-      if(!$bypass_access)
-      {
-        $uid = $user->id();
-        $groups = array();
-        $grp_membership_service = \Drupal::service('group.membership_loader');
-        $grps = $grp_membership_service->loadByUser($user);
-        if(!empty($grps)) 
-        {
-          foreach ($grps as $grp) {
-            $groups = $grp->getGroup();
+    }
+    if (!$bypass_access) {
+      $uid = $user->id();
+      $groups = [];
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($user);
+      if (!empty($grps)) {
+        foreach ($grps as $grp) {
+          $groups = $grp->getGroup();
+        }
+        $country_languages = $groups->get('field_language')->getValue();
+        $clanguage = [];
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
+        }
+        $language_options = [];
+        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if (in_array($langcode, $clanguage)) {
+            $language_options[$langcode] = $language->getName();
           }
-          $country_languages = $groups->get('field_language')->getValue();
-          $clanguage = array();
-          foreach($country_languages as $mlangkey=>$mlangval)
-          {
-            $clanguage[]=$mlangval['value'];
+        }
+        if ($form['#id'] == "media-image-edit-form") {
+          $form_language = $form_state->get('langcode');
+          if (!in_array($form_language, $clanguage)) {
+            $form['actions']['submit']['#disabled'] = TRUE;
+            $form['actions']['submit']['#access'] = FALSE;
+            drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
           }
-          $language_options = [];
-          foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
-            if(in_array($langcode,$clanguage)){
-              $language_options[$langcode] = $language->getName();
-            }
+          else {
+            $form['langcode']['widget'][0]['value']['#options'] = $language_options;
           }
-          
-          
-          if($form['#id'] == "media-image-edit-form") { 
-            $form_language = $form_state->get('langcode');
-            if(!in_array($form_language,$clanguage))
-            {
-              $form['actions']['submit']['#disabled'] = true;
-              $form['actions']['submit']['#access'] = FALSE;
-              drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
-            }
-            else
-            {
+          $form['actions']['delete']['#access'] = FALSE;
+          $form['actions']['delete']['#disabled'] = TRUE;
+        }
+        else {
           $form['langcode']['widget'][0]['value']['#options'] = $language_options;
         }
-        $form['actions']['delete']['#access'] = FALSE;
-        $form['actions']['delete']['#disabled'] = true;
+        $form['#validate'][] = 'user_media_access_validation_chk';
       }
-      else
-      {
-        $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-      }
-      $form['#validate'][]='user_media_access_validation_chk';
-   }
+    }
   }
-}
 
-
-
-/*language dropdown for remote video and video type */
-if($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video-add-form" || $form['#id'] == "media-video-add-form" || $form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form")
-{
-   /* get the user role based permission list */
-   $user = \Drupal::currentUser();
-   $roles = $user->getRoles();
-   $bypass_access = false;
-   foreach($roles as $rkey=>$rval)
-   {
-     if($rval != "authenticated")
-     {
-       $roles_permissions = user_role_permissions(array($rval));
-       if(in_array('bypass node access',$roles_permissions[$rval]))
-       {
-         $bypass_access = true;
-       }
-     }
-   }
-   if(!$bypass_access)
-   {
-     $uid = $user->id();
-     $groups = array();
-     $grp_membership_service = \Drupal::service('group.membership_loader');
-     $grps = $grp_membership_service->loadByUser($user);
-     if(!empty($grps)) 
-     {
-       foreach ($grps as $grp) {
-         $groups = $grp->getGroup();
-       }
-       $country_languages = $groups->get('field_language')->getValue();
-       $clanguage = array();
-       foreach($country_languages as $mlangkey=>$mlangval)
-       {
-         $clanguage[]=$mlangval['value'];
-       }
-       $language_options = [];
-       foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
-         if(in_array($langcode,$clanguage)){
-           $language_options[$langcode] = $language->getName();
-         }
-       }
-
-          $form['#validate'][]='user_media_access_validation_chk';
-          if($form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form") 
-          { 
-            $form_language = $form_state->get('langcode');
-
-            if(!in_array($form_language,$clanguage))
-            {
-              $form['actions']['submit']['#disabled'] = true;
-              $form['actions']['submit']['#access'] = FALSE;
-             drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
-            }
-            else
-            {
-             $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-            }
-
-            $form['actions']['delete']['#access'] = FALSE;
-            $form['actions']['delete']['#disabled'] = true;
+  /*language dropdown for remote video and video type */
+  if ($form['#id'] == "media-video-add-form" || $form['#id'] == "media-remote-video-add-form" || $form['#id'] == "media-video-add-form" || $form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form") {
+    /* get the user role based permission list */
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $roles_permissions = user_role_permissions([$rval]);
+        if (in_array('bypass node access', $roles_permissions[$rval])) {
+          $bypass_access = TRUE;
+        }
+      }
+    }
+    if (!$bypass_access) {
+      $uid = $user->id();
+      $groups = [];
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($user);
+      if (!empty($grps)) {
+        foreach ($grps as $grp) {
+          $groups = $grp->getGroup();
+        }
+        $country_languages = $groups->get('field_language')->getValue();
+        $clanguage = [];
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
+        }
+        $language_options = [];
+        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+          if (in_array($langcode, $clanguage)) {
+            $language_options[$langcode] = $language->getName();
           }
-          else
-          {
-             $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-          } 
-       }
-      }
+        }
 
- }
- 
- $chk_mandatory_ctype = array('activities','child-development','child-growth','faq','milestone','page');
-  $form_details = array("node_activities_edit_form","node_faq_edit_form","node_milestone_edit_form","node_page_edit_form","node_child-development_edit_form","node_child-growth_edit_form","node_activities_form","node_faq_form","node_milestone_form","node_page_form","node_child_development_form","node_child_growth_form");
-  if(in_array($form_id,$form_details)){
-	$user_roles = \Drupal::currentUser()->getRoles();
-	if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-		$form['field_mandatory_content']['#disabled'] = TRUE;
-	}  
-		
+        $form['#validate'][] = 'user_media_access_validation_chk';
+        if ($form['#id'] == "media-video-edit-form" || $form['#id'] == "media-remote-video-edit-form") {
+          $form_language = $form_state->get('langcode');
+          if (!in_array($form_language, $clanguage)) {
+            $form['actions']['submit']['#disabled'] = TRUE;
+            $form['actions']['submit']['#access'] = FALSE;
+            drupal_set_message(t('This content is associated with another language. It cannot be edited.'), 'error');
+          }
+          else {
+            $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+          }
+          $form['actions']['delete']['#access'] = FALSE;
+          $form['actions']['delete']['#disabled'] = TRUE;
+        }
+        else {
+          $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+        }
+      }
+    }
   }
-  
-  $australian_type = array("node_video_article_form","node_article_form","node_video_article_edit_form","node_article_edit_form");
-  if(in_array($form_id,$australian_type)){
-	$user_roles = \Drupal::currentUser()->getRoles();
-	if(!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)){
-	   $form['#attached']['library'][] = 'pb_custom_field/mylib';  
-	   $form['field_australian_article']['#attributes']['class'][] = 'hide';
-	   $form['field_mandatory_content']['#disabled'] = TRUE;	   
-	}
+
+  /* $chk_mandatory_ctype = ['activities', 'child-development', 'child-growth',
+  'faq', 'milestone', 'page']; */
+  $form_details = ["node_activities_edit_form", "node_faq_edit_form", "node_milestone_edit_form",
+    "node_page_edit_form", "node_child-development_edit_form", "node_child-growth_edit_form",
+    "node_activities_form", "node_faq_form", "node_milestone_form", "node_page_form",
+    "node_child_development_form", "node_child_growth_form",
+  ];
+  if (in_array($form_id, $form_details)) {
+    $user_roles = \Drupal::currentUser()->getRoles();
+    if (!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)) {
+      $form['field_mandatory_content']['#disabled'] = TRUE;
+    }
+  }
+
+  $australian_type = ["node_video_article_form", "node_article_form",
+    "node_video_article_edit_form", "node_article_edit_form",
+  ];
+  if (in_array($form_id, $australian_type)) {
+    $user_roles = \Drupal::currentUser()->getRoles();
+    if (!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)) {
+      $form['#attached']['library'][] = 'pb_custom_field/mylib';
+      $form['field_australian_article']['#attributes']['class'][] = 'hide';
+      $form['field_mandatory_content']['#disabled'] = TRUE;
+    }
   }
   /* Check the current url is related node add or edit */
 
-  if($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form")
-  {
-    
+  if ($route_match->getRouteName() == "node.add" || $route_match->getRouteName() == "entity.node.edit_form") {
     $request = \Drupal::request();
     $is_ajax = $request->isXmlHttpRequest();
-	
-    if(!$is_ajax && $form['#id'] != "lang-dropdown-form") {
+    if (!$is_ajax && $form['#id'] != "lang-dropdown-form") {
       /* Get the logged in user details */
-     
       $currentAccount = \Drupal::currentUser();
       $cur_user_roles = $currentAccount->getRoles();
-      $authorized_roles = array('se','sme','editor');
+      $authorized_roles = ['se', 'sme', 'editor'];
       /* check the country admin check */
-      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) 
-      {
-        
+      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
         $node = $form_state->getFormObject()->getEntity();
         $ntype = $node->getType();
-        $ntype = str_replace("_","-",$ntype);
-        $chk_type = "node-".$ntype."-edit-form";
-        if($form['#id'] == $chk_type)
-        {
+        $ntype = str_replace("_", "-", $ntype);
+        $chk_type = "node-" . $ntype . "-edit-form";
+        if ($form['#id'] == $chk_type) {
           $user = \Drupal::currentUser();
           $uid = $user->id();
-          $groups = array();
+          $groups = [];
           $grp_membership_service = \Drupal::service('group.membership_loader');
           $grps = $grp_membership_service->loadByUser($user);
           foreach ($grps as $grp) {
             $groups = $grp->getGroup();
           }
-          if(!empty($groups))
-          {
+          if (!empty($groups)) {
             $country_languages = $groups->get('field_master_language')->getValue();
             $form_language = $form_state->get('langcode');
-            $clanguage = array();
-            foreach($country_languages as $mlangkey=>$mlangval)
-            {
-              $clanguage[]=$mlangval['value'];
+            $clanguage = [];
+            foreach ($country_languages as $mlangval) {
+              $clanguage[] = $mlangval['value'];
             }
-            if(in_array($form_language,$clanguage))
-            {              
-              $form['actions']['submit']['#disabled'] = true;
+            if (in_array($form_language, $clanguage)) {
+              $form['actions']['submit']['#disabled'] = TRUE;
               $form['actions']['submit']['#access'] = FALSE;
               drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
             }
-            $form['#validate'][]='user_access_validation_chk';
+            $form['#validate'][] = 'user_access_validation_chk';
             $form['actions']['delete']['#access'] = FALSE;
-            $form['actions']['delete']['#disabled'] = true;
-          }          
+            $form['actions']['delete']['#disabled'] = TRUE;
+          }
         }
       }
-	  
-	   
-	  
 
       /* Get the logged in user details */
-      $authorized_roles = array('se','sme','editor','reviewer');
+      $authorized_roles = ['se', 'sme', 'editor', 'reviewer'];
       /* Check the user roles */
-      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) 
-      {      
-          /* get the content type details */
-          $node = $form_state->getFormObject()->getEntity();
-          //$node->getType();
-          $content_type_arr = array('article');
-          /* get the group details based on logged in user id */
-          $grp_membership_service = \Drupal::service('group.membership_loader');
-          $grps = $grp_membership_service->loadByUser($currentAccount);
-              if(!empty($grps))
-              {
-                foreach ($grps as $grp) {
-                  $groups = $grp->getGroup();
-                } 
-                $languages = $groups->get('field_language')->getString();
-                $language_arr = explode(",",$languages);
-                $language_arr = array_map('trim', explode(',', $languages));
-                $language_options = [];
-                foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
-                  if(in_array($langcode,$language_arr)){
-                    $language_options[$langcode] = $language->getName();
-                  }
-                }
-                $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-                $form['#validate'][]='user_access_validation_chk';
-              }
+      if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
+        /* get the content type details */
+        $node = $form_state->getFormObject()->getEntity();
+        /* $node->getType();
+        $content_type_arr = ['article'];
+         */
+        /* get the group details based on logged in user id */
+        $grp_membership_service = \Drupal::service('group.membership_loader');
+        $grps = $grp_membership_service->loadByUser($currentAccount);
+        if (!empty($grps)) {
+          foreach ($grps as $grp) {
+            $groups = $grp->getGroup();
+          }
+          $languages = $groups->get('field_language')->getString();
+          $language_arr = explode(",", $languages);
+          $language_arr = array_map('trim', explode(',', $languages));
+          $language_options = [];
+          foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+            if (in_array($langcode, $language_arr)) {
+              $language_options[$langcode] = $language->getName();
+            }
+          }
+          $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+          $form['#validate'][] = 'user_access_validation_chk';
         }
-      }	  
+      }
     }
-	if($form['#id'] == "content-moderation-entity-moderation-form")
-    { 
-       /* get the user role based permission list */
-        $user = \Drupal::currentUser();
-        $roles = $user->getRoles();
-        $bypass_access = false;
-        foreach($roles as $rkey=>$rval)
-        {
-          if($rval != "authenticated")
-          {
-            $roles_permissions = user_role_permissions(array($rval));
-            if(in_array('bypass node access',$roles_permissions[$rval]))
-            {
-              $bypass_access = true;
-            }
-          }
+  }
+  if ($form['#id'] == "content-moderation-entity-moderation-form") {
+    /* get the user role based permission list */
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $roles_permissions = user_role_permissions([$rval]);
+        if (in_array('bypass node access', $roles_permissions[$rval])) {
+          $bypass_access = TRUE;
         }
-        if(!$bypass_access)
-        {
-          $uid = $user->id();
-          $groups = array();
-          $grp_membership_service = \Drupal::service('group.membership_loader');
-          $grps = $grp_membership_service->loadByUser($user);
-          if(!empty($grps)) 
-          {
-            foreach ($grps as $grp) {
-              $groups = $grp->getGroup();
-            }
-            $country_languages = $groups->get('field_language')->getValue();
-            $clanguage = array();
-            foreach($country_languages as $mlangkey=>$mlangval)
-            {
-              $clanguage[]=$mlangval['value'];
-            }
-            
-          $node = \Drupal::routeMatch()->getParameter('node');
-          $nid =  $node->id();
-          $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-          if(!in_array($current_language,$clanguage))
-          {
-            $form['submit']['#disabled'] = true;
-            $form['submit']['#access'] = FALSE;
-          }
-          }
-        }
+      }
     }
+    if (!$bypass_access) {
+      $uid = $user->id();
+      $groups = [];
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($user);
+      if (!empty($grps)) {
+        foreach ($grps as $grp) {
+          $groups = $grp->getGroup();
+        }
+        $country_languages = $groups->get('field_language')->getValue();
+        $clanguage = [];
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
+        }
+        $node = \Drupal::routeMatch()->getParameter('node');
+        /* $nid =  $node -> id(); */
+        $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+        if (!in_array($current_language, $clanguage)) {
+          $form['submit']['#disabled'] = TRUE;
+          $form['submit']['#access'] = FALSE;
+        }
+      }
+    }
+  }
 }
 
+/**
+ * {@inheritdoc}
+ */
 function pb_custom_field_link_alter(&$variables) {
   $user = \Drupal::currentUser();
   $user_roles = $user->getRoles();
-  $uid = $user->id();
-  $groups = array();
+  /* $uid = $user->id(); */
+  $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
   foreach ($grps as $grp) {
-          $groups[] = $grp->getGroup();
+    $groups[] = $grp->getGroup();
   }
 
-  if(!empty($groups) && $groups[0]->bundle() == "country" && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {           
-    $group_url = 'internal:/group/'.$groups[0]->id().'/members';
-    if($group_url){
+  if (!empty($groups) && $groups[0]->bundle() == "country" && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+    $group_url = 'internal:/group/' . $groups[0]->id() . '/members';
+    $add_group_members_url = 'internal:/group/' . $groups[0]->id() . '/content/create/group_membership';
+    if ($group_url) {
       $menu_link_parents = \Drupal::entityTypeManager()
         ->getStorage('menu_link_content')
         ->loadByProperties([
@@ -708,31 +662,96 @@ function pb_custom_field_link_alter(&$variables) {
           'menu_name' => 'editorial-menu',
         ]);
       $entity = reset($menu_link_parents);
-      if ($entity) {     
+      if ($entity) {
         $entity->set('link', $group_url);
-        $entity->save();         
-      }      
+        $entity->save();
+      }
+
+      /* Dashboard - Manage Users for Country Admin. */
+      $menu_link_parents = \Drupal::entityTypeManager()
+        ->getStorage('menu_link_content')
+        ->loadByProperties([
+          'title' => 'Manage Users',
+          'menu_name' => 'quick-links',
+        ]);
+      $entity = reset($menu_link_parents);
+      if ($entity) {
+        $entity->set('link', $group_url);
+        $entity->save();
+      }
     }
+    /* Dashboard - add members. */
+
+    if ($add_group_members_url) {
+      $menu_link_members = \Drupal::entityTypeManager()
+        ->getStorage('menu_link_content')
+        ->loadByProperties([
+          'title' => 'Add Members',
+          'menu_name' => 'quick-links',
+        ]);
+      $entity = reset($menu_link_members);
+      if ($entity) {
+        $entity->set('link', $add_group_members_url);
+        $entity->save();
+      }
+    }
+
   }
 }
 
+/**
+ * Implements hook_views_pre_view().
+ *
+ * Dashboard - Recent users - View header link.
+ */
+function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+
+  if ($view->id() == 'recent_logged_in_users' && $display_id === 'block_1') {
+    $user = \Drupal::currentUser();
+    $groups = [];
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    foreach ($grps as $grp) {
+      $groups[] = $grp->getGroup();
+    }
+    $options = [
+      'id' => 'area',
+      'table' => 'views',
+      'field' => 'area',
+      'relationship' => 'none',
+      'group_type' => 'none',
+      'admin_label' => '',
+      'empty' => NULL,
+      'tokenize' => NULL,
+      'content' => [
+        'value' => '<a href="group/' . $groups[0]->id() . '/members">View More</a>',
+        'format' => "full_html",
+      ],
+      'plugin_id' => 'text',
+    ];
+    $view->setHandler('block_1', 'header', 'area', $options);
+
+  }
+
+}
+
+/**
+ * {@inheritdoc}
+ */
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
 
   $roles = \Drupal::currentUser()->getRoles();
+  /*$current_url = Url::fromRoute('<current>');
+  $path = $current_url->toString();
+  $langcode = explode('node', $path);
+  $split_url = explode('/', $langcode['0']);
   $roles_permissions = user_role_permissions($roles);
   $current_path = \Drupal::service('path.current')->getPath();
-  $current_url = Url::fromRoute('<current>');
-  $path = $current_url->toString();
-  $langcode = explode('node', $path);  
-  $split_url = explode('/', $langcode['0']);
-  /* $languagecode =  str_replace("/","",$split_url['1']); */
-  //$languagecode =  $split_url['3'];
+   */
   $languagecode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
-
-
-  if(in_array("reviewer", $roles) ){  
-    unset($data['tabs'][0]['devel.entities:group.devel_tab']);    
+  if (in_array("reviewer", $roles)) {
+    unset($data['tabs'][0]['devel.entities:group.devel_tab']);
     unset($data['tabs'][0]['group.view']);
     unset($data['tabs'][0]['group.edit_form']);
     unset($data['tabs'][0]['group.delete_form']);
@@ -740,218 +759,229 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
     unset($data['tabs'][0]['views_view:view.group_nodes.page_1']);
     unset($data['tabs'][0]['views_view:view.duplicate_of_moderated_group_content.moderated_content']);
     unset($data['tabs'][0]['content_translation.local_tasks:entity.group.content_translation_overview']);
-  }  
+  }
 
-  if(in_array("global_admin", $roles) ){  
+  if (in_array("global_admin", $roles)) {
     unset($data['tabs'][0]['group.delete_form']);
     unset($data['tabs'][0]['group.content']);
     unset($data['tabs'][0]['views_view:view.group_nodes.page_1']);
-  }  
+  }
 
-  if(!in_array("global_admin", $roles) && !in_array("administrator", $roles)){
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles)) {
     $user = \Drupal::currentUser();
-    $uid = $user->id();
-    $groups = array();
+    /* $uid = $user->id(); */
+    $groups = [];
     $grp_membership_service = \Drupal::service('group.membership_loader');
     $grps = $grp_membership_service->loadByUser($user);
-    if(!empty($grps)){
+    if (!empty($grps)) {
       foreach ($grps as $grp) {
         $groups = $grp->getGroup();
-      }           
+      }
       $country_languages = $groups->get('field_language')->getValue();
-      $clanguage = array();
-      if(!empty($country_languages)){
-        foreach($country_languages as $mlangkey=>$mlangval)
-        {
-          $clanguage[]=$mlangval['value'];            
+      $clanguage = [];
+      if (!empty($country_languages)) {
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
         }
       }
-      ##Remove  delete tab for country users       
+      /* Remove  delete tab for country users. */
       unset($data['tabs'][0]['entity.node.delete_form']);
-       unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
-      ##Remove tabs for edit, delete and translate fo other languages.
-      if(!in_array($languagecode, $clanguage)){
+      unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
+      /* Remove tabs for edit, delete and translate fo other languages. */
+      if (!in_array($languagecode, $clanguage)) {
         unset($data['tabs'][0]['entity.node.edit_form']);
         unset($data['tabs'][0]['entity.node.delete_form']);
-        // unset($data['tabs'][0]['entity.node.version_history']);
-        unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);    
+        /* unset($data['tabs'][0]['entity.node.version_history']); */
+        unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
       }
     }
   }
 
-  ## hide delete tab  and translate tab in media page
-  if($route_name == 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
-    unset($data['tabs'][0]['media.tasks:entity.media.delete_form']); 
+  /* Hide delete tab  and translate tab in media page. */
+  if ($route_name == 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)) {
+    unset($data['tabs'][0]['media.tasks:entity.media.delete_form']);
     $media_id = \Drupal::routeMatch()->getParameter('media')->Id();
     $entity = Drupal::entityManager()->getStorage('media')->load($media_id);
     $media_type = $entity->bundle();
-    if($media_type != "image") {
-      unset($data['tabs'][0]['content_translation.local_tasks:entity.media.content_translation_overview']); 
-    }   
+    if ($media_type != "image") {
+      unset($data['tabs'][0]['content_translation.local_tasks:entity.media.content_translation_overview']);
+    }
   }
 }
 
+/**
+ * {@inheritdoc}
+ */
 function user_update_function($form, FormStateInterface $form_state) {
-  $currentUser = \Drupal::currentUser();
+  /* $currentUser = \Drupal::currentUser();
   $node = $form_state->getFormObject();
   $entity = $node->getEntity();
+   */
   $uid = $form_state->getValue('entity_id')[0]['target_id'];
-  $user = \Drupal\user\Entity\User::load($uid);
+  $user = User::load($uid);
   $roles = $user->getRoles();
   $group_roles = $form_state->getValue('group_roles');
 
-  if(!empty($group_roles)){
+  if (!empty($group_roles)) {
     foreach ($roles as $role) {
-      $user->removeRole($role);   
+      $user->removeRole($role);
       $user->save();
     }
 
     foreach ($group_roles as $group_role) {
-      if($group_role['target_id'] == "country-admin"){
-        $new_role = "reviewer";      
-      }else if($group_role['target_id'] == "country-sme"){     
+      if ($group_role['target_id'] == "country-admin") {
+        $new_role = "reviewer";
+      }
+      elseif ($group_role['target_id'] == "country-sme") {
         $new_role = "sme";
-      }else if($group_role['target_id'] == "country-editor"){
+      }
+      elseif ($group_role['target_id'] == "country-editor") {
         $new_role = "editor";
-      }else if($group_role['target_id'] == "country-senior_editor"){
+      }
+      elseif ($group_role['target_id'] == "country-senior_editor") {
         $new_role = "se";
       }
-      $user->addRole($new_role);    
+      $user->addRole($new_role);
       $user->save();
     }
   }
 }
 
-function group_user_validate($form, FormStateInterface $form_state){
+/**
+ * {@inheritdoc}
+ */
+function group_user_validate($form, FormStateInterface $form_state) {
   $uid = $form_state->getValue('entity_id')[0]['target_id'];
-  $user = \Drupal\user\Entity\User::load($uid); 
-  $groups = array();
-  $grp_membership_service = \Drupal::service('group.membership_loader'); 
-  
+  $user = User::load($uid);
+  $groups = [];
+  $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
   foreach ($grps as $grp) {
-      $groups[] = $grp->getGroup();
+    $groups[] = $grp->getGroup();
   }
 
-  if(empty($groups)){
-    return true;
-  }else{
+  if (empty($groups)) {
+    return TRUE;
+  }
+  else {
     drupal_set_message(t('User already added in country.'), 'error');
     $form_state->setRebuild();
   }
-
 }
 
+/**
+ * {@inheritdoc}
+ */
 function redirect_to_add_member_page($form, FormStateInterface $form_state) {
-    $user = \Drupal::currentUser();
-    $user_roles = $user->getRoles();
-    $uid = $user->id();
-    $groups = array();
-    $grp_membership_service = \Drupal::service('group.membership_loader');
-    $grps = $grp_membership_service->loadByUser($user);
-    foreach ($grps as $grp) {      
-      $groups[] = $grp->getGroup();
-    }  
-    $uids = $form_state->getValue('uid');
-    if ($form_state->getFormObject() instanceOf EntityFormInterface) {
-      $nid = $form_state->getformObject()->getEntity()->id();
-    }    
+  $user = \Drupal::currentUser();
+  $user_roles = $user->getRoles();
+  /* $uid = $user->id(); */
+  $groups = [];
+  $grp_membership_service = \Drupal::service('group.membership_loader');
+  $grps = $grp_membership_service->loadByUser($user);
+  foreach ($grps as $grp) {
+    $groups[] = $grp->getGroup();
+  }
+  /* $uids = $form_state->getValue('uid'); */
+  if ($form_state->getFormObject() instanceof EntityFormInterface) {
+    $nid = $form_state->getformObject()->getEntity()->id();
+  }
 
-    $query = \Drupal::database()->select('group_content_field_data');
-    $query->condition('entity_id', $nid);
-    $query->orderBy('id', 'DESC');
-    $query->range(0, 1);
-    $query->fields('group_content_field_data');
-    $result = $query->execute()->fetchAll();
-    if(!empty($result))
-    {
-      $group_content_id = $result[0]->id;   
-    }
+  $query = \Drupal::database()->select('group_content_field_data');
+  $query->condition('entity_id', $nid);
+  $query->orderBy('id', 'DESC');
+  $query->range(0, 1);
+  $query->fields('group_content_field_data');
+  $result = $query->execute()->fetchAll();
+  if (!empty($result)) {
+    $group_content_id = $result[0]->id;
+  }
 
-    if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) { 
-      $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/'.$group_content_id.'/edit');     
-      $form_state->setRedirectUrl($url);      
-    }
+  if (!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {
+    $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/' . $group_content_id . '/edit');
+    $form_state->setRedirectUrl($url);
+  }
 
-    if(in_array("global_admin", $user_roles))
-    {      
-      if(Drupal::service('path.current')->getPath() != "/admin/people/create")
-      {
-        $request_uri = \Drupal::service('path.current')->getPath();
-        $request = explode('/', $request_uri);
-        $url = url::fromUserInput('/group/' . $request[2] . '/content/'.$group_content_id.'/edit');     
-        $form_state->setRedirectUrl($url);     
-      }       
+  if (in_array("global_admin", $user_roles)) {
+    if (Drupal::service('path.current')->getPath() != "/admin/people/create") {
+      $request_uri = \Drupal::service('path.current')->getPath();
+      $request = explode('/', $request_uri);
+      $url = url::fromUserInput('/group/' . $request[2] . '/content/' . $group_content_id . '/edit');
+      $form_state->setRedirectUrl($url);
     }
-    // if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {        
-    //   $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/add/group_membership?uid='.$uids);     
-    //   $form_state->setRedirectUrl($url);      
-    // }
+  }
+  /* if(!empty($groups) && $groups[0]->bundle() == "country" && in_array
+  ('reviewer', $user_roles)) {
+  $url = url::fromUserInput('/group/' . $groups[0]->id() .
+  '/content/add/group_membership?uid='.$uids);
+  $form_state->setRedirectUrl($url);
+  } */
 }
 
 /**
  * Implements hook_entity_operation_alter().
  */
-function pb_custom_field_entity_operation_alter(array &$operations, EntityInterface $entity) {  
+function pb_custom_field_entity_operation_alter(array &$operations, EntityInterface $entity) {
   $roles = \Drupal::currentUser()->getRoles();
-  $roles_permissions = user_role_permissions($roles);
-  ## hide operations in country listing page
-  if(!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {   
+  /* $roles_permissions = user_role_permissions($roles); */
+  /* Hide operations in country listing page. */
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {
     if (isset($operations['delete'])) {
-      unset($operations['delete']);      
+      unset($operations['delete']);
     }
     if (isset($operations['translate'])) {
-      unset($operations['translate']);      
-    }
-  }
-  
-  ##dashboard operations
-
-   if(!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/dashboard" && $entity->getEntityTypeId() == "node") {   
-    if (isset($operations['delete'])) {
-      unset($operations['delete']);      
-    }
-    if (isset($operations['translate'])) {
-      unset($operations['translate']);      
+      unset($operations['translate']);
     }
   }
 
-  ## hide operations in media listing page
-  if(!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/admin/content/media" && $entity->getEntityTypeId() == "media") {   
+  /* Dashboard operations. */
+
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/dashboard" && $entity->getEntityTypeId() == "node") {
     if (isset($operations['delete'])) {
-      unset($operations['delete']);      
+      unset($operations['delete']);
     }
-    if($entity->bundle() != "image") {
+    if (isset($operations['translate'])) {
+      unset($operations['translate']);
+    }
+  }
+
+  /* Hide operations in media listing page. */
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/admin/content/media" && $entity->getEntityTypeId() == "media") {
+    if (isset($operations['delete'])) {
+      unset($operations['delete']);
+    }
+    if ($entity->bundle() != "image") {
       if (isset($operations['translate'])) {
-        unset($operations['translate']);      
+        unset($operations['translate']);
       }
     }
   }
-  
-  if($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
+
+  if ($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
     if (isset($operations['edit'])) {
-      unset($operations['edit']);      
+      unset($operations['edit']);
     }
     if (isset($operations['delete'])) {
-      unset($operations['delete']);      
+      unset($operations['delete']);
     }
-  }    
+  }
 }
 
+/**
+ * Implements View query alter.
+ */
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   $user = \Drupal::currentUser();
   $user_roles = $user->getRoles();
-  $groups = array();
+  $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
   foreach ($grps as $grp) {
-          $groups[] = $grp->getGroup();
-  }      
-  if(!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {           
+    $groups[] = $grp->getGroup();
+  }
+  if (!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {
     $gid = $groups[0]->id();
     if ($view->id() == 'users_list') {
-      // dump($query->where);
-      // die();
       // Traverse through the 'where' part of the query.
       foreach ($query->where as &$condition_group) {
         foreach ($condition_group['conditions'] as &$condition) {
@@ -971,125 +1001,104 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   }
 }
 
-/* validation for all node and add image media form */
-
-function user_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface $form_state)
-{
-
-  //$form_language = $form_state->get('langcode');
-  
-  /* Check the user validation */
+/**
+ * Validation for all node and add image media form.
+ */
+function user_access_validation_chk(&$form, FormStateInterface $form_state) {
+  /* Check the user validation.*/
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
-  $bypass_access = false;
-  /* check the bypass content access*/
-  foreach($roles as $rkey=>$rval)
-  {
-    if($rval != "authenticated")
-    {
-      $roles_permissions = user_role_permissions(array($rval));
-      if(in_array('bypass node access',$roles_permissions[$rval]))
-      {
-        $bypass_access = true;
+  $bypass_access = FALSE;
+  /* Check the bypass content access. */
+  foreach ($roles as $rval) {
+    if ($rval != "authenticated") {
+      $roles_permissions = user_role_permissions([$rval]);
+      if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $bypass_access = TRUE;
       }
     }
   }
- 
-  /* global admin have bypass node access other user doesn't have 
-   * check the country user have this language permission 
+
+  /* global admin have bypass node access other user doesn't have
+   * check the country user have this language permission
    * if they dont have access show the error message
    */
-  if(!$bypass_access)
-  {
-    $groups = array();
+  if (!$bypass_access) {
+    $groups = [];
     $grp_membership_service = \Drupal::service('group.membership_loader');
     $grps = $grp_membership_service->loadByUser($user);
-    if(!empty($grps))
-    {
+    if (!empty($grps)) {
       foreach ($grps as $grp) {
-              $groups = $grp->getGroup();
+        $groups = $grp->getGroup();
       }
       $country_languages = $groups->get('field_language')->getValue();
       $form_language = $form_state->get('langcode');
-      $clanguage = array();
-      if(!empty($form_language)) {
-        foreach($country_languages as $mlangkey=>$mlangval)
-        {
-          $clanguage[]=$mlangval['value'];
+      $clanguage = [];
+      if (!empty($form_language)) {
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
         }
-        if(!in_array($form_language,$clanguage))
-        {
-          $form_state->setErrorByName('','This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
+        if (!in_array($form_language, $clanguage)) {
+          $form_state->setErrorByName('', 'This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
         }
       }
-     
     }
-
   }
- 
 }
 
-
-/* validation for all add image media form */
-function user_media_access_validation_chk(&$form, \Drupal\Core\Form\FormStateInterface $form_state)
-{
-
+/**
+ * Validation for all add image media form.
+ */
+function user_media_access_validation_chk(&$form, FormStateInterface $form_state) {
   /* Check the user validation */
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
-  $bypass_access = false;
+  $bypass_access = FALSE;
   /* check the bypass content access*/
-  foreach($roles as $rkey=>$rval)
-  {
-    if($rval != "authenticated")
-    {
-      $roles_permissions = user_role_permissions(array($rval));
-      if(in_array('bypass node access',$roles_permissions[$rval]))
-      {
-        $bypass_access = true;
+  foreach ($roles as $rval) {
+    if ($rval != "authenticated") {
+      $roles_permissions = user_role_permissions([$rval]);
+      if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $bypass_access = TRUE;
       }
     }
   }
- 
-  /* global admin have bypass node access other user doesn't have 
-   * check the country user have this language permission 
+
+  /* global admin have bypass node access other user doesn't have.
+   * check the country user have this language permission.
    * if they dont have access show the error message
    */
-  if(!$bypass_access)
-  {
-    $groups = array();
+  if (!$bypass_access) {
+    $groups = [];
     $grp_membership_service = \Drupal::service('group.membership_loader');
     $grps = $grp_membership_service->loadByUser($user);
-    if(!empty($grps))
-    {
-	  foreach ($grps as $grp) {
-              $groups = $grp->getGroup();
+    if (!empty($grps)) {
+      foreach ($grps as $grp) {
+        $groups = $grp->getGroup();
       }
       $country_languages = $groups->get('field_language')->getValue();
       $form_language = $form_state->get('langcode');
-      $clanguage = array();
-      if(!empty($form_language)) {
-        foreach($country_languages as $mlangkey=>$mlangval)
-        {
-          $clanguage[]=$mlangval['value'];
+      $clanguage = [];
+      if (!empty($form_language)) {
+        foreach ($country_languages as $mlangval) {
+          $clanguage[] = $mlangval['value'];
         }
-        if(!in_array($form_language,$clanguage))
-        {
-	       $form_state->setErrorByName('','This content is associated with another language. It cannot be edited.');
+        if (!in_array($form_language, $clanguage)) {
+          $form_state->setErrorByName('', 'This content is associated with another language. It cannot be edited.');
         }
       }
-     
+
     }
 
   }
- 
+
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
-*/
+ */
 function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Add reset password link.
+  /* Add reset password link. */
   $url_object = Url::fromRoute('user.pass');
   $form['password_reset_link'] = [
     '#type' => 'link',
@@ -1102,84 +1111,76 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
 }
 
 /**
- * Alters user_profile_form
+ * Implements Alters user_profile_form.
  */
 function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $current_uri = \Drupal::request()->getRequestUri();
-  $roles = \Drupal\user\Entity\Role::loadMultiple();
+  $roles = Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $path_args = explode('?', $current_uri);
   $path_args = explode('/', $current_uri);
-  if($form_id == "user_form" && in_array("global_admin", $currentUser_roles)){
-    if(isset($path_args[count($path_args)-3]) && $path_args[count($path_args)-3] == "group" && isset($path_args[count($path_args)-1]) && $path_args[count($path_args)-1] == "members") {
-      $form['account']['roles']['#access'] = false;  
-      // $form['account']['roles']['#title_display'] = 'invisible';
-      // foreach ($roles as $role) {      
-      //   unset($form['account']['roles']['#options'][$role->id()]);       
-      // }
+  if ($form_id == "user_form" && in_array("global_admin", $currentUser_roles)) {
+    if (isset($path_args[count($path_args) - 3]) && $path_args[count($path_args) - 3] == "group" && isset($path_args[count($path_args) - 1]) && $path_args[count($path_args) - 1] == "members") {
+      $form['account']['roles']['#access'] = FALSE;
+      /* $form['account']['roles']['#title_display'] = 'invisible';
+      foreach ($roles as $role) {
+      unset($form['account']['roles']['#options'][$role->id()]);
+      } */
     }
     else {
       $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
       $user_path_args = explode('/', $current_path);
-      if(isset($user_path_args[1]))
-      {
+      if (isset($user_path_args[1])) {
         $uid = $user_path_args[1];
-        $user = \Drupal\user\Entity\User::load($uid);
+        $user = User::load($uid);
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
-          if($user_role != "global_admin")
-          {
-            //$form['account']['roles']['#title_display'] = 'invisible';
-            $form['account']['roles']['#access'] = false;  
+          if ($user_role != "global_admin") {
+            /* $form['account']['roles']['#title_display'] = 'invisible'; */
+            $form['account']['roles']['#access'] = FALSE;
           }
-          elseif($user_role == "global_admin")
-          {
-            //$form['account']['roles']['#title_display'] = 'visible';
-            $form['account']['roles']['#access'] = true;
+          elseif ($user_role == "global_admin") {
+            /* $form['account']['roles']['#title_display'] = 'visible'; */
+            $form['account']['roles']['#access'] = TRUE;
             foreach ($roles as $role) {
-              if($role->id() == "authenticated" || $role->id() == "administrator") 
-              {
-                unset($form['account']['roles']['#options'][$role->id()]);  
+              if ($role->id() == "authenticated" || $role->id() == "administrator") {
+                unset($form['account']['roles']['#options'][$role->id()]);
               }
-              if($role->id() != "global_admin") 
-              {
-                unset($form['account']['roles']['#options'][$role->id()]);  
+              if ($role->id() != "global_admin") {
+                unset($form['account']['roles']['#options'][$role->id()]);
               }
             }
-          }         
+          }
         }
-      }      
+      }
     }
   }
 }
 
 /**
- * Alters user_register_form
+ * Alters user_register_form.
  */
 function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $form_id) {
-  
-  $roles = \Drupal\user\Entity\Role::loadMultiple();
+  $roles = Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
   $path_args = explode('/', $current_path);
-  if($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
-    if(isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
-      $form['account']['roles']['#access'] = false;  
-      // $form['account']['roles']['#title_display'] = 'invisible';
-      // foreach ($roles as $role) {      
-      //   unset($form['account']['roles']['#options'][$role->id()]);        
-      // }
+  if ($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
+    if (isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
+      $form['account']['roles']['#access'] = FALSE;
+      /* $form['account']['roles']['#title_display'] = 'invisible';
+      foreach ($roles as $role) {
+      unset($form['account']['roles']['#options'][$role->id()]);
+      }*/
     }
     else {
       foreach ($roles as $role) {
-        if($role->id() == "authenticated" || $role->id() == "administrator") 
-        {
-          unset($form['account']['roles']['#options'][$role->id()]);  
+        if ($role->id() == "authenticated" || $role->id() == "administrator") {
+          unset($form['account']['roles']['#options'][$role->id()]);
         }
-        if($role->id() != "global_admin") 
-        {
-          unset($form['account']['roles']['#options'][$role->id()]);  
-          //$form['account']['roles'][$role->id()]['#disabled'] = TRUE;
+        if ($role->id() != "global_admin") {
+          unset($form['account']['roles']['#options'][$role->id()]);
+          /* $form['account']['roles'][$role->id()]['#disabled'] = TRUE; */
         }
       }
     }

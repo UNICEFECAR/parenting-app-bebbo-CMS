@@ -4,11 +4,9 @@ namespace Drupal\pb_custom_rest_api\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
- * Provides a Custom Rest Resource
+ * Provides a Custom Rest Resource.
  *
  * @RestResource(
  *   id = "custom_rest_resource",
@@ -18,18 +16,15 @@ use Drupal\Core\Entity\Query\QueryFactory;
  *   }
  * )
  */
-
 class CustomRestResource extends ResourceBase {
+
   /**
    * Responds to GET requests.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity object.
    *
    * @return \Drupal\rest\ResourceResponse
    *   The HTTP response object.
    */
-  public function get ($country = NULL) {
+  public function get($country = NULL) {
     $database = \Drupal::database();
     $query = $database->query("SELECT * FROM {forcefull_check_update_api} WHERE country_id = $country ORDER BY id DESC LIMIT 1");
     $result = $query->fetchAll();

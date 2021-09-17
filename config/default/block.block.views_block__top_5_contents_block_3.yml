@@ -13,7 +13,7 @@ dependencies:
 id: views_block__top_5_contents_block_3
 theme: claro
 region: content
-weight: -1
+weight: -5
 provider: null
 plugin: 'views_block:top_5_contents-block_3'
 settings:

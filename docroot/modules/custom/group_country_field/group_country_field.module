@@ -1,42 +1,45 @@
 <?php
 
-use Drupal\Core\Form\FormState;
+/**
+ * @file
+ * It contains group field module.
+ */
+
 use Drupal\views\ViewExecutable;
+use Drupal\group\Entity\Group;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+
+/*
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\Condition as SqlCondition;
 use Drupal\views\Plugin\views\query\Sql;
-use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\languagefield\Entity;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\TypedData\OptionsProviderInterface;
 use Drupal\Core\Language\LanguageManager;
-use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Views;
-/**
- * @file
- * It contains custom field module.
  */
 
+/**
+ * Implements form alter.
+ */
 function group_country_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 
-  if($form['#id'] == "views-exposed-form-global-content-listing-page-4")
-  {
-    // $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
-    // $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
+  if ($form['#id'] == "views-exposed-form-global-content-listing-page-4") {
     $groups = Group::loadMultiple();
     $options = ['' => 'All'];
-    foreach($groups as $gid => $group) {
+    foreach ($groups as $group) {
       $value = $group->get('label')->getString();
       $id = $group->get('id')->getString();
-
       if (isset($value)) {
-        //$options[strtolower($value)] = $value;
+        /* $options[strtolower($value)] = $value; */
         $options[$id] = $value;
       }
     }
@@ -47,77 +50,74 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
       return $form;
     }
   }
-  if($form['#id'] == "tmgmt-job-item-edit-form"){
+  if ($form['#id'] == "tmgmt-job-item-edit-form") {
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
-    $roles_permissions = user_role_permissions($user_roles);    
-
-    $new_default_state = array("review_after_translation" => "Review_after_translation");
-
-    if(!empty($roles_permissions['global_admin'])){      
+    $roles_permissions = user_role_permissions($user_roles);
+    $new_default_state = ["review_after_translation" => "Review_after_translation"];
+    if (!empty($roles_permissions['global_admin'])) {
       if (in_array("administer nodes", $roles_permissions['global_admin'])) {
-
-        $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];    
-       }      
-    }
-     else{
-        $form['moderation_state']['new_state']['#options'] = $new_default_state;
+        $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];
       }
-   }
+    }
+    else {
+      $form['moderation_state']['new_state']['#options'] = $new_default_state;
+    }
+  }
 }
 
-function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {  
-  if($view->id() == "recent_logged_in_users")
-  {
+/**
+ * Implements views query alter.
+ */
+function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() == "recent_logged_in_users") {
     $user = \Drupal::currentUser();
-    $user_roles = $user->getRoles();
-    $groups = array();
+    /* $user_roles = $user->getRoles(); */
+    $groups = [];
     $grp_membership_service = \Drupal::service('group.membership_loader');
     $grps = $grp_membership_service->loadByUser($user);
-     foreach ($grps as $grp) {
-       $groups[] = $grp->getGroup();
-     }
-      if(!empty($groups)){
-        $title = $groups[0]->label();
-        foreach ($query->where as &$condition_group) {        
+    foreach ($grps as $grp) {
+      $groups[] = $grp->getGroup();
+    }
+    if (!empty($groups)) {
+      $title = $groups[0]->label();
+      foreach ($query->where as &$condition_group) {
         foreach ($condition_group['conditions'] as &$condition) {
-          if($condition['field'] == "groups_field_data_group_content_field_data.label"){
+          if ($condition['field'] == "groups_field_data_group_content_field_data.label") {
             $condition['value'] = $title;
-            //$condition['operator'] = "IN";
+            /* $condition['operator'] = "IN"; */
           }
         }
       }
     }
   }
+  /*if ($view->id() == 'global_content_listing') {
 
-   //    if ($view->id() == 'global_content_listing') {  
-
-   //      $currentAccount = \Drupal::currentUser();
-   //      $cur_user_roles = $currentAccount->getRoles();
-   //      $authorized_roles = array('se','sme','editor','reviewer');
-   //    if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0){
-   //        $type = array('0' => 'article', '1' => 'video_article');
-
-   //        $configuration = array(
-   //        'type'       => 'LEFT',
-   //        'table'      => 'node__field_licensed_content',
-   //        'field'      => 'entity_id',
-   //        'left_table' => 'node_field_data',
-   //        'left_field' => 'nid',
-   //        'operator'   => '=',
-   //        'extra' => array(
-   //         array('table' => 'node_field_data','field' => 'type', 'value' => $type, 'operator' => 'IN'),
-   //         array('field' => 'field_licensed_content_value', 'value' => 0, 'operator' => '='),
-   //         ),
-   //      );
-
-   //      $join = \Drupal\views\Views::pluginManager('join')
-   //        ->createInstance('standard', $configuration);
-   //      $rel = $query->addRelationship('l', $join, 'node_field_data');
-   //      $query->addTable('node__field_licensed_content', $rel, $join, 'l');        
-   //      $query->addWhere(0, 'node_field_data.status', 1, '=');
-   //    }
-
-   // }
-          
+  $currentAccount = \Drupal::currentUser();
+  $cur_user_roles = $currentAccount->getRoles();
+  $authorized_roles = array('se','sme','editor','reviewer');
+  if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
+  $type = array('0' => 'article', '1' => 'video_article');
+  $configuration = array(
+  'type'       => 'LEFT',
+  'table'      => 'node__field_licensed_content',
+  'field'      => 'entity_id',
+  'left_table' => 'node_field_data',
+  'left_field' => 'nid',
+  'operator'   => '=',
+  'extra' => array(
+  array('table' => 'node_field_data','field' => 'type', 'value' => $type,
+  'operator' => 'IN'),
+  array('field' => 'field_licensed_content_value', 'value' => 0,
+  'operator' => '='),
+  ),
+  );
+  $join = \Drupal\views\Views::pluginManager('join')
+  ->createInstance('standard', $configuration);
+  $rel = $query->addRelationship('l', $join, 'node_field_data');
+  $query->addTable('node__field_licensed_content', $rel, $join, 'l');
+  $query->addWhere(0, 'node_field_data.status', 1, '=');
+  }
+  }
+   */
 }
