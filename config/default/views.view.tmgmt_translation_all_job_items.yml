@@ -1021,7 +1021,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No job items for the current selection.'
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
           plugin_id: text_custom
       relationships:
         tjid:
@@ -1067,6 +1067,7 @@ display:
         footer: false
         header: false
         css_class: false
+        empty: false
       fields:
         item_id:
           id: item_id
@@ -1501,6 +1502,18 @@ display:
             format: full_html
           plugin_id: text
       css_class: common_table
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
@@ -1525,6 +1538,20 @@ display:
         weight: 5
         context: '0'
         menu_name: admin
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'No job items for the current selection.'
+          plugin_id: text_custom
+      defaults:
+        empty: false
     cache_metadata:
       max-age: -1
       contexts:
