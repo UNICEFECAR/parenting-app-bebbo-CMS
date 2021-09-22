@@ -121,3 +121,14 @@ function group_country_field_views_query_alter(ViewExecutable $view, QueryPlugin
   }
    */
 }
+
+/**
+ * Implements views form alter.
+ *
+ * Translation job items item id size.
+ */
+function group_country_field_form_views_exposed_form_alter(&$form, $form_state) {
+  if ($form['#id'] == 'views-exposed-form-tmgmt-translation-all-job-items-page-1') {
+    $form['item_id']['#size'] = 5;
+  }
+}
