@@ -14,14 +14,14 @@ process:
     plugin: default_value
     source: language
     default_value: en
-  
+
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
 
   nid: ID
-  title: Title  
+  title: Title
   body/value: Body
   field_cover_image: Cover_image
 
