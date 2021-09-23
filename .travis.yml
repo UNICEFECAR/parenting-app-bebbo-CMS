@@ -56,16 +56,16 @@ deploy:
      skip_cleanup: true
      on:
        branch: dev
-       php: 7.4
+       php: 7.3
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_branch"
      skip_cleanup: true
      on:
        branch: main
-       php: 7.4
+       php: 7.3
    - provider: script
      script: "${BLT_DIR}/scripts/travis/deploy_tag"
      skip_cleanup: true
      on:
        tags: true
-       php: 7.4
+       php: 7.3
