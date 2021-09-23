@@ -61,7 +61,9 @@ AddEncoding gzip svgz
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
   RewriteEngine on
-
+  RewriteCond %{HTTP_HOST} ^bebbo.app$ [NC]
+  RewriteRule (.*) https://www.bebbo.app/$1 [R=301,L]
+  
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.

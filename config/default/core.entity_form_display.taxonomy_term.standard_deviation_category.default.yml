@@ -1,0 +1,58 @@
+uuid: 592a8b8b-862a-44ec-9c94-7ea939b0eb12
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.standard_deviation_category.feeds_item
+    - taxonomy.vocabulary.standard_deviation_category
+  module:
+    - path
+    - text
+id: taxonomy_term.standard_deviation_category.default
+targetEntityType: taxonomy_term
+bundle: standard_deviation_category
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 100
+    region: content
+    third_party_settings: {  }
+  translation:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  feeds_item: true

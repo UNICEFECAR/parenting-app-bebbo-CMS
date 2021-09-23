@@ -1,0 +1,39 @@
+uuid: e753c83d-c28f-4702-974d-566500443c2a
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.recent_logged_in_users
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - claro
+id: views_block__recent_logged_in_users_block_1
+theme: claro
+region: content
+weight: 6
+provider: null
+plugin: 'views_block:recent_logged_in_users-block_1'
+settings:
+  id: 'views_block:recent_logged_in_users-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /dashboard
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      reviewer: reviewer
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

@@ -1,34 +1,43 @@
 <?php
+
+/**
+ * @file
+ * Force update check api schema.
+ */
+
+/**
+ * Implements hook_schema().
+ */
 function pb_custom_form_schema() {
-  $schema['forcefull_check_update_api'] = array(
+  $schema['forcefull_check_update_api'] = [
     'description' => 'Stores value in custom table',
-    'fields' => array(
-      'id' => array(
+    'fields' => [
+      'id' => [
         'type' => 'serial',
         'not null' => TRUE,
         'description' => 'Primary Key: Unique id for forcefull_check_update_api',
-      ),
-      'flag' => array(
+      ],
+      'flag' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Store flag of force update',
-      ),      
-      'country_id' => array(
+      ],
+      'country_id' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Store country id',
-      ),
-      'updated_at' => array(
+      ],
+      'updated_at' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Store current date and time',
-      ),
-    ),
-    'primary key' => array('id'),
-  );
- 
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
   return $schema;
 }

@@ -1,0 +1,38 @@
+uuid: fdc8307f-a797-4ff3-96aa-a7e079af2e7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.editor_review_pending
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - claro
+id: views_block__editor_review_pending_block_1
+theme: claro
+region: content
+weight: -1
+provider: null
+plugin: 'views_block:editor_review_pending-block_1'
+settings:
+  id: 'views_block:editor_review_pending-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: /dashboard
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      editor: editor
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
