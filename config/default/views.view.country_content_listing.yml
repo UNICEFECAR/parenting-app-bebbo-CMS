@@ -1091,6 +1091,18 @@ display:
               action_id: pb_custom_field_assign_action
               preconfiguration:
                 add_confirmation: 0
+            10:
+              action_id: pb_custom_field_publish_to_draft
+              preconfiguration:
+                add_confirmation: 0
+            11:
+              action_id: pb_custom_field_publish_to_senioreditor
+              preconfiguration:
+                add_confirmation: 0
+            12:
+              action_id: pb_custom_field_publish_to_sme
+              preconfiguration:
+                add_confirmation: 0
           force_selection_info: false
           plugin_id: views_bulk_operations_bulk_form
         nid:

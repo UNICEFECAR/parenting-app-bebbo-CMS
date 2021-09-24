@@ -1,4 +1,5 @@
 module:
+  actions_permissions: 0
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
   admin_toolbar_search: 0
