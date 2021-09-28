@@ -112,6 +112,8 @@ class CustomSerializer extends Serializer {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
               $rendered_data[$key] = str_replace("\n", '', $body_summary);
+              /* remove inline style attribute */
+              $rendered_data[$key] = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
