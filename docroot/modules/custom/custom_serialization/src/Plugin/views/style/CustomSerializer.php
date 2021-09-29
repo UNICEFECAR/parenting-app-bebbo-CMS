@@ -112,10 +112,10 @@ class CustomSerializer extends Serializer {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
-              /* remove inline style attribute */
-              //$rendered_data[$key] = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove span tag from body and summary field */
-              $rendered_data[$key] = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
+              $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
+              /* remove inline style attribute */
+              $rendered_data[$key] = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
