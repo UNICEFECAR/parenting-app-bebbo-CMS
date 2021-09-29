@@ -113,7 +113,9 @@ class CustomSerializer extends Serializer {
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
               /* remove inline style attribute */
-              $rendered_data[$key] = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
+              //$rendered_data[$key] = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
+              /* Remove span tag from body and summary field */
+              $rendered_data[$key] = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
