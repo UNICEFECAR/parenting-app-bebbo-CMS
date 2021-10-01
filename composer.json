@@ -18,7 +18,11 @@
         "drupal/config_split": "^1.0.0",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-recommended": "^8.8.0",
+        "drupal/csv_serialization": "^2.0",
+        "drupal/date_popup": "^1.1",
         "drupal/devel": "^4.1",
+        "drupal/devel_php": "^1.3",
+        "drupal/entity": "^1.2",
         "drupal/features": "^3.8.0",
         "drupal/feeds": "^3.0@alpha",
         "drupal/feeds_tamper": "^2.0@beta",
@@ -26,20 +30,30 @@
         "drupal/group": "^1.3",
         "drupal/json_field": "^1.0@RC",
         "drupal/lang_dropdown": "^2.0@beta",
+        "drupal/languagefield": "^1.7",
         "drupal/menu_per_role": "^1.3",
+        "drupal/migrate_plus": "^5.1",
         "drupal/migrate_source_csv": "^3.4",
         "drupal/migrate_tools": "^5.0",
         "drupal/migrate_upgrade": "^3.2",
         "drupal/phpmailer": "^3.0@beta",
         "drupal/qa_accounts": "^1.0.0-alpha1",
+        "drupal/restui": "^1.20",
         "drupal/seckit": "^1.0.0-alpha2",
         "drupal/shield": "^1.2.0",
         "drupal/smtp": "^1.0",
+        "drupal/tamper": "^1.0@alpha",
+        "drupal/title_length": "^1.2",
         "drupal/tmgmt": "^1.12",
+        "drupal/tmgmt_memsource": "^1.13",
+        "drupal/toolbar_menu": "^2.2",
         "drupal/toolbar_menu_clean": "^1.2",
         "drupal/upgrade_status": "^3.10",
+        "drupal/variationcache": "^1.0",
+        "drupal/video_embed_field": "^2.4",
         "drupal/video_embed_media": "^2.4",
-        "drupal/views_bulk_operations": "^3.13"
+        "drupal/views_bulk_operations": "^3.13",
+        "drupal/views_data_export": "^1.0"
     },
     "require-dev": {
         "acquia/blt-require-dev": "11.x-dev"
@@ -110,7 +124,8 @@
         },
         "patches": {
             "drupal/core": {
-                "Media library weight issue css" : "https://www.drupal.org/files/issues/2020-07-01/interdiff_64-67.txt"
+                "Media library weight issue css" : "https://www.drupal.org/files/issues/2020-07-01/interdiff_64-67.txt",
+                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch"
             },
             "drupal/video_embed_field": {
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"
@@ -121,11 +136,11 @@
             "drupal/group": {
                 "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
             },
-            "drupal/taxonomy": {
-                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch"
-            },
             "drupal/content_moderation": {
                 "Added translated draft status content into node_field table":"patches/content_moderation/content_moderation_revision.patch"
+            },
+            "drupal/content_moderation_status": {
+                "Fixed listing page status issue for status change req":"patches/content_moderation/content_moderation_status.patch"
             }
         }
     },
