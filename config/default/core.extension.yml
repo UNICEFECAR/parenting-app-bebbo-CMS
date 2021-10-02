@@ -42,6 +42,7 @@ module:
   help: 0
   history: 0
   image: 0
+  image_style_quality: 0
   json_field: 0
   lang_dropdown: 0
   language: 0

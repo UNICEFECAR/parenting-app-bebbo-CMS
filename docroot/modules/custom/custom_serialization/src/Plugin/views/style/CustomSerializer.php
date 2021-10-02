@@ -109,7 +109,7 @@ class CustomSerializer extends Serializer {
 
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary") {
-              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/styles/content_1200xh_/public/', $values);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
               /* Remove span tag from body and summary field */
@@ -119,7 +119,7 @@ class CustomSerializer extends Serializer {
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
-              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
+              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code, $request_path);
               $rendered_data[$key] = $media_formatted_data;
             }
             /* Custom array formatter.To check mulitple field.  */
@@ -281,7 +281,7 @@ class CustomSerializer extends Serializer {
   /**
    * To get media files details from db.
    */
-  public function customMediaFormatter($key, $values, $language_code) {
+  public function customMediaFormatter($key, $values, $language_code, $request_path) {
 
     if (!empty($values)) {
       $media_entity = Media::load($values);
@@ -308,6 +308,8 @@ class CustomSerializer extends Serializer {
            */
           $file = File::load($mid);
           $url = $file->url();
+          $url = str_replace('/sites/default/files/', '/sites/default/files/styles/content_1200xh_/public/', $url);
+
         }
         $media_data = [
           'url'  => $url,
