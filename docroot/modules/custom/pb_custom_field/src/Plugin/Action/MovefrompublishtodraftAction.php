@@ -25,6 +25,12 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
    *
    * @var int
    */
+  public $initial = 0;
+  /**
+   * Get the total translated count.
+   *
+   * @var int
+   */
   public $assigned = 0;
   /**
    * Get the total non translated count.
@@ -43,31 +49,33 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
+    $uid = \Drupal::currentUser()->id();
     $context = $this->context;
-
     $total_selected = $context['sandbox']['total'];
-
+    $this->initial = $this->initial + 1;
     $this->processItem = $this->processItem + 1;
+    $list = $this->context['list'];
     $message = "";
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
     $node = node_load($nid);
-
+    $ids = array_column($list, '0');
+    $all_ids = implode(',', $ids);
     $node_lang = $node->getTranslation($current_language);
     $current_state = $node_lang->moderation_state->value;
-    $uid = \Drupal::currentUser()->id();
     if ($current_state == 'published') {
-      /* change status from publish to archive */
+      /* Change status from publish to archive. */
       $node_lang->set('moderation_state', 'archive');
       $node_lang->set('uid', $uid);
       $node_lang->set('content_translation_source', $current_language);
       $node_lang->set('changed', time());
       $node_lang->set('created', time());
+      $node_lang->setNewRevision(FALSE);
       $node_lang->save();
-      $node->setRevisionTranslationAffected(FALSE);
       $node->save();
-      /* change status from archive to draft */
+
+      /* Change status from archive to draft. */
       $node = node_load($nid);
       $node_lang = $node->getTranslation($current_language);
       $node_lang->set('moderation_state', 'draft');
@@ -75,8 +83,8 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
       $node_lang->set('content_translation_source', $current_language);
       $node_lang->set('changed', time());
       $node_lang->set('created', time());
+      $node_lang->setNewRevision(FALSE);
       $node_lang->save();
-      $node->setRevisionTranslationAffected(FALSE);
       $node->save();
       $this->assigned = $this->assigned + 1;
     }
@@ -101,6 +109,11 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
       }
     }
 
+    if ($this->initial == 1) {
+      /* Please add the entity */
+      $message = 'Content Bulk updated from archieve to draft by' . $uid . " content id - " . $all_ids;
+      \Drupal::logger('Content Bulk updated')->info($message);
+    }
     return $this->t("Total content selected");
   }
 
