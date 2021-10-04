@@ -109,7 +109,7 @@ class CustomSerializer extends Serializer {
 
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary") {
-              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/styles/content_1200xh_/public/', $values);
+              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
               /* Remove span tag from body and summary field */
