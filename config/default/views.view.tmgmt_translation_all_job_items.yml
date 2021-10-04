@@ -1021,7 +1021,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No job items for the current selection.'
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
           plugin_id: text_custom
       relationships:
         tjid:
@@ -1065,6 +1065,9 @@ display:
         sorts: false
         pager: false
         footer: false
+        header: false
+        css_class: false
+        empty: false
       fields:
         item_id:
           id: item_id
@@ -1484,6 +1487,33 @@ display:
           items_per_page: 5
           offset: 0
       footer: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<a href="/admin/tmgmt/job_items">View More</a>'
+            format: full_html
+          plugin_id: text
+      css_class: common_table
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
@@ -1508,239 +1538,23 @@ display:
         weight: 5
         context: '0'
         menu_name: admin
-      filters:
-        item_id:
-          id: item_id
-          table: tmgmt_job_item
-          field: item_id
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: item_id_op
-            label: 'Node ID'
-            description: ''
-            use_operator: false
-            operator: item_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: item_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: tmgmt_job_item
-          entity_field: item_id
-          plugin_id: string
-        state:
-          id: state
-          table: tmgmt_job_item
-          field: state
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: job_item_state
-          value:
-            2: '2'
-          group: 1
-          exposed: true
-          expose:
-            operator_id: state_op
-            label: States
-            description: ''
-            use_operator: false
-            operator: state_op
-            identifier: state
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: State
-            description: ''
-            identifier: state
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: ''
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: tmgmt_job_item
-          plugin_id: tmgmt_job_item_filter
-        source_language:
-          id: source_language
-          table: tmgmt_job
-          field: source_language
-          relationship: tjid
-          group_type: group
-          admin_label: ''
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: source_language_op
-            label: 'Source language'
-            description: ''
-            use_operator: false
-            operator: source_language_op
-            identifier: source_language
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-            reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: tmgmt_job
-          entity_field: source_language
-          plugin_id: language
-        target_language:
-          id: target_language
-          table: tmgmt_job
-          field: target_language
-          relationship: tjid
-          group_type: group
-          admin_label: ''
-          operator: in
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: target_language_op
-            label: 'Target language'
-            description: ''
-            use_operator: false
-            operator: target_language_op
-            identifier: target_language
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-            reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: tmgmt_job
-          entity_field: target_language
-          plugin_id: language
-        job_type:
-          id: job_type
-          table: tmgmt_job
-          field: job_type
-          relationship: tjid
-          group_type: group
-          admin_label: ''
-          operator: '='
-          group: 1
-          exposed: true
-          expose:
-            operator_id: job_type_op
-            label: 'Job Type (Custom)'
-            description: null
-            use_operator: false
-            operator: job_type_op
-            identifier: job_type
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            hide_no_continuous: true
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: true
-          group_info:
-            label: 'Job type'
-            description: ''
-            identifier: job_type
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1:
-                title: Normal
-                operator: '='
-                value:
-                  value: normal
-              2:
-                title: Continuous
-                operator: '='
-                value:
-                  value: continuous
-          entity_type: tmgmt_job
-          plugin_id: tmgmt_job_type_filter
+          empty: true
+          tokenize: false
+          content: 'No job items for the current selection.'
+          plugin_id: text_custom
       defaults:
+        empty: false
+        fields: false
         filters: false
         filter_groups: false
-        fields: false
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       fields:
         item_id:
           id: item_id
@@ -2397,6 +2211,235 @@ display:
           entity_type: null
           entity_field: null
           plugin_id: entity_operations
+      filters:
+        item_id:
+          id: item_id
+          table: tmgmt_job_item
+          field: item_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: item_id_op
+            label: 'Node ID'
+            description: ''
+            use_operator: false
+            operator: item_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: item_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: tmgmt_job_item
+          entity_field: item_id
+          plugin_id: string
+        state:
+          id: state
+          table: tmgmt_job_item
+          field: state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: job_item_state
+          value:
+            2: '2'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: state_op
+            label: States
+            description: ''
+            use_operator: false
+            operator: state_op
+            identifier: state
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: false
+          group_info:
+            label: State
+            description: ''
+            identifier: state
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: ''
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: tmgmt_job_item
+          plugin_id: tmgmt_job_item_filter
+        source_language:
+          id: source_language
+          table: tmgmt_job
+          field: source_language
+          relationship: tjid
+          group_type: group
+          admin_label: ''
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: source_language_op
+            label: 'Source language'
+            description: ''
+            use_operator: false
+            operator: source_language_op
+            identifier: source_language
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: tmgmt_job
+          entity_field: source_language
+          plugin_id: language
+        target_language:
+          id: target_language
+          table: tmgmt_job
+          field: target_language
+          relationship: tjid
+          group_type: group
+          admin_label: ''
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: target_language_op
+            label: 'Target language'
+            description: ''
+            use_operator: false
+            operator: target_language_op
+            identifier: target_language
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+            reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: tmgmt_job
+          entity_field: target_language
+          plugin_id: language
+        job_type:
+          id: job_type
+          table: tmgmt_job
+          field: job_type
+          relationship: tjid
+          group_type: group
+          admin_label: ''
+          operator: '='
+          group: 1
+          exposed: true
+          expose:
+            operator_id: job_type_op
+            label: 'Job Type (Custom)'
+            description: null
+            use_operator: false
+            operator: job_type_op
+            identifier: job_type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            hide_no_continuous: true
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: true
+          group_info:
+            label: 'Job type'
+            description: ''
+            identifier: job_type
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Normal
+                operator: '='
+                value:
+                  value: normal
+              2:
+                title: Continuous
+                operator: '='
+                value:
+                  value: continuous
+          entity_type: tmgmt_job
+          plugin_id: tmgmt_job_type_filter
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
