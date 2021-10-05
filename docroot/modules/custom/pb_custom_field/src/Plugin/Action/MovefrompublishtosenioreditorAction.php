@@ -44,12 +44,10 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $uid = \Drupal::currentUser()->id();
-    $context = $this->context;
-    $total_selected = $context['sandbox']['total'];
     $this->initial = $this->initial + 1;
     $this->processItem = $this->processItem + 1;
     $list = $this->context['list'];
-
+    $list_count = count($list);
     $message = "";
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
@@ -89,14 +87,14 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
     }
 
     if ($this->nonAssigned > 0) {
-      $error_message = $this->t("Please Select Published Content ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
+      $error_message = $this->t("( @nonassigned ) content not processed because they were not in 'Published' state  <br/>", ['@nonassigned' => $this->nonAssigned]);
     }
-    else {
+    if ($this->assigned > 0) {
       $message = $this->t("Content Changed Into Senior Editor Review Successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
     }
 
     /* $message.="Please visit Country content page to view.";*/
-    if ($total_selected == $this->processItem) {
+    if ($list_count == $this->processItem) {
       if (!empty($message)) {
         drupal_set_message($message, 'status');
       }
