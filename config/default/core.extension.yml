@@ -22,6 +22,7 @@ module:
   contextual: 0
   csv_serialization: 0
   custom_serialization: 0
+  date_popup: 0
   datetime: 0
   dblog: 0
   dynamic_page_cache: 0
