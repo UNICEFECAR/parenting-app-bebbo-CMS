@@ -17,19 +17,19 @@ targetEntityType: media
 bundle: image
 mode: media_library
 content:
-  thumbnail:
+  field_media_image:
     type: image
     weight: 0
     region: content
-    label: hidden
+    label: above
     settings:
       image_style: content_1200xh_
-      image_link: ''
+      image_link: content
     third_party_settings: {  }
 hidden:
   created: true
   feeds_item: true
-  field_media_image: true
   langcode: true
   name: true
+  thumbnail: true
   uid: true
