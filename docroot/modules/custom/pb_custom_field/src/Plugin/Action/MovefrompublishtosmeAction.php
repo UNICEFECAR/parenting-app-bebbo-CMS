@@ -62,29 +62,20 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
     if ($current_state == 'published') {
       /* Change status from publish to archive. */
       $uid = \Drupal::currentUser()->id();
-      $node_lang_archive->setNewRevision(TRUE);
-      $node_lang_archive->revision_log = 'content change to SME' . $nid . "--" . time();
-      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
-      $node_lang_archive->setRevisionUserId($uid);
-      $storage = \Drupal::entityTypeManager()->getStorage($archive_node->getEntityTypeId());
-      $vid = $storage->getLatestTranslationAffectedRevisionId($archive_node->id(), $current_language);
-      /* Update Database node field revision table. */
-      $table = 'node_field_revision';
-      \Drupal::database()->update($table)
-        ->fields(['revision_translation_affected' => 1])
-        ->condition('langcode', $current_language)
-        ->condition('vid', $vid)
-        ->condition('nid', $nid)
-        ->execute();
       $node_lang_archive->set('moderation_state', 'archive');
       $node_lang_archive->set('uid', $uid);
       $node_lang_archive->set('content_translation_source', $current_language);
       $node_lang_archive->set('changed', time());
       $node_lang_archive->set('created', time());
+
+      $node_lang_archive->setNewRevision(TRUE);
+      $node_lang_archive->revision_log = 'content change to SME' . $nid . "--" . time();
+      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+      $node_lang_archive->setRevisionUserId($uid);
+      $node_lang_archive->setRevisionTranslationAffected(NULL);
       $node_lang_archive->save();
       $archive_node->save();
       /* Change status from publish to sme_review. */
-
       $draft_node = Node::load($nid);
       $node_lang_draft = $draft_node->getTranslation($current_language);
       $node_lang_draft->set('moderation_state', 'sme_review');
