@@ -6,6 +6,7 @@ use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\node\Entity\Node;
 
 /**
  * Action description.
@@ -52,34 +53,46 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
-    $node = node_load($nid);
+    $archive_node = node_load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
-
-    $node_lang = $node->getTranslation($current_language);
-    $current_state = $node_lang->moderation_state->value;
+    $node_lang_archive = $archive_node->getTranslation($current_language);
+    $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state == 'published') {
       /* Change status from publish to archive. */
-      $node_lang->set('moderation_state', 'archive');
-      $node_lang->set('uid', $uid);
-      $node_lang->set('content_translation_source', $current_language);
-      $node_lang->set('changed', time());
-      $node_lang->set('created', time());
-      $node_lang->setNewRevision(FALSE);
-      $node_lang->save();
-      $node->save();
+      $uid = \Drupal::currentUser()->id();
+      $node_lang_archive->setNewRevision(TRUE);
+      $node_lang_archive->revision_log = 'content change to senior editor review' . $nid . "--" . time();
+      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+      $node_lang_archive->setRevisionUserId($uid);
+      $storage = \Drupal::entityTypeManager()->getStorage($archive_node->getEntityTypeId());
+      $vid = $storage->getLatestTranslationAffectedRevisionId($archive_node->id(), $current_language);
+      /* Update Database node field revision table. */
+      $table = 'node_field_revision';
+      \Drupal::database()->update($table)
+        ->fields(['revision_translation_affected' => 1])
+        ->condition('langcode', $current_language)
+        ->condition('vid', $vid)
+        ->condition('nid', $nid)
+        ->execute();
+      $node_lang_archive->set('moderation_state', 'archive');
+      $node_lang_archive->set('uid', $uid);
+      $node_lang_archive->set('content_translation_source', $current_language);
+      $node_lang_archive->set('changed', time());
+      $node_lang_archive->set('created', time());
+      $node_lang_archive->save();
+      $archive_node->save();
+      /* Change status from publish to senior_editor_review. */
 
-      /* Change status from archive to senior_editor_review. */
-      $node = node_load($nid);
-      $node_lang = $node->getTranslation($current_language);
-      $node_lang->set('moderation_state', 'senior_editor_review');
-      $node_lang->set('uid', $uid);
-      $node_lang->set('content_translation_source', $current_language);
-      $node_lang->set('changed', time());
-      $node_lang->set('created', time());
-      $node_lang->setNewRevision(FALSE);
-      $node_lang->save();
-      $node->save();
+      $draft_node = Node::load($nid);
+      $node_lang_draft = $draft_node->getTranslation($current_language);
+      $node_lang_draft->set('moderation_state', 'senior_editor_review');
+      $node_lang_draft->set('uid', $uid);
+      $node_lang_draft->set('content_translation_source', $current_language);
+      $node_lang_draft->set('changed', time());
+      $node_lang_draft->set('created', time());
+      $node_lang_draft->save();
+      $draft_node->save();
       $this->assigned = $this->assigned + 1;
     }
     else {
@@ -87,9 +100,9 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
     }
 
     if ($this->nonAssigned > 0) {
-      $error_message = $this->t("( @nonassigned ) content not processed because they were not in 'Published' state  <br/>", ['@nonassigned' => $this->nonAssigned]);
+      $error_message = $this->t("Please Select Published Content ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
     }
-    if ($this->assigned > 0) {
+    else {
       $message = $this->t("Content Changed Into Senior Editor Review Successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
     }
 
