@@ -1,8 +1,9 @@
-uuid: aa348092-8d8c-4a45-aaa4-954f7b15a628
+uuid: 4096d319-ba90-4273-9ddb-8e694f3c2a9d
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.full
     - field.field.node.activities.body
     - field.field.node.activities.field_activity_category
     - field.field.node.activities.field_child_age
@@ -16,10 +17,10 @@ dependencies:
   module:
     - text
     - user
-id: node.activities.default
+id: node.activities.full
 targetEntityType: node
 bundle: activities
-mode: default
+mode: full
 content:
   body:
     label: hidden

@@ -8,6 +8,7 @@ use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * The style plugin for serialized output formats.
@@ -306,8 +307,18 @@ class CustomSerializer extends Serializer {
            *
            * @var object
            */
-          $file = File::load($mid);
-          $url = $file->url();
+          $query = \Drupal::database()->select('file_managed');
+          $query->condition('fid', $mid);
+          $query->fields('file_managed');
+          $result22 = $query->execute()->fetchAll();
+          if (!empty($result22)) {
+            $uri = $result22[0]->uri;
+          }
+
+          // $file = File::load($mid);
+          // $url = $file->url();
+          $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
+
         }
         $media_data = [
           'url'  => $url,

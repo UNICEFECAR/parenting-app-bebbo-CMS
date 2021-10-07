@@ -1,8 +1,9 @@
-uuid: 05e9027d-969f-431f-8d65-d60c4c7b0b4d
+uuid: b46c6f1c-1022-42c5-97ab-1c189486a732
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.full
     - field.field.node.article.body
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
@@ -23,10 +24,10 @@ dependencies:
     - user
 _core:
   default_config_hash: ChmU3AVqDKU32A_fyChG0W9dTRKmVBR58B6OClCLvZI
-id: node.article.default
+id: node.article.full
 targetEntityType: node
 bundle: article
-mode: default
+mode: full
 content:
   body:
     type: text_default
