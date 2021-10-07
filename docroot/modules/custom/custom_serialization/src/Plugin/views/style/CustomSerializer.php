@@ -120,7 +120,7 @@ class CustomSerializer extends Serializer {
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
-              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code, $request_path);
+              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
               $rendered_data[$key] = $media_formatted_data;
             }
             /* Custom array formatter.To check mulitple field.  */
@@ -282,7 +282,7 @@ class CustomSerializer extends Serializer {
   /**
    * To get media files details from db.
    */
-  public function customMediaFormatter($key, $values, $language_code, $request_path) {
+  public function customMediaFormatter($key, $values, $language_code) {
 
     if (!empty($values)) {
       $media_entity = Media::load($values);
@@ -308,7 +308,7 @@ class CustomSerializer extends Serializer {
            * @var object
            */
           $query = \Drupal::database()->select('file_managed');
-          $query->condition('fid  ', $mid);
+          $query->condition('fid', $mid);
           $query->fields('file_managed');
           $result22 = $query->execute()->fetchAll();
           if (!empty($result22)) {
