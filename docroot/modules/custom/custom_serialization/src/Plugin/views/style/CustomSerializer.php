@@ -87,16 +87,17 @@ class CustomSerializer extends Serializer {
           if (strpos($request_uri, "basic-pages") !== FALSE && $rendered_data['type'] === "Basic page") {
             $query = \Drupal::database()->select('node_field_data');
             $query->condition('nid', $rendered_data['id']);
+            $query->condition('langcode', "en");
             $query->fields('node_field_data');
             $result = $query->execute()->fetchAll();
-            for ($i = 0; $i < count($result); $i++) {
-              $language = $result[$i]->langcode;
-              if ($language == "en") {
-                $basic_title = $result[$i]->title;
-                $basic_page = strtolower($basic_title);
-                $basic_page = str_replace(' ', '_', $basic_page);
-                $rendered_data['unique_name'] = $basic_page;
-              }
+            if (!empty($result) && isset($result)) {
+              $basic_title = $result[0]->title;
+              $basic_page = strtolower($basic_title);
+              $basic_page = str_replace(' ', '_', $basic_page);
+              $rendered_data['unique_name'] = $basic_page;
+            }
+            else {
+              $rendered_data['unique_name'] = "";
             }
           }
 
