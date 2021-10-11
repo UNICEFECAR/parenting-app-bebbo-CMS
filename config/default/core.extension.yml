@@ -75,6 +75,8 @@ module:
   rest: 0
   restui: 0
   search: 0
+  seckit: 0
+  security_review: 0
   serialization: 0
   shortcut: 0
   smtp: 0
