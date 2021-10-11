@@ -97,6 +97,9 @@ class CustomSerializer extends Serializer {
                 $basic_page = str_replace(' ', '_', $basic_page);
                 $rendered_data['unique_name'] = $basic_page;
               }
+              else {
+                $rendered_data['unique_name'] = "";
+              }
             }
           }
 
