@@ -56,6 +56,7 @@ permissions:
   - 'edit own vaccinations content'
   - 'edit own video media'
   - 'edit own video_article content'
+  - 'execute pb_custom_field_assign_action node'
   - 'translate activities node'
   - 'translate all languages'
   - 'translate any entity'
