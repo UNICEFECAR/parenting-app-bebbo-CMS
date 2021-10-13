@@ -66,6 +66,12 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state == 'published') {
       /* Change status from publish to archive. */
+      $node_lang_archive->setNewRevision(TRUE);
+      $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “Draft”';
+      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+      $node_lang_archive->setRevisionUserId($uid);
+      $node_lang_archive->setRevisionTranslationAffected(NULL);
+
       $node_lang_archive->set('moderation_state', 'archive');
       $node_lang_archive->set('uid', $uid);
       $node_lang_archive->set('content_translation_source', $current_language);
@@ -73,11 +79,6 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
       $node_lang_archive->set('created', time());
 
       $uid = \Drupal::currentUser()->id();
-      $node_lang_archive->setNewRevision(TRUE);
-      $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “Draft”';
-      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
-      $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
       $node_lang_archive->save();
       $archive_node->save();
       /* Change status from publish to draft. */
