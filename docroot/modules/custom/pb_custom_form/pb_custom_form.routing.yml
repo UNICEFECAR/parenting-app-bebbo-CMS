@@ -5,3 +5,13 @@ pb_custom_form.form_api:
     _title: 'Force Full Update Check Form'
   requirements:
     _permission: 'access content'
+
+pb_custom_form.admin_settings_form:  
+  path: '/admin/config/adminsettings'  
+  defaults:  
+    _form: '\Drupal\pb_custom_form\Form\SettingsForm'  
+    _title: 'Settings Form'  
+  requirements:  
+    _permission: 'administer site configuration'  
+  options:  
+    _admin_route: TRUE

@@ -1,0 +1,11 @@
+content_moderation_notifications.menu:
+  title: Content Moderation Notifications
+  route_name: entity.content_moderation_notification.collection
+
+# Moderation state transition menu items definition
+entity.moderation_state_notifications.collection:
+  title: 'Content moderation notifications'
+  route_name: entity.content_moderation_notification.collection
+  description: 'Administer moderation states email notifications.'
+  parent: system.admin_config_workflow
+  weight: 21
