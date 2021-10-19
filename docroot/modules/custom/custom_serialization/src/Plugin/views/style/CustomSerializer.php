@@ -8,6 +8,7 @@ use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * The style plugin for serialized output formats.
@@ -86,16 +87,17 @@ class CustomSerializer extends Serializer {
           if (strpos($request_uri, "basic-pages") !== FALSE && $rendered_data['type'] === "Basic page") {
             $query = \Drupal::database()->select('node_field_data');
             $query->condition('nid', $rendered_data['id']);
+            $query->condition('langcode', "en");
             $query->fields('node_field_data');
             $result = $query->execute()->fetchAll();
-            for ($i = 0; $i < count($result); $i++) {
-              $language = $result[$i]->langcode;
-              if ($language == "en") {
-                $basic_title = $result[$i]->title;
-                $basic_page = strtolower($basic_title);
-                $basic_page = str_replace(' ', '_', $basic_page);
-                $rendered_data['unique_name'] = $basic_page;
-              }
+            if (!empty($result) && isset($result)) {
+              $basic_title = $result[0]->title;
+              $basic_page = strtolower($basic_title);
+              $basic_page = str_replace(' ', '_', $basic_page);
+              $rendered_data['unique_name'] = $basic_page;
+            }
+            else {
+              $rendered_data['unique_name'] = "";
             }
           }
 
@@ -109,7 +111,17 @@ class CustomSerializer extends Serializer {
 
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary") {
-              $rendered_data[$key] = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              /* remove new line. */
+              $body_summary = str_replace("\n", '', $body_summary);
+              /* Remove span tag from body and summary field */
+              $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
+              /* Remove empty <p> </p> tag */
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
+              /* remove inline style attribute */
+              $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
+              /* Remove empty <p> </p> tag */
+              $rendered_data[$key] = str_replace("<p> </p>", '', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
@@ -300,8 +312,18 @@ class CustomSerializer extends Serializer {
            *
            * @var object
            */
-          $file = File::load($mid);
-          $url = $file->url();
+          $query = \Drupal::database()->select('file_managed');
+          $query->condition('fid', $mid);
+          $query->fields('file_managed');
+          $result22 = $query->execute()->fetchAll();
+          if (!empty($result22)) {
+            $uri = $result22[0]->uri;
+          }
+
+          // $file = File::load($mid);
+          // $url = $file->url();
+          $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
+
         }
         $media_data = [
           'url'  => $url,
