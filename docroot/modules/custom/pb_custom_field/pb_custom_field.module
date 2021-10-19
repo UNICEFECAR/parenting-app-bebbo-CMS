@@ -1220,6 +1220,12 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
         $data['params']['message'] = $body;
         $data['to'] = $new_arry;
       }
+      else {
+      	 $data['to'] = [];
+      }
+    }
+    else {
+    	 $data['to'] = [];
     }
   }
   else {
@@ -1252,6 +1258,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
       }
       $data['params']['message'] = $body;
       $data['to'] = $new_arry;
+    } else {
+      $data['to'] = [];
     }
   }
 }
