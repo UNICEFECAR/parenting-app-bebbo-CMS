@@ -208,6 +208,12 @@ type_settings:
         - sme_review
       to: senior_editor_review
       weight: 4
+    sme_review_to_sme_review:
+      label: 'SME Review to SME Review'
+      from:
+        - sme_review
+      to: sme_review
+      weight: 25
   entity_types:
     node:
       - activities
