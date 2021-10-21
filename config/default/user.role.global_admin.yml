@@ -118,6 +118,7 @@ permissions:
   - 'execute pb_custom_field_publish_to_draft node'
   - 'execute pb_custom_field_publish_to_senioreditor node'
   - 'execute pb_custom_field_publish_to_sme node'
+  - 'forcefull update check'
   - 'submit translation jobs'
   - 'translate all languages'
   - 'translate any entity'
