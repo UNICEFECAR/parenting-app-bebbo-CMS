@@ -111,15 +111,16 @@ class CustomSerializer extends Serializer {
 
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary") {
-              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              $body_summary_data = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
-              $body_summary = str_replace("\n", '', $body_summary);
-              /* Remove span tag from body and summary field */
-              $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
-              /* remove inline style attribute */
-              $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
-              /* Remove empty <p> </p> tag */
-              $rendered_data[$key] = preg_replace('~<p>\s*<\/p>~i','',$body_summary);
+              $body_summary_data = str_replace("\n", '', $body_summary_data);
+              // /* Remove span tag from body and summary field */
+              // $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
+              // /* remove inline style attribute */
+              // $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
+              // /* Remove empty <p> </p> tag */
+              // $rendered_data[$key] = preg_replace('(<p[^>]*>(?:\s|&nbsp;)*<\/p>){1,}','',$body_summary);
+              $rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$3', $body_summary_data);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
