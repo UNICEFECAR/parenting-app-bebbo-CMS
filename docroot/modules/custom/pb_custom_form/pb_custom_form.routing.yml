@@ -37,7 +37,7 @@ pb_custom_form.mobile_app_share_link_form:
     _admin_route: TRUE
 
 pb_custom_form.pb_mobile:
-  path: '/pb-mobile'
+  path: '/share'
   defaults:
     _controller:  '\Drupal\pb_custom_form\Controller\PbMobile::render'
     _title: 'Pb Mobile'
