@@ -22,6 +22,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /pb-mobile
+    pages: /share
     negate: true
     context_mapping: {  }
