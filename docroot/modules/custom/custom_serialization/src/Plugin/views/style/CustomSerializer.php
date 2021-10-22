@@ -120,7 +120,8 @@ class CustomSerializer extends Serializer {
               // $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               // /* Remove empty <p> </p> tag */
               // $rendered_data[$key] = preg_replace('(<p[^>]*>(?:\s|&nbsp;)*<\/p>){1,}','',$body_summary);
-              $rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$3', $body_summary_data);
+              //$rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$3', $body_summary_data);
+              $rendered_data[$key] = $body_summary_data;
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
