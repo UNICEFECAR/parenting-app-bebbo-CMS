@@ -21,6 +21,7 @@ permissions:
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'
+  - 'execute pb_custom_field_assign_action node'
   - 'translate all languages'
   - 'translate any entity'
   - 'translate image media'
@@ -41,4 +42,3 @@ permissions:
   - 'view latest version'
   - 'view own unpublished content'
   - 'view translatable_node revisions'
-

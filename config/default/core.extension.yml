@@ -1,4 +1,5 @@
 module:
+  actions_permissions: 0
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
   admin_toolbar_search: 0
@@ -19,9 +20,11 @@ module:
   config_translation: 0
   contact: 0
   content_moderation: 0
+  content_moderation_notifications: 0
   contextual: 0
   csv_serialization: 0
   custom_serialization: 0
+  date_popup: 0
   datetime: 0
   dblog: 0
   dynamic_page_cache: 0
@@ -40,6 +43,7 @@ module:
   help: 0
   history: 0
   image: 0
+  image_style_quality: 0
   json_field: 0
   lang_dropdown: 0
   language: 0
@@ -72,6 +76,8 @@ module:
   rest: 0
   restui: 0
   search: 0
+  seckit: 0
+  security_review: 0
   serialization: 0
   shortcut: 0
   smtp: 0

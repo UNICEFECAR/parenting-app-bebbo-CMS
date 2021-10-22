@@ -2,6 +2,9 @@ uuid: 2bc42758-71d9-4406-a752-deed10368b02
 langcode: en
 status: true
 dependencies:
+  module:
+    - system
+    - user
   theme:
     - claro
 _core:
@@ -17,4 +20,17 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: /pb-mobile
+    negate: true
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

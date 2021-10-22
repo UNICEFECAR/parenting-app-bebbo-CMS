@@ -1,23 +1,23 @@
-uuid: e8e95762-7983-4d73-a918-eede313d6fc5
+uuid: ad31c766-3490-49bb-8222-edaaddb13570
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.recent_country_content
+    - views.view.tmgmt_job_overview
   module:
     - system
     - user
     - views
   theme:
     - claro
-id: views_block__recent_country_content_block_1
+id: views_block__tmgmt_job_overview_block_1
 theme: claro
 region: content
-weight: -4
+weight: 0
 provider: null
-plugin: 'views_block:recent_country_content-block_1'
+plugin: 'views_block:tmgmt_job_overview-block_1'
 settings:
-  id: 'views_block:recent_country_content-block_1'
+  id: 'views_block:tmgmt_job_overview-block_1'
   label: ''
   provider: views
   label_display: visible
@@ -32,7 +32,7 @@ visibility:
   user_role:
     id: user_role
     roles:
-      authenticated: authenticated
+      global_admin: global_admin
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'

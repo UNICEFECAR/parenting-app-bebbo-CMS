@@ -5,6 +5,7 @@ dependencies:
   module:
     - tmgmt
     - tmgmt_local
+    - user
 _core:
   default_config_hash: ho5IlSieIFmtj-n14QvTd_Iz5GlimbEOU0B5x2RRecM
 id: tmgmt_local_task_items
@@ -22,8 +23,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access content'
       cache:
         type: none
         options: {  }
@@ -494,12 +496,13 @@ display:
           plugin_id: numeric
       display_extenders: {  }
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }
   block_1:
     display_plugin: block
@@ -510,10 +513,11 @@ display:
       display_extenders: {  }
       block_description: 'Translation Task Items Block'
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }

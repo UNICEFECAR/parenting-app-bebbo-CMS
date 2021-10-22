@@ -24,6 +24,7 @@ permissions:
   - 'edit any image media'
   - 'edit any remote_video media'
   - 'edit any video media'
+  - 'manage mobile javascript'
   - 'post comments'
   - 'search content'
   - 'skip comment approval'

@@ -1,0 +1,11 @@
+diff --git a/core/modules/content_moderation/src/Entity/Handler/ModerationHandler.php b/core/modules/content_moderation/src/Entity/Handler/ModerationHandler.php
+index c44ab09841..8fb250cc4f 100644
+--- a/core/modules/content_moderation/src/Entity/Handler/ModerationHandler.php
++++ b/core/modules/content_moderation/src/Entity/Handler/ModerationHandler.php
+@@ -32,8 +32,6 @@ public static function createInstance(ContainerInterface $container, EntityTypeI
+    * {@inheritdoc}
+    */
+   public function onPresave(ContentEntityInterface $entity, $default_revision, $published_state) {
+-    // This is probably not necessary if configuration is setup correctly.
+-    $entity->setNewRevision(TRUE);
+     $entity->isDefaultRevision($default_revision);

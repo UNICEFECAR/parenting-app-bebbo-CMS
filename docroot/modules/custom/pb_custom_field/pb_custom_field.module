@@ -18,6 +18,7 @@ use Drupal\views\ViewExecutable;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
+use Drupal\Core\Language\LanguageManager;
 
 /*
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -1159,6 +1160,106 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
           /* $form['account']['roles'][$role->id()]['#disabled'] = TRUE; */
         }
       }
+    }
+  }
+}
+
+/**
+ * Alters content moderation notification mail.
+ */
+function pb_custom_field_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
+  // Add an extra email address to the list.
+  global $base_url;
+  $notification_array = $data['notification'];
+  $notification_label = end($notification_array);
+  // For the master country users mail.
+  if ($notification_label == "Master : Senior Editor Publish" || $notification_label == "Master :  Any state to Review_after_translation") {
+    $nid = $data['params']['context']['entity']->nid[0]->value;
+    $node_language = $data['params']['context']['entity']->langcode[0]->value;
+    $standard_languages = LanguageManager::getStandardLanguageList();
+    foreach ($standard_languages as $key => $val) {
+      if ($key == $node_language) {
+        $translation = $val;
+      }
+    }
+    $message = '<html><body>' . $data['params']['message'] . '</body></html>';
+    $subject_old = $data['params']['subject'];
+    $subject = str_replace("[language]", $translation[0], $subject_old);
+
+    $logged_in = \Drupal::currentUser()->isAuthenticated();
+    if ($logged_in != 1) {
+      $nid_with_link = $base_url . '/user/login?destination=/' . $base_url . '/' . $node_language . '/node/' . $nid . '/edit';
+    }
+    else {
+      $nid_with_link = $base_url . "/" . $node_language . "/node/" . $nid . "/edit";
+    }
+    $body_old = str_replace("[node_id]", $nid, $message);
+    $body_old = str_replace("[language]", $translation[0], $body_old);
+    $body = str_replace("[link]", $nid_with_link, $body_old);
+    // Get master value from settings form.
+    $config = \Drupal::config('pb_custom_form.adminsettings');
+    $master = $config->get('master_language');
+    $master_language = explode(',', $master);
+    if (in_array($node_language, $master_language)) {
+      $all_users_email = $data['to'];
+      if (!empty($all_users_email)) {
+        $new_arry = [];
+        foreach ($all_users_email as $mail) {
+          if ($mail != '') {
+            $user_load = user_load_by_mail($mail);
+            $uid = $user_load->id();
+            $user = User::load($uid);
+            $allowe_lng = $user->allowed_languages->getValue();
+            $new_array = array_column($allowe_lng, 'target_id');
+            if (in_array($node_language, $new_array)) {
+              $new_arry[] = $mail;
+            }
+          }
+        }
+        $data['params']['subject'] = $subject;
+        $data['params']['message'] = $body;
+        $data['to'] = $new_arry;
+      }
+      else {
+      	 $data['to'] = [];
+      }
+    }
+    else {
+    	 $data['to'] = [];
+    }
+  }
+  else {
+    $nid = $data['params']['context']['entity']->nid[0]->value;
+    $node_language = $data['params']['context']['entity']->langcode[0]->value;
+    $message = '<html><body>' . $data['params']['message'] . '</body></html>';
+    $logged_in = \Drupal::currentUser()->isAuthenticated();
+    if ($logged_in != 1) {
+      $nid_with_link = $base_url . '/user/login?destination=/' . $base_url . '/' . $node_language . '/node/' . $nid . '/edit';
+    }
+    else {
+      $nid_with_link = $base_url . "/" . $node_language . "/node/" . $nid . "/edit";
+    }
+    $body_old = str_replace("[node_id]", $nid, $message);
+    $body = str_replace("[link]", $nid_with_link, $body_old);
+    $all_users_email = $data['to'];
+    if (!empty($all_users_email)) {
+      $new_arry = [];
+      foreach ($all_users_email as $mail) {
+        if ($mail != '') {
+          $user_load  = user_load_by_mail($mail);
+          $uid = $user_load->id();
+          $user = User::load($uid);
+          $allowe_lng = $user->allowed_languages->getValue();
+          $new_array = array_column($allowe_lng, 'target_id');
+          if (in_array($node_language, $new_array)) {
+            $new_arry[] = $mail;
+          }
+        }
+      }
+      $data['params']['message'] = $body;
+      $data['to'] = $new_arry;
+    } else {
+      $data['to'] = [];
     }
   }
 }

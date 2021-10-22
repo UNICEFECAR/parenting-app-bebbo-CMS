@@ -1,0 +1,20 @@
+uuid: 4dffc6a4-972d-43f0-94f6-a5487e0af9a4
+langcode: kg-ru
+status: true
+dependencies: {  }
+id: master_senior_editor_publish
+workflow: group_workflow
+transitions:
+  senior_editor_review_to_published: senior_editor_review_to_published
+  draft_to_published: draft_to_published
+roles:
+  editor: editor
+  se: se
+author: false
+site_mail: false
+emails: ''
+subject: 'New content Published in your Master Language [language]'
+body:
+  value: "<p><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Dear Country User,</span></span></span></span></span></span></p>\r\n\r\n<p><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Content ID [node_id]&nbsp; Published in your Master Language [language]</span></span></span></span></span></span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:10.5pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Roboto,sans-serif\"><span style=\"color:#202124\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Please review at: </span></span></span></span></span></span><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">&nbsp;[link]</span></span></span></span></span></span></p>\r\n"
+  format: full_html
+label: 'Master : Senior Editor Publish'

@@ -45,9 +45,10 @@ content:
     weight: 111
     label: above
     settings:
-      link: true
+      view_mode: media_library
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_equipment:
     weight: 103

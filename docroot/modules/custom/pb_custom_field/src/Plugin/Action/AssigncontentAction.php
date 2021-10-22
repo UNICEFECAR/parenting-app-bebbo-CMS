@@ -181,7 +181,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $context = $this->context;
-    $total_selected = $context['sandbox']['total'];
+    $total_selected = $context{'selected_count'};
     $langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
     $this->processItem = $this->processItem + 1;
@@ -192,9 +192,10 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
       $nid = $entity->get('nid')->getString();
       $node = node_load($nid);
       $uid = \Drupal::currentUser()->id();
+      $uname = \Drupal::currentUser()->getDisplayName();
       if (!$node->hasTranslation($langoption)) {
         $node_lang = $node->getTranslation($current_language);
-        $node->setRevisionTranslationAffected(FALSE);
+        /* $node->setRevisionTranslationAffected(FALSE); */
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
         $node_es->set('moderation_state', 'draft');
         $node_es->set('langcode', $langoption);
@@ -202,6 +203,12 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         $node_es->set('content_translation_source', $current_language);
         $node_es->set('changed', time());
         $node_es->set('created', time());
+        /* Set new Revision */
+        $node_es->setNewRevision(TRUE);
+        $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
+        $node_es->setRevisionCreationTime(REQUEST_TIME);
+        $node_es->setRevisionUserId($uid);
+        $node_es->save();
         $node->save();
         $this->assigned = $this->assigned + 1;
       }
