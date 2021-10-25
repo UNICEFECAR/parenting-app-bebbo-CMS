@@ -22,6 +22,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /share
+    pages: "/share\r\n/privacy-policy"
     negate: true
     context_mapping: {  }
