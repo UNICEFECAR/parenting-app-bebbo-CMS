@@ -13,6 +13,7 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access site-wide contact form'
+  - 'manage mobile javascript'
   - 'restful get custom_rest_resource'
   - 'search content'
   - 'use text format restricted_html'
