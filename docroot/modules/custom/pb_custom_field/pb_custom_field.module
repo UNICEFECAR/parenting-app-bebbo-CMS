@@ -20,19 +20,6 @@ use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
 use Drupal\Core\Language\LanguageManager;
 
-/*
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\languagefield\Entity;
-use Drupal\Core\TypedData\OptionsProviderInterface;
-use Drupal\Core\Language\LanguageManager;
-use Drupal\views\Plugin\views\query\Sql;
-use Drupal\Core\Menu\LocalActionInterface;
-use Drupal\Core\Menu\LocalActionManager;
-use Drupal\user\UserInterface;
- */
-
 /**
  * {@inheritdoc}
  */
@@ -146,25 +133,6 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /* if ($form_id == "media_library_add_form_upload") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  }
-
-  if ($form_id == "media_library_add_form_oembed") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  } */
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
@@ -718,13 +686,6 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
 
   $roles = \Drupal::currentUser()->getRoles();
-  /*$current_url = Url::fromRoute('<current>');
-  $path = $current_url->toString();
-  $langcode = explode('node', $path);
-  $split_url = explode('/', $langcode['0']);
-  $roles_permissions = user_role_permissions($roles);
-  $current_path = \Drupal::service('path.current')->getPath();
-   */
   $languagecode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   if (in_array("reviewer", $roles)) {
@@ -887,12 +848,6 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
       $form_state->setRedirectUrl($url);
     }
   }
-  /* if(!empty($groups) && $groups[0]->bundle() == "country" && in_array
-  ('reviewer', $user_roles)) {
-  $url = url::fromUserInput('/group/' . $groups[0]->id() .
-  '/content/add/group_membership?uid='.$uids);
-  $form_state->setRedirectUrl($url);
-  } */
 }
 
 /**
@@ -1099,10 +1054,6 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
   if ($form_id == "user_form" && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[count($path_args) - 3]) && $path_args[count($path_args) - 3] == "group" && isset($path_args[count($path_args) - 1]) && $path_args[count($path_args) - 1] == "members") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      } */
     }
     else {
       $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
@@ -1113,11 +1064,9 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'invisible'; */
             $form['account']['roles']['#access'] = FALSE;
           }
           elseif ($user_role == "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'visible'; */
             $form['account']['roles']['#access'] = TRUE;
             foreach ($roles as $role) {
               if ($role->id() == "authenticated" || $role->id() == "administrator") {
@@ -1145,10 +1094,6 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
   if ($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      }*/
     }
     else {
       foreach ($roles as $role) {
@@ -1157,7 +1102,6 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
         }
         if ($role->id() != "global_admin") {
           unset($form['account']['roles']['#options'][$role->id()]);
-          /* $form['account']['roles'][$role->id()]['#disabled'] = TRUE; */
         }
       }
     }
@@ -1221,11 +1165,11 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
         $data['to'] = $new_arry;
       }
       else {
-      	 $data['to'] = [];
+        $data['to'] = [];
       }
     }
     else {
-    	 $data['to'] = [];
+      $data['to'] = [];
     }
   }
   else {
@@ -1258,7 +1202,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
       }
       $data['params']['message'] = $body;
       $data['to'] = $new_arry;
-    } else {
+    }
+    else {
       $data['to'] = [];
     }
   }

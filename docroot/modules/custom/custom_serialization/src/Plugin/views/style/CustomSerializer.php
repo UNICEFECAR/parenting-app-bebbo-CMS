@@ -111,16 +111,18 @@ class CustomSerializer extends Serializer {
 
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary") {
-              $body_summary_data = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
-              $body_summary_data = str_replace("\n", '', $body_summary_data);
-              // /* Remove span tag from body and summary field */
-              // $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
-              // /* remove inline style attribute */
-              // $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
-              // /* Remove empty <p> </p> tag */
-              // $rendered_data[$key] = preg_replace('(<p[^>]*>(?:\s|&nbsp;)*<\/p>){1,}','',$body_summary);
-              $rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$3', $body_summary_data);
+              $body_summary = str_replace("\n", '', $body_summary);
+              /* Remove span tag from body and summary field */
+              //$body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
+              /* Remove empty <p> </p> tag */
+              //$body_summary = str_replace("<p> </p>", '', $body_summary);
+              /* remove inline style attribute */
+              //$body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
+              /* Remove empty <p> </p> tag */
+              //$rendered_data[$key] = str_replace("<p> </p>", '', $body_summary);
+              $rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$1$3', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
@@ -318,9 +320,6 @@ class CustomSerializer extends Serializer {
           if (!empty($result22)) {
             $uri = $result22[0]->uri;
           }
-
-          // $file = File::load($mid);
-          // $url = $file->url();
           $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
 
         }
@@ -354,7 +353,6 @@ class CustomSerializer extends Serializer {
         }
       }
       elseif ($media_type === "video") {
-        /* $url = $media_entity->get('field_media_video_file')->value; */
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
         $mid = $media_entity->get('field_media_video_file')->target_id;
