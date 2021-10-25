@@ -122,7 +122,16 @@ class CustomSerializer extends Serializer {
               //$body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
               //$rendered_data[$key] = str_replace("<p> </p>", '', $body_summary);
-              $rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$1$3', $body_summary);
+                //** Recursive empty HTML tags.
+    $rendered_data[$key] = preg_replace (
+      //** Pattern to match empty tags.
+      '/\<p\>([\w*\s*]*)\<\/p\>/',
+      //** Replace with nothing.
+      '$1',
+      //** Source string
+      $body_summary
+    );
+              //$rendered_data[$key] = preg_replace('/<p>(([\s]*))<\/p>/', '$1$3', $body_summary);
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
