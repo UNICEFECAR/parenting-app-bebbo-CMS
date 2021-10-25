@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - editor
-    - emptyparagraphkiller
     - media
 _core:
   default_config_hash: WNeK5FbcY8pXgEpbD_KgRzlF1-5PL3BJXwqaBctPTqw
@@ -57,9 +56,3 @@ filters:
         remote_video: remote_video
         video: video
       allowed_view_modes: {  }
-  emptyparagraphkiller:
-    id: emptyparagraphkiller
-    provider: emptyparagraphkiller
-    status: true
-    weight: 1
-    settings: {  }
