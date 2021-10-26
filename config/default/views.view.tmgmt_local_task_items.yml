@@ -2,6 +2,8 @@ uuid: 424042d9-e0dc-4bcc-9903-4eb917a9147c
 langcode: en
 status: true
 dependencies:
+  config:
+    - user.role.authenticated
   module:
     - tmgmt
     - tmgmt_local
@@ -23,9 +25,10 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            authenticated: authenticated
       cache:
         type: none
         options: {  }
@@ -502,7 +505,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user.permissions
+        - user.roles
       tags: {  }
   block_1:
     display_plugin: block
@@ -519,5 +522,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user.permissions
+        - user.roles
       tags: {  }

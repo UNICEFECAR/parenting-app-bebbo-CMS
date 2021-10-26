@@ -1604,6 +1604,7 @@ display:
         query: false
         title: false
         group_by: false
+        header: false
       fields:
         views_bulk_operations_bulk_form:
           id: views_bulk_operations_bulk_form
@@ -2783,6 +2784,30 @@ display:
           query_tags: {  }
       title: 'Country Content'
       group_by: false
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          content:
+            value: "<br>This page lists all the Content that belong to your Country {{ label_1 }}<br>\r\n"
+            format: full_html
+          plugin_id: text
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: "<br>\r\nTotal Count - @total"
+          plugin_id: result
     display_plugin: page
     display_title: 'Country Based Content List'
     id: page_5
