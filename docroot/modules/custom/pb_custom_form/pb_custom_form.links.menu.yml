@@ -20,4 +20,4 @@ pb_custom_form.admin_settings_form:
   route_name: pb_custom_form.admin_settings_form
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Configure the Master langauage for notification.'
-  weight: 102
+  weight: 103

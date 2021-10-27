@@ -181,7 +181,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $context = $this->context;
-    $total_selected = $context{'selected_count'};
+    $total_selected = $context['selected_count'];
     $langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
     $this->processItem = $this->processItem + 1;
