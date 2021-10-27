@@ -6,6 +6,7 @@ id: master_any_state_to_review_after_translation
 workflow: group_workflow
 transitions:
   published_to_review_after_translation: published_to_review_after_translation
+  draft_to_review_after_translation: draft_to_review_after_translation
   sme_review_to_review_after_translation: sme_review_to_review_after_translation
   senior_editor_review_to_review_after_translation: senior_editor_review_to_review_after_translation
   archive_to_review_after_translation: archive_to_review_after_translation
@@ -19,6 +20,6 @@ site_mail: false
 emails: ''
 subject: 'New content is in review after translation in your Master Language [language]'
 body:
-  value: "<p>Dear Country User,</p>\r\n\r\n<p><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Content ID </span></span></span></span></span></span>[node_id]<span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">&nbsp; is in review after translation in your Master Language </span></span></span></span></span></span>[language]</p>\r\n\r\n<p><span style=\"font-size:10.5pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Roboto,sans-serif\"><span style=\"color:#202124\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Please review at: </span></span></span></span></span></span><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">&nbsp;</span></span></span></span></span></span>[link]</p>\r\n"
+  value: "<p>Dear Country User,</p>\r\n\r\n<p>Content ID [node_id]&nbsp; is in review after translation in your Master Language [language]</p>\r\n\r\n<p>Please review at: &nbsp;[link]</p>\r\n"
   format: full_html
 label: 'Master :  Any state to Review_after_translation'
