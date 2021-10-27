@@ -570,10 +570,17 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
         $translation = $storage->createRevision($translation, $translation->isDefaultRevision());
 
         if ($entity instanceof RevisionLogInterface) {
+		  $uid = \Drupal::currentUser()->id();
           $translation->setRevisionLogMessage($this->t('Created by translation job <a href=":url">@label</a>.', [
             ':url' => $item->getJob()->toUrl()->toString(),
             '@label' => $item->label(),
           ]));
+		  $translation->setRevisionUserId($uid);
+          $translation->setRevisionCreationTime(REQUEST_TIME);
+          /* Update the Entity Author Details */
+          $translation->set('uid', $uid);
+          $translation->set('changed', time());
+          $translation->set('created', time());
         }
       }
     }

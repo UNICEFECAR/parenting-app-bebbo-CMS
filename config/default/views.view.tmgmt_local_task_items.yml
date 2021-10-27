@@ -2,9 +2,12 @@ uuid: 424042d9-e0dc-4bcc-9903-4eb917a9147c
 langcode: en
 status: true
 dependencies:
+  config:
+    - user.role.authenticated
   module:
     - tmgmt
     - tmgmt_local
+    - user
 _core:
   default_config_hash: ho5IlSieIFmtj-n14QvTd_Iz5GlimbEOU0B5x2RRecM
 id: tmgmt_local_task_items
@@ -22,8 +25,10 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            authenticated: authenticated
       cache:
         type: none
         options: {  }
@@ -494,12 +499,13 @@ display:
           plugin_id: numeric
       display_extenders: {  }
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags: {  }
   block_1:
     display_plugin: block
@@ -510,10 +516,11 @@ display:
       display_extenders: {  }
       block_description: 'Translation Task Items Block'
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags: {  }

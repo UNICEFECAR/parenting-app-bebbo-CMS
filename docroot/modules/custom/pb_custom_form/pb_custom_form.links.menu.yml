@@ -15,3 +15,9 @@ pb_custom_form.forcefull_update_check:
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Configure the forcefull update check to sync latest content in mobile application.'
   weight: 102
+pb_custom_form.admin_settings_form:
+  title: 'Adminster Parent Buddy'
+  route_name: pb_custom_form.admin_settings_form
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the Master langauage for notification.'
+  weight: 103

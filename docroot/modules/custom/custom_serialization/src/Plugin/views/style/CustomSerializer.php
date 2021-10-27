@@ -319,9 +319,6 @@ class CustomSerializer extends Serializer {
           if (!empty($result22)) {
             $uri = $result22[0]->uri;
           }
-
-          // $file = File::load($mid);
-          // $url = $file->url();
           $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
 
         }
@@ -355,7 +352,6 @@ class CustomSerializer extends Serializer {
         }
       }
       elseif ($media_type === "video") {
-        /* $url = $media_entity->get('field_media_video_file')->value; */
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
         $mid = $media_entity->get('field_media_video_file')->target_id;

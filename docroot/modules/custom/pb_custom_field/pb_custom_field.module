@@ -18,19 +18,7 @@ use Drupal\views\ViewExecutable;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
-
-/*
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\languagefield\Entity;
-use Drupal\Core\TypedData\OptionsProviderInterface;
 use Drupal\Core\Language\LanguageManager;
-use Drupal\views\Plugin\views\query\Sql;
-use Drupal\Core\Menu\LocalActionInterface;
-use Drupal\Core\Menu\LocalActionManager;
-use Drupal\user\UserInterface;
- */
 
 /**
  * {@inheritdoc}
@@ -145,25 +133,6 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /* if ($form_id == "media_library_add_form_upload") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  }
-
-  if ($form_id == "media_library_add_form_oembed") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  } */
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
@@ -741,13 +710,6 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
 
   $roles = \Drupal::currentUser()->getRoles();
-  /*$current_url = Url::fromRoute('<current>');
-  $path = $current_url->toString();
-  $langcode = explode('node', $path);
-  $split_url = explode('/', $langcode['0']);
-  $roles_permissions = user_role_permissions($roles);
-  $current_path = \Drupal::service('path.current')->getPath();
-   */
   $languagecode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   if (in_array("reviewer", $roles)) {
@@ -910,12 +872,6 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
       $form_state->setRedirectUrl($url);
     }
   }
-  /* if(!empty($groups) && $groups[0]->bundle() == "country" && in_array
-  ('reviewer', $user_roles)) {
-  $url = url::fromUserInput('/group/' . $groups[0]->id() .
-  '/content/add/group_membership?uid='.$uids);
-  $form_state->setRedirectUrl($url);
-  } */
 }
 
 /**
@@ -1122,10 +1078,6 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
   if ($form_id == "user_form" && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[count($path_args) - 3]) && $path_args[count($path_args) - 3] == "group" && isset($path_args[count($path_args) - 1]) && $path_args[count($path_args) - 1] == "members") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      } */
     }
     else {
       $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
@@ -1136,11 +1088,9 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'invisible'; */
             $form['account']['roles']['#access'] = FALSE;
           }
           elseif ($user_role == "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'visible'; */
             $form['account']['roles']['#access'] = TRUE;
             foreach ($roles as $role) {
               if ($role->id() == "authenticated" || $role->id() == "administrator") {
@@ -1168,10 +1118,6 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
   if ($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      }*/
     }
     else {
       foreach ($roles as $role) {
@@ -1180,9 +1126,109 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
         }
         if ($role->id() != "global_admin") {
           unset($form['account']['roles']['#options'][$role->id()]);
-          /* $form['account']['roles'][$role->id()]['#disabled'] = TRUE; */
         }
       }
+    }
+  }
+}
+
+/**
+ * Alters content moderation notification mail.
+ */
+function pb_custom_field_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
+  // Add an extra email address to the list.
+  global $base_url;
+  $notification_array = $data['notification'];
+  $notification_label = end($notification_array);
+  // For the master country users mail.
+  if ($notification_label == "Master : Senior Editor Publish" || $notification_label == "Master :  Any state to Review_after_translation") {
+    $nid = $data['params']['context']['entity']->nid[0]->value;
+    $node_language = $data['params']['context']['entity']->langcode[0]->value;
+    $standard_languages = LanguageManager::getStandardLanguageList();
+    foreach ($standard_languages as $key => $val) {
+      if ($key == $node_language) {
+        $translation = $val;
+      }
+    }
+    $message = '<html><body>' . $data['params']['message'] . '</body></html>';
+    $subject_old = $data['params']['subject'];
+    $subject = str_replace("[language]", $translation[0], $subject_old);
+
+    $logged_in = \Drupal::currentUser()->isAuthenticated();
+    if ($logged_in != 1) {
+      $nid_with_link = $base_url . '/user/login?destination=/' . $base_url . '/' . $node_language . '/node/' . $nid . '/edit';
+    }
+    else {
+      $nid_with_link = $base_url . "/" . $node_language . "/node/" . $nid . "/edit";
+    }
+    $body_old = str_replace("[node_id]", $nid, $message);
+    $body_old = str_replace("[language]", $translation[0], $body_old);
+    $body = str_replace("[link]", $nid_with_link, $body_old);
+    // Get master value from settings form.
+    $config = \Drupal::config('pb_custom_form.adminsettings');
+    $master = $config->get('master_language');
+    $master_language = explode(',', $master);
+    if (in_array($node_language, $master_language)) {
+      $all_users_email = $data['to'];
+      if (!empty($all_users_email)) {
+        $new_arry = [];
+        foreach ($all_users_email as $mail) {
+          if ($mail != '') {
+            $user_load = user_load_by_mail($mail);
+            $uid = $user_load->id();
+            $user = User::load($uid);
+            $allowe_lng = $user->allowed_languages->getValue();
+            $new_array = array_column($allowe_lng, 'target_id');
+            if (in_array($node_language, $new_array)) {
+              $new_arry[] = $mail;
+            }
+          }
+        }
+        $data['params']['subject'] = $subject;
+        $data['params']['message'] = $body;
+        $data['to'] = $new_arry;
+      }
+      else {
+        $data['to'] = [];
+      }
+    }
+    else {
+      $data['to'] = [];
+    }
+  }
+  else {
+    $nid = $data['params']['context']['entity']->nid[0]->value;
+    $node_language = $data['params']['context']['entity']->langcode[0]->value;
+    $message = '<html><body>' . $data['params']['message'] . '</body></html>';
+    $logged_in = \Drupal::currentUser()->isAuthenticated();
+    if ($logged_in != 1) {
+      $nid_with_link = $base_url . '/user/login?destination=/' . $base_url . '/' . $node_language . '/node/' . $nid . '/edit';
+    }
+    else {
+      $nid_with_link = $base_url . "/" . $node_language . "/node/" . $nid . "/edit";
+    }
+    $body_old = str_replace("[node_id]", $nid, $message);
+    $body = str_replace("[link]", $nid_with_link, $body_old);
+    $all_users_email = $data['to'];
+    if (!empty($all_users_email)) {
+      $new_arry = [];
+      foreach ($all_users_email as $mail) {
+        if ($mail != '') {
+          $user_load  = user_load_by_mail($mail);
+          $uid = $user_load->id();
+          $user = User::load($uid);
+          $allowe_lng = $user->allowed_languages->getValue();
+          $new_array = array_column($allowe_lng, 'target_id');
+          if (in_array($node_language, $new_array)) {
+            $new_arry[] = $mail;
+          }
+        }
+      }
+      $data['params']['message'] = $body;
+      $data['to'] = $new_arry;
+    }
+    else {
+      $data['to'] = [];
     }
   }
 }

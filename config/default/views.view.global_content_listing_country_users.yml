@@ -40,8 +40,9 @@ display:
   default:
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access content'
       cache:
         type: tag
       query:
@@ -997,6 +998,7 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
+        - user.permissions
       max-age: 0
       tags: {  }
   page_4:
@@ -2147,6 +2149,7 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
+        - user.permissions
       max-age: -1
       tags:
         - 'config:workflow_list'

@@ -1,0 +1,22 @@
+diff --git a/sources/content/src/Plugin/tmgmt/Source/ContentEntitySource.php b/sources/content/src/Plugin/tmgmt/Source/ContentEntitySource.php
+index 23c2dc87..e5a4cd20 100644
+--- a/sources/content/src/Plugin/tmgmt/Source/ContentEntitySource.php
++++ b/sources/content/src/Plugin/tmgmt/Source/ContentEntitySource.php
+@@ -599,10 +599,17 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
+         $translation = $storage->createRevision($translation, $translation->isDefaultRevision());
+ 
+         if ($entity instanceof RevisionLogInterface) {
++		  $uid = \Drupal::currentUser()->id();
+           $translation->setRevisionLogMessage($this->t('Created by translation job <a href=":url">@label</a>.', [
+             ':url' => $item->getJob()->toUrl()->toString(),
+             '@label' => $item->label(),
+           ]));
++		  $translation->setRevisionUserId($uid);
++          $translation->setRevisionCreationTime(REQUEST_TIME);
++          /* Update the Entity Author Details */
++          $translation->set('uid', $uid);
++          $translation->set('changed', time());
++          $translation->set('created', time());
+         }
+       }
+     }
