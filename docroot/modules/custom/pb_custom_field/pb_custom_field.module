@@ -331,7 +331,6 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
   }
 
-
   if ($form['#id'] == "views-exposed-form-user-admin-people-page-2") {
     $user = \Drupal::currentUser();
     $user_roles = $user->getRoles();
