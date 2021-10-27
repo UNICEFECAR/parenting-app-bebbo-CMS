@@ -1,0 +1,11 @@
+name: Empty Paragraph Killer
+type: module
+description: 'Filters out pesky empty paragraphs.'
+package: Input filters
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+# Information added by Drupal.org packaging script on 2020-09-08
+version: '8.x-1.0-alpha1'
+project: 'emptyparagraphkiller'
+datestamp: 1599608883

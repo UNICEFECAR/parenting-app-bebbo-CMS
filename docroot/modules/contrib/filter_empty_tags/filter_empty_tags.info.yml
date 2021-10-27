@@ -1,0 +1,11 @@
+name: Filter empty tags
+description: A text format filter to recursively remove empty tags in your HTML content.
+type: module
+package: 'Input filters'
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+# Information added by Drupal.org packaging script on 2020-07-08
+version: '1.0.0'
+project: 'filter_empty_tags'
+datestamp: 1594200816
