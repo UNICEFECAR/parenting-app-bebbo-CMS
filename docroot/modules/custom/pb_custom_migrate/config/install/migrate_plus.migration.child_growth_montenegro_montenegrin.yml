@@ -22,9 +22,7 @@ process:
   nid: ID
   title: Title
   body/value: Body
-  field_mandatory_content: Mandatory_content
-  moderation_state: Moderation_state
-  
+
 destination:
   plugin: 'entity:node'
   default_bundle: child_growth
