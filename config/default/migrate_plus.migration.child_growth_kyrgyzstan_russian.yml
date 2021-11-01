@@ -18,12 +18,10 @@ process:
     plugin: default_value
     source: node_uid
     default_value: 1
-    
+
   nid: ID
   title: Title
   body/value: body
-  field_mandatory_content: Mandatory_content
-  moderation_state: Moderation_state
 
 destination:
   plugin: 'entity:node'

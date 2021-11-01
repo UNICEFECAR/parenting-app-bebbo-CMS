@@ -27,44 +27,7 @@ process:
   nid: ID
   title: Title
   body/value: Body
-  field_growth_type:
-    plugin: entity_lookup
-    source: Growth_type
-    value_key: tid
-    bundle_key: vid
-    bundle: growth_type
-    entity_type: taxonomy_term
-  field_standard_deviation:
-    plugin: entity_lookup
-    source: Standard_deviation
-    value_key: tid
-    bundle_key: vid
-    bundle: standard_deviation_category
-    entity_type: taxonomy_term
-  field_child_age:
-    -
-      plugin: explode
-      delimiter: ','
-      source: Child_age
-    -
-      plugin: entity_lookup
-      value_key: tid
-      bundle_key: vid
-      bundle: child_age
-      entity_type: taxonomy_term
-  field_related_articles:
-    -
-      plugin: explode
-      delimiter: ', '
-      source: Related_articles
-    -
-      plugin: entity_lookup
-      entity_type: node
-      bundle_key: type
-      bundle: article
-      value_key: nid
-  field_mandatory_content: Mandatory_content
-  moderation_state: Moderation_state
+
 destination:
   plugin: 'entity:node'
   default_bundle: child_growth

@@ -95,19 +95,19 @@ display:
           summary: ''
           description: ''
           columns:
-            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             nid: nid
             title: title
             type: type
+            field_content_category: field_content_category
+            field_activity_category: field_activity_category
+            field_mandatory_content_1: field_mandatory_content_1
+            field_child_gender: field_child_gender
+            field_parent_gender: field_parent_gender
             langcode: langcode
             name: name
             changed: changed
+            created: created
           info:
-            views_bulk_operations_bulk_form:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
             nid:
               sortable: false
               default_sort_order: asc
@@ -116,28 +116,63 @@ display:
               empty_column: false
               responsive: ''
             title:
-              sortable: true
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             type:
-              sortable: true
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_content_category:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_activity_category:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_mandatory_content_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_child_gender:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_parent_gender:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             langcode:
-              sortable: true
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             name:
-              sortable: true
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -150,6 +185,13 @@ display:
               separator: ''
               empty_column: false
               responsive: priority-low
+            created:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
           default: changed
           empty_table: true
       row:
@@ -2776,6 +2818,7 @@ display:
         filter_groups: false
         arguments: false
         title: false
+        header: false
       fields:
         nid:
           id: nid
@@ -4475,6 +4518,28 @@ display:
       display_description: ''
       arguments: {  }
       title: 'Global Reports'
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Total Count - @total'
+          plugin_id: result
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content: "<br/>\r\nNote:\r\n<br/>\r\n1. At any time please choose either the Updated date or the Created date filters.\r\n<br/>\r\n2. Please also make sure the From date is always greater than the To date."
+          plugin_id: text_custom
     display_plugin: page
     display_title: 'Global Reports'
     id: page_4

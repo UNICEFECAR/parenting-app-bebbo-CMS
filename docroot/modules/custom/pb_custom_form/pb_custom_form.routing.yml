@@ -4,7 +4,7 @@ pb_custom_form.admin_config_parent_buddy:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Parent Buddy'
   requirements:
-    _permission: 'access administration pages'
+    _permission: 'administer site configuration'
 
 pb_custom_form.forcefull_update_check:
   path: '/admin/config/parent-buddy/forcefull-update-check'
@@ -17,10 +17,10 @@ pb_custom_form.forcefull_update_check:
     _admin_route: TRUE
 
 pb_custom_form.admin_settings_form:
-  path: '/admin/config/adminsettings'
+  path: '/admin/config/parent-buddy/admin-parent-buddy'
   defaults:
     _form: '\Drupal\pb_custom_form\Form\SettingsForm'
-    _title: 'Settings Form'
+    _title: 'Adminster Parent Buddy'
   requirements:
     _permission: 'administer site configuration'
   options:

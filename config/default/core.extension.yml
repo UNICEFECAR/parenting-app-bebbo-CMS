@@ -1,4 +1,5 @@
 module:
+  acquia_purge: 0
   actions_permissions: 0
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
@@ -20,6 +21,7 @@ module:
   config_translation: 0
   contact: 0
   content_moderation: 0
+  content_moderation_notifications: 0
   contextual: 0
   csv_serialization: 0
   custom_serialization: 0
@@ -51,6 +53,7 @@ module:
   locale: 0
   media: 0
   media_library: 0
+  memcache: 0
   menu_link_content: 0
   menu_per_role: 0
   menu_ui: 0
@@ -70,11 +73,15 @@ module:
   pb_custom_migrate: 0
   pb_custom_rest_api: 0
   pb_custom_standard_deviation: 0
+  purge: 0
+  purge_ui: 0
   quickedit: 0
   rdf: 0
   rest: 0
   restui: 0
   search: 0
+  seckit: 0
+  security_review: 0
   serialization: 0
   shortcut: 0
   smtp: 0
