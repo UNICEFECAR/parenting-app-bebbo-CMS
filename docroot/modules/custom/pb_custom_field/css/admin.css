@@ -248,7 +248,7 @@ height: 20px;
 }
 .pb-main-homepage .main-logo .align-center 
 {
-  width: 50%;
+  width: 120px;
   margin: 0;
 }
 .pb-main-homepage .region.region-header.headerbg .menu--main {
@@ -337,4 +337,23 @@ height: 20px;
   width: 30%;
   margin: 0 auto;
   align-content: center;
+}
+
+@media screen and (max-width:767px)
+{
+  .pb-main-homepage nav#block-mainnavigation-2 ul {
+    background-color: #4FA9DD;
+    width: 100%;
+    padding: 20px 10px;
+    color: white;
+    margin-top: -3px;
+    display: inline-block;
+    text-align: center;
+  }
+  .pb-main-homepage nav#block-mainnavigation-2 ul li a {
+    font-size:14px;
+  }
+  .pb-main-homepage nav#block-mainnavigation-2 ul li a {
+      padding:0;
+  }
 }
