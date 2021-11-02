@@ -250,6 +250,7 @@ height: 20px;
 {
   width: 120px;
   margin: 0;
+  padding-right: 10px;
 }
 .pb-main-homepage .region.region-header.headerbg .menu--main {
   display: block;
@@ -353,7 +354,7 @@ height: 20px;
   .pb-main-homepage nav#block-mainnavigation-2 ul li a {
     font-size:14px;
   }
-  .pb-main-homepage nav#block-mainnavigation-2 ul li a {
+  .pb-main-homepage .region.region-content h1 {
       padding:0;
   }
 }
