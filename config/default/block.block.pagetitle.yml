@@ -1,18 +1,17 @@
-uuid: 2bc42758-71d9-4406-a752-deed10368b02
+uuid: dfe42f24-01d7-450b-ad37-434d071ffe60
 langcode: en
 status: true
 dependencies:
   module:
+    - node
     - system
     - user
   theme:
     - claro
-_core:
-  default_config_hash: gfXKmThltk6eewwrjAEaxVPxzPEVHV1UfNjjOUQ5A7g
-id: claro_page_title
+id: pagetitle
 theme: claro
-region: header
-weight: -12
+region: content
+weight: -14
 provider: null
 plugin: page_title_block
 settings:
@@ -21,16 +20,22 @@ settings:
   provider: core
   label_display: '0'
 visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy"
+    pages: "/homepage\r\n/share"
     negate: true
     context_mapping: {  }
   user_role:
     id: user_role
     roles:
       anonymous: anonymous
-      authenticated: authenticated
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'

@@ -331,29 +331,6 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
 
   }
 
-  if ($form['#id'] == "views-exposed-form-user-admin-people-page-2") {
-    $user = \Drupal::currentUser();
-    $user_roles = $user->getRoles();
-    if (in_array('administrator', $user_roles) || in_array('global_admin', $user_roles)) {
-      $user_groups = [];
-      $user_groups[''] = "- Any -";
-      $groups = Group::loadMultiple();
-      if (!empty($groups)) {
-        foreach ($groups as $group) {
-          $id = $group->get('id')->getString();
-          $title = $group->get('label')->getString();
-          $user_groups[$title] = $title;
-        }
-      }
-      if (isset($form['country'])) {
-        $form['country']['#type'] = 'select';
-        $form['country']['#options'] = $user_groups;
-        $form['country']['#size'] = 1;
-      }
-    }
-
-  }
-
   /* Media Image Page - Validation */
   $route_match = \Drupal::routeMatch();
   if ($form['#id'] == "media-image-add-form" || $form['#id'] == "media-image-edit-form") {
@@ -1054,6 +1031,7 @@ function user_media_access_validation_chk(&$form, FormStateInterface $form_state
  */
 function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /* Add reset password link. */
+  $form['#submit'][] = 'pb_custom_field_user_login_form_submit';
   $url_object = Url::fromRoute('user.pass');
   $form['password_reset_link'] = [
     '#type' => 'link',
@@ -1063,6 +1041,32 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
       'class' => 'user-reset-password-link',
     ],
   ];
+}
+
+/**
+ * Implements hook_form_submit().
+ */
+function pb_custom_field_user_login_form_submit($form, FormStateInterface $form_state) {
+
+  $redirect_url = Url::fromUri('internal:/dashboard');
+  $form_state->setRedirectUrl($redirect_url);
+
+}
+
+/**
+ * Hook implements hook_preprocess_html.
+ */
+function pb_custom_field_preprocess_html(&$variables) {
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+  if (!$logged_in) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy") {
+      $variables['#attached']['library'][] = 'pb_custom_field/mylib';
+      // Replace 'the-class-to-add' with your CSS class.
+      $variables['attributes']['class'][] = 'pb-main-homepage';
+    }
+  }
 }
 
 /**
