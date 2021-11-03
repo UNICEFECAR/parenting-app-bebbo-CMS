@@ -28,6 +28,7 @@ permissions:
   - 'post comments'
   - 'search content'
   - 'skip comment approval'
+  - 'use text format admin_full_html'
   - 'use text format basic_html'
   - 'view latest version'
   - 'view media'
