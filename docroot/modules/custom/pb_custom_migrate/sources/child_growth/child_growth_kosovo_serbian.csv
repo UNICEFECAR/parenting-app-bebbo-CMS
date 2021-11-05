@@ -1,51 +1,675 @@
-ID,Title,Body,Child_age,Growth_type,Standard_deviation,Related_articles,Mandatory_content,Moderation_state,Translation_language
-23001,Više o rastu 13 -24 meseca - adekvatna težina za visinu/dužinu,"Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.","1st month, 2nd month, 3-4 months, 5-6 months",Height for weight,between -2SD to +2SD,"3401, 3341, 3346, 3416",1,published,
-23002,Više o rastu 7 - 9 meseci - adekvatna težina za visinu/dužinu,"Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.",7-9 months,Height for weight,between -2SD to +2SD,"3406, 3351, 3346, 3416",1,published,
-23003,Više o rastu10 - 12 meseci - adekvatna težina za visinu/dužinu,"Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.",10-12 months,Height for weight,between -2SD to +2SD,"3411, 3356, 3346, 3416",1,published,
-23004,Više o rastu 13 -24 meseca - adekvatna težina za visinu/dužinu,"Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.",10-12 months,Height for weight,between -2SD to +2SD,"3391, 3386, 3361, 3416",1,published,
-23005,Više o rastu 25 - 60 meseca - adekvatna težina za visinu/dužinu,"Bravo! Vaše dete dobro raste i njegova težina je u skladu sa njegovom visinom. Nastavite da se pridžavate preporuka za optimalnu ishranu, fizičku aktivnost i spavanje. Pratite i dalje rast vašeg deteta.","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for weight,between -2SD to +2SD,"3396, 5891, 3366, 3416",1,published,
-23006,	Više o rastu u prvih 6 meseci - blaga pothranjenost,"Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.","1st month, 2nd month, 3-4 months, 5-6 months",Height for weight,between  -2 and -3SD,"3401, 3341, 3346, 3416",1,published,
-23007,	Više o rastu 7 - 9 meseci - blaga pothranjenost,"
-Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.",7-9 months,Height for weight,between  -2 and -3SD,"3406, 3351, 3346, 3371",1,published,
-23008,Više o rastu 10 - 12 meseci - blaga pothranjenost,"
-Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.",10-12 months,Height for weight,between  -2 and -3SD,"3411, 3356, 3346, 3371",1,published,
-23009,Više o rastu 13 -24 meseca - blaga pothranjenost,"
-Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.","13-18 months, 19-24 months",Height for weight,between  -2 and -3SD,"3391, 3386, 3361, 3371",1,published,
-23010,Više o rastu 25 - 60 meseca - blaga pothranjenost,"Pažnja! Vaše dete gubi na težini (ili ne dobija u skladu sa visinom) i ima umereni nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima: skorašnja zarazna bolest ili dijarea, hronične bolesti, nedovoljna i vrlo nepravilna ishrana, promene u neposrednom okruženju itd. Obavezno zakažite pregled kod pedijtra radi otkrivanja uzroka, korekcije nastalog gubitka kao i određivanja dinamike daljeg praćenja rasta. Ozbiljno razmislite kako da poboljšate ishranu vašeg detetu.","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for weight,between  -2 and -3SD,"3396, 5891, 3366, 3371",1,published,
-23011,Više o rastu u prvih 6 meseci - ozbiljna pothranjenost,"Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.","1st Month, 2nd month, 3-4 months, 5-6 months",Height for weight,below -3SD,"3401, 3341, 3346, 3371",1,published,
-23012,	Više o rastu 7 - 9 meseci - ozbiljna pothranjenost,"Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.",7-9 months,Height for weight,below -3SD,"3406, 3351, 3346, 3371",1,published,
-23013,Više o rastu 10 - 12 meseci - ozbiljna pothranjenost,"Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.",10-12 months,Height for weight,below -3SD,"3411, 3356, 3346",1,published,
-23014,	Više o rastu 13 -24 meseca - ozbiljna pothranjenost,"Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.
-","13-18 months, 19-24 months",Height for weight,below -3SD,"3391, 3386, 3361, 3371",1,published,
-23015,Više o rastu 25 - 60 meseca - ozbiljna pothranjenost,"Hitno! Vaše dete ima ozbiljan nedostatak težine za dužinu/visinu. Ovo stanje je moglo nastati tokom nekoliko nedelja, stoga razmislite o mogućim neposrednim uzrocima. Neki od mogućih uzroka bi mogli biti: skorašnja bolest, metabolička stanja, hronične bolesti, nedovoljna i nepravilna ishrana, promene u najbližem  okružrnju i dr. Hitno se obratite pedijatru radi ispitivanja uzroka i određivanja načina za nadoknadu nastalog gubitka.","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for weight,below -3SD,"3396, 5891, 3366, 3371",1,published,
-23016,Više o rastu u prvih 6 meseci - prekomerna težina i gojaznost,"Prema kartama rasta vaša beba ima prekomernu težinu za dužinu, što može ugroziti njeno zdravlje. Kod veštačke ishrane (ili dohrane adaptiranim mlekom uz dojenje), uvek je prisutna opasnost od prekomernog dobijanja u težini, jer bebina urođena sposobnost regulacije apetita može biti narušena. Obavezno zakažite posetu vašem izabranom pedijatru, kako biste obezbedili optimalnu ishranu neophodnu za pravilan rast i razvoj vaše bebe. Pratite dalji napredak u težini i sledite savete pedijatra o broju obroka, odgovarajućoj količini mleka za vašu bebu, učestalosti obroka. Poštujte uputstva za pravilnu pripremu mlečnog obroka i nemojte nikada uskraćivati hranu u pokušaju da bebi smanjite težinu. ","1st month, 2nd month, 3-4 months, 5-6 months",Height for weight,between +2 and +3SD,"3401, 3341, 3346, 3376",1,published,
-23017,Više o rastu 7 - 9 meseci - prekomerna težina i gojaznost,"Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta",7-9 months,Height for weight,between +2 and +3SD,"3406, 3351, 3346, 3376",1,published,
-23018,Više o rastu: 10 - 12 meseci - prekomerna težina i gojaznost,"Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta",10-12 months,Height for weight,between +2 and +3SD,"3411, 3356, 3346, 3376",1,published,
-23019,	Više o rastu 13 -24 meseca - prekomerna težina i gojaznost,"Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta","13-18 months, 19-24 months",Height for weight,between +2 and +3SD,"3391, 3386, 3361, 3381",1,published,
-23020,	Više o rastu 25 - 60 meseca - prekomerna težina i gojaznost,"
-Pažnja! Vaše dete ima umereni višak težine za visinu. Ova prekomerna težina može ugroziti njegovo zdravlje i zato razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica - takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite pregled kod pedijatra radi dobijanja dodatnih preporuka i određivanja dinamike praćenja rasta vašeg deteta","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for weight,between +2 and +3SD,"3396, 5891, 3366, 3381",1,published,
-23021,	Više o rastu u prvih 6 meseci - gojaznost,"Iako prema kartama rasta vaša beba ima prekomernu težinu za dužinu, ishrana isključivo majčinim mlekom izuzetno retko dovodi do prekomerne težine, zahvaljujući bebinoj urođenoj sposobnosti regulacije apetita. Međutim, kod veštačke ishrane (ili dohrane adaptiranim mlekom uz dojenje) uvek je prisutna opasnost od prekomernog dobijanja u težini, jer ova urođena sposobnost regulacije apetita, može biti narušena. Svakako se obratite vašem pedijatru kako biste pratili napredak u težini i obezbedili optimalnu ishranu neophodnu za pravilan rast i razvoj vaše bebe. Sledite savete o broju obroka, odgovarajućoj količini mleka za vašu bebu, učestalosti obroka. Pažljivo pratite uputstva za pravilnu pripremu mlečnog obroka i nemojte nikada uskraćivati hranu u pokušaju da bebi smanjite težinu. ","1st month, 2nd month, 3-4 months, 5-6 months",Height for weight,above +3SD,"3401, 3341, 3346, 3376",1,published,
-23022,	Više o rastu 7 - 9 meseci - gojaznost,"Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!",7-9 months,Height for weight,above +3SD,"3406, 3351, 3346, 3376",1,published,
-23023,	Više o rastu 10 - 12 meseci - gojaznost,"Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!",10-12 months,Height for weight,above +3SD,"3411, 3356, 3346, 3376",1,published,
-23024,	Više o rastu 13 -24 meseca - gojaznost,"Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!","13-18 months, 19-24 months",Height for weight,above +3SD,"3391, 3386, 3361, 3381",1,published,
-23025,	Više o rastu 25 - 60 meseca - gojaznost,"Hitno! Vaše dete je gojazno, odnosno ima ozbiljan višak težine za visinu. Ova težina može ozbiljno ugroziti zdravlje vašeg deteta. Razmislite šta je tome doprinelo: povećan unos energetski bogatije hrane (kao što su slatke i masne namirnice), unos bezvrednih namirnica- takozvane brze hrane, smanjena fizička aktivnost, produženo vreme boravka u sedećem položaju ili boravak ispred ekrana, promene u najbližem okružrnju i dr. Obavezno zakažite posetu kod pedijatra radi pregleda i dodatnog ispitivanja kao i određivanja dinamike daljeg praćenja rasta!","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for weight,above +3SD,"3396, 5891, 3366, 3381",1,published,
-23026,	Više o rastu u prvih 6 meseci - adekvatan rast za uzrast,"Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.","1st month, 2nd month, 3-4 months, 5-6 months",Height for age,between -2SD to +3SD,"3401, 3341, 3346",1,published,
-23027,	Više o rastu 7 - 9 meseci - adekvatan rast za uzrast,"Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.",7-9 months,Height for age,between -2SD to +3SD,"3406, 3351, 3346",1,published,
-23028,Više o rastu 10 - 12 meseci - adekvatan rast za uzrast,"Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.",10-12 months,Height for age,between -2SD to +3SD,"3411, 3356, 3346",1,published,
-23029,Više o rastu 13 -24 meseca - adekvatan rast za uzrast,"Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.","13-18 months, 19-24 months",Height for age,between -2SD to +3SD,"3391, 3386, 3361",1,published,
-23030,Više o rastu 25 - 60 meseca - adekvatan rast za uzrast,"Bravo! Vaše dete raste u dužinu/visinu po zacrtanoj liniji ili malo iznad okvira za njegov uzrast i pol. Nastavite da se pridžavate preporuka dobre prakse u ishrani, fizičkoj aktivnosti i spavanju i pratite rast vašeg deteta.","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for age,between -2SD to +3SD,"3396, 5891, 3366 ",1,published,
-23031,Više o rastu u prvih 6 meseci - blago zaostajanje u rastu,"Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.","1st month, 2nd month, 3-4 months, 5-6 months",Height for age,below -2SD,"3401, 3341, 3346, 3606",1,published,
-23032,Više o rastu 7 - 9 meseci - blago zaostajanje u rastu,"Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.",7-9 months,Height for age,below -2SD,"3406, 3351, 3346, 3606",1,published,
-23033,Više o rastu 10 - 12 meseci - blago zaostajanje u rastu,"Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.",10-12 months,Height for age,below -2SD,"3411, 3356, 3346",1,published,
-23034,Više o rastu 13 -24 meseca - blago zaostajanje u rastu,"Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.","13-18 months, 19-24 months",Height for age,below -2SD,"3391, 3386, 3361, 3606",1,published,
-23035,	Više o rastu 25 - 60 meseca - blago zaostajanje u rastu,"Pažnja! Vaše dete sporo raste u dužini/visinu i sada je sa umerenim zaostajanjem u rastu. Razmislite da li je neki od mogućih dugoročnih uzroka tome doprineo: hronično nedovoljna ishrana, hronična bolest, endokrini poremećaj i dr. Obavezno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja dodatnih preporuka i određivanja dinamike daljeg praćenja rasta.","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for age,below -2SD,"3396, 5891, 3366, 3606",1,published,
-23036,	Više o rastu u prvih 6 meseci - ozbiljno zaostajanje u rastu,"Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!","1st month, 2nd month, 3-4 months, 5-6 months",Height for age,below -3SD,"3401, 3341, 3346",1,published,
-23037,	Više o rastu 7 - 9 meseci - ozbiljno zaostajanje u rastu,"Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!",7-9 months,Height for age,below -3SD,"3406, 3351, 3346, 3606",1,published,
-23038,Više o rastu 10 - 12 meseci - ozbiljno zaostajanje u rastu,"Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!",10-12 months,Height for age,below -3SD,"3411, 3356, 3346, 3606",1,published,
-23039,	Više o rastu 13 -24 meseca - ozbiljno zaostajanje u rastu,"Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!","13-18 months, 19-24 months",Height for age,below -3SD,"3391, 3386, 3361, 3606",1,published,
-23040,	Više o rastu 25 - 60 meseca - ozbiljno zaostajanje u rastu,"Hitno! Rast vašeg deteta u dužinu/visinu ozbiljno zaostaje. Hitno zakažite pregled kod pedijatra radi dodatnog ispitivanja, dobijanja odgovarajućeg tretmana i određivanja dinamike daljeg praćenja rasta!","25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for age,below -3SD,"3396, 5891, 3366, 3606",1,published,
-23041,Više o rastu u prvih 6 meseci - visok rast za uzrast,Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.,"1st month, 2nd month, 3-4 months, 5-6 months",Height for age,above +3SD,"3401, 3341, 3346",1,published,
-23042,	Više o rastu 7 -9 meseci - visok rast za uzrast,Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.,7-9 months,Height for age,above +3SD,"3406, 3351, 3346",1,published,
-23043,Više o rastu 10-12 meseci - visok rast za uzrast,Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.,10-12 months,Height for age,above +3SD,"3411, 3356, 3346",1,published,
-23044,Više o rastu 13-24 meseca - visok rast za uzrast,Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.,"13-18 months, 19-24 months",Height for age,above +3SD,"3391, 3386, 3361",1,published,
-23045,Više o rastu 25-60 meseca - visok rast za uzrast,Vaše dete je poraslo u visinu znatno iznad okvira uobičajenih za njegov uzrast i pol. Verovatno da je to rezultat njegovih genetskih potencijala ali ipak razgovarajte o tome sa pedijatrom. Nastavite da se pridžavate usvojenih preporuka i pratite rast vašeg deteta u regularnim intervalima.,"25-36 months, 37-48 months, 49-60 months, 61-72 months",Height for age,above +3SD,"3396, 5891, 3366",1,published,
+ID_A,ID,Title,Body,Moderation state
+3026,23001,Više o rastu u prvih 6 meseci - adekvatna težina za visinu/dužinu,"Nakon rođenja, u prvom tromesečju dete raste najbrže a zatim rast i dalje intenzivno traje ali sa blagim usporavanjem. 
+
+U ovom periodu, kjučni uticaj na brzinu rasta imaju ishrana i još nedovoljno definisani genetski faktori, ali i odgovarajuća podrška iz najbližeg okruženja. Bolesti u detinjstvu mogu delovati ometajuće ali uz vašu odgovarajuću podršku uglavnom imaju privremen uticaj.    
+
+Rast vašeg deteta se procenjuje merenjem  parametara rasta: telesne mase ( težine), telesne dužine (dete se meri u ležećem položaju sve do 2 godine) i obima glave, te njihovim poređenjem sa standardima rasta  koje je izdala Svetska zdravstvena organizacija (SZO).  Za svakodnevnu praksu ovi standardi su pretočeni u grafikone rasta koji su izrađeni posebno za dečake a posebno za devojčice.
+	Pri svakoj preventivnoj poseti kod pedijatra ( 5 poseta u prvih 6 meseci) vaše dete če biti izmereno a dobijene vrednosti unete u karte rasta  putem kojih će se pratiti kojom brzinom vaše dete napreduje i da li se drži ustaljenog obrasca rasta.       
+	Na rođenju Prosečne vrednosti telesne mase i telesne dužine, na rođenju, su nešto veće kod dečaka (oko 3600 gr i 51,5 cm)  u odnosu na devojčice ( oko 3500 gr i 50,5 cmi ), što jasno odražava uticaj genetskih faktora na rast. Obim glave je u proseku oko 35 cm.
+	Prvi mesec Nemojte se iznenaditi ako vaše dete u  prvim danima po rođenju izgubi i do 10% svoje telesne mase. To je očekivano, a gubitak je privremen i nadoknadiće se uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, najdalje do kraja druge nedelje života.
+	Narednih dana se očekuje da dete počne da dobija na težini, u proseku  20 do 30 grama dnevno.
+	Prvi mesec je mesec privikavanja deteta na uslove života u spoljašnjem okruženju i postoje velike varijacije u rastu. Zato se može desiti da vaše dete dobije samo 400 grama ili ako je krupno rođeno,  često traži da sisa i dobro spava  dobije1000 grama i više. Za ovo vreme poraste u dužinu u proseku  4,5 do 5 cm.  
+	Rast glave se posebno prati jer je uslovljen brzinom rasta mozga. Mozak se puni mnoštvom informacija iz okruženja i raste fantastičnom brzinom te u ovom mesecu obim glave može porasti za  oko 2,5 cm
+	Prvo tromesečje Vaše dete će nastaviti da raste približno istom brzinom koju je uspostavilo tokom prvih nekoliko nedelja života. Tokom ovih meseci se očekuje da dobija  700 do 900 gr u težini,  2,5 do 4 cm u dužini  i 1,2 cm obim glave mesečno. Navedene brojke predstavljaju samo prosečne vrednosti tako da su za tipičan rast moguća blaža odstupanja i napredovanje vašeg deteta će se procenjivati na osnovu sveukupne slike.       
+	Pola godine  Od četvrtog do sedmog meseca dete će nastaviti da dobija mesečno u težini oko 450 do 550 gr, Za ovo vreme će porasti u dužinu oko 6 cm a obim glave će se povećati za oko 2,5 cm.     
+	U periodu od 4. do 6. meseca većina dece udvostruči svoju telesnu masu sa rođenja.
+	Godina dana Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku.  
+
+Rast svakog deteta je jedinstven, i uglavnom sledi obrazac rasta utvrđen u prvim mesecima života a redovna merenja i vođenje karta rasta nam pomažu da ga uredno pratimo.",Draft
+3031,23002,Više o rastu 7 - 9 meseci - adekvatna težina za visinu/dužinu,"Verovatno ste primetili da je dete lako usporilo rast negde oko četvrtog meseca Istim intenzitetom je nastavilo da raste i u ovom periodu.
+
+U ovom periodu majčino mleko ( ili adaptirano mleko), nije jedina hrana koju dete koristi i postepeno se navikava na unošenje drugih namirnica biljnog i životinjskog porekla. S druge strane postaje aktivnije u kretanju i istraživanju okruženja što će u značajnoj meri odraziti na rast. Da podsetimo samo da dete raste dok spava  i da rast zavisi i od toga koliko vremena provede u spavanju  i kakav san ima.
+	Važno je da dete nastavi da prti obrazac rasta koji je uspostavilo tokom prvih nedelja života
+	Očekujte da će vaše dete mesečno u proseku u ovom periodu dobijati oko 1,5 do 2 cm  u dužini i 300 do 350 gr u težini. Ako je sitnije građe i vrlo živahno, biće dovoljno da dobije i 200 do  250 gr. u devetom  mesecu.
+	Mozak i dalje intenzivno raste i obim glave se svakog meseca povećava za oko 0,5 cm. 
+
+Rast svakog deteta je jedinstven i ono je već uspostavilo obrazac rasta koji će slediti.",Draft
+3036,23003,Više o rastu10 - 12 meseci - adekvatna težina za visinu/dužinu,"Ovih godinu dana rasta i razvoja vašeg deteta je skoro ’’proletelo’’. Došlo je vreme prohodavanja i prve reči a telesni rast deteta lagano usporava iako je i dalje intenzivan.   
+
+U poslednjem tromesečju odojčad mesečno dobijaju u proseku oko 200 do 250 gr u težini i oko 1 cm u dužini. Tokom ovog perioda obim glave kod deteta će porasti još za 1 cm.
+
+Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku. 
+
+Telesni rast vašeg deteta zavisi od nasleđa ali imajte na umu da se odvija uz vašu svakodnevnu podršku i da ste i vi zaslužni za njegovo uspešno napredovanje.",Draft
+3041,23004,Više o rastu 13 -24 meseca - adekvatna težina za visinu/dužinu,"Dete dobro raste i napreduje uz:  adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način. 
+	Praćenje rasta deteta u drugoj godini podrazumeva određivanje parametara rasta; telesne mase,  telesne dužine i obima glave dva puta godišnje i praćenje njihovog kretanja kroz vreme u kartama rasta.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  fantastičnih 90% svog ukupnog rasta.
+	Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše  na odgovarajući način
+
+Rast deteta u drugoj godini je malo sporiji u odnosu na rast u predhodnoj godini ali i dalje dovoljno brz da lako može da se poremeti Stoga je važno da se detetu omoguće uslovi za dobar napredak i rast redovno prati. ",Draft
+3046,23005,Više o rastu 25 - 72 meseca - adekvatna težina za visinu/dužinu,"Dete dobro raste i napreduje uz: adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način.  
+	Pored već pomenutih faktora, hormoni samog deteta počinju da ostvaruju snažniji uticaj na rast .
+	Praćenje rasta malog deteta podrazumeva određivanje parametara rasta; telesne mase i telesne dužine/visine, jednom do dva puta godišnje i praćenje njihovog kretanja kroz vreme.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  90% svog ukupnog rasta.
+	Od treće godine Telesni rast deteta se odvija i kroz promene u proporcijama. Novorođenče je imalo relativno veliku glavu i kratke noge i ruke dok sada glava usporava rast a raste telo,  naročito ruke i noge.
+	Procenat masti u telu se takođe smanjuje što se vidi kroz vitkije ekstremitete i manje okruglu glavu.
+	Iako rast pratimo linearno on se ipak sastoji od niza malih skokova. Deca dobiju malo u težini a zatim krenu da rastu u visinu.
+	Poznate su i sezonske varijacije: deca u  proleće rastu brže u visinu dok od jeseni više dobijaju u težini.  
+	Od treće godine nadalje, do puberteta, rast je uglavnom ujednačen.
+	Većina dece, u tom periodu, godišnje poraste u visini  5,0 -7,5 cm  i 2-3 kg  u težini.
+	Glava će za narednih destak godina porasti još 3-4 cm.
+	U ovom uzrastu već postoji statistički značajna pozitivna korelacija između visine deteta i srednje visine roditelja, odnosno može se proceniti da li dete raste u skladu sa svojim genetskim potencijalom. Genetski potencijal rasta („ciljna visina”) se procenjuje na osnovu izračunavanja srednje visine roditelja prema jednačinama različitim za dečaka odnosno devojčice ( Tannerov metod)
+            Ciljna visina za dečaka (cm) = (visina oca + visina majke)/2 + 6,5
+
+            Ciljna visina za devojčicu (cm) = (visina oca + visina majke)/2 – 6,5 
+
+Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, endokrini poremećaji, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše   
+	Deci koja su rođena pre vremena ili sa malom telesnom masom/dužinom  na rođenju, potrebno je posvetiti posebnu pažnju jer u slučaju da posle dve godine ne postignu visinu u skladu sa visinom svojih roditelja, odnosno svojim genetskim potencijalom rasta, zahtevaju neodložno ispitivanje.    
+
+Vaše dete očekuje od vas  da mu pružite odgovarajuće uslove za optimalni rast i razvoj!",Draft
+3051,23006,Više o rastu u prvih 6 meseci - blaga pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3056,23007,Više o rastu 7 - 9 meseci - blaga pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3061,23008,Više o rastu 10 - 12 meseci - blaga pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3066,23009,Više o rastu 13 -24 meseca - blaga pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3071,23010,Više o rastu 25 - 72 meseca - blaga pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3076,23011,Više o rastu u prvih 6 meseci - ozbiljna pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3081,23012,Više o rastu 7 - 9 meseci - ozbiljna pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3086,23013,Više o rastu 10 - 12 meseci - ozbiljna pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3091,23014,Više o rastu 13 -24 meseca - ozbiljna pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.",Draft
+3096,23015,Više o rastu 25 - 72 meseca - ozbiljna pothranjenost,"Detetu koje  ne napreduje dovoljno tokom jednog ili dva meseca možda je potrebna veća količina hrane za obrok, hranljivije namirnice ili češći obroci. Dete je možda bolesno i potrebno mu je više pažnje i nege ili pomoći pri obrocima.
+
+Ovo su neka važna pitanja koja  treba da razmotrite da bi se pomoglo u otkrivanju uzroka problema sa rastom i napredovanjem:
+
+Da li dete jede dovoljno često? Uz dojenje, detetu  uzrasta 6-8 meseci potrebna su 2-3 obroka, a od 9. meseca 3-4 obroka druge hrane. Dodatne hranljive užine, kao što je komad voća ili hleb sa zdravim namazom, mogu biti potrebne 1-2 puta dnevno. Deci sa kašnjenjem ili smetnjama u razvoju nekada je potrebna dodatna pomoć i vreme za hranjenje.
+	Da li dete dobija dovoljno hrane? Detetu uzrasta 6-8 meseci potrebno je u početku 2-3 kašičice hrane, a količina se postepeno povećava do ½ šolje (od 250ml), za svaki obrok u uzrastu 9-12meseci.
+	Da li detetovi obroci sadrže dovoljno energije i hranljivih materija? Hrana koja pomaže rast deteta je pasulj, orašasti plodovi, meso, riba, jaja, mlečni proizvodi, žitarice i mahunarke. Svakodnevo uključivanje hrane životinjskog porekla je posebno značajno. Mala količina ulja može dati dodatnu energiju. Kvalitetna „hrana za rast“ posebno je važna da bi se obezbedio odgovarajući rast u težini i u visini. Namirnice kao što su prerađena masna hrana ili slatke grickalice nisu bogate vitaminima i mineralima ni drugim važnim nutrijentima i mogu dovesti do prekomernog porasta težine bez odgovarajućeg rasta u visinu.
+	Da li dete dobija previše slatke hrane (kolači, keks) ili zaslađenih tečnosti (sokovi, čajevi) ili drugu nezdravu hranu za obroke ili užine. Smanjite ili zamenite ovu hranu hranljivim namirnicama, kao što su voće, povrće, žitarice, meso prema preporukama za ishranu.
+	Da li dete dobija previše mlečne formule ili drugih tečnosti (sokovi, čajevi) a nedovoljno čvrste hrane. Tečnost ispunjava želudac i smanjuje potrebu deteta za hranom.
+	Da li dete odbija da jede? Ako dete ne voli ukus neke određene vrste hrane, treba mu ponuditi drugu. Nove namirnice traba uvoditi postepeno.
+	Da li je dete bolesno? Bolesno dete treba ohrabrivati da jede male, češće obroke. Podoji treba da budu češći. Posle bolesti, dete treba da jede više nego uobičajeno da bi  nadoknadilo izgubljenu težinu, energiju i nutrijente. Ukoliko je dete često bolesno, treba potražiti pomoć lekara.
+	Da li dete dobija dovoljno namirnica koje sadrže vitamin A? Majčino mleko je bogato vitaminom A. Ostale namirnice koje ga sadrže su džigerica, jaja, mlečni proizvodi, žuto i narandžasto voće i povrće i zeleno lisnato povrće. Ukoliko ove namirnice nisu raspoložive u dovoljnoj količini, detetu treba dati suplementaciju (tablete ili sirup svakih 4-6 meseci).
+	Da li dete dobija mlečnu formulu iz flašice? Ako se dete hrani mlečnom formulom, preporučuje se čista šolja ili čašica radije nego flašica sa cuclom.
+	Da li se hrana priprema i čuva na čist i bezbedan način? Ako ne, dete će često biti bolesno. Sirovu hranu treba dobro prati ili kuvati, koristeći čistu vodu iz bezbednog izvora. Kuvanu hranu treba odmah pojesti; preostalu hranu treba pažljivo čuvati i pravilno podgrejati pre jela.
+	Da li je dete često samo ili prepušteno brizi starije dece?  Detetu je potrebno više pažnje  od strane odraslih, posebno za vreme obroka.
+ ",Draft
+3101,23016,Više o rastu u prvih 6 meseci - prekomerna težina i gojaznost,"Nakon rođenja, u prvom tromesečju dete raste najbrže a zatim rast i dalje intenzivno traje ali sa blagim usporavanjem. 
+
+U ovom periodu, kjučni uticaj na brzinu rasta imaju ishrana i još nedovoljno definisani genetski faktori, ali i odgovarajuća podrška iz najbližeg okruženja. Bolesti u detinjstvu mogu delovati ometajuće ali uz vašu odgovarajuću podršku uglavnom imaju privremen uticaj.    
+
+Rast vašeg deteta se procenjuje merenjem  parametara rasta: telesne mase ( težine), telesne dužine (dete se meri u ležećem položaju sve do 2 godine) i obima glave, te njihovim poređenjem sa standardima rasta  koje je izdala Svetska zdravstvena organizacija (SZO).  Za svakodnevnu praksu ovi standardi su pretočeni u grafikone rasta koji su izrađeni posebno za dečake a posebno za devojčice.
+	Pri svakoj preventivnoj poseti kod pedijatra ( 5 poseta u prvih 6 meseci) vaše dete če biti izmereno a dobijene vrednosti unete u karte rasta  putem kojih će se pratiti kojom brzinom vaše dete napreduje i da li se drži ustaljenog obrasca rasta.       
+	Na rođenju Prosečne vrednosti telesne mase i telesne dužine, na rođenju, su nešto veće kod dečaka (oko 3600 gr i 51,5 cm)  u odnosu na devojčice ( oko 3500 gr i 50,5 cmi ), što jasno odražava uticaj genetskih faktora na rast. Obim glave je u proseku oko 35 cm.
+	Prvi mesec Nemojte se iznenaditi ako vaše dete u  prvim danima po rođenju izgubi i do 10% svoje telesne mase. To je očekivano, a gubitak je privremen i nadoknadiće se uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, najdalje do kraja druge nedelje života.
+	Narednih dana se očekuje da dete počne da dobija na težini, u proseku  20 do 30 grama dnevno.
+	Prvi mesec je mesec privikavanja deteta na uslove života u spoljašnjem okruženju i postoje velike varijacije u rastu. Zato se može desiti da vaše dete dobije samo 400 grama ili ako je krupno rođeno,  često traži da sisa i dobro spava  dobije1000 grama i više. Za ovo vreme poraste u dužinu u proseku  4,5 do 5 cm.  
+	Rast glave se posebno prati jer je uslovljen brzinom rasta mozga. Mozak se puni mnoštvom informacija iz okruženja i raste fantastičnom brzinom te u ovom mesecu obim glave može porasti za  oko 2,5 cm
+	Prvo tromesečje Vaše dete će nastaviti da raste približno istom brzinom koju je uspostavilo tokom prvih nekoliko nedelja života. Tokom ovih meseci se očekuje da dobija  700 do 900 gr u težini,  2,5 do 4 cm u dužini  i 1,2 cm obim glave mesečno. Navedene brojke predstavljaju samo prosečne vrednosti tako da su za tipičan rast moguća blaža odstupanja i napredovanje vašeg deteta će se procenjivati na osnovu sveukupne slike.       
+	Pola godine  Od četvrtog do sedmog meseca dete će nastaviti da dobija mesečno u težini oko 450 do 550 gr, Za ovo vreme će porasti u dužinu oko 6 cm a obim glave će se povećati za oko 2,5 cm.     
+	U periodu od 4. do 6. meseca većina dece udvostruči svoju telesnu masu sa rođenja.
+	Godina dana Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku.  
+
+Rast svakog deteta je jedinstven, i uglavnom sledi obrazac rasta utvrđen u prvim mesecima života a redovna merenja i vođenje karta rasta nam pomažu da ga uredno pratimo.",Draft
+3106,23017,Više o rastu 7 - 9 meseci - prekomerna težina i gojaznost,,Draft
+3111,23018,Više o rastu: 10 - 12 meseci - prekomerna težina i gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane i/ili nedovoljne fizičke aktivnosti. Tome mogu doprineti promene u okruženju i načinu nege deteta kao i mogući genetski poremećaji. Višak telesne mase može dovesti do brojnih zdravstvenih problema u detinjstvu ali i kasnije u životu: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, šećerne bolesti, mentalnih problema: depresije i niskog samopoštovanja.   
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti.
+
+Preporuke za odojče
+
+Najbolja hrana za odojče je majčino mleko koje sadrži sve potrebne hranljive materije u uravnoteženom odnosu. Stoga se ono preporučuje kao isključiva hrana u prvih 6 meseci i dalje uz uvođenje nemlečne hrane.
+	Proverite da li vaše dete, ako je starije od 6 meseci, ima  ostale obroke u količini i broju u skladu sa važećim preporukama za optimalnu ishranu, a ako to nije slučaj obavite potrebno prilagođavanje. 
+	Držite se preporuka da ne sladite hranu koju dajete detatu, a dnevnu količinu prirodnog soka koju dajete detetu starijem od 6 meseci  ograničite na 90 ml, maksimalno 120 ml.
+	Ne solite hranu koju dajete deteteu.
+	Obratite pažnju i na način kako hranite dete. Nemojte ga siliti da pojede svu hranu koju ste spremili već poštujte njegov osećaj sitosti. Podstičite ga da se samo hrani, iz ruke, jer tada najbolje zna kada mu je dosta.
+	Ohrabrite kretanje i aktivnost vašeg deteta i omogućite mu najmanje 30 minuta interaktivne igre, u raznim položajima na podu.
+	Omogućite mu dobar san i spavanje u trajanju od 12 do 17 sati u zavisnosti od uzrasta u kome se nalazi i potrebe.
+
+Primena  preporuka za pravilnu ishranu i fizičku aktivnost deteta od njegovog  najranijeg uzrasta, povećava njegove izglede za zdrav i uspešan život.",Draft
+3116,23019,Više o rastu 13 -24 meseca - prekomerna težina i gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane ili nedovoljne fizičke aktivnosti, retko genetskih poremećaja, ali je potrebno razmotiti i promene u okruženju i načinu nege deteta. Kako dovodi do brojnih zdravstvenih problema: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, endokrinih bolesti, depresije, niskog samopoštovanja i nižeg akademskog postignuća kasnije u životu, neophodno je ovaj višak na vreme otkriti i preduzeti mere za vraćanje telesne mase u tipične tokove rasta.  
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti. 
+
+Preporuke za malo dete:
+
+Proverite da li Vaše dete ima odgovarajući broj obroka i unosi hranu, u količini i sadržaju u skladu sa preporukama optimalne ishrane za uzrast.
+	Omogućite mu da unosi više raznobojnog povrća  ( posebo tamno zelenog , crvenog i narandžastog) i sveže raznovrsno voće
+	Čist, prirodni sok možete dati samo u okviru obroka i ne u većoj količini od 120 -180 ml.
+	Ponudite detetu  čistu vodu kada je žedno umesto zaslađenih tečnosti ( zaslađenih ćajeva, gaziranih napitaka, sokova).
+	Omogućite  mu da koristi hleb, testenine i žitarice od celog zrna
+	Izaberite zdrave proteine : piletinu, mahunarke, nemasne sireve i dr
+	Deci od 1-2 godine možete dati celo pasterizovano mleko a deci starijoj od 2 godine obrano mleko.  
+	Obezbedite raznoliku i uravnoteženu ishranu sa minimalno prerađenom hranom
+	Izbegavajte da dajete detetu visokokaloričnu i slanu hranu ( masna peciva, grickalice, čips, ), koja će ga zasititi i smanjiti apetit za unos korisnijih namirnica.
+	Izbegavajte da nudite detetu zaslađenu hranu: slatkiše, kolače, čokoladu, čokoladno mleko.
+	Razgovarajte sa Vašim detetom da zna da ste mu podrška. Fokusirajte se na postepeno menjanje telesnih aktivnosti i prehrambenih navika čitave porodice kako se dete ne bi osećalo usamljeno.
+	Budite pozitivan primer svom detetu. 
+	Uspostavite rutine u jelu, aktivnostima i spavanju, omogućite mu dovoljno vremena za spavanje. 
+	Ograničite vreme sedenja ispred ekrana ( tableta, televizora, telefona)  na manje od 1 časa .
+	Obezbedite vašem detetu, ako je starije od 2 godine,  umerene i jake fizičke aktivnosti raspoređene u kraćim intervalima, u kojima će  dete a i cela porodica uživati i koje nisu preteške za njega ( brzo hodanje, plivanje, skakanje, igre loptom, vožnja bicikla..), najmanje 60 do 90 minuta tokom dana. 
+
+Poštovanje preporuka nije neki prinudni posao već skup mogućnosti koje možete iskoristiti kako bi cela porodica bila aktivna i zdrava",Draft
+3121,23020,Više o rastu 25 - 72 meseca - prekomerna težina i gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane ili nedovoljne fizičke aktivnosti, retko genetskih poremećaja, ali je potrebno razmotiti i promene u okruženju i načinu nege deteta. Kako dovodi do brojnih zdravstvenih problema: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, endokrinih bolesti, depresije, niskog samopoštovanja i nižeg akademskog postignuća kasnije u životu, neophodno je ovaj višak na vreme otkriti i preduzeti mere za vraćanje telesne mase u tipične tokove rasta.  
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti. 
+
+Preporuke za malo dete:
+
+Proverite da li Vaše dete ima odgovarajući broj obroka i unosi hranu, u količini i sadržaju u skladu sa preporukama optimalne ishrane za uzrast.
+	Omogućite mu da unosi više raznobojnog povrća  ( posebo tamno zelenog , crvenog i narandžastog) i sveže raznovrsno voće
+	Čist, prirodni sok možete dati samo u okviru obroka i ne u većoj količini od 120 -180 ml.
+	Ponudite detetu  čistu vodu kada je žedno umesto zaslađenih tečnosti ( zaslađenih ćajeva, gaziranih napitaka, sokova).
+	Omogućite  mu da koristi hleb, testenine i žitarice od celog zrna
+	Izaberite zdrave proteine : piletinu, mahunarke, nemasne sireve i dr
+	Deci od 1-2 godine možete dati celo pasterizovano mleko a deci starijoj od 2 godine obrano mleko.  
+	Obezbedite raznoliku i uravnoteženu ishranu sa minimalno prerađenom hranom
+	Izbegavajte da dajete detetu visokokaloričnu i slanu hranu ( masna peciva, grickalice, čips, ), koja će ga zasititi i smanjiti apetit za unos korisnijih namirnica.
+	Izbegavajte da nudite detetu zaslađenu hranu: slatkiše, kolače, čokoladu, čokoladno mleko.
+	Razgovarajte sa Vašim detetom da zna da ste mu podrška. Fokusirajte se na postepeno menjanje telesnih aktivnosti i prehrambenih navika čitave porodice kako se dete ne bi osećalo usamljeno.
+	Budite pozitivan primer svom detetu. 
+	Uspostavite rutine u jelu, aktivnostima i spavanju, omogućite mu dovoljno vremena za spavanje. 
+	Ograničite vreme sedenja ispred ekrana ( tableta, televizora, telefona)  na manje od 1 časa .
+	Obezbedite vašem detetu, ako je starije od 2 godine,  umerene i jake fizičke aktivnosti raspoređene u kraćim intervalima, u kojima će  dete a i cela porodica uživati i koje nisu preteške za njega ( brzo hodanje, plivanje, skakanje, igre loptom, vožnja bicikla..), najmanje 60 do 90 minuta tokom dana. 
+
+Poštovanje preporuka nije neki prinudni posao već skup mogućnosti koje možete iskoristiti kako bi cela porodica bila aktivna i zdrava",Draft
+3126,23021,Više o rastu u prvih 6 meseci - gojaznost,"Za decu uzrasta do 6 meseci koja su isključivo dojena (dobijaju samo mamino mleko) ne postoji rizik od prekomerne težine. Dokazano je i naučno potvrđeno da dojenje, naročito produženo-najmanje 12 meseci, štiti dete od gojaznosti kasnije u detinjstvu i u odraslom dobu. Kada beba sisa, ona uzima onoliko mleka koliko joj je potrebno i prekida podoj kada oseti da je sita.
+
+Za decu na veštačkoj ishrani uvek je prisutna opasnost od prekomernog dobijanja u težini.  Bebina urođena sposobnost regulacije apetita može biti narušena ako hranite bebu na flašicu (bilo da se radi o dohrani uz podoj ili potpunoj ishrani adaptiranim mlekom).
+
+Ako beba ne sisa, važno je ne samo kojim ćete je adaptiranim mlekom hraniti, već i način na koji se beba hrani. Zato vodite računa o preporučenoj količini i broju obroka prema uzrastu deteta.
+
+Ukoliko mislite sa vaša beba ima višak kilograma ili je gojazna posavetujte se sa izabranim pedijatrom. Nemojte nikada uskraćivati hranu detetu u želji da izgubi u težini, već se potrudite da uz savete pedijatra uspostavite pravilnu ishranu koja je neophodna za optimalan rast i razvoj vašeg deteta.",Draft
+3131,23022,Više o rastu 7 - 9 meseci - gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane i/ili nedovoljne fizičke aktivnosti. Tome mogu doprineti promene u okruženju i načinu nege deteta kao i mogući genetski poremećaji. Višak telesne mase može dovesti do brojnih zdravstvenih problema u detinjstvu ali i kasnije u životu: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, šećerne bolesti, mentalnih problema: depresije i niskog samopoštovanja.   
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti.
+
+Preporuke za odojče
+
+Najbolja hrana za odojče je majčino mleko koje sadrži sve potrebne hranljive materije u uravnoteženom odnosu. Stoga se ono preporučuje kao isključiva hrana u prvih 6 meseci i dalje uz uvođenje nemlečne hrane.
+	Proverite da li vaše dete, ako je starije od 6 meseci, ima  ostale obroke u količini i broju u skladu sa važećim preporukama za optimalnu ishranu, a ako to nije slučaj obavite potrebno prilagođavanje. 
+	Držite se preporuka da ne sladite hranu koju dajete detatu, a dnevnu količinu prirodnog soka koju dajete detetu starijem od 6 meseci  ograničite na 90 ml, maksimalno 120 ml.
+	Ne solite hranu koju dajete deteteu.
+	Obratite pažnju i na način kako hranite dete. Nemojte ga siliti da pojede svu hranu koju ste spremili već poštujte njegov osećaj sitosti. Podstičite ga da se samo hrani, iz ruke, jer tada najbolje zna kada mu je dosta.
+	Ohrabrite kretanje i aktivnost vašeg deteta i omogućite mu najmanje 30 minuta interaktivne igre, u raznim položajima na podu.
+	Omogućite mu dobar san i spavanje u trajanju od 12 do 17 sati u zavisnosti od uzrasta u kome se nalazi i potrebe.
+
+Primena  preporuka za pravilnu ishranu i fizičku aktivnost deteta od njegovog  najranijeg uzrasta, povećava njegove izglede za zdrav i uspešan život.",Draft
+3136,23023,Više o rastu 10 - 12 meseci - gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane i/ili nedovoljne fizičke aktivnosti. Tome mogu doprineti promene u okruženju i načinu nege deteta kao i mogući genetski poremećaji. Višak telesne mase može dovesti do brojnih zdravstvenih problema u detinjstvu ali i kasnije u životu: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, šećerne bolesti, mentalnih problema: depresije i niskog samopoštovanja.   
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti.
+
+Preporuke za odojče
+
+Najbolja hrana za odojče je majčino mleko koje sadrži sve potrebne hranljive materije u uravnoteženom odnosu. Stoga se ono preporučuje kao isključiva hrana u prvih 6 meseci i dalje uz uvođenje nemlečne hrane.
+	Proverite da li vaše dete, ako je starije od 6 meseci, ima  ostale obroke u količini i broju u skladu sa važećim preporukama za optimalnu ishranu, a ako to nije slučaj obavite potrebno prilagođavanje. 
+	Držite se preporuka da ne sladite hranu koju dajete detatu, a dnevnu količinu prirodnog soka koju dajete detetu starijem od 6 meseci  ograničite na 90 ml, maksimalno 120 ml.
+	Ne solite hranu koju dajete deteteu.
+	Obratite pažnju i na način kako hranite dete. Nemojte ga siliti da pojede svu hranu koju ste spremili već poštujte njegov osećaj sitosti. Podstičite ga da se samo hrani, iz ruke, jer tada najbolje zna kada mu je dosta.
+	Ohrabrite kretanje i aktivnost vašeg deteta i omogućite mu najmanje 30 minuta interaktivne igre, u raznim položajima na podu.
+	Omogućite mu dobar san i spavanje u trajanju od 12 do 17 sati u zavisnosti od uzrasta u kome se nalazi i potrebe.
+
+Primena  preporuka za pravilnu ishranu i fizičku aktivnost deteta od njegovog  najranijeg uzrasta, povećava njegove izglede za zdrav i uspešan život.",Draft
+3141,23024,Više o rastu 13 -24 meseca - gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane ili nedovoljne fizičke aktivnosti, retko genetskih poremećaja, ali je potrebno razmotiti i promene u okruženju i načinu nege deteta. Kako dovodi do brojnih zdravstvenih problema: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, endokrinih bolesti, depresije, niskog samopoštovanja i nižeg akademskog postignuća kasnije u životu, neophodno je ovaj višak na vreme otkriti i preduzeti mere za vraćanje telesne mase u tipične tokove rasta.  
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti. 
+
+Preporuke za malo dete:
+
+Proverite da li Vaše dete ima odgovarajući broj obroka i unosi hranu, u količini i sadržaju u skladu sa preporukama optimalne ishrane za uzrast.
+	Omogućite mu da unosi više raznobojnog povrća  ( posebo tamno zelenog , crvenog i narandžastog) i sveže raznovrsno voće
+	Čist, prirodni sok možete dati samo u okviru obroka i ne u većoj količini od 120 -180 ml.
+	Ponudite detetu  čistu vodu kada je žedno umesto zaslađenih tečnosti ( zaslađenih ćajeva, gaziranih napitaka, sokova).
+	Omogućite  mu da koristi hleb, testenine i žitarice od celog zrna
+	Izaberite zdrave proteine : piletinu, mahunarke, nemasne sireve i dr
+	Deci od 1-2 godine možete dati celo pasterizovano mleko a deci starijoj od 2 godine obrano mleko.  
+	Obezbedite raznoliku i uravnoteženu ishranu sa minimalno prerađenom hranom
+	Izbegavajte da dajete detetu visokokaloričnu i slanu hranu ( masna peciva, grickalice, čips, ), koja će ga zasititi i smanjiti apetit za unos korisnijih namirnica.
+	Izbegavajte da nudite detetu zaslađenu hranu: slatkiše, kolače, čokoladu, čokoladno mleko.
+	Razgovarajte sa Vašim detetom da zna da ste mu podrška. Fokusirajte se na postepeno menjanje telesnih aktivnosti i prehrambenih navika čitave porodice kako se dete ne bi osećalo usamljeno.
+	Budite pozitivan primer svom detetu. 
+	Uspostavite rutine u jelu, aktivnostima i spavanju, omogućite mu dovoljno vremena za spavanje. 
+	Ograničite vreme sedenja ispred ekrana ( tableta, televizora, telefona)  na manje od 1 časa .
+	Obezbedite vašem detetu, ako je starije od 2 godine,  umerene i jake fizičke aktivnosti raspoređene u kraćim intervalima, u kojima će  dete a i cela porodica uživati i koje nisu preteške za njega ( brzo hodanje, plivanje, skakanje, igre loptom, vožnja bicikla..), najmanje 60 do 90 minuta tokom dana. 
+
+Poštovanje preporuka nije neki prinudni posao već skup mogućnosti koje možete iskoristiti kako bi cela porodica bila aktivna i zdrava",Draft
+3146,23025,Više o rastu 25 - 72 meseca - gojaznost,"Višak telesne mase se najčešće javlja kao posledica prekomerene  ishrane ili nedovoljne fizičke aktivnosti, retko genetskih poremećaja, ali je potrebno razmotiti i promene u okruženju i načinu nege deteta. Kako dovodi do brojnih zdravstvenih problema: koštano-zglobnih deformiteta, bolesti srca i krvnih sudova, endokrinih bolesti, depresije, niskog samopoštovanja i nižeg akademskog postignuća kasnije u životu, neophodno je ovaj višak na vreme otkriti i preduzeti mere za vraćanje telesne mase u tipične tokove rasta.  
+
+Ako vidite da je vaše dete počelo da se goji odvešćete ga kod pedijatra na pregled, možda i detaljnije ispitivanje, ali postoje neke mere koje i sami možete preduzeti. 
+
+Preporuke za malo dete:
+
+Proverite da li Vaše dete ima odgovarajući broj obroka i unosi hranu, u količini i sadržaju u skladu sa preporukama optimalne ishrane za uzrast.
+	Omogućite mu da unosi više raznobojnog povrća  ( posebo tamno zelenog , crvenog i narandžastog) i sveže raznovrsno voće
+	Čist, prirodni sok možete dati samo u okviru obroka i ne u većoj količini od 120 -180 ml.
+	Ponudite detetu  čistu vodu kada je žedno umesto zaslađenih tečnosti ( zaslađenih ćajeva, gaziranih napitaka, sokova).
+	Omogućite  mu da koristi hleb, testenine i žitarice od celog zrna
+	Izaberite zdrave proteine : piletinu, mahunarke, nemasne sireve i dr
+	Deci od 1-2 godine možete dati celo pasterizovano mleko a deci starijoj od 2 godine obrano mleko.  
+	Obezbedite raznoliku i uravnoteženu ishranu sa minimalno prerađenom hranom
+	Izbegavajte da dajete detetu visokokaloričnu i slanu hranu ( masna peciva, grickalice, čips, ), koja će ga zasititi i smanjiti apetit za unos korisnijih namirnica.
+	Izbegavajte da nudite detetu zaslađenu hranu: slatkiše, kolače, čokoladu, čokoladno mleko.
+	Razgovarajte sa Vašim detetom da zna da ste mu podrška. Fokusirajte se na postepeno menjanje telesnih aktivnosti i prehrambenih navika čitave porodice kako se dete ne bi osećalo usamljeno.
+	Budite pozitivan primer svom detetu. 
+	Uspostavite rutine u jelu, aktivnostima i spavanju, omogućite mu dovoljno vremena za spavanje. 
+	Ograničite vreme sedenja ispred ekrana ( tableta, televizora, telefona)  na manje od 1 časa .
+	Obezbedite vašem detetu, ako je starije od 2 godine,  umerene i jake fizičke aktivnosti raspoređene u kraćim intervalima, u kojima će  dete a i cela porodica uživati i koje nisu preteške za njega ( brzo hodanje, plivanje, skakanje, igre loptom, vožnja bicikla..), najmanje 60 do 90 minuta tokom dana. 
+
+Poštovanje preporuka nije neki prinudni posao već skup mogućnosti koje možete iskoristiti kako bi cela porodica bila aktivna i zdrava",Draft
+3151,23026,Više o rastu u prvih 6 meseci - adekvatan rast za uzrast,"Nakon rođenja, u prvom tromesečju dete raste najbrže a zatim rast i dalje intenzivno traje ali sa blagim usporavanjem. 
+
+U ovom periodu, kjučni uticaj na brzinu rasta imaju ishrana i još nedovoljno definisani genetski faktori, ali i odgovarajuća podrška iz najbližeg okruženja. Bolesti u detinjstvu mogu delovati ometajuće ali uz vašu odgovarajuću podršku uglavnom imaju privremen uticaj.    
+
+Rast vašeg deteta se procenjuje merenjem  parametara rasta: telesne mase ( težine), telesne dužine (dete se meri u ležećem položaju sve do 2 godine) i obima glave, te njihovim poređenjem sa standardima rasta  koje je izdala Svetska zdravstvena organizacija (SZO).  Za svakodnevnu praksu ovi standardi su pretočeni u grafikone rasta koji su izrađeni posebno za dečake a posebno za devojčice.
+	Pri svakoj preventivnoj poseti kod pedijatra ( 5 poseta u prvih 6 meseci) vaše dete če biti izmereno a dobijene vrednosti unete u karte rasta  putem kojih će se pratiti kojom brzinom vaše dete napreduje i da li se drži ustaljenog obrasca rasta.       
+	Na rođenju Prosečne vrednosti telesne mase i telesne dužine, na rođenju, su nešto veće kod dečaka (oko 3600 gr i 51,5 cm)  u odnosu na devojčice ( oko 3500 gr i 50,5 cmi ), što jasno odražava uticaj genetskih faktora na rast. Obim glave je u proseku oko 35 cm.
+	Prvi mesec Nemojte se iznenaditi ako vaše dete u  prvim danima po rođenju izgubi i do 10% svoje telesne mase. To je očekivano, a gubitak je privremen i nadoknadiće se uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, najdalje do kraja druge nedelje života.
+	Narednih dana se očekuje da dete počne da dobija na težini, u proseku  20 do 30 grama dnevno.
+	Prvi mesec je mesec privikavanja deteta na uslove života u spoljašnjem okruženju i postoje velike varijacije u rastu. Zato se može desiti da vaše dete dobije samo 400 grama ili ako je krupno rođeno,  često traži da sisa i dobro spava  dobije1000 grama i više. Za ovo vreme poraste u dužinu u proseku  4,5 do 5 cm.  
+	Rast glave se posebno prati jer je uslovljen brzinom rasta mozga. Mozak se puni mnoštvom informacija iz okruženja i raste fantastičnom brzinom te u ovom mesecu obim glave može porasti za  oko 2,5 cm
+	Prvo tromesečje Vaše dete će nastaviti da raste približno istom brzinom koju je uspostavilo tokom prvih nekoliko nedelja života. Tokom ovih meseci se očekuje da dobija  700 do 900 gr u težini,  2,5 do 4 cm u dužini  i 1,2 cm obim glave mesečno. Navedene brojke predstavljaju samo prosečne vrednosti tako da su za tipičan rast moguća blaža odstupanja i napredovanje vašeg deteta će se procenjivati na osnovu sveukupne slike.       
+	Pola godine  Od četvrtog do sedmog meseca dete će nastaviti da dobija mesečno u težini oko 450 do 550 gr, Za ovo vreme će porasti u dužinu oko 6 cm a obim glave će se povećati za oko 2,5 cm.     
+	U periodu od 4. do 6. meseca većina dece udvostruči svoju telesnu masu sa rođenja.
+	Godina dana Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku.  
+
+Rast svakog deteta je jedinstven, i uglavnom sledi obrazac rasta utvrđen u prvim mesecima života a redovna merenja i vođenje karta rasta nam pomažu da ga uredno pratimo.",Draft
+3156,23027,Više o rastu 7 - 9 meseci - adekvatan rast za uzrast,"Verovatno ste primetili da je dete lako usporilo rast negde oko četvrtog meseca Istim intenzitetom je nastavilo da raste i u ovom periodu.
+
+U ovom periodu majčino mleko ( ili adaptirano mleko), nije jedina hrana koju dete koristi i postepeno se navikava na unošenje  drugih namirnice biljnog i životinjskog porekla. S druge strane postaje aktivnije u kretanju i istraživanju okruženja što će u značajnoj meri odraziti na rast. Da podsetimo samo da dete raste dok spava  i da rast zavisi i od toga koliko vremena provede u spavanju  i kakav san ima.
+	Važno je da dete nastavi da prti obrazac rasta koji je uspostavilo tokom prvih nedelja života
+	Očekujte da će vaše dete mesečno u proseku u ovom periodu dobijati oko 1,5 do 2 cm  u dužini i 300 do 350 gr u težini. Ako je sitnije građe i vrlo živahno, biće dovoljno da dobije i 200 do  250 gr. u devetom  mesecu.
+	Mozak i dalje intenzivno raste i obim glave se svakog meseca povećava za oko 0,5 cm. 
+
+Rast svakog deteta je jedinstven i ono je već uspostavilo obrazac rasta koji će slediti.",Draft
+3161,23028,Više o rastu 10 - 12 meseci - adekvatan rast za uzrast,"Ovih godinu dana rasta i razvoja vašeg deteta je skoro ’’proletelo’’. Došlo je vreme prohodavanja i prve reči a telesni rast deteta lagano usporava iako je i dalje intenzivan.   
+
+U poslednjem tromesečju odojčad mesečno dobijaju u proseku oko 200 do 250 gr u težini i oko 1 cm u dužini. Tokom ovog perioda obim glave kod deteta će porasti još za 1 cm.
+
+Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku. 
+
+Telesni rast vašeg deteta zavisi od nasleđa ali imajte na umu da se odvija uz vašu svakodnevnu podršku i da ste i vi zaslužni za njegovo uspešno napredovanje.",Draft
+3166,23029,Više o rastu 13 -24 meseca - adekvatan rast za uzrast,"Dete dobro raste i napreduje uz:  adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način. 
+	Praćenje rasta deteta u drugoj godini podrazumeva određivanje parametara rasta; telesne mase,  telesne dužine i obima glave dva puta godišnje i praćenje njihovog kretanja kroz vreme u kartama rasta.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  fantastičnih 90% svog ukupnog rasta.
+	Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše  na odgovarajući način
+
+Rast deteta u drugoj godini je malo sporiji u odnosu na rast u predhodnoj godini ali i dalje dovoljno brz da lako može da se poremeti Stoga je važno da se detetu omoguće uslovi za dobar napredak i rast redovno prati. ",Draft
+3171,23030,Više o rastu 25 - 72 meseca - adekvatan rast za uzrast,"Dete dobro raste i napreduje uz: adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način.  
+	Pored već pomenutih faktora, hormoni samog deteta počinju da ostvaruju snažniji uticaj na rast .
+	Praćenje rasta malog deteta podrazumeva određivanje parametara rasta; telesne mase i telesne dužine/visine, jednom do dva puta godišnje i praćenje njihovog kretanja kroz vreme.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  90% svog ukupnog rasta.
+	Od treće godine Telesni rast deteta se odvija i kroz promene u proporcijama. Novorođenče je imalo relativno veliku glavu i kratke noge i ruke dok sada glava usporava rast a raste telo,  naročito ruke i noge.
+	Procenat masti u telu se takođe smanjuje što se vidi kroz vitkije ekstremitete i manje okruglu glavu.
+	Iako rast pratimo linearno on se ipak sastoji od niza malih skokova. Deca dobiju malo u težini a zatim krenu da rastu u visinu.
+	Poznate su i sezonske varijacije: deca u  proleće rastu brže u visinu dok od jeseni više dobijaju u težini.  
+	Od treće godine nadalje, do puberteta, rast je uglavnom ujednačen.
+	Većina dece, u tom periodu, godišnje poraste u visini  5,0 -7,5 cm  i 2-3 kg  u težini.
+	Glava će za narednih destak godina porasti još 3-4 cm.
+	U ovom uzrastu već postoji statistički značajna pozitivna korelacija između visine deteta i srednje visine roditelja, odnosno može se proceniti da li dete raste u skladu sa svojim genetskim potencijalom. Genetski potencijal rasta („ciljna visina”) se procenjuje na osnovu izračunavanja srednje visine roditelja prema jednačinama različitim za dečaka odnosno devojčice ( Tannerov metod)
+            Ciljna visina za dečaka (cm) = (visina oca + visina majke)/2 + 6,5
+
+            Ciljna visina za devojčicu (cm) = (visina oca + visina majke)/2 – 6,5 
+
+Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, endokrini poremećaji, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše   
+	Deci koja su rođena pre vremena ili sa malom telesnom masom/dužinom  na rođenju, potrebno je posvetiti posebnu pažnju jer u slučaju da posle dve godine ne postignu visinu u skladu sa visinom svojih roditelja, odnosno svojim genetskim potencijalom rasta, zahtevaju neodložno ispitivanje.    
+
+Vaše dete očekuje od vas  da mu pružite odgovarajuće uslove za optimalni rast i razvoj.",Draft
+3176,23031,Više o rastu u prvih 6 meseci - blago zaostajanje u rastu,"Nakon rođenja, u prvom tromesečju dete raste najbrže a zatim rast i dalje intenzivno traje ali sa blagim usporavanjem. 
+
+U ovom periodu, kjučni uticaj na brzinu rasta imaju ishrana i još nedovoljno definisani genetski faktori, ali i odgovarajuća podrška iz najbližeg okruženja. Bolesti u detinjstvu mogu delovati ometajuće ali uz vašu odgovarajuću podršku uglavnom imaju privremen uticaj.    
+
+Rast vašeg deteta se procenjuje merenjem  parametara rasta: telesne mase ( težine), telesne dužine (dete se meri u ležećem položaju sve do 2 godine) i obima glave, te njihovim poređenjem sa standardima rasta  koje je izdala Svetska zdravstvena organizacija (SZO).  Za svakodnevnu praksu ovi standardi su pretočeni u grafikone rasta koji su izrađeni posebno za dečake a posebno za devojčice.
+	Pri svakoj preventivnoj poseti kod pedijatra ( 5 poseta u prvih 6 meseci) vaše dete če biti izmereno a dobijene vrednosti unete u karte rasta  putem kojih će se pratiti kojom brzinom vaše dete napreduje i da li se drži ustaljenog obrasca rasta.       
+	Na rođenju Prosečne vrednosti telesne mase i telesne dužine, na rođenju, su nešto veće kod dečaka (oko 3600 gr i 51,5 cm)  u odnosu na devojčice ( oko 3500 gr i 50,5 cmi ), što jasno odražava uticaj genetskih faktora na rast. Obim glave je u proseku oko 35 cm.
+	Prvi mesec Nemojte se iznenaditi ako vaše dete u  prvim danima po rođenju izgubi i do 10% svoje telesne mase. To je očekivano, a gubitak je privremen i nadoknadiće se uz odgovarajuću negu i ishranu, najbolje majčinim mlekom, najdalje do kraja druge nedelje života.
+	Narednih dana se očekuje da dete počne da dobija na težini, u proseku  20 do 30 grama dnevno.
+	Prvi mesec je mesec privikavanja deteta na uslove života u spoljašnjem okruženju i postoje velike varijacije u rastu. Zato se može desiti da vaše dete dobije samo 400 grama ili ako je krupno rođeno,  često traži da sisa i dobro spava  dobije1000 grama i više. Za ovo vreme poraste u dužinu u proseku  4,5 do 5 cm.  
+	Rast glave se posebno prati jer je uslovljen brzinom rasta mozga. Mozak se puni mnoštvom informacija iz okruženja i raste fantastičnom brzinom te u ovom mesecu obim glave može porasti za  oko 2,5 cm
+	Prvo tromesečje Vaše dete će nastaviti da raste približno istom brzinom koju je uspostavilo tokom prvih nekoliko nedelja života. Tokom ovih meseci se očekuje da dobija  700 do 900 gr u težini,  2,5 do 4 cm u dužini  i 1,2 cm obim glave mesečno. Navedene brojke predstavljaju samo prosečne vrednosti tako da su za tipičan rast moguća blaža odstupanja i napredovanje vašeg deteta će se procenjivati na osnovu sveukupne slike.       
+	Pola godine  Od četvrtog do sedmog meseca dete će nastaviti da dobija mesečno u težini oko 450 do 550 gr, Za ovo vreme će porasti u dužinu oko 6 cm a obim glave će se povećati za oko 2,5 cm.     
+	U periodu od 4. do 6. meseca većina dece udvostruči svoju telesnu masu sa rođenja.
+	Godina dana Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku.  
+
+Rast svakog deteta je jedinstven, i uglavnom sledi obrazac rasta utvrđen u prvim mesecima života a redovna merenja i vođenje karta rasta nam pomažu da ga uredno pratimo.",Draft
+3181,23032,Više o rastu 7 - 9 meseci - blago zaostajanje u rastu,"Verovatno ste primetili da je dete lako usporilo rast negde oko četvrtog meseca Istim intenzitetom je nastavilo da raste i u ovom periodu.
+
+U ovom periodu majčino mleko ( ili adaptirano mleko), nije jedina hrana koju dete koristi i postepeno se navikava na unošenje  drugih namirnice biljnog i životinjskog porekla. S druge strane postaje aktivnije u kretanju i istraživanju okruženja što će u značajnoj meri odraziti na rast. Da podsetimo samo da dete raste dok spava  i da rast zavisi i od toga koliko vremena provede u spavanju  i kakav san ima.
+	Važno je da dete nastavi da prti obrazac rasta koji je uspostavilo tokom prvih nedelja života
+	Očekujte da će vaše dete mesečno u proseku u ovom periodu dobijati oko 1,5 do 2 cm  u dužini i 300 do 350 gr u težini. Ako je sitnije građe i vrlo živahno, biće dovoljno da dobije i 200 do  250 gr. u devetom  mesecu.
+	Mozak i dalje intenzivno raste i obim glave se svakog meseca povećava za oko 0,5 cm. 
+
+Rast svakog deteta je jedinstven i ono je već uspostavilo obrazac rasta koji će slediti.",Draft
+3186,23033,Više o rastu 10 - 12 meseci - blago zaostajanje u rastu,"Ovih godinu dana rasta i razvoja vašeg deteta je skoro ’’proletelo’’. Došlo je vreme prohodavanja i prve reči a telesni rast deteta lagano usporava iako je i dalje intenzivan.   
+
+U poslednjem tromesečju odojčad mesečno dobijaju u proseku oko 200 do 250 gr u težini i oko 1 cm u dužini. Tokom ovog perioda obim glave kod deteta će porasti još za 1 cm.
+
+Do kraja prve godine dete uglavnom utrostruči svoju težinu sa rođenja a procenat masnog  tkiva dostiže svoj vrhunac.  Za ovo vreme dete poraste u dužini oko  25 cm  ( 50% telesne dužine sa rođenja) a obim glave se poveća za 12,5 cm u proseku. 
+
+Telesni rast vašeg deteta zavisi od nasleđa ali imajte na umu da se odvija uz vašu svakodnevnu podršku i da ste i vi zaslužni za njegovo uspešno napredovanje.",Draft
+3191,23034,Više o rastu 13 -24 meseca - blago zaostajanje u rastu,"Dete dobro raste i napreduje uz:  adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način. 
+	Praćenje rasta deteta u drugoj godini podrazumeva određivanje parametara rasta; telesne mase,  telesne dužine i obima glave dva puta godišnje i praćenje njihovog kretanja kroz vreme u kartama rasta.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  fantastičnih 90% svog ukupnog rasta.
+	Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše  na odgovarajući način
+
+Rast deteta u drugoj godini je malo sporiji u odnosu na rast u predhodnoj godini ali i dalje dovoljno brz da lako može da se poremeti Stoga je važno da se detetu omoguće uslovi za dobar napredak i rast redovno prati. ",Draft
+3196,23035,Više o rastu 25 - 72 meseca - blago zaostajanje u rastu,"Dete dobro raste i napreduje uz: adekvatnu ishranu, dobro zdravstveno stanje, sigurno i bezbedno okruženje za igru i učenje  i roditelje koji mu podmiruju potrebe na odgovarajući način.  
+	Pored već pomenutih faktora, hormoni samog deteta počinju da ostvaruju snažniji uticaj na rast .
+	Praćenje rasta malog deteta podrazumeva određivanje parametara rasta; telesne mase i telesne dužine/visine, jednom do dva puta godišnje i praćenje njihovog kretanja kroz vreme.       
+	Druga godina U drugoj godini brzina rasta se usporava i postepeno se ustaljuje. Do navršene druge godine većina deca dobije još 2 do 2,5 kg,  poraste za 12 -12,5 cm, u proseku 1 cm mesečno, i dostigne skoro polovinu svoje krajnje visine.
+	 U ovom periodu glava poraste u proseku još za 2 -2,5 cm i dostigne skoro  90% svog ukupnog rasta.
+	Od treće godine Telesni rast deteta se odvija i kroz promene u proporcijama. Novorođenče je imalo relativno veliku glavu i kratke noge i ruke dok sada glava usporava rast a raste telo,  naročito ruke i noge.
+	Procenat masti u telu se takođe smanjuje što se vidi kroz vitkije ekstremitete i manje okruglu glavu.
+	Iako rast pratimo linearno on se ipak sastoji od niza malih skokova. Deca dobiju malo u težini a zatim krenu da rastu u visinu.
+	Poznate su i sezonske varijacije: deca u  proleće rastu brže u visinu dok od jeseni više dobijaju u težini.  
+	Od treće godine nadalje, do puberteta, rast je uglavnom ujednačen.
+	Većina dece, u tom periodu, godišnje poraste u visini  5,0 -7,5 cm  i 2-3 kg  u težini.
+	Glava će za narednih destak godina porasti još 3-4 cm.
+	U ovom uzrastu već postoji statistički značajna pozitivna korelacija između visine deteta i srednje visine roditelja, odnosno može se proceniti da li dete raste u skladu sa svojim genetskim potencijalom. Genetski potencijal rasta („ciljna visina”) se procenjuje na osnovu izračunavanja srednje visine roditelja prema jednačinama različitim za dečaka odnosno devojčice ( Tannerov metod)
+            Ciljna visina za dečaka (cm) = (visina oca + visina majke)/2 + 6,5
+
+            Ciljna visina za devojčicu (cm) = (visina oca + visina majke)/2 – 6,5 
+
+Poremećaj u rastu Rast je složen proces, podložan uticaju brojnih faktora od kojih neki mogu delovati ometajuće i poremetiti utvrđen obrazac rasta kao što su: neadekvatna ishrana,  hronične bolesti, endokrini poremećaji, lekovi, porodične neprilike i dr, te je redovno praćenje rasta deteta prilika da se poremećaj na vreme otkrije i interveniše   
+	Deci koja su rođena pre vremena ili sa malom telesnom masom/dužinom  na rođenju, potrebno je posvetiti posebnu pažnju jer u slučaju da posle dve godine ne postignu visinu u skladu sa visinom svojih roditelja, odnosno svojim genetskim potencijalom rasta, zahtevaju neodložno ispitivanje.    
+
+Vaše dete očekuje od vas  da mu pružite odgovarajuće uslove za optimalni rast i razvoj.",Draft
+3201,23036,Više o rastu u prvih 6 meseci - ozbiljno zaostajanje u rastu,"Roditelji su vrlo zainteresovani da znaju  da li njihovo dete ima visinu koja je odgovarajuća za uzrast.
+
+Ako vam se učini da je vaše dete nižeg rasta u odnosu na vršnjake, sami ćete ga češće meriti i naravno konsultovati se sa pedijatrom.  
+
+U okviru redovnih preventivnih pregleda u pedijatrijskoj ambulanti svoj deci se meri telesna dužina/visina i unosi u grafikon rasta, gde se jasno vidi u kakvom je odnosu izmerena vrednost deteta prema vrednostima zdrave dece  istog uzrasta i pola.  
+	U našoj sredini se koriste grafikoni (karte) rasta, koji predstavljaju standarde rasta do kojih su došla istraživanja u okviru Svetske zdravstvene organizacije.  
+Kada je dete nisko ( kratko) za uzrast?.
+
+Deci u uzrastu do 2 godine se meri telesna dužina u ležećem položaju a od druge godine se meri telesna visina u stojećem položaju.
+	Granica između normalnog i niskog rasta nije oštra jer je zasnovana na arbitraarno uzetom kriterijumu.
+	Dete čija telasna dužina/visina ima vrednosti 2 SD ispod proseka zdrave dece istog uzrasta i pola, u odnosu na pomenute standarde, ima  nizak rast.
+	Ako se vrednost telesne visine deteta nalazi u oblasti između -2 i -3 SD smatra se da dete ima umereno zaostajanje u rastu, a  ako je ispod – 3 SD teško zaostajanje u rastu.   
+	Poremećaj rasta u ovom smislu se može smatrati i kada su deca u uzrastu starijem od 4 godine sa normalnom visinom,  u neskladu sa visinom roditelja ili imaju nisku brzinu rasta, ispod 4,5 cm godišnje.
+Uzroci niskog rasta 
+
+Većina dece u razvijenim zemljama ima fiziološki oblik niskog rasta ’’oblik normalnog niskog rasta’’ jer nema druge znake poremećaja zdravlja već je visina deteta u skladu sa visinom i modelom rasta roditelja ili drugih bliskih srodnika ( porodično nizak rast)
+	Kod manjeg broja dece radi se o: genetskim poremećajima, poremećajima u lučenju hormona, zatim   različitim hroničnim bolestima creva, bubrega, srca, pluća; terapiji kortikosteroidima u visokim dozama. 
+	U nerazvijenim zemljama širom sveta podhranjenost, usled nedovoljnog unosa hrane u potrebnoj količini i sadržaju i/ili čestih infekcija, je vodeći uzrok niskog rasta.
+Pedijatar će na osnovu izvršenih merenja, pregleda deteta, uzetih podataka  o istoriji stanja, naročito podataka o visini roditelja i bliskih srodnika, proceniti da li će dati određene preporuke i nastaviti da prati rast deteta ili će preduzeti detaljnija ispitivanja.
+
+Kod istraživanja uzroka niskog rasta, pored traženja drugih znakova poremećaja zdravlja,  važno je da lekar ima na uvid kretanje vrednosti visine deteta najmanje za period od 2 predhodne godine.  
+
+Redovno praćenje rasta deteta u dužinu/visinu  je način kojim se može rano otkriti nizak rast i preduzimanjem odgovarajućih mera poboljšati prognoza u pogledu mogućnosti dostizanja očekivane telesne visine.",Draft
+3206,23037,Više o rastu 7 - 9 meseci - ozbiljno zaostajanje u rastu,"Roditelji su vrlo zainteresovani da znaju  da li njihovo dete ima visinu koja je odgovarajuća za uzrast.
+
+Ako vam se učini da je vaše dete nižeg rasta u odnosu na vršnjake, sami ćete ga češće meriti i naravno konsultovati se sa pedijatrom.  
+
+U okviru redovnih preventivnih pregleda u pedijatrijskoj ambulanti svoj deci se meri telesna dužina/visina i unosi u grafikon rasta, gde se jasno vidi u kakvom je odnosu izmerena vrednost deteta prema vrednostima zdrave dece  istog uzrasta i pola.  
+	U našoj sredini se koriste grafikoni (karte) rasta, koji predstavljaju standarde rasta do kojih su došla istraživanja u okviru Svetske zdravstvene organizacije.  
+Kada je dete nisko ( kratko) za uzrast?.
+
+Deci u uzrastu do 2 godine se meri telesna dužina u ležećem položaju a od druge godine se meri telesna visina u stojećem položaju.
+	Granica između normalnog i niskog rasta nije oštra jer je zasnovana na arbitraarno uzetom kriterijumu.
+	Dete čija telasna dužina/visina ima vrednosti 2 SD ispod proseka zdrave dece istog uzrasta i pola, u odnosu na pomenute standarde, ima  nizak rast.
+	Ako se vrednost telesne visine deteta nalazi u oblasti između -2 i -3 SD smatra se da dete ima umereno zaostajanje u rastu, a  ako je ispod – 3 SD teško zaostajanje u rastu.   
+	Poremećaj rasta u ovom smislu se može smatrati i kada su deca u uzrastu starijem od 4 godine sa normalnom visinom,  u neskladu sa visinom roditelja ili imaju nisku brzinu rasta, ispod 4,5 cm godišnje.
+Uzroci niskog rasta 
+
+Većina dece u razvijenim zemljama ima fiziološki oblik niskog rasta ’’oblik normalnog niskog rasta’’ jer nema druge znake poremećaja zdravlja već je visina deteta u skladu sa visinom i modelom rasta roditelja ili drugih bliskih srodnika ( porodično nizak rast)
+	Kod manjeg broja dece radi se o: genetskim poremećajima, poremećajima u lučenju hormona, zatim   različitim hroničnim bolestima creva, bubrega, srca, pluća; terapiji kortikosteroidima u visokim dozama. 
+	U nerazvijenim zemljama širom sveta podhranjenost, usled nedovoljnog unosa hrane u potrebnoj količini i sadržaju i/ili čestih infekcija, je vodeći uzrok niskog rasta.
+Pedijatar će na osnovu izvršenih merenja, pregleda deteta, uzetih podataka  o istoriji stanja, naročito podataka o visini roditelja i bliskih srodnika, proceniti da li će dati određene preporuke i nastaviti da prati rast deteta ili će preduzeti detaljnija ispitivanja.
+
+Kod istraživanja uzroka niskog rasta, pored traženja drugih znakova poremećaja zdravlja,  važno je da lekar ima na uvid kretanje vrednosti visine deteta najmanje za period od 2 predhodne godine.  
+
+Redovno praćenje rasta deteta u dužinu/visinu  je način kojim se može rano otkriti nizak rast i preduzimanjem odgovarajućih mera poboljšati prognoza u pogledu mogućnosti dostizanja očekivane telesne visine.",Draft
+3211,23038,Više o rastu 10 - 12 meseci - ozbiljno zaostajanje u rastu,"Roditelji su vrlo zainteresovani da znaju  da li njihovo dete ima visinu koja je odgovarajuća za uzrast.
+
+Ako vam se učini da je vaše dete nižeg rasta u odnosu na vršnjake, sami ćete ga češće meriti i naravno konsultovati se sa pedijatrom.  
+
+U okviru redovnih preventivnih pregleda u pedijatrijskoj ambulanti svoj deci se meri telesna dužina/visina i unosi u grafikon rasta, gde se jasno vidi u kakvom je odnosu izmerena vrednost deteta prema vrednostima zdrave dece  istog uzrasta i pola.  
+	U našoj sredini se koriste grafikoni (karte) rasta, koji predstavljaju standarde rasta do kojih su došla istraživanja u okviru Svetske zdravstvene organizacije.  
+Kada je dete nisko ( kratko) za uzrast?.
+
+Deci u uzrastu do 2 godine se meri telesna dužina u ležećem položaju a od druge godine se meri telesna visina u stojećem položaju.
+	Granica između normalnog i niskog rasta nije oštra jer je zasnovana na arbitraarno uzetom kriterijumu.
+	Dete čija telasna dužina/visina ima vrednosti 2 SD ispod proseka zdrave dece istog uzrasta i pola, u odnosu na pomenute standarde, ima  nizak rast.
+	Ako se vrednost telesne visine deteta nalazi u oblasti između -2 i -3 SD smatra se da dete ima umereno zaostajanje u rastu, a  ako je ispod – 3 SD teško zaostajanje u rastu.   
+	Poremećaj rasta u ovom smislu se može smatrati i kada su deca u uzrastu starijem od 4 godine sa normalnom visinom,  u neskladu sa visinom roditelja ili imaju nisku brzinu rasta, ispod 4,5 cm godišnje.
+Uzroci niskog rasta 
+
+Većina dece u razvijenim zemljama ima fiziološki oblik niskog rasta ’’oblik normalnog niskog rasta’’ jer nema druge znake poremećaja zdravlja već je visina deteta u skladu sa visinom i modelom rasta roditelja ili drugih bliskih srodnika ( porodično nizak rast)
+	Kod manjeg broja dece radi se o: genetskim poremećajima, poremećajima u lučenju hormona, zatim   različitim hroničnim bolestima creva, bubrega, srca, pluća; terapiji kortikosteroidima u visokim dozama. 
+	U nerazvijenim zemljama širom sveta podhranjenost, usled nedovoljnog unosa hrane u potrebnoj količini i sadržaju i/ili čestih infekcija, je vodeći uzrok niskog rasta.
+Pedijatar će na osnovu izvršenih merenja, pregleda deteta, uzetih podataka  o istoriji stanja, naročito podataka o visini roditelja i bliskih srodnika, proceniti da li će dati određene preporuke i nastaviti da prati rast deteta ili će preduzeti detaljnija ispitivanja.
+
+Kod istraživanja uzroka niskog rasta, pored traženja drugih znakova poremećaja zdravlja,  važno je da lekar ima na uvid kretanje vrednosti visine deteta najmanje za period od 2 predhodne godine.  
+
+Redovno praćenje rasta deteta u dužinu/visinu  je način kojim se može rano otkriti nizak rast i preduzimanjem odgovarajućih mera poboljšati prognoza u pogledu mogućnosti dostizanja očekivane telesne visine.",Draft
+3216,23039,Više o rastu 13 -24 meseca - ozbiljno zaostajanje u rastu,"Roditelji su vrlo zainteresovani da znaju  da li njihovo dete ima visinu koja je odgovarajuća za uzrast.
+
+Ako vam se učini da je vaše dete nižeg rasta u odnosu na vršnjake, sami ćete ga češće meriti i naravno konsultovati se sa pedijatrom.  
+
+U okviru redovnih preventivnih pregleda u pedijatrijskoj ambulanti svoj deci se meri telesna dužina/visina i unosi u grafikon rasta, gde se jasno vidi u kakvom je odnosu izmerena vrednost deteta prema vrednostima zdrave dece  istog uzrasta i pola.  
+	U našoj sredini se koriste grafikoni (karte) rasta, koji predstavljaju standarde rasta do kojih su došla istraživanja u okviru Svetske zdravstvene organizacije.  
+Kada je dete nisko ( kratko) za uzrast?.
+
+Deci u uzrastu do 2 godine se meri telesna dužina u ležećem položaju a od druge godine se meri telesna visina u stojećem položaju.
+	Granica između normalnog i niskog rasta nije oštra jer je zasnovana na arbitraarno uzetom kriterijumu.
+	Dete čija telasna dužina/visina ima vrednosti 2 SD ispod proseka zdrave dece istog uzrasta i pola, u odnosu na pomenute standarde, ima  nizak rast.
+	Ako se vrednost telesne visine deteta nalazi u oblasti između -2 i -3 SD smatra se da dete ima umereno zaostajanje u rastu, a  ako je ispod – 3 SD teško zaostajanje u rastu.   
+	Poremećaj rasta u ovom smislu se može smatrati i kada su deca u uzrastu starijem od 4 godine sa normalnom visinom,  u neskladu sa visinom roditelja ili imaju nisku brzinu rasta, ispod 4,5 cm godišnje.
+Uzroci niskog rasta 
+
+Većina dece u razvijenim zemljama ima fiziološki oblik niskog rasta ’’oblik normalnog niskog rasta’’ jer nema druge znake poremećaja zdravlja već je visina deteta u skladu sa visinom i modelom rasta roditelja ili drugih bliskih srodnika ( porodično nizak rast)
+	Kod manjeg broja dece radi se o: genetskim poremećajima, poremećajima u lučenju hormona, zatim   različitim hroničnim bolestima creva, bubrega, srca, pluća; terapiji kortikosteroidima u visokim dozama. 
+	U nerazvijenim zemljama širom sveta podhranjenost, usled nedovoljnog unosa hrane u potrebnoj količini i sadržaju i/ili čestih infekcija, je vodeći uzrok niskog rasta.
+Pedijatar će na osnovu izvršenih merenja, pregleda deteta, uzetih podataka  o istoriji stanja, naročito podataka o visini roditelja i bliskih srodnika, proceniti da li će dati određene preporuke i nastaviti da prati rast deteta ili će preduzeti detaljnija ispitivanja.
+
+Kod istraživanja uzroka niskog rasta, pored traženja drugih znakova poremećaja zdravlja,  važno je da lekar ima na uvid kretanje vrednosti visine deteta najmanje za period od 2 predhodne godine.  
+
+Redovno praćenje rasta deteta u dužinu/visinu  je način kojim se može rano otkriti nizak rast i preduzimanjem odgovarajućih mera poboljšati prognoza u pogledu mogućnosti dostizanja očekivane telesne visine.",Draft
+3221,23040,Više o rastu 25 - 72 meseca - ozbiljno zaostajanje u rastu,"Roditelji su vrlo zainteresovani da znaju  da li njihovo dete ima visinu koja je odgovarajuća za uzrast.
+
+Ako vam se učini da je vaše dete nižeg rasta u odnosu na vršnjake, sami ćete ga češće meriti i naravno konsultovati se sa pedijatrom.  
+
+U okviru redovnih preventivnih pregleda u pedijatrijskoj ambulanti svoj deci se meri telesna dužina/visina i unosi u grafikon rasta, gde se jasno vidi u kakvom je odnosu izmerena vrednost deteta prema vrednostima zdrave dece  istog uzrasta i pola.  
+	U našoj sredini se koriste grafikoni (karte) rasta, koji predstavljaju standarde rasta do kojih su došla istraživanja u okviru Svetske zdravstvene organizacije.  
+Kada je dete nisko ( kratko) za uzrast?.
+
+Deci u uzrastu do 2 godine se meri telesna dužina u ležećem položaju a od druge godine se meri telesna visina u stojećem položaju.
+	Granica između normalnog i niskog rasta nije oštra jer je zasnovana na arbitraarno uzetom kriterijumu.
+	Dete čija telasna dužina/visina ima vrednosti 2 SD ispod proseka zdrave dece istog uzrasta i pola, u odnosu na pomenute standarde, ima  nizak rast.
+	Ako se vrednost telesne visine deteta nalazi u oblasti između -2 i -3 SD smatra se da dete ima umereno zaostajanje u rastu, a  ako je ispod – 3 SD teško zaostajanje u rastu.   
+	Poremećaj rasta u ovom smislu se može smatrati i kada su deca u uzrastu starijem od 4 godine sa normalnom visinom,  u neskladu sa visinom roditelja ili imaju nisku brzinu rasta, ispod 4,5 cm godišnje.
+Uzroci niskog rasta 
+
+Većina dece u razvijenim zemljama ima fiziološki oblik niskog rasta ’’oblik normalnog niskog rasta’’ jer nema druge znake poremećaja zdravlja već je visina deteta u skladu sa visinom i modelom rasta roditelja ili drugih bliskih srodnika ( porodično nizak rast)
+	Kod manjeg broja dece radi se o: genetskim poremećajima, poremećajima u lučenju hormona, zatim   različitim hroničnim bolestima creva, bubrega, srca, pluća; terapiji kortikosteroidima u visokim dozama. 
+	U nerazvijenim zemljama širom sveta podhranjenost, usled nedovoljnog unosa hrane u potrebnoj količini i sadržaju i/ili čestih infekcija, je vodeći uzrok niskog rasta.
+Pedijatar će na osnovu izvršenih merenja, pregleda deteta, uzetih podataka  o istoriji stanja, naročito podataka o visini roditelja i bliskih srodnika, proceniti da li će dati određene preporuke i nastaviti da prati rast deteta ili će preduzeti detaljnija ispitivanja.
+
+Kod istraživanja uzroka niskog rasta, pored traženja drugih znakova poremećaja zdravlja,  važno je da lekar ima na uvid kretanje vrednosti visine deteta najmanje za period od 2 predhodne godine.  
+
+Redovno praćenje rasta deteta u dužinu/visinu  je način kojim se može rano otkriti nizak rast i preduzimanjem odgovarajućih mera poboljšati prognoza u pogledu mogućnosti dostizanja očekivane telesne visine.",Draft
+3226,23041,Više o rastu u prvih 6 meseci - visok rast za uzrast,"Visina (dužina) deteta je jedan od parametara rasta koji se meri i prati tokom redovnih preventivnih pregleda kod pedijatra, te se odstupanja od očekivanih vrednosti lako i na vreme mogu uočiti. U našoj sredini se koriste grafikoni rasta Svetske zdravstvene organizacije na kojima naznačene linije (+/- 2SD u odnosu na središnju vrednost) predstavljaju granične vrednosti normalnog opsega rasta dece istog pola i uzrasta. Međutim, kada je u pitanju visina, dete čija visina značajno premašuje očekivanu visinu za njegov uzrast (postiže vrednost + 3 SD na grafikonu rasta) detet smatramo veoma visokim. Ako visina deteta premašuje granične vrednosti, dobrog je zdravstvenog stanja, u kliničkoj slici nema drugih znakova odstupanja a roditelji ili bliski srodnici su visoki, onda je to detetova očekivana visina.
+
+Retko se dešava da je detetu, koje ima visinu (dužinu) iznad gornje granične vrednosti za pol i uzrast, ili postiže neobičan skok u visini, ili ima neke pridružene zdravstvene probleme, potrebno detaljnije ispitivanje. Tada se razmišlja o mogućim naslednim uzrocima ili povišenom lučenju hormona rasta.
+
+Promene u genskoj ili hromozomskoj osnovi (Marfanov, Sotosov, Beckwith- Wiedemannov, Klinefelterov sindrom,..) pored istaknutog rasta u visinu daju i druge karakteristike u kliničkoj slici deteta koje ukazuju na mogući nasledni poremećaj.    
+
+Rast kostiju i mišića, a samim tim rast u visinu, pod snažnim je uticajem hormona rasta. Povišene vrednosti ovog hormona u periodu rasta deteta, kada su hrskavice pri krajevima kostiju još otvorene, dovodi do pojave gigantizma: veoma visokog rasta sa dugačkim udovima i naglašenom bradom. Ako kod odraslih, u periodu kada je završen rast kostiju, dođe do porasta hormona rasta, javiće se klinička slika akromegalije, koja se odlikuje  porastom šaka, stopala istaknutih delova lica. Hormon rasta je jedan od hormona koje luči hipofiza, mala žlezda smeštena na bazi mozga, odmah ispod dela mozga koji nazivamo hipotalamus, sa kojim u sprezi reguliše i rad drugih žlezda sa unutrašnjim lučenjem.
+
+Kod sumnje na pojavu gigantskog rasta dete se upućuje endokrinologu na rengenološko i laboratorijsko ispitivanja kako bi se procenilo lučenje hormona rasta i stanje hipofize. Nekad se desi da se u predelu hipofize otkrije manji tumor čije je lečenje, u poslednje vreme, sve uspešnije.  
+
+
+Ako vaše dete ima visinu čija vrednost značajno premašuje očekivanu visinu za detetov kalendarski uzrast  (+3SD na grafikonu rasta) ili ste primetili da je došlo do neočekivano naglog skoka rasta u visinu, razgovarajte sa izabranim pedijatrom o rastu i ponašanju vašeg deteta.
+
+
+ ",Draft
+3231,23042,Više o rastu 7 -9 meseci - visok rast za uzrast,"Visina (dužina) deteta je jedan od parametara rasta koji se meri i prati tokom redovnih preventivnih pregleda kod pedijatra, te se odstupanja od očekivanih vrednosti lako i na vreme mogu uočiti. U našoj sredini se koriste grafikoni rasta Svetske zdravstvene organizacije na kojima naznačene linije (+/- 2SD u odnosu na središnju vrednost) predstavljaju granične vrednosti normalnog opsega rasta dece istog pola i uzrasta. Međutim, kada je u pitanju visina, dete čija visina značajno premašuje očekivanu visinu za njegov uzrast (postiže vrednost + 3 SD na grafikonu rasta) detet smatramo veoma visokim. Ako visina deteta premašuje granične vrednosti, dobrog je zdravstvenog stanja, u kliničkoj slici nema drugih znakova odstupanja a roditelji ili bliski srodnici su visoki, onda je to detetova očekivana visina.
+
+Retko se dešava da je detetu, koje ima visinu (dužinu) iznad gornje granične vrednosti za pol i uzrast, ili postiže neobičan skok u visini, ili ima neke pridružene zdravstvene probleme, potrebno detaljnije ispitivanje. Tada se razmišlja o mogućim naslednim uzrocima ili povišenom lučenju hormona rasta.
+
+Promene u genskoj ili hromozomskoj osnovi (Marfanov, Sotosov, Beckwith- Wiedemannov, Klinefelterov sindrom,..) pored istaknutog rasta u visinu daju i druge karakteristike u kliničkoj slici deteta koje ukazuju na mogući nasledni poremećaj.    
+
+Rast kostiju i mišića, a samim tim rast u visinu, pod snažnim je uticajem hormona rasta. Povišene vrednosti ovog hormona u periodu rasta deteta, kada su hrskavice pri krajevima kostiju još otvorene, dovodi do pojave gigantizma: veoma visokog rasta sa dugačkim udovima i naglašenom bradom. Ako kod odraslih, u periodu kada je završen rast kostiju, dođe do porasta hormona rasta, javiće se klinička slika akromegalije, koja se odlikuje  porastom šaka, stopala istaknutih delova lica. Hormon rasta je jedan od hormona koje luči hipofiza, mala žlezda smeštena na bazi mozga, odmah ispod dela mozga koji nazivamo hipotalamus, sa kojim u sprezi reguliše i rad drugih žlezda sa unutrašnjim lučenjem.
+
+Kod sumnje na pojavu gigantskog rasta dete se upućuje endokrinologu na rengenološko i laboratorijsko ispitivanja kako bi se procenilo lučenje hormona rasta i stanje hipofize. Nekad se desi da se u predelu hipofize otkrije manji tumor čije je lečenje, u poslednje vreme, sve uspešnije.  
+
+
+Ako vaše dete ima visinu čija vrednost značajno premašuje očekivanu visinu za detetov kalendarski uzrast  (+3SD na grafikonu rasta) ili ste primetili da je došlo do neočekivano naglog skoka rasta u visinu, razgovarajte sa izabranim pedijatrom o rastu i ponašanju vašeg deteta.
+
+
+ ",Draft
+3236,23043,Više o rastu 10-12 meseci - visok rast za uzrast,"Visina (dužina) deteta je jedan od parametara rasta koji se meri i prati tokom redovnih preventivnih pregleda kod pedijatra, te se odstupanja od očekivanih vrednosti lako i na vreme mogu uočiti. U našoj sredini se koriste grafikoni rasta Svetske zdravstvene organizacije na kojima naznačene linije (+/- 2SD u odnosu na središnju vrednost) predstavljaju granične vrednosti normalnog opsega rasta dece istog pola i uzrasta. Međutim, kada je u pitanju visina, dete čija visina značajno premašuje očekivanu visinu za njegov uzrast (postiže vrednost + 3 SD na grafikonu rasta) detet smatramo veoma visokim. Ako visina deteta premašuje granične vrednosti, dobrog je zdravstvenog stanja, u kliničkoj slici nema drugih znakova odstupanja a roditelji ili bliski srodnici su visoki, onda je to detetova očekivana visina.
+
+Retko se dešava da je detetu, koje ima visinu (dužinu) iznad gornje granične vrednosti za pol i uzrast, ili postiže neobičan skok u visini, ili ima neke pridružene zdravstvene probleme, potrebno detaljnije ispitivanje. Tada se razmišlja o mogućim naslednim uzrocima ili povišenom lučenju hormona rasta.
+
+Promene u genskoj ili hromozomskoj osnovi (Marfanov, Sotosov, Beckwith- Wiedemannov, Klinefelterov sindrom,..) pored istaknutog rasta u visinu daju i druge karakteristike u kliničkoj slici deteta koje ukazuju na mogući nasledni poremećaj.    
+
+Rast kostiju i mišića, a samim tim rast u visinu, pod snažnim je uticajem hormona rasta. Povišene vrednosti ovog hormona u periodu rasta deteta, kada su hrskavice pri krajevima kostiju još otvorene, dovodi do pojave gigantizma: veoma visokog rasta sa dugačkim udovima i naglašenom bradom. Ako kod odraslih, u periodu kada je završen rast kostiju, dođe do porasta hormona rasta, javiće se klinička slika akromegalije, koja se odlikuje  porastom šaka, stopala istaknutih delova lica. Hormon rasta je jedan od hormona koje luči hipofiza, mala žlezda smeštena na bazi mozga, odmah ispod dela mozga koji nazivamo hipotalamus, sa kojim u sprezi reguliše i rad drugih žlezda sa unutrašnjim lučenjem.
+
+Kod sumnje na pojavu gigantskog rasta dete se upućuje endokrinologu na rengenološko i laboratorijsko ispitivanja kako bi se procenilo lučenje hormona rasta i stanje hipofize. Nekad se desi da se u predelu hipofize otkrije manji tumor čije je lečenje, u poslednje vreme, sve uspešnije.  
+
+
+Ako vaše dete ima visinu čija vrednost značajno premašuje očekivanu visinu za detetov kalendarski uzrast  (+3SD na grafikonu rasta) ili ste primetili da je došlo do neočekivano naglog skoka rasta u visinu, razgovarajte sa izabranim pedijatrom o rastu i ponašanju vašeg deteta.",Draft
+3241,23044,Više o rastu 13-24 meseca - visok rast za uzrast,"Visina (dužina) deteta je jedan od parametara rasta koji se meri i prati tokom redovnih preventivnih pregleda kod pedijatra, te se odstupanja od očekivanih vrednosti lako i na vreme mogu uočiti. U našoj sredini se koriste grafikoni rasta Svetske zdravstvene organizacije na kojima naznačene linije (+/- 2SD u odnosu na središnju vrednost) predstavljaju granične vrednosti normalnog opsega rasta dece istog pola i uzrasta. Međutim, kada je u pitanju visina, dete čija visina značajno premašuje očekivanu visinu za njegov uzrast (postiže vrednost + 3 SD na grafikonu rasta) detet smatramo veoma visokim. Ako visina deteta premašuje granične vrednosti, dobrog je zdravstvenog stanja, u kliničkoj slici nema drugih znakova odstupanja a roditelji ili bliski srodnici su visoki, onda je to detetova očekivana visina.
+
+Retko se dešava da je detetu, koje ima visinu (dužinu) iznad gornje granične vrednosti za pol i uzrast, ili postiže neobičan skok u visini, ili ima neke pridružene zdravstvene probleme, potrebno detaljnije ispitivanje. Tada se razmišlja o mogućim naslednim uzrocima ili povišenom lučenju hormona rasta.
+
+Promene u genskoj ili hromozomskoj osnovi (Marfanov, Sotosov, Beckwith- Wiedemannov, Klinefelterov sindrom,..) pored istaknutog rasta u visinu daju i druge karakteristike u kliničkoj slici deteta koje ukazuju na mogući nasledni poremećaj.    
+
+Rast kostiju i mišića, a samim tim rast u visinu, pod snažnim je uticajem hormona rasta. Povišene vrednosti ovog hormona u periodu rasta deteta, kada su hrskavice pri krajevima kostiju još otvorene, dovodi do pojave gigantizma: veoma visokog rasta sa dugačkim udovima i naglašenom bradom. Ako kod odraslih, u periodu kada je završen rast kostiju, dođe do porasta hormona rasta, javiće se klinička slika akromegalije, koja se odlikuje  porastom šaka, stopala istaknutih delova lica. Hormon rasta je jedan od hormona koje luči hipofiza, mala žlezda smeštena na bazi mozga, odmah ispod dela mozga koji nazivamo hipotalamus, sa kojim u sprezi reguliše i rad drugih žlezda sa unutrašnjim lučenjem.
+
+Kod sumnje na pojavu gigantskog rasta dete se upućuje endokrinologu na rengenološko i laboratorijsko ispitivanja kako bi se procenilo lučenje hormona rasta i stanje hipofize. Nekad se desi da se u predelu hipofize otkrije manji tumor čije je lečenje, u poslednje vreme, sve uspešnije.  
+
+
+Ako vaše dete ima visinu čija vrednost značajno premašuje očekivanu visinu za detetov kalendarski uzrast  (+3SD na grafikonu rasta) ili ste primetili da je došlo do neočekivano naglog skoka rasta u visinu, razgovarajte sa izabranim pedijatrom o rastu i ponašanju vašeg deteta.",Draft
+3246,23045,Više o rastu 25-72 meseca - visok rast za uzrast,"Visina (dužina) deteta je jedan od parametara rasta koji se meri i prati tokom redovnih preventivnih pregleda kod pedijatra, te se odstupanja od očekivanih vrednosti lako i na vreme mogu uočiti. U našoj sredini se koriste grafikoni rasta Svetske zdravstvene organizacije na kojima naznačene linije (+/- 2SD u odnosu na središnju vrednost) predstavljaju granične vrednosti normalnog opsega rasta dece istog pola i uzrasta. Međutim, kada je u pitanju visina, dete čija visina značajno premašuje očekivanu visinu za njegov uzrast (postiže vrednost + 3 SD na grafikonu rasta) detet smatramo veoma visokim. Ako visina deteta premašuje granične vrednosti, dobrog je zdravstvenog stanja, u kliničkoj slici nema drugih znakova odstupanja a roditelji ili bliski srodnici su visoki, onda je to detetova očekivana visina.
+
+Retko se dešava da je detetu, koje ima visinu (dužinu) iznad gornje granične vrednosti za pol i uzrast, ili postiže neobičan skok u visini, ili ima neke pridružene zdravstvene probleme, potrebno detaljnije ispitivanje. Tada se razmišlja o mogućim naslednim uzrocima ili povišenom lučenju hormona rasta.
+
+Promene u genskoj ili hromozomskoj osnovi (Marfanov, Sotosov, Beckwith- Wiedemannov, Klinefelterov sindrom,..) pored istaknutog rasta u visinu daju i druge karakteristike u kliničkoj slici deteta koje ukazuju na mogući nasledni poremećaj.    
+
+Rast kostiju i mišića, a samim tim rast u visinu, pod snažnim je uticajem hormona rasta. Povišene vrednosti ovog hormona u periodu rasta deteta, kada su hrskavice pri krajevima kostiju još otvorene, dovodi do pojave gigantizma: veoma visokog rasta sa dugačkim udovima i naglašenom bradom. Ako kod odraslih, u periodu kada je završen rast kostiju, dođe do porasta hormona rasta, javiće se klinička slika akromegalije, koja se odlikuje  porastom šaka, stopala istaknutih delova lica. Hormon rasta je jedan od hormona koje luči hipofiza, mala žlezda smeštena na bazi mozga, odmah ispod dela mozga koji nazivamo hipotalamus, sa kojim u sprezi reguliše i rad drugih žlezda sa unutrašnjim lučenjem.
+
+Kod sumnje na pojavu gigantskog rasta dete se upućuje endokrinologu na rengenološko i laboratorijsko ispitivanja kako bi se procenilo lučenje hormona rasta i stanje hipofize. Nekad se desi da se u predelu hipofize otkrije manji tumor čije je lečenje, u poslednje vreme, sve uspešnije.  
+
+
+Ako vaše dete ima visinu čija vrednost značajno premašuje očekivanu visinu za detetov kalendarski uzrast  (+3SD na grafikonu rasta) ili ste primetili da je došlo do neočekivano naglog skoka rasta u visinu, razgovarajte sa izabranim pedijatrom o rastu i ponašanju vašeg deteta.",Draft
