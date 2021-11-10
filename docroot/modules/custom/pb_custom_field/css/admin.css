@@ -358,3 +358,13 @@ height: 20px;
       padding:0;
   }
 }
+
+
+.two-section a {
+  background-color: transparent;
+}
+
+.two-section a:focus {
+  outline: none;
+  box-shadow: unset;
+}
