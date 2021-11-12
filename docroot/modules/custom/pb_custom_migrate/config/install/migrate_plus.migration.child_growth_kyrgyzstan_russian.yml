@@ -21,7 +21,7 @@ process:
 
   nid: ID
   title: Title
-  body/value: body
+  body/value: Body
 
 destination:
   plugin: 'entity:node'
