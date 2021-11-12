@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
 
 /**
  * Action description.
@@ -40,6 +41,12 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
    */
   public $nonAssigned = 0;
   /**
+   * Get the total non translated count.
+   *
+   * @var int
+   */
+  public $countryRestrict = 0;
+  /**
    * Get the total items processed.
    *
    * @var int
@@ -51,6 +58,19 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $uid = \Drupal::currentUser()->id();
+    $user = User::load($uid);
+
+    // $groups = array();
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    if (!empty($grps)) {
+      foreach ($grps as $grp) {
+        $groups = $grp->getGroup();
+      }
+      $grp_country_language = $groups->get('field_language')->getValue();
+      $grp_country_new_array = array_column($grp_country_language, 'value');
+    }
+
     $this->initial = $this->initial + 1;
     $this->processItem = $this->processItem + 1;
     $list = $this->context['list'];
@@ -58,13 +78,15 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     $message = "";
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
+
     $nid = $entity->get('nid')->getString();
     $archive_node = node_load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
     $node_lang_archive = $archive_node->getTranslation($current_language);
     $current_state = $node_lang_archive->moderation_state->value;
-    if ($current_state == 'published') {
+
+    if ($current_state == 'published' && empty($grps)) {
       /* Change status from publish to archive. */
       $node_lang_archive->set('moderation_state', 'archive');
       $node_lang_archive->set('uid', $uid);
@@ -92,8 +114,43 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
       $draft_node->save();
       $this->assigned = $this->assigned + 1;
     }
+    elseif ($current_state == 'published' && !empty($grps)) {
+      if (in_array($current_language, $grp_country_new_array)) {
+        /* Change status from publish to archive. */
+        $node_lang_archive->set('moderation_state', 'archive');
+        $node_lang_archive->set('uid', $uid);
+        $node_lang_archive->set('content_translation_source', $current_language);
+        $node_lang_archive->set('changed', time());
+        $node_lang_archive->set('created', time());
+
+        $uid = \Drupal::currentUser()->id();
+        $node_lang_archive->setNewRevision(TRUE);
+        $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “Draft”';
+        $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_archive->setRevisionUserId($uid);
+        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->save();
+        $archive_node->save();
+        /* Change status from publish to draft. */
+        $draft_node = Node::load($nid);
+        $node_lang_draft = $draft_node->getTranslation($current_language);
+        $node_lang_draft->set('moderation_state', 'draft');
+        $node_lang_draft->set('uid', $uid);
+        $node_lang_draft->set('content_translation_source', $current_language);
+        $node_lang_draft->set('changed', time());
+        $node_lang_draft->set('created', time());
+        $node_lang_draft->save();
+        $draft_node->save();
+        $this->assigned = $this->assigned + 1;
+      }
+      else {
+        $this->countryRestrict = $this->countryRestrict + 1;
+
+      }
+    }
     else {
       $this->nonAssigned = $this->nonAssigned + 1;
+
     }
 
     if ($this->nonAssigned > 0) {
@@ -101,6 +158,10 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     }
     else {
       $message = $this->t("Content Changed Into Draft Successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
+    }
+
+    if ($this->countryRestrict > 0) {
+      $error_message = $this->t("This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization. ( @countryRestrict ) <br/>", ['@countryRestrict' => $this->countryRestrict]);
     }
 
     /* $message.="Please visit Country content page to view.";*/
