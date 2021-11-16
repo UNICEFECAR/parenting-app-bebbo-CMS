@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.chatbot_category.field_content_category
+    - field.field.taxonomy_term.chatbot_category.field_unique_name
     - taxonomy.vocabulary.chatbot_category
   module:
     - text
@@ -19,13 +19,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_content_category:
+  field_unique_name:
     weight: 1
     label: above
     settings:
-      link: true
+      link_to_entity: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: string
     region: content
 hidden:
   langcode: true

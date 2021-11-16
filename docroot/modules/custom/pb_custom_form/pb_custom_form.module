@@ -17,14 +17,3 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-
-// function pb_custom_form_create_custom_menu()
-// {
-
-//     $menu = array();
-//     $menu['menu_name'] = "parent_buddy";
-//     $menu['title'] = "Parent Buddy";
-//     $menu['description'] = "The <em>Parent Buddy</em> menu contains custom form links";
-//     menu_save($menu);
-
-// }

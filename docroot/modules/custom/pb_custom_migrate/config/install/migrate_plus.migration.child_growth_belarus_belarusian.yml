@@ -21,9 +21,7 @@ process:
 
   nid: ID
   title: Title
-  body/value: Body 
-  field_mandatory_content: Mandatory_content
-  moderation_state: Moderation_state
+  body/value: Body
   
 destination:
   plugin: 'entity:node'

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.chatbot_category.field_content_category
+    - field.field.taxonomy_term.chatbot_category.field_unique_name
     - taxonomy.vocabulary.chatbot_category
   module:
     - path
@@ -12,11 +12,13 @@ targetEntityType: taxonomy_term
 bundle: chatbot_category
 mode: default
 content:
-  field_content_category:
-    weight: 2
-    settings: {  }
+  field_unique_name:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: options_select
+    type: string_textfield
     region: content
   langcode:
     type: language_select

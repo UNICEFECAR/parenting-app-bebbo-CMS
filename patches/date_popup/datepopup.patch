@@ -1,0 +1,29 @@
+--- a/docroot/modules/contrib/date_popup/src/DatePopup.php
++++ b/docroot/modules/contrib/date_popup/src/DatePopup.php
+@@ -2,7 +2,9 @@
+ 
+ namespace Drupal\date_popup;
+ 
++use Drupal\Core\Datetime\DrupalDateTime;
+ use Drupal\Core\Form\FormStateInterface;
++use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+ use Drupal\views\Plugin\views\filter\Date;
+ 
+ /**
+@@ -20,4 +22,15 @@ public function buildExposedForm(&$form, FormStateInterface $form_state) {
+     $this->applyDatePopupToForm($form);
+   }
+ 
++    /**
++   * {@inheritdoc}
++   */
++  protected function opBetween($field) {
++    // Add 1 day to the end so the query will include the selected date.
++    $end = new DrupalDateTime($this->value['max']);
++    $end->add(new \DateInterval ('P1D'));
++    $this->value['max'] = $end->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
++    parent::opBetween($field);
++  } 
++
+ }
+

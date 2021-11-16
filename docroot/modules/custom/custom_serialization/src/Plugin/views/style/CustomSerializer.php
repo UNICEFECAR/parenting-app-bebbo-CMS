@@ -51,7 +51,7 @@ class CustomSerializer extends Serializer {
         "id", "category", "child_gender", "parent_gender", "licensed", "premature",
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
-        "make_available_for_mobile", "pinned_article", "pinned_video_article",
+        "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory"
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -319,9 +319,6 @@ class CustomSerializer extends Serializer {
           if (!empty($result22)) {
             $uri = $result22[0]->uri;
           }
-
-          // $file = File::load($mid);
-          // $url = $file->url();
           $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
 
         }
@@ -355,7 +352,6 @@ class CustomSerializer extends Serializer {
         }
       }
       elseif ($media_type === "video") {
-        /* $url = $media_entity->get('field_media_video_file')->value; */
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
         $mid = $media_entity->get('field_media_video_file')->target_id;
@@ -503,7 +499,7 @@ class CustomSerializer extends Serializer {
             'sd4neg' => round($sd4neg, 3),
           ];
         }
-        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent") {
+        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,

@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - system
+    - user
   theme:
     - claro
 _core:
@@ -22,6 +23,13 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /share
+    pages: "/share\r\n/privacy-policy\r\n/homepage\r\n/about-us"
     negate: true
     context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

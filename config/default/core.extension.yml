@@ -1,4 +1,5 @@
 module:
+  acquia_purge: 0
   actions_permissions: 0
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
@@ -14,11 +15,9 @@ module:
   ckeditor: 0
   ckeditor_media_embed: 0
   color: 0
-  comment: 0
   config: 0
   config_ignore: 0
   config_translation: 0
-  contact: 0
   content_moderation: 0
   content_moderation_notifications: 0
   contextual: 0
@@ -26,7 +25,6 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -41,7 +39,6 @@ module:
   group: 0
   group_country_field: 0
   help: 0
-  history: 0
   image: 0
   image_style_quality: 0
   json_field: 0
@@ -52,6 +49,7 @@ module:
   locale: 0
   media: 0
   media_library: 0
+  memcache: 0
   menu_link_content: 0
   menu_per_role: 0
   menu_ui: 0
@@ -71,16 +69,18 @@ module:
   pb_custom_migrate: 0
   pb_custom_rest_api: 0
   pb_custom_standard_deviation: 0
+  purge: 0
+  purge_ui: 0
   quickedit: 0
   rdf: 0
   rest: 0
   restui: 0
   search: 0
   seckit: 0
-  security_review: 0
   serialization: 0
   shortcut: 0
   smtp: 0
+  syslog: 0
   system: 0
   tamper: 0
   taxonomy: 0
@@ -103,6 +103,7 @@ module:
   variationcache: 0
   video_embed_field: 0
   video_embed_media: 0
+  view_custom_table: 0
   views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0

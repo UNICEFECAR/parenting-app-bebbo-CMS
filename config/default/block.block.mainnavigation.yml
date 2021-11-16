@@ -1,0 +1,38 @@
+uuid: 48cf4c84-358c-4a37-b707-269be69e0d00
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+    - user
+  theme:
+    - claro
+id: mainnavigation
+theme: claro
+region: header
+weight: -14
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+  request_path:
+    id: request_path
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy"
+    negate: false
+    context_mapping: {  }

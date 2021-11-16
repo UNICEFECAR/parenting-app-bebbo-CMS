@@ -79,19 +79,42 @@ display:
           summary: ''
           description: ''
           columns:
+            item_id: item_id
+            state: state
             label: label
+            tjid: tjid
             type: type
             source_language: source_language
             target_language: target_language
-            state: state
             progress: progress
             word_count: word_count
             tags_count: tags_count
             changed: changed
             operations: operations
           info:
+            item_id:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            state:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             label:
               sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            tjid:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -112,13 +135,6 @@ display:
               empty_column: false
               responsive: ''
             target_language:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            state:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -154,8 +170,6 @@ display:
               empty_column: false
               responsive: ''
             operations:
-              sortable: false
-              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false

@@ -19,19 +19,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
 use Drupal\Core\Language\LanguageManager;
-
-/*
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\language\Entity\ConfigurableLanguage;
-use Drupal\languagefield\Entity;
-use Drupal\Core\TypedData\OptionsProviderInterface;
-use Drupal\Core\Language\LanguageManager;
-use Drupal\views\Plugin\views\query\Sql;
-use Drupal\Core\Menu\LocalActionInterface;
-use Drupal\Core\Menu\LocalActionManager;
-use Drupal\user\UserInterface;
- */
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Database\Database;
 
 /**
  * {@inheritdoc}
@@ -146,25 +135,6 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /* if ($form_id == "media_library_add_form_upload") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  }
-
-  if ($form_id == "media_library_add_form_oembed") {
-  $form['cutomtext'] = [
-  '#type' => 'item',
-  '#markup' => '<div class="error_language" id="widget_lang"> Note:
-  Please choose only languages associated with your country
-  while creating Alt text. </div>',
-  '#weight' => 1,
-  ];
-  } */
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
@@ -486,6 +456,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $user_roles = \Drupal::currentUser()->getRoles();
     if (!in_array('global_admin', $user_roles) && !in_array('administrator', $user_roles)) {
       $form['field_mandatory_content']['#disabled'] = TRUE;
+      $form['field_pre_populated']['#disabled'] = TRUE;
+
     }
   }
 
@@ -498,6 +470,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       $form['#attached']['library'][] = 'pb_custom_field/mylib';
       $form['field_australian_article']['#attributes']['class'][] = 'hide';
       $form['field_mandatory_content']['#disabled'] = TRUE;
+      $form['field_pre_populated']['#disabled'] = TRUE;
+
     }
   }
   /* Check the current url is related node add or edit */
@@ -718,13 +692,6 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
 function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
 
   $roles = \Drupal::currentUser()->getRoles();
-  /*$current_url = Url::fromRoute('<current>');
-  $path = $current_url->toString();
-  $langcode = explode('node', $path);
-  $split_url = explode('/', $langcode['0']);
-  $roles_permissions = user_role_permissions($roles);
-  $current_path = \Drupal::service('path.current')->getPath();
-   */
   $languagecode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
   if (in_array("reviewer", $roles)) {
@@ -887,12 +854,6 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
       $form_state->setRedirectUrl($url);
     }
   }
-  /* if(!empty($groups) && $groups[0]->bundle() == "country" && in_array
-  ('reviewer', $user_roles)) {
-  $url = url::fromUserInput('/group/' . $groups[0]->id() .
-  '/content/add/group_membership?uid='.$uids);
-  $form_state->setRedirectUrl($url);
-  } */
 }
 
 /**
@@ -1076,6 +1037,7 @@ function user_media_access_validation_chk(&$form, FormStateInterface $form_state
  */
 function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /* Add reset password link. */
+  $form['#submit'][] = 'pb_custom_field_user_login_form_submit';
   $url_object = Url::fromRoute('user.pass');
   $form['password_reset_link'] = [
     '#type' => 'link',
@@ -1088,6 +1050,32 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
 }
 
 /**
+ * Implements hook_form_submit().
+ */
+function pb_custom_field_user_login_form_submit($form, FormStateInterface $form_state) {
+
+  $redirect_url = Url::fromUri('internal:/dashboard');
+  $form_state->setRedirectUrl($redirect_url);
+
+}
+
+/**
+ * Hook implements hook_preprocess_html.
+ */
+function pb_custom_field_preprocess_html(&$variables) {
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+  if (!$logged_in) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy") {
+      $variables['#attached']['library'][] = 'pb_custom_field/mylib';
+      // Replace 'the-class-to-add' with your CSS class.
+      $variables['attributes']['class'][] = 'pb-main-homepage';
+    }
+  }
+}
+
+/**
  * Implements Alters user_profile_form.
  */
 function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -1096,13 +1084,19 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $path_args = explode('?', $current_uri);
   $path_args = explode('/', $current_uri);
+  if ($form_id == "user_form") {
+    // dpm($form['account']['status']['#default_value']);.
+    $current_path = \Drupal::service('path.current')->getPath();
+    $node_path = explode('/', $current_path);
+    $user_id = $node_path[2];
+    $conn = Database::getConnection();
+    $query = $conn->query("SELECT status FROM users_field_data where uid = '" . $user_id . "'");
+    $result = $query->fetchObject();
+    $form['account']['status']['#default_value'] = $result->status;
+  }
   if ($form_id == "user_form" && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[count($path_args) - 3]) && $path_args[count($path_args) - 3] == "group" && isset($path_args[count($path_args) - 1]) && $path_args[count($path_args) - 1] == "members") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      } */
     }
     else {
       $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
@@ -1113,11 +1107,9 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'invisible'; */
             $form['account']['roles']['#access'] = FALSE;
           }
           elseif ($user_role == "global_admin") {
-            /* $form['account']['roles']['#title_display'] = 'visible'; */
             $form['account']['roles']['#access'] = TRUE;
             foreach ($roles as $role) {
               if ($role->id() == "authenticated" || $role->id() == "administrator") {
@@ -1145,10 +1137,6 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
   if ($form_id == "user_register_form" && isset($form['account']['roles']) && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[0]) && $path_args[0] == "group" && isset($path_args[4]) && $path_args[4] == "group_membership") {
       $form['account']['roles']['#access'] = FALSE;
-      /* $form['account']['roles']['#title_display'] = 'invisible';
-      foreach ($roles as $role) {
-      unset($form['account']['roles']['#options'][$role->id()]);
-      }*/
     }
     else {
       foreach ($roles as $role) {
@@ -1157,7 +1145,6 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
         }
         if ($role->id() != "global_admin") {
           unset($form['account']['roles']['#options'][$role->id()]);
-          /* $form['account']['roles'][$role->id()]['#disabled'] = TRUE; */
         }
       }
     }
@@ -1221,11 +1208,11 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
         $data['to'] = $new_arry;
       }
       else {
-      	 $data['to'] = [];
+        $data['to'] = [];
       }
     }
     else {
-    	 $data['to'] = [];
+      $data['to'] = [];
     }
   }
   else {
@@ -1258,8 +1245,84 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
       }
       $data['params']['message'] = $body;
       $data['to'] = $new_arry;
-    } else {
+    }
+    else {
       $data['to'] = [];
+    }
+  }
+}
+
+/**
+ * For redirect page.
+ */
+function my_goto($path) {
+  $response = new RedirectResponse($path);
+  $response->send();
+  return $response;
+}
+
+/**
+ * For alter forcefull update check view.
+ */
+function pb_custom_field_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'force_update_check') {
+    // $view->element['#attached']['library'][] = 'pb_custom_field/mylib';
+    $results = $view->result;
+    $groups = Group::loadMultiple();
+    foreach ($groups as $group) {
+      $label = $group->get('label')->getString();
+      $id[$label] = $group->get('id')->getString();
+    }
+
+    foreach ($results as $result) {
+
+      $forcefull_check_update_api_uuid = $result->forcefull_check_update_api_uuid;
+      $country_id = $result->forcefull_check_update_api_countries_id;
+      $flag = $result->forcefull_check_update_api_flag_status;
+      $created_at = $result->forcefull_check_update_api_created_at;
+      // Get user name from uuid.
+      $database = \Drupal::database();
+      $query = $database->query("SELECT uid FROM {users} WHERE uuid = '" . $forcefull_check_update_api_uuid . "'");
+      $user_uid = $query->fetchAll();
+
+      if (!empty($user_uid)) {
+        $uid_query = $database->query("SELECT name FROM {users_field_data} WHERE uid = '" . $user_uid[0]->uid . "'");
+        $user_name = $uid_query->fetchAll();
+        $user_name = $user_name[0]->name;
+      }
+      else {
+        $user_name = 'no author';
+      }
+
+      // Get country name from country id.
+      if (in_array($country_id, $id)) {
+
+        $country_label = array_keys($id, $country_id);
+        $country_label = $country_label[0];
+      }
+      else {
+        $country_label = 'no country';
+      }
+      // Get date formate.
+      if ($created_at != '') {
+        $dateee = date("m/d/Y - H:i", $created_at);
+      }
+      else {
+        $dateee = date("m/d/Y - H:i");
+      }
+      // Get flag.
+      if ($flag == 1) {
+        $flag_txt = 'Enable';
+      }
+      else {
+        $flag_txt = 'Disable';
+      }
+
+      $result->forcefull_check_update_api_countries_id = $country_label;
+      $result->forcefull_check_update_api_uuid = $user_name;
+      $result->forcefull_check_update_api_created_at = $dateee;
+      $result->forcefull_check_update_api_flag_status = $flag_txt;
+      $result->id = $country_id;
     }
   }
 }

@@ -1047,6 +1047,7 @@ display:
         query: false
         title: false
         group_by: false
+        sorts: false
       fields:
         nid:
           id: nid
@@ -2844,6 +2845,21 @@ display:
       redirect_to_display: none
       custom_redirect_path: false
       include_query_params: false
+      sorts:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: standard
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -4404,7 +4420,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '>='
+          operator: between
           value:
             min: ''
             max: ''
@@ -4451,60 +4467,6 @@ display:
           entity_type: node
           entity_field: created
           plugin_id: date
-        created_1:
-          id: created_1
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-          group: 1
-          exposed: true
-          expose:
-            operator_id: created_1_op
-            label: 'Created To Date'
-            description: ''
-            use_operator: false
-            operator: created_1_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: created_1
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: created
-          plugin_id: date
         changed:
           id: changed
           table: node_field_data
@@ -4512,7 +4474,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '>='
+          operator: between
           value:
             min: ''
             max: ''
@@ -4529,60 +4491,6 @@ display:
             operator_limit_selection: false
             operator_list: {  }
             identifier: changed
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: changed
-          plugin_id: date
-        changed_1:
-          id: changed_1
-          table: node_field_data
-          field: changed
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-          group: 1
-          exposed: true
-          expose:
-            operator_id: changed_1_op
-            label: 'Updated To Date'
-            description: ''
-            use_operator: false
-            operator: changed_1_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: changed_1
             required: false
             remember: false
             multiple: false

@@ -12,7 +12,7 @@ _core:
 id: claro_page_title
 theme: claro
 region: header
-weight: -30
+weight: -12
 provider: null
 plugin: page_title_block
 settings:
@@ -23,7 +23,7 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: /share
+    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy"
     negate: true
     context_mapping: {  }
   user_role:
