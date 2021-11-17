@@ -1,0 +1,261 @@
+<?php
+
+/**
+ * @file
+ * view_custom_table.module
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Database\Database;
+use Drupal\Component\Render\FormattableMarkup;
+
+/**
+ * Implements hook_help().
+ */
+function view_custom_table_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+
+    case 'help.page.view_custom_table':
+      return '<h3>' . t('About') . '</h3><p>' . t('Views Custom Table provide you interface to add your custom table data to views. as we know views is a very strong and powerfull pulgin to format data in different displys. Views Custom Table module add your data to views so you can use all wonderfull fetures for the views for custom table data. you can add as much as custom table you want in syatem. you can find link to add them in system and manage or view which are already added in the system on <a href="@views_custom_table">Views Custom Table</a> page.', [
+        '@views_custom_table' => Url::fromRoute('view_custom_table.customtable'),
+      ]) . '</p>' . '<p>' . t('It is very common that your custom table has the reference of a drupal entity, or relation with the drupal entity like "Node", "Taxonomy", "User", etc. Views Custom Table module provides you facility to add a relationship from custom table to drupal entity, to add relationship you must have an integer type column in your custom table, which refere main id of the entity, for example if your table has relation with the "Node" then it must have a column which refere to "Nid". Views Custom Table module also provide you facility to add relationship between two custom tables.') . '</p>' . '<h3>Notes for developer:</h3></p><ul><li>Each custom table must have a primary key.</li><li>The column which refere to a entity or an other custom table must be numeric.</li><li>Tables of extarnal database (other then default) can be relat to only those tables which are belongs to that database.</li></ul>';
+  }
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function view_custom_table_views_data() {
+  $all_custom_tables = \Drupal::config('view_custom_table.tables')->getRawData();
+  // My Sql Data types.
+  $int_types = [
+    'tinyint',
+    'smallint',
+    'mediumint',
+    'int',
+    'bigint',
+    'decimal',
+    'float',
+    'double',
+    'bit',
+  ];
+  $text_types = [
+    'varchar',
+    'char',
+    'tinytext',
+    'text',
+    'mediumtext',
+    'longtext',
+    'binary',
+    'varbinary',
+    'tinyblob',
+    'mediumblob',
+    'blob',
+    'longblob',
+    'enum',
+    'set',
+  ];
+  $time_type = [
+    'timestamp',
+    'date',
+    'datetime',
+    'time',
+    'year',
+  ];
+
+  if (!empty($all_custom_tables)) {
+    foreach ($all_custom_tables as $table_name => $custom_table) {
+      $table_relations = unserialize($custom_table['column_relations']);
+      $table_display_name = ucfirst($table_name);
+      $table_display_name = str_replace('_', ' ', $table_display_name);
+
+      $data[$table_name]['table']['group'] = t('Custom Table Views');
+
+      $table = view_custom_table_load_table_structure($table_name, $custom_table['table_database']);
+      $table_listed = [];
+
+      foreach ((array) $table as $column) {
+        $column_display_name = ucfirst($column->Field);
+        $column_display_name = str_replace('_', ' ', $column_display_name);
+
+        if (strpos($column->Type, '(')) {
+          $column_type_values = explode('(', $column->Type);
+          $column_type = $column_type_values[0];
+        }
+        else {
+          $column_type = $column->Type;
+        }
+
+        if (!(\array_key_exists($table_name, $table_listed))) {
+          $table_listed[$table_name] = TRUE;
+
+          $data[$table_name]['table']['base'] = [
+            'field' => $column->Field,
+            'title' => t('@table data', [
+              '@table' => $table_display_name,
+            ]),
+            'help' => t('Data of @table.', [
+              '@table' => $table_display_name,
+            ]),
+            'database' => $custom_table['table_database'],
+            'weight' => 10,
+          ];
+        }
+
+        if (in_array($column_type, $int_types)) {
+          $data[$table_name][$column->Field] = [
+            'title' => t('@column_name', [
+              '@column_name' => $column_display_name,
+            ]),
+            'help' => t('@column_name data form @table.', [
+              '@column_name' => $column_display_name,
+              '@table' => $table_display_name,
+            ]),
+            'field' => [
+              'id' => 'numeric',
+            ],
+            'sort' => [
+              'id' => 'standard',
+            ],
+            'filter' => [
+              'id' => 'numeric',
+            ],
+            'argument' => [
+              'id' => 'numeric',
+            ],
+          ];
+        }
+
+        if (in_array($column_type, $text_types)) {
+          $data[$table_name][$column->Field] = [
+            'title' => t('@column_name', [
+              '@column_name' => $column_display_name,
+            ]),
+            'help' => t('@column_name data form @table.', [
+              '@column_name' => $column_display_name,
+              '@table' => $table_display_name,
+            ]),
+            'field' => [
+              'id' => 'standard',
+            ],
+            'sort' => [
+              'id' => 'standard',
+            ],
+            'filter' => [
+              'id' => 'string',
+            ],
+            'argument' => [
+              'id' => 'string',
+            ],
+          ];
+        }
+        if (in_array($column_type, $time_type)) {
+          $data[$table_name][$column->Field] = [
+            'title' => t('@column_name', [
+              '@column_name' => $column_display_name,
+            ]),
+            'help' => t('@column_name data form @table.', [
+              '@column_name' => $column_display_name,
+              '@table' => $table_display_name,
+            ]),
+            'field' => [
+              'id' => 'mysql_date',
+            ],
+            'filter' => [
+              'id' => 'mysql_date',
+            ],
+          ];
+        }
+        if (!empty($table_relations)) {
+          if (array_key_exists($column->Field, $table_relations)) {
+            $all_entities = \Drupal::entityTypeManager()->getDefinitions();
+            if (isset($all_entities[$table_relations[$column->Field]])) {
+              $entity_info = \Drupal::entityTypeManager()->getDefinition($table_relations[$column->Field]);
+              $entity_keys = $entity_info->getKeys();
+              $data[$table_name][$column->Field]['relationship'] = [
+                'base' => $entity_info->getBaseTable(),
+                'id' => 'standard',
+                'base field' => $entity_keys['id'],
+                'label' => t('@column_name', [
+                  '@column_name' => $column_display_name,
+                ]),
+                'title' => t('@column_name', [
+                  '@column_name' => $column_display_name,
+                ]),
+                'help' => t('@entity - @column_name relationship', [
+                  '@column_name' => $column_display_name,
+                  '@entity' => $entity_info->getBaseTable(),
+                ]),
+              ];
+              $data[$entity_info->getBaseTable()][$table_name] = [
+                'title' => t('Reverse reference to @custom_table', ['@custom_table' => $custom_table['description'] ?? $custom_table['table_name']]),
+                'help' => t('Reference each custom table entry back from table @custom_table', ['@custom_table' => $custom_table['table_name']]),
+                'relationship' => [
+                  'id' => 'entity_reverse',
+                  'field_name' => $table_name,
+                  'field table' => $table_name,
+                  'field field' => $column->Field,
+                  'base' => $table_name,
+                  'base field' => $column->Field,
+                  'label' => $custom_table['description'] ?? $custom_table['table_name'],
+                ],
+              ];
+            }
+            else {
+              $related_table_info = $all_custom_tables[$table_relations[$column->Field]];
+              $related_table = view_custom_table_load_table_structure($related_table_info['table_name'], $related_table_info['table_database']);
+              foreach ((array) $related_table as $related_table_column) {
+                if ($related_table_column->Key == 'PRI') {
+                  $related_table_pri_key = $related_table_column->Field;
+                }
+              }
+              $data[$table_name][$column->Field]['relationship'] = [
+                'base' => $table_relations[$column->Field],
+                'database' => $related_table_info['table_database'],
+                'id' => 'standard',
+                'base field' => $related_table_pri_key,
+                'label' => t('@column_name', [
+                  '@column_name' => $column_display_name,
+                ]),
+                'title' => t('@column_name', [
+                  '@column_name' => $column_display_name,
+                ]),
+                'help' => t('@entity - @column_name relationship', [
+                  '@column_name' => $column_display_name,
+                  '@entity' => $table_relations[$column->Field],
+                ]),
+              ];
+            }
+          }
+        }
+      }
+    }
+  }
+  return $data ?? [];
+}
+
+/**
+ * Function to get table structure information.
+ *
+ * @param string $table_name
+ *   Name of the table.
+ * @param string $database
+ *   Name of database to connect to.
+ *
+ * @return array|null
+ *   Return table info or NULL.
+ */
+function view_custom_table_load_table_structure($table_name = NULL, $database = 'default') {
+  if ($table_name === NULL) {
+    return NULL;
+  }
+
+  $connection = Database::getConnection('default', $database);
+  $query = 'DESCRIBE ' . $connection->escapeTable($table_name);
+  if ($result = $connection->query($query)) {
+    $table_info = $result->fetchAll();
+  }
+
+  return $table_info ?? NULL;
+}

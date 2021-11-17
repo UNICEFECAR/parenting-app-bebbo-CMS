@@ -43,3 +43,19 @@ pb_custom_form.pb_mobile:
     _title: 'Pb Mobile'
   requirements:
     _permission: 'manage mobile javascript'
+
+pb_custom_form.content:
+  path: '/forcefull-check'
+  defaults:
+    _controller: '\Drupal\pb_custom_form\Controller\ForceCountrySaveController::content' 
+    _title: 'Forcefull check form save method'
+  requirements:
+    _permission: 'access content'
+
+pb_custom_form.ForceUpdateCheckForm:
+  path: '/forcefull-update-check'
+  defaults:
+    _form:  '\Drupal\pb_custom_form\Form\ForceUpdateCheckForm'
+    _title: 'Force Full Update Check Form'
+  requirements:
+    _access: 'TRUE'

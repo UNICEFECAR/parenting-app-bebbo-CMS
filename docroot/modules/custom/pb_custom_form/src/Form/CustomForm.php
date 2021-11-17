@@ -4,8 +4,6 @@ namespace Drupal\pb_custom_form\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Database\Database;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\group\Entity\Group;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -102,22 +100,14 @@ class CustomForm extends FormBase {
    *   The custom form state.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $date = new DrupalDateTime();
-    $conn = Database::getConnection();
-    $conn->insert('forcefull_check_update_api')->fields(
-      [
-        'flag' => $form_state->getValue('checkbox'),
-        'country_id' => $form_state->getValue('country_select'),
-        'updated_at' => $date->getTimestamp(),
-      ]
-    )->execute();
-
-    $checkbox = $form_state->getValue('checkbox');
-    $text_msg = $this->t("Force Check Update API Disabled");
-    if ($checkbox == 1) {
-      $text_msg = $this->t("Force Check Update API Enbled");
-    }
-    drupal_set_message($text_msg, 'status');
+    global $base_url;
+    /* $date = new DrupalDateTime(); */
+    $flag = $form_state->getValue('checkbox');
+    $country_id = $form_state->getValue('country_select');
+    /* $updated_at = $date->getTimestamp(); */
+    $country_val = $form['country_select']['#options'][$country_id];
+    $path = $base_url . '/forcefull-update-check?flag=' . $flag . '&&country_id=' . $country_id . '&&country_name=' . $country_val;
+    my_goto($path);
   }
 
 }

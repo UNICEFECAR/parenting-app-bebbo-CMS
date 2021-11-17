@@ -1,0 +1,68 @@
+view_custom_table.customtable:
+  path: '/admin/structure/views/custom_table'
+  defaults:
+    _controller: '\Drupal\view_custom_table\Controller\OwnTableList::content'
+    _title: 'Views Custom Tables'
+  requirements:
+    _permission: 'administer own custom table in views'
+view_custom_table.customtable_own:
+  path: '/admin/structure/views/custom_table/own'
+  defaults:
+    _controller: '\Drupal\view_custom_table\Controller\OwnTableList::content'
+    _title: 'Views Custom Tables'
+  requirements:
+    _permission: 'administer own custom table in views'
+view_custom_table.customtable_all:
+  path: '/admin/structure/views/custom_table/all'
+  defaults:
+    _controller: '\Drupal\view_custom_table\Controller\AllTableList::content'
+    _title: 'Views Custom Tables'
+  requirements:
+    _permission: 'administer all custom table in views'
+view_custom_table.customtable_views:
+  path: '/admin/structure/views/custom_table/views/{table_name}'
+  defaults:
+    _controller: '\Drupal\view_custom_table\Controller\TablesViews::content'
+    _title: 'Views Custom Tables'
+  requirements:
+    _permission: 'administer all custom table in views'
+  options:
+    parameters:
+      table_name:
+view_custom_table.addcustomtable:
+  path: '/admin/structure/views/custom_table/add'
+  defaults:
+    _form: '\Drupal\view_custom_table\Form\AddViewsCustomTable'
+    _title: 'Add Custom Table'
+  requirements:
+    _permission: 'add custom table in views'
+view_custom_table.removecustomtable:
+  path: '/admin/structure/views/custom_table/remove/{table_name}'
+  defaults:
+    _form: '\Drupal\view_custom_table\Form\RemoveViewsCustomTable'
+    _title: 'Remove Custom Table'
+  requirements:
+    _permission: 'remove custom table in views'
+  options:
+    parameters:
+      table_name:
+view_custom_table.editcustomtable:
+  path: '/admin/structure/views/custom_table/edit/{table_name}'
+  defaults:
+    _form: '\Drupal\view_custom_table\Form\EditViewsCustomTable'
+    _title: 'Edit Custom Table'
+  requirements:
+    _permission: 'add custom table in views'
+  options:
+    parameters:
+      table_name:
+view_custom_table.edittablerelations:
+  path: '/admin/structure/views/custom_table/relations/{table_name}'
+  defaults:
+    _form: '\Drupal\view_custom_table\Form\EditTableRelations'
+    _title: 'Edit Custom Table Relations'
+  requirements:
+    _permission: 'add custom table in views'
+  options:
+    parameters:
+      table_name:
