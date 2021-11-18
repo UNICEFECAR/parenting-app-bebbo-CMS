@@ -5,7 +5,8 @@ dependencies:
   config:
     - field.storage.node.body
     - field.storage.node.field_activity_category
-    - field.storage.node.field_chatbot_child_age
+    - field.storage.node.field_answer_part_2
+    - field.storage.node.field_chatbot_subcategory
     - field.storage.node.field_child_age
     - field.storage.node.field_child_gender
     - field.storage.node.field_content_category
@@ -17245,7 +17246,7 @@ display:
               alias: ''
               raw_output: false
             title:
-              alias: ''
+              alias: question
               raw_output: false
             created:
               alias: created_at
@@ -17254,13 +17255,16 @@ display:
               alias: updated_at
               raw_output: false
             body:
-              alias: ''
+              alias: answer_part_1
               raw_output: false
-            field_chatbot_child_age:
-              alias: chatbot_child_age
+            field_answer_part_2:
+              alias: answer_part_2
               raw_output: false
-            field_content_category:
-              alias: chatbot_sub_category
+            field_chatbot_subcategory:
+              alias: chatbot_subcategory
+              raw_output: false
+            field_pinned_article:
+              alias: related_article
               raw_output: false
             field_mandatory_content:
               alias: mandatory
@@ -17763,10 +17767,72 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_chatbot_child_age:
-          id: field_chatbot_child_age
-          table: node__field_chatbot_child_age
-          field: field_chatbot_child_age
+        field_answer_part_2:
+          id: field_answer_part_2
+          table: node__field_answer_part_2
+          field: field_answer_part_2
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_chatbot_subcategory:
+          id: field_chatbot_subcategory
+          table: node__field_chatbot_subcategory
+          field: field_chatbot_subcategory
           relationship: none
           group_type: group
           admin_label: ''
@@ -17825,10 +17891,10 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_content_category:
-          id: field_content_category
-          table: node__field_content_category
-          field: field_content_category
+        field_pinned_article:
+          id: field_pinned_article
+          table: node__field_pinned_article
+          field: field_pinned_article
           relationship: none
           group_type: group
           admin_label: ''
@@ -17964,9 +18030,10 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.body'
-        - 'config:field.storage.node.field_chatbot_child_age'
-        - 'config:field.storage.node.field_content_category'
+        - 'config:field.storage.node.field_answer_part_2'
+        - 'config:field.storage.node.field_chatbot_subcategory'
         - 'config:field.storage.node.field_mandatory_content'
+        - 'config:field.storage.node.field_pinned_article'
   rest_export_6:
     display_plugin: rest_export
     id: rest_export_6

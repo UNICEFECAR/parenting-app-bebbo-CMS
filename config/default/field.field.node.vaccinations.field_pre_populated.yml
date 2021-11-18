@@ -1,20 +1,20 @@
-uuid: d5dfa47b-8fa2-43d3-8a0d-f45b9ed8450f
+uuid: dc1ffca9-2444-4da0-b6c2-f29c41ebfda6
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_pre_populated
-    - node.type.activities
+    - node.type.vaccinations
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.activities.field_pre_populated
+id: node.vaccinations.field_pre_populated
 field_name: field_pre_populated
 entity_type: node
-bundle: activities
-label: 'Pre Populated'
+bundle: vaccinations
+label: Pre Populated
 description: ''
 required: false
 translatable: false

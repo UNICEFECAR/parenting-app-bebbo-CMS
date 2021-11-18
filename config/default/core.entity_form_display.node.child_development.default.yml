@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
     - field.field.node.child_development.field_pinned_article_for_girl
+    - field.field.node.child_development.field_pre_populated
     - node.type.child_development
     - workflows.workflow.group_workflow
   module:
@@ -153,3 +154,4 @@ hidden:
   field_home_message_before_end: true
   field_home_message_before_start: true
   field_licensed_content: true
+  field_pre_populated: true

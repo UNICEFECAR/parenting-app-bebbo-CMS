@@ -1,20 +1,20 @@
-uuid: d5dfa47b-8fa2-43d3-8a0d-f45b9ed8450f
+uuid: 71198ed9-f85c-46f4-a522-0fadedb3d9c0
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_pre_populated
-    - node.type.activities
+    - node.type.page
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.activities.field_pre_populated
+id: node.page.field_pre_populated
 field_name: field_pre_populated
 entity_type: node
-bundle: activities
-label: 'Pre Populated'
+bundle: page
+label: Pre Populated
 description: ''
 required: false
 translatable: false

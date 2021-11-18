@@ -1,20 +1,20 @@
-uuid: d5dfa47b-8fa2-43d3-8a0d-f45b9ed8450f
+uuid: 8d39d401-7ed8-42cb-8c45-5f53d3826f01
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_pre_populated
-    - node.type.activities
+    - node.type.child_growth
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.activities.field_pre_populated
+id: node.child_growth.field_pre_populated
 field_name: field_pre_populated
 entity_type: node
-bundle: activities
-label: 'Pre Populated'
+bundle: child_growth
+label: Pre Populated
 description: ''
 required: false
 translatable: false

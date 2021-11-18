@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.survey.body
     - field.field.node.survey.field_licensed_content
+    - field.field.node.survey.field_pre_populated
     - field.field.node.survey.field_survey_link
     - field.field.node.survey.field_type
     - node.type.survey
@@ -114,3 +115,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_licensed_content: true
+  field_pre_populated: true
