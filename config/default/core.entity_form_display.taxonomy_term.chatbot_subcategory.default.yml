@@ -1,19 +1,26 @@
-uuid: d2498a2e-6a4d-4eb0-93f5-aa7d75c0252f
+uuid: d00893a8-a5ad-4232-bf2f-21c0acd7504b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.chatbot_category.field_unique_name
-    - taxonomy.vocabulary.chatbot_category
+    - field.field.taxonomy_term.chatbot_subcategory.field_chatbot_category
+    - field.field.taxonomy_term.chatbot_subcategory.field_unique_name
+    - taxonomy.vocabulary.chatbot_subcategory
   module:
     - path
-id: taxonomy_term.chatbot_category.default
+id: taxonomy_term.chatbot_subcategory.default
 targetEntityType: taxonomy_term
-bundle: chatbot_category
+bundle: chatbot_subcategory
 mode: default
 content:
+  field_chatbot_category:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_unique_name:
-    weight: 6
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -37,7 +44,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -45,7 +52,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 6
     region: content
     third_party_settings: {  }
   translation:

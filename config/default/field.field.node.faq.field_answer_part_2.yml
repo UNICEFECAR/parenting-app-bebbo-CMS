@@ -1,9 +1,9 @@
-uuid: fbfe9372-5000-4068-8d8e-a2fd3318607e
+uuid: 284540e5-6533-401e-89db-9c152985c2cc
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.body
+    - field.storage.node.field_answer_part_2
     - node.type.faq
   module:
     - text
@@ -11,13 +11,13 @@ dependencies:
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.faq.body
-field_name: body
+id: node.faq.field_answer_part_2
+field_name: field_answer_part_2
 entity_type: node
 bundle: faq
-label: 'Answer Part 1'
+label: 'Answer Part 2'
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''

@@ -51,7 +51,8 @@ class CustomSerializer extends Serializer {
         "id", "category", "child_gender", "parent_gender", "licensed", "premature",
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
-        "make_available_for_mobile", "pinned_article", "pinned_video_article",
+        "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
+        "related_article",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -110,7 +111,7 @@ class CustomSerializer extends Serializer {
             }
 
             /* Change video or image actual path to absolute path. */
-            if ($key === "body" || $key === "summary") {
+            if ($key === "body" || $key === "summary" || $key === "answer_part_1" || $key === "answer_part_2") {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
@@ -499,7 +500,16 @@ class CustomSerializer extends Serializer {
             'sd4neg' => round($sd4neg, 3),
           ];
         }
-        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent") {
+        elseif ($vocabulary_machine_name === "chatbot_subcategory") {
+          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_data[] = [
+            'id' => (int) $tax_result[$tax]->tid,
+            'name' => $tax_result[$tax]->name,
+            'parent_category_id' => (int) $term_obj->get('field_chatbot_category')->target_id,
+            'unique_name' => $term_obj->get('field_unique_name')->value,
+          ];
+        }
+        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
