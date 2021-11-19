@@ -14,7 +14,7 @@ id: node.child_growth.field_pre_populated
 field_name: field_pre_populated
 entity_type: node
 bundle: child_growth
-label: Pre Populated
+label: 'Pre Populated'
 description: ''
 required: false
 translatable: false

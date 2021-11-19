@@ -14,7 +14,7 @@ id: node.daily_homescreen_messages.field_pre_populated
 field_name: field_pre_populated
 entity_type: node
 bundle: daily_homescreen_messages
-label: Pre Populated
+label: 'Pre Populated'
 description: ''
 required: false
 translatable: false
