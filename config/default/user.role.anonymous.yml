@@ -22,7 +22,7 @@ permissions:
   - 'view vocabulary activity_category'
   - 'view vocabulary category'
   - 'view vocabulary chatbot_category'
-  - 'view vocabulary chatbot_child_age'
+  - 'view vocabulary chatbot_subcategory'
   - 'view vocabulary child_age'
   - 'view vocabulary child_gender'
   - 'view vocabulary growth_introductory'

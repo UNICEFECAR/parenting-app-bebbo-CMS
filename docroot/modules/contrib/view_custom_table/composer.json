@@ -1,0 +1,10 @@
+{
+  "name": "drupal/view_custom_table",
+  "description": "Extends views to use custom table data.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/view_custom_table",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "drupal/core": "^8 || ^9"
+  }
+}

@@ -325,12 +325,22 @@ height: 20px;
 .pb-homepage .all-parent img{
   width: 450px;
 }
+/*
 .grey a {
   color: white;
   text-decoration: none;
   background-color: #58B9E6;
   padding: 10px;
   border-radius: 10px;
+}
+*/
+.grey .bebbobtn {
+  color: white;
+  text-decoration: none;
+  background-color: #58B9E6;
+  padding: 10px !important;
+  border-radius: 10px;
+  width:200px !important;
 }
 .two-section 
 {
@@ -357,4 +367,14 @@ height: 20px;
   .pb-main-homepage .region.region-content h1 {
       padding:0;
   }
+}
+
+
+.two-section a {
+  background-color: transparent;
+}
+
+.two-section a:focus {
+  outline: none;
+  box-shadow: unset;
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Database\Database;
+
 /**
  * @file
  * Force update check api schema.
@@ -40,4 +42,65 @@ function pb_custom_form_schema() {
   ];
 
   return $schema;
+}
+
+function pb_custom_form_update_70010() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store current user uuid',
+  );
+  db_add_field('forcefull_check_update_api', 'uuid', $spec);
+}
+
+function pb_custom_form_update_70011() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store created at',
+  );
+  db_add_field('forcefull_check_update_api', 'created_at', $spec);
+}
+
+function pb_custom_form_update_70012() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store country id',
+  );
+  db_add_field('forcefull_check_update_api', 'countries_id', $spec);
+}
+
+function pb_custom_form_update_70013() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store flag status',
+  );
+  db_add_field('forcefull_check_update_api', 'flag_status', $spec);
+}
+
+function pb_custom_form_update_70014() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'flag');
+
+}
+
+function pb_custom_form_update_70015() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'country_id');
+
+}
+
+function pb_custom_form_update_70016() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'updated_at');
+
 }

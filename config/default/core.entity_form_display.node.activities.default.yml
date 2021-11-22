@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.activities.field_equipment
     - field.field.node.activities.field_licensed_content
     - field.field.node.activities.field_mandatory_content
+    - field.field.node.activities.field_pre_populated
     - field.field.node.activities.field_related_articles
     - field.field.node.activities.field_type_of_support
     - node.type.activities
@@ -66,6 +67,13 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_pre_populated:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_related_articles:
     weight: 14
     settings:
@@ -91,7 +99,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 16
+    weight: 17
     settings: {  }
     region: content
     third_party_settings: {  }

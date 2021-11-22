@@ -807,4 +807,9 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 /********** DEV *******************/
 if (file_exists('/var/www/site-php')) {
    require '/var/www/site-php/' . $_ENV['AH_SITE_GROUP'] . '/' . $_ENV['AH_SITE_GROUP'] . '-settings.inc';
+   
+   // Memcached settings for Acquia Hosting
+   if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
+      require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
+   }
 }

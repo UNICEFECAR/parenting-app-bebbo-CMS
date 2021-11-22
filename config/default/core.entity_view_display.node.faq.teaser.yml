@@ -5,14 +5,11 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.faq.body
-    - field.field.node.faq.field_chatbot_child_age
-    - field.field.node.faq.field_child_age
-    - field.field.node.faq.field_child_gender
-    - field.field.node.faq.field_content_category
-    - field.field.node.faq.field_keywords
+    - field.field.node.faq.field_answer_part_2
+    - field.field.node.faq.field_chatbot_subcategory
     - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
-    - field.field.node.faq.field_parent_gender
+    - field.field.node.faq.field_pinned_article
     - node.type.faq
   module:
     - text
@@ -41,12 +38,9 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  field_chatbot_child_age: true
-  field_child_age: true
-  field_child_gender: true
-  field_content_category: true
-  field_keywords: true
+  field_answer_part_2: true
+  field_chatbot_subcategory: true
   field_licensed_content: true
   field_mandatory_content: true
-  field_parent_gender: true
+  field_pinned_article: true
   langcode: true
