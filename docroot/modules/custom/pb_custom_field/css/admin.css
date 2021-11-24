@@ -367,3 +367,15 @@ height: 20px;
   outline: none;
   box-shadow: unset;
 }
+
+.countrydate .form-item {
+    margin-bottom: 0px;
+}
+
+.globaldate .form-item {
+    margin-bottom: 0px;
+}
+
+.countrydate #edit-created-min, .countrydate #edit-changed-min, .countrydate #edit-changed-max, .globaldate #edit-created-min, .globaldate #edit-created-max, .globaldate #edit-changed-max, .globaldate #edit-changed-min, .countrydate #edit-created-max{
+  margin-right: 12px;
+}

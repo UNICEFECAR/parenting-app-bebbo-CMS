@@ -145,10 +145,7 @@
                 "Fixed listing page status issue for status change req":"patches/content_moderation/content_moderation_status.patch"
             },
              "drupal/date_popup": {
-                "Add 1 day to the end so the query will include the selected date. ": "patches/date_popup/datepopup.patch"
-            },
-            "drupal/date_popup": {
-                "Add 1 day to the end so the query will include the selected date.": "patches/date_popup/datetimepopup.patch"
+                "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
             }
         }
     },

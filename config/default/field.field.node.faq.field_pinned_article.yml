@@ -1,31 +1,31 @@
-uuid: 98b3f773-068d-4ce9-beca-f0f0d24579b9
+uuid: d6da90d8-0c8a-4eee-8fa0-89f6ad7bd5c6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_cover_image
-    - media.type.image
-    - node.type.activities
+    - field.storage.node.field_pinned_article
+    - node.type.article
+    - node.type.faq
   module:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: node.activities.field_cover_image
-field_name: field_cover_image
+id: node.faq.field_pinned_article
+field_name: field_pinned_article
 entity_type: node
-bundle: activities
-label: 'Cover Image'
-description: 'Upload an image of dimensions 1600 in width for best results'
-required: true
+bundle: faq
+label: 'Related Article'
+description: ''
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:media'
+  handler: 'default:node'
   handler_settings:
     target_bundles:
-      image: image
+      article: article
     sort:
       field: _none
     auto_create: false

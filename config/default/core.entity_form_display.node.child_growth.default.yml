@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.child_growth.field_growth_type
     - field.field.node.child_growth.field_licensed_content
     - field.field.node.child_growth.field_mandatory_content
+    - field.field.node.child_growth.field_pre_populated
     - field.field.node.child_growth.field_related_articles
     - field.field.node.child_growth.field_related_video_articles
     - field.field.node.child_growth.field_standard_deviation
@@ -149,3 +150,4 @@ content:
 hidden:
   field_activity_child_age: true
   field_licensed_content: true
+  field_pre_populated: true

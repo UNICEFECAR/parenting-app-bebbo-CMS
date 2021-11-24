@@ -8,7 +8,8 @@ dependencies:
     - field.field.node.faq.field_chatbot_subcategory
     - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
-    - field.field.node.faq.field_related_articles
+    - field.field.node.faq.field_pinned_article
+    - field.field.node.faq.field_pre_populated
     - node.type.faq
     - workflows.workflow.group_workflow
   module:
@@ -59,7 +60,7 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_related_articles:
+  field_pinned_article:
     weight: 5
     settings:
       match_operator: CONTAINS
@@ -134,3 +135,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_licensed_content: true
+  field_pre_populated: true

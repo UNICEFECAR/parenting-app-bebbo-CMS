@@ -2916,6 +2916,7 @@ display:
         title: false
         group_by: false
         header: false
+        css_class: false
       fields:
         nid:
           id: nid
@@ -4604,6 +4605,7 @@ display:
           tokenize: false
           content: "<br/>\r\nNote:\r\n<br/>\r\n1. At any time please choose either the Updated date or the Created date filters.\r\n<br/>\r\n2. Please also make sure the From date is always greater than the To date."
           plugin_id: text_custom
+      css_class: countrydate
     display_plugin: page
     display_title: 'Country Reports'
     id: page_5

@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.faq.field_chatbot_subcategory
     - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
-    - field.field.node.faq.field_related_articles
+    - field.field.node.faq.field_pinned_article
     - node.type.faq
   module:
     - text
@@ -42,5 +42,5 @@ hidden:
   field_chatbot_subcategory: true
   field_licensed_content: true
   field_mandatory_content: true
-  field_related_articles: true
+  field_pinned_article: true
   langcode: true

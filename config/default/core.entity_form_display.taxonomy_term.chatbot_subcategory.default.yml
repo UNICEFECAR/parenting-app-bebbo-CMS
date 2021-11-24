@@ -3,33 +3,34 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.chatbot_subcategory.feeds_item
     - field.field.taxonomy_term.chatbot_subcategory.field_chatbot_category
+    - field.field.taxonomy_term.chatbot_subcategory.field_unique_name
     - taxonomy.vocabulary.chatbot_subcategory
   module:
     - path
-    - text
 id: taxonomy_term.chatbot_subcategory.default
 targetEntityType: taxonomy_term
 bundle: chatbot_subcategory
 mode: default
 content:
-  description:
-    type: text_textarea
-    weight: 1
-    region: content
-    settings:
-      placeholder: ''
-      rows: 5
-    third_party_settings: {  }
   field_chatbot_category:
-    weight: 3
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
+  field_unique_name:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 1
     region: content
     settings:
       include_locked: true
@@ -56,8 +57,10 @@ content:
     region: content
     third_party_settings: {  }
   translation:
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  description: true
+  feeds_item: true

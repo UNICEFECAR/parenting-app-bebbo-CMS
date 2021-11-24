@@ -66,7 +66,7 @@ function group_country_field_form_views_exposed_form_alter(&$form, $form_state) 
   if ($form['#id'] == 'views-exposed-form-tmgmt-translation-all-job-items-page-1') {
     $form['item_id']['#size'] = 5;
   }
-  if($form['#id'] == 'views-exposed-form-country-reports-page-5' || $form['#id'] == 'views-exposed-form-global-reports-page-4'){
+  if ($form['#id'] == 'views-exposed-form-country-reports-page-5' || $form['#id'] == 'views-exposed-form-global-reports-page-4') {
     $form['created']['min']['#title'] = t('Created From');
     $form['created']['max']['#title'] = t('Created To');
     $form['changed']['min']['#title'] = t('Updated From');

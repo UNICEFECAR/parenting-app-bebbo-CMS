@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.daily_homescreen_messages.feeds_item
     - field.field.node.daily_homescreen_messages.field_daily_message_category
     - field.field.node.daily_homescreen_messages.field_licensed_content
+    - field.field.node.daily_homescreen_messages.field_pre_populated
     - node.type.daily_homescreen_messages
     - workflows.workflow.group_workflow
   module:
@@ -91,3 +92,4 @@ hidden:
   feeds_item: true
   field_daily_message_category: true
   field_licensed_content: true
+  field_pre_populated: true

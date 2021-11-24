@@ -1,4 +1,3 @@
-test
 This directory should contain all custom modules and features.
 
 # Group_country_field:

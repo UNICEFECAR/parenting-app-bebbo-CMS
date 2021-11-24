@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.vaccinations.field_notification_to
     - field.field.node.vaccinations.field_pinned_article
     - field.field.node.vaccinations.field_pinned_video_article
+    - field.field.node.vaccinations.field_pre_populated
     - field.field.node.vaccinations.field_vaccination_closes
     - field.field.node.vaccinations.field_vaccination_opens
     - node.type.vaccinations
@@ -124,5 +125,6 @@ hidden:
   field_licensed_content: true
   field_notification_from: true
   field_notification_to: true
+  field_pre_populated: true
   field_vaccination_closes: true
   field_vaccination_opens: true

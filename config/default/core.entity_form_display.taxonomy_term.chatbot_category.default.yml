@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.chatbot_category.feeds_item
     - field.field.taxonomy_term.chatbot_category.field_unique_name
     - taxonomy.vocabulary.chatbot_category
   module:
@@ -55,3 +56,4 @@ content:
     third_party_settings: {  }
 hidden:
   description: true
+  feeds_item: true

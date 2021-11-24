@@ -2,7 +2,11 @@ uuid: 0934b992-611e-431c-a9f0-a7ab30c4e579
 langcode: en
 status: true
 dependencies:
+  config:
+    - user.role.administrator
+    - user.role.global_admin
   module:
+    - user
     - view_custom_table
 id: force_update_check
 label: force-update-check
@@ -19,8 +23,11 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            global_admin: global_admin
+            administrator: administrator
       cache:
         type: tag
         options: {  }
@@ -493,6 +500,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags: {  }
   page_1:
     display_plugin: page
@@ -508,4 +516,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags: {  }
+
