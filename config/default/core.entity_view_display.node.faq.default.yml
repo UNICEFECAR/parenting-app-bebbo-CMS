@@ -4,14 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.faq.body
-    - field.field.node.faq.field_chatbot_child_age
-    - field.field.node.faq.field_child_age
-    - field.field.node.faq.field_child_gender
-    - field.field.node.faq.field_content_category
-    - field.field.node.faq.field_keywords
+    - field.field.node.faq.field_answer_part_2
+    - field.field.node.faq.field_chatbot_subcategory
     - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
-    - field.field.node.faq.field_parent_gender
+    - field.field.node.faq.field_pinned_article
     - node.type.faq
   module:
     - text
@@ -24,49 +21,32 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
   content_moderation_control:
-    weight: -20
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_chatbot_child_age:
-    weight: 109
+  field_answer_part_2:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_chatbot_subcategory:
+    weight: 4
     label: above
     settings:
       link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_child_gender:
-    weight: 103
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_content_category:
-    weight: 106
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_keywords:
-    weight: 108
-    label: above
-    settings:
-      link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_licensed_content:
-    weight: 110
+    weight: 7
     label: hidden
     settings:
       format: default
@@ -76,7 +56,7 @@ content:
     type: boolean
     region: content
   field_mandatory_content:
-    weight: 107
+    weight: 6
     label: above
     settings:
       format: default
@@ -85,8 +65,8 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
-  field_parent_gender:
-    weight: 104
+  field_pinned_article:
+    weight: 5
     label: above
     settings:
       link: true
@@ -94,10 +74,10 @@ content:
     type: entity_reference_label
     region: content
   links:
-    weight: 100
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_child_age: true
+  field_pre_populated: true
   langcode: true

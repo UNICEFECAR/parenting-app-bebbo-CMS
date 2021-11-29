@@ -104,7 +104,9 @@ class CustomStandardDeviation extends Serializer {
             $title = str_replace("&#039;", "'", $$temp[$j]['title']);
             $title = str_replace("&quot;", '"', $title);
             $sd_field_data['name'] = $title;
-            $sd_field_data['text'] = $$temp[$j]['body'];
+            /* remove new line. */
+            $body = str_replace("\n", '', $$temp[$j]['body']);
+            $sd_field_data['text'] = $body;
             $sd_data[$sd_weight_for_height_fields[$j]] = $sd_field_data;
           }
           $sd_arr[] = $sd_data;
@@ -158,7 +160,9 @@ class CustomStandardDeviation extends Serializer {
             $title = str_replace("&#039;", "'", $$temp[$j]['title']);
             $title = str_replace("&quot;", '"', $title);
             $sd_field_data['name'] = $title;
-            $sd_field_data['text'] = $$temp[$j]['body'];
+            /* remove new line. */
+            $body = str_replace("\n", '', $$temp[$j]['body']);
+            $sd_field_data['text'] = $body;
             $sd_data[$sd_height_for_age_fields[$j]] = $sd_field_data;
           }
           $sd_arr[] = $sd_data;

@@ -11,7 +11,7 @@ dependencies:
 id: quicklinks
 theme: claro
 region: content
-weight: -7
+weight: -8
 provider: null
 plugin: 'system_menu_block:quick-links'
 settings:

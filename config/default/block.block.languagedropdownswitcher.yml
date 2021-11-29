@@ -10,7 +10,7 @@ dependencies:
 id: languagedropdownswitcher
 theme: claro
 region: header
-weight: 0
+weight: -11
 provider: null
 plugin: 'language_dropdown_block:language_interface'
 settings:

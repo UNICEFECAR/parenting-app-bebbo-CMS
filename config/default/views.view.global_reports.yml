@@ -2819,6 +2819,7 @@ display:
         arguments: false
         title: false
         header: false
+        css_class: false
       fields:
         nid:
           id: nid
@@ -4257,7 +4258,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '>='
+          operator: between
           value:
             min: ''
             max: ''
@@ -4304,105 +4305,6 @@ display:
           entity_type: node
           entity_field: created
           plugin_id: date
-        created_1:
-          id: created_1
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-          group: 1
-          exposed: true
-          expose:
-            operator_id: created_1_op
-            label: 'Created To Date'
-            description: ''
-            use_operator: false
-            operator: created_1_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: created_1
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-        field_australian_article_value:
-          id: field_australian_article_value
-          table: node__field_australian_article
-          field: field_australian_article_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: All
-          group: 1
-          exposed: true
-          expose:
-            operator_id: ''
-            label: 'Australian Article'
-            description: ''
-            use_operator: false
-            operator: field_australian_article_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_australian_article_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              global_admin: '0'
-              reviewer: '0'
-              editor: '0'
-              sme: '0'
-              se: '0'
-              administrator: '0'
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: boolean
         changed:
           id: changed
           table: node_field_data
@@ -4410,7 +4312,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '>='
+          operator: between
           value:
             min: ''
             max: ''
@@ -4457,30 +4359,26 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: date
-        changed_1:
-          id: changed_1
-          table: node_field_data
-          field: changed
+        field_australian_article_value:
+          id: field_australian_article_value
+          table: node__field_australian_article
+          field: field_australian_article_value
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
+          operator: '='
+          value: All
           group: 1
           exposed: true
           expose:
-            operator_id: changed_1_op
-            label: 'Updated To Date'
+            operator_id: ''
+            label: 'Australian Article'
             description: ''
             use_operator: false
-            operator: changed_1_op
+            operator: field_australian_article_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: changed_1
+            identifier: field_australian_article_value
             required: false
             remember: false
             multiple: false
@@ -4493,9 +4391,6 @@ display:
               sme: '0'
               se: '0'
               administrator: '0'
-            placeholder: ''
-            min_placeholder: ''
-            max_placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -4508,9 +4403,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: node
-          entity_field: changed
-          plugin_id: date
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
@@ -4540,6 +4433,7 @@ display:
           tokenize: false
           content: "<br/>\r\nNote:\r\n<br/>\r\n1. At any time please choose either the Updated date or the Created date filters.\r\n<br/>\r\n2. Please also make sure the From date is always greater than the To date."
           plugin_id: text_custom
+      css_class: globaldate
     display_plugin: page
     display_title: 'Global Reports'
     id: page_4

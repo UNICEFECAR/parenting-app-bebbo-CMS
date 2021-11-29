@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
     - field.field.node.health_check_ups.field_pinned_video_article
+    - field.field.node.health_check_ups.field_pre_populated
     - node.type.health_check_ups
     - workflows.workflow.group_workflow
   module:
@@ -122,3 +123,4 @@ hidden:
   field_licensed_content: true
   field_notification_from: true
   field_notification_to: true
+  field_pre_populated: true

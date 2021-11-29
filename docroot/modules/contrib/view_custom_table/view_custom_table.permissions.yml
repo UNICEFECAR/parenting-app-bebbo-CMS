@@ -1,0 +1,15 @@
+'add custom table in views':
+  title: 'Add custom tables in views'
+  description: 'Permission to add new custom table in system for views.'
+
+'remove custom table in views':
+  title: 'Remove custom tables in views'
+  description: 'Permission to remove custom table in system for views.'
+
+'administer all custom table in views':
+  title: 'Administer all custom tables in views'
+  description: 'Permission to view, edit, and remove all custom tables availabe.'
+
+'administer own custom table in views':
+  title: 'Administer own custom tables in views'
+  description: 'Permission to view, edit and remove own custom tables.'

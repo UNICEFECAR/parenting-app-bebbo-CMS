@@ -26,12 +26,12 @@ class CustomRestResource extends ResourceBase {
    */
   public function get($country = NULL) {
     $database = \Drupal::database();
-    $query = $database->query("SELECT * FROM {forcefull_check_update_api} WHERE country_id = $country ORDER BY id DESC LIMIT 1");
+    $query = $database->query("SELECT * FROM {forcefull_check_update_api} WHERE countries_id = $country ORDER BY id DESC LIMIT 1");
     $result = $query->fetchAll();
     if (!empty($result)) {
       $response_array['status'] = 200;
-      $response_array['flag'] = (int) $result[0]->flag;
-      $response_array['updated_at'] = $result[0]->updated_at;
+      $response_array['flag'] = (int) $result[0]->flag_status;
+      $response_array['updated_at'] = $result[0]->created_at;
     }
     else {
       $response_array['status'] = 204;

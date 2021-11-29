@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_licensed_content
     - field.field.node.page.field_mandatory_content
+    - field.field.node.page.field_pre_populated
     - node.type.page
     - workflows.workflow.group_workflow
   module:
@@ -108,3 +109,4 @@ content:
 hidden:
   feeds_item: true
   field_licensed_content: true
+  field_pre_populated: true

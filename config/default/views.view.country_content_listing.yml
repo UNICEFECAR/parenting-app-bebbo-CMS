@@ -2768,6 +2768,51 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
+        field_pre_populated_value:
+          id: field_pre_populated_value
+          table: node__field_pre_populated
+          field: field_pre_populated_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Pre Populated Content'
+            description: ''
+            use_operator: false
+            operator: field_pre_populated_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_pre_populated_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
@@ -2795,7 +2840,7 @@ display:
           empty: false
           tokenize: true
           content:
-            value: "<br>This page lists all the Content that belong to your Country {{ label_1 }}<br>\r\n"
+            value: "<br>This page lists all the Content that belong to your Country</br>\r\n<br>You can filter Licensed content</br>\r\n"
             format: full_html
           plugin_id: text
         result:
