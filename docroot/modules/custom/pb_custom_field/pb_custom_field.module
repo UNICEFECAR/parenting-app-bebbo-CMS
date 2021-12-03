@@ -28,7 +28,7 @@ use Drupal\Core\Database\Database;
 function pb_custom_field_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   /*
    * Group Module - Country Type.
-   * Language Field - Multiselect Option Customization.
+   * Language Field - Multiselect Options Customization.
    */
   $standard_languages = \Drupal::languageManager()->getLanguages();
   $options = [];
