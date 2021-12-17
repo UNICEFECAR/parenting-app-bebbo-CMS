@@ -107,7 +107,13 @@ class CustomSerializer extends Serializer {
             if ($key === "title") {
               $title = str_replace("&#039;", "'", $values);
               $title = str_replace("&quot;", '"', $title);
-              $rendered_data[$key] = $title;
+              $rendered_data[$key] = htmlspecialchars_decode($title);
+            }
+            ## Added for FAQ
+            if ($key === "question") {
+              $question = str_replace("&#039;", "'", $values);
+              $question = str_replace("&quot;", '"', $question);
+              $rendered_data[$key] = htmlspecialchars_decode($question);
             }
 
             /* Change video or image actual path to absolute path. */
