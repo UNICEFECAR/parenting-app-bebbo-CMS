@@ -23,10 +23,21 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_form_alter().
  */
-function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
+function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {  
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'group_country_edit_form') {
+    ##Make readonly if offload country is enabled
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();    
+    $global_user = ['global_admin'];
+    if (count(array_intersect($roles, $global_user)) != 0) {
+      if ($form['field_make_available_for_mobile']['widget']['value']['#default_value'] == 1) {
+        $form['field_make_available_for_mobile']['widget']['value']['#disabled'] = 'true';
+      }
+      else{
+            $form['field_make_available_for_mobile']['widget']['value']['#default_value'] = 'true';
+          }
+    }      
     /* $form['#attached']['js'][] = drupal_get_path('module', 'pb_custom_field') . '/js/homepage.js'; */
     $form['#attached']['library'][] = 'pb_custom_field/mylib';
     $form['actions']['submit']['#submit'][] = 'group_country_save';
