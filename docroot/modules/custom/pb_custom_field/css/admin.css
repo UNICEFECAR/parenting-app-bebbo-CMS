@@ -379,3 +379,16 @@ height: 20px;
 .countrydate #edit-created-min, .countrydate #edit-changed-min, .countrydate #edit-changed-max, .globaldate #edit-created-min, .globaldate #edit-created-max, .globaldate #edit-changed-max, .globaldate #edit-changed-min, .countrydate #edit-created-max{
   margin-right: 12px;
 }
+
+@media screen and (max-width:767px)
+{
+    .pb-main-homepage nav#block-mainnavigation-2 ul
+    {
+        padding:20px 10px;
+    }
+    .pb-main-homepage nav#block-mainnavigation-2 ul li a 
+    {
+        font-size:14px;
+    }
+
+}

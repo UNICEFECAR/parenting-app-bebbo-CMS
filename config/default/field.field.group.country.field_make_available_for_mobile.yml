@@ -5,11 +5,16 @@ dependencies:
   config:
     - field.storage.group.field_make_available_for_mobile
     - group.type.country
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: group.country.field_make_available_for_mobile
 field_name: field_make_available_for_mobile
 entity_type: group
 bundle: country
-label: 'Make available for mobile App'
+label: 'Off Load Country'
 description: ''
 required: false
 translatable: false

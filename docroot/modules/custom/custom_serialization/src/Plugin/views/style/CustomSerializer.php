@@ -38,7 +38,7 @@ class CustomSerializer extends Serializer {
     if (empty($validate_params_res)) {
       $array_of_multiple_values = [
         "child_age", "keywords", "related_articles", "related_video_articles", "related_activities",
-        "language", "related_milestone",
+        "language", "related_milestone", "embedded_images",
       ];
       $media_fields = [
         "cover_image", "country_flag", "country_sponsor_logo", "country_national_partner",
@@ -101,13 +101,19 @@ class CustomSerializer extends Serializer {
               $rendered_data['unique_name'] = "";
             }
           }
-
+          $embedded_images = array(); 
           foreach ($rendered_data as $key => $values) {
             /* Replace special charater into normal. */
             if ($key === "title") {
               $title = str_replace("&#039;", "'", $values);
               $title = str_replace("&quot;", '"', $title);
-              $rendered_data[$key] = $title;
+              $rendered_data[$key] = htmlspecialchars_decode($title);
+            }
+            ## Added for FAQ
+            if ($key === "question") {
+              $question = str_replace("&#039;", "'", $values);
+              $question = str_replace("&quot;", '"', $question);
+              $rendered_data[$key] = htmlspecialchars_decode($question);
             }
 
             /* Change video or image actual path to absolute path. */
@@ -122,7 +128,25 @@ class CustomSerializer extends Serializer {
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
-              $rendered_data[$key] = str_replace("<p> </p>", '', $body_summary);
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
+
+              /* Embedded images. */
+              if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {
+                $rendered_data[$key] = $body_summary;
+                $doc = new \DOMDocument();
+                libxml_use_internal_errors(TRUE);
+                $doc->loadHTML($body_summary); 
+                // Get the images.
+                $images = $doc->getElementsByTagName('img');
+
+                foreach ($images as $image) {
+                  $embedded_images[] = $image->getAttribute('src');
+                }
+                $rendered_data['embedded_images'] = $embedded_images;
+              }
+              else {
+                $rendered_data[$key] = $body_summary;
+              }
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {

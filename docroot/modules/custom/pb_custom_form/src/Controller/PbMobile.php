@@ -15,7 +15,7 @@ class PbMobile extends ControllerBase {
    * @return array
    *   Return pb-mobile array.
    */
-  public static function render() {
+  public  function render($param1,$param2,$param3) {
     return [
       '#theme' => 'pb-mobile',
     ];
