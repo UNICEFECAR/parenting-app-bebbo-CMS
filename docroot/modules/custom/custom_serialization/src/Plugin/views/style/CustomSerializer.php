@@ -129,7 +129,9 @@ class CustomSerializer extends Serializer {
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-
+			  /* Remove div Image label tag */
+			  $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
+			     
               /* Embedded images. */
               if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {
                 $rendered_data[$key] = $body_summary;
