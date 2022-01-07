@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Initialize value for new config key: applinks.
+ */
+function mobile_app_links_update_8103() {
+  \Drupal::configFactory()
+    ->getEditable('mobile_app_links.ios')
+    ->set('appclips', '')
+    ->save();
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Add support for /.well-known/apple-developer-domain-association.txt.
+ */
+function mobile_app_links_update_8102() {
+  \Drupal::configFactory()
+    ->getEditable('mobile_app_links.apple_dev_id_assoc')
+    ->set('apple_dev_id_assoc', '')
+    ->save();
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function mobile_app_links_update_8101() {
+  \Drupal::configFactory()
+    ->getEditable('mobile_app_links.apple_dev_merchantid_assoc')
+    ->set('apple_dev_merchant_id_assoc', '')
+    ->save();
+}

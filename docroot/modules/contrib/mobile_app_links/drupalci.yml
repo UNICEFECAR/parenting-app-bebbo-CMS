@@ -1,0 +1,11 @@
+build:
+  assessment:
+    validate_codebase:
+      # Static analysis of code for @deprecated uses.
+      phpstan:
+        halt-on-fail: true
+    testing:
+      run_tests.standard:
+        types: 'PHPUnit-Unit,PHPUnit-Kernel,PHPUnit-Functional'
+        # Fails on errors triggered.
+        suppress-deprecations: false

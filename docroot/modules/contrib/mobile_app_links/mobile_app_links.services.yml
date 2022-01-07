@@ -1,0 +1,6 @@
+services:
+  mobile_app_links.path_processor:
+    class: Drupal\mobile_app_links\MobileAppLinksPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: -500 }
+      - { name: path_processor_outbound, priority: 500 }

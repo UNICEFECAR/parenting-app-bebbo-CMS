@@ -1,0 +1,46 @@
+mobile_app_links.ios:
+  type: config_object
+  label: 'iOS App Configurations'
+  mapping:
+    appID:
+      type: string
+      label: 'App ID'
+    paths:
+      type: string
+      label: 'Paths'
+    appclips:
+      type: string
+      label: 'App Clips'
+    appID_Test:
+      type: string
+      label: 'App ID - UAT'
+    paths_Test:
+      type: string
+      label: 'Paths - UAT'
+    
+mobile_app_links.android:
+  type: config_object
+  label: 'Android App Configurations'
+  mapping:
+    package_name:
+      type: string
+      label: 'Package Name'
+    sha256_cert_fingerprints:
+      type: string
+      label: 'SHA256 Certificate Fingerprints'
+
+mobile_app_links.apple_dev_merchant_id_assoc:
+  type: config_object
+  label: 'Apple Developer Merchant Id Domain Association Configurations'
+  mapping:
+    apple_dev_merchant_id_assoc:
+      type: string
+      label: 'Apple Developer Merchant Id'
+
+mobile_app_links.apple_dev_id_assoc:
+  type: config_object
+  label: 'Apple Developer Id Domain Association Configurations'
+  mapping:
+    apple_dev_id_assoc:
+      type: string
+      label: 'Apple Developer Id'
