@@ -17,6 +17,8 @@ dependencies:
     - taxonomy.vocabulary.parent_gender
     - user.role.administrator
     - user.role.global_admin
+    - user.role.reviewer
+    - user.role.se
   module:
     - allowed_languages
     - content_moderation
@@ -45,6 +47,8 @@ display:
         options:
           role:
             global_admin: global_admin
+            reviewer: reviewer
+            se: se
             administrator: administrator
       cache:
         type: tag
@@ -2806,6 +2810,51 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
+        field_licensed_content_value:
+          id: field_licensed_content_value
+          table: node__field_licensed_content
+          field: field_licensed_content_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Licensed Content'
+            description: ''
+            use_operator: false
+            operator: field_licensed_content_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_licensed_content_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
@@ -4542,6 +4591,51 @@ display:
             operator_limit_selection: false
             operator_list: {  }
             identifier: field_australian_article_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_licensed_content_value:
+          id: field_licensed_content_value
+          table: node__field_licensed_content
+          field: field_licensed_content_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Licensed Content'
+            description: ''
+            use_operator: false
+            operator: field_licensed_content_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_licensed_content_value
             required: false
             remember: false
             multiple: false
