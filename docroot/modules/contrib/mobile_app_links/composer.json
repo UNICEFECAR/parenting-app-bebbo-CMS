@@ -1,0 +1,28 @@
+{
+  "name": "drupal/mobile_app_links",
+  "description": "This module adds ability to expose mobile app links.",
+  "homepage": "https://www.drupal.org/project/mobile_app_links",
+  "type": "drupal-module",
+  "authors": [
+    {
+      "name": "Nikunj Kotecha (nikunjkotecha)",
+      "homepage": "https://www.drupal.org/u/nikunjkotecha",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://drupal.org/project/issues/mobile_app_links",
+    "source": "https://cgit.drupalcode.org/mobile_app_links"
+  },
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.1.0",
+    "drupal/core": "^8.7||^9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Drupal\\mobile_app_links\\": "src/"
+    }
+  }
+}

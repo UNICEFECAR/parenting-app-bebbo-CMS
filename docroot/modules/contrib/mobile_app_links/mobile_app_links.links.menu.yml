@@ -1,0 +1,30 @@
+mobile_app_links.config:
+  title: 'Mobile App configurations'
+  route_name: mobile_app_links.config
+  parent: system.admin_config
+  description: 'Configure mobile app related settings.'
+  weight: 1
+
+mobile_app_links.ios_config:
+  route_name: mobile_app_links.ios_config
+  title: 'iOS App Configurations'
+  description: 'Configure iOS app related settings.'
+  parent: mobile_app_links.config
+
+mobile_app_links.android_config:
+  route_name: mobile_app_links.android_config
+  title: 'Android App Configurations'
+  description: 'Configure Android app related settings.'
+  parent: mobile_app_links.config
+
+mobile_app_links.apple_dev_id_assoc_config:
+  route_name: mobile_app_links.apple_dev_id_assoc_config
+  title: 'Apple Developer Id Domain Association Configuration'
+  description: 'Configure Apple Developer Id Domain Association.'
+  parent: mobile_app_links.config
+
+mobile_app_links.apple_dev_merchant_id_assoc_config:
+  route_name: mobile_app_links.apple_dev_merchant_id_assoc_config
+  title: 'Apple Developer Merchant Id Domain Association Configurations'
+  description: 'Configure Apple Developer Merchant Id Domain Association related settings.'
+  parent: mobile_app_links.config

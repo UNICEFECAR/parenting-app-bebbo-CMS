@@ -8194,7 +8194,7 @@ display:
               alias: cover_video
               raw_output: false
             field_cover_video_1:
-              alias: cover_image
+              alias: cover_video_image
               raw_output: false
             field_related_articles:
               alias: related_articles
@@ -12549,6 +12549,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -12571,7 +12574,7 @@ display:
               alias: cover_video
               raw_output: false
             field_cover_video_1:
-              alias: cover_image
+              alias: cover_video_image
               raw_output: false
             field_related_articles:
               alias: related_articles
@@ -12584,9 +12587,6 @@ display:
               raw_output: false
             field_mandatory_content:
               alias: mandatory
-              raw_output: false
-            body_1:
-              alias: summary
               raw_output: false
       display_description: ''
       arguments:
