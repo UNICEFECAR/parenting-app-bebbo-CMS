@@ -54,8 +54,11 @@ class NotificationInformation implements NotificationInformationInterface {
     $previous_state = FALSE;
     $workflow = $this->getWorkflow($entity);
     if (isset($entity->last_revision)) {
-      $previous_state = $workflow->getTypePlugin()->getState($entity->last_revision->moderation_state->value);
-
+      $revision_ids = $this->entityTypeManager->getStorage('node')->revisionIds($entity);
+      $last_revision_id = $revision_ids[count($revision_ids) - 2];
+      $current_state = node_revision_load($last_revision_id);
+      $revision = $current_state->getTranslation($entity->langcode->value);
+      $previous_state = $workflow->getTypePlugin()->getState($revision->moderation_state->value);
     }
 
     if (!$previous_state) {
