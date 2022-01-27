@@ -154,9 +154,6 @@
                 "Added new uat fields in form": "patches/mobile_app_links/ios_uat_field_display.patch",
                 "Added uat field saving function": "patches/mobile_app_links/ios_uat_field_insert.patch",
                 "Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch"
-            },
-            "drupal/content_moderation_notifications": {
-                "Get previous content moderation revision state based on language": "patches/content_moderation_notifications/previous_moderation_revision_state.patch"
             }
         }
     },
