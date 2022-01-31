@@ -12,8 +12,7 @@ use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 
-/*
-use Drupal\group\Entity;
+/* use Drupal\group\Entity;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Language\LanguageManager;
@@ -38,6 +37,12 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    *
    * @var int
    */
+  public $initialCount = 1;
+  /**
+   * Get the total translated count.
+   *
+   * @var int
+   */
   public $assigned = 0;
   /**
    * Get the total non translated count.
@@ -45,6 +50,12 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    * @var int
    */
   public $nonAssigned = 0;
+  /**
+   * Get the total non translated count.
+   *
+   * @var int
+   */
+  public $countryRestrict = 0;
   /**
    * Get the total items processed.
    *
@@ -180,58 +191,36 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    * {@inheritdoc}
    */
   public function execute(ContentEntityInterface $entity = NULL) {
-    $context = $this->context;
-    $total_selected = $context['selected_count'];
+	  $context = $this->context;
+    /* $total_selected = $context['selected_count'];
+    $message = "";
+    $error_message = ""; */
     $langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
     $this->processItem = $this->processItem + 1;
-    $message = "";
-    $error_message = "";
+    $initial_count = $this->initialCount++;
+    $list = $this->context['list'];
+    $page = $this->context['sandbox']['page'];
+    foreach ($list as $value) {
+      $nids = $value[0];
+      $n_language[$nids][] = $value[1];
+    }
     if (!empty($langoption) && !empty($countryoption)) {
-      $current_language = $entity->get('langcode')->value;
-      $nid = $entity->get('nid')->getString();
-      $node = node_load($nid);
-      $uid = \Drupal::currentUser()->id();
-      $uname = \Drupal::currentUser()->getDisplayName();
-      if (!$node->hasTranslation($langoption)) {
-        $node_lang = $node->getTranslation($current_language);
-        /* $node->setRevisionTranslationAffected(FALSE); */
-        $node_es = $node->addTranslation($langoption, $node_lang->toArray());
-        $node_es->set('moderation_state', 'draft');
-        $node_es->set('langcode', $langoption);
-        $node_es->set('uid', $uid);
-        $node_es->set('content_translation_source', $current_language);
-        $node_es->set('changed', time());
-        $node_es->set('created', time());
-        /* Set new Revision */
-        $node_es->setNewRevision(TRUE);
-        $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
-        $node_es->setRevisionCreationTime(REQUEST_TIME);
-        $node_es->setRevisionUserId($uid);
-        $node_es->save();
-        $node->save();
-        $this->assigned = $this->assigned + 1;
-      }
-      else {
-        $this->nonAssigned = $this->nonAssigned + 1;
-      }
-      if ($this->assigned > 0) {
-        $message = $this->t("Content assigned to country ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
-      }
-      if ($this->nonAssigned > 0) {
-        $error_message = $this->t("Content already exists in country ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
+      if ($initial_count == 1 && $page == 0) {
+        $batch = [
+          'title' => t('Performing Assign to country..'),
+          'operations' => [
+          [
+            '\Drupal\pb_custom_field\AssigncontentStatus::assignlanguage',
+            [$n_language, $langoption],
+          ],
+          ],
+          'finished' => '\Drupal\pb_custom_field\AssigncontentStatus::assignlanguageFinishedCallback',
+        ];
+        batch_set($batch);
       }
     }
-
-    if ($total_selected == $this->processItem) {
-      if (!empty($message)) {
-        drupal_set_message($message, 'status');
-      }
-      if (!empty($error_message)) {
-        drupal_set_message($error_message, 'error');
-      }
-    }
-    return $this->t("Total content selected");
+    return $this->t("Total Content Selected");
   }
 
   /**
@@ -243,7 +232,6 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         ->andIf($object->status->access('edit', $account, TRUE));
       return $return_as_object ? $access : $access->isAllowed();
     }
-
     return TRUE;
   }
 
