@@ -71,7 +71,7 @@ class AssigncontentStatus {
   /**
    * Processes each required or optional tag.
    */
-  public static function offLoadsCountryProcessfordraftFinishedCallback($success, $results, $operations) {
+  public static function assignlanguageFinishedCallback($success, $results, $operations) {
     // The 'success' parameter means no fatal PHP errors were detected. All
     // other error management should be handled using 'results'.
     if ($success) {
@@ -82,8 +82,8 @@ class AssigncontentStatus {
     }
     else {
       $message = t('Finished with an error.');
+	  drupal_set_message($message);
     }
-    drupal_set_message($message);
   }
 
 }

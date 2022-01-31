@@ -94,7 +94,7 @@ class ChangeintoSMEActionStatus {
       drupal_set_message(t($Succ_message), 'status');
     }
     if($same_status_error > 0){
-      $msg = "Selected content is allready in SME Review state (" . $same_status_error . ")";
+      $msg = "Selected content is already in SME Review state (" . $same_status_error . ")";
         drupal_set_message(t($msg), 'error');
     }
     if($country_error > 0){
@@ -119,8 +119,9 @@ class ChangeintoSMEActionStatus {
     }
     else {
       $message = t('Finished with an error.');
+	  drupal_set_message($message);
     }
-    drupal_set_message($message);
+    
   }
 
 }

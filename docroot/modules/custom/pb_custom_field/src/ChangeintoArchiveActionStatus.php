@@ -117,8 +117,9 @@ class ChangeintoArchiveActionStatus {
     }
     else {
       $message = t('Finished with an error.');
+	  drupal_set_message($message);
     }
-    drupal_set_message($message);
+   
   }
 
 }
