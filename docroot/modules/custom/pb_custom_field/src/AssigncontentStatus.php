@@ -49,13 +49,16 @@ class AssigncontentStatus {
         $node_es->setRevisionCreationTime(REQUEST_TIME);
         $node_es->setRevisionUserId($uid);
         //$node_es->save();
-        $results[] = $node->save();
-        $success_msg++;
+		$results_save = $node->save();
+		
+		$success_msg++;
       }
       else {
         $same_status_error++;
       }
+	  $results[] = 1;
     }
+	
     if ($success_msg > 0) {
       $Succ_message = "Content assigned to country (" . $success_msg . ") <br/>";
       drupal_set_message(t($Succ_message), 'status');
@@ -65,7 +68,8 @@ class AssigncontentStatus {
       drupal_set_message(t($msg), 'error');
     }
     $context['message'] = $message;
-    $context['results'] = $results;
+	$context['results'] = $results;
+	
   }
 
   /**
