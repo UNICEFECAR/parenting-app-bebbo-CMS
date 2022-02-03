@@ -147,13 +147,16 @@
              "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
             },
-            "drupal/mobile_app_links": {
-                "Created new path for android and ios": "patches/mobile_app_links/android_ios_root_url.patch",
-                "Added some changes in IOS json format": "patches/mobile_app_links/ios_json_format.patch",
-                "Added UAT fields config changes": "patches/mobile_app_links/ios_uat_field_config.patch",
-                "Added new uat fields in form": "patches/mobile_app_links/ios_uat_field_display.patch",
-                "Added uat field saving function": "patches/mobile_app_links/ios_uat_field_insert.patch",
-                "Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch"
+			"drupal/mobile_app_links": {
+				"Created new path for android and ios": "patches/mobile_app_links/android_ios_root_url.patch",
+				"Added some changes in IOS json format": "patches/mobile_app_links/ios_json_format.patch",
+				"Added UAT fields config changes": "patches/mobile_app_links/ios_uat_field_config.patch",
+				"Added new uat fields in form": "patches/mobile_app_links/ios_uat_field_display.patch",
+				"Added uat field saving function": "patches/mobile_app_links/ios_uat_field_insert.patch",
+				"Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch"
+			},
+            "drupal/views_bulk_operations": {
+                "Remove the default status message from VBO": "patches/views_bulk_operations/vbo_default_message_remove.patch"
             }
         }
     },

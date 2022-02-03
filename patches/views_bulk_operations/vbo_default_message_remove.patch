@@ -1,0 +1,20 @@
+diff --git a/docroot/modules/contrib/views_bulk_operations/src/ViewsBulkOperationsBatch.php b/docroot/modules/contrib/views_bulk_operations/src/ViewsBulkOperationsBatch.php
+index 97356a16..a7923479 100644
+--- a/docroot/modules/contrib/views_bulk_operations/src/ViewsBulkOperationsBatch.php
++++ b/docroot/modules/contrib/views_bulk_operations/src/ViewsBulkOperationsBatch.php
+@@ -153,15 +153,6 @@ public static function operation(array $data, array &$context) {
+    */
+   public static function finished($success, array $results, array $operations) {
+     if ($success) {
+-      $operations = array_count_values($results['operations']);
+-      $details = [];
+-      foreach ($operations as $op => $count) {
+-        $details[] = $op . ' (' . $count . ')';
+-      }
+-      $message = static::t('Action processing results: @operations.', [
+-        '@operations' => implode(', ', $details),
+-      ]);
+-      static::message($message);
+       if (isset($results['redirect_url'])) {adf
+         return new RedirectResponse($results['redirect_url']->setAbsolute()->toString());
+       }
