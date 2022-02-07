@@ -153,15 +153,6 @@ class ViewsBulkOperationsBatch {
    */
   public static function finished($success, array $results, array $operations) {
     if ($success) {
-      $operations = array_count_values($results['operations']);
-      $details = [];
-      foreach ($operations as $op => $count) {
-        $details[] = $op . ' (' . $count . ')';
-      }
-      $message = static::t('Action processing results: @operations.', [
-        '@operations' => implode(', ', $details),
-      ]);
-      static::message($message);
       if (isset($results['redirect_url'])) {
         return new RedirectResponse($results['redirect_url']->setAbsolute()->toString());
       }
