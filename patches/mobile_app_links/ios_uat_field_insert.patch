@@ -1,0 +1,44 @@
+diff --git a/docroot/modules/contrib/mobile_app_links/src/Form/IosConfigForm.php b/docroot/modules/contrib/mobile_app_links/src/Form/IosConfigForm.php
+index de4d43e3..a7bb47b6 100644
+--- a/docroot/modules/contrib/mobile_app_links/src/Form/IosConfigForm.php
++++ b/docroot/modules/contrib/mobile_app_links/src/Form/IosConfigForm.php
+@@ -46,13 +46,26 @@ public function buildForm(array $form, FormStateInterface $form_state) {
+       '#description' => $this->t('Enter one value per line.'),
+       '#default_value' => $config->get('paths'),
+     ];
+-
++
+     $form['appclips'] = [
+       '#type' => 'textfield',
+       '#title' => $this->t('App Clips'),
+       '#description' => $this->t('Enter the "apps" that have appclips: *your_id*.com.domain.Clip.'),
+       '#default_value' => $config->get('appclips'),
+     ];
++
++       $form['appID_Test'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('App ID - UAT'),
++      '#default_value' => $config->get('appID_Test'),
++    ];
++
++    $form['paths_Test'] = [
++      '#type' => 'textarea',
++      '#title' => $this->t('Paths - UAT'),
++      '#description' => $this->t('Enter one value per line.'),
++      '#default_value' => $config->get('paths_Test'),
++    ];
+
+     return $form;
+   }
+@@ -68,6 +81,12 @@ public function submitForm(array &$form, FormStateInterface $form_state) {
+     $paths = str_replace("\r", "\n", $paths);
+     $config->set('paths', $paths);
+     $config->set('appclips', $form_state->getValue('appclips'));
++
++       /* UAT Config Settings */
++       $config->set('appID_Test', $form_state->getValue('appID_Test'));
++       $paths_uat = str_replace("\r\n", "\n", $form_state->getValue('paths_Test'));
++    $paths_uat = str_replace("\r", "\n", $paths_uat);
++    $config->set('paths_Test', $paths_uat);
+
+     $config->save();

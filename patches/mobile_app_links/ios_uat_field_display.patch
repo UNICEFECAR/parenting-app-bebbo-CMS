@@ -1,0 +1,56 @@
+diff --git a/docroot/modules/contrib/mobile_app_links/src/Controller/WellKnownController.php b/docroot/modules/contrib/mobile_app_links/src/Controller/WellKnownController.php
+index fa8648ce..198a3d15 100644
+--- a/docroot/modules/contrib/mobile_app_links/src/Controller/WellKnownController.php
++++ b/docroot/modules/contrib/mobile_app_links/src/Controller/WellKnownController.php
+@@ -112,20 +112,40 @@ public function appleAppSiteAssociation() {
+     $cacheMeta = new CacheableMetadata();
+     $cacheMeta->addCacheTags($config->getCacheTags());
+
+-    $appID = $config->get('appID');
++       $appID = $config->get('appID');
+     if (empty($appID)) {
+       throw new CacheableNotFoundHttpException($cacheMeta);
+     }
+-
++
++       /* UAT app config details */
++       $appID_Test = $config->get('appID_Test');
++       if(!empty($appID_Test)){
++               $app_test_path = explode(PHP_EOL, $config->get('paths_Test'));
++               $prod_details[] =  [
++            'appID' => $appID_Test,
++                       'components' => [ [
++                               '/' => $app_test_path[0],
++                               'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
++                       ]],
++            'paths' => explode(PHP_EOL, $config->get('paths_Test'))
++          ];
++       }
++
++       /* Prod app config details */
++       $component_path = explode(PHP_EOL, $config->get('paths'));
++       $prod_details[] = [
++            'appID' => $appID,
++                       'components' => [ [
++                               '/' => $component_path[0],
++                               'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
++                       ]],
++            'paths' => explode(PHP_EOL, $config->get('paths'))
++    ];
++
+     $body = [
+       'applinks' => [
+         'apps' => [],
+-        'details' => [
+-          [
+-            'appID' => $appID,
+-            'paths' => explode(PHP_EOL, $config->get('paths')),
+-          ],
+-        ],
++        'details' => $prod_details,
+       ],
+     ];
+
+@@ -138,7 +158,7 @@ public function appleAppSiteAssociation() {
+       ];
+     }

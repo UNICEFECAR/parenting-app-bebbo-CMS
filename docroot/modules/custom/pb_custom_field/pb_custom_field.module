@@ -586,6 +586,10 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       }
     }
   }
+   if ($form['#id'] == "workflow-state-edit-form") {
+    /* Make Default Value 1 of Workflow*/
+    $form['type_settings']['default_revision']['#default_value'] = TRUE;
+  }
 }
 
 /**
@@ -1154,6 +1158,7 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
 /**
  * Alters content moderation notification mail.
  */
+
 function pb_custom_field_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
   // Add an extra email address to the list.
   global $base_url;
@@ -1164,7 +1169,7 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     $nid = $data['params']['context']['entity']->nid[0]->value;
     $node_language = $data['params']['context']['entity']->langcode[0]->value;
     $standard_languages = LanguageManager::getStandardLanguageList();
-    foreach ($standard_languages as $key => $val) {
+    foreach($standard_languages as $key => $val) {
       if ($key == $node_language) {
         $translation = $val;
       }
@@ -1183,7 +1188,7 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     $body_old = str_replace("[node_id]", $nid, $message);
     $body_old = str_replace("[language]", $translation[0], $body_old);
     $body = str_replace("[link]", $nid_with_link, $body_old);
-    // Get master value from settings form.
+	// Get master value from settings form.
     $config = \Drupal::config('pb_custom_form.adminsettings');
     $master = $config->get('master_language');
     $master_language = explode(',', $master);
@@ -1202,7 +1207,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
               $new_arry[] = $mail;
             }
           }
-        }
+		}
+
         $data['params']['subject'] = $subject;
         $data['params']['message'] = $body;
         $data['to'] = $new_arry;
@@ -1233,6 +1239,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
       $new_arry = [];
       foreach ($all_users_email as $mail) {
         if ($mail != '') {
+
+
           $user_load  = user_load_by_mail($mail);
           $uid = $user_load->id();
           $user = User::load($uid);
@@ -1325,4 +1333,19 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       $result->id = $country_id;
     }
   }
+}
+function smackmybatch_process_letter($ids) {
+
+ 
+  $batch = [
+      'title' => t('change status'),
+      'operations' => [
+      [
+        '\Drupal\pb_custom_field\ChangeActionStatus::offLoadCountryProcessd',
+        [$ids],
+      ],
+      ],
+      'finished' => '\Drupal\pb_custom_field\ChangeActionStatus::offLoadsCountryProcessFinishedCallback',
+    ];
+    batch_set($batch);
 }
