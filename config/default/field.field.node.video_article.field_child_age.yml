@@ -6,14 +6,19 @@ dependencies:
     - field.storage.node.field_child_age
     - node.type.video_article
     - taxonomy.vocabulary.child_age
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.video_article.field_child_age
 field_name: field_child_age
 entity_type: node
 bundle: video_article
 label: 'Child Age'
 description: 'Press Shift to select multiple values'
-required: false
-translatable: true
+required: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

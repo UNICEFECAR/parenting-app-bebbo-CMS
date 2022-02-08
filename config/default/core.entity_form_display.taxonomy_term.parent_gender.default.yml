@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.parent_gender.feeds_item
+    - field.field.taxonomy_term.parent_gender.field_unique_name
     - taxonomy.vocabulary.parent_gender
   module:
     - path
@@ -48,3 +49,4 @@ content:
 hidden:
   description: true
   feeds_item: true
+  field_unique_name: true

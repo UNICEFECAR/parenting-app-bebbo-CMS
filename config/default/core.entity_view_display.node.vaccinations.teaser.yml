@@ -5,10 +5,13 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.feeds_item
     - field.field.node.vaccinations.field_growth_period
+    - field.field.node.vaccinations.field_licensed_content
     - field.field.node.vaccinations.field_notification_from
     - field.field.node.vaccinations.field_notification_to
     - field.field.node.vaccinations.field_pinned_article
+    - field.field.node.vaccinations.field_pinned_video_article
     - field.field.node.vaccinations.field_vaccination_closes
     - field.field.node.vaccinations.field_vaccination_opens
     - node.type.vaccinations
@@ -41,9 +44,11 @@ content:
 hidden:
   feeds_item: true
   field_growth_period: true
+  field_licensed_content: true
   field_notification_from: true
   field_notification_to: true
   field_pinned_article: true
+  field_pinned_video_article: true
   field_vaccination_closes: true
   field_vaccination_opens: true
   langcode: true

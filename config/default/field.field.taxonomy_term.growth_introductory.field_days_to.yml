@@ -5,6 +5,11 @@ dependencies:
   config:
     - field.storage.taxonomy_term.field_days_to
     - taxonomy.vocabulary.growth_introductory
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: taxonomy_term.growth_introductory.field_days_to
 field_name: field_days_to
 entity_type: taxonomy_term
@@ -12,7 +17,7 @@ bundle: growth_introductory
 label: 'Days To'
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

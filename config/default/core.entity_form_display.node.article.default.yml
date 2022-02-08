@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
-    - field.field.node.article.feeds_item
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
     - field.field.node.article.field_child_gender
@@ -15,6 +14,7 @@ dependencies:
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
     - field.field.node.article.field_parent_gender
+    - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
@@ -110,6 +110,13 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_pre_populated:
+    type: boolean_checkbox
+    weight: 23
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_premature_content:
     weight: 12
     settings:
@@ -199,5 +206,4 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  feeds_item: true
   field_generic_content: true

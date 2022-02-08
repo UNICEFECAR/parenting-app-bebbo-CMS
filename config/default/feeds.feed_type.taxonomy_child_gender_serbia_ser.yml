@@ -8,8 +8,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_child_gender_serbia_ser
-label: 'Taxonomy - Child Gender - serbia-serbian'
-description: 'Taxonomy - Child Gender serbia-serbian'
+label: 'Taxonomy - Child Gender - Language'
+description: ' Child Gender - Language'
 help: ''
 import_period: -1
 fetcher: upload
@@ -23,7 +23,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: rs-sr
+  langcode: bg-bg
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -60,4 +60,4 @@ mappings:
       value: term_name
     unique: {  }
     settings:
-      language: rs-sr
+      language: bg-bg

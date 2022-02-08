@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.activity_category.feeds_item
+    - field.field.taxonomy_term.activity_category.field_unique_name
     - taxonomy.vocabulary.activity_category
   module:
     - path
@@ -48,3 +49,4 @@ content:
 hidden:
   description: true
   feeds_item: true
+  field_unique_name: true

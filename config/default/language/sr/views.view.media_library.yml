@@ -1,39 +1,6 @@
 display:
-  default:
-    display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
-      filters:
-        name:
-          expose:
-            label: Name
-        langcode:
-          expose:
-            label: Language
-  page:
-    display_options:
-      fields:
-        edit_media:
-          text: Edit
-        delete_media:
-          text: Delete
-  widget:
-    display_options:
-      filters:
-        name:
-          expose:
-            label: Name
   widget_table:
     display_options:
       fields:
         thumbnail__target_id:
           label: 'Умањени приказ'
-        name:
-          label: Name
-        uid:
-          label: Author
-      filters:
-        name:
-          expose:
-            label: Name

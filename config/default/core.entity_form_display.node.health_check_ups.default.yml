@@ -4,12 +4,18 @@ status: true
 dependencies:
   config:
     - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.feeds_item
     - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_licensed_content
     - field.field.node.health_check_ups.field_notification_from
     - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
+    - field.field.node.health_check_ups.field_pinned_video_article
+    - field.field.node.health_check_ups.field_pre_populated
     - node.type.health_check_ups
+    - workflows.workflow.group_workflow
   module:
+    - content_moderation
     - path
 id: node.health_check_ups.default
 targetEntityType: node
@@ -38,6 +44,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_pinned_video_article:
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   langcode:
     type: language_select
     weight: 2
@@ -47,7 +63,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 12
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -87,7 +103,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -104,5 +120,7 @@ content:
 hidden:
   body: true
   feeds_item: true
+  field_licensed_content: true
   field_notification_from: true
   field_notification_to: true
+  field_pre_populated: true

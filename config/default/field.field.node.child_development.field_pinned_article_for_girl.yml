@@ -4,25 +4,28 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_pinned_article_for_girl
-    - node.type.article
     - node.type.child_development
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.child_development.field_pinned_article_for_girl
 field_name: field_pinned_article_for_girl
 entity_type: node
 bundle: child_development
-label: 'Pinned Article for Girl Baby'
+label: 'Pinned Video Article for Girl Baby'
 description: ''
-required: false
-translatable: true
+required: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      article: article
-    sort:
-      field: _none
-    auto_create: false
-    auto_create_bundle: ''
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - video_article
 field_type: entity_reference

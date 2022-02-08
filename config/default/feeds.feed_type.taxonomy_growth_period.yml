@@ -4,8 +4,7 @@ status: true
 dependencies:
   config:
     - core.base_field_override.taxonomy_term.growth_period.name
-    - field.field.taxonomy_term.growth_period.field_days_from
-    - field.field.taxonomy_term.growth_period.field_days_to
+    - field.field.taxonomy_term.growth_period.field_vaccination_opens
     - taxonomy.vocabulary.growth_period
   module:
     - taxonomy
@@ -56,6 +55,22 @@ custom_sources:
     label: Weight
     value: Weight
     machine_name: weight
+  term_id:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id
+  vaccination_opens:
+    label: Vaccination_opens
+    value: Vaccination_opens
+    machine_name: vaccination_opens
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  id:
+    label: ID
+    value: ID
+    machine_name: id
 mappings:
   -
     target: name
@@ -65,28 +80,16 @@ mappings:
     settings:
       language: en
   -
-    target: field_days_from
+    target: tid
     map:
-      value: days_from
-    unique: {  }
-    settings:
-      language: en
-  -
-    target: field_days_to
-    map:
-      value: days_to
-    unique: {  }
-    settings:
-      language: en
-  -
-    target: langcode
-    map:
-      value: language_code
-    settings:
-      language: en
-  -
-    target: weight
-    map:
-      value: weight
-    unique: {  }
+      value: id
+    unique:
+      value: '1'
     settings: {  }
+  -
+    target: field_vaccination_opens
+    map:
+      value: vaccination_opens
+    unique: {  }
+    settings:
+      language: en

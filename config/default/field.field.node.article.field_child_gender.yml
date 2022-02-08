@@ -6,15 +6,24 @@ dependencies:
     - field.storage.node.field_child_gender
     - node.type.article
     - taxonomy.vocabulary.child_gender
+  content:
+    - 'taxonomy_term:child_gender:558010e1-3983-448c-8976-5d227facd13f'
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.article.field_child_gender
 field_name: field_child_gender
 entity_type: node
 bundle: article
 label: 'Child Gender'
 description: 'To Specify under which child gender this article falls'
-required: false
-translatable: true
-default_value: {  }
+required: true
+translatable: false
+default_value:
+  -
+    target_uuid: 558010e1-3983-448c-8976-5d227facd13f
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'

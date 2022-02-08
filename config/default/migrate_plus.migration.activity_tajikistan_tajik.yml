@@ -1,0 +1,33 @@
+langcode: en
+id: activity_tajikistan_tajik
+migration_tags: activity_tajikistan_tajik
+migration_group: activity
+label: 'activity_tajikistan_tajik'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/activity/activity_tajikistan_tajik.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: tj-tg
+
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+
+  nid: ID
+  field_cover_image: Cover_image
+  moderation_state: Moderation_state
+
+destination:
+  plugin: 'entity:node'
+  default_bundle: activities
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

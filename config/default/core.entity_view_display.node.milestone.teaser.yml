@@ -6,8 +6,10 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.milestone.body
     - field.field.node.milestone.field_child_age
+    - field.field.node.milestone.field_licensed_content
     - field.field.node.milestone.field_mandatory_content
     - field.field.node.milestone.field_related_activities
+    - field.field.node.milestone.field_related_articles
     - field.field.node.milestone.field_related_video_articles
     - node.type.milestone
   module:
@@ -26,6 +28,11 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 100
     settings: {  }
@@ -33,7 +40,9 @@ content:
     region: content
 hidden:
   field_child_age: true
+  field_licensed_content: true
   field_mandatory_content: true
   field_related_activities: true
+  field_related_articles: true
   field_related_video_articles: true
   langcode: true

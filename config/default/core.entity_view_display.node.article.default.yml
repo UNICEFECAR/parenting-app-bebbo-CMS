@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
-    - field.field.node.article.feeds_item
     - field.field.node.article.field_australian_article
     - field.field.node.article.field_child_age
     - field.field.node.article.field_child_gender
@@ -38,9 +37,9 @@ content:
     label: hidden
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_australian_article:
     weight: 111
     label: above
@@ -55,7 +54,7 @@ content:
     weight: 115
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -63,7 +62,7 @@ content:
     weight: 116
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -71,7 +70,7 @@ content:
     weight: 114
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -80,7 +79,7 @@ content:
     weight: 112
     label: above
     settings:
-      view_mode: default
+      view_mode: media_library
       link: false
     third_party_settings: {  }
     region: content
@@ -98,7 +97,7 @@ content:
     weight: 113
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -126,7 +125,7 @@ content:
     weight: 117
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -161,5 +160,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  feeds_item: true
   langcode: true

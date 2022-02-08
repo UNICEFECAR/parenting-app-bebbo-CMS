@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.child_growth.body
     - field.field.node.child_growth.field_child_age
     - field.field.node.child_growth.field_growth_type
+    - field.field.node.child_growth.field_licensed_content
     - field.field.node.child_growth.field_mandatory_content
     - field.field.node.child_growth.field_related_articles
+    - field.field.node.child_growth.field_related_video_articles
     - field.field.node.child_growth.field_standard_deviation
     - node.type.child_growth
   module:
@@ -27,16 +29,26 @@ content:
     region: content
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_growth_type:
     weight: 102
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 110
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_mandatory_content:
     weight: 106
@@ -56,19 +68,27 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_standard_deviation:
-    weight: 103
+  field_related_video_articles:
+    weight: 109
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_standard_deviation:
+    weight: 103
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   feeds_item: true
   field_activity_child_age: true

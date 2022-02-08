@@ -1,0 +1,74 @@
+langcode: en
+id: activity_english
+migration_tags: activity_english
+migration_group: activity
+label: 'activity_english'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/activity/activity_english.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: en
+
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+
+  nid: ID
+  title: Title
+  body/value: Body
+  field_cover_image: Cover_image
+
+  field_equipment: Equipment
+
+  field_type_of_support:
+    plugin: entity_lookup
+    source: Type_of_support
+    value_key: tid
+    bundle_key: vid
+    bundle: type_of_support
+    entity_type: taxonomy_term
+
+  field_child_age:
+    -
+      plugin: explode
+      delimiter: ','
+      source: Child_age
+    -
+      plugin: entity_lookup
+      value_key: tid
+      bundle_key: vid
+      bundle: child_age
+      entity_type: taxonomy_term
+
+  field_activity_category:    
+    source: Domain    
+    plugin: entity_lookup
+    value_key: tid
+    bundle_key: vid
+    bundle: activity_category
+    entity_type: taxonomy_term
+
+  field_related_articles:   
+    source: Related_milestones  
+    plugin: entity_lookup
+    entity_type: node
+    bundle_key: type
+    bundle: milestone
+    value_key: nid
+   
+  field_mandatory_content: Mandatory_content
+  moderation_state: Moderation_state
+
+destination:
+  plugin: 'entity:node'
+  default_bundle: activities
+migration_dependencies:
+  required: {  }
+  optional: {  }

@@ -1,24 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
         thumbnail__target_id:
           label: 'Умањени приказ'
-        bundle:
-          label: Type
-        uid:
-          label: Author
-        status:
-          label: Status
-        operations:
-          label: Operations
-      filters:
-        bundle:
-          expose:
-            label: Type
-        langcode:
-          expose:
-            label: Language

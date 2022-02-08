@@ -4,8 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.media_library
+    - field.field.media.image.feeds_item
     - field.field.media.image.field_media_image
-    - image.style.medium
+    - image.style.content_1200xh_
     - media.type.image
   module:
     - image
@@ -16,18 +17,19 @@ targetEntityType: media
 bundle: image
 mode: media_library
 content:
-  thumbnail:
+  field_media_image:
     type: image
     weight: 0
     region: content
-    label: hidden
+    label: above
     settings:
-      image_style: medium
-      image_link: ''
+      image_style: content_1200xh_
+      image_link: content
     third_party_settings: {  }
 hidden:
   created: true
-  field_media_image: true
+  feeds_item: true
   langcode: true
   name: true
+  thumbnail: true
   uid: true

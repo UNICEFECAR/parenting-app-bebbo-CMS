@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.growth_introductory.feeds_item
     - field.field.taxonomy_term.growth_introductory.field_days_from
     - field.field.taxonomy_term.growth_introductory.field_days_to
     - taxonomy.vocabulary.growth_introductory
@@ -69,4 +70,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  feeds_item: true

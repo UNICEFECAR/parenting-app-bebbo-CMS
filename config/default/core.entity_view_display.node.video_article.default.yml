@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_related_video_articles
     - field.field.node.video_article.field_seasons
     - node.type.video_article
   module:
@@ -34,6 +35,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_australian_article:
     weight: 102
     label: above
@@ -48,7 +54,7 @@ content:
     weight: 107
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -56,7 +62,7 @@ content:
     weight: 108
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -64,7 +70,7 @@ content:
     weight: 109
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -91,7 +97,7 @@ content:
     weight: 110
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -119,7 +125,7 @@ content:
     weight: 111
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -148,6 +154,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_related_video_articles:
+    weight: 116
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_seasons:
     weight: 113
     label: above
@@ -158,8 +172,9 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  feeds_item: true
   langcode: true

@@ -4,10 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.feeds_item
     - field.field.node.vaccinations.field_growth_period
+    - field.field.node.vaccinations.field_licensed_content
     - field.field.node.vaccinations.field_notification_from
     - field.field.node.vaccinations.field_notification_to
     - field.field.node.vaccinations.field_pinned_article
+    - field.field.node.vaccinations.field_pinned_video_article
     - field.field.node.vaccinations.field_vaccination_closes
     - field.field.node.vaccinations.field_vaccination_opens
     - node.type.vaccinations
@@ -28,16 +31,26 @@ content:
     region: content
   content_moderation_control:
     weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_growth_period:
     weight: 103
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_licensed_content:
+    weight: 109
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_notification_from:
     weight: 105
@@ -65,6 +78,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_pinned_video_article:
+    weight: 108
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_vaccination_closes:
     weight: 107
     label: above
@@ -85,9 +106,9 @@ content:
     region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   feeds_item: true
   langcode: true

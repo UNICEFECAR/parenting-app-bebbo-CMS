@@ -5,7 +5,7 @@ dependencies:
   config:
     - group.type.country
 id: country-admin
-label: Admin
+label: 'Country Admin'
 weight: 100
 internal: false
 audience: member
@@ -15,10 +15,12 @@ permissions:
   - 'access content overview'
   - 'access group_node overview'
   - 'administer group'
-  - 'use group_workflow transition draft_to_published'
-  - 'view group'
+  - 'administer members'
+  - 'create group_membership entity'
+  - 'update any group_membership entity'
+  - 'update own group_membership content'
   - 'view group_membership content'
-  - 'view group_node:activities entity'
+  - 'view group_membership entity'
   - 'view unpublished group_node:activities entity'
   - 'view unpublished group_node:article entity'
   - 'view unpublished group_node:child_development entity'

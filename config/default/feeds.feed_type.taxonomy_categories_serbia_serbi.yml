@@ -8,8 +8,8 @@ dependencies:
   module:
     - taxonomy
 id: taxonomy_categories_serbia_serbi
-label: 'Taxonomy - Categories - serbia-serbian'
-description: 'Taxonomy - Categories - serbia-serbian'
+label: 'Taxonomy - Categories - Language'
+description: 'Categories - Language'
 help: ''
 import_period: -1
 fetcher: upload
@@ -23,7 +23,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: rs-sr
+  langcode: rs-en
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -56,4 +56,4 @@ mappings:
       value: term_name
     unique: {  }
     settings:
-      language: rs-sr
+      language: rs-en

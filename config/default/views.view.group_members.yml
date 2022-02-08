@@ -2,6 +2,8 @@ uuid: 09d41dc8-c7ff-473d-be79-f552deb4999f
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.storage.group_content.group_roles
   module:
     - group
     - user
@@ -462,11 +464,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: 'View member'
-          entity_type: group_content
-          plugin_id: entity_link
+          text: 'Manage member'
           output_url_as_text: false
           absolute: false
+          entity_type: group_content
+          plugin_id: entity_link
         edit_group_content:
           id: edit_group_content
           table: group_content
@@ -515,7 +517,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: 'Edit member'
+          text: 'Assign roles'
+          output_url_as_text: false
+          absolute: false
           entity_type: group_content
           plugin_id: entity_link_edit
         delete_group_content:
@@ -569,6 +573,59 @@ display:
           text: 'Remove member'
           entity_type: group_content
           plugin_id: entity_link_delete
+        edit_user:
+          id: edit_user
+          table: users
+          field: edit_user
+          relationship: gc__user
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          text: 'Edit member'
+          output_url_as_text: false
+          absolute: false
+          entity_type: user
+          plugin_id: entity_link_edit
         dropbutton:
           id: dropbutton
           table: views
@@ -620,11 +677,12 @@ display:
           fields:
             view_group_content: view_group_content
             edit_group_content: edit_group_content
-            delete_group_content: delete_group_content
+            edit_user: edit_user
             name: '0'
             group_roles: '0'
             changed: '0'
             created: '0'
+            delete_group_content: '0'
           destination: true
           plugin_id: dropbutton
       filters: {  }

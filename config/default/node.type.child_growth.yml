@@ -9,7 +9,7 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
-name: 'Child Growth'
+name: 'Child Growth - Age Periods'
 type: child_growth
 description: 'Growth scenario corresponding to measures of weight and height/length in relation to WHO Growth charts '
 help: ''

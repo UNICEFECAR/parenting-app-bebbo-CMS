@@ -1,4 +1,4 @@
-uuid: 563159b0-ff4d-44ad-b152-e8600e807adb
+uuid: 0b7250a5-1df6-4337-b940-8ae9f6e3083d
 langcode: en
 status: true
 dependencies:
@@ -6,14 +6,19 @@ dependencies:
     - field.storage.node.field_child_age
     - node.type.child_development
     - taxonomy.vocabulary.child_age
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.child_development.field_child_age
 field_name: field_child_age
 entity_type: node
 bundle: child_development
 label: 'Child Age'
-description: 'Press Shift to select multiple values'
+description: 'Note - Please select single value for child age'
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_pinned_article
-    - node.type.article
     - node.type.health_check_ups
-    - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.health_check_ups.field_pinned_article
 field_name: field_pinned_article
 entity_type: node
@@ -14,17 +17,15 @@ bundle: health_check_ups
 label: 'Pinned Article'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      article: article
-      video_article: video_article
-    sort:
-      field: _none
-    auto_create: false
-    auto_create_bundle: article
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - article
 field_type: entity_reference

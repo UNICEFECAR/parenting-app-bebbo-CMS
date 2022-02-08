@@ -7,11 +7,15 @@ dependencies:
     - node.type.survey
   module:
     - link
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.survey.field_survey_link
 field_name: field_survey_link
 entity_type: node
 bundle: survey
-label: 'Survey Link'
+label: 'Survey / Feedback Link'
 description: ''
 required: true
 translatable: true

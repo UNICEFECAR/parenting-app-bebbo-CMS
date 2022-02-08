@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.base_field_override.taxonomy_term.growth_introductory.description
     - core.base_field_override.taxonomy_term.growth_introductory.name
     - field.field.taxonomy_term.growth_introductory.field_days_from
     - field.field.taxonomy_term.growth_introductory.field_days_to
@@ -41,12 +42,12 @@ custom_sources:
     value: Term_name
     machine_name: term_name
   days_from:
-    label: Days_from
-    value: Days_from
+    label: days_from
+    value: days_from
     machine_name: days_from
   days_to:
-    label: Days_to
-    value: Days_to
+    label: days_to
+    value: days_to
     machine_name: days_to
   weight:
     label: Weight
@@ -60,37 +61,59 @@ custom_sources:
     label: Language_code
     value: Language_code
     machine_name: language_code
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  days_froms:
+    label: days_from
+    value: days_from
+    machine_name: days_froms
+  days_tos:
+    label: days_to
+    value: days_to
+    machine_name: days_tos
+  body:
+    label: body
+    value: body
+    machine_name: body
+  id:
+    label: ID
+    value: ID
+    machine_name: id
 mappings:
   -
     target: name
     map:
-      value: term_name
+      value: title
     unique: {  }
     settings:
       language: en
   -
     target: field_days_from
     map:
-      value: days_from
+      value: days_froms
     unique: {  }
     settings:
       language: en
   -
     target: field_days_to
     map:
-      value: days_to
+      value: days_tos
     unique: {  }
     settings:
       language: en
   -
-    target: weight
+    target: description
     map:
-      value: weight
-    unique: {  }
+      value: body
+    settings:
+      language: en
+      format: plain_text
+  -
+    target: tid
+    map:
+      value: id
+    unique:
+      value: '1'
     settings: {  }
-  -
-    target: langcode
-    map:
-      value: language_code
-    settings:
-      language: en

@@ -1,0 +1,32 @@
+langcode: en
+id: homescreen_english
+migration_tags: homescreen_english
+migration_group: homescreen
+label: 'Homescreen English'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/homescreen/homescreen_english.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: en
+  
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+
+  nid: ID
+  title: Title
+  moderation_state: Moderation_state
+destination:
+  plugin: 'entity:node'
+  default_bundle: daily_homescreen_messages
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

@@ -4,16 +4,18 @@ status: true
 dependencies:
   config:
     - field.field.node.child_development.body
-    - field.field.node.child_development.feeds_item
     - field.field.node.child_development.field_activity_child_age
+    - field.field.node.child_development.field_child_age
     - field.field.node.child_development.field_home_message_after_end
     - field.field.node.child_development.field_home_message_after_start
     - field.field.node.child_development.field_home_message_before_end
     - field.field.node.child_development.field_home_message_before_start
+    - field.field.node.child_development.field_licensed_content
     - field.field.node.child_development.field_mandatory_content
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
     - field.field.node.child_development.field_pinned_article_for_girl
+    - field.field.node.child_development.field_pre_populated
     - node.type.child_development
     - workflows.workflow.group_workflow
   module:
@@ -41,7 +43,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_activity_child_age:
+  field_child_age:
     weight: 10
     settings: {  }
     third_party_settings: {  }
@@ -146,9 +148,10 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  feeds_item: true
-  field_child_age: true
+  field_activity_child_age: true
   field_home_message_after_end: true
   field_home_message_after_start: true
   field_home_message_before_end: true
   field_home_message_before_start: true
+  field_licensed_content: true
+  field_pre_populated: true

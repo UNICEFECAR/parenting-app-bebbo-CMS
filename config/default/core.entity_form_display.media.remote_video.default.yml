@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.remote_video.feeds_item
     - field.field.media.remote_video.field_media_oembed_video
     - field.field.media.remote_video.field_video_embed_url
     - media.type.remote_video
   module:
     - path
-    - video_embed_field
 _core:
   default_config_hash: DfbjvjtGEMGLvm-1Zm7-MCRZj3wpGokUWZOuaK5-1Po
 id: media.remote_video.default
@@ -22,12 +22,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_video_embed_url:
+  field_media_oembed_video:
+    type: string_textfield
     weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: video_embed_field_textfield
     region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 1
@@ -48,6 +50,11 @@ content:
     weight: 5
     region: content
     third_party_settings: {  }
+  translation:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 2
@@ -60,5 +67,5 @@ content:
     third_party_settings: {  }
 hidden:
   feeds_item: true
-  field_media_oembed_video: true
+  field_video_embed_url: true
   name: true

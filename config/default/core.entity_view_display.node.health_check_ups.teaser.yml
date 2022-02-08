@@ -5,10 +5,13 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.feeds_item
     - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_licensed_content
     - field.field.node.health_check_ups.field_notification_from
     - field.field.node.health_check_ups.field_notification_to
     - field.field.node.health_check_ups.field_pinned_article
+    - field.field.node.health_check_ups.field_pinned_video_article
     - node.type.health_check_ups
   module:
     - text
@@ -39,7 +42,9 @@ content:
 hidden:
   feeds_item: true
   field_growth_period: true
+  field_licensed_content: true
   field_notification_from: true
   field_notification_to: true
   field_pinned_article: true
+  field_pinned_video_article: true
   langcode: true

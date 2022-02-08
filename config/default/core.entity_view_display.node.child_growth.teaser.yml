@@ -7,8 +7,10 @@ dependencies:
     - field.field.node.child_growth.body
     - field.field.node.child_growth.field_child_age
     - field.field.node.child_growth.field_growth_type
+    - field.field.node.child_growth.field_licensed_content
     - field.field.node.child_growth.field_mandatory_content
     - field.field.node.child_growth.field_related_articles
+    - field.field.node.child_growth.field_related_video_articles
     - field.field.node.child_growth.field_standard_deviation
     - node.type.child_growth
   module:
@@ -42,8 +44,10 @@ hidden:
   field_activity_child_age: true
   field_child_age: true
   field_growth_type: true
+  field_licensed_content: true
   field_mandatory_content: true
   field_pinned_article: true
   field_related_articles: true
+  field_related_video_articles: true
   field_standard_deviation: true
   langcode: true

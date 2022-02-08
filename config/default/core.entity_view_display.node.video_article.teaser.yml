@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_related_video_articles
     - field.field.node.video_article.field_seasons
     - node.type.video_article
   module:
@@ -36,12 +37,18 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
+  feeds_item: true
   field_australian_article: true
   field_child_age: true
   field_child_gender: true
@@ -55,5 +62,6 @@ hidden:
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true
+  field_related_video_articles: true
   field_seasons: true
   langcode: true

@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.video_article.body
-    - field.field.node.video_article.feeds_item
     - field.field.node.video_article.field_australian_article
     - field.field.node.video_article.field_child_age
     - field.field.node.video_article.field_child_gender
@@ -15,9 +14,11 @@ dependencies:
     - field.field.node.video_article.field_licensed_content
     - field.field.node.video_article.field_mandatory_content
     - field.field.node.video_article.field_parent_gender
+    - field.field.node.video_article.field_pre_populated
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
+    - field.field.node.video_article.field_related_video_articles
     - field.field.node.video_article.field_seasons
     - node.type.video_article
     - workflows.workflow.group_workflow
@@ -134,6 +135,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_related_video_articles:
+    weight: 23
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   langcode:
     type: language_select
     weight: 2
@@ -198,6 +209,6 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  feeds_item: true
   field_generic_content: true
+  field_pre_populated: true
   field_seasons: true

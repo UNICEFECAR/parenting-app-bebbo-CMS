@@ -2,41 +2,10 @@ label: Содержимое
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      fields:
-        title:
-          label: Title
-        type:
-          separator: ', '
-        name:
-          label: Author
-        status:
-          label: Status
-        changed:
-          label: Updated
-        operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
-        status:
-          expose:
-            label: Status
-        langcode:
-          expose:
-            label: Language
       title: Содержимое
-    display_title: Master
   page_1:
     display_options:
       menu:
         title: Содержимое
       tab_options:
         title: Содержимое
-    display_title: Page

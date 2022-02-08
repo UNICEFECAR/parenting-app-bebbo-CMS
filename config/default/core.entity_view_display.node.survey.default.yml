@@ -4,10 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.survey.body
+    - field.field.node.survey.field_licensed_content
     - field.field.node.survey.field_survey_link
+    - field.field.node.survey.field_type
     - node.type.survey
   module:
     - link
+    - options
     - text
     - user
 id: node.survey.default
@@ -18,12 +21,27 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_licensed_content:
+    weight: 5
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_survey_link:
-    weight: 102
+    weight: 4
     label: above
     settings:
       trim_length: 80
@@ -34,10 +52,17 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  links:
-    weight: 100
+  field_type:
+    weight: 3
+    label: above
     settings: {  }
     third_party_settings: {  }
+    type: list_default
     region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   langcode: true
