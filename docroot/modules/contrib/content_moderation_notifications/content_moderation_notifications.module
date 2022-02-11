@@ -10,6 +10,7 @@ use Drupal\content_moderation_notifications\ContentModerationNotificationInterfa
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\TranslatableRevisionableInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -74,6 +75,27 @@ function _content_moderation_notifications_ensure_revision(EntityInterface $enti
   $notification_info = Drupal::service('content_moderation_notifications.notification_information');
   if ($notification_info->isModeratedEntity($entity) && !isset($entity->last_revision)) {
     $entity->last_revision = $notification_info->getLatestRevision($entity->getEntityTypeId(), $entity->id());
+    if ($entity instanceof TranslatableRevisionableInterface) {
+      // This entity is translatable and revisionable simultaneously. This means
+      // we wanna load not the latest revision but the latest translation
+      // affected revision so we compare workflow states within the same
+      // language.
+      /** @var \Drupal\Core\Entity\TranslatableRevisionableStorageInterface $entity_storage */
+      $entity_storage = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId());
+
+      $revision_id = $entity_storage->getLatestTranslationAffectedRevisionId($entity->id(), $entity->language()->getId());
+
+      if ($revision_id) {
+        $revision = $entity_storage->loadRevision($revision_id);
+        if ($revision->hasTranslation($entity->language()->getId())) {
+          $revision = $revision->getTranslation($entity->language()->getId());
+          $entity->last_revision = $revision;
+        }
+      }
+    }
+    else {
+      $entity->last_revision = $notification_info->getLatestRevision($entity->getEntityTypeId(), $entity->id());
+    }
   }
 }
 

@@ -157,6 +157,9 @@
 			},
             "drupal/views_bulk_operations": {
                 "Remove the default status message from VBO": "patches/views_bulk_operations/vbo_default_message_remove.patch"
+            },
+            "drupal/content_moderation_notifications": {
+                "Doesn't work on multilingual entities": "https://www.drupal.org/files/issues/2019-10-23/2949891-multi-language-moderation-against-rc2--10.patch"
             }
         }
     },
