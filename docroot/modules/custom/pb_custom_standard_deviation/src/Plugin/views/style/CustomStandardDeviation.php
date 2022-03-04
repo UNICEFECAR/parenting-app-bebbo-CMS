@@ -63,25 +63,28 @@ class CustomStandardDeviation extends Serializer {
         $child_5 = [];
 
         for ($i = 0; $i < count($weight_for_height); $i++) {
-          /* \Drupal::logger('pb_custom_standard_deviation')->notice('<pre><code>' . $weight_for_height[$i]['child_age'] . '</code></pre>'); */
-          if ($weight_for_height[$i]['child_age'] === "46,45,44,43") {
-            $child_1[] = $weight_for_height[$i];
-          }
+          if(isset($weight_for_height[$i]['child_age'])){
+            $sorted_weight_for_height = $this->sortChildAgeID($weight_for_height[$i]['child_age']);
+            \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');
+            if ($sorted_weight_for_height === "43,44,45,46") {
+              $child_1[] = $weight_for_height[$i];
+            }
 
-          if ($weight_for_height[$i]['child_age'] === "47") {
-            $child_2[] = $weight_for_height[$i];
-          }
+            if ($sorted_weight_for_height === "47") {
+              $child_2[] = $weight_for_height[$i];
+            }
 
-          if ($weight_for_height[$i]['child_age'] === "48") {
-            $child_3[] = $weight_for_height[$i];
-          }
+            if ($sorted_weight_for_height === "48") {
+              $child_3[] = $weight_for_height[$i];
+            }
 
-          if ($weight_for_height[$i]['child_age'] === "50,49") {
-            $child_4[] = $weight_for_height[$i];
-          }
+            if ($sorted_weight_for_height === "49,50") {
+              $child_4[] = $weight_for_height[$i];
+            }
 
-          if ($weight_for_height[$i]['child_age'] === "58,57,52,51") {
-            $child_5[] = $weight_for_height[$i];
+            if ($sorted_weight_for_height === "51,52,57,58") {
+              $child_5[] = $weight_for_height[$i];
+            }
           }
         }
 
@@ -119,25 +122,28 @@ class CustomStandardDeviation extends Serializer {
         $child_4 = [];
         $child_5 = [];
         for ($i = 0; $i <= count($height_for_age); $i++) {
-          /* \Drupal::logger('pb_custom_standard_deviation')->notice('<pre><code>' . $height_for_age[$i]['child_age'] . '</code></pre>'); */
-          if ($height_for_age[$i]['child_age'] === "46,45,44,43") {
-            $child_1[] = $height_for_age[$i];
-          }
+          if(isset($height_for_age[$i]['child_age'])){
+            $sorted_height_for_age = $this->sortChildAgeID($height_for_age[$i]['child_age']);
+            \Drupal::logger('pb_custom_standard_deviation')->notice('height_for_age => <pre><code>' . $sorted_height_for_age . '</code></pre>');
+            if ($sorted_height_for_age === "43,44,45,46") {
+              $child_1[] = $height_for_age[$i];
+            }
 
-          if ($height_for_age[$i]['child_age'] === "47") {
-            $child_2[] = $height_for_age[$i];
-          }
+            if ($sorted_height_for_age === "47") {
+              $child_2[] = $height_for_age[$i];
+            }
 
-          if ($height_for_age[$i]['child_age'] === "48") {
-            $child_3[] = $height_for_age[$i];
-          }
+            if ($sorted_height_for_age === "48") {
+              $child_3[] = $height_for_age[$i];
+            }
 
-          if ($height_for_age[$i]['child_age'] === "50,49") {
-            $child_4[] = $height_for_age[$i];
-          }
+            if ($sorted_height_for_age === "49,50") {
+              $child_4[] = $height_for_age[$i];
+            }
 
-          if ($height_for_age[$i]['child_age'] === "58,57,52,51") {
-            $child_5[] = $height_for_age[$i];
+            if ($sorted_height_for_age === "51,52,57,58") {
+              $child_5[] = $height_for_age[$i];
+            }
           }
         }
 
@@ -234,6 +240,21 @@ class CustomStandardDeviation extends Serializer {
         }
       }
     }
+  }
+
+  /**
+   * To sort child age id.
+   */
+  public function sortChildAgeID($child_age_id) {
+    $child_sorted_arr = array();
+    $child_age_arr = explode(',',$child_age_id);
+    sort($child_age_arr);
+    $child_arr_length = count($child_age_arr);
+    for($x = 0; $x < $child_arr_length; $x++) {
+      array_push($child_sorted_arr, $child_age_arr[$x]);
+    }
+    $child_age = implode(',', $child_age_arr);
+    return $child_age;
   }
 
 }

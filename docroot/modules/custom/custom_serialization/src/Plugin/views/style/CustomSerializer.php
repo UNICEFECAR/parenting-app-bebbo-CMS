@@ -119,6 +119,8 @@ class CustomSerializer extends Serializer {
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary" || $key === "answer_part_1" || $key === "answer_part_2") {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+
+              $body_summary = str_replace('src="/media/oembed', 'src="' . $request_path . '/media/oembed', $body_summary);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
               /* Remove span tag from body and summary field */
