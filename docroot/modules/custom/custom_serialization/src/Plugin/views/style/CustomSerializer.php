@@ -119,6 +119,7 @@ class CustomSerializer extends Serializer {
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary" || $key === "answer_part_1" || $key === "answer_part_2") {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
+              $body_summary = str_replace('src="/media/oembed', 'src="' . $request_path . '/media/oembed', $body_summary);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
               /* Remove span tag from body and summary field */
@@ -129,8 +130,8 @@ class CustomSerializer extends Serializer {
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-			  /* Remove div Image label tag */
-			  $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
+              /* Remove div Image label tag */
+              $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
 			     
               /* Embedded images. */
               if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {
