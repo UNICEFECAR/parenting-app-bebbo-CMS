@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Contains installation and update hooks..
+ */
+
+/**
+ * Transform all current toolbar_menu items to toolbar_menu_element entities.
+ */
+function toolbar_menu_update_8001() {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::service('config.factory');
+
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_manager */
+  $entity_manager = \Drupal::service('entity_type.manager');
+
+  // Get previous toolbar menu settings before clearing cache definition.
+  $old_config = $config_factory->get('toolbar_menu.settings')->get('menus');
+
+  // Create 'toolbar_menu_element' entity type.
+  $entity_manager->clearCachedDefinitions();
+  $toolbar_menu_entity_type = $entity_manager->getDefinition('toolbar_menu_element');
+  if ($toolbar_menu_entity_type && $toolbar_menu_entity_type instanceof \Drupal\Core\Entity\EntityTypeInterface) {
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($toolbar_menu_entity_type);
+  }
+
+  // Load old configuration and create a toolbar_menu_element entity
+  // if is active.
+  foreach ($old_config as $menu_name => $menu_config) {
+    if ($menu_config['active'] == TRUE && !$entity_manager->getStorage('toolbar_menu_element')->load($menu_name)) {
+      $entity_manager->getStorage('toolbar_menu_element')->create([
+        'id' => $menu_name,
+        'label' => $menu_name,
+        'menu' => $menu_name,
+        'weight' => $menu_config['weight'],
+        'rewrite_label' => TRUE,
+      ])->save();
+    }
+  }
+
+  // Delete old and deprecated configuration.
+  $config_factory->getEditable('toolbar_menu.settings')->delete();
+}

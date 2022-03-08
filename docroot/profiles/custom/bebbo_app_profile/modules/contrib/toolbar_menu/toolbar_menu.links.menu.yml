@@ -1,0 +1,5 @@
+entity.toolbar_menu_element.collection:
+  description: 'Configure Toolbar Menu to add your own element in the toolbar'
+  title: 'Toolbar Menu'
+  route_name: entity.toolbar_menu_element.collection
+  parent: system.admin_config_ui

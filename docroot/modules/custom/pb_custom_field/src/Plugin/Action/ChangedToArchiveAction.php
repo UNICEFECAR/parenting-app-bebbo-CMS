@@ -129,7 +129,7 @@ class ChangedToArchiveAction extends ViewsBulkOperationsActionBase {
     if ($this->nonAssigned > 0) {
       $error_message = $this->t("Selected content is already in Archive state ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
     }
-    else {
+    if ($this->assigned > 0) {
       $message = $this->t("Content changed into Archive successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
     }
     if ($this->countryRestrict > 0) {

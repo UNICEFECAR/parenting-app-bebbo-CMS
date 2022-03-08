@@ -1,0 +1,16 @@
+entity.toolbar_menu_element.collection:
+  path: 'admin/config/user-interface/toolbar-menu/elements'
+  defaults:
+    _entity_list: 'toolbar_menu_element'
+    _title: 'Toolbar menu elements'
+  requirements:
+    _permission: 'administer toolbar menu'
+
+entity.toolbar_menu_element.add_form:
+  path: 'admin/config/user-interface/toolbar-menu/elements/add'
+  defaults:
+    _entity_form: 'toolbar_menu_element.default'
+    _title: 'Add Toolbar menu element'
+    tempstore_id: 'toolbar_menu.element'
+  requirements:
+    _permission: 'administer toolbar menu'

@@ -1,0 +1,6 @@
+services:
+  qa_accounts.commands:
+    class: \Drupal\qa_accounts\Commands\QaAccountsCommands
+    arguments: ['@qa_accounts.create_delete']
+    tags:
+      - { name: drush.command }

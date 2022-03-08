@@ -1,0 +1,6 @@
+administer allowed languages:
+  title: 'Administer allowed languages'
+  description: 'Permission to edit the allowed languages in a user profiles.'
+
+translate all languages:
+  title: 'Allow to translate all languages'

@@ -1,0 +1,58 @@
+uuid: d8b03d24-3541-420d-8b25-9718856d3c50
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.chatbot_child_age
+  module:
+    - taxonomy
+id: taxonomy_charbot_child_age
+label: 'Taxonomy - Chatbot Child Age'
+description: 'Taxonomy - Chatbot Child Age'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: en
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: chatbot_child_age
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  term_id:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id
+  term_name:
+    label: Term_name
+    value: Term_name
+    machine_name: term_name
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: term_name
+    unique: {  }
+    settings:
+      language: en

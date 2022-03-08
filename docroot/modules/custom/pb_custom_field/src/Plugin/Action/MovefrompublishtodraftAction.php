@@ -126,7 +126,7 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     if ($this->nonAssigned > 0) {
       $error_message = $this->t("Selected content is already In Draft state ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
     }
-    else {
+    if ($this->assigned > 0) {
       $message = $this->t("Content changed into Draft successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
     }
     if ($this->countryRestrict > 0) {

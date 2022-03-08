@@ -1,0 +1,79 @@
+uuid: 97e240fd-16af-4839-b921-b5ba6ab04aa4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.growth_period.name
+    - taxonomy.vocabulary.growth_period
+  module:
+    - taxonomy
+id: taxonomy_growth_period_serbia_se
+label: 'Taxonomy - Growth Period - Language'
+description: 'Growth Period - Language'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  langcode: rs-en
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: growth_period
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  term_id:
+    label: Term_ID
+    value: Term_ID
+    machine_name: term_id
+  term_name:
+    label: Term_name
+    value: Term_name
+    machine_name: term_name
+  vaccination_opens:
+    label: Vaccination_opens
+    value: Vaccination_opens
+    machine_name: vaccination_opens
+  weight:
+    label: Weight
+    value: Weight
+    machine_name: weight
+  language_code:
+    label: Language_code
+    value: Language_code
+    machine_name: language_code
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+mappings:
+  -
+    target: tid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: name
+    map:
+      value: term_name
+    unique: {  }
+    settings:
+      language: rs-en

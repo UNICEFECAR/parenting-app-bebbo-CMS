@@ -1,0 +1,38 @@
+# Schema definition for date filter.
+views.filter.mysql_date:
+  type: views.filter.date
+
+views.filter_value.mysql_date:
+    type: views.filter_value.date
+
+view_custom_table.tables:
+  type: sequence
+  label: 'Custom Table'
+  sequence:
+    type: view_custom_table.tables.[%key]
+
+view_custom_table.tables.langcode:
+  type: string
+  label: 'Language code'
+view_custom_table.tables._core:
+  type: _core_config_info
+  label: 'Core info'
+
+view_custom_table.tables.*:
+  type: mapping
+  mapping:
+    table_name:
+      type: string
+      label: 'Table Name'
+    table_database:
+      type: string
+      label: 'Table Database'
+    description:
+      type: string
+      label: 'Description'
+    column_relations:
+      type: string
+      label: 'Column Relations'
+    created_by:
+      type: string
+      label: 'Created By'

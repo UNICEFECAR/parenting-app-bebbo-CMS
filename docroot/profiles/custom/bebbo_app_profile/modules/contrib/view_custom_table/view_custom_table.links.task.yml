@@ -1,0 +1,14 @@
+view_custom_table.customtable_tab:
+  route_name: view_custom_table.customtable
+  title: Views Custom Tables
+  base_route: entity.view.collection
+  weight: 10
+view_custom_table.customtable_tab_own:
+  route_name: view_custom_table.customtable
+  title: My Views Custom Tables
+  parent_id: view_custom_table.customtable_tab
+view_custom_table.customtable_tab_all:
+  route_name: view_custom_table.customtable_all
+  title: All Views Custom Tables
+  parent_id: view_custom_table.customtable_tab
+  weight: 11

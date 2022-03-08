@@ -1,0 +1,18 @@
+uuid: 6968b47d-8dea-4ca5-8350-f17cad0b22bd
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.title
+field_name: title
+entity_type: node
+bundle: vaccinations
+label: 'Vaccine Name'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

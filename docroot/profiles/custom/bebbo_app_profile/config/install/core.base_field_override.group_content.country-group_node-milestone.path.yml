@@ -1,0 +1,20 @@
+uuid: 66f2d421-3d31-49a8-aad3-4b7a513403a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-milestone
+  module:
+    - path
+id: group_content.country-group_node-milestone.path
+field_name: path
+entity_type: group_content
+bundle: country-group_node-milestone
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

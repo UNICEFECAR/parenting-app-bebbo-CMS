@@ -1,0 +1,48 @@
+uuid: ebf8b277-374d-42c1-a5a2-a8feb6784fd0
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+  module:
+    - path
+id: taxonomy_term.daily_home_screen_message_catego.default
+targetEntityType: taxonomy_term
+bundle: daily_home_screen_message_catego
+mode: default
+content:
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  translation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true

@@ -1,0 +1,12 @@
+name: 'Cron processor'
+type: module
+description: 'Processes the queue every time cron runs, recommended for most configurations.'
+package: "Purge - processors"
+dependencies:
+  - purge:purge
+core_version_requirement: '^8.9 || ^9'
+
+# Information added by Drupal.org packaging script on 2021-10-05
+version: '8.x-3.2'
+project: 'purge'
+datestamp: 1633428283

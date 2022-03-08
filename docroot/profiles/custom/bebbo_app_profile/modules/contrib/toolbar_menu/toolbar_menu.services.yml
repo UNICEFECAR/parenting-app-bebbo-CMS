@@ -1,0 +1,8 @@
+services:
+  toolbar_menu.manager:
+    class: Drupal\toolbar_menu\ToolbarMenuManager
+    arguments: ['@entity_type.manager', '@current_user']
+
+  toolbar_menu.menu_link_tree_manipulators:
+    class: Drupal\toolbar_menu\ToolbarMenuMenuLinkTreeManipulators
+    arguments: ['@toolbar_menu.manager']

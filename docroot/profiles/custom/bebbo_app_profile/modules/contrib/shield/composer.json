@@ -1,0 +1,17 @@
+{
+    "name": "drupal/shield",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "description": "Creates a general shield for the site.",
+    "require-dev": {
+        "drupal/key": "^1.0"
+    },
+    "require": {
+        "drupal/core": "^8.7.7 || ^9"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-8.x-1.x": "1.x-dev"
+        }
+    }
+}

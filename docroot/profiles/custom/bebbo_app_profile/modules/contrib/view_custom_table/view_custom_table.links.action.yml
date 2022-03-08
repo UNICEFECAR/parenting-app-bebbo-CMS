@@ -1,0 +1,6 @@
+view_custom_table.add_customtable:
+  route_name: 'view_custom_table.addcustomtable'
+  title: 'Add Custom Table'
+  appears_on:
+    - view_custom_table.customtable
+    - view_custom_table.customtable_all

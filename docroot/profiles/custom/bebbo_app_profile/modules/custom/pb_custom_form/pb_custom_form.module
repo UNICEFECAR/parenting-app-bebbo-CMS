@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * @file
+ * It contains custom field module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function pb_custom_form_theme($existing, $type, $theme, $path) {
+  $config = \Drupal::config('pb_custom_form.mobile_app_share_link_form');
+
+  return [
+    'pb-mobile' => [
+      'variables' => ['app_share_script' => $config->get('mobile_app_share_link')],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {  
+  // Adding custom validation for the welcome page type field.
+  if ($form_id == 'group_country_edit_form') {
+    ##Make readonly if offload country is enabled
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();    
+    $global_user = ['global_admin'];
+    if (count(array_intersect($roles, $global_user)) != 0) {
+      if ($form['field_make_available_for_mobile']['widget']['value']['#default_value'] == 1) {
+        $form['field_make_available_for_mobile']['widget']['value']['#disabled'] = 'true';
+      }
+      else{
+            $form['field_make_available_for_mobile']['widget']['value']['#default_value'] = 'true';
+          }
+    }      
+    /* $form['#attached']['js'][] = drupal_get_path('module', 'pb_custom_field') . '/js/homepage.js'; */
+    $form['#attached']['library'][] = 'pb_custom_field/mylib';
+    $form['actions']['submit']['#submit'][] = 'group_country_save';
+
+  }
+}
+
+/**
+ * Implements hook_example().
+ */
+function group_country_save($form, FormStateInterface $form_state) {
+  $field_make_available_for_mobiles = $form_state->getValue('field_make_available_for_mobile');
+  $field_make_available_for_mobile = $field_make_available_for_mobiles['value'];
+  if ($field_make_available_for_mobile == 1) {
+    $country_language = $form_state->getValue('field_language');
+    if (!empty($country_language)) {
+      foreach ($country_language as $value) {
+        $country_languages_arry[] = $value['value'];
+      }
+    }
+    $resultss = db_select('node_field_data', 't')
+      ->fields('t')
+      ->condition('langcode', $country_languages_arry, 'IN')
+      ->execute()
+      ->fetchAll();
+    if (!empty($resultss)) {
+      foreach ($resultss as $val) {
+        $langcode = $val->langcode;
+        $nid = $val->nid;
+        $nids[$langcode] = $val->nid;
+        $langcodess[$nid][] = $val->langcode;
+      }
+    }
+    $batch = [
+      'title' => t('change status'),
+      'operations' => [
+      [
+        '\Drupal\pb_custom_form\ChangeNodeStatus::offLoadCountryProcess',
+        [$langcodess],
+      ],
+      ],
+      'finished' => '\Drupal\pb_custom_form\ChangeNodeStatus::offLoadCountryProcessFinishedCallback',
+    ];
+    batch_set($batch);
+
+  }
+
+}

@@ -130,7 +130,7 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase {
     if ($this->nonAssigned > 0) {
       $error_message = $this->t("Selected content is already in Published state ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
     }
-    else {
+    if ($this->assigned > 0) {
       $message = $this->t("Content changed into Published Successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
     }
     if ($this->countryRestrict > 0) {

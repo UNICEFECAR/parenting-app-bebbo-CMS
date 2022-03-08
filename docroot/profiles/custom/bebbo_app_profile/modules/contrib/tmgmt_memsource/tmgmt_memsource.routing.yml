@@ -1,0 +1,23 @@
+tmgmt_memsource.callback:
+  path: /tmgmt_memsource_callback
+  defaults:
+    _title: 'Remote Callback'
+    _controller: '\Drupal\tmgmt_memsource\Controller\WebHookController::callback'
+  requirements:
+    _access: 'TRUE'
+
+tmgmt_memsource.no_preview:
+  path: /no_preview
+  defaults:
+    _title: 'No preview response'
+    _controller: '\Drupal\tmgmt_memsource\Controller\WebHookController::noPreview'
+  requirements:
+    _access: 'TRUE'
+
+tmgmt_memsource.pull_all_remote_translations:
+  path: /pull_all_remote_translations
+  defaults:
+    _title: 'Pull all remote translations'
+    _controller: '\Drupal\tmgmt_memsource\Controller\WebHookController::pullAllRemoteTranslations'
+  requirements:
+    _permission: 'administer tmgmt+accept translation jobs'

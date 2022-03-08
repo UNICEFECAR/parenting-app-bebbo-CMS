@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Creates dummy accounts to aid in testing.
+ */
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ *
+ * Creates a qa user for newly created role, if configured.
+ */
+function qa_accounts_user_role_insert(RoleInterface $role) {
+  // Check configuration to see whether a new role should be created.
+  if (!\Drupal::config('qa_accounts.settings')->get('auto_create_user_per_new_role')) {
+    return;
+  }
+
+  \Drupal::service('qa_accounts.create_delete')->createQaAccountForRole($role->id());
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * Deletes qa user for deleted role, if configured.
+ */
+function qa_accounts_user_role_delete(RoleInterface $role) {
+  // Check configuration to see whether role should be deleted.
+  if (!\Drupal::config('qa_accounts.settings')->get('auto_delete_user_per_deleted_role')) {
+    return;
+  }
+
+  \Drupal::service('qa_accounts.create_delete')->deleteQaAccountForRole($role->id());
+}
