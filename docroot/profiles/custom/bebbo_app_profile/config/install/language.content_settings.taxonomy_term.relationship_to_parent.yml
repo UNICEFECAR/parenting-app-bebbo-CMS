@@ -1,0 +1,16 @@
+uuid: 8835404c-1055-4940-85c0-65c99df36d84
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.relationship_to_parent
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: taxonomy_term.relationship_to_parent
+target_entity_type_id: taxonomy_term
+target_bundle: relationship_to_parent
+default_langcode: current_interface
+language_alterable: true

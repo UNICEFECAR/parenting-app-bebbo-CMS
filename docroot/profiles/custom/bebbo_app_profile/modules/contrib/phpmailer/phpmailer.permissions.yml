@@ -1,0 +1,3 @@
+administer phpmailer settings:
+  title: 'Administer PHPMailer settings'
+  restrict access: TRUE

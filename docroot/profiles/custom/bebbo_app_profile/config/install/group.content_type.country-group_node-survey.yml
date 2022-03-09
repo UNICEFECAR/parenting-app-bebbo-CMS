@@ -1,0 +1,19 @@
+uuid: 0e78a6bb-d370-4694-910d-ae0d8d3a26a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+    - node.type.survey
+  module:
+    - gnode
+    - node
+id: country-group_node-survey
+label: 'Country: Group node (Survey)'
+description: 'Adds <em class="placeholder">Survey</em> content to groups both publicly and privately.'
+group_type: country
+content_plugin: 'group_node:survey'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

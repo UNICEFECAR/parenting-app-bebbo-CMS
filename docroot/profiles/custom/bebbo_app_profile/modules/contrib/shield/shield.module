@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Contains shield.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function shield_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the shield module.
+    case 'help.page.shield':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('It creates a simple shield for the site with HTTP
+            basic authentication. It hides the sites, if the user does not know a simple
+        username/password.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

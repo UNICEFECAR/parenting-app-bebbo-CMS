@@ -1,0 +1,5 @@
+entity.toolbar_menu_element.add_form:
+  route_name: 'entity.toolbar_menu_element.add_form'
+  title: 'Add Toolbar menu element'
+  appears_on:
+    - entity.toolbar_menu_element.collection

@@ -1,0 +1,28 @@
+uuid: c36cedff-5dbb-4350-93d9-f84471869a1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pre_populated
+    - node.type.milestone
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.milestone.field_pre_populated
+field_name: field_pre_populated
+entity_type: node
+bundle: milestone
+label: 'Pre Populated'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

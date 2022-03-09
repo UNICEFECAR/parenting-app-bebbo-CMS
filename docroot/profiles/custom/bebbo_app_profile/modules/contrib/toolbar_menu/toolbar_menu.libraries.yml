@@ -1,0 +1,7 @@
+icons:
+  version: 1.3
+  js:
+    js/toolbar_menu.js: {}
+  css:
+    base:
+      css/toolbar_menu.module.css: {}

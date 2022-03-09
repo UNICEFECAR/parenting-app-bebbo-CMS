@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the content moderation notifications test module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_content_moderation_notifications_mail_data_alter().
+ */
+function content_moderation_notifications_test_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
+  if (\Drupal::state()->get('content_moderation_notifications_test.alter', FALSE)) {
+    // Change mails to verify this hook has been called.
+    $data['to'] = ['altered@example.com', 'foo' . $entity->id() . '@example.com'];
+  }
+}

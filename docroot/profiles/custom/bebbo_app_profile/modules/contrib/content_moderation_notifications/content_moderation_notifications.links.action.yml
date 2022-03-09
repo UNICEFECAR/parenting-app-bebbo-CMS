@@ -1,0 +1,15 @@
+# Add some local task links to facilitate navigation.
+
+content_moderation_notifications.add_action:
+  route_name: entity.content_moderation_notification.add_form
+  title: 'Add notification'
+  appears_on:
+    - entity.content_moderation_notification.collection
+
+content_moderation_notifications.list_action:
+  route_name: entity.content_moderation_notification.collection
+  title: 'List notifications'
+  appears_on:
+    - entity.content_moderation_notification.add_form
+    - entity.content_moderation_notification.edit
+    - entity.content_moderation_notification.delete

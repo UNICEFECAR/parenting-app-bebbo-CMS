@@ -1,0 +1,9 @@
+uuid: 8e5482aa-c460-4575-a170-c403c5e14e6c
+langcode: en
+status: true
+dependencies: {  }
+id: gr-arb
+label: Greece-Arab
+direction: ltr
+weight: 9
+locked: false

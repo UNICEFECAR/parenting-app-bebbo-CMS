@@ -1,0 +1,13 @@
+name: 'Group test plugin'
+description: 'Provides group plugins to run tests with.'
+package: 'Testing'
+type: 'module'
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - 'group:group'
+  - 'drupal:language'
+
+# Information added by Drupal.org packaging script on 2021-06-30
+version: '8.x-1.4'
+project: 'group'
+datestamp: 1625062978

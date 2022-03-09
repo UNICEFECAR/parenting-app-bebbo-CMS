@@ -1,0 +1,6 @@
+name: PB Custom Standard Deviation
+description: Define's a custom standard deviation
+package: Custom
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9

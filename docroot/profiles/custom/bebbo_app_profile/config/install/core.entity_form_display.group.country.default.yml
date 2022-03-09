@@ -1,0 +1,85 @@
+uuid: f8cea152-51f1-4e6f-ab4a-9a1dbcc022f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group.country.field_country_flag
+    - field.field.group.country.field_country_national_partner
+    - field.field.group.country.field_country_sponsor_logo
+    - field.field.group.country.field_language
+    - field.field.group.country.field_make_available_for_mobile
+    - field.field.group.country.field_master_language
+    - group.type.country
+  module:
+    - languagefield
+    - media_library
+id: group.country.default
+targetEntityType: group
+bundle: country
+mode: default
+content:
+  field_country_flag:
+    type: media_library_widget
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_country_national_partner:
+    type: media_library_widget
+    weight: 4
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_country_sponsor_logo:
+    type: media_library_widget
+    weight: 3
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_language:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_make_available_for_mobile:
+    weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_master_language:
+    weight: 6
+    settings:
+      format:
+        name: name
+    third_party_settings: {  }
+    type: languagefield_select
+    region: content
+  label:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  translation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  path: true
+  uid: true

@@ -1,0 +1,25 @@
+uuid: 4d8425ea-3cfb-4240-8723-d656faa4507b
+langcode: kg-ru
+status: true
+dependencies: {  }
+id: master_any_state_to_review_after_translation
+workflow: group_workflow
+transitions:
+  published_to_review_after_translation: published_to_review_after_translation
+  draft_to_review_after_translation: draft_to_review_after_translation
+  sme_review_to_review_after_translation: sme_review_to_review_after_translation
+  senior_editor_review_to_review_after_translation: senior_editor_review_to_review_after_translation
+  archive_to_review_after_translation: archive_to_review_after_translation
+  require_modification_to_review_after_translation: require_modification_to_review_after_translation
+  review_after_translation_to_review_after_translation: review_after_translation_to_review_after_translation
+roles:
+  editor: editor
+  se: se
+author: false
+site_mail: false
+emails: ''
+subject: 'New content is in review after translation in your Master Language [language]'
+body:
+  value: "<p>Dear Country User,</p>\r\n\r\n<p>Content ID [node_id]&nbsp; is in review after translation in your Master Language [language]</p>\r\n\r\n<p>Please review at: &nbsp;[link]</p>\r\n"
+  format: full_html
+label: 'Master :  Any state to Review_after_translation'

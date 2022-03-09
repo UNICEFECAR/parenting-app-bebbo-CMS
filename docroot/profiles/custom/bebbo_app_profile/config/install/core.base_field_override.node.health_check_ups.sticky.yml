@@ -1,0 +1,22 @@
+uuid: 23b47d82-dccb-446f-ac1e-44d2fb51e482
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+id: node.health_check_ups.sticky
+field_name: sticky
+entity_type: node
+bundle: health_check_ups
+label: 'Sticky at top of lists'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

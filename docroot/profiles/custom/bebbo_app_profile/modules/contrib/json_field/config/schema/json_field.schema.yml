@@ -1,0 +1,18 @@
+field.value.json:
+  type: mapping
+  label: 'Default value'
+  mapping:
+    value:
+      type: string
+      label: 'Value'
+
+field.widget.settings.json_textarea:
+  type: field.widget.settings.string_textarea
+  label: 'Json textarea (multiple rows)'
+
+field.storage_settings.json:
+  type: mapping
+  mapping:
+    size:
+      type: integer
+      label: Size

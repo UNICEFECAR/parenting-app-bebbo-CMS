@@ -1,0 +1,6 @@
+
+# Hide PhpStorm files
+.idea
+
+# Do not include lock file within distribution
+composer.lock

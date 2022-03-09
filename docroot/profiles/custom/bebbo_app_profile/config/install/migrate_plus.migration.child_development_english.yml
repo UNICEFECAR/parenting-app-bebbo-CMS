@@ -1,0 +1,71 @@
+uuid: 6de241d8-ad6a-4b76-af45-64c568232ef2
+langcode: en
+status: true
+dependencies: {  }
+id: child_development_english
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: child_development_english
+migration_group: child_development
+label: child_development_english
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/child_development/child_development_english.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: en
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+
+  nid: ID
+  title: Title
+  field_child_age:
+    source: Child_age
+    plugin: entity_lookup
+    value_key: name
+    bundle_key: vid
+    bundle: child_age
+    entity_type: taxonomy_term
+
+  field_pinned_article_for_boy:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Pinned_article_boy
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
+
+  field_pinned_article_for_girl:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Pinned_article_girl
+    -
+      plugin: entity_lookup
+      entity_type: node
+      bundle_key: type
+      bundle: video_article
+      value_key: nid
+      
+  field_milestone_instructions: Milestone_instructions
+  field_mandatory_content: Mandatory_content
+  moderation_state: Moderation_state
+  
+destination:
+  plugin: 'entity:node'
+  default_bundle: child_development
+migration_dependencies:
+  required: {  }
+  optional: {  }
