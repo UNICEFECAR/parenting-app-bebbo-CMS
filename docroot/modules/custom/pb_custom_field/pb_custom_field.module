@@ -1325,4 +1325,7 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       $result->id = $country_id;
     }
   }
+  if ($view->id() == 'country_content_listing') {
+    $view->element['#attached']['library'][] = '/js/homepage.js';
+  }
 }
