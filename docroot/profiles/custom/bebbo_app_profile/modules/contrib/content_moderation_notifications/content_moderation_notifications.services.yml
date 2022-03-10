@@ -1,7 +1,0 @@
-services:
-  content_moderation_notifications.notification_information:
-    class: Drupal\content_moderation_notifications\NotificationInformation
-    arguments: ['@entity_type.manager', '@content_moderation.moderation_information']
-  content_moderation_notifications.notification:
-    class: Drupal\content_moderation_notifications\Notification
-    arguments: ['@current_user', '@entity_type.manager', '@plugin.manager.mail', '@module_handler', '@content_moderation_notifications.notification_information', '@?token.entity_mapper']

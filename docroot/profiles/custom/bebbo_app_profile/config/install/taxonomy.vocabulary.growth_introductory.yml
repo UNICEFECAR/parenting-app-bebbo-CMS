@@ -1,8 +1,0 @@
-uuid: 882b2746-4105-478e-9985-90fe52d945a2
-langcode: en
-status: true
-dependencies: {  }
-name: 'Growth Introductory'
-vid: growth_introductory
-description: 'Introductory message about typical growth in a given age period'
-weight: 0

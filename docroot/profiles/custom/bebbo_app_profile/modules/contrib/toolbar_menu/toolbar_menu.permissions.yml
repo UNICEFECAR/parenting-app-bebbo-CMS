@@ -1,5 +1,0 @@
-administer toolbar menu:
-  title: 'Administer toolbar menu'
-
-permission_callbacks:
-  - Drupal\toolbar_menu\ToolbarMenuPermissions::permissions
