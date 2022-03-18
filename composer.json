@@ -133,7 +133,8 @@
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"
             },
             "drupal/tmgmt": {
-                "Added custom filter in source pge like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch"
+                "Added custom filter in source pge like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch",
+                "Content Overview (Content Entity) shows multiple time the same content on different pagination pages.": "https://www.drupal.org/files/issues/2021-05-12/content-overview-3213377-1_0.patch"
             },
             "drupal/group": {
                 "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
