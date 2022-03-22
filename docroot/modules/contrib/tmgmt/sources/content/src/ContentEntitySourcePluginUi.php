@@ -466,6 +466,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
     $query = \Drupal::database()->select($entity_type->getBaseTable(), 'e');
     $query->addTag('tmgmt_entity_get_translatable_entities');
     $query->addField('e', $id_key);
+    $query->distinct();
 
     $langcode_table_alias = 'e';
     // @todo: Discuss if search should work on latest, default or all revisions.
