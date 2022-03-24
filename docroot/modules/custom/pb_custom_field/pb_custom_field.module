@@ -683,6 +683,17 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
     $view->setHandler('block_1', 'header', 'area', $options);
 
   }
+  if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
+    $filters = $view->display_handler->getOption('filters');
+    $langcodes = \Drupal::languageManager()->getLanguages();
+    foreach ($langcodes as $key => $value) {
+      $id= $key;
+      $langarry[$id] = $key;
+    }
+    $filters['langcode_1']['value'] = $langarry;
+	$filters['langcode']['value'] = $langarry;
+	$view->display_handler->overrideOption('filters', $filters);
+  }
 
 }
 
