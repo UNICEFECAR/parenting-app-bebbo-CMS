@@ -21,6 +21,7 @@ use Drupal\user\Entity\Role;
 use Drupal\Core\Language\LanguageManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Database\Database;
+use Drupal\Component\Serialization\Json;
 
 /**
  * {@inheritdoc}
@@ -948,6 +949,25 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
+  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_2' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_22')) {
+         foreach ($query->where['2'] as &$condition_group) {
+            foreach ($condition_group as &$condition) {
+              $date = date('Y-m-d h:i');
+              $aa = $view->args['1'];
+              $variable = substr($aa, 0, strpos($aa, "--"));
+
+              if (empty($variable)) {
+              // $condition['field'] ="DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %h:%i') BETWEEN :changed AND :changed1 ";
+              $condition['value'][':changed'] = $aa;
+              $condition['value'][':changed1'] = $date;
+              }else{
+                // $condition['field'] ="DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %h:%i') BETWEEN :changed AND :changed1 ";
+                $condition['value'][':changed'] = '';
+                $condition['value'][':changed1'] = '';
+              }
+            }
+          }
+        }
 }
 
 /**
@@ -1339,4 +1359,34 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'country_content_listing') {
     $view->element['#attached']['library'][] = '/js/homepage.js';
   }
+}
+
+function pb_custom_field_views_post_render(&$view, &$output, &$cache) {
+    if(($view->id() == 'articles') && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_2' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_13')) {
+        $results = &$output;
+        $array_result = $results['#markup'];
+        $decoded = Json::decode($array_result);
+        $cur_date = date('Y-m-d h:i');
+        $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
+        $results['#markup'] = Json::encode($res);
+
+    }
+    if($view->id() == 'articles' &&  $view->current_display == 'rest_export_22') {
+        $results = &$output;
+        $array_result = $results['#markup'];
+        $decoded = Json::decode($array_result);
+        $cur_date = date('Y-m-d h:i');
+        $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
+        foreach ($res['data'] as  $value) {
+          $type = $value['type'];
+          $ids[$type][] = $value['id'];
+
+         }
+          $indexCompleted = array_search($res['data'], $res);
+           unset($res[$indexCompleted]);
+
+         $res_updated = array_slice($res, 0, 4, true) + $ids + array_slice($ids, 3, count($ids) - 1, true);        
+        $results['#markup'] = Json::encode($res_updated);
+
+    }
 }
