@@ -952,7 +952,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_2' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_22')) {
          foreach ($query->where['2'] as &$condition_group) {
             foreach ($condition_group as &$condition) {
-              $date = date('Y-m-d h:i');
+              $date = date('Y-m-d H:i');
               $aa = $view->args['1'];
               $variable = substr($aa, 0, strpos($aa, "--"));
 
