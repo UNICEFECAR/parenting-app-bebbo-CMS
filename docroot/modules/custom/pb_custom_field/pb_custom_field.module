@@ -957,9 +957,10 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
               $variable = substr($aa, 0, strpos($aa, "--"));
 
               if (empty($variable)) {
-              // $condition['field'] ="DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %h:%i') BETWEEN :changed AND :changed1 ";
-              $condition['value'][':changed'] = $aa;
-              $condition['value'][':changed1'] = $date;
+				$condition['value'][':changed'] = $aa;
+                $condition['value'][':changed1'] = $date; 
+                $condition['field'] ="DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i') BETWEEN :changed AND :changed1 ";
+              
               }else{
                 // $condition['field'] ="DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %h:%i') BETWEEN :changed AND :changed1 ";
                 $condition['value'][':changed'] = '';
@@ -1366,7 +1367,7 @@ function pb_custom_field_views_post_render(&$view, &$output, &$cache) {
         $results = &$output;
         $array_result = $results['#markup'];
         $decoded = Json::decode($array_result);
-        $cur_date = date('Y-m-d h:i');
+        $cur_date = date('Y-m-d H:i');
         $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
         $results['#markup'] = Json::encode($res);
 
@@ -1375,7 +1376,7 @@ function pb_custom_field_views_post_render(&$view, &$output, &$cache) {
         $results = &$output;
         $array_result = $results['#markup'];
         $decoded = Json::decode($array_result);
-        $cur_date = date('Y-m-d h:i');
+        $cur_date = date('Y-m-d H:i');
         $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
         foreach ($res['data'] as  $value) {
           $type = $value['type'];
