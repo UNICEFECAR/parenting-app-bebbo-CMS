@@ -20,5 +20,16 @@ class PbMobile extends ControllerBase {
       '#theme' => 'pb-mobile',
     ];
   }
+  /**
+   * Display the Kosovo-mobile.
+   *
+   * @return array
+   *   Return kosovo-mobile array.
+   */
+  public  function kosovorender($param1,$param2,$param3) {
+    return [
+      '#theme' => 'kosovo-mobile',
+    ];
+  }
 
 }

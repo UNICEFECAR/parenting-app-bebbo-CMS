@@ -47,6 +47,19 @@ pb_custom_form.pb_mobile:
   requirements:
     _permission: 'manage mobile javascript'
 
+
+pb_custom_form.kosovo_pb_mobile:
+  path: '/foleja/share/{param1}/{param2}/{param3}'
+  defaults:
+    _controller:  '\Drupal\pb_custom_form\Controller\PbMobile::kosovorender'
+    param1: ''
+    param2: ''
+    param3: ''
+    _title: 'Pb Mobile'
+  requirements:
+    _permission: 'manage mobile javascript'
+
+
 pb_custom_form.content:
   path: '/forcefull-check'
   defaults:

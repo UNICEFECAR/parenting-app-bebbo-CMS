@@ -41,6 +41,20 @@ class WellKnownController extends ControllerBase {
       'relation'=>$relation,
       'target'=>$target,
     ];
+	
+	 /* Kosovo Details */
+
+    $kosovo_package_name = $config->get('kosovo_package_name');
+    if (empty($kosovo_package_name)) {
+      throw new CacheableNotFoundHttpException($cacheMeta);
+    }
+
+    $kosovo_target = ['namespace'=>'android_app','package_name'=>$kosovo_package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),];
+    $kosovo_relation = ['delegate_permission/common.handle_all_urls'];
+    $body[] = [
+      'relation'=>$kosovo_relation,
+      'target'=>$kosovo_target,
+    ];
 
     $response = new CacheableJsonResponse(json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 200, [], TRUE);
     $response->addCacheableDependency($cacheMeta);
@@ -137,6 +151,35 @@ class WellKnownController extends ControllerBase {
 			]],
             'paths' => explode(PHP_EOL, $config->get('paths'))
     ];
+	
+	/* Kosovo app config details */
+	$kosovo_appID_Test = $config->get('kosovo_appID_Test');
+	if(!empty($kosovo_appID_Test)){
+		$kosovo_paths_Test = explode(PHP_EOL, $config->get('kosovo_paths_Test'));
+		$prod_details[] =  [
+            'appID' => $kosovo_appID_Test,
+			'components' => [ [
+				'/' => $kosovo_paths_Test[0],
+				'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+			]],
+            'paths' => explode(PHP_EOL, $config->get('kosovo_paths_Test'))
+          ];
+	}
+	
+    $kosovo_appID = $config->get('kosovo_appID');
+    if(!empty($kosovo_appID)){
+        $kosovo_paths = explode(PHP_EOL, $config->get('kosovo_paths'));
+        $prod_details[] =  [
+          'appID' => $kosovo_appID,
+          'components' => [ [
+                  '/' => $kosovo_paths[0],
+                  'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+            ]],
+          'paths' => explode(PHP_EOL, $config->get('kosovo_paths'))
+        ];
+    }
+	
+	
 	
     $body = [
       'applinks' => [

@@ -154,7 +154,14 @@
 				"Added UAT fields config changes": "patches/mobile_app_links/ios_uat_field_config.patch",
 				"Added new uat fields in form": "patches/mobile_app_links/ios_uat_field_display.patch",
 				"Added uat field saving function": "patches/mobile_app_links/ios_uat_field_insert.patch",
-				"Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch"
+				"Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch",
+				"Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
+				"Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
+				"Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_config_install_ios.patch",
+				"Added KOSOVO fields in ios form": "patches/mobile_app_links/kosovo_ios_config_form.patch",
+				"Added KOSOVO settings fields": "patches/mobile_app_links/kosovo_settings.patch",
+				"Added KOSOVO details in JSON format": "patches/mobile_app_links/kosovo_wellknown_controller.patch"
+
 			},
             "drupal/views_bulk_operations": {
                 "Remove the default status message from VBO": "patches/views_bulk_operations/vbo_default_message_remove.patch"
