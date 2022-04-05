@@ -1402,33 +1402,3 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
     $view->element['#attached']['library'][] = '/js/homepage.js';
   }
 }
-
-function pb_custom_field_views_post_render(&$view, &$output, &$cache) {
-    if(($view->id() == 'articles') && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_2' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_13')) {
-        $results = &$output;
-        $array_result = $results['#markup'];
-        $decoded = Json::decode($array_result);
-        $cur_date = date('Y-m-d H:i');
-        $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
-        $results['#markup'] = Json::encode($res);
-
-    }
-    if($view->id() == 'articles' &&  $view->current_display == 'rest_export_22') {
-        $results = &$output;
-        $array_result = $results['#markup'];
-        $decoded = Json::decode($array_result);
-        $cur_date = date('Y-m-d H:i');
-        $res = array_slice($decoded, 0, 3, true) + array("datetime" => $cur_date) + array_slice($decoded, 3, count($decoded) - 1, true);
-        foreach ($res['data'] as  $value) {
-          $type = $value['type'];
-          $ids[$type][] = $value['id'];
-
-         }
-          $indexCompleted = array_search($res['data'], $res);
-           unset($res[$indexCompleted]);
-
-         $res_updated = array_slice($res, 0, 4, true) + $ids + array_slice($ids, 3, count($ids) - 1, true);        
-        $results['#markup'] = Json::encode($res_updated);
-
-    }
-}
