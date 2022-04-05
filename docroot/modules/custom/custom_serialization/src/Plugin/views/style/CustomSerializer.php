@@ -63,6 +63,8 @@ class CustomSerializer extends Serializer {
       $data = [];
       $field_formatter = [];
       $uniques = [];
+      date_default_timezone_set('Asia/Kolkata');
+      $timestamp = date("Y-m-d H:i");
       if (isset($this->view->result) && !empty($this->view->result)) {
         $language_code = $request[3];
         foreach ($this->view->result as $row_index => $row) {
@@ -232,8 +234,6 @@ class CustomSerializer extends Serializer {
         if (strpos($request_uri, "sponsors") !== FALSE) {
           unset($rows['langcode']);
         }
-        date_default_timezone_set('Asia/Kolkata');
-        $timestamp = date("Y-m-d H:i");
         $rows['datetime'] = $timestamp;
         $rows['data'] = $data;
         unset($this->view->row_index);
@@ -250,6 +250,7 @@ class CustomSerializer extends Serializer {
         $rows = [];
         $rows['status'] = 204;
         $rows['message'] = "No Records Found";
+        $rows['datetime'] = $timestamp;
 
         return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
       }
