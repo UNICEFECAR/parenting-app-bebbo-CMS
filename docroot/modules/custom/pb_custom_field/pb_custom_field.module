@@ -1145,6 +1145,10 @@ function pb_custom_field_preprocess_html(&$variables) {
       // Replace 'the-class-to-add' with your CSS class.
       $variables['attributes']['class'][] = 'pb-main-homepage';
     }
+	if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
+    {
+      $variables['head_title']['name'] = "Foleja";
+    }
   }
 }
 
