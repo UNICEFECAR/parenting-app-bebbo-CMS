@@ -112,6 +112,7 @@ module:
   workflows: 0
   content_translation: 10
   views: 10
+  contextual_range_filter: 11
   standard: 1000
 theme:
   stable: 0
