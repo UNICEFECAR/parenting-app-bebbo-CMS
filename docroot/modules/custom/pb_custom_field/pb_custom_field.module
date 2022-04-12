@@ -949,11 +949,21 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
-  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22')) {
-         foreach ($query->where['2'] as &$condition_group) {
+  date_default_timezone_set('Asia/Kolkata');
+  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
+    foreach ($query->where['2'] as &$condition_group) {
             foreach ($condition_group as &$condition) {
               $date = date('Y-m-d H:i');
-              $aa = $view->args['1'];
+			  if($view->current_display == 'rest_export_13'){
+				$aa = $view->args['2'];
+			  }
+			  else if($view->current_display == 'rest_export_2'){
+				$aa = $view->args['6'];
+			  }
+			  else
+			  {
+				$aa = $view->args['1'];
+			  }
               $variable = substr($aa, 0, strpos($aa, "--"));
               if (empty($variable)) {
                 $condition['value'][':changed'] = $aa;
@@ -968,47 +978,6 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
             }
           }
         }
-          if ($view->id() == 'articles' && $view->current_display == 'rest_export_13') {
-           foreach ($query->where['2'] as &$condition_group) {
-            foreach ($condition_group as &$condition) {
-              $date = date('Y-m-d H:i');
-              $aa = $view->args['2'];
-              $variable = substr($aa, 0, strpos($aa, "--"));
-
-              if (empty($variable)) {
-                 $condition['value'][':changed'] = $aa;
-                 $condition['value'][':changed1'] = $date; 
-                 $field_details = $condition['field'];
-                 $updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-                 $condition['field'] =$updated_date;
-              }else{
-                $condition['value'][':changed'] = '';
-                $condition['value'][':changed1'] = '';
-              }
-            }
-          }
-        }
-        if ($view->id() == 'articles' && $view->current_display == 'rest_export_2') {
-           foreach ($query->where['2'] as &$condition_group) {
-            foreach ($condition_group as &$condition) {
-              $date = date('Y-m-d H:i');
-              $aa = $view->args['6'];
-              $variable = substr($aa, 0, strpos($aa, "--"));
-
-              if (empty($variable)) {
-                 $condition['value'][':changed'] = $aa;
-                 $condition['value'][':changed1'] = $date; 
-                 $field_details = $condition['field'];
-                 $updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-                 $condition['field'] =$updated_date;
-              }else{
-                $condition['value'][':changed'] = '';
-                $condition['value'][':changed1'] = '';
-              }
-            }
-          }
-        }
-
 
 }
 
