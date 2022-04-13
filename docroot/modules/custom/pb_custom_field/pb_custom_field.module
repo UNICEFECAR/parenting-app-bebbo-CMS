@@ -968,9 +968,10 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
               if (empty($variable)) {
                 $condition['value'][':changed'] = $aa;
                 $condition['value'][':changed1'] = $date; 
-		        $field_details = $condition['field'];
+		        /*$field_details = $condition['field'];
 		        $updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-		        $condition['field'] =$updated_date;
+		        $condition['field'] =$updated_date; */
+				$condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
               }else{
                 $condition['value'][':changed'] = '';
                 $condition['value'][':changed1'] = '';
@@ -978,7 +979,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
             }
           }
         }
-
+		
 }
 
 /**

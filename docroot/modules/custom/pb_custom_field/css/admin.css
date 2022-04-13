@@ -199,11 +199,11 @@ height: 20px;
 .pb-main-homepage .main-logo
 {
   display: flex;
-  width:50%;
+  width:100%;
   vertical-align: middle;
   align-items: center;
   position: absolute;
-  top: 5px;
+  top: 16px;
   font-size:18px;
   vertical-align: middle;
   left: 20px;
