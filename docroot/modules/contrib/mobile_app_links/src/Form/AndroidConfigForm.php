@@ -46,6 +46,20 @@ class AndroidConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enter one value per line.'),
       '#default_value' => $config->get('sha256_cert_fingerprints'),
     ];
+	
+	/* Kosovo Country package details */
+    $form['kosovo_package_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Kosovo Package Name'),
+      '#default_value' => $config->get('kosovo_package_name'),
+    ];
+
+    $form['kosovo_sha256_cert_fingerprints'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Kosovo SHA256 Certificate Fingerprints'),
+      '#description' => $this->t('Enter one value per line.'),
+      '#default_value' => $config->get('kosovo_sha256_cert_fingerprints'),
+    ];
 
     return $form;
   }
@@ -60,6 +74,12 @@ class AndroidConfigForm extends ConfigFormBase {
     $certificates = str_replace("\r\n", "\n", $form_state->getValue('sha256_cert_fingerprints'));
     $certificates = str_replace("\r", "\n", $certificates);
     $config->set('sha256_cert_fingerprints', $certificates);
+	
+	/* Kosovo Package details */
+    $config->set('kosovo_package_name', $form_state->getValue('kosovo_package_name'));
+    $certificates = str_replace("\r\n", "\n", $form_state->getValue('kosovo_sha256_cert_fingerprints'));
+    $certificates = str_replace("\r", "\n", $certificates);
+    $config->set('kosovo_sha256_cert_fingerprints', $certificates);
     $config->save();
 
     return parent::submitForm($form, $form_state);

@@ -17,6 +17,9 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
     'pb-mobile' => [
       'variables' => ['app_share_script' => $config->get('mobile_app_share_link')],
     ],
+	'kosovo-mobile' => [
+	  'variables' => ['kosovo_app_share_script' => $config->get('kosovo_mobile_app_share_link')],
+	]
   ];
 }
 

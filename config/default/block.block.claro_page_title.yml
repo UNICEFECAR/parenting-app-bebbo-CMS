@@ -23,7 +23,7 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy"
+    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
     negate: true
     context_mapping: {  }
   user_role:

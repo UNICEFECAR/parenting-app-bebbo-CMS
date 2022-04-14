@@ -66,6 +66,40 @@ class IosConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enter one value per line.'),
       '#default_value' => $config->get('paths_Test'),
     ];
+	
+	/* Kosovo App Config Details */
+	$form['kosovo_appID'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Kosovo App ID'),
+      '#default_value' => $config->get('kosovo_appID'),
+    ];
+
+    $form['kosovo_paths'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Kosovo Paths'),
+      '#description' => $this->t('Enter one value per line.'),
+      '#default_value' => $config->get('kosovo_paths'),
+    ];
+
+    $form['kosovo_appclips'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Kosovo App Clips'),
+      '#description' => $this->t('Enter the "apps" that have appclips: *your_id*.com.domain.Clip.'),
+      '#default_value' => $config->get('kosovo_appclips'),
+    ];
+	
+	$form['kosovo_appID_Test'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Kosovo App ID - UAT'),
+      '#default_value' => $config->get('kosovo_appID_Test'),
+    ];
+
+    $form['kosovo_paths_Test'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Kosovo Paths - UAT'),
+      '#description' => $this->t('Enter one value per line.'),
+      '#default_value' => $config->get('kosovo_paths_Test'),
+    ];
 
     return $form;
   }
@@ -87,6 +121,18 @@ class IosConfigForm extends ConfigFormBase {
 	$paths_uat = str_replace("\r\n", "\n", $form_state->getValue('paths_Test'));
     $paths_uat = str_replace("\r", "\n", $paths_uat);
     $config->set('paths_Test', $paths_uat);
+	
+    /* Kosovo Config Settings */
+	$config->set('kosovo_appID_Test', $form_state->getValue('kosovo_appID_Test'));
+    $kosovo_paths_Test = str_replace("\r\n", "\n", $form_state->getValue('kosovo_paths_Test'));
+    $kosovo_paths_Test = str_replace("\r", "\n", $kosovo_paths_Test);
+    $config->set('kosovo_paths_Test', $kosovo_paths_Test);
+	
+    $config->set('kosovo_appID', $form_state->getValue('kosovo_appID'));
+    $kosovo_paths = str_replace("\r\n", "\n", $form_state->getValue('kosovo_paths'));
+    $kosovo_paths = str_replace("\r", "\n", $kosovo_paths);
+    $config->set('kosovo_paths', $kosovo_paths);
+    $config->set('kosovo_appclips', $form_state->getValue('kosovo_appclips'));
 
     $config->save();
 
