@@ -1123,7 +1123,36 @@ function pb_custom_field_preprocess_html(&$variables) {
 	if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
     {
       $variables['head_title']['name'] = "Foleja";
+	  $icon = [
+		'#tag' => 'link',
+		'#attributes' => [
+		  'href' => 'https://staging.bebbo.app/sites/default/files/2022-04/foleja_favicon.png',
+		  'rel' => 'shortcut icon',
+		  'sizes' => '52x52'
+		  ],
+		];
+		$variables['#attached']['html_head'][] = [
+		  $icon,
+		  'icon52x52'
+		]; 
     }
+  }
+  $current_path = \Drupal::service('path.current')->getPath();
+  $route_name = Url::fromUserInput($current_path)->getRouteName();
+  if($route_name == "pb_custom_form.kosovo_pb_mobile")
+  {
+	$icon = [
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => 'https://staging.bebbo.app/sites/default/files/2022-04/foleja_favicon.png',
+        'rel' => 'shortcut icon',
+        'sizes' => '52x52'
+      ],
+    ];
+	$variables['#attached']['html_head'][] = [
+        $icon,
+        'icon52x52'
+    ]; 
   }
 }
 
