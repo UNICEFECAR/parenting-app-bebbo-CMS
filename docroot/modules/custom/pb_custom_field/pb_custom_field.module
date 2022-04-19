@@ -1137,9 +1137,8 @@ function pb_custom_field_preprocess_html(&$variables) {
 		]; 
     }
   }
-  $current_path = \Drupal::service('path.current')->getPath();
-  $route_name = Url::fromUserInput($current_path)->getRouteName();
-  if(!empty($route_name) && $route_name == "pb_custom_form.kosovo_pb_mobile")
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if($route_name == "pb_custom_form.kosovo_pb_mobile")
   {
 	$icon = [
       '#tag' => 'link',
