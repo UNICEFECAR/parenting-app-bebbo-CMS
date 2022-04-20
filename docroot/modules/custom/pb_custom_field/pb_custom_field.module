@@ -1126,7 +1126,7 @@ function pb_custom_field_preprocess_html(&$variables) {
     {
       $variables['head_title']['name'] = "Foleja";
 	  /* Load the favicon ico for kosovo landing pages */
-	  $media_entity = Media::load(33551);
+	  $media_entity = Media::load(35386);
 	  if(!empty($media_entity)){
 	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
 		if ($source_value){
@@ -1152,7 +1152,7 @@ function pb_custom_field_preprocess_html(&$variables) {
   if($route_name == "pb_custom_form.kosovo_pb_mobile")
   {
 	/* Load the favicon ico for kosovo landing pages */
-	  $media_entity = Media::load(33551);
+	  $media_entity = Media::load(35386);
 	  if(!empty($media_entity)){
 	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
 		if ($source_value){
