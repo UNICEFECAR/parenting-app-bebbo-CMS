@@ -21,6 +21,9 @@ use Drupal\user\Entity\Role;
 use Drupal\Core\Language\LanguageManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Database\Database;
+use Drupal\Component\Serialization\Json;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 
 /**
  * {@inheritdoc}
@@ -683,6 +686,17 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
     $view->setHandler('block_1', 'header', 'area', $options);
 
   }
+  if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
+    $filters = $view->display_handler->getOption('filters');
+    $langcodes = \Drupal::languageManager()->getLanguages();
+    foreach ($langcodes as $key => $value) {
+      $id= $key;
+      $langarry[$id] = $key;
+    }
+    $filters['langcode_1']['value'] = $langarry;
+	$filters['langcode']['value'] = $langarry;
+	$view->display_handler->overrideOption('filters', $filters);
+  }
 
 }
 
@@ -937,6 +951,42 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
+  date_default_timezone_set('Asia/Kolkata');
+  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
+    foreach ($query->where['2'] as &$condition_group) {
+            foreach ($condition_group as &$condition) {
+              $date = date('Y-m-d H:i');
+			  if($view->current_display == 'rest_export_13'){
+				$aa = $view->args['2'];
+			  }
+			  else if($view->current_display == 'rest_export_2'){
+				$aa = $view->args['6'];
+			  }
+			  else
+			  {
+				$aa = $view->args['1'];
+			  }
+              $variable = substr($aa, 0, strpos($aa, "--"));
+              if (empty($variable)) {
+                $condition['value'][':changed'] = $aa;
+                $condition['value'][':changed1'] = $date; 
+		        if($view->current_display == 'rest_export_1'){
+				  $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
+				}
+				else {
+				  $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
+				}
+				
+				    
+
+              }else{
+                $condition['value'][':changed'] = '';
+                $condition['value'][':changed1'] = '';
+              }
+            }
+          }
+        }
+		
 }
 
 /**
@@ -1067,11 +1117,61 @@ function pb_custom_field_preprocess_html(&$variables) {
   if (!$logged_in) {
     $current_path = \Drupal::service('path.current')->getPath();
     $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy") {
+    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
       $variables['#attached']['library'][] = 'pb_custom_field/mylib';
       // Replace 'the-class-to-add' with your CSS class.
       $variables['attributes']['class'][] = 'pb-main-homepage';
     }
+	if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
+    {
+      $variables['head_title']['name'] = "Foleja";
+	  /* Load the favicon ico for kosovo landing pages */
+	  $media_entity = Media::load(35386);
+	  if(!empty($media_entity)){
+	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
+		if ($source_value){
+		  $file_entity = File::load($source_value);
+		  $url = $file_entity->url();
+		  $icon = [
+		    '#tag' => 'link',
+			'#attributes' => [
+				'href' => $url,
+				'rel' => 'shortcut icon',
+				'sizes' => '52x52'
+				],
+		  ];
+		  $variables['#attached']['html_head'][] = [
+			$icon,
+			'icon52x52'
+		  ];
+		}
+	  }
+    }
+  }
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if($route_name == "pb_custom_form.kosovo_pb_mobile")
+  {
+	/* Load the favicon ico for kosovo landing pages */
+	  $media_entity = Media::load(35386);
+	  if(!empty($media_entity)){
+	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
+		if ($source_value){
+		  $file_entity = File::load($source_value);
+		  $url = $file_entity->url();
+		  $icon = [
+		    '#tag' => 'link',
+			'#attributes' => [
+				'href' => $url,
+				'rel' => 'shortcut icon',
+				'sizes' => '52x52'
+				],
+		  ];
+		  $variables['#attached']['html_head'][] = [
+			$icon,
+			'icon52x52'
+		  ];
+		}
+	  }
   }
 }
 
@@ -1324,5 +1424,8 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       $result->forcefull_check_update_api_flag_status = $flag_txt;
       $result->id = $country_id;
     }
+  }
+  if ($view->id() == 'country_content_listing') {
+    $view->element['#attached']['library'][] = '/js/homepage.js';
   }
 }

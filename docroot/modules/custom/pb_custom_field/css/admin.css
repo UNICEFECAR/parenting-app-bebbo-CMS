@@ -72,7 +72,7 @@ height: 20px;
 .pb-main-homepage .region.region-content h3,
 .pb-main-homepage .region.region-content h4,
 .pb-main-homepage .region.region-content h5,
-.pb-main-homepage .region.region-content h5,
+.pb-main-homepage .region.region-content h6,
 .pb-main-homepage .region.region-content ul,
 .pb-main-homepage .block-page-title-block
 {
@@ -86,7 +86,7 @@ height: 20px;
 .pb-main-homepage .region.region-content h3,
 .pb-main-homepage .region.region-content h4,
 .pb-main-homepage .region.region-content h5,
-.pb-main-homepage .region.region-content h5,
+.pb-main-homepage .region.region-content h6,
 .pb-main-homepage .region.region-content ul,
 .pb-main-homepage .block-page-title-block
 {
@@ -188,8 +188,9 @@ height: 20px;
   background-color: #4FA9DD;
 }
 .pb-main-homepage .main-logo img {
-  width: 100px;
+  width: 74px;
   margin-right: 25px;
+  margin-top:12px;
 }
 .pb-main-homepage nav#block-mainnavigation-2 ul li {
   display: inline;

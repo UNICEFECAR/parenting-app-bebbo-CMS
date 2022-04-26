@@ -1063,7 +1063,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          batch: true
+          batch: false
           batch_size: 20
           form_step: true
           buttons: false
@@ -1871,6 +1871,9 @@ display:
           admin_label: ''
           operator: in
           value:
+            all: all
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
             en: en
             sr: sr
             ru: ru
@@ -1895,6 +1898,9 @@ display:
             tj-tg: tj-tg
             uz-ru: uz-ru
             uz-uz: uz-uz
+            uk: uk
+            und: und
+            zxx: zxx
           group: 1
           exposed: false
           expose:
@@ -1976,6 +1982,9 @@ display:
           admin_label: ''
           operator: in
           value:
+            all: all
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
             en: en
             sr: sr
             ru: ru
@@ -2000,6 +2009,9 @@ display:
             tj-tg: tj-tg
             uz-ru: uz-ru
             uz-uz: uz-uz
+            uk: uk
+            und: und
+            zxx: zxx
           group: 1
           exposed: true
           expose:

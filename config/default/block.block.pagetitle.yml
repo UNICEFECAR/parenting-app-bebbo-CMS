@@ -29,7 +29,7 @@ visibility:
       node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: "/homepage\r\n/share"
+    pages: "/homepage\r\n/share\r\n/foleja"
     negate: true
     context_mapping: {  }
   user_role:
