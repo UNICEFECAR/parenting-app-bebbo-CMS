@@ -949,18 +949,34 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
-  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22')) {
-         foreach ($query->where['2'] as &$condition_group) {
+  date_default_timezone_set('Asia/Kolkata');
+  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
+    foreach ($query->where['2'] as &$condition_group) {
             foreach ($condition_group as &$condition) {
               $date = date('Y-m-d H:i');
-              $aa = $view->args['1'];
+			  if($view->current_display == 'rest_export_13'){
+				$aa = $view->args['2'];
+			  }
+			  else if($view->current_display == 'rest_export_2'){
+				$aa = $view->args['6'];
+			  }
+			  else
+			  {
+				$aa = $view->args['1'];
+			  }
               $variable = substr($aa, 0, strpos($aa, "--"));
-			  if (empty($variable)) {
-				$condition['value'][':changed'] = $aa;
+              if (empty($variable)) {
+                $condition['value'][':changed'] = $aa;
                 $condition['value'][':changed1'] = $date; 
-				$field_details = $condition['field'];
-				$updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-				$condition['field'] =$updated_date;
+		        if($view->current_display == 'rest_export_1'){
+				  $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
+				}
+				else {
+				  $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
+				}
+				
+				    
+
               }else{
                 $condition['value'][':changed'] = '';
                 $condition['value'][':changed1'] = '';
@@ -968,48 +984,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
             }
           }
         }
-          if ($view->id() == 'articles' && $view->current_display == 'rest_export_13') {
-           foreach ($query->where['2'] as &$condition_group) {
-            foreach ($condition_group as &$condition) {
-              $date = date('Y-m-d H:i');
-              $aa = $view->args['2'];
-              $variable = substr($aa, 0, strpos($aa, "--"));
-
-              if (empty($variable)) {
-                 $condition['value'][':changed'] = $aa;
-                 $condition['value'][':changed1'] = $date; 
-                 $field_details = $condition['field'];
-                 $updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-                 $condition['field'] =$updated_date;
-              }else{
-                $condition['value'][':changed'] = '';
-                $condition['value'][':changed1'] = '';
-              }
-            }
-          }
-        }
-        if ($view->id() == 'articles' && $view->current_display == 'rest_export_2') {
-           foreach ($query->where['2'] as &$condition_group) {
-            foreach ($condition_group as &$condition) {
-              $date = date('Y-m-d H:i');
-              $aa = $view->args['6'];
-              $variable = substr($aa, 0, strpos($aa, "--"));
-
-              if (empty($variable)) {
-                 $condition['value'][':changed'] = $aa;
-                 $condition['value'][':changed1'] = $date; 
-                 $field_details = $condition['field'];
-                 $updated_date = str_replace('%Y-%m-%d','%Y-%m-%d %H:%i',$field_details);
-                 $condition['field'] =$updated_date;
-              }else{
-                $condition['value'][':changed'] = '';
-                $condition['value'][':changed1'] = '';
-              }
-            }
-          }
-        }
-
-
+		
 }
 
 /**
@@ -1145,11 +1120,30 @@ function pb_custom_field_preprocess_html(&$variables) {
       // Replace 'the-class-to-add' with your CSS class.
       $variables['attributes']['class'][] = 'pb-main-homepage';
     }
-	 if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
+	if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
     {
       $variables['head_title']['name'] = "Foleja";
     }
   }
+   $current_path = \Drupal::service('path.current')->getPath();
+   $route_name = Url::fromUserInput($current_path)->getRouteName();
+   if($route_name == "pb_custom_form.kosovo_pb_mobile")
+   {
+	  $variables['head_title']['name'] = "Foleja";
+	  $icon = [
+        '#tag' => 'link',
+        '#attributes' => [
+            'href' => 'https://dev.bebbo.app/sites/default/files/2022-04/foleja_favicon.png',
+            'rel' => 'shortcut icon',
+            'sizes' => '52x52'
+        ],
+    ];
+	$variables['#attached']['html_head'][] = [
+        $icon,
+        'icon52x52'
+    ]; 
+  }
+
 }
 
 /**

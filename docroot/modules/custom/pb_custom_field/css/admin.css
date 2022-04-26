@@ -188,8 +188,9 @@ height: 20px;
   background-color: #4FA9DD;
 }
 .pb-main-homepage .main-logo img {
-  width: 100px;
+  width: 74px;
   margin-right: 25px;
+  margin-top:12px;
 }
 .pb-main-homepage nav#block-mainnavigation-2 ul li {
   display: inline;

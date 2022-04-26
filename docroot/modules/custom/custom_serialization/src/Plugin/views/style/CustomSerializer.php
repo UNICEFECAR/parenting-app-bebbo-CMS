@@ -63,6 +63,8 @@ class CustomSerializer extends Serializer {
       $data = [];
       $field_formatter = [];
       $uniques = [];
+      date_default_timezone_set('Asia/Kolkata');
+      $timestamp = date("Y-m-d H:i");
       if (isset($this->view->result) && !empty($this->view->result)) {
         $language_code = $request[3];
         foreach ($this->view->result as $row_index => $row) {
@@ -119,7 +121,6 @@ class CustomSerializer extends Serializer {
             /* Change video or image actual path to absolute path. */
             if ($key === "body" || $key === "summary" || $key === "answer_part_1" || $key === "answer_part_2") {
               $body_summary = str_replace('src="/sites/default/files/', 'src="' . $request_path . '/sites/default/files/', $values);
-
               $body_summary = str_replace('src="/media/oembed', 'src="' . $request_path . '/media/oembed', $body_summary);
               /* remove new line. */
               $body_summary = str_replace("\n", '', $body_summary);
@@ -127,12 +128,15 @@ class CustomSerializer extends Serializer {
               $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
+			    /* Remove strong <strong> </strong> tag */
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-			  /* Remove div Image label tag */
-			  $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
+			  $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              /* Remove div Image label tag */
+              $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
 			     
               /* Embedded images. */
               if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {
@@ -216,6 +220,14 @@ class CustomSerializer extends Serializer {
               $rows['total'] = count($data);
             }
           }
+          if (strpos($request_uri, "archive") !== FALSE ) {
+           $type = $rendered_data['type'];
+           $total_ids[] = $rendered_data['id'];
+           $types[$type][] =+ $rendered_data['id'];
+           $data = $types;
+           $rows['total'] = count($total_ids);
+
+          }
         }
         /* To validate request params. */
         if (isset($request[3]) && !empty($request[3])) {
@@ -225,7 +237,7 @@ class CustomSerializer extends Serializer {
         if (strpos($request_uri, "sponsors") !== FALSE) {
           unset($rows['langcode']);
         }
-
+        $rows['datetime'] = $timestamp;
         $rows['data'] = $data;
         unset($this->view->row_index);
         /* Json output. */
@@ -241,6 +253,7 @@ class CustomSerializer extends Serializer {
         $rows = [];
         $rows['status'] = 204;
         $rows['message'] = "No Records Found";
+        $rows['datetime'] = $timestamp;
 
         return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
       }
