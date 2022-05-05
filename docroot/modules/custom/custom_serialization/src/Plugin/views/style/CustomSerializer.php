@@ -103,7 +103,7 @@ class CustomSerializer extends Serializer {
               $rendered_data['unique_name'] = "";
             }
           }
-          $embedded_images = array(); 
+          $embedded_images = [];
           foreach ($rendered_data as $key => $values) {
             /* Replace special charater into normal. */
             if ($key === "title") {
@@ -111,7 +111,7 @@ class CustomSerializer extends Serializer {
               $title = str_replace("&quot;", '"', $title);
               $rendered_data[$key] = htmlspecialchars_decode($title);
             }
-            ## Added for FAQ
+            // Added for FAQ.
             if ($key === "question") {
               $question = str_replace("&#039;", "'", $values);
               $question = str_replace("&quot;", '"', $question);
@@ -128,29 +128,34 @@ class CustomSerializer extends Serializer {
               $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-			    /* Remove strong <strong> </strong> tag */
+              /* Remove strong <strong> </strong> tag */
               $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-			  $body_summary = str_replace("<strong>  </strong>", '', $body_summary);
-			  $body_summary = str_replace("<strong> </strong>", '', $body_summary);
-			  $body_summary = str_replace("<strong></strong>", '', $body_summary);
+              /* Remove empty <strong> </strong> tag */
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              /* Remove width and height of remote video */
+              $body_summary = str_replace('width="640"', '', $body_summary);
+              $body_summary = str_replace('height="480"', '', $body_summary);
+
               /* Remove div Image label tag */
               $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
-			     
+
               /* Embedded images. */
               if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {
                 $rendered_data[$key] = $body_summary;
-                $doc = new \DOMDocument();
-                libxml_use_internal_errors(TRUE);
-                $doc->loadHTML($body_summary); 
-                // Get the images.
-                $images = $doc->getElementsByTagName('img');
+                if (!empty($body_summary)) {
+                  $doc = new \DOMDocument();
+                  libxml_use_internal_errors(TRUE);
+                  $doc->loadHTML($body_summary);
+                  // Get the images.
+                  $images = $doc->getElementsByTagName('img');
 
-                foreach ($images as $image) {
-                  $embedded_images[] = $image->getAttribute('src');
+                  foreach ($images as $image) {
+                    $embedded_images[] = $image->getAttribute('src');
+                  }
                 }
                 $rendered_data['embedded_images'] = $embedded_images;
               }
@@ -222,12 +227,12 @@ class CustomSerializer extends Serializer {
               $rows['total'] = count($data);
             }
           }
-          if (strpos($request_uri, "archive") !== FALSE ) {
-           $type = $rendered_data['type'];
-           $total_ids[] = $rendered_data['id'];
-           $types[$type][] =+ $rendered_data['id'];
-           $data = $types;
-           $rows['total'] = count($total_ids);
+          if (strpos($request_uri, "archive") !== FALSE) {
+            $type = $rendered_data['type'];
+            $total_ids[] = $rendered_data['id'];
+            $types[$type][] = +$rendered_data['id'];
+            $data = $types;
+            $rows['total'] = count($total_ids);
 
           }
         }
