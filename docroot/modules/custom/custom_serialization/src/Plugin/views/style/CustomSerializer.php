@@ -127,15 +127,15 @@ class CustomSerializer extends Serializer {
               /* Remove span tag from body and summary field */
               $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
               /* Remove empty <p> </p> tag */
-              $body_summary = str_replace("<p> </p>", '', $body_summary);
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
               /* Remove strong <strong> </strong> tag */
-              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
-              $body_summary = str_replace("<p> </p>", '', $body_summary);
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
               /* Remove empty <strong> </strong> tag */
-              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* Remove width and height of remote video */
               $body_summary = str_replace('width="640"', '', $body_summary);
               $body_summary = str_replace('height="480"', '', $body_summary);
