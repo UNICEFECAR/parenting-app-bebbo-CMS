@@ -1,12 +1,12 @@
-uuid: f69f1a56-1a7b-4016-9469-995b61c8965c
+uuid: e585918e-d466-4cbc-9e6f-3aed49da970e
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:1e2e18a1-a48b-4485-b8d5-2753d7817de9'
+    - 'block_content:basic:89c9a297-e84c-4422-8c77-8568cb271855'
   module:
     - block_content
-    - language
+    - system
     - user
   theme:
     - claro
@@ -15,9 +15,9 @@ theme: claro
 region: header
 weight: 0
 provider: null
-plugin: 'block_content:1e2e18a1-a48b-4485-b8d5-2753d7817de9'
+plugin: 'block_content:89c9a297-e84c-4422-8c77-8568cb271855'
 settings:
-  id: 'block_content:1e2e18a1-a48b-4485-b8d5-2753d7817de9'
+  id: 'block_content:89c9a297-e84c-4422-8c77-8568cb271855'
   label: 'Kosovo Logo'
   provider: block_content
   label_display: '0'
@@ -32,11 +32,8 @@ visibility:
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
-  language:
-    id: language
-    langcodes:
-      xk-sq: xk-sq
-      xk-rs: xk-rs
+  request_path:
+    id: request_path
+    pages: "/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy\r\n/xk-sq\r\n/xk-rs"
     negate: false
-    context_mapping:
-      language: '@language.current_language_context:language_interface'
+    context_mapping: {  }

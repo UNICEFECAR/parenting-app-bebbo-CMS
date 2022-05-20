@@ -17,6 +17,9 @@ settings:
     -
       value: feedback
       label: Feedback
+    -
+      value: user_guide
+      label: 'User Guide'
   allowed_values_function: ''
 module: options
 locked: false
