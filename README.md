@@ -1,148 +1,201 @@
-# My Project
+# parenting-app-bebbo-CMS
 
-A brief description of My Project.
+#CONTENTS OF THIS FILE
 
-## Using This Template
+Introduction
+Requirements
+Installation
+Configuration
+Maintainers
 
-Remove this section after initial setup!
+# Introduction
 
-Search for and replace the following placeholders within this file:
+Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the contents will be added through the web interface and served as REST APIs for mobile App. This application is used to assist the editors to add different types of contents under different types of content types and taxonomies that will be configured in Drupal CMS.
 
-| Placeholder | Example |
-| --- | --- |
-| `#ACQUIA_CLOUD_URL` | https://cloud.acquia.com/app/develop/applications/12345678-1234-1234-12345678901234567 |
-| `#GIT_PRIMARY_DEV_BRANCH` | `master` or `develop` |
-| `#GITHUB_ORG` | The "org" in https://github.com/org/project |
-| `#GITHUB_PROJECT` | The "project" in https://github.com/org/project |
-| `#JIRA_URL` | https://org.atlassian.net/projects/PROJ |
-| `#LOCAL_DEV_SITE_ALIAS` | `@example.local` |
-| `#LOCAL_DEV_URL` | http://local.example.com/ |
-| `#TRAVIS_URL` | https://travis-ci.com/org/PROJ |
+[![Build Status](https://bebbo.app/)
 
-# Getting Started
+# Requirements
 
-This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology. 
+Make sure you have installed all of the following prerequisites on your development machine:
 
-1. Review the [Required / Recommended Skills](https://docs.acquia.com/blt/developer/skills/) for working with a BLT project.
-2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](https://docs.acquia.com/blt/install/).
-3. Request access to organization that owns the project repo in GitHub (if needed).
-4. Fork the project repository in GitHub.
-5. Request access to the Acquia Cloud Environment for your project (if needed).
-6. Setup a SSH key that can be used for GitHub and the Acquia Cloud (you CAN use the same key).
-    1. [Setup GitHub SSH Keys](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/)
-    2. [Setup Acquia Cloud SSH Keys](https://docs.acquia.com/acquia-cloud/ssh/generate)
-7. Clone your forked repository. By default, Git names this "origin" on your local.
-    ```
-    $ git clone git@github.com:<account>/#GITHUB_PROJECT.git
-    ```
-8. To ensure that upstream changes to the parent repository may be tracked, add the upstream locally as well.
-    ```
-    $ git remote add upstream git@github.com:#GITHUB_ORG/#GITHUB_PROJECT.git
-    ```
+1. Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+Optional - [Global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
+If skipping, you may need to replace `composer` with `php composer.phar` for your setup.
 
-9. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
-
-
-----
-# Setup Local Environment.
-
-BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://docs.acquia.com/blt/install/alt-env/ddev/), [Docksal](https://docs.acquia.com/blt/install/alt-env/docksal/), [Lando](https://docs.acquia.com/blt/install/alt-env/lando/), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
-1. Install Composer dependencies.
-After you have forked, cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
-    ```
-    $ composer install
-    ```
-2. Setup VM.
-Setup the VM with the configuration from this repositories [configuration files](#important-configuration-files).
-
-    ```
-    $ vagrant up
-    ```
-
-3. Setup a local blt alias.
-If the blt alias is not available use this command outside and inside vagrant (one time only).
-    ```
-    $ composer run-script blt-alias
-    ```
-
-4. SSH into your VM.
-SSH into your localized Drupal VM environment automated with the BLT launch and automation tools.
-    ```
-    $ vagrant ssh
-    ```
-
-5. Setup a local Drupal site with an empty database.
-Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
-   ```
-     $ blt setup
-    ```
-   or
-   ```
-   $ blt setup --site=[sitename]
-   ```
-
-6. Log into your site with drush.
-Access the site and do necessary work at #LOCAL_DEV_URL by running the following commands.
-    ```
-    $ cd docroot
-    $ drush uli
-    ```
-
----
-## Other Local Setup Steps
-
-1. Set up frontend build and theme.
-By default BLT sets up a site with the lightning profile and a cog base theme. You can choose your own profile before setup in the blt.yml file. If you do choose to use cog, see [Cog's documentation](https://github.com/acquia-pso/cog/blob/8.x-1.x/STARTERKIT/README.md#create-cog-sub-theme) for installation.
-See [BLT's Frontend docs](https://docs.acquia.com/blt/developer/frontend/) to see how to automate the theme requirements and frontend tests.
-After the initial theme setup you can configure `blt/blt.yml` to install and configure your frontend dependencies with `blt setup`.
-
-2. Pull Files locally.
-Use BLT to pull all files down from your Cloud environment.
-
-   ```
-   $ blt drupal:sync:files
-   ```
-
-3. Sync the Cloud Database.
-If you have an existing database you can use BLT to pull down the database from your Cloud environment.
-   ```
-   $ blt sync
-   ```
-
-
----
-
-# Resources 
-
-Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
+2. Install Drush
+```    composer global require drush/drush
 ```
-$ blt
-``` 
 
-Note the following properties of this project:
-* Primary development branch: #GIT_PRIMARY_DEV_BRANCH
-* Local environment: #LOCAL_DEV_SITE_ALIAS
-* Local site URL: #LOCAL_DEV_URL
+## Installation
 
-## Working With a BLT Project
+1. Download Bebbo App from git repo 
+   https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
+   Ex: git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
+2. Download the Database from Acquia server and import the database into your local.
+3. Update the database details in settings.php file ( docroot/sites/default/settings. php).
+4. Then run the application in your browser.
 
-BLT projects are designed to instill software development best practices (including git workflows). 
 
-Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/).
+### Contributed Modules
 
-### Important Configuration Files
+The following contributed modules are installed as part of the profile
+- acquia_purge
+- actions_permissions
+- admin_toolbar
+- admin_toolbar_links_access_filter
+- admin_toolbar_search
+- admin_toolbar_tools
+- allowed_languages
+- automated_cron
+- basic_auth
+- big_pipe
+- block
+- block_content
+- breakpoint
+- ckeditor
+- ckeditor_media_embed
+- color
+- config
+- config_ignore
+- config_translation
+- content_moderation
+- content_moderation_notifications
+- contextual
+- csv_serialization
+- date_popup
+- datetime
+- dynamic_page_cache
+- editor
+- entity
+- feeds
+- feeds_tamper
+- field
+- field_ui
+- file
+- filter
+- gnode
+- google_analytics
+- group
+- help
+- image
+- image_style_quality
+- json_field
+- lang_dropdown
+- language
+- languagefield
+- link
+- locale
+- media
+- media_library
+- memcache
+- menu_link_content
+- menu_per_role
+- menu_ui
+- migrate
+- migrate_drupal
+- migrate_plus
+- migrate_source_csv
+- migrate_tools
+- migrate_upgrade
+- node
+- options
+- page_cache
+- path
+- path_alias
+- purge
+- purge_ui
+- quickedit
+- rdf
+- rest
+- restui
+- search
+- seckit
+- serialization
+- shortcut
+- smtp
+- syslog
+- system
+- tamper
+- taxonomy
+- text
+- title_length
+- tmgmt
+- tmgmt_config
+- tmgmt_content
+- tmgmt_demo
+- tmgmt_file
+- tmgmt_language_combination
+- tmgmt_local
+- tmgmt_locale
+- tmgmt_memsource
+- toolbar
+- toolbar_menu
+- toolbar_menu_clean
+- tour
+- user
+- variationcache
+- video_embed_field
+- video_embed_media
+- view_custom_table
+- views_bulk_operations
+- views_data_export
+- workflows
+- content_translation
+- views
 
-BLT uses a number of configuration (`.yml` or `.json`) files to define and customize behaviors. Some examples of these are:
+### Custom Libraries
 
-* `blt/blt.yml` (formerly blt/project.yml prior to BLT 9.x)
-* `blt/local.blt.yml` (local only specific blt configuration)
-* `box/config.yml` (if using Drupal VM)
-* `drush/sites` (contains Drush aliases for this project)
-* `composer.json` (includes required components, including Drupal Modules, for this project)
+- CKEDITOR
 
-## Resources
+### Custom Modules
 
-* JIRA - #JIRA_URL
-* GitHub - https://github.com/#GITHUB_ORG/#GITHUB_PROJECT
-* Acquia Cloud subscription - #ACQUIA_CLOUD_URL
-* TravisCI - #TRAVIS_URL
+The following Custom modules are installed as part of the profile
+- custom_serialization
+- group_country_field
+- pb_custom_field
+- pb_custom_form
+- pb_custom_migrate
+- pb_custom_rest_api
+- pb_custom_standard_deviation
+
+### Theme
+
+The theme is installed and enabled by the profile.
+- bartik
+- seven
+- stable
+- classy
+- claro
+
+### Custom Roles
+
+Globaladmin : This User handles all the country and country users, configures new languages and new country , Taxonomies data and offload a country.            
+senior editor :   Senior editors have access to create , update , publish and translate the content to their country language.
+Sme : SME have access to updates and approve the content.
+Editor : Editor have access to create , update and translate the content to their country language
+country admin : This user has access to create and cancel their country users and view their language content.
+
+All the users have a separate Dashboard. Country admin and Senior editor have access the country reports.
+
+## Menus
+
+Global Content List - It shows all the published contents
+Country Content List - In this page the user is able to see their allowed languages list.
+Add Content - Editor , Globaladmin and Senioreditor have permission to create new content.
+
+Manage Taxonomies - It shows all the available taxonomy terms
+Manage Media - In this page User can add and update the image related details
+Manage Country - Global admin can add any new country or update the already existing country and user details.
+Manage Language - Create a new language or update an existing language. This have two options
+Manage Users  -  Global admin can add another global admin using the language.
+Manage Translation - Users can send a content translation request to memsource using this menu option.
+Google Analytics -  Global admin can add the analytics id .
+Import Taxonomy - Users can import the taxonomy term values using this option .Based on the documentation, users can change the feed configuration according to their language.
+Manage reports - user can see their reports based on their allowed language
+
+Configurations
+
+Installation profile assists in setting up a base instance. 
+
+Maintainers
+Datamatics

@@ -15,7 +15,7 @@ id: node.survey.field_survey_link
 field_name: field_survey_link
 entity_type: node
 bundle: survey
-label: 'Survey / Feedback Link'
+label: 'Survey / Feedback or User Guide Link'
 description: ''
 required: true
 translatable: true
