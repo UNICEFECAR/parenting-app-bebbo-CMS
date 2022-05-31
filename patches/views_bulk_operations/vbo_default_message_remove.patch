@@ -15,6 +15,6 @@ index 97356a16..a7923479 100644
 -        '@operations' => implode(', ', $details),
 -      ]);
 -      static::message($message);
-       if (isset($results['redirect_url'])) {adf
+       if (isset($results['redirect_url'])) {
          return new RedirectResponse($results['redirect_url']->setAbsolute()->toString());
        }
