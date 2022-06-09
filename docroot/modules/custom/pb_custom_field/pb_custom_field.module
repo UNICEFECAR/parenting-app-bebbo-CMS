@@ -743,7 +743,9 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
         }
       }
       /* Remove  delete tab for country users. */
-      unset($data['tabs'][0]['entity.node.delete_form']);
+      if (!in_array("se", $roles)) {
+        unset($data['tabs'][0]['entity.node.delete_form']);
+      }      
       unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
       /* Remove tabs for edit, delete and translate fo other languages. */
       if (!in_array($languagecode, $clanguage)) {
