@@ -1,0 +1,31 @@
+uuid: b684fe2e-fd5c-4595-b646-7f57a834b799
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_video_articles
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_related_video_articles
+field_name: field_related_video_articles
+entity_type: node
+bundle: article
+label: 'Related Video Articles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - video_article
+field_type: entity_reference

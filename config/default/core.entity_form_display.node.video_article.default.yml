@@ -44,12 +44,12 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   field_australian_article:
-    weight: 13
+    weight: 14
     settings:
       display_label: true
     third_party_settings: {  }
@@ -91,14 +91,14 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_licensed_content:
-    weight: 11
+    weight: 12
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_mandatory_content:
-    weight: 15
+    weight: 16
     settings:
       display_label: true
     third_party_settings: {  }
@@ -111,14 +111,14 @@ content:
     type: options_select
     region: content
   field_premature_content:
-    weight: 12
+    weight: 13
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_references_and_comments:
-    weight: 14
+    weight: 15
     settings:
       rows: 5
       placeholder: ''
@@ -136,7 +136,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_related_video_articles:
-    weight: 23
+    weight: 10
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -154,13 +154,13 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 22
+    weight: 23
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 20
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -168,21 +168,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 18
+    weight: 19
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 21
+    weight: 22
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 19
+    weight: 20
     region: content
     third_party_settings: {  }
   title:
@@ -194,13 +194,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 16
+    weight: 17
     settings:
       match_operator: CONTAINS
       size: 60
