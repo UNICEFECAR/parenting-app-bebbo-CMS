@@ -1209,7 +1209,20 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
-            $form['account']['roles']['#access'] = FALSE;
+            $user_list = $user->get('roles')->getValue();
+            if(empty($user_list)){
+              $user_role_permission = ['sme', 'authenticated', 'administrator', 'editor', 'anonymous', 'reviewer', 'se'];
+              foreach ($roles as $role) {
+                if(in_array($role->id(), $user_role_permission))
+                {
+                  unset($form['account']['roles']['#options'][$role->id()]);
+                }
+              } 
+            }
+            else
+            {
+              $form['account']['roles']['#access'] = FALSE;
+            }
           }
           elseif ($user_role == "global_admin") {
             $form['account']['roles']['#access'] = TRUE;
