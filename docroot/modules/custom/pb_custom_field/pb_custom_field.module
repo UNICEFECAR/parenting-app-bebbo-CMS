@@ -880,11 +880,14 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
   /* $roles_permissions = user_role_permissions($roles); */
   /* Hide operations in country listing page. */
   if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {
-    if (isset($operations['delete'])) {
-      unset($operations['delete']);
-    }
     if (isset($operations['translate'])) {
       unset($operations['translate']);
+    }
+  }
+
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && !in_array("se", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {
+    if (isset($operations['delete'])) {
+      unset($operations['delete']);
     }
   }
 
