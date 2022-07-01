@@ -15,9 +15,11 @@ dependencies:
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
     - field.field.node.article.field_parent_gender
+    - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
+    - field.field.node.article.field_related_video_articles
     - node.type.article
   module:
     - text
@@ -31,18 +33,18 @@ mode: full
 content:
   body:
     type: text_default
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
     label: hidden
   content_moderation_control:
-    weight: -20
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_australian_article:
-    weight: 111
+    weight: 3
     label: above
     settings:
       format: default
@@ -52,7 +54,7 @@ content:
     type: boolean
     region: content
   field_child_age:
-    weight: 115
+    weight: 7
     label: above
     settings:
       link: false
@@ -60,7 +62,7 @@ content:
     type: entity_reference_label
     region: content
   field_child_gender:
-    weight: 116
+    weight: 8
     label: above
     settings:
       link: false
@@ -68,7 +70,7 @@ content:
     type: entity_reference_label
     region: content
   field_content_category:
-    weight: 114
+    weight: 6
     label: above
     settings:
       link: false
@@ -77,7 +79,7 @@ content:
     region: content
   field_cover_image:
     type: entity_reference_entity_view
-    weight: 112
+    weight: 4
     label: above
     settings:
       view_mode: media_library
@@ -85,7 +87,7 @@ content:
     third_party_settings: {  }
     region: content
   field_generic_content:
-    weight: 121
+    weight: 13
     label: above
     settings:
       format: default
@@ -95,7 +97,7 @@ content:
     type: boolean
     region: content
   field_keywords:
-    weight: 113
+    weight: 5
     label: above
     settings:
       link: false
@@ -103,7 +105,7 @@ content:
     type: entity_reference_label
     region: content
   field_licensed_content:
-    weight: 122
+    weight: 14
     label: above
     settings:
       format: default
@@ -113,7 +115,7 @@ content:
     type: boolean
     region: content
   field_mandatory_content:
-    weight: 124
+    weight: 16
     label: above
     settings:
       format: default
@@ -123,7 +125,7 @@ content:
     type: boolean
     region: content
   field_parent_gender:
-    weight: 117
+    weight: 9
     label: above
     settings:
       link: false
@@ -131,7 +133,7 @@ content:
     type: entity_reference_label
     region: content
   field_premature_content:
-    weight: 123
+    weight: 15
     label: above
     settings:
       format: default
@@ -141,24 +143,33 @@ content:
     type: boolean
     region: content
   field_references_and_comments:
-    weight: 119
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_related_articles:
-    weight: 120
+    weight: 11
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_related_video_articles:
+    type: entity_reference_label
+    weight: 12
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_pre_populated: true
   langcode: true
