@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c6995a1ba1dae3f7e575f8e5fbb03e7",
+    "content-hash": "7f1091d7370157f97eb996c4b457adc8",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5026,6 +5026,58 @@
                 "source": "https://git.drupalcode.org/project/migrate_upgrade",
                 "issues": "https://www.drupal.org/project/issues/migrate_upgrade",
                 "slack": "#migrate"
+            }
+        },
+        {
+            "name": "drupal/mobile_app_links",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/mobile_app_links.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/mobile_app_links-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "fa19da9e5d68ad120c0d7a9cf66a30b43f3be7ea"
+            },
+            "require": {
+                "drupal/core": "^8.7||^9.0 || ^10",
+                "php": ">=7.1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1656476084",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\mobile_app_links\\": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Nikunj Kotecha (nikunjkotecha)",
+                    "homepage": "https://www.drupal.org/u/nikunjkotecha",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This module adds ability to expose mobile app links.",
+            "homepage": "https://www.drupal.org/project/mobile_app_links",
+            "support": {
+                "source": "https://cgit.drupalcode.org/mobile_app_links",
+                "issues": "https://drupal.org/project/issues/mobile_app_links"
             }
         },
         {
@@ -14133,6 +14185,7 @@
         "drupal/json_field": 5,
         "drupal/lang_dropdown": 10,
         "drupal/phpmailer": 10,
+        "drupal/security_review": 15,
         "drupal/tamper": 15,
         "acquia/blt-require-dev": 20
     },
@@ -14145,5 +14198,5 @@
     "platform-overrides": {
         "php": "7.2"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

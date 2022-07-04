@@ -1,13 +1,12 @@
-diff --git a/docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php b/docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
-index 038ba954..56432c04 100644
---- a/docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
-+++ b/docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
-@@ -46,6 +46,20 @@ public function buildForm(array $form, FormStateInterface $form_state) {
-       '#description' => $this->t('Enter one value per line.'),
+diff --git docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
+index 038ba954..789ada31 100644
+--- docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
++++ docroot/modules/contrib/mobile_app_links/src/Form/AndroidConfigForm.php
+@@ -47,6 +47,20 @@ public function buildForm(array $form, FormStateInterface $form_state) {
        '#default_value' => $config->get('sha256_cert_fingerprints'),
      ];
-+	
-+	/* Kosovo Country package details */
+ 
++    /* Kosovo Country package details */
 +    $form['kosovo_package_name'] = [
 +      '#type' => 'textfield',
 +      '#title' => $this->t('Kosovo Package Name'),
@@ -20,15 +19,16 @@ index 038ba954..56432c04 100644
 +      '#description' => $this->t('Enter one value per line.'),
 +      '#default_value' => $config->get('kosovo_sha256_cert_fingerprints'),
 +    ];
- 
++
      return $form;
    }
+ 
 @@ -60,6 +74,12 @@ public function submitForm(array &$form, FormStateInterface $form_state) {
      $certificates = str_replace("\r\n", "\n", $form_state->getValue('sha256_cert_fingerprints'));
      $certificates = str_replace("\r", "\n", $certificates);
      $config->set('sha256_cert_fingerprints', $certificates);
-+	
-+	/* Kosovo Package details */
++
++    /* Kosovo Package details */
 +    $config->set('kosovo_package_name', $form_state->getValue('kosovo_package_name'));
 +    $certificates = str_replace("\r\n", "\n", $form_state->getValue('kosovo_sha256_cert_fingerprints'));
 +    $certificates = str_replace("\r", "\n", $certificates);

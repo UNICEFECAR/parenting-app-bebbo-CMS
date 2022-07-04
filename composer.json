@@ -37,6 +37,7 @@
         "drupal/migrate_source_csv": "^3.4",
         "drupal/migrate_tools": "^5.0",
         "drupal/migrate_upgrade": "^3.2",
+        "drupal/mobile_app_links": "^2.0",
         "drupal/phpmailer": "^3.0@beta",
         "drupal/qa_accounts": "^1.0.0-alpha1",
         "drupal/restui": "^1.20",
@@ -64,7 +65,16 @@
         "platform": {
             "php": "7.2"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "cweagans/composer-patches": true,
+            "grasmash/drupal-security-warning": true,
+            "oomphinc/composer-installers-extender": true,
+            "acquia/blt": true,
+            "drupal/core-composer-scaffold": true
+        }
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
@@ -126,8 +136,10 @@
         },
         "patches": {
             "drupal/core": {
-                "Media library weight issue css" : "https://www.drupal.org/files/issues/2020-07-01/interdiff_64-67.txt",
-                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch"
+                "Media library weight issue css": "https://www.drupal.org/files/issues/2020-07-01/interdiff_64-67.txt",
+                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch",
+                "Added translated draft status content into node_field table": "patches/content_moderation/content_moderation_revision.patch",
+                "Fixed listing page status issue for status change req": "patches/content_moderation/content_moderation_status.patch"
             },
             "drupal/video_embed_field": {
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"
@@ -137,32 +149,21 @@
                 "Content Overview (Content Entity) shows multiple time the same content on different pagination pages.": "https://www.drupal.org/files/issues/2021-05-12/content-overview-3213377-1_0.patch"
             },
             "drupal/group": {
-                "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
-            },
-            "drupal/content_moderation": {
-                "Added translated draft status content into node_field table":"patches/content_moderation/content_moderation_revision.patch"
-            },
-            "drupal/content_moderation_status": {
-                "Fixed listing page status issue for status change req":"patches/content_moderation/content_moderation_status.patch"
+                "Allow group admins to create user account and add to group": "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
             },
              "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
             },
 			"drupal/mobile_app_links": {
-				"Created new path for android and ios": "patches/mobile_app_links/android_ios_root_url.patch",
-				"Added some changes in IOS json format": "patches/mobile_app_links/ios_json_format.patch",
-				"Added UAT fields config changes": "patches/mobile_app_links/ios_uat_field_config.patch",
-				"Added new uat fields in form": "patches/mobile_app_links/ios_uat_field_display.patch",
-				"Added uat field saving function": "patches/mobile_app_links/ios_uat_field_insert.patch",
-				"Added UAT fields in ios form": "patches/mobile_app_links/ios_uat_fields.patch",
-				"Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
-				"Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
-				"Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_config_install_ios.patch",
-				"Added KOSOVO fields in ios form": "patches/mobile_app_links/kosovo_ios_config_form.patch",
-				"Added KOSOVO settings fields": "patches/mobile_app_links/kosovo_settings.patch",
-				"Added KOSOVO details in JSON format": "patches/mobile_app_links/kosovo_wellknown_controller.patch"
-
-			},
+                "mobile_app_links.info": "patches/mobile_app_links/mobile-app-links-info.patch",
+                "mobile_app_links.android": "patches/mobile_app_links/mobile-app-links-android.patch",
+                "mobile_app_links.ios": "patches/mobile_app_links/mobile-app-links-ios.patch",
+                "mobile_app_links.settings": "patches/mobile_app_links/mobile-app-links-settings.patch",
+                "mobile_app_links.routing": "patches/mobile_app_links/mobile-app-links-routing.patch",
+                "mobile_app_links.wellknowncontroller": "patches/mobile_app_links/mobile-app-links-wellknowncontroller.patch",
+                "mobile_app_links.androidconfigform": "patches/mobile_app_links/mobile-app-links-androidconfigform.patch",
+                "mobile_app_links.iosconfigform": "patches/mobile_app_links/mobile-app-links-iosconfigform.patch"
+            },
             "drupal/views_bulk_operations": {
                 "Remove the default status message from VBO": "patches/views_bulk_operations/vbo_default_message_remove.patch"
             },
