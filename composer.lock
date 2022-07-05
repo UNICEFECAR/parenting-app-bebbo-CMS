@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f1091d7370157f97eb996c4b457adc8",
+    "content-hash": "226a0d94a3fbeab1c3d975cd36733e72",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3312,6 +3312,54 @@
             }
         },
         {
+            "name": "drupal/contextual_range_filter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/contextual_range_filter.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/contextual_range_filter-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "0e7d74a9b6762b2aec881ae0580433884661972f"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1594532602",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Beakerboy",
+                    "homepage": "https://www.drupal.org/user/1700098"
+                },
+                {
+                    "name": "RdeBoer",
+                    "homepage": "https://www.drupal.org/user/404007"
+                }
+            ],
+            "description": "Contextually filter Views by alphabetic, date or numeric ranges, e.g. <em>http://yoursite.com/yourview/50--99.95</em>",
+            "homepage": "https://www.drupal.org/project/contextual_range_filter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/contextual_range_filter"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "8.9.19",
             "source": {
@@ -4470,6 +4518,57 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/group",
                 "issues": "https://drupal.org/project/issues/group"
+            }
+        },
+        {
+            "name": "drupal/image_style_quality",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/image_style_quality.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/image_style_quality-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "5c2e80cfe88d8902ac9c7b6b3c70f6e8c893ffe1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "require-dev": {
+                "drupal/imagemagick": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1597367306",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Charlton",
+                    "homepage": "https://www.drupal.org/user/17089"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                }
+            ],
+            "description": "Provides an image effect plugin that allows you to choose the quality of images.",
+            "homepage": "https://www.drupal.org/project/image_style_quality",
+            "support": {
+                "source": "https://git.drupalcode.org/project/image_style_quality"
             }
         },
         {
@@ -6102,6 +6201,63 @@
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
                 "source": "https://git.drupalcode.org/project/video_embed_field"
+            }
+        },
+        {
+            "name": "drupal/view_custom_table",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/view_custom_table.git",
+                "reference": "2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/view_custom_table-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "d1436a0636f63e4c57966c4f0e76d952d995aaa1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.1",
+                    "datestamp": "1655386832",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Rajeshreeputra",
+                    "homepage": "https://www.drupal.org/user/3418561"
+                },
+                {
+                    "name": "joseph.olstad",
+                    "homepage": "https://www.drupal.org/user/1321830"
+                },
+                {
+                    "name": "sagar_cis",
+                    "homepage": "https://www.drupal.org/user/3487653"
+                },
+                {
+                    "name": "sagarwani",
+                    "homepage": "https://www.drupal.org/user/3221452"
+                }
+            ],
+            "description": "Extends views to use custom table data.",
+            "homepage": "https://www.drupal.org/project/view_custom_table",
+            "support": {
+                "source": "https://git.drupalcode.org/view_custom_table",
+                "issues": "https://www.drupal.org/project/issues/view_custom_table"
             }
         },
         {

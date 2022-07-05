@@ -36,7 +36,10 @@ If skipping, you may need to replace `composer` with `php composer.phar` for you
    it will install the core, contributed and other required folders and files.
 3. Download the Database from Acquia server and import the database into your local.
 4. Update the database details in settings.php file ( docroot/sites/default/settings. php).
-5. Then run the application in your browser.
+5. Go into root of the project and run following command
+    "drush cr"
+    "drush cim"
+6. Then run the application in your browser.
 
 
 ### Contributed Modules
