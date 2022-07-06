@@ -22,6 +22,8 @@ use Drupal\Core\Language\LanguageManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Database\Database;
 use Drupal\Component\Serialization\Json;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 
 /**
  * {@inheritdoc}
@@ -741,7 +743,9 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
         }
       }
       /* Remove  delete tab for country users. */
-      unset($data['tabs'][0]['entity.node.delete_form']);
+      if (!in_array("se", $roles)) {
+        unset($data['tabs'][0]['entity.node.delete_form']);
+      }      
       unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
       /* Remove tabs for edit, delete and translate fo other languages. */
       if (!in_array($languagecode, $clanguage)) {
@@ -876,11 +880,14 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
   /* $roles_permissions = user_role_permissions($roles); */
   /* Hide operations in country listing page. */
   if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {
-    if (isset($operations['delete'])) {
-      unset($operations['delete']);
-    }
     if (isset($operations['translate'])) {
       unset($operations['translate']);
+    }
+  }
+
+  if (!in_array("global_admin", $roles) && !in_array("administrator", $roles) && !in_array("se", $roles) && Drupal::service('path.current')->getPath() == "/country-content-list" && $entity->getEntityTypeId() == "node") {
+    if (isset($operations['delete'])) {
+      unset($operations['delete']);
     }
   }
 
@@ -1123,27 +1130,54 @@ function pb_custom_field_preprocess_html(&$variables) {
 	if($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy")
     {
       $variables['head_title']['name'] = "Foleja";
+	  /* Load the favicon ico for kosovo landing pages */
+	  $media_entity = Media::load(35386);
+	  if(!empty($media_entity)){
+	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
+		if ($source_value){
+		  $file_entity = File::load($source_value);
+		  $url = $file_entity->url();
+		  $icon = [
+		    '#tag' => 'link',
+			'#attributes' => [
+				'href' => $url,
+				'rel' => 'shortcut icon',
+				'sizes' => '52x52'
+				],
+		  ];
+		  $variables['#attached']['html_head'][] = [
+			$icon,
+			'icon52x52'
+		  ];
+		}
+	  }
     }
   }
-   $current_path = \Drupal::service('path.current')->getPath();
-   $route_name = Url::fromUserInput($current_path)->getRouteName();
-   if($route_name == "pb_custom_form.kosovo_pb_mobile")
-   {
-	  $variables['head_title']['name'] = "Foleja";
-	  $icon = [
-        '#tag' => 'link',
-        '#attributes' => [
-            'href' => 'https://dev.bebbo.app/sites/default/files/2022-04/foleja_favicon.png',
-            'rel' => 'shortcut icon',
-            'sizes' => '52x52'
-        ],
-    ];
-	$variables['#attached']['html_head'][] = [
-        $icon,
-        'icon52x52'
-    ]; 
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if($route_name == "pb_custom_form.kosovo_pb_mobile")
+  {
+	/* Load the favicon ico for kosovo landing pages */
+	  $media_entity = Media::load(35386);
+	  if(!empty($media_entity)){
+	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
+		if ($source_value){
+		  $file_entity = File::load($source_value);
+		  $url = $file_entity->url();
+		  $icon = [
+		    '#tag' => 'link',
+			'#attributes' => [
+				'href' => $url,
+				'rel' => 'shortcut icon',
+				'sizes' => '52x52'
+				],
+		  ];
+		  $variables['#attached']['html_head'][] = [
+			$icon,
+			'icon52x52'
+		  ];
+		}
+	  }
   }
-
 }
 
 /**
@@ -1178,7 +1212,20 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
         $user_roles = $user->getRoles();
         foreach ($user_roles as $user_role) {
           if ($user_role != "global_admin") {
-            $form['account']['roles']['#access'] = FALSE;
+            $user_list = $user->get('roles')->getValue();
+            if(empty($user_list)){
+              $user_role_permission = ['sme', 'authenticated', 'administrator', 'editor', 'anonymous', 'reviewer', 'se'];
+              foreach ($roles as $role) {
+                if(in_array($role->id(), $user_role_permission))
+                {
+                  unset($form['account']['roles']['#options'][$role->id()]);
+                }
+              } 
+            }
+            else
+            {
+              $form['account']['roles']['#access'] = FALSE;
+            }
           }
           elseif ($user_role == "global_admin") {
             $form['account']['roles']['#access'] = TRUE;

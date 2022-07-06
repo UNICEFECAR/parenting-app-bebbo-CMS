@@ -87,22 +87,22 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
           summary: ''
-          description: ''
           columns:
+            user_bulk_form: user_bulk_form
             name: name
-            roles_target_id: roles_target_id
-            allowed_languages_target_id: allowed_languages_target_id
-            label_1: label_1
-            id: id
-            field_language: field_language
-            field_master_language: field_master_language
             status: status
+            rid: rid
             created: created
             access: access
-            mail: mail
+            edit_node: edit_node
+            dropbutton: dropbutton
           info:
+            user_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             name:
               sortable: true
               default_sort_order: asc
@@ -110,44 +110,15 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            roles_target_id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            allowed_languages_target_id:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            label_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_language:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_master_language:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
             status:
               sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            rid:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -161,13 +132,18 @@ display:
               empty_column: false
               responsive: priority-low
             access:
-              sortable: false
+              sortable: true
               default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
               responsive: priority-low
-            mail:
+            edit_node:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            dropbutton:
               sortable: false
               default_sort_order: asc
               align: ''

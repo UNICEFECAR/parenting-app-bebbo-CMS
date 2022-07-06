@@ -12,7 +12,7 @@ _core:
 id: claro_page_title
 theme: claro
 region: header
-weight: -13
+weight: -12
 provider: null
 plugin: page_title_block
 settings:

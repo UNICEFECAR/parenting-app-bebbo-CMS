@@ -127,15 +127,15 @@ class CustomSerializer extends Serializer {
               /* Remove span tag from body and summary field */
               $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
               /* Remove empty <p> </p> tag */
-              $body_summary = str_replace("<p> </p>", '', $body_summary);
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
               /* Remove strong <strong> </strong> tag */
-              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
               /* Remove empty <p> </p> tag */
-              $body_summary = str_replace("<p> </p>", '', $body_summary);
+              $body_summary = str_replace("<p> </p>", '', $body_summary);
               /* Remove empty <strong> </strong> tag */
-              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
+              $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* Remove width and height of remote video */
               $body_summary = str_replace('width="640"', '', $body_summary);
               $body_summary = str_replace('height="480"', '', $body_summary);
@@ -196,12 +196,15 @@ class CustomSerializer extends Serializer {
             if (strpos($request_uri, "vocabularies") !== FALSE || strpos($request_uri, "taxonomies") !== FALSE) {
               /* If the field have comma. */
               if (!empty($values) && strpos($values, ',') !== FALSE) {
-                $formatted_data = explode(',', $values);
-                $vocabulary_name = $formatted_data[1];
-                $vocabulary_machine_name = $formatted_data[0];
-                $taxonomy_data = $this->customTaxonomyFieldFormatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);
-                /* \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
-                $field_formatter[$formatted_data[0]] = $taxonomy_data;
+                /* remove keywords from taxonomy res */
+                if($values != "keywords,Keywords") {
+                  $formatted_data = explode(',', $values);
+                  $vocabulary_name = $formatted_data[1];
+                  $vocabulary_machine_name = $formatted_data[0];
+                  $taxonomy_data = $this->customTaxonomyFieldFormatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);
+                  /* \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
+                  $field_formatter[$formatted_data[0]] = $taxonomy_data;
+                }
               }
             }
           }

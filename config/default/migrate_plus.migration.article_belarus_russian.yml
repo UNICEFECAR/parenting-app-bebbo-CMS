@@ -21,7 +21,7 @@ process:
 
   nid: ID
   moderation_state: Moderation_state
-  
+
 destination:
   plugin: 'entity:node'
   default_bundle: article

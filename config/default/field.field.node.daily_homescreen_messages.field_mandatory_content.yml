@@ -1,0 +1,28 @@
+uuid: 6ee67265-b327-4dea-9c90-5fa1dc2aabdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.daily_homescreen_messages
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.daily_homescreen_messages.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Mandatory Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
