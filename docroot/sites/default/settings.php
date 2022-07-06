@@ -814,7 +814,7 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
   'driver' => 'mysql',
 );*/
   $databases['default']['default'] = array (
-  'database' => 'pb_prod_07_06_2022',
+  'database' => 'pb_local',
   'username' => 'root',
   'password' => '',
   'prefix' => '',
