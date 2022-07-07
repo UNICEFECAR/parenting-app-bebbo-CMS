@@ -24,6 +24,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Component\Serialization\Json;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * {@inheritdoc}
