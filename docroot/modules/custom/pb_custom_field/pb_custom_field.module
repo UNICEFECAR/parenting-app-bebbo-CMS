@@ -139,6 +139,11 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /* To modify label changes in member remove*/
+  if($form_id == "group_content_country-group_membership_delete_form") {
+    $form['#title'] =  strip_tags(str_replace("delete","remove",$form['#title']));
+    $form['actions']['submit']['#value'] = "Remove";
+  }
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
