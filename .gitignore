@@ -52,3 +52,6 @@ reports
 /docroot/robots.txt
 /docroot/update.php
 /docroot/web.config
+
+# Ignore sensitive information
+/docroot/sites/*/settings.php
