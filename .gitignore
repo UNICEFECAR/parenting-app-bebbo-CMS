@@ -54,4 +54,4 @@ reports
 /docroot/web.config
 
 # Ignore sensitive information
-/docroot/sites/*/settings.php
+/docroot/sites/default/settings.php
