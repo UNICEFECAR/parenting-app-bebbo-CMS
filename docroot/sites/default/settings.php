@@ -804,40 +804,12 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
  *
  * @link https://docs.acquia.com/blt/
  */
-/*  $databases['default']['default'] = array (
-  'database' => getenv('MYSQL_DATABASE'),
-  'username' => getenv('MYSQL_USER'),
-  'password' => getenv('MYSQL_PASSWORD'),
-  'prefix' => '',
-  'host' => '192.168.4.125',
-  'port' => '3306',
-  'driver' => 'mysql',
-);*/
-  $databases['default']['default'] = array (
-  'database' => 'pb_local',
-  'username' => 'root',
-  'password' => '',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
-  'driver' => 'mysql',
-);
-
-/*$databases['default']['default'] = array (
-  'database' => 'parent_buddy',
-  'username' => 'root',
-  'password' => 'p@ssw0rd',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '3306',
-  'driver' => 'mysql',
-);*/
-/*$databases['default']['default'] = array (
-  'database' => 'drupal9',
-  'username' => 'drupal9',
-  'password' => 'drupal9',
-  'prefix' => '',
-  'host' => 'database',
-  'port' => '3306',
-  'driver' => 'mysql',
-);*/
+/********** DEV *******************/
+if (file_exists('/var/www/site-php')) {
+   require '/var/www/site-php/' . $_ENV['AH_SITE_GROUP'] . '/' . $_ENV['AH_SITE_GROUP'] . '-settings.inc';
+   
+   // Memcached settings for Acquia Hosting
+   if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
+      require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
+   }
+}
