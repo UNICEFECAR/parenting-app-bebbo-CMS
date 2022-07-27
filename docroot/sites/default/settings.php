@@ -804,13 +804,12 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
  *
  * @link https://docs.acquia.com/blt/
  */
-/*  $databases['default']['default'] = array (
-  'database' => 'drupal8',
-  'username' => "",
-  'password' => "",
-  'prefix' => '',
-  'host' => 'database',
-  'port' => '3306',
-  'driver' => 'mysql',
-);*/
-
+/********** DEV *******************/
+if (file_exists('/var/www/site-php')) {
+   require '/var/www/site-php/' . $_ENV['AH_SITE_GROUP'] . '/' . $_ENV['AH_SITE_GROUP'] . '-settings.inc';
+   
+   // Memcached settings for Acquia Hosting
+   if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
+      require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
+   }
+}

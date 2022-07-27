@@ -20,7 +20,6 @@
 
 # Ignore non-custom parts of Drupal.
 /docroot/core
-/docroot/libraries
 /docroot/modules/contrib
 /docroot/profiles/contrib
 /docroot/themes/contrib
@@ -33,6 +32,15 @@
 /vendor/
 /docroot/.csslintrc
 /docroot/.eslintignore
+
+# Ignore build artifacts
+deployment_identifier
+/deploy
+bin/*
+tmp
+reports
+/travis_wait*
+
 /docroot/.eslintrc.json
 /docroot/.ht.router.php
 /docroot/.htaccess
@@ -44,3 +52,11 @@
 /docroot/robots.txt
 /docroot/update.php
 /docroot/web.config
+
+# Ignore sensitive information
+/config/default/smtp.settings.yml
+/config/default/tmgmt.translator.memsource.yml
+/config/default/google_analytics.settings.yml
+/config/default/mobile_app_links.ios.yml
+/config/default/mobile_app_links.android.yml
+/config/default/pb_custom_form.mobile_app_share_link_form.yml
