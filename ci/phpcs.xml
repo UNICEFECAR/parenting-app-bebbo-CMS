@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="drupal">
-    <description>PHP CodeSniffer configuration for Drupal coding standards.</description>
-    <file>./docroot/modules/custom</file>
+<ruleset name="phpcs">
+    <description>PHP Code Sniffer configuration</description>
+    <file>../docroot/modules/custom</file>
     <arg name="extensions"
          value="php,
                 module,
@@ -17,6 +17,6 @@
                 yml" />
     <config name="drupal_core_version"
             value="8.9.14" />
-    <rule ref="Drupal" />
-    <rule ref="DrupalPractice"/>
+    <rule ref="vendor/drupal/coder/coder_sniffer/Drupal" />
+    <rule ref="vendor/drupal/coder/coder_sniffer/DrupalPractice"/>
 </ruleset>
