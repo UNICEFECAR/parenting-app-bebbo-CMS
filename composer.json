@@ -13,6 +13,7 @@
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_languages": "^2.0@alpha",
         "drupal/ckeditor_media_embed": "^1.10",
+        "drupal/coder": "8.3.13",
         "drupal/cog": "^1.0.0",
         "drupal/config_ignore": "^3.0@beta",
         "drupal/config_split": "^1.0.0",
