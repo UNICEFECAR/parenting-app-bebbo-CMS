@@ -71,6 +71,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "cweagans/composer-patches": true,
             "grasmash/drupal-security-warning": true,
             "oomphinc/composer-installers-extender": true,
