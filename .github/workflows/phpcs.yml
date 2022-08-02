@@ -16,11 +16,6 @@ jobs:
           repository: drupal/drupal
           ref: ${{ matrix.drupal-core }}
 
-      - name: Checkout module
-        uses: actions/checkout@v2
-        with:
-          path: modules/commerce_product_saleprice
-
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
@@ -41,11 +36,6 @@ jobs:
       - name: Install Drupal core dependencies
         run: |
           composer --no-interaction --no-progress --prefer-dist --optimize-autoloader install
-      
-      - name: Install module dependencies
-        run: |
-          composer --no-interaction --no-progress require \
-            drupal/commerce
 
       - name: Install Coder module
         run: |
@@ -55,4 +45,4 @@ jobs:
       - name: Check coding standards
         run: |
           ./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
-          ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,install,js modules/commerce_product_saleprice
+          ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,install,js
