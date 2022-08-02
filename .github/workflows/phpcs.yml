@@ -1,7 +1,5 @@
 name: D8 Code Review
-
 on: pull_request
-
 jobs:
   code-standards:
     name: Drupal ${{ matrix.drupal-core }} - PHP ${{ matrix.php-versions }}
@@ -12,42 +10,42 @@ jobs:
         php_version: ['7.4']
 
     steps:
-    - name: Checkout Drupal core
-        uses: actions/checkout@v2
+      - name: Checkout Drupal core
+          uses: actions/checkout@v2
+          with:
+            repository: drupal/drupal
+            ref: ${{ matrix.drupal-core }}
+
+      - name: Set up PHP ${{ matrix.php_version }}
+        uses: shivammathur/setup-php@v2
         with:
-          repository: drupal/drupal
-          ref: ${{ matrix.drupal-core }}
+          php-version: ${{ matrix.php_version }}
 
-    - name: Set up PHP ${{ matrix.php_version }}
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php_version }}
+      - name: Install dependencies
+        run: composer install --dev
 
-    - name: Install dependencies
-      run: composer install --dev
+      - name: Composer version
+        run: composer -V
 
-    - name: Composer version
-      run: composer -V
+      - name: Install Coder
+        run: composer global require drupal/coder:^8.3.1
 
-    - name: Install Coder
-      run: composer global require drupal/coder:^8.3.1
+      - name: Install Codesniffer
+        run: composer global require dealerdirect/phpcodesniffer-composer-installer
 
-    - name: Install Codesniffer
-      run: composer global require dealerdirect/phpcodesniffer-composer-installer
+      - name: List all of the available packages
+        run: composer global show -P
 
-    - name: List all of the available packages
-      run: composer global show -P
+      - name: Composer home directory
+        run: composer config home
 
-    - name: Composer home directory
-      run: composer config home
+      - name: Verify Registered Standards
+        run: ~/.composer/vendor/bin/phpcs -i
 
-    - name: Verify Registered Standards
-      run: ~/.composer/vendor/bin/phpcs -i
-
-    - name: Manually Set Installed Paths
-      run: ~/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
-  
-    - name: Code review initiated
-      run: |
-        ~/.composer/vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md,yml ./
-        ~/.composer/vendor/bin/phpcs --standard=DrupalPractice --php,module,inc,install,test,profile,theme,css,info,txt,md,yml ./  
+      - name: Manually Set Installed Paths
+        run: ~/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+    
+      - name: Code review initiated
+        run: |
+          ~/.composer/vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md,yml ./
+          ~/.composer/vendor/bin/phpcs --standard=DrupalPractice --php,module,inc,install,test,profile,theme,css,info,txt,md,yml ./  
