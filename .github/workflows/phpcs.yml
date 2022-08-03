@@ -28,25 +28,8 @@ jobs:
       - name: Composer version
         run: composer -V
 
-      - name: Install Coder
-        run: composer global require drupal/coder:^8.3.1
+      - name: Phpcs version
+        run: phpcs -i
 
-      - name: Install Codesniffer
-        run: composer global require dealerdirect/phpcodesniffer-composer-installer
-
-      - name: List all of the available packages
-        run: composer global show -P
-
-      - name: Composer home directory
-        run: composer config home
-
-      - name: Verify Registered Standards
-        run: ~/.composer/vendor/bin/phpcs -i
-
-      - name: Manually Set Installed Paths
-        run: ~/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
-    
-      - name: Code review initiated
-        run: |
-          ~/.composer/vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md,yml
-          ~/.composer/vendor/bin/phpcs --standard=DrupalPractice --php,module,inc,install,test,profile,theme,css,info,txt,md,yml
+      - name: Review Custom code
+        run: phpcs
