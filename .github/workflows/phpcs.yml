@@ -23,10 +23,16 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --dev
+        run: composer install
 
       - name: Composer version
         run: composer -V
+
+      - name: Install Coder
+        run: composer global require drupal/coder:^8.3.1
+
+      - name: Install Codesniffer
+        run: composer global require dealerdirect/phpcodesniffer-composer-installer
 
       - name: List all of the available packages
         run: composer global show -P
