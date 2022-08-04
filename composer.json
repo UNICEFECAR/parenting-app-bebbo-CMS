@@ -62,7 +62,9 @@
         "drupal/views_data_export": "^1.0"
     },
     "require-dev": {
-        "acquia/blt-require-dev": "11.x-dev"
+        "acquia/blt-require-dev": "11.x-dev",
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "drupal/coder": "^8.3"
     },
     "config": {
         "platform": {
@@ -205,6 +207,12 @@
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
             "@composer install --ansi"
+        ],
+        "install-codestandards": [
+            "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+        ],
+        "post-install-cmd": [
+            "@install-codestandards"
         ]
     }
 }

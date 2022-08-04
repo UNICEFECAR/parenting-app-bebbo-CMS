@@ -1,0 +1,35 @@
+name: PHP Code Sniffer
+on: pull_request
+jobs:
+  phpcs:
+    name: Drupal ${{ matrix.drupal-core }} - PHP ${{ matrix.php-versions }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        drupal-core: ['8.9.14']
+        php-versions: ['7.4']
+    steps:
+      - name: Checkout Drupal core
+        uses: actions/checkout@v2
+        with:
+          repository: drupal/drupal
+          ref: ${{ matrix.drupal-core }}
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Composer version
+        run: composer -V
+
+      - name: Phpcs version
+        run: phpcs -i
+
+      - name: Review Custom code
+        run: phpcs
