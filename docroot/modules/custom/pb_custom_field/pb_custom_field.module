@@ -24,6 +24,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Component\Serialization\Json;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * {@inheritdoc}
@@ -138,6 +139,11 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /* To modify label changes in member remove*/
+  if($form_id == "group_content_country-group_membership_delete_form") {
+    $form['#title'] =  strip_tags(str_replace("delete","remove",$form['#title']));
+    $form['actions']['submit']['#value'] = "Remove";
+  }
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
     /* New User Creation form */
@@ -654,6 +660,47 @@ function pb_custom_field_link_alter(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_menu().
+ */
+function pb_custom_field_preprocess_menu(&$variables) {
+  $user = \Drupal::currentUser();
+  $roles = \Drupal::currentUser()->getRoles();
+  $groups = [];
+  $grp_membership_service = \Drupal::service('group.membership_loader');
+  $grps = $grp_membership_service->loadByUser($user);
+  if(empty($grps) && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
+    if (isset($variables['menu_name']) && $variables['menu_name'] === 'editorial-menu') {
+      foreach($variables['items'] as $key => $item) {
+        $path = $item['url']->toString();
+        unset($variables['items'][$key]); //Remove menu item
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function pb_custom_field_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  $user = \Drupal::currentUser();
+  $roles = \Drupal::currentUser()->getRoles();
+  $groups = [];
+  $grp_membership_service = \Drupal::service('group.membership_loader');
+  $grps = $grp_membership_service->loadByUser($user);
+  if(empty($grps) && !in_array("global_admin", $roles) && !in_array("administrator", $roles)){
+    if ($block->getPluginId() === 'system_menu_block:quick-links'
+    || $block->getPluginId() === "views_block:senior_editor_review_pending-block_1"
+    || $block->getPluginId() === "views_block:sme_review_pending-block_1"
+    || $block->getPluginId() === "views_block:tmgmt_translation_all_job_items-block_1"
+    || $block->getPluginId() === "views_block:editor_review_pending-block_1"
+    || $block->getPluginId() === "views_block:recent_logged_in_users-block_1"
+    || $block->getPluginId() === "views_block:country_content_listing-block_1") {
+      return AccessResult::forbidden();
+    }
+  }
+}
+
+/**
  * Implements hook_views_pre_view().
  *
  * Dashboard - Recent users - View header link.
@@ -668,22 +715,24 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
     foreach ($grps as $grp) {
       $groups[] = $grp->getGroup();
     }
-    $options = [
-      'id' => 'area',
-      'table' => 'views',
-      'field' => 'area',
-      'relationship' => 'none',
-      'group_type' => 'none',
-      'admin_label' => '',
-      'empty' => NULL,
-      'tokenize' => NULL,
-      'content' => [
-        'value' => '<a href="group/' . $groups[0]->id() . '/members">View More</a>',
-        'format' => "full_html",
-      ],
-      'plugin_id' => 'text',
-    ];
-    $view->setHandler('block_1', 'header', 'area', $options);
+    if(!empty($grps)){
+      $options = [
+        'id' => 'area',
+        'table' => 'views',
+        'field' => 'area',
+        'relationship' => 'none',
+        'group_type' => 'none',
+        'admin_label' => '',
+        'empty' => NULL,
+        'tokenize' => NULL,
+        'content' => [
+          'value' => '<a href="group/' . $groups[0]->id() . '/members">View More</a>',
+          'format' => "full_html",
+        ],
+        'plugin_id' => 'text',
+      ];
+      $view->setHandler('block_1', 'header', 'area', $options);
+    }
 
   }
   if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
@@ -754,6 +803,13 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
         /* unset($data['tabs'][0]['entity.node.version_history']); */
         unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
       }
+    }
+    else
+    {
+      unset($data['tabs'][0]['entity.node.edit_form']);
+      unset($data['tabs'][0]['entity.node.delete_form']);
+      unset($data['tabs'][0]['entity.node.version_history']);
+      unset($data['tabs'][0]['content_translation.local_tasks:entity.node.content_translation_overview']);
     }
   }
 
