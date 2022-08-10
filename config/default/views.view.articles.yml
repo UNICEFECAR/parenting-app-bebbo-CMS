@@ -1387,6 +1387,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -1408,9 +1411,6 @@ display:
             field_cover_image:
               alias: cover_image
               raw_output: false
-            field_cover_video:
-              alias: cover_video
-              raw_output: false
             field_related_articles:
               alias: related_articles
               raw_output: false
@@ -1423,11 +1423,8 @@ display:
             field_mandatory_content:
               alias: mandatory
               raw_output: false
-            field_cover_video_1:
-              alias: cover_video_image
-              raw_output: false
-            body_1:
-              alias: summary
+            field_related_video_articles:
+              alias: related_video_articles
               raw_output: false
       display_description: ''
       arguments:
@@ -2417,6 +2414,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_pinned_article
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -2748,6 +2807,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_10:
     display_plugin: rest_export
     id: rest_export_10
@@ -4352,6 +4412,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -4391,8 +4454,8 @@ display:
             field_cover_video_1:
               alias: cover_video_image
               raw_output: false
-            body_1:
-              alias: summary
+            field_related_video_articles:
+              alias: related_video_articles
               raw_output: false
       display_description: ''
       arguments:
@@ -5404,6 +5467,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_pinned_article
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -5798,6 +5923,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_13:
     display_plugin: rest_export
     id: rest_export_13
@@ -8278,6 +8404,9 @@ display:
             field_mandatory_content:
               alias: mandatory
               raw_output: false
+            field_related_video_articles:
+              alias: related_video_articles
+              raw_output: false
       display_description: ''
       arguments:
         langcode:
@@ -9655,6 +9784,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -9694,8 +9826,8 @@ display:
             field_cover_video_1:
               alias: cover_video_image
               raw_output: false
-            body_1:
-              alias: summary
+            field_related_video_articles:
+              alias: related_video_articles
               raw_output: false
       display_description: ''
       arguments:
@@ -10707,6 +10839,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_pinned_article
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -11101,6 +11295,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_18:
     display_plugin: rest_export
     id: rest_export_18
@@ -11137,6 +11332,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -11164,6 +11362,9 @@ display:
             field_related_articles:
               alias: related_articles
               raw_output: false
+            field_related_video_articles:
+              alias: related_video_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
               raw_output: false
@@ -11175,9 +11376,6 @@ display:
               raw_output: false
             field_cover_video_1:
               alias: cover_video_image
-              raw_output: false
-            body_1:
-              alias: summary
               raw_output: false
       display_description: ''
       arguments:
@@ -12189,6 +12387,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_related_articles
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -12583,6 +12843,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_19:
     display_plugin: rest_export
     id: rest_export_19
@@ -12657,6 +12918,9 @@ display:
               raw_output: false
             field_mandatory_content:
               alias: mandatory
+              raw_output: false
+            field_related_video_articles:
+              alias: related_video_articles
               raw_output: false
       display_description: ''
       arguments:
@@ -14035,6 +14299,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -14059,6 +14326,9 @@ display:
             field_related_articles:
               alias: related_articles
               raw_output: false
+            field_related_video_articles:
+              alias: related_video_articles
+              raw_output: false
             field_licensed_content:
               alias: licensed
               raw_output: false
@@ -14067,9 +14337,6 @@ display:
               raw_output: false
             field_mandatory_content:
               alias: mandatory
-              raw_output: false
-            body_1:
-              alias: summary
               raw_output: false
       display_description: ''
       arguments:
@@ -15236,6 +15503,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -15497,6 +15826,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_20:
     display_plugin: rest_export
     id: rest_export_20
@@ -15533,6 +15863,9 @@ display:
             changed:
               alias: updated_at
               raw_output: false
+            body_1:
+              alias: summary
+              raw_output: false
             body:
               alias: ''
               raw_output: false
@@ -15566,8 +15899,8 @@ display:
             field_mandatory_content:
               alias: mandatory
               raw_output: false
-            body_1:
-              alias: summary
+            field_related_video_articles:
+              alias: related_video_articles
               raw_output: false
       display_description: ''
       arguments:
@@ -16516,6 +16849,68 @@ display:
           separator: ','
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_related_articles
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
         field_licensed_content:
           id: field_licensed_content
           table: node__field_licensed_content
@@ -16847,6 +17242,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_21:
     display_plugin: rest_export
     id: rest_export_21
@@ -18108,6 +18504,68 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_related_video_articles:
+          id: field_related_video_articles
+          table: node__field_related_video_articles
+          field: field_related_video_articles
+          relationship: field_pinned_article
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ','
+          field_api_classes: false
+          plugin_id: field
       auth: {  }
       group_by: false
       query:
@@ -18244,6 +18702,7 @@ display:
         - 'config:field.storage.node.field_parent_gender'
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
+        - 'config:field.storage.node.field_related_video_articles'
   rest_export_22:
     display_plugin: rest_export
     id: rest_export_22

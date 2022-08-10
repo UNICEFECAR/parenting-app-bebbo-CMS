@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c6995a1ba1dae3f7e575f8e5fbb03e7",
+    "content-hash": "226a0d94a3fbeab1c3d975cd36733e72",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3312,8 +3312,56 @@
             }
         },
         {
+            "name": "drupal/contextual_range_filter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/contextual_range_filter.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/contextual_range_filter-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "0e7d74a9b6762b2aec881ae0580433884661972f"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1594532602",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Beakerboy",
+                    "homepage": "https://www.drupal.org/user/1700098"
+                },
+                {
+                    "name": "RdeBoer",
+                    "homepage": "https://www.drupal.org/user/404007"
+                }
+            ],
+            "description": "Contextually filter Views by alphabetic, date or numeric ranges, e.g. <em>http://yoursite.com/yourview/50--99.95</em>",
+            "homepage": "https://www.drupal.org/project/contextual_range_filter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/contextual_range_filter"
+            }
+        },
+        {
             "name": "drupal/core",
-            "version": "8.9.19",
+            "version": "8.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
@@ -3541,13 +3589,13 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/8.9.19"
+                "source": "https://github.com/drupal/core/tree/8.9.14"
             },
             "time": "2021-09-14T22:08:18+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "8.9.19",
+            "version": "8.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3597,7 +3645,7 @@
         },
         {
             "name": "drupal/core-recommended",
-            "version": "8.9.19",
+            "version": "8.9.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
@@ -3618,7 +3666,7 @@
                 "doctrine/common": "v2.7.3",
                 "doctrine/inflector": "v1.2.0",
                 "doctrine/lexer": "1.0.2",
-                "drupal/core": "8.9.19",
+                "drupal/core": "8.9.14",
                 "easyrdf/easyrdf": "0.9.1",
                 "egulias/email-validator": "2.1.17",
                 "guzzlehttp/guzzle": "6.5.4",
@@ -3676,7 +3724,7 @@
             ],
             "description": "Locked core dependencies; require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/8.9.19"
+                "source": "https://github.com/drupal/core-recommended/tree/8.9.14"
             },
             "time": "2021-09-14T22:08:18+00:00"
         },
@@ -4473,6 +4521,57 @@
             }
         },
         {
+            "name": "drupal/image_style_quality",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/image_style_quality.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/image_style_quality-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "5c2e80cfe88d8902ac9c7b6b3c70f6e8c893ffe1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "require-dev": {
+                "drupal/imagemagick": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1597367306",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Charlton",
+                    "homepage": "https://www.drupal.org/user/17089"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                }
+            ],
+            "description": "Provides an image effect plugin that allows you to choose the quality of images.",
+            "homepage": "https://www.drupal.org/project/image_style_quality",
+            "support": {
+                "source": "https://git.drupalcode.org/project/image_style_quality"
+            }
+        },
+        {
             "name": "drupal/json_field",
             "version": "1.0.0-rc4",
             "source": {
@@ -5026,6 +5125,58 @@
                 "source": "https://git.drupalcode.org/project/migrate_upgrade",
                 "issues": "https://www.drupal.org/project/issues/migrate_upgrade",
                 "slack": "#migrate"
+            }
+        },
+        {
+            "name": "drupal/mobile_app_links",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/mobile_app_links.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/mobile_app_links-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "fa19da9e5d68ad120c0d7a9cf66a30b43f3be7ea"
+            },
+            "require": {
+                "drupal/core": "^8.7||^9.0 || ^10",
+                "php": ">=7.1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1656476084",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\mobile_app_links\\": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Nikunj Kotecha (nikunjkotecha)",
+                    "homepage": "https://www.drupal.org/u/nikunjkotecha",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This module adds ability to expose mobile app links.",
+            "homepage": "https://www.drupal.org/project/mobile_app_links",
+            "support": {
+                "source": "https://cgit.drupalcode.org/mobile_app_links",
+                "issues": "https://drupal.org/project/issues/mobile_app_links"
             }
         },
         {
@@ -6050,6 +6201,63 @@
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
                 "source": "https://git.drupalcode.org/project/video_embed_field"
+            }
+        },
+        {
+            "name": "drupal/view_custom_table",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/view_custom_table.git",
+                "reference": "2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/view_custom_table-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "d1436a0636f63e4c57966c4f0e76d952d995aaa1"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.1",
+                    "datestamp": "1655386832",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Rajeshreeputra",
+                    "homepage": "https://www.drupal.org/user/3418561"
+                },
+                {
+                    "name": "joseph.olstad",
+                    "homepage": "https://www.drupal.org/user/1321830"
+                },
+                {
+                    "name": "sagar_cis",
+                    "homepage": "https://www.drupal.org/user/3487653"
+                },
+                {
+                    "name": "sagarwani",
+                    "homepage": "https://www.drupal.org/user/3221452"
+                }
+            ],
+            "description": "Extends views to use custom table data.",
+            "homepage": "https://www.drupal.org/project/view_custom_table",
+            "support": {
+                "source": "https://git.drupalcode.org/view_custom_table",
+                "issues": "https://www.drupal.org/project/issues/view_custom_table"
             }
         },
         {
@@ -14133,6 +14341,7 @@
         "drupal/json_field": 5,
         "drupal/lang_dropdown": 10,
         "drupal/phpmailer": 10,
+        "drupal/security_review": 15,
         "drupal/tamper": 15,
         "acquia/blt-require-dev": 20
     },
@@ -14145,5 +14354,5 @@
     "platform-overrides": {
         "php": "7.2"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

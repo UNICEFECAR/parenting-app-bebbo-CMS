@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
+    - field.field.node.article.field_related_video_articles
     - node.type.article
     - workflows.workflow.group_workflow
   module:
@@ -44,12 +45,12 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   field_australian_article:
-    weight: 13
+    weight: 14
     settings:
       display_label: true
     third_party_settings: {  }
@@ -91,14 +92,14 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_licensed_content:
-    weight: 11
+    weight: 12
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_mandatory_content:
-    weight: 15
+    weight: 16
     settings:
       display_label: true
     third_party_settings: {  }
@@ -112,20 +113,20 @@ content:
     region: content
   field_pre_populated:
     type: boolean_checkbox
-    weight: 23
+    weight: 24
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_premature_content:
-    weight: 12
+    weight: 13
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_references_and_comments:
-    weight: 14
+    weight: 15
     settings:
       rows: 5
       placeholder: ''
@@ -134,6 +135,16 @@ content:
     region: content
   field_related_articles:
     weight: 9
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_related_video_articles:
+    weight: 10
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -151,13 +162,13 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 22
+    weight: 23
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 20
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -165,21 +176,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 18
+    weight: 19
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 21
+    weight: 22
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 19
+    weight: 20
     region: content
     third_party_settings: {  }
   title:
@@ -191,13 +202,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 16
+    weight: 17
     region: content
     settings:
       match_operator: CONTAINS
