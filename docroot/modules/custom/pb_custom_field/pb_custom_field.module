@@ -143,6 +143,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
   if($form_id == "group_content_country-group_membership_delete_form") {
     $form['#title'] =  strip_tags(str_replace("delete","remove",$form['#title']));
     $form['actions']['submit']['#value'] = "Remove";
+    $form['actions']['submit']['#submit'][] = 'pb_custom_field_form_submit';
   }
   /* Add & edit user language dropdown. */
   if ($form['#id'] == "user-register-form" || $form['#id'] == "user-form") {
@@ -1501,5 +1502,37 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
   }
   if ($view->id() == 'country_content_listing') {
     $view->element['#attached']['library'][] = '/js/homepage.js';
+  }
+}
+
+function pb_custom_field_form_submit($form, FormStateInterface $form_state)
+{
+  /* Remove user role */
+  $entity = $form_state->getFormObject()->getEntity()->toArray();
+  $uid = $entity['entity_id'][0]['target_id'];
+  $user_roles = $entity['group_roles'];
+  $user = User::load($uid);
+  if(!empty($user_roles)) {
+    foreach($user_roles as $user_role) {
+      foreach($user_role as $key=>$value){
+        if($value === "country-admin"){
+          $role = "reviewer";
+        }elseif($value === "country-sme") {
+          $role = "sme";
+        }elseif($value === "country-editor"){
+          $role = "editor";
+        }elseif($value === "country-senior_editor"){
+          $role = "se";
+        }
+        $user->removeRole($role);
+        $user->save();
+      }
+    }
+  }else{
+    $user_roles = $user->getRoles();
+    foreach ($user_roles as $user_role) {
+      $user->removeRole($user_role);
+      $user->save();
+    }
   }
 }
