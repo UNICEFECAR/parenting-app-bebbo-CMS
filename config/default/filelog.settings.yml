@@ -3,7 +3,7 @@ location: 'public://bulk_action'
 rotation:
   schedule: daily
   delete: false
-  destination: 'archive/[date:custom:Y/m/d].log'
+  destination: 'archive/[date:custom:Y-m-d].log'
   gzip: true
 format: '[[log:created]] [client: [log:ip], [log:user]] [log:message]'
 level: 6

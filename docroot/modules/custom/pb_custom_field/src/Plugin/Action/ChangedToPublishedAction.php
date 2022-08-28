@@ -127,7 +127,6 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase {
 
     }
 
-    $log["client_ip"] =  \Drupal::request()->getClientIp();
     $log["source_language"] = $current_language;
     $log["nid"] = $nid;
     $log["uid"] = $uid;

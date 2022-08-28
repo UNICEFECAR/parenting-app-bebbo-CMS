@@ -123,7 +123,6 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
       $this->nonAssigned = $this->nonAssigned + 1;
 
     }
-    $log["client_ip"] =  \Drupal::request()->getClientIp();
     $log["source_language"] = $current_language;
     $log["nid"] = $nid;
     $log["uid"] = $uid;
