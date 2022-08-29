@@ -11,6 +11,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
+use Symfony\Component\HttpFoundation;
 
 /*
 use Drupal\group\Entity;
@@ -181,7 +182,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $context = $this->context;
-    $total_selected = $context{'selected_count'};
+    $total_selected = $context['selected_count'];
     $langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
     $this->processItem = $this->processItem + 1;
@@ -215,13 +216,24 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
       else {
         $this->nonAssigned = $this->nonAssigned + 1;
       }
+
+      $log["source_language"] = $current_language;
+      $log["nid"] = $nid;
+      $log["uid"] = $uid;
+      $log["desitination_language"] = $langoption;
+      $current_uri = \Drupal::request()->getRequestUri();
+      $log["requested_url"] = $current_uri;
       if ($this->assigned > 0) {
         $message = $this->t("Content assigned to country ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
+        $log["status"] = $message;
       }
       if ($this->nonAssigned > 0) {
         $error_message = $this->t("Content already exists in country ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
+        $log["status"] = $error_message;
       }
     }
+    $logs = json_encode($log);
+    \Drupal::logger('bulk_action')->info($logs);
 
     if ($total_selected == $this->processItem) {
       if (!empty($message)) {

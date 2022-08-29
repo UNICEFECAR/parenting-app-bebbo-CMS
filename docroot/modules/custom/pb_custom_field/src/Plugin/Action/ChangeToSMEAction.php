@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation;
 
 /* use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
@@ -126,15 +127,27 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
 
     }
 
+    $log["source_language"] = $current_language;
+    $log["nid"] = $nid;
+    $log["uid"] = $uid;
+    $current_uri = \Drupal::request()->getRequestUri();
+    $log["requested_url"] = $current_uri;
+
     if ($this->nonAssigned > 0) {
       $error_message = $this->t("Selected content is already in SME Review state ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
+      $log["status"] = $error_message;
     }
     if ($this->assigned > 0) {
       $message = $this->t("Content changed into SME Review successfully ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
+      $log["status"] = $message;
     }
     if ($this->countryRestrict > 0) {
       $error_message = $this->t("This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization. ( @countryRestrict ) <br/>", ['@countryRestrict' => $this->countryRestrict]);
+      $log["status"] = $error_message;
     }
+
+    $logs = json_encode($log);
+    \Drupal::logger('bulk_action')->info($logs);
 
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
