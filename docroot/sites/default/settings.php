@@ -815,6 +815,8 @@ if (file_exists('/var/www/site-php')) {
 }
 if (file_exists('/mnt/gfs/parentbuddy2.dev/nobackup/bebbo_app_apikeys.php')) {
   require '/mnt/gfs/parentbuddy2.dev/nobackup/bebbo_app_apikeys.php';
+  echo "testing";
 }
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username');
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password');
+echo "<pre>"; print_r($config); echo "</pre>";
