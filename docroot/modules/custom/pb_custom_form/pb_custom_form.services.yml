@@ -1,0 +1,6 @@
+services:
+  pb_custom_form.internal_content_node_redirect:
+    class: Drupal\pb_custom_form\EventSubscriber\InternalContentNodeRedirect
+    arguments: ['@current_route_match', '@language_manager', '@current_user']
+    tags:
+      - { name: event_subscriber }
