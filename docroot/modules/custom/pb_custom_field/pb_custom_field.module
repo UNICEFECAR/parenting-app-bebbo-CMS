@@ -25,6 +25,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Access\AccessResult;
+use Drupal\node\NodeInterface;
 
 /**
  * {@inheritdoc}
@@ -641,6 +642,7 @@ function pb_custom_field_link_alter(&$variables) {
         $entity->save();
       }
     }
+
     /* Dashboard - add members. */
 
     if ($add_group_members_url) {
@@ -1048,7 +1050,61 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
             }
           }
         }
-		
+  
+      if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
+        $current_user = \Drupal::currentUser();
+        $roles = $current_user->getRoles();
+        if (in_array('editor', $roles)) {
+          $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+          if(!empty($user_lang)) {
+            $query->setGroupOperator('AND');
+            $query->addWhere(1,'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
+          }
+        }
+
+        foreach($query->orderby as $key => $condition) {
+          if ($condition['field'] == 'tmgmt_job_item.item_id') {
+              $order_val =  $query->orderby[$key]['direction'];
+              // delete orderby which exist sort by id.
+              $query->orderby = [];
+              $query->orderby[] = [
+                'field' => 'tmgmt_job_itemitem_id',
+                'direction' => $order_val
+              ];
+          }
+        }
+      }
+
+      if ($view->id() == 'tmgmt_job_items' && $view->current_display == 'submitted') {
+          $query->distinct = TRUE;
+          $query->addField('', 'tmgmt_job_item.changed', '');
+          $query->addField('', 'tmgmt_job_item.item_id', '', ['function' => 'groupby']);
+          $query->addGroupBy('tmgmt_job_item.item_id');
+      }
+
+      if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
+        $current_user = \Drupal::currentUser();
+        $roles = $current_user->getRoles();
+        if (in_array('editor', $roles)) {
+          $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+          if(!empty($user_lang)) {
+            $query->setGroupOperator('AND');
+            $query->addWhere(1,'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
+          }
+        }
+      }
+}
+
+//Column sorting converting varchar to numberic
+
+function pb_custom_field_views_pre_execute($view) {
+  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
+    $view->build_info['query']->addExpression('CAST(tmgmt_job_item.item_id AS UNSIGNED)','tmgmt_job_itemitem_id');
+  }
+
+  if ($view->id() == 'tmgmt_job_items' && $view->current_display == 'submitted') {
+    $view->build_info['query']->addExpression('CAST(tmgmt_job_item.item_id AS UNSIGNED)','tmgmt_job_itemitem_id');  
+  }
 }
 
 /**

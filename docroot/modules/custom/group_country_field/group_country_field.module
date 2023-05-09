@@ -24,6 +24,10 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
         $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];
       }
     }
+    elseif(!empty($roles_permissions['editor'])) {
+      $new_default_state = ["review_after_translation" => "Review_after_translation","draft" => "Draft"];
+      $form['moderation_state']['new_state']['#options'] =  $new_default_state;
+    }
     else {
       $form['moderation_state']['new_state']['#options'] = $new_default_state;
     }
