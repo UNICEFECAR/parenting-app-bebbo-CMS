@@ -48,6 +48,35 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     $form['actions']['submit']['#submit'][] = 'group_country_save';
 
   }
+
+  if(strpos($form_id,'edit_form')  !== false && strpos($form_id,'node')  !== false) {
+    $form['#validate'][] = 'pb_custom_form_node_validate';
+  }
+}
+
+/**
+ * Implements validate function().
+ */
+function pb_custom_form_node_validate($form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  $user = \Drupal::currentUser();
+  $roles = $user->getRoles();
+
+  $roles_arr = array (
+      'administrator',
+      'global_admin',
+  );
+
+  if ($form_state->getValue('moderation_state')[0]['value'] == 'archive') {
+    if (!array_intersect($roles_arr, $roles)) {
+      if (empty($form_state->getValue('revision_log')[0]['value'])) {
+        $form_state->setErrorByName('revision_log', t('Revision log message is required when archiving.'));
+      }
+      elseif(!empty($form_state->getValue('revision_log')[0]['value']) && strlen(trim($form_state->getValue('revision_log')[0]['value'])) < 3){
+        $form_state->setErrorByName('revision_log', t('Revision log message is required when archiving.'));
+      }
+    }
+  }
 }
 
 /**
