@@ -1,11 +1,11 @@
-diff --git docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
+diff --git a/docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml b/docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
 index d6777935..093cfdda 100644
---- docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
-+++ docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
+--- a/docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
++++ b/docroot/modules/contrib/mobile_app_links/mobile_app_links.routing.yml
 @@ -48,6 +48,17 @@ mobile_app_links.well_known_assetlinks:
      # Android app asset links should be accessible by everyone.
      _access: 'TRUE'
- 
+
 +
 +mobile_app_links.assetlinks:
 +  path: '/assetlinks.json'

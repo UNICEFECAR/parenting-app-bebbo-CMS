@@ -31,15 +31,9 @@ If skipping, you may need to replace `composer` with `php composer.phar` for you
 1. Download Bebbo App from git repo 
    https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
    Ex: git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
-2. Go into root of the project and run following command  
-    "composer install"
-   it will install the core, contributed and other required folders and files.
-3. Download the Database from Acquia server and import the database into your local.
-4. Update the database details in settings.php file ( docroot/sites/default/settings. php).
-5. Go into root of the project and run following command
-    "drush cr"
-    "drush cim"
-6. Then run the application in your browser.
+2. Download the Database from Acquia server and import the database into your local.
+3. Update the database details in settings.php file ( docroot/sites/default/settings. php).
+4. Then run the application in your browser.
 
 
 ### Contributed Modules

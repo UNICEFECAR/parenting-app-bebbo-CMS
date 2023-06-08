@@ -1,17 +1,11 @@
-diff --git docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
-index 5fcdc4da..6e4cd037 100644
---- docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
-+++ docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
-@@ -11,6 +11,27 @@ mobile_app_links.ios:
-     appclips:
+diff --git a/docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml b/docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
+index 77283855..e7598556 100644
+--- a/docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
++++ b/docroot/modules/contrib/mobile_app_links/config/schema/mobile_app_links.settings.yml
+@@ -17,6 +17,21 @@ mobile_app_links.ios:
+     paths_Test:
        type: string
-       label: 'App Clips'
-+    appID_Test:
-+      type: string
-+      label: 'App ID - UAT'
-+    paths_Test:
-+      type: string
-+      label: 'Paths - UAT'
+       label: 'Paths - UAT'
 +    kosovo_appID:
 +      type: string
 +      label: 'Kosovo App ID'
@@ -27,10 +21,10 @@ index 5fcdc4da..6e4cd037 100644
 +    kosovo_paths_Test:
 +      type: string
 +      label: 'Kosovo Paths - UAT'
- 
+     
  mobile_app_links.android:
    type: config_object
-@@ -22,6 +43,12 @@ mobile_app_links.android:
+@@ -28,6 +43,12 @@ mobile_app_links.android:
      sha256_cert_fingerprints:
        type: string
        label: 'SHA256 Certificate Fingerprints'
