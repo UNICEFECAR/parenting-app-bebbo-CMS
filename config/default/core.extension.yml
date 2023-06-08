@@ -25,7 +25,6 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -34,6 +33,7 @@ module:
   field: 0
   field_ui: 0
   file: 0
+  filelog: 0
   filter: 0
   gnode: 0
   google_analytics: 0
@@ -108,7 +108,6 @@ module:
   view_custom_table: 0
   views_bulk_operations: 0
   views_data_export: 0
-  views_ui: 0
   workflows: 0
   content_translation: 10
   views: 10

@@ -20,6 +20,9 @@ settings:
     -
       value: user_guide
       label: 'User Guide'
+    -
+      value: donate
+      label: Donate
   allowed_values_function: ''
 module: options
 locked: false
