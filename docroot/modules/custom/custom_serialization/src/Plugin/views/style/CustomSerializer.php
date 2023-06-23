@@ -52,7 +52,7 @@ class CustomSerializer extends Serializer {
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
-        "related_article",
+        "related_article","old_calendar",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
