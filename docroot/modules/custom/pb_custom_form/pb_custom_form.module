@@ -217,3 +217,101 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
     }
   }
 }
+
+/**
+ * Ultimate cron will call this function, from "ultimate_cron.job.article_api_cron.yml" config file
+ * Depedency module = ultimate_cron
+ */
+function article_api_cache_cron_job() {
+  $url = \Drupal::request()->getSchemeAndHttpHost();
+
+  if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
+    switch ($_ENV['AH_SITE_ENVIRONMENT']){
+      case 'dev':
+        $domain_name = 'dev.bebbo.app';
+        break;
+      case 'test':
+        $domain_name = 'staging.bebbo.app';
+        break;
+      case 'prod':
+        $domain_name = 'www.bebbo.app';
+        break;
+      }
+  } 
+  else {
+    $domain_name = 'dev.bebbo.app';
+  }
+  \Drupal::logger('ultimate_cron_article_api')->notice('domain -'.$domain_name);
+  //get access token
+  $access_url = 'https://accounts.acquia.com/api/auth/oauth/token';
+  $ac = curl_init($access_url);
+  curl_setopt($ac, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ac, CURLOPT_CUSTOMREQUEST, 'POST');
+  curl_setopt($ac, CURLOPT_POSTFIELDS, array('client_id' => '71b253a8-5c37-41de-b349-2e4f489aba6e',
+  'client_secret' => 'B1rLfGTncLXtHi6W/I3nYhPMh9bD3xjbSx8m/usnvxU=',
+  'grant_type' => 'client_credentials'));
+  $response_value = curl_exec($ac);
+  // Get the status code
+  $status_access = curl_getinfo($ac, CURLINFO_HTTP_CODE);
+  curl_close($ac);
+  if($status_access != 200) { 
+    \Drupal::logger('ultimate_cron_article_api')->notice('error in access token status - '.$status_access.' error details-'.$response_value);
+  } 
+  else {
+    //cleared cache programmatically.
+    $result = json_decode($response_value, true);
+    if(isset($result['access_token'])) {
+      $token_value = $result['access_token'];
+      $cache_url = 'https://cloud.acquia.com/api/environments/324528-08c5238f-9d4c-43ce-be88-b3d8e51c7750/domains/'.$domain_name.'/actions/clear-caches';
+      $cc = curl_init($cache_url);
+      curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($cc, CURLOPT_CUSTOMREQUEST, 'POST');
+      curl_setopt($cc, CURLOPT_HTTPHEADER, array(
+           'Authorization: Bearer '.$token_value
+          ));
+      $ct = curl_exec($cc);
+      // Get the status code
+      $status_cache = curl_getinfo($cc, CURLINFO_HTTP_CODE);
+      curl_close($cc);
+      if($status_cache != '200' && $status_cache != '202' ) { 
+        \Drupal::logger('ultimate_cron_article_api')->notice('cloud cache not cleared '. $status_cache .' error -'.$ct);
+      }
+      else { 
+        \Drupal::logger('ultimate_cron_article_api')->notice('cloud cache cleared '.$status_cache.' Details -'.$ct);
+      }
+    }
+  }
+
+  $langcodes = \Drupal::languageManager()->getLanguages();
+  foreach ($langcodes as $key => $value) {
+    $id = $key;
+    if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
+      switch ($_ENV['AH_SITE_ENVIRONMENT']){
+        case 'dev':
+          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
+          break;
+        case 'test':
+          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
+          break;
+        case 'prod':
+          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
+          break;
+        }
+    } else {
+      $article_api_url = $url.'/api/articles/'.$id.'?category=all';
+    }
+
+    $c = curl_init($article_api_url);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+    $html = curl_exec($c);
+    // Get the status code
+    $status = curl_getinfo($c, CURLINFO_HTTP_CODE);
+    if($status != 200){
+      \Drupal::logger('ultimate_cron_article_api')->notice('There is an error to call an article api for language '.$id.' and error '.$article_api_url);
+      \Drupal::logger('ultimate_cron_article_api')->notice('error -'.$html);
+    } else {
+      \Drupal::logger('ultimate_cron_article_api')->notice('completed article api for language '.$id.' url '. $article_api_url);
+    }
+    curl_close($c);
+  }
+}
