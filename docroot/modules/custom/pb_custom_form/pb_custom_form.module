@@ -31,7 +31,7 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
 function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {  
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'group_country_edit_form') {
-    ##Make readonly if offload country is enabled
+    ##Make readonly if offload country is enabled this is.
     $user = \Drupal::currentUser();
     $roles = $user->getRoles();    
     $global_user = ['global_admin'];
