@@ -36,7 +36,6 @@ module:
   filelog: 0
   filter: 0
   gnode: 0
-  google_analytics: 0
   group: 0
   group_country_field: 0
   help: 0
@@ -108,6 +107,7 @@ module:
   view_custom_table: 0
   views_bulk_operations: 0
   views_data_export: 0
+  views_ui: 0
   workflows: 0
   content_translation: 10
   views: 10

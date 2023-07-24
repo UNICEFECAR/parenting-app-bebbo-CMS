@@ -1,0 +1,18 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      fields:
+        uid:
+          label: Author
+        status:
+          label: Status
+        operations:
+          label: Operations
+      filters:
+        langcode:
+          expose:
+            label: Language

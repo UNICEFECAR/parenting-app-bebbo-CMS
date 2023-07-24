@@ -1,0 +1,21 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      fields:
+        title:
+          label: Title
+        name:
+          label: Author
+        operations:
+          label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+        langcode:
+          expose:
+            label: Language

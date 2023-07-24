@@ -1,5 +1,11 @@
+uuid: 1b364219-c308-4a4a-8839-dd0bb353301f
 langcode: en
+status: true
+dependencies: {  }
 id: video_article_belarus_belarusian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: video_article_belarus_belarusian
 migration_group: video_article_belarusian
 label: 'Video Article Belarusian'
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: by-be
-
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   field_keywords:
     -
@@ -32,10 +36,8 @@ process:
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
-
   field_cover_video: Cover_video
   moderation_state: Moderation_state
-  
 destination:
   plugin: 'entity:node'
   default_bundle: video_article

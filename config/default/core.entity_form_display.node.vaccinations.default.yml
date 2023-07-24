@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.vaccinations.field_licensed_content
     - field.field.node.vaccinations.field_notification_from
     - field.field.node.vaccinations.field_notification_to
+    - field.field.node.vaccinations.field_old_calendar
     - field.field.node.vaccinations.field_pinned_article
     - field.field.node.vaccinations.field_pinned_video_article
     - field.field.node.vaccinations.field_pre_populated
@@ -35,6 +36,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_old_calendar:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_pinned_article:
     weight: 10
