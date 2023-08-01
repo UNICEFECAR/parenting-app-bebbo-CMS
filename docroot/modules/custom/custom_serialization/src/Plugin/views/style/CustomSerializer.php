@@ -394,7 +394,7 @@ class CustomSerializer extends Serializer {
           $tid = $media_entity->get('thumbnail')->target_id;
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->url();
+            $thumbnail_url = $thumbnail->createFileUrl();
           }
           $media_data = [
             'url'  => $thumbnail_url,

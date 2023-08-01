@@ -31,7 +31,7 @@ class ChangeNodeStatus {
         $uid = \Drupal::currentUser()->id();
         $node_lang_archive->setNewRevision(TRUE);
         $node_lang_archive->revision_log = 'Content changed to “Archive” through Country Offload';
-        $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
         $node_lang_archive->setRevisionTranslationAffected(NULL);
         $node_lang_archive->save();

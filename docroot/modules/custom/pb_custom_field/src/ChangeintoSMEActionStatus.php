@@ -57,7 +57,7 @@ class ChangeintoSMEActionStatus {
 
         $node_lang_draft->setNewRevision(TRUE);
         $node_lang_draft->revision_log = 'Content Changed Into SME Review';
-        $node_lang_draft->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_draft->setRevisionUserId($uid);
         $node_lang_draft->setRevisionTranslationAffected(NULL);
         $node_lang_draft->save();
@@ -72,7 +72,7 @@ class ChangeintoSMEActionStatus {
 
         $node_lang_draft->setNewRevision(TRUE);
         $node_lang_draft->revision_log = 'Content changed into SME Review';
-        $node_lang_draft->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_draft->setRevisionUserId($uid);
         $node_lang_draft->setRevisionTranslationAffected(NULL);
         $node_lang_draft->save();
