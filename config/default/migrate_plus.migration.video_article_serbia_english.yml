@@ -1,5 +1,11 @@
+uuid: 9f5fd80c-4145-4589-ad36-5052c5e51631
 langcode: en
+status: true
+dependencies: {  }
 id: video_article_serbia_english
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: video_article_serbia_english
 migration_group: video_article
 label: 'Video Article Serbia-English'
@@ -14,12 +20,10 @@ process:
     plugin: default_value
     source: language
     default_value: rs-en
-
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   field_keywords:
     -
@@ -32,10 +36,8 @@ process:
       bundle_key: vid
       bundle: keywords
       entity_type: taxonomy_term
-
   field_cover_video: Cover_video
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: video_article

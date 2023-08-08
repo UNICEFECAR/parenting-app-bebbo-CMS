@@ -43,4 +43,5 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_pinned_article: true
+  field_pre_populated: true
   langcode: true

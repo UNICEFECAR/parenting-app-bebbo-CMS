@@ -98,6 +98,7 @@ permissions:
   - 'use group_workflow transition require_modification_to_sme_review'
   - 'use group_workflow transition review_after_translation_to_draft'
   - 'use group_workflow transition review_after_translation_to_published'
+  - 'use group_workflow transition review_after_translation_to_review_after_translation'
   - 'use group_workflow transition review_after_translation_to_senior_editor_review'
   - 'use group_workflow transition review_after_translation_to_sme_review'
   - 'use group_workflow transition reviewer_review_to_review'

@@ -1,8 +1,14 @@
+uuid: 4b904d63-6f77-4421-b1c9-2aef8a5b29d9
 langcode: en
+status: true
+dependencies: {  }
 id: activity_russian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: activity_russian
 migration_group: activity
-label: 'activity_russian'
+label: activity_russian
 source:
   plugin: csv
   path: modules/custom/pb_custom_migrate/sources/activity/activity_russian.csv
@@ -14,16 +20,13 @@ process:
     plugin: default_value
     source: language
     default_value: ru
-
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   field_cover_image: Cover_image
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: activities

@@ -1,0 +1,267 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      pager:
+        options:
+          tags:
+            previous: '‹ Predchádzajúci'
+            next: Ďalej
+            first: '« Prvý'
+            last: Koniec
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        title:
+          label: Nadpis
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+  assigned:
+    display_title: Pridelené
+    display_options:
+      menu:
+        title: Pridelené
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        source_language:
+          expose:
+            label: 'Zdrojový jazyk'
+        uid:
+          expose:
+            label: Poskytovateľ
+        title:
+          expose:
+            label: Nadpis
+  closed:
+    display_title: Uzavreté
+    display_options:
+      menu:
+        title: Uzavreté
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+          separator: ', '
+        created:
+          label: Vytvorené
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        source_language:
+          expose:
+            label: 'Zdrojový jazyk'
+        uid:
+          expose:
+            label: Poskytovateľ
+        title:
+          expose:
+            label: Nadpis
+  completed:
+    display_title: Ukončená
+    display_options:
+      menu:
+        title: Ukončená
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+          separator: ', '
+        created:
+          label: Vytvorené
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        source_language:
+          expose:
+            label: 'Zdrojový jazyk'
+        uid:
+          expose:
+            label: Poskytovateľ
+        title:
+          expose:
+            label: Nadpis
+  pending:
+    display_title: Čakajúce
+    display_options:
+      menu:
+        title: Čakajúce
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+        tuid:
+          separator: ', '
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        source_language:
+          expose:
+            label: 'Zdrojový jazyk'
+        uid:
+          expose:
+            label: Poskytovateľ
+        title:
+          expose:
+            label: Nadpis
+  rejected:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+        created:
+          label: Vytvorené
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        source_language:
+          expose:
+            label: 'Zdrojový jazyk'
+        uid:
+          expose:
+            label: Poskytovateľ
+        title:
+          expose:
+            label: Nadpis
+  unassigned:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        status:
+          label: Stav
+        title:
+          label: Nadpis
+          separator: ', '
+        source_language:
+          label: Od
+          separator: ', '
+        target_language:
+          label: Komu
+          separator: ', '
+        word_count:
+          label: Slov
+        item_count:
+          label: Položky
+        loop_count:
+          separator: ', '
+        operations:
+          label: Operácie
