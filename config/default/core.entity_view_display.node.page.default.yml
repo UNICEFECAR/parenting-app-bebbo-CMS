@@ -6,10 +6,104 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_licensed_content
     - field.field.node.page.field_mandatory_content
+    - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_pre_populated
+    - field.field.node.page.layout_builder__layout
     - node.type.page
+  content:
+    - 'block_content:basic:1db0cf1f-71e5-459a-a2be-e41fc934bd78'
+    - 'block_content:basic:6a5cb8e3-cf5d-451d-8345-49941fc59f43'
+    - 'block_content:basic:6ed5e166-9367-43a9-855e-1a98bba652f6'
+    - 'block_content:basic:caa2df01-045d-46d3-abad-d3fe286e22e6'
+    - 'block_content:basic:e72f101e-ef93-4df0-8dfa-eebdc5de7c3b'
   module:
+    - block_content
+    - layout_builder
+    - layout_discovery
+    - metatag
     - text
     - user
+third_party_settings:
+  layout_builder:
+    allow_custom: true
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          f15b0f6e-2fa0-47ae-aa02-67b1bc3f1719:
+            uuid: f15b0f6e-2fa0-47ae-aa02-67b1bc3f1719
+            region: content
+            configuration:
+              id: 'block_content:caa2df01-045d-46d3-abad-d3fe286e22e6'
+              label: 'Homepage - Video'
+              provider: block_content
+              label_display: '0'
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          cd76c6b7-ab48-4a4e-b9a9-8e20f12dbecc:
+            uuid: cd76c6b7-ab48-4a4e-b9a9-8e20f12dbecc
+            region: content
+            configuration:
+              id: 'block_content:e72f101e-ef93-4df0-8dfa-eebdc5de7c3b'
+              label: 'Homepage - Download the free Bebbo app'
+              provider: block_content
+              label_display: '0'
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            additional: {  }
+            weight: 1
+          0c6e18d1-4c02-4ca5-b41f-7d62811ea987:
+            uuid: 0c6e18d1-4c02-4ca5-b41f-7d62811ea987
+            region: content
+            configuration:
+              id: 'block_content:1db0cf1f-71e5-459a-a2be-e41fc934bd78'
+              label: 'Homepage - parenting is hard all parents can use some support'
+              provider: block_content
+              label_display: '0'
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            additional: {  }
+            weight: 2
+          8d5cd8a2-a8d8-47dc-86d7-ba024724e016:
+            uuid: 8d5cd8a2-a8d8-47dc-86d7-ba024724e016
+            region: content
+            configuration:
+              id: 'block_content:6a5cb8e3-cf5d-451d-8345-49941fc59f43'
+              label: 'Homepage - FEATURES'
+              provider: block_content
+              label_display: '0'
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            additional: {  }
+            weight: 3
+          e4912435-fcd6-4c57-a4cb-99e1658c1380:
+            uuid: e4912435-fcd6-4c57-a4cb-99e1658c1380
+            region: content
+            configuration:
+              id: 'block_content:6ed5e166-9367-43a9-855e-1a98bba652f6'
+              label: 'Homepage - Download FREE App now!'
+              provider: block_content
+              label_display: '0'
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            additional: {  }
+            weight: 4
+        third_party_settings: {  }
 _core:
   default_config_hash: g1S3_GLaxq4l3I9RIca5Mlz02MxI2KmOquZpHw59akM
 id: node.page.default
@@ -49,8 +143,19 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
+  field_meta_tags:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   links:
     weight: 101
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  field_pre_populated: true
   langcode: true
+  layout_builder__layout: true

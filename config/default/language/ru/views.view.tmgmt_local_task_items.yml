@@ -25,6 +25,7 @@ display:
         label:
           label: Label
         item_type:
+          label: Тип
           separator: ', '
         word_count:
           separator: ', '

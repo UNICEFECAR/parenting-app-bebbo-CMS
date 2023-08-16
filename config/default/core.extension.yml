@@ -10,6 +10,7 @@ module:
   basic_auth: 0
   big_pipe: 0
   block: 0
+  block_classes: 0
   block_content: 0
   breakpoint: 0
   ckeditor: 0
@@ -25,6 +26,7 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
+  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -45,6 +47,9 @@ module:
   lang_dropdown: 0
   language: 0
   languagefield: 0
+  layout_builder: 0
+  layout_builder_styles: 0
+  layout_discovery: 0
   link: 0
   locale: 0
   media: 0
@@ -53,6 +58,10 @@ module:
   menu_link_content: 0
   menu_per_role: 0
   menu_ui: 0
+  metatag: 0
+  metatag_open_graph: 0
+  metatag_twitter_cards: 0
+  metatag_views: 0
   migrate: 0
   migrate_drupal: 0
   migrate_plus: 0
@@ -74,6 +83,7 @@ module:
   purge_ui: 0
   quickedit: 0
   rdf: 0
+  responsive_image: 0
   rest: 0
   restui: 0
   search: 0
@@ -81,6 +91,8 @@ module:
   serialization: 0
   shortcut: 0
   smtp: 0
+  svg_image: 0
+  svg_image_responsive: 0
   syslog: 0
   system: 0
   tamper: 0
@@ -96,10 +108,12 @@ module:
   tmgmt_local: 0
   tmgmt_locale: 0
   tmgmt_memsource: 0
+  token: 0
   toolbar: 0
   toolbar_menu: 0
   toolbar_menu_clean: 0
   tour: 0
+  ultimate_cron: 0
   user: 0
   variationcache: 0
   video_embed_field: 0

@@ -1,0 +1,121 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: فلٹر
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: '› گزشتہ'
+            first: '» ابتدائی'
+      fields:
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+  assigned:
+    display_options:
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات
+      filters:
+        uid:
+          expose:
+            label: 'سہولت کار'
+        title:
+          expose:
+            label: عنوان
+  closed:
+    display_title: 'بند کردیا گیا'
+    display_options:
+      menu:
+        title: 'بند کردیا گیا'
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات
+      filters:
+        uid:
+          expose:
+            label: 'سہولت کار'
+        title:
+          expose:
+            label: عنوان
+  completed:
+    display_options:
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات
+      filters:
+        uid:
+          expose:
+            label: 'سہولت کار'
+        title:
+          expose:
+            label: عنوان
+  pending:
+    display_options:
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات
+      filters:
+        uid:
+          expose:
+            label: 'سہولت کار'
+        title:
+          expose:
+            label: عنوان
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات
+      filters:
+        uid:
+          expose:
+            label: 'سہولت کار'
+        title:
+          expose:
+            label: عنوان
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: حالت
+        title:
+          label: عنوان
+        item_count:
+          label: سرخیاں
+        operations:
+          label: معاملات

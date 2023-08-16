@@ -1414,6 +1414,15 @@ display:
           plugin_id: entity_operations
       defaults:
         fields: false
+        query: false
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_comment: ''
+          query_tags: null
     cache_metadata:
       contexts:
         - 'languages:language_interface'

@@ -1,0 +1,13 @@
+uuid: 660528bf-cd82-452a-a90f-45cdf1687c71
+langcode: en
+status: true
+dependencies: {  }
+id: homepage6
+label: Homepage6
+classes: homepageblock6
+type: component
+group: default
+weight: 0
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }

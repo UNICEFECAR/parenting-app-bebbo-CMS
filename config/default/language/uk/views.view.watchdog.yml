@@ -1,0 +1,23 @@
+display:
+  default:
+    display_options:
+      fields:
+        severity:
+          label: Важливість
+        type:
+          label: Тип
+        timestamp:
+          label: Дата
+        message:
+          label: Повідомлення
+        name:
+          label: Користувач
+        link:
+          label: Операції
+      filters:
+        type:
+          expose:
+            label: Тип
+        severity:
+          expose:
+            label: Важливість

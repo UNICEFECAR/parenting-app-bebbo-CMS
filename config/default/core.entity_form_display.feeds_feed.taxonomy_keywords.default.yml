@@ -1,0 +1,36 @@
+uuid: 021235b6-2197-4d90-90fa-b88ee0b9069d
+langcode: en
+status: true
+dependencies:
+  config:
+    - feeds.feed_type.taxonomy_keywords
+id: feeds_feed.taxonomy_keywords.default
+targetEntityType: feeds_feed
+bundle: taxonomy_keywords
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+hidden: {  }

@@ -10,6 +10,8 @@ display:
           label: Username
         status:
           label: Status
+          settings:
+            format_custom_true: Aktiv
         roles_target_id:
           label: Roles
         operations:
@@ -18,3 +20,6 @@ display:
         status:
           group_info:
             label: Status
+            group_items:
+              1:
+                title: Aktiv

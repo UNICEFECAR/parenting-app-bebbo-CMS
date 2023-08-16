@@ -23,7 +23,7 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sk
+  langcode: rs-sr
   update_existing: 1
   update_non_existent: _keep
   expire: -1
@@ -60,4 +60,4 @@ mappings:
       value: term_name
     unique: {  }
     settings:
-      language: sk
+      language: rs-sr

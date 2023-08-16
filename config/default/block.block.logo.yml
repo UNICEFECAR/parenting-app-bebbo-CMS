@@ -27,7 +27,7 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/homepage\r\n/about-us\r\n/privacy-policy"
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions"
     negate: false
     context_mapping: {  }
   user_role:

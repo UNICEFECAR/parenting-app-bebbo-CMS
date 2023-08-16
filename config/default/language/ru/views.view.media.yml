@@ -28,6 +28,7 @@ display:
         name:
           separator: ', '
         bundle:
+          label: Тип
           separator: ', '
         uid:
           label: Author
@@ -41,6 +42,9 @@ display:
         operations:
           label: Operations
       filters:
+        bundle:
+          expose:
+            label: Тип
         langcode:
           expose:
             label: Language

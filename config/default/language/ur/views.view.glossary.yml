@@ -1,0 +1,18 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: ››
+            next: ‹‹
+      fields:
+        title:
+          label: عنوان
+        name:
+          label: مصنف
+        changed:
+          label: 'گزشتہ تجدید'

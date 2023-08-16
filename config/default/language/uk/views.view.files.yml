@@ -1,0 +1,22 @@
+display:
+  default:
+    display_options:
+      fields:
+        filename:
+          label: 'Назва (ім''я)'
+        filemime:
+          label: 'Тип MIME'
+        status:
+          label: Стан
+      filters:
+        filemime:
+          expose:
+            label: 'Тип MIME'
+        status:
+          expose:
+            label: Стан
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Тип сутності'

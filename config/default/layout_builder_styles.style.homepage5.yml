@@ -1,0 +1,13 @@
+uuid: b8e56258-cab7-491c-ab7e-057a4cbddd4c
+langcode: en
+status: true
+dependencies: {  }
+id: homepage5
+label: Homepage5
+classes: homepageblock5
+type: component
+group: default
+weight: 0
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }

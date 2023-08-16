@@ -1,0 +1,80 @@
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+  assigned:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+  closed:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+  completed:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+  pending:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        title:
+          label: Заголовок
+        operations:
+          label: Операції

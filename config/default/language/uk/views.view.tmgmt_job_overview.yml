@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        tags_count:
+          label: Теґи
+        operations:
+          label: Операції
