@@ -207,7 +207,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         /* Set new Revision */
         $node_es->setNewRevision(TRUE);
         $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
-        $node_es->setRevisionCreationTime(REQUEST_TIME);
+        $node_es->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_es->setRevisionUserId($uid);
         $node_es->save();
         $node->save();
