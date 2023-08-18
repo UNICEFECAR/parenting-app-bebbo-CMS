@@ -1,50 +1,47 @@
-# parenting-app-bebbo-CMS
+<h1>Bebbo CMS - Drupal content management system</h1>
 
-#CONTENTS OF THIS FILE
+### Table of Contents
 
-Introduction
-Requirements
-Installation
-Configuration
-Maintainers
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Contributed Modules](#contributed-modules)
+* [Custom Modules](#custom-modules)
+* [Theme](#theme)
+* [Custom Roles](#custom-roles)
+* [Menus](#menus)
+* [Configurations](#configurations)
+* [Maintainers](#maintainers)
 
-# Introduction
+## Introduction
 
 Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the contents will be added through the web interface and served as REST APIs for mobile App. This application is used to assist the editors to add different types of contents under different types of content types and taxonomies that will be configured in Drupal CMS.
 
-[![Build Status](https://bebbo.app/)
+[Bebbo website](https://bebbo.app/)
 
-# Requirements
+## Requirements
 
 Make sure you have installed all of the following prerequisites on your development machine:
 
 1. Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-Optional - [Global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
+Optional - [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
 If skipping, you may need to replace `composer` with `php composer.phar` for your setup.
 
-2. Install Drush
-```    composer global require drush/drush
-```
+2. Install Drush: `composer global require drush/drush`
 
 ## Installation
 
-1. Download Bebbo App from git repo 
-   https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
-   Ex: git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
-2. Go into root of the project and run following command  
-    "composer install"
-   it will install the core, contributed and other required folders and files.
-3. Download the Database from Acquia server and import the database into your local.
-4. Update the database details in settings.php file ( docroot/sites/default/settings. php).
-5. Go into root of the project and run following command
-    "drush cr"
-    "drush cim"
-6. Then run the application in your browser.
+1. Download Bebbo App from [git repo](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS)
+   
+   For example: `git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS`
+   
+3. Download the database from Acquia server and import the database into your local.
+4. Update the database details in settings.php file (docroot/sites/default/settings.php).
+5. Then run the application in your browser.
 
+## Contributed Modules
 
-### Contributed Modules
-
-The following contributed modules are installed as part of the profile
+The following contributed modules are installed as part of the profile:
 - acquia_purge
 - actions_permissions
 - admin_toolbar
@@ -149,13 +146,13 @@ The following contributed modules are installed as part of the profile
 - content_translation
 - views
 
-### Custom Libraries
+## Custom Libraries
 
 - CKEDITOR
 
-### Custom Modules
+## Custom Modules
 
-The following Custom modules are installed as part of the profile
+The following custom modules are installed as part of the profile:
 - custom_serialization
 - group_country_field
 - pb_custom_field
@@ -164,44 +161,45 @@ The following Custom modules are installed as part of the profile
 - pb_custom_rest_api
 - pb_custom_standard_deviation
 
-### Theme
+## Theme
 
-The theme is installed and enabled by the profile.
+The following themes are installed and enabled by the profile:
 - bartik
 - seven
 - stable
 - classy
 - claro
 
-### Custom Roles
+## Custom Roles
 
-Globaladmin : This User handles all the country and country users, configures new languages and new country , Taxonomies data and offload a country.            
-senior editor :   Senior editors have access to create , update , publish and translate the content to their country language.
-Sme : SME have access to updates and approve the content.
-Editor : Editor have access to create , update and translate the content to their country language
-country admin : This user has access to create and cancel their country users and view their language content.
+Globaladmin: This User handles all the country and country users, configures new languages and new country, Taxonomies data and offload a country.            
+Senior editor: Senior editors have access to create, update, publish and translate the content to their country language.
+SME: SME have access to updates and approve the content.
+Editor: Editor have access to create, update and translate the content to their country language
+Country admin: This user has access to create and cancel their country users and view their language content.
 
-All the users have a separate Dashboard. Country admin and Senior editor have access the country reports.
+All the users have a separate dashboard. Country admin and Senior editor have access to the country reports.
 
 ## Menus
 
-Global Content List - It shows all the published contents
-Country Content List - In this page the user is able to see their allowed languages list.
-Add Content - Editor , Globaladmin and Senioreditor have permission to create new content.
+Global content list - It shows all the published contents.
+Country content list - In this page the user will be able to see their allowed languages.
+Add content - Editor, global admin and senior editor have permission to create a new content.
 
 Manage Taxonomies - It shows all the available taxonomy terms
 Manage Media - In this page User can add and update the image related details
-Manage Country - Global admin can add any new country or update the already existing country and user details.
+Manage Country - Global admin can add any new country or update the already existing country and user details
 Manage Language - Create a new language or update an existing language. This have two options
-Manage Users  -  Global admin can add another global admin using the language.
-Manage Translation - Users can send a content translation request to memsource using this menu option.
-Google Analytics -  Global admin can add the analytics id .
-Import Taxonomy - Users can import the taxonomy term values using this option .Based on the documentation, users can change the feed configuration according to their language.
-Manage reports - user can see their reports based on their allowed language
+Manage Users  -  Global admin can add another global admin using the language
+Manage Translation - Users can send a content translation request to memsource using this menu option
+Google Analytics -  Global admin can add the analytics id
+Import Taxonomy - Users can import the taxonomy term values using this option .Based on the documentation, users can change the feed configuration according to their language
+Manage reports - user can see their reports based on their allowed language.
 
-Configurations
+## Configurations
 
 Installation profile assists in setting up a base instance. 
 
-Maintainers
+## Maintainers
+
 Datamatics
