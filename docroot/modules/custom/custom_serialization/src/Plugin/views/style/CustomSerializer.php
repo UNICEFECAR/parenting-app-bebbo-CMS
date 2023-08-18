@@ -163,12 +163,27 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $body_summary;
               }
             }
+
+            //dblog after embedded images
+            \Drupal::logger('custom_serialization')->notice('This is after embedded images with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             /* Custom image & video formattter.To check media image field exist  */
+            
+            //dblog before media formatter
+            \Drupal::logger('custom_serialization')->notice('This is before media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
             if (in_array($key, $media_fields)) {
               $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
               $rendered_data[$key] = $media_formatted_data;
             }
+
+            //dblog after media formatter
+            \Drupal::logger('custom_serialization')->notice('This is after media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             /* Custom array formatter.To check mulitple field.  */
+
+            //dblog before array formatter
+            \Drupal::logger('custom_serialization')->notice('This is before array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             if (in_array($key, $array_of_multiple_values)) {
               $array_formatted_data = $this->customArrayFormatter($values);
               /* Convert array to array of int. */
@@ -181,6 +196,9 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $array_formatted_data;
               }
             }
+
+            //dblog after array formatter
+            \Drupal::logger('custom_serialization')->notice('This is after array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
 
             /* Convert string to int. */
             if (in_array($key, $string_to_int)) {
@@ -394,7 +412,7 @@ class CustomSerializer extends Serializer {
           $tid = $media_entity->get('thumbnail')->target_id;
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->createFileUrl();
+            $thumbnail_url = $thumbnail->url();
           }
           $media_data = [
             'url'  => $thumbnail_url,

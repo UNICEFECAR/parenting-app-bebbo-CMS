@@ -571,7 +571,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   justify-content: center;
 }
 .homepageblock5 {
-  background-image: url(/sites/default/files/styles/content_1200xh_/public/2023-04/banner.jpg?itok=OlNbD7bg);
+  background-image: url(/sites/default/files/2023-08/Bebbo%20key%20visual.jpg);
     min-height: 500px;
     background-attachment: fixed;
     background-position: center;
@@ -580,7 +580,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
     margin-bottom: 20px;
 }
 .featured-bb-image {
-  width: 250px;
+  width: 200px;
   margin: auto;
 }
 .head-text {
@@ -628,7 +628,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   padding: 20px;
 }
 .main-logo { 
-  top: 60px !important;
+  top: 40px !important;
   color: #4fa9dd !important;
   font-style: italic !important;
   font-weight: 600 !important;
@@ -685,7 +685,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   font-size: 18px;
 }
 .layout.layout--onecol {
-  margin-top: 150px;
+  margin-top: 100px;
 }
 /*Homepage css end*/
 
