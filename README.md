@@ -1,4 +1,4 @@
-# parenting-app-bebbo-CMS
+# Bebbo CMS
 
 #CONTENTS OF THIS FILE
 
