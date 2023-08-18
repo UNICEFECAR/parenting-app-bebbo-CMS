@@ -52,11 +52,11 @@ filters:
     weight: -44
     settings:
       default_view_mode: default
+      allowed_view_modes: {  }
       allowed_media_types:
         image: image
         remote_video: remote_video
         video: video
-      allowed_view_modes: {  }
   filter_ckeditor_media_embed:
     id: filter_ckeditor_media_embed
     provider: ckeditor_media_embed

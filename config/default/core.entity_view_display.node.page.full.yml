@@ -24,13 +24,14 @@ dependencies:
     - user
 third_party_settings:
   layout_builder:
-    allow_custom: true
     enabled: true
+    allow_custom: true
     sections:
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          context_mapping: {  }
         components:
           940b1ddf-1ee8-4f1c-83a0-7380e3d1b312:
             uuid: 940b1ddf-1ee8-4f1c-83a0-7380e3d1b312
@@ -38,42 +39,43 @@ third_party_settings:
             configuration:
               id: 'field_block:node:page:title'
               label: Title
-              provider: layout_builder
               label_display: '0'
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 0
+            additional: {  }
           dd32cc90-18b8-4881-86d9-6846b0eaef34:
             uuid: dd32cc90-18b8-4881-86d9-6846b0eaef34
             region: content
             configuration:
               id: 'field_block:node:page:body'
               label: Body
-              provider: layout_builder
               label_display: '0'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: 1
+            additional: {  }
         third_party_settings: {  }
       -
         layout_id: layout_twocol_section
         layout_settings:
           label: ''
+          context_mapping: {  }
           column_widths: 67-33
         components:
           41377c8b-bb43-4352-b218-7554285d4454:
@@ -82,26 +84,27 @@ third_party_settings:
             configuration:
               id: 'system_menu_block:footer'
               label: Footer
-              provider: system
               label_display: '0'
+              provider: system
+              context_mapping: {  }
               level: 1
               depth: 0
               expand_all_items: false
-              context_mapping: {  }
-            additional: {  }
             weight: 0
+            additional: {  }
           3f056ee4-7fc9-423d-810f-a6903bb1eb43:
             uuid: 3f056ee4-7fc9-423d-810f-a6903bb1eb43
             region: first
             configuration:
               id: 'block_content:026587c2-31f5-4461-aae1-ea379893708e'
               label: 'Footer logo'
-              provider: block_content
               label_display: '0'
+              provider: block_content
               status: true
               info: ''
               view_mode: full
               context_mapping: {  }
+            weight: 0
             additional:
               layout_builder_styles_style:
                 homepage: 0
@@ -111,7 +114,6 @@ third_party_settings:
                 homepage5: 0
                 homepage6: 0
                 homepage7: 0
-            weight: 0
         third_party_settings: {  }
 _core:
   default_config_hash: g1S3_GLaxq4l3I9RIca5Mlz02MxI2KmOquZpHw59akM
@@ -121,49 +123,49 @@ bundle: page
 mode: full
 content:
   body:
-    label: hidden
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 100
     region: content
-    settings: {  }
-    third_party_settings: {  }
   content_moderation_control:
-    weight: -20
     settings: {  }
     third_party_settings: {  }
+    weight: -20
     region: content
   field_licensed_content:
-    weight: 103
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 103
     region: content
   field_mandatory_content:
-    weight: 102
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 102
     region: content
   field_meta_tags:
-    weight: 104
+    type: metatag_empty_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: metatag_empty_formatter
+    weight: 104
     region: content
   links:
-    weight: 101
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 101
+    region: content
 hidden:
   field_pre_populated: true
   langcode: true

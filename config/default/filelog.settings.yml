@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: uVSFqX1MwFixVjXjlh72ukQ8LKPgMKNi2raycY9vt3w
 enabled: true
 location: 'public://bulk_action'
 rotation:
@@ -10,5 +12,3 @@ level: 6
 channels_type: include
 channels:
   - bulk_action
-_core:
-  default_config_hash: uVSFqX1MwFixVjXjlh72ukQ8LKPgMKNi2raycY9vt3w

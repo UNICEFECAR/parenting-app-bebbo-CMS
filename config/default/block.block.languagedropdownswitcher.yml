@@ -16,8 +16,8 @@ plugin: 'language_dropdown_block:language_interface'
 settings:
   id: 'language_dropdown_block:language_interface'
   label: 'Language dropdown switcher'
-  provider: lang_dropdown
   label_display: '0'
+  provider: lang_dropdown
   showall: false
   tohome: false
   width: 165
@@ -45,8 +45,8 @@ settings:
 visibility:
   user_role:
     id: user_role
-    roles:
-      authenticated: authenticated
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

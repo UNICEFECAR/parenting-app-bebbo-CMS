@@ -18,13 +18,13 @@ third_party_settings:
       55247208-540f-4a41-8a40-3638db1729d3:
         separator: ','
         limit: null
+        uuid: 55247208-540f-4a41-8a40-3638db1729d3
         plugin: explode
         source: age_bracket
         weight: 0
         label: Explode
-        uuid: 55247208-540f-4a41-8a40-3638db1729d3
-id: taxonomy_child_age
 label: 'Taxonomy - Child Age'
+id: taxonomy_child_age
 description: 'Taxonomy - Child Age'
 help: ''
 import_period: -1
@@ -39,78 +39,88 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: en
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: child_age
-  owner_id: 0
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
   language_code:
-    label: Language_code
     value: Language_code
+    label: Language_code
     machine_name: language_code
+    type: csv
   days_from:
-    label: Days_from
     value: Days_from
+    label: Days_from
     machine_name: days_from
+    type: csv
   days_to:
-    label: Days_to
     value: Days_to
+    label: Days_to
     machine_name: days_to
+    type: csv
   age_bracket:
-    label: Age_bracket
     value: Age_bracket
+    label: Age_bracket
     machine_name: age_bracket
+    type: csv
   buffers_days:
-    label: Buffers_days
     value: Buffers_days
+    label: Buffers_days
     machine_name: buffers_days
+    type: csv
   weight:
-    label: Weight
     value: Weight
+    label: Weight
     machine_name: weight
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: term_id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_days_from
     map:
       value: days_from
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_days_to
     map:
       value: days_to
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_age_bracket
     map:
@@ -124,12 +134,12 @@ mappings:
     target: field_buffers_days
     map:
       value: buffers_days
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: weight
     map:
       value: weight
-    unique: {  }
     settings: {  }
+    unique: {  }

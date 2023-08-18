@@ -1,7 +1,21 @@
 uuid: 834b1f3a-82ad-415a-b667-165150bbc7d9
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+  module:
+    - actions_permissions
+    - block
+    - content_moderation
+    - content_translation
+    - media
+    - node
+    - system
+    - toolbar_menu
+    - toolbar_menu_clean
 id: reviewer
 label: 'Country Admin'
 weight: -6
@@ -12,10 +26,7 @@ permissions:
   - 'administer content translation'
   - 'administer toolbar menu'
   - 'create content translations'
-  - 'create document media'
   - 'create media'
-  - 'edit any chatbot content'
-  - 'edit own chatbot content'
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'
@@ -28,15 +39,8 @@ permissions:
   - 'update any media'
   - 'update content translations'
   - 'update media'
-  - 'use group_workflow transition publish'
-  - 'use group_workflow transition reject'
-  - 'use group_workflow transition reviewer_review_to_review'
-  - 'use group_workflow transition reviewer_to_publish'
-  - 'use group_workflow transition reviewer_to_sme_review'
   - 'view all media revisions'
   - 'view any unpublished content'
-  - 'view chatbot revisions'
   - 'view editorial_menu in toolbar'
   - 'view latest version'
   - 'view own unpublished content'
-  - 'view translatable_node revisions'

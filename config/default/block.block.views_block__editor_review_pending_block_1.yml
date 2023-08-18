@@ -19,20 +19,20 @@ plugin: 'views_block:editor_review_pending-block_1'
 settings:
   id: 'views_block:editor_review_pending-block_1'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
   views_label: ''
   items_per_page: none
 visibility:
   request_path:
     id: request_path
-    pages: /dashboard
     negate: false
     context_mapping: {  }
+    pages: /dashboard
   user_role:
     id: user_role
-    roles:
-      editor: editor
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      editor: editor

@@ -7,7 +7,7 @@ label: Homepage7
 classes: homepageblock7
 type: component
 group: default
-weight: 0
 block_restrictions:
   - 'inline_block:basic'
 layout_restrictions: {  }
+weight: 0

@@ -5,13 +5,13 @@ dependencies:
   config:
     - field.storage.media.field_media_image
     - media.type.image
-  enforced:
-    module:
-      - media
   module:
     - content_translation
     - image
     - tmgmt_content
+  enforced:
+    module:
+      - media
 third_party_settings:
   content_translation:
     translation_sync:
@@ -33,6 +33,8 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg svg'
   max_filesize: ''
@@ -48,6 +50,4 @@ settings:
     title: ''
     width: null
     height: null
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: image

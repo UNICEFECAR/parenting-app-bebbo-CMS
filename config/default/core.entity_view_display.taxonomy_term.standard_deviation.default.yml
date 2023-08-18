@@ -23,30 +23,30 @@ bundle: standard_deviation
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_child_gender:
-    weight: 2
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
   field_growth_type:
-    weight: 1
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
   field_sd0:
-    weight: 7
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -54,10 +54,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 7
     region: content
   field_sd1:
-    weight: 8
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -65,10 +65,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 8
     region: content
   field_sd1neg:
-    weight: 6
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -76,10 +76,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 6
     region: content
   field_sd2:
-    weight: 9
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -87,10 +87,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 9
     region: content
   field_sd2neg:
-    weight: 5
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -98,10 +98,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 5
     region: content
   field_sd3:
-    weight: 10
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -109,10 +109,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 10
     region: content
   field_sd3neg:
-    weight: 4
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -120,10 +120,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 4
     region: content
   field_sd4:
-    weight: 11
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -131,10 +131,10 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 11
     region: content
   field_sd4neg:
-    weight: 3
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -142,7 +142,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 3
     region: content
 hidden:
   feeds_item: true

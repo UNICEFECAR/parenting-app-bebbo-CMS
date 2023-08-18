@@ -17,14 +17,14 @@ plugin: 'system_menu_block:footer'
 settings:
   id: 'system_menu_block:footer'
   label: Footer
-  provider: system
   label_display: '0'
+  provider: system
   level: 1
   depth: 0
   expand_all_items: false
 visibility:
   request_path:
     id: request_path
-    pages: "/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
     negate: false
     context_mapping: {  }
+    pages: "/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"

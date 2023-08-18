@@ -11,8 +11,8 @@ dependencies:
 third_party_settings:
   feeds_tamper:
     tampers: {  }
-id: taxonomy_keywords
 label: 'Taxonomy - Keywords'
+id: taxonomy_keywords
 description: 'Taxonomy - Keywords'
 help: ''
 import_period: -1
@@ -27,72 +27,83 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: en
-  update_existing: 2
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: true
   values:
     vid: keywords
-  owner_id: 0
+  langcode: en
+  insert_new: 1
+  update_existing: 2
+  update_non_existent: _keep
+  skip_hash_check: true
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   '':
-    label: ''
     value: ''
+    label: ''
     machine_name: ''
+    type: csv
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
   language_code:
-    label: Language_code
     value: Language_code
+    label: Language_code
     machine_name: language_code
+    type: csv
   term_id3:
-    label: Term_id
     value: Term_id
+    label: Term_id
     machine_name: term_id3
+    type: csv
   language:
-    label: Language
     value: Language
+    label: Language
     machine_name: language
+    type: csv
   term_name_sq:
-    label: Term_name_sq
     value: Term_name_sq
+    label: Term_name_sq
     machine_name: term_name_sq
+    type: csv
   term_name_en:
-    label: Term_name_ru
     value: Term_name_ru
+    label: Term_name_ru
     machine_name: term_name_en
+    type: csv
   term_name_ru:
-    label: Term_name_ru
     value: Term_name_ru
+    label: Term_name_ru
     machine_name: term_name_ru
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: term_id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name_sq
-    unique: {  }
     settings:
       language: sq
+    unique: {  }
   -
     target: name
     map:
       value: term_name_ru
-    unique: {  }
     settings:
       language: ru
+    unique: {  }

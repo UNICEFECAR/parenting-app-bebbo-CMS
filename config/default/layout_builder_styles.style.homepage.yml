@@ -7,8 +7,8 @@ label: Homepage1
 classes: "homepageblock1\r\n\r\n"
 type: component
 group: default
-weight: 0
 block_restrictions:
   - 'field_block:block_content:basic:id'
   - 'inline_block:basic'
 layout_restrictions: {  }
+weight: 0
