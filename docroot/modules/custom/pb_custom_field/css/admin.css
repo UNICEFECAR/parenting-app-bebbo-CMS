@@ -700,7 +700,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 }
 #features,
 #why-bebbo {
-  scroll-margin-top: -20px;
+  scroll-margin-top: 120px;
 }
 .pb-main-homepage .menu li a {
   padding: 0 15px 0 0!important;
@@ -838,6 +838,16 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   }
   .navigation .menu .menu-item:last-child {
     padding-left: 0px;
+  }
+  .homepageblock4 img {
+    width: 70px;
+        height: 70px;
+    }
+  .img-wrapper-sub2 {
+      display: flex;
+      width: 80%;
+      margin: auto;
+      justify-content: center;
   }
 
 }

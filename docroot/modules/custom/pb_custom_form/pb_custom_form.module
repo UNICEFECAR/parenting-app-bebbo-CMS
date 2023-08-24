@@ -221,3 +221,14 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
 function pb_custom_form_page_attachments_alter(&$page) {
   $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
 }
+
+function pb_custom_form_page_attachments(array &$page) {
+  $xuacompatible = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'http-equiv' => 'Permissions-Policy',
+          'content' => 'interest-cohort=()',
+        ],
+      ];
+  $page['#attached']['html_head'][] = [$xuacompatible, 'Permissions-Policy'];
+}
