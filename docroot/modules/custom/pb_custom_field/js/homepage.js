@@ -36,7 +36,7 @@ jQuery(document).ready(function() {
         var id = jQuery(this).attr('id');
         menuLinks.removeClass('is-active');
         if (typeof id !== "undefined") {
-          var correspondingLink = menuLinks.filter('[href="https://staging.bebbo.app/#' + id + '"]');
+          var correspondingLink = menuLinks.filter('[href="https://www.bebbo.app/#' + id + '"]');
           correspondingLink.addClass('is-active');
         }
       }
