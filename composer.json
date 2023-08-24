@@ -46,6 +46,7 @@
         "drupal/security_review": "^1.0@alpha",
         "drupal/shield": "^1.2.0",
         "drupal/smtp": "^1.0",
+        "drupal/svg_image": "^1.16",
         "drupal/tamper": "^1.0@alpha",
         "drupal/title_length": "^1.2",
         "drupal/tmgmt": "^1.12",

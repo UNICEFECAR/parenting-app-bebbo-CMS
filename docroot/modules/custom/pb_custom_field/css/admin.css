@@ -131,7 +131,26 @@ height: 20px;
   text-align: right;
 }
 
-.pb-main-homepage .region.region-content p,
+.pb-main-homepage nav#block-footer ul li a {
+  color: white;
+  font-weight: 500;
+}
+.pb-main-homepage nav#block-footer 
+{
+  display:block;
+}
+.pb-main-homepage nav#block-footer ul {
+ background-color: #4FA9DD;
+  width: 100%;
+  padding: 20px 15%;
+  color: white;
+  margin-top: -3px;
+  display: block;
+  margin-bottom:0;
+  text-align: right;
+}
+
+/* .pb-main-homepage .region.region-content p,
 .pb-main-homepage .region.region-content h2,
 .pb-main-homepage .region.region-content h1,
 .pb-main-homepage .region.region-content h3,
@@ -142,8 +161,8 @@ height: 20px;
 .pb-main-homepage .block-page-title-block
 {
  padding:0 30px;
-}
-@media screen and (min-width:1200px)
+} */
+/* @media screen and (min-width:1200px)
 {
 .pb-main-homepage .region.region-content p,
 .pb-main-homepage .region.region-content h2,
@@ -159,8 +178,12 @@ height: 20px;
   margin: 10px auto;
   padding:0px;
 }
-}
+} */
 .pb-main-homepage nav#block-mainnavigation-2 ul li a {
+  color: white;
+  font-weight: 500;
+}
+.pb-main-homepage nav#block-footer ul li a {
   color: white;
   font-weight: 500;
 }
@@ -216,7 +239,7 @@ height: 20px;
 }
 .pb-main-homepage .navbar-toggle {
   position: absolute;
-  top: 119px;
+  top: 60px;
   right: 0;
   width: 12%;
   height: 44px;
@@ -258,6 +281,9 @@ height: 20px;
   margin-top:12px;
 }
 .pb-main-homepage nav#block-mainnavigation-2 ul li {
+  display: inline;
+}
+.pb-main-homepage nav#block-footer ul li {
   display: inline;
 }
 @media screen and (min-width:768px)
@@ -314,7 +340,7 @@ height: 20px;
 }
 .pb-main-homepage .main-logo .align-center 
 {
-  width: 50%;
+  width: 100%;
   margin: 0;
 }
 .pb-main-homepage .region.region-header.headerbg .menu--main {
@@ -445,6 +471,267 @@ height: 20px;
 .countrydate #edit-created-min, .countrydate #edit-changed-min, .countrydate #edit-changed-max, .globaldate #edit-created-min, .globaldate #edit-created-max, .globaldate #edit-changed-max, .globaldate #edit-changed-min, .countrydate #edit-created-max{
   margin-right: 12px;
 }
+/*Homepage css*/
+.pb-video {
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+  font-weight: 300;
+  /* margin-left: 4vw;
+  display: inline-block;
+  width: 45%; */
+}
+.pb-video h1 {
+  margin-left: 0;
+}
+.pb-video iframe {
+  /* height: 50vh;
+  width: 51vw; */
+  width: 100%;
+}
+.pb-video-text {
+  /* float: right;
+  display: inline-block;
+  width: 35%;
+  margin-right: 20px;
+  margin-top: 100px; */
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #32b8de !important;
+}
+.subtitle-video-text {
+  font-size: 18px;
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+img[alt="bebbo-hearts"] {
+  width: 50px;
+  text-align: center;
+  margin: 20px;
+}
+.block-download-applogo .media--type-image { 
+  justify-content: flex-start;
+}
+.block-download-header {
+  font-size: 30px;
+  margin-top: 40px;
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+.block-download-text {
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  font-size: 18px;
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+.homepageblock7 .media--type-image,
+.block-download-doubl-heart .media--type-image {
+  justify-content: center;
+}
+.homepageblock3 {
+  background: #e8e8e8;
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+.homepageblock6 p,
+.homepageblock3 p{
+width: 70%;
+margin: auto;
+margin-bottom: 30px;
+text-align: center;
+font-size: 18px;
+font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+/* .homepageblock6 p:first-child {
+/* .homepageblock3 p:first-child{ */
+/* font-size: 24px; */
+/* font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+} */ 
+.homepageblock4 img {
+  width: 100px;
+}
+.img-wrapper-sub {
+  display: flex;
+  width: 70%;
+  margin: auto;
+  justify-content: center;
+}
+.img-wrapper-sub2 {
+  display: flex;
+  width: 50%;
+  margin: auto;
+  justify-content: center;
+}
+.img-wrapper {
+  background: #e8e8e8;
+  padding: 20px;
+}
+.para-img-wrap {
+  margin: 20px;
+}
+.para-img-wrap .media--type-image {
+  justify-content: center;
+}
+.homepageblock5 {
+  background-image: url(/sites/default/files/2023-08/Bebbo%20key%20visual.jpg);
+    min-height: 300px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* margin-bottom: 20px; */
+}
+.featured-bb-image {
+  width: 120px;
+  margin: auto;
+}
+.head-text {
+  font-size: 24px;
+  text-align: center;
+  font-weight:600;
+   margin-bottom: 15px; 
+   font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+.content-bb {
+  font-size: 18px;
+  text-align:center;
+  margin-bottom: 30px; 
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+.content-bb {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.layout--twocol-section--50-50 img {
+  width: 75px;
+  margin-left: 13px;
+}
+.layout--twocol-section--50-50 .menu-item {
+  list-style: none;
+}
+.layout--twocol-section--50-50 .menu-item a{
+  color: white;
+  font-size: 20px;
+}
+.layout--twocol-section--50-50 {
+  background: #4FA9DD;
+  padding: 30px;
+}
+.layout--twocol-section--50-50 .menu {
+  display: flex;
+  justify-content: space-around;
+}
+.header-un-logo img {
+  width: 205px;
+  margin-right: 35px;
+}
+#block-mainnavigation {
+  background: #f2f2f2;
+  padding: 20px;
+}
+.main-logo { 
+  top: 40px !important;
+  color: #4fa9dd !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+}
+.homepageblock7 {
+  background: #e8e8e8;
+  padding: 30px;
+  font-size: 18px;
+}
+.homepageblock7 img{
+ width: 50px;
+ margin: 20px;
+}
+.layout--twocol-section--50-50 .menu li a {
+  color: white !important;
+}
+.para-img-wrap p{
+  text-align: center;
+  font-size: 18px;
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+}
+.pb-main-homepage .main-logo img {
+  width: 100px;
+  margin-top: 0;
+}
+.pb-main-homepage .main-logo {
+  align-items: end;
+}
+.pb-main-homepage .region.region-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+.pb-main-homepage .page-wrapper {
+  overflow-x: hidden;
+}
+.homepageblock1 {
+  margin-top: 160px;
+}
+
+.homepageblock2 {
+  padding-bottom: 30px;
+}
+.flx {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+}
+.homepageblock7 p {
+  width: 80%;
+  margin:auto;
+  text-align: center;
+  font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+  font-size: 18px;
+}
+.layout.layout--onecol {
+  margin-top: 100px;
+}
+.menu .menu-item a:hover {
+  color: #4fa9dd;
+}
+.menu .menu-item .active {
+  color: #4fa9dd;
+}
+.menu .menu-item .is-active {
+  color: #4fa9dd;
+}
+#features,
+#why-bebbo {
+  scroll-margin-top: -20px;
+}
+.pb-main-homepage .menu li a {
+  padding: 0 15px 0 0!important;
+}
+
+.block.block-layout-builder.block-field-blocknodepagetitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* .block-download-applogo img, .block-download-googlelogo img{
+  width: 70%;
+} */
+
+.homepageblock6 {
+  padding: 60px 20px;
+}
+.homepageblock6 h2 {
+  text-align: center;
+}
+.block-download-googlelogo .align-center {
+  justify-content: flex-end;
+}
+
+.homepageblock6 .col-md-4 {
+  padding-left: 35px !important;
+  padding-right: 35px !important;
+}
+
+
+/*Homepage css end*/
 
 @media screen and (max-width:767px)
 {
@@ -456,5 +743,109 @@ height: 20px;
     {
         font-size:14px;
     }
+    .pb-main-homepage nav#block-footer ul
+    {
+        padding:20px 10px;
+    }
+    .pb-main-homepage nav#block-footer ul li a 
+    {
+        font-size:14px;
+    }
 
+    .pb-video {
+      /* margin-left: auto;
+      display: inline-block;
+      width: 100%; */
+      text-align: center;
+      margin-top: 20px;
+    }
+    .pb-video iframe {
+        width: 95%;
+        margin:auto;
+    }
+    .pb-video-text {
+      /* float: none;
+      width: 95%; */
+      text-align: center;
+      font-size: 29px;
+      /* margin:auto ;
+      margin-top: 10px;
+      font-size: 22px; */
+    }
+    .subtitle-video-text {
+      text-align: center;
+    }
+    .homepageblock6 p, .homepageblock3 p ,
+    .block-download-text {
+      width: 92%;
+    }
+    .layout__region--first .media--type-image {
+      justify-content: flex-start;
+   }
+    .pb-main-homepage #block-logo {
+      width: 100% !important;
+    }
+    .pb-main-homepage .main-logo {
+        background-color: #f2f2f2;
+        height: 70px;
+        align-items: center;
+    }
+    .pb-main-homepage .navbar-toggle .icon-bar {
+        background-color: #393636;
+    }
+    .pb-main-homepage .navbar-toggle {
+      top: 30px;
+      background: #f4f4f4;
+    }
+    .header-un-logo img {
+        width: 200px;
+    }
+    .pb-main-homepage .menu li a {
+        padding: 0 !important;
+        font-size: 13px;
+    }
+    .layout--twocol-section--50-50 .menu {
+      margin-top: 20px;
+    }
+    .pb-main-homepage .menu li {
+      list-style: none;
+      width: 42vw;
+   }
+   .homepageblock7 p {
+    width: 100%;
+   }
+   .header-un-logo img {
+    margin-left: 16px;
+   }
+   .block-download-googlelogo .media--type-image,
+   .block-download-applogo .media--type-image {
+    justify-content: center;
+   }
+   .homepageblock5 {
+    min-height: 300px; /* Adjust the height as needed for mobile view */
+    background-attachment: scroll; /* Change background attachment for better mobile scrolling */
+   }
+   .block-download-header {
+    font-size: 22px;
+    margin-top: 40px;
+    font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+  }
+  .navigation .menu .menu-item {
+    padding-left: 30px;
+  }
+  .navigation .menu .menu-item:first-child {
+    padding-left: 0px;
+  }
+  .navigation .menu .menu-item:last-child {
+    padding-left: 0px;
+  }
+
+}
+@media screen and (min-width: 768px) and (max-width: 950px) {
+  .pb-main-homepage .menu li a {
+    font-size: 14px;
+  }
+  .pb-main-homepage .main-logo {
+    font-size: 16px;
+  }
 }
