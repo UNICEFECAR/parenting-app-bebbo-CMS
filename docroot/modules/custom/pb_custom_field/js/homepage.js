@@ -29,7 +29,7 @@ jQuery(window).on('scroll', function() {
           var id = jQuery(this).attr('id');
           jQuery('#block-mainnavigation .menu-item a').removeClass('is-active');
           if (typeof id !==  "undefined") {
-            jQuery("#block-mainnavigation .menu-item").find('a[href="https://staging.bebbo.app/#'+ id +'"]').addClass('is-active');
+            jQuery("#block-mainnavigation .menu-item").find('a[href="/#'+ id +'"]').addClass('is-active');
           }
       }
   });
