@@ -21,3 +21,24 @@ jQuery('.field--name-field-make-available-for-mobile').nextAll('p').remove();
 }
   
 });
+
+
+jQuery(window).on('scroll', function() {
+  jQuery('.scroll-menu').each(function() {
+      if(jQuery(window).scrollTop() >= jQuery(this).position().top) {
+          var id = jQuery(this).attr('id');
+          jQuery('#block-mainnavigation .menu-item a').removeClass('is-active');
+          if (typeof id !==  "undefined") {
+            jQuery("#block-mainnavigation .menu-item").find('a[href="https://staging.bebbo.app/#'+ id +'"]').addClass('is-active');
+          }
+      }
+  });
+});
+
+jQuery(document).ready(function() {
+  jQuery("#block-mainnavigation .menu-item").on('click', 'a', function () {
+      var id = jQuery(this).attr('href');
+      jQuery('#block-mainnavigation li a.is-active').removeClass("is-active");
+    jQuery('#block-mainnavigation .menu-item').find('a[href="'+id+'"]').addClass('is-active');
+  });
+});
