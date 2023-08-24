@@ -1235,7 +1235,7 @@ function pb_custom_field_preprocess_html(&$variables) {
   if (!$logged_in) {
     $current_path = \Drupal::service('path.current')->getPath();
     $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
+    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/terms-and-conditions" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
       $variables['#attached']['library'][] = 'pb_custom_field/mylib';
       // Replace 'the-class-to-add' with your CSS class.
       $variables['attributes']['class'][] = 'pb-main-homepage';

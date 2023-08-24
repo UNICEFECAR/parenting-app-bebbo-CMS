@@ -85,7 +85,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     global $base_url;
     $current_path = \Drupal::service('path.current')->getPath();
     $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    $landingPages = ['/homepage', '/about-us', '/privacy-policy', '/foleja', '/foleja-about-us', '/foleja-privacy-policy'];
+    $landingPages = ['/homepage', '/about-us','/terms-and-conditions','/privacy-policy', '/foleja', '/foleja-about-us', '/foleja-privacy-policy'];
     if (!$this->isNodeRoute()) {
       return;
     }
