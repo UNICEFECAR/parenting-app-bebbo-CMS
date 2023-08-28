@@ -696,7 +696,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   color: #4fa9dd;
 }
 .menu .menu-item .is-active {
-  color: #4fa9dd;
+  color: #4fa9dd !important;
 }
 #features,
 #why-bebbo {
@@ -849,7 +849,9 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       margin: auto;
       justify-content: center;
   }
-
+  .menu .menu-item a:hover {
+    color: inherit;
+    }
 }
 @media screen and (min-width: 768px) and (max-width: 950px) {
   .pb-main-homepage .menu li a {
