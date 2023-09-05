@@ -16,7 +16,7 @@ abstract class GroupKernelTestBase extends EntityKernelTestBase {
    * @todo Refactor tests to not automatically use group_test_config unless they
    *       have a good reason to.
    */
-  public static $modules = ['group', 'options', 'entity', 'variationcache', 'group_test_config'];
+  protected static $modules = ['group', 'options', 'entity', 'variationcache', 'group_test_config'];
 
   /**
    * The content enabler plugin manager.
@@ -28,7 +28,7 @@ abstract class GroupKernelTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->pluginManager = $this->container->get('plugin.manager.group_content_enabler');

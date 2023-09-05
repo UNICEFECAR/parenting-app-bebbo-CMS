@@ -18,7 +18,7 @@ class ContentEntityLinkTest extends ContentEntityTestBase {
    *
    * @var array
    */
-  public static $modules = ['link'];
+  protected static $modules = ['link'];
 
   /**
    * The entity type used for the tests.
@@ -30,7 +30,7 @@ class ContentEntityLinkTest extends ContentEntityTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $field_storage = FieldStorageConfig::create([

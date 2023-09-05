@@ -69,13 +69,12 @@ class GroupContentEnablerManagerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->cacheBackend = $this->prophesize(CacheBackendInterface::class);
 
     $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
-    $this->moduleHandler->getImplementations('entity_type_build')->willReturn([]);
     $this->moduleHandler->alter('group_content_info', Argument::type('array'))->willReturn(NULL);
 
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);

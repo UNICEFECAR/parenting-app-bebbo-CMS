@@ -3,7 +3,7 @@
 namespace Drupal\Tests\purge_queuer_coretags\Functional;
 
 use Drupal\purge_queuer_coretags\Form\ConfigurationForm;
-use Drupal\Tests\purge_ui\Functional\Form\Config\QueuerConfigFormTestBase;
+use Drupal\Tests\purge_ui\FunctionalJavascript\Form\Config\QueuerConfigFormTestBase;
 
 /**
  * Tests \Drupal\purge_queuer_coretags\Form\ConfigurationForm.
@@ -15,7 +15,7 @@ class QueuerConfigFormTest extends QueuerConfigFormTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['purge_queuer_coretags', 'purge_coretags_removed_test'];
+  protected static $modules = ['purge_queuer_coretags', 'purge_coretags_removed_test'];
 
   /**
    * {@inheritdoc}
@@ -55,7 +55,7 @@ class QueuerConfigFormTest extends QueuerConfigFormTestBase {
     $this->assertSession()->responseContains('value="config:field.storage"');
     $this->assertSession()->responseContains('value="route_match"');
     $this->assertSession()->responseContains('value="routes"');
-    $this->assertSession()->pageTextContains('Add prefix');
+    $this->assertSession()->buttonExists('Add prefix');
     $this->assertSession()->pageTextContains('if you know what you are doing');
   }
 

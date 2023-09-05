@@ -27,7 +27,7 @@ class TmgmtContentRouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = parent::getSubscribedEvents();
     //  ContentTranslationRouteSubscriber is -100, make sure we are later.
     $events[RoutingEvents::ALTER] = array('onAlterRoutes', -211);

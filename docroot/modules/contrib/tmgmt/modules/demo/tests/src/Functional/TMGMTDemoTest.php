@@ -17,12 +17,12 @@ class TMGMTDemoTest extends TMGMTTestBase {
    *
    * @var string[]
    */
-  public static $modules = array('tmgmt_demo', 'ckeditor');
+  protected static $modules = array('tmgmt_demo', 'ckeditor5');
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $basic_html_format = FilterFormat::load('basic_html');
     $restricted_html_format = FilterFormat::create(array(
@@ -52,48 +52,49 @@ class TMGMTDemoTest extends TMGMTTestBase {
   public function testInstalled() {
     // Try and translate node 1.
     $this->drupalGet('node');
-    $this->assertText('First node');
-    $this->assertText('Second node');
-    $this->assertText('TMGMT Demo');
+    $this->assertSession()->pageTextContains('First node');
+    $this->assertSession()->pageTextContains('Second node');
+    $this->assertSession()->pageTextContains('TMGMT Demo');
     $this->clickLink(t('First node'));
     $this->clickLink(t('Translate'));
     $edit = [
       'languages[de]' => TRUE,
       'languages[fr]' => TRUE,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
-    $this->assertText(t('2 jobs need to be checked out.'));
+    $this->submitForm($edit, t('Request translation'));
+    $this->assertSession()->pageTextContains(t('2 jobs need to be checked out.'));
     // Try and translate node 2.
     $this->drupalGet('admin/content');
     $this->clickLink(t('Second node'));
     $this->clickLink(t('Translate'));
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
-    $this->assertText(t('2 jobs need to be checked out.'));
+    $this->submitForm($edit, t('Request translation'));
+    $this->assertSession()->pageTextContains(t('2 jobs need to be checked out.'));
 
     // Test local translator.
     $edit = [
       'translator' => 'local',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Submit to provider and continue');
-    $this->assertText('The translation job has been submitted.');
+    $this->submitForm($edit, 'Submit to provider and continue');
+    $this->assertSession()->pageTextContains('The translation job has been submitted.');
 
     // Check to see if no items are selected and the error message pops up.
-    $this->drupalPostForm('admin/tmgmt/sources', [], t('Request translation'));
-    $this->assertUniqueText(t("You didn't select any source items."));
-    $this->drupalPostForm(NULL, [], t('Search'));
-    $this->assertNoText(t("You didn't select any source items."));
-    $this->drupalPostForm(NULL, [], t('Cancel'));
-    $this->assertNoText(t("You didn't select any source items."));
-    $this->drupalPostForm(NULL, [], t('Add to cart'));
-    $this->assertUniqueText(t("You didn't select any source items."));
+    $this->drupalGet('admin/tmgmt/sources');
+    $this->submitForm([], t('Request translation'));
+    $this->assertSession()->pageTextContainsOnce(t("You didn't select any source items."));
+    $this->submitForm([], t('Search'));
+    $this->assertSession()->pageTextNotContains(t("You didn't select any source items."));
+    $this->submitForm([], t('Cancel'));
+    $this->assertSession()->pageTextNotContains(t("You didn't select any source items."));
+    $this->submitForm([], t('Add to cart'));
+    $this->assertSession()->pageTextContainsOnce(t("You didn't select any source items."));
 
     // Test if the formats are set properly.
     $this->drupalGet('node/1/edit');
-    $this->assertOptionSelected('edit-body-0-format--2', 'basic_html', 'Basic HTML selected as format');
+    $this->assertTrue($this->assertSession()->optionExists('edit-body-0-format--2', 'basic_html')->isSelected());
     $this->drupalGet('node/2/edit');
-    $this->assertOptionSelected('edit-body-0-format--2', 'restricted_html', 'Restricted HTML selected as format');
+    $this->assertTrue($this->assertSession()->optionExists('edit-body-0-format--2', 'restricted_html')->isSelected());
     $this->drupalGet('node/3/edit');
-    $this->assertOptionSelected('edit-body-0-format--2', 'full_html', 'Full HTML selected as format');
+    $this->assertTrue($this->assertSession()->optionExists('edit-body-0-format--2', 'full_html')->isSelected());
   }
 
 }

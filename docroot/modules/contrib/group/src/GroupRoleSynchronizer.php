@@ -63,7 +63,7 @@ class GroupRoleSynchronizer implements GroupRoleSynchronizerInterface {
   public function getGroupRoleIdsByGroupTypes($group_type_ids) {
     $group_role_ids = [];
 
-    $role_ids = $this->entityTypeManager->getStorage('user_role')->getQuery()->execute();
+    $role_ids = $this->entityTypeManager->getStorage('user_role')->getQuery()->accessCheck(FALSE)->execute();
     foreach ($role_ids as $role_id) {
       foreach ($group_type_ids as $group_type_id) {
         $group_role_ids[] = $this->getGroupRoleId($group_type_id, $role_id);
@@ -86,7 +86,7 @@ class GroupRoleSynchronizer implements GroupRoleSynchronizerInterface {
   public function getGroupRoleIdsByUserRoles($role_ids) {
     $group_role_ids = [];
 
-    $group_type_ids = $this->entityTypeManager->getStorage('group_type')->getQuery()->execute();
+    $group_type_ids = $this->entityTypeManager->getStorage('group_type')->getQuery()->accessCheck(FALSE)->execute();
     foreach ($group_type_ids as $group_type_id) {
       foreach ($role_ids as $role_id) {
         $group_role_ids[] = $this->getGroupRoleId($group_type_id, $role_id);

@@ -21,7 +21,7 @@ class ConfigEntityReferenceTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'feeds',
@@ -33,7 +33,7 @@ class ConfigEntityReferenceTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create two config entities.

@@ -125,7 +125,7 @@ class RecommendationsCheck extends DiagnosticCheckBase implements DiagnosticChec
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('app.root'),
+      $container->getParameter('app.root'),
       $container->get('cache.default'),
       $container->get('config.factory'),
       $container->get('module_handler'),

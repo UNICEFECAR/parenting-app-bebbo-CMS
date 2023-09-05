@@ -23,7 +23,8 @@ class ConfigDifferTest extends ConfigUpdateUnitTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
+    parent::setUp();
     $this->configDiffer = new ConfigDiffer($this->getTranslationMock());
   }
 

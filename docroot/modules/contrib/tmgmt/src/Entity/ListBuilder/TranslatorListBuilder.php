@@ -106,10 +106,11 @@ class TranslatorListBuilder extends DraggableListBuilder implements EntityListBu
     // Add provider logo.
     /** @var \Drupal\tmgmt\Entity\Translator $entity */
     $definition = \Drupal::service('plugin.manager.tmgmt.translator')->getDefinition($entity->getPluginId());
+    $npath = \Drupal::service('extension.list.module')->getPath($definition['provider']);
     if (isset($definition['logo'])) {
       $logo_render_array = [
         '#theme' => 'image',
-        '#uri' => file_create_url(drupal_get_path('module', $definition['provider']) . '/' . $definition['logo']),
+        '#uri' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/' . $definition['logo']),
         '#alt' => $definition['label'],
         '#title' => $definition['label'],
         '#attributes' => [

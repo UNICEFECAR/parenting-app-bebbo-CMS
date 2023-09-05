@@ -4,7 +4,7 @@ namespace Drupal\Tests\feeds\Unit\Event;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Event\EventDispatcherTrait
@@ -32,7 +32,7 @@ class EventDispatcherTraitTest extends FeedsUnitTestCase {
     $event = new Event();
     $dispatcher->expects($this->once())
       ->method('dispatch')
-      ->with('test_event', $event);
+      ->with($event, 'test_event');
     $method = $this->getMethod(get_class($mock), 'dispatchEvent');
     $method->invokeArgs($mock, ['test_event', $event]);
   }

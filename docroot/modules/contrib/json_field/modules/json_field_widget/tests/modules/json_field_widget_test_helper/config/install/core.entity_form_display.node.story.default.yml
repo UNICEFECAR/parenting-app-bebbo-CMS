@@ -1,0 +1,72 @@
+uuid: 1ee6c515-5cc0-445a-97b7-af1217f7291b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.story.field_json
+    - node.type.story
+  module:
+    - json_field_widget
+id: node.story.default
+targetEntityType: node
+bundle: story
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_json:
+    type: json_editor
+    weight: 122
+    region: content
+    settings:
+      mode: code
+      modes:
+        code: code
+        tree: tree
+      schema: ''
+      schema_validate: false
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

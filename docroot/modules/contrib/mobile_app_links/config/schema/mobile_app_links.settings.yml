@@ -32,23 +32,29 @@ mobile_app_links.ios:
     kosovo_paths_Test:
       type: string
       label: 'Kosovo Paths - UAT'
-    
-mobile_app_links.android:
+
+mobile_app_links.android_packages:
   type: config_object
   label: 'Android App Configurations'
   mapping:
-    package_name:
-      type: string
-      label: 'Package Name'
-    sha256_cert_fingerprints:
-      type: string
-      label: 'SHA256 Certificate Fingerprints'
-    kosovo_package_name:
-      type: string
-      label: 'Kosovo Package Name'
-    kosovo_sha256_cert_fingerprints:
-      type: string
-      label: 'Kosovo SHA256 Certificate Fingerprints'
+    android_packages:
+      type: sequence
+      label: 'Android Packages'
+      sequence:
+        type: mapping
+        mapping:
+          package_name:
+            type: string
+            label: 'Package Name'
+          sha256_cert_fingerprints:
+            type: string
+            label: 'SHA256 Certificate Fingerprints'
+          kosovo_package_name:
+            type: string
+            label: 'Kosovo Package Name'
+          kosovo_sha256_cert_fingerprints:
+            type: string
+            label: 'Kosovo SHA256 Certificate Fingerprints'
 
 mobile_app_links.apple_dev_merchant_id_assoc:
   type: config_object

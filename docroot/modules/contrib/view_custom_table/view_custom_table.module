@@ -8,7 +8,6 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
-use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Implements hook_help().
@@ -17,9 +16,9 @@ function view_custom_table_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
 
     case 'help.page.view_custom_table':
-      return '<h3>' . t('About') . '</h3><p>' . t('Views Custom Table provide you interface to add your custom table data to views. as we know views is a very strong and powerfull pulgin to format data in different displys. Views Custom Table module add your data to views so you can use all wonderfull fetures for the views for custom table data. you can add as much as custom table you want in syatem. you can find link to add them in system and manage or view which are already added in the system on <a href="@views_custom_table">Views Custom Table</a> page.', [
-        '@views_custom_table' => Url::fromRoute('view_custom_table.customtable'),
-      ]) . '</p>' . '<p>' . t('It is very common that your custom table has the reference of a drupal entity, or relation with the drupal entity like "Node", "Taxonomy", "User", etc. Views Custom Table module provides you facility to add a relationship from custom table to drupal entity, to add relationship you must have an integer type column in your custom table, which refere main id of the entity, for example if your table has relation with the "Node" then it must have a column which refere to "Nid". Views Custom Table module also provide you facility to add relationship between two custom tables.') . '</p>' . '<h3>Notes for developer:</h3></p><ul><li>Each custom table must have a primary key.</li><li>The column which refere to a entity or an other custom table must be numeric.</li><li>Tables of extarnal database (other then default) can be relat to only those tables which are belongs to that database.</li></ul>';
+      return '<h3>' . t('About') . '</h3><p>' . t('Views Custom Table provide you interface to add your custom table data to views. as we know views is a very strong and powerful plugin to format data in different displays. Views Custom Table module add your data to views so you can use all wonderful features for the views for custom table data. You can add as much as custom table you want in system. you can find link to add them in system and manage or view which are already added in the system on <a href="@views_custom_table">Views Custom Table</a> page.', [
+        '@views_custom_table' => Url::fromRoute('view_custom_table.customtable')->toString(),
+      ]) . '</p>' . '<p>' . t('It is very common that your custom table has the reference of a drupal entity, or relation with the drupal entity like "Node", "Taxonomy", "User", etc. Views Custom Table module provides you facility to add a relationship from custom table to drupal entity, to add relationship you must have an integer type column in your custom table, which refer main id of the entity, for example if your table has relation with the "Node" then it must have a column which refer to "Nid". Views Custom Table module also provide you facility to add relationship between two custom tables.') . '</p>' . '<h3>Notes for developer:</h3></p><ul><li>Each custom table must have a primary key.</li><li>The column which refer to a entity or an other custom table must be numeric.</li><li>Tables of external database (other then default) can be related to only those tables which are belongs to that database.</li></ul>';
   }
 }
 
@@ -34,6 +33,7 @@ function view_custom_table_views_data() {
     'smallint',
     'mediumint',
     'int',
+    'int unsigned',
     'bigint',
     'decimal',
     'float',
@@ -66,7 +66,7 @@ function view_custom_table_views_data() {
 
   if (!empty($all_custom_tables)) {
     foreach ($all_custom_tables as $table_name => $custom_table) {
-      $table_relations = unserialize($custom_table['column_relations']);
+      $table_relations = unserialize($custom_table['column_relations'], ['allowed_classes' => FALSE]);
       $table_display_name = ucfirst($table_name);
       $table_display_name = str_replace('_', ' ', $table_display_name);
 
@@ -173,8 +173,12 @@ function view_custom_table_views_data() {
             if (isset($all_entities[$table_relations[$column->Field]])) {
               $entity_info = \Drupal::entityTypeManager()->getDefinition($table_relations[$column->Field]);
               $entity_keys = $entity_info->getKeys();
+              $base = $entity_info->getDataTable();
+              if ($table_relations[$column->Field] == 'file') {
+                $base = 'file_managed';
+              }
               $data[$table_name][$column->Field]['relationship'] = [
-                'base' => $entity_info->getBaseTable(),
+                'base' => $base,
                 'id' => 'standard',
                 'base field' => $entity_keys['id'],
                 'label' => t('@column_name', [
@@ -250,12 +254,17 @@ function view_custom_table_load_table_structure($table_name = NULL, $database = 
   if ($table_name === NULL) {
     return NULL;
   }
-
   $connection = Database::getConnection('default', $database);
-  $query = 'DESCRIBE ' . $connection->escapeTable($table_name);
-  if ($result = $connection->query($query)) {
-    $table_info = $result->fetchAll();
-  }
 
-  return $table_info ?? NULL;
+  /* Check if table exists. */
+  try {
+    $query = 'DESCRIBE ' . $connection->tablePrefix($table_name) . $connection->escapeTable($table_name);
+    if ($result = $connection->query($query)) {
+      $table_info = $result->fetchAll();
+    }
+    return $table_info ?? NULL;
+  }
+  catch (\Exception $e) {
+    return FALSE;
+  }
 }

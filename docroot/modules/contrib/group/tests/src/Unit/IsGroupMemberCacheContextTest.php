@@ -39,7 +39,7 @@ class IsGroupMemberCacheContextTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->currentUser = $this->prophesize(AccountProxyInterface::class)->reveal();
     $this->group = $this->prophesize(GroupInterface::class)->reveal();

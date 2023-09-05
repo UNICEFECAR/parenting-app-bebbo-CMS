@@ -8,7 +8,6 @@ use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\feeds\Functional\FeedsBrowserTestBase;
-use SimpleXMLElement;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\HttpFetcher
@@ -19,7 +18,7 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'node',
     'user',
@@ -38,8 +37,11 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
+
+    // Flush all caches to make table "cache_feeds_download" available.
+    drupal_flush_all_caches();
 
     // Add body field.
     node_add_body_field($this->nodeType);
@@ -106,18 +108,22 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
    * Tests importing a RSS feed using the HTTP fetcher.
    */
   public function testHttpImport() {
-    $filepath = drupal_get_path('module', 'feeds') . '/tests/resources/rss/googlenewstz.rss2';
+    $filepath = $this->resourcesPath() . '/rss/googlenewstz.rss2';
 
     $feed = $this->createFeed($this->feedType->id(), [
       'source' => $this->resourcesUrl() . '/rss/googlenewstz.rss2',
     ]);
+
     $this->drupalGet('feed/' . $feed->id());
     $this->clickLink(t('Import'));
-    $this->drupalPostForm(NULL, [], t('Import'));
-    $this->assertText('Created 6');
+    $this->submitForm([], t('Import'));
+    $this->assertSession()->pageTextContains('Created 6');
     $this->assertNodeCount(6);
 
-    $xml = new SimpleXMLElement($filepath, 0, TRUE);
+    // Assert that the temporary file is cleaned up.
+    $this->assertCountFilesInProgressDir(0);
+
+    $xml = new \SimpleXMLElement($filepath, 0, TRUE);
 
     $expected_terms = [
       1 => [],
@@ -133,8 +139,11 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
       $node = Node::load($nid);
       $this->assertEquals($node->title->value, (string) $item->title);
       $this->assertEquals($node->body->value, (string) $item->description);
-      $this->assertEquals($node->feeds_item->guid, (string) $item->guid);
-      $this->assertEquals($node->feeds_item->url, (string) $item->link);
+
+      $feeds_item = $node->get('feeds_item')->getItemByFeed($feed);
+      $this->assertEquals($feeds_item->guid, (string) $item->guid);
+      $this->assertEquals($feeds_item->url, (string) $item->link);
+
       $this->assertEquals($node->created->value, strtotime((string) $item->pubDate));
 
       $terms = [];
@@ -145,13 +154,15 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
     }
 
     // Test cache.
-    $this->drupalPostForm('feed/' . $feed->id() . '/import', [], t('Import'));
-    $this->assertText('The feed has not been updated.');
+    $this->drupalGet('feed/' . $feed->id() . '/import');
+    $this->submitForm([], t('Import'));
+    $this->assertSession()->pageTextContains('The feed has not been updated.');
 
     // Import again.
     \Drupal::cache('feeds_download')->deleteAll();
-    $this->drupalPostForm('feed/' . $feed->id() . '/import', [], t('Import'));
-    $this->assertText('There are no new');
+    $this->drupalGet('feed/' . $feed->id() . '/import');
+    $this->submitForm([], t('Import'));
+    $this->assertSession()->pageTextContains('There are no new');
 
     // Test force-import.
     \Drupal::cache('feeds_download')->deleteAll();
@@ -160,15 +171,16 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
     $configuration['update_existing'] = ProcessorInterface::UPDATE_EXISTING;
     $this->feedType->getProcessor()->setConfiguration($configuration);
     $this->feedType->save();
-    $this->drupalPostForm('feed/' . $feed->id() . '/import', [], t('Import'));
+    $this->drupalGet('feed/' . $feed->id() . '/import');
+    $this->submitForm([], t('Import'));
     $this->assertNodeCount(6);
-    $this->assertText('Updated 6');
+    $this->assertSession()->pageTextContains('Updated 6');
 
     // Delete items.
     $this->clickLink(t('Delete items'));
-    $this->drupalPostForm(NULL, [], t('Delete items'));
+    $this->submitForm([], t('Delete items'));
     $this->assertNodeCount(0);
-    $this->assertText('Deleted 6');
+    $this->assertSession()->pageTextContains('Deleted 6');
   }
 
   /**
@@ -187,7 +199,7 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
       'source' => $this->resourcesUrl() . '/rss/googlenewstz.rss2',
     ]);
     $this->batchImport($feed);
-    $this->assertText('Created 6');
+    $this->assertSession()->pageTextContains('Created 6');
     $this->assertNodeCount(6);
 
     // Assert that no cache entries were created.
@@ -228,12 +240,12 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
       'source' => \Drupal::request()->getSchemeAndHttpHost() . '/testing/feeds/nodes.csv',
     ]);
     $this->batchImport($feed);
-    $this->assertText('Created 8');
+    $this->assertSession()->pageTextContains('Created 8');
     $this->assertNodeCount(8);
 
     // Import again.
     $this->batchImport($feed);
-    $this->assertText('There are no new');
+    $this->assertSession()->pageTextContains('There are no new');
 
     // Now change the source to test if the source is refetched.
     // - Items 1 and 4 changed.
@@ -241,7 +253,30 @@ class HttpFetcherTest extends FeedsBrowserTestBase {
     \Drupal::state()->set('feeds_test_nodes_last_modified', strtotime('Sun, 30 Mar 2016 10:19:55 GMT'));
 
     $this->batchImport($feed);
-    $this->assertText('Updated 2');
+    $this->assertSession()->pageTextContains('Updated 2');
+  }
+
+  /**
+   * Tests if the file to import gets removed when unlocking a feed.
+   */
+  public function testRemoveTempFileAfterUnlock() {
+    $feed = $this->createFeed($this->feedType->id(), [
+      'source' => $this->resourcesUrl() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // Start a cron import. This will put items on the queue.
+    $feed->startCronImport();
+
+    // Run the first queue task, which is fetching the http source. This will
+    // create the file in the Feeds in progress dir.
+    $this->runQueue('feeds_feed_refresh:' . $this->feedType->id(), 1);
+    // Assert that a file exist in the Feeds in progress dir.
+    $this->assertCountFilesInProgressDir(1, '', 'public');
+    $this->assertCountFilesInProgressDir(1, $feed->id(), 'public');
+
+    // Now unlock the feed and assert that the file to import gets removed.
+    $feed->unlock();
+    $this->assertCountFilesInProgressDir(0, '', 'public');
   }
 
 }

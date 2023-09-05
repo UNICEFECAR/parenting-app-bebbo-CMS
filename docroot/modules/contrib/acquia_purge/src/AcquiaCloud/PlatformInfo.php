@@ -2,10 +2,8 @@
 
 namespace Drupal\acquia_purge\AcquiaCloud;
 
-use Drupal\Core\DrupalKernel;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\StateInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides an information object interfacing with the Acquia platform.
@@ -91,17 +89,17 @@ class PlatformInfo implements PlatformInfoInterface {
   /**
    * Constructs a PlatformInfo object.
    *
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *   The request stack.
+   * @param string $site_path
+   *   The site path.
    * @param \Drupal\Core\Site\Settings $settings
    *   Drupal site settings object.
    * @param \Drupal\Core\State\StateInterface $state
    *   The state key value store.
    */
-  public function __construct(RequestStack $request_stack, Settings $settings, StateInterface $state) {
+  public function __construct(string $site_path, Settings $settings, StateInterface $state) {
 
-    // Generate the Drupal sitepath by querying the SitePath from this request.
-    $this->sitePath = DrupalKernel::findSitePath($request_stack->getCurrentRequest());
+    // Generate the Drupal sitepath from service.
+    $this->sitePath = $site_path;
 
     // Take the IP addresses from the 'reverse_proxies' setting.
     if (is_array($reverse_proxies = $settings->get('reverse_proxies'))) {

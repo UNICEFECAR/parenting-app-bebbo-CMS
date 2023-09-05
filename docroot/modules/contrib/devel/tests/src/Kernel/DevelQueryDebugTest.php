@@ -31,7 +31,7 @@ class DevelQueryDebugTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installSchema('system', 'sequences');
@@ -40,6 +40,7 @@ class DevelQueryDebugTest extends KernelTestBase {
 
     $devel_role = Role::create([
       'id' => 'admin',
+      'label' => 'Admin',
       'permissions' => ['access devel information'],
     ]);
     $devel_role->save();
@@ -98,7 +99,7 @@ class DevelQueryDebugTest extends KernelTestBase {
 
     // Ensures that no debug message is shown to user without the adequate
     // permissions.
-    $query = \Drupal::entityQuery('user');
+    $query = \Drupal::entityQuery('user')->accessCheck(FALSE);
     $query->addTag('debug');
     $query->execute();
 
@@ -111,7 +112,7 @@ class DevelQueryDebugTest extends KernelTestBase {
     \Drupal::currentUser()->setAccount($this->develUser);
     $expected_message = "SELECT base_table.uid AS uid, base_table.uid AS base_table_uid\nFROM\n{users} base_table";
 
-    $query = \Drupal::entityQuery('user');
+    $query = \Drupal::entityQuery('user')->accessCheck(FALSE);
     $query->addTag('debug');
     $query->execute();
 

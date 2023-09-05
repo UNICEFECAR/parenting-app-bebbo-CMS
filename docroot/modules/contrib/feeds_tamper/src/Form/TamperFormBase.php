@@ -160,6 +160,16 @@ abstract class TamperFormBase extends FormBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    if (!empty($this->plugin)) {
+      $subform_state = SubformState::createForSubform($form[self::VAR_PLUGIN_CONFIGURATION], $form, $form_state);
+      $this->plugin->submitConfigurationForm($form[self::VAR_PLUGIN_CONFIGURATION], $subform_state);
+    }
+  }
+
+  /**
    * Get the tamper plugin options.
    *
    * @return array
@@ -195,10 +205,13 @@ abstract class TamperFormBase extends FormBase {
       'plugin' => $this->plugin->getPluginId(),
       'source' => $source,
       'weight' => $form_state->getValue(self::VAR_WEIGHT),
-      'label' => $form_state->getValue([self::VAR_PLUGIN_CONFIGURATION, self::VAR_TAMPER_LABEL]),
+      'label' => $form_state->getValue([
+        self::VAR_PLUGIN_CONFIGURATION,
+        self::VAR_TAMPER_LABEL,
+      ]),
     ];
 
-    $plugin_config = $form_state->getValue(self::VAR_PLUGIN_CONFIGURATION);
+    $plugin_config = $this->plugin->getConfiguration();
     if ($plugin_config) {
       $config += $plugin_config;
     }

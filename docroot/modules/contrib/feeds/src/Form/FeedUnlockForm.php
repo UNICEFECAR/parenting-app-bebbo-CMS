@@ -36,7 +36,10 @@ class FeedUnlockForm extends ContentEntityConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->unlock();
-    $args = ['@type' => $this->entity->getType()->label(), '%title' => $this->entity->label()];
+    $args = [
+      '@type'  => $this->entity->getType()->label(),
+      '%title' => $this->entity->label(),
+    ];
 
     $this->logger('feeds')->notice('@type: unlocked %title.', $args);
     $this->messenger()->addMessage($this->t('%title has been unlocked.', $args));

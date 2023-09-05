@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Functional;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\filter\Entity\FilterFormat;
 
 /**
@@ -14,7 +15,7 @@ class FieldValidationTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'node',
     'user',
@@ -69,10 +70,11 @@ class FieldValidationTest extends FeedsBrowserTestBase {
     $this->batchImport($feed);
 
     // Import CSV file.
-    $this->assertText('Created 1 Article.');
-    $this->assertText('Failed importing 1 Article.');
-    $this->assertText("The content Ut wisi enim ad minim veniam failed to validate with the following errors");
-    $this->assertText('field_alpha.0.value: field_alpha label: the text may not be longer than 5 characters.');
+    $page_text = Xss::filter($this->getSession()->getPage()->getContent(), []);
+    $this->assertStringContainsString('Created 1 Article.', $page_text);
+    $this->assertStringContainsString('Failed importing 1 Article.', $page_text);
+    $this->assertStringContainsString('The content Ut wisi enim ad minim veniam failed to validate with the following errors', $page_text);
+    $this->assertStringContainsString('field_alpha.0.value: field_alpha label: the text may not be longer than 5 characters.', $page_text);
   }
 
   /**
@@ -132,7 +134,8 @@ class FieldValidationTest extends FeedsBrowserTestBase {
     $this->drupalLogin($account);
 
     // And import!
-    $this->drupalPostForm('feed/1/import', [], 'Import');
+    $this->drupalGet('feed/1/import');
+    $this->submitForm([], 'Import');
 
     // Assert that 2 nodes have been created.
     $this->assertNodeCount(2);

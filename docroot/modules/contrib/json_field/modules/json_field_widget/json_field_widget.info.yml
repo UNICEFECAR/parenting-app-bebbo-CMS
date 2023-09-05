@@ -1,0 +1,12 @@
+name: JSON Field Widget
+type: module
+description: Adds a new field widget for the JSON Field module.
+core_version_requirement: ^9 || ^10
+package: Field types
+dependencies:
+  - json_field:json_field
+
+# Information added by Drupal.org packaging script on 2023-08-09
+version: '8.x-1.3'
+project: 'json_field'
+datestamp: 1691597988

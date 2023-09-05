@@ -12,6 +12,16 @@ class FeedsBatchBatch extends FeedsBatchBase {
   use StringTranslationTrait;
 
   /**
+   * Adds a new batch.
+   *
+   * @param array $batch_definition
+   *   An associative array defining the batch.
+   */
+  protected function batchSet(array $batch_definition) {
+    return batch_set($batch_definition);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function run() {
@@ -54,7 +64,7 @@ class FeedsBatchBatch extends FeedsBatchBase {
       'progress_message' => $batch['title'],
     ];
 
-    batch_set($batch);
+    $this->batchSet($batch);
 
     return $this;
   }

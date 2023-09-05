@@ -1,7 +1,7 @@
 name: Content Entity Source
 description: Content entity source plugin for the Translation Management system.
 package: Translation Management
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.3 || ^10
 type: module
 
 dependencies:
@@ -14,7 +14,7 @@ test_dependencies:
  - pathauto:pathauto
 
 
-# Information added by Drupal.org packaging script on 2021-02-09
-version: '8.x-1.12'
+# Information added by Drupal.org packaging script on 2023-04-04
+version: '8.x-1.15'
 project: 'tmgmt'
-datestamp: 1612891041
+datestamp: 1680643415

@@ -1,3 +1,4 @@
+# @todo For 2.0.0: Prefix entity-specific links with entity.
 group.list:
   title: 'List'
   base_route: 'entity.group.collection'
@@ -39,6 +40,12 @@ group.content:
   base_route: 'entity.group.canonical'
   route_name: 'entity.group_content.collection'
   weight: 15
+
+group.version_history:
+  title: 'Revisions'
+  base_route: 'entity.group.canonical'
+  route_name: 'entity.group.version_history'
+  weight: 20
 
 group_type.edit_form:
   title: 'Edit'

@@ -33,7 +33,7 @@ class CrudFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'block',
     'content_moderation_notifications',
     'node',
@@ -43,7 +43,7 @@ class CrudFormTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp():void {
     parent::setUp();
 
     $this->createContentType(['type' => 'article']);
@@ -83,17 +83,27 @@ class CrudFormTest extends BrowserTestBase {
       'subject' => $this->randomString(),
       'body[value]' => $this->randomGenerator->paragraphs(2),
     ];
-    $this->drupalPostForm(NULL, $edit, t('Create Notification'));
+    $this->submitForm($edit, t('Create Notification'));
 
     /** @var \Drupal\content_moderation_notifications\ContentModerationNotificationInterface $notification */
     $notification = ContentModerationNotification::load($edit['id']);
     $this->assertSession()
-      ->responseContains(t('Notification <a href=":url">%label</a> has been added.', ['%label' => $edit['label'], ':url' => $notification->toUrl('edit-form')->toString()]));
+      ->responseContains(t('Notification <a href=":url">%label</a> has been added.',
+        [
+          '%label' => $edit['label'],
+          ':url' => $notification->toUrl('edit-form')->toString(),
+        ]
+      ));
 
     $this->assertEquals($edit['id'], $notification->id());
     $this->assertEquals($edit['workflow'], $notification->getWorkflowId());
     $this->assertEquals(['authenticated' => 'authenticated'], $notification->getRoleIds());
-    $this->assertEquals(['create_new_draft' => 'create_new_draft', 'archived_published' => 'archived_published'], $notification->getTransitions());
+    $this->assertEquals(
+      [
+        'create_new_draft' => 'create_new_draft',
+        'archived_published' => 'archived_published',
+      ], $notification->getTransitions()
+    );
 
     // Test long emails.
     $emails = [
@@ -108,12 +118,17 @@ class CrudFormTest extends BrowserTestBase {
       'body[format]' => 'full_html',
       'body[value]' => $this->randomGenerator->paragraphs(3),
       // Long adhoc email value with line breaks and commas.
-      'emails' =>  $emails[0] . ",\r\n" . $emails[1] . "\n" . $emails[2],
+      'emails' => $emails[0] . ",\r\n" . $emails[1] . "\n" . $emails[2],
     ];
     $this->drupalGet($notification->toUrl('edit-form'));
-    $this->drupalPostForm(NULL, $edit, t('Update Notification'));
+    $this->submitForm($edit, t('Update Notification'));
     $this->assertSession()
-      ->responseContains(t('Notification <a href=":url">%label</a> has been updated.', ['%label' => $notification->label(), ':url' => $notification->toUrl('edit-form')->toString()]));
+      ->responseContains(t('Notification <a href=":url">%label</a> has been updated.',
+        [
+          '%label' => $notification->label(),
+          ':url' => $notification->toUrl('edit-form')->toString(),
+        ]
+      ));
     /** @var \Drupal\content_moderation_notifications\ContentModerationNotificationInterface $notification */
     $notification = ContentModerationNotification::load($notification->id());
     $this->assertEquals($edit['subject'], $notification->getSubject());
@@ -123,7 +138,7 @@ class CrudFormTest extends BrowserTestBase {
 
     // Test the disable form.
     $this->drupalGet($notification->toUrl('disable-form'));
-    $this->drupalPostForm(NULL, [], t('Confirm'));
+    $this->submitForm([], t('Confirm'));
     /** @var \Drupal\content_moderation_notifications\ContentModerationNotificationInterface $notification */
     $notification = ContentModerationNotification::load($notification->id());
     $this->assertFalse($notification->status());
@@ -134,7 +149,7 @@ class CrudFormTest extends BrowserTestBase {
 
     // Test the enable form.
     $this->drupalGet($notification->toUrl('enable-form'));
-    $this->drupalPostForm(NULL, [], t('Confirm'));
+    $this->submitForm([], t('Confirm'));
     /** @var \Drupal\content_moderation_notifications\ContentModerationNotificationInterface $notification */
     $notification = ContentModerationNotification::load($notification->id());
     $this->assertTrue($notification->status());
@@ -145,7 +160,7 @@ class CrudFormTest extends BrowserTestBase {
 
     // Test the delete form.
     $this->drupalGet($notification->toUrl('delete-form'));
-    $this->drupalPostForm(NULL, [], t('Delete Notification'));
+    $this->submitForm([], t('Delete Notification'));
     $this->assertSession()->responseContains(t('Notification %label was deleted.', ['%label' => $notification->label()]));
     $this->assertSession()->pageTextContains(t('There are no notifications yet.'));
   }

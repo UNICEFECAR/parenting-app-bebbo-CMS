@@ -1,12 +1,10 @@
-name: feature
+name: test_feature
 type: module
-core_version_requirement: ^8.8 || ^9
-package: Test
-# Force this to install after features.
+package: Testing
 dependencies:
   - features:features
 
-# Information added by Drupal.org packaging script on 2021-02-09
-version: '8.x-3.12'
+# Information added by Drupal.org packaging script on 2023-06-06
+version: '8.x-3.13'
 project: 'features'
-datestamp: 1612830533
+datestamp: 1686073888

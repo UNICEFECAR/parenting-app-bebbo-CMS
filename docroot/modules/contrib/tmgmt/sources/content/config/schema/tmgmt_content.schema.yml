@@ -8,6 +8,11 @@ tmgmt_content.settings:
         type: sequence
         sequence:
           type: boolean
+    default_moderation_states:
+      label: 'Default moderation states'
+      type: sequence
+      sequence:
+        type: string
 
 field.field.*.*.*.third_party.tmgmt_content:
   type: mapping

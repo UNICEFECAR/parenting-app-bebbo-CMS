@@ -169,7 +169,7 @@ class FeedTypeTamperMeta implements FeedTypeTamperMetaInterface {
     // Extract used sources from mappings.
     $sources = [];
     foreach ($this->feedType->getMappings() as $mapping) {
-      foreach ($mapping['map'] as $column => $source) {
+      foreach ($mapping['map'] as $source) {
         if ($source == '') {
           continue;
         }
@@ -186,7 +186,7 @@ class FeedTypeTamperMeta implements FeedTypeTamperMetaInterface {
   public function getSourceDefinition() {
     $source_list = [];
     foreach ($this->feedType->getMappingSources() as $key => $source) {
-      $source_list[$key] = $key;
+      $source_list[$key] = $source['label'] ?? $key;
     }
 
     return new SourceDefinition($source_list);

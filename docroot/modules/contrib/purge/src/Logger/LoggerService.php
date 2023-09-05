@@ -99,7 +99,8 @@ class LoggerService extends ServiceProviderBase implements LoggerServiceInterfac
    * {@inheritdoc}
    */
   public function destruct() {
-    if ($this->write) {
+    // Do not change data while config import in progress.
+    if ($this->write && !\Drupal::isConfigSyncing()) {
       $this->configFactory
         ->getEditable(self::CONFIG)
         ->set(self::CKEY, $this->config)

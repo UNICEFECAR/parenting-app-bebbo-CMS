@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\FeedsItem;
 class FeedsItemTest extends FieldTargetTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'feeds_item';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {

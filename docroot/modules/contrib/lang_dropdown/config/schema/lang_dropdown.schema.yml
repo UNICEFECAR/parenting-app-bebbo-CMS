@@ -5,6 +5,9 @@ block.settings.language_dropdown_block:*:
     showall:
       type: boolean
       label: 'Show all enabled languages'
+    hide_only_one:
+      type: boolean
+      label: 'Hide switcher if there is only one translation'
     tohome:
       type: boolean
       label: 'Redirect to home on switch'

@@ -46,15 +46,16 @@ class IosConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enter one value per line.'),
       '#default_value' => $config->get('paths'),
     ];
-	
+
     $form['appclips'] = [
       '#type' => 'textfield',
       '#title' => $this->t('App Clips'),
       '#description' => $this->t('Enter the "apps" that have appclips: *your_id*.com.domain.Clip.'),
       '#default_value' => $config->get('appclips'),
     ];
-	
-	$form['appID_Test'] = [
+
+    
+    $form['appID_Test'] = [
       '#type' => 'textfield',
       '#title' => $this->t('App ID - UAT'),
       '#default_value' => $config->get('appID_Test'),
@@ -66,7 +67,8 @@ class IosConfigForm extends ConfigFormBase {
       '#description' => $this->t('Enter one value per line.'),
       '#default_value' => $config->get('paths_Test'),
     ];
-	
+
+    	
 	/* Kosovo App Config Details */
 	$form['kosovo_appID'] = [
       '#type' => 'textfield',
@@ -115,15 +117,15 @@ class IosConfigForm extends ConfigFormBase {
     $paths = str_replace("\r", "\n", $paths);
     $config->set('paths', $paths);
     $config->set('appclips', $form_state->getValue('appclips'));
-	
-	/* UAT Config Settings */
-	$config->set('appID_Test', $form_state->getValue('appID_Test'));
-	$paths_uat = str_replace("\r\n", "\n", $form_state->getValue('paths_Test'));
+    
+    /* UAT Config Settings */
+    $config->set('appID_Test', $form_state->getValue('appID_Test'));
+    $paths_uat = str_replace("\r\n", "\n", $form_state->getValue('paths_Test'));
     $paths_uat = str_replace("\r", "\n", $paths_uat);
     $config->set('paths_Test', $paths_uat);
-	
+
     /* Kosovo Config Settings */
-	$config->set('kosovo_appID_Test', $form_state->getValue('kosovo_appID_Test'));
+	  $config->set('kosovo_appID_Test', $form_state->getValue('kosovo_appID_Test'));
     $kosovo_paths_Test = str_replace("\r\n", "\n", $form_state->getValue('kosovo_paths_Test'));
     $kosovo_paths_Test = str_replace("\r", "\n", $kosovo_paths_Test);
     $config->set('kosovo_paths_Test', $kosovo_paths_Test);
@@ -133,7 +135,6 @@ class IosConfigForm extends ConfigFormBase {
     $kosovo_paths = str_replace("\r", "\n", $kosovo_paths);
     $config->set('kosovo_paths', $kosovo_paths);
     $config->set('kosovo_appclips', $form_state->getValue('kosovo_appclips'));
-
     $config->save();
 
     return parent::submitForm($form, $form_state);

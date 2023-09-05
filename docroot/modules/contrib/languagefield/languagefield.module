@@ -34,6 +34,13 @@ function languagefield_field_formatter_info_alter(array &$info) {
  * @see options_allowed_values()
  */
 function languagefield_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, &$cacheable = TRUE) {
-  $valueOptions = CustomLanguageManager::allowed_values($definition->getSettings());
+  $valueOptions = CustomLanguageManager::allowedValues($definition->getSettings());
   return $valueOptions;
+}
+
+/**
+ * Please check new Permission "Language Field/Administer custom languages',
+ * which is no longer hiding under "Language/Administer languages".
+ */
+function languagefield_update_8001(&$sandbox) {
 }

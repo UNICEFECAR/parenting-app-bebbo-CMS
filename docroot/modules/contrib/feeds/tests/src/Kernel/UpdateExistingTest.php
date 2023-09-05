@@ -14,7 +14,7 @@ class UpdateExistingTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'user',
@@ -93,6 +93,7 @@ class UpdateExistingTest extends FeedsKernelTestBase {
 
     // Assert that the second vocabulary has two terms now.
     $term_count = $term_storage->getQuery()
+      ->accessCheck(FALSE)
       ->condition('vid', 'vocab2')
       ->count()
       ->execute();
@@ -134,13 +135,19 @@ class UpdateExistingTest extends FeedsKernelTestBase {
       'bundle' => 'entity_test_string_id',
     ]);
 
-    // Create an entity to update.
+    // Create entities to update.
     $entity = $entity_storage->create([
       'id' => 'LRM',
       'name' => 'Lorem ipsum',
       'type' => 'entity_test_string_id',
     ]);
     $entity->save();
+    $entity2 = $entity_storage->create([
+      'id' => 'UTWISI',
+      'name' => 'Ut wisi enim ad minim veniam',
+      'type' => 'entity_test_string_id',
+    ]);
+    $entity2->save();
 
     // Create a feed type to update the entity.
     $feed_type = $this->createFeedTypeForCsv([

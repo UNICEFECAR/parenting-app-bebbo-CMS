@@ -13,7 +13,7 @@ class FileTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'node',
     'user',
@@ -24,7 +24,7 @@ class FileTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Create a file field.

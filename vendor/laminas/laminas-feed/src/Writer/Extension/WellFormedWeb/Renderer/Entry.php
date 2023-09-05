@@ -1,16 +1,14 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\WellFormedWeb\Renderer;
 
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer\Extension;
+
+use function strtolower;
 
 class Entry extends Extension\AbstractRenderer
 {
@@ -39,15 +37,15 @@ class Entry extends Extension\AbstractRenderer
         }
     }
 
+    // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
     /**
      * Append entry namespaces
      *
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _appendNamespaces()
     {
-        // @codingStandardsIgnoreEnd
         $this->getRootElement()->setAttribute(
             'xmlns:wfw',
             'http://wellformedweb.org/CommentAPI/'
@@ -57,14 +55,10 @@ class Entry extends Extension\AbstractRenderer
     /**
      * Set entry comment feed links
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setCommentFeedLinks(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $links = $this->getDataContainer()->getCommentFeedLinks();
         if (! $links || empty($links)) {
             return;
@@ -72,11 +66,13 @@ class Entry extends Extension\AbstractRenderer
         foreach ($links as $link) {
             if ($link['type'] === 'rss') {
                 $flink = $this->dom->createElement('wfw:commentRss');
-                $text  = $dom->createTextNode($link['uri']);
+                $text  = $dom->createTextNode((string) $link['uri']);
                 $flink->appendChild($text);
                 $root->appendChild($flink);
             }
         }
         $this->called = true;
     }
+
+    // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

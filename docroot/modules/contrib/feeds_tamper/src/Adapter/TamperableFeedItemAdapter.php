@@ -45,7 +45,7 @@ class TamperableFeedItemAdapter implements TamperableItemInterface {
    * {@inheritdoc}
    */
   public function getSourceProperty($property) {
-    $this->feedItem->get($property);
+    return $this->feedItem->get($property);
   }
 
 }

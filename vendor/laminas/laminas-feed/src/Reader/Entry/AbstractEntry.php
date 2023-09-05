@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Entry;
 
@@ -13,6 +9,11 @@ use DOMElement;
 use DOMXPath;
 use Laminas\Feed\Reader;
 use Laminas\Feed\Reader\Exception;
+
+use function call_user_func_array;
+use function in_array;
+use function method_exists;
+use function sprintf;
 
 abstract class AbstractEntry
 {
@@ -119,8 +120,7 @@ abstract class AbstractEntry
     public function saveXml()
     {
         $dom   = new DOMDocument('1.0', $this->getEncoding());
-        $deep  = version_compare(PHP_VERSION, '7', 'ge') ? 1 : true;
-        $entry = $dom->importNode($this->getElement(), $deep);
+        $entry = $dom->importNode($this->getElement(), true);
         $dom->appendChild($entry);
         return $dom->saveXML();
     }
@@ -173,14 +173,15 @@ abstract class AbstractEntry
      * Return an Extension object with the matching name (postfixed with _Entry)
      *
      * @param  string $name
-     * @return Reader\Extension\AbstractEntry
+     * @return null|Reader\Extension\AbstractEntry
      */
     public function getExtension($name)
     {
-        if (array_key_exists($name . '\\Entry', $this->extensions)) {
-            return $this->extensions[$name . '\\Entry'];
-        }
-        return;
+        $extensionClass = $name . '\\Entry';
+        return isset($this->extensions[$extensionClass])
+            && $this->extensions[$extensionClass] instanceof Reader\Extension\AbstractEntry
+            ? $this->extensions[$extensionClass]
+            : null;
     }
 
     /**
@@ -189,7 +190,7 @@ abstract class AbstractEntry
      * @param  string $method
      * @param  array $args
      * @return mixed
-     * @throws Exception\RuntimeException if no extensions implements the method
+     * @throws Exception\RuntimeException If no extensions implements the method.
      */
     public function __call($method, $args)
     {

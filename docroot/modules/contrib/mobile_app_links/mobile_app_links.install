@@ -6,6 +6,30 @@
  */
 
 /**
+ * Implements hook_update_N().
+ *
+ * Create a copy of existing android app config before deleting it.
+ */
+function mobile_app_links_update_8104() {
+  $config = \Drupal::configFactory()->getEditable('mobile_app_links.android');
+  $package_name = $config->get('package_name');
+  $certificate = $config->get('sha256_cert_fingerprints');
+
+  if ($package_name && $certificate) {
+    $android_config = \Drupal::configFactory()->getEditable('mobile_app_links.android_packages');
+    $config_key = str_replace('.', '-', $package_name) . '_0';
+
+    $android_packages[$config_key]['package_name'] = $package_name;
+    $android_packages[$config_key]['sha256_cert_fingerprints'] = $certificate;
+
+    $android_config->set('android_packages', $android_packages);
+    $android_config->save();
+  }
+
+  $config->delete();
+}
+
+/**
  * Initialize value for new config key: applinks.
  */
 function mobile_app_links_update_8103() {

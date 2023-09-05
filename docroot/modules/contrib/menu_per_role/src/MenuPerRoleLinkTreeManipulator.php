@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\menu_per_role;
 
@@ -43,7 +43,7 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
    * @param \Drupal\Core\Routing\AdminContext $adminContext
    *   The router admin context service.
    */
-  public function setAdminContext(AdminContext $adminContext) : void {
+  public function setAdminContext(AdminContext $adminContext): void {
     $this->adminContext = $adminContext;
   }
 
@@ -53,7 +53,7 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config service.
    */
-  public function setConfigFactory(ConfigFactoryInterface $config) : void {
+  public function setConfigFactory(ConfigFactoryInterface $config): void {
     $this->config = $config;
   }
 
@@ -78,23 +78,25 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
         // @phpstan-ignore-next-line
         return $this->getEntity();
       };
-      $function = \Closure::bind($function, $instance, get_class($instance));
+      $function = \Closure::bind($function, $instance, \get_class($instance));
       /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $entity */
       $entity = $function();
       if (isset($entity->menu_per_role__show_role)) {
+        /** @var array $show_role */
         $show_role = $entity->menu_per_role__show_role->getValue();
-        $show_role = array_column($show_role, 'target_id');
+        $show_role = \array_column($show_role, 'target_id');
+        /** @var array $hidden_role */
         $hidden_role = $entity->menu_per_role__hide_role->getValue();
-        $hidden_role = array_column($hidden_role, 'target_id');
+        $hidden_role = \array_column($hidden_role, 'target_id');
 
         // Check whether this role has visibility access (must be present).
-        if ($show_role && count(array_intersect($show_role, $this->account->getRoles())) == 0) {
+        if ($show_role && \count(\array_intersect($show_role, $this->account->getRoles())) == 0) {
           $result = $result->andIf(AccessResult::forbidden()
             ->addCacheContexts(['user.roles']));
         }
 
         // Check whether this role has visibility access (must not be present).
-        if ($hidden_role && count(array_intersect($hidden_role, $this->account->getRoles())) > 0) {
+        if ($hidden_role && \count(\array_intersect($hidden_role, $this->account->getRoles())) > 0) {
           $result = $result->andIf(AccessResult::forbidden()
             ->addCacheContexts(['user.roles']));
         }
@@ -106,13 +108,13 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
   /**
    * Check if the user can bypass the access check.
    *
-   * @return bool
-   *   TRUE if the Menu Per Role access check should be bypassed.
-   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *
+   * @return bool
+   *   TRUE if the Menu Per Role access check should be bypassed.
    */
-  protected function bypassAccessCheck() : bool {
+  protected function bypassAccessCheck(): bool {
     $bypass_access_check = FALSE;
     $menu_per_role_settings = $this->config->get('menu_per_role.settings');
     $admin_bypass_access_front = $menu_per_role_settings->get('admin_bypass_access_front');
@@ -123,8 +125,8 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
     // Admin user access check bypass.
     if ($user_is_admin) {
       if (
-        ($context_is_admin && $admin_bypass_access_admin) ||
-        (!$context_is_admin && $admin_bypass_access_front)
+        ($context_is_admin && $admin_bypass_access_admin)
+        || (!$context_is_admin && $admin_bypass_access_front)
       ) {
         $bypass_access_check = TRUE;
       }
@@ -132,8 +134,8 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
     // Normal user access check bypass.
     else {
       if (
-        ($context_is_admin && $this->account->hasPermission('bypass menu_per_role access admin')) ||
-        (!$context_is_admin && $this->account->hasPermission('bypass menu_per_role access front'))
+        ($context_is_admin && $this->account->hasPermission('bypass menu_per_role access admin'))
+        || (!$context_is_admin && $this->account->hasPermission('bypass menu_per_role access front'))
       ) {
         $bypass_access_check = TRUE;
       }
@@ -145,13 +147,13 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
   /**
    * Check if the current user is admin. Either due to uid 1 or admin roles.
    *
-   * @return bool
-   *   TRUE if the user admin. FALSE otherwise.
-   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *
+   * @return bool
+   *   TRUE if the user admin. FALSE otherwise.
    */
-  protected function isUserAdmin() : bool {
+  protected function isUserAdmin(): bool {
     if ($this->account->id() == 1) {
       return TRUE;
     }
@@ -163,13 +165,14 @@ class MenuPerRoleLinkTreeManipulator extends DefaultMenuLinkTreeManipulators {
       /** @var string[] $admin_roles */
       $admin_roles = $role_storage->getQuery()
         ->condition('is_admin', TRUE)
+        ->accessCheck(FALSE)
         ->execute();
       $this->adminRoles = $admin_roles;
     }
 
     $account_roles = $this->account->getRoles(TRUE);
     foreach ($account_roles as $account_role) {
-      if (in_array($account_role, $this->adminRoles)) {
+      if (\in_array($account_role, $this->adminRoles, TRUE)) {
         return TRUE;
       }
     }

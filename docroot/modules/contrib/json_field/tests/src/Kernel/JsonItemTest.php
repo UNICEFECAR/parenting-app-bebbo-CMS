@@ -5,10 +5,11 @@ namespace Drupal\Tests\json_field\Kernel;
 use Drupal\Core\Database\Connection;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\Core\Validation\Plugin\Validation\Constraint\LengthConstraint;
-use Drupal\json_field\Plugin\Field\FieldType\JSONItem;
+use Drupal\json_field\Plugin\Field\FieldType\JsonItem;
+use PHPUnit\Framework\SkippedTestError;
 
 /**
- * @coversDefaultClass \Drupal\json_field\Plugin\Field\FieldType\JSONItem
+ * @coversDefaultClass \Drupal\json_field\Plugin\Field\FieldType\JsonItem
  *
  * @group json_field
  */
@@ -16,9 +17,11 @@ class JsonItemTest extends KernelTestBase {
 
   /**
    * Tests that field values are saved a retrievable.
+   *
+   * @dataProvider providerTestFieldCreate
    */
-  public function testFieldCreate() {
-    $this->createTestField();
+  public function testFieldCreate($type) {
+    $this->createTestField([], [], $type);
 
     $entity = EntityTest::create([
       'test_json_field' => json_encode([]),
@@ -26,6 +29,15 @@ class JsonItemTest extends KernelTestBase {
     $entity->save();
 
     $this->assertEquals(json_encode([]), $entity->test_json_field->value);
+  }
+
+  /**
+   * Data provider.
+   *
+   * @see testFieldCreate()
+   */
+  public function providerTestFieldCreate() {
+    return [['json'], ['json_native']];
   }
 
   /**
@@ -60,7 +72,7 @@ class JsonItemTest extends KernelTestBase {
 
     $constraint_list = $entity->validate()->getByField('test_json_field');
     $this->assertEquals(1, $constraint_list->count());
-    $this->assertEquals('The supplied value is not valid JSON data (@error).', $constraint_list->get(0)->getMessage()->getUntranslatedString());
+    $this->assertEquals('The supplied text is not valid JSON data (@error).', $constraint_list->get(0)->getMessage()->getUntranslatedString());
   }
 
   /**
@@ -95,17 +107,32 @@ class JsonItemTest extends KernelTestBase {
    */
   public function providerTestCharacterLimit() {
     return [
-      [JSONItem::SIZE_SMALL, JSONItem::SIZE_SMALL],
-      [JSONItem::SIZE_NORMAL, JSONItem::SIZE_NORMAL / 4],
-      [JSONItem::SIZE_MEDIUM, JSONItem::SIZE_MEDIUM / 4],
-      // JSONItem::SIZE_BIG is too large to test like this.
+      [JsonItem::SIZE_SMALL, JsonItem::SIZE_SMALL],
+      [JsonItem::SIZE_NORMAL, JsonItem::SIZE_NORMAL / 4],
+      [JsonItem::SIZE_MEDIUM, JsonItem::SIZE_MEDIUM / 4],
+      // JsonItem::SIZE_BIG is too large to test like this.
     ];
   }
 
   /**
+   * Check the schema size used by the fields.
+   *
+   * Note: this currently only works with MySQL.
+   *
+   * @todo Work out how to handle this in a more agnostic fashion.
+   *
    * @dataProvider providerTestSchemaSize
    */
   public function testSchemaSize($size, array $expected) {
+    $connection = \Drupal::database();
+
+    // Check this is MySQL.
+    if ($connection->databaseType() !== 'mysql') {
+      // @todo Is there a better way of doing this? This is an internal class
+      // from PHPUnit and may change in future releases.
+      throw new SkippedTestError('This script can only be used with MySQL database backends.');
+    }
+
     $storage = [
       'settings' => [
         'size' => $size,
@@ -113,55 +140,62 @@ class JsonItemTest extends KernelTestBase {
     ];
     $this->createTestField($storage);
 
-    $schema = $this->getTableSchema(\Drupal::database(), 'entity_test__test_json_field');
+    $schema = $this->getTableSchemaMySql($connection, 'entity_test__test_json_field');
     $this->assertEquals($expected, $schema['fields']['test_json_field_value']);
   }
 
   /**
+   * Data provider.
    *
+   * @see testSchemaSize()
    */
   public function providerTestSchemaSize() {
     $data = [];
-    $data[] = [JSONItem::SIZE_SMALL, [
-      'type' => 'varchar',
-      'not null' => 1,
-      'length' => 255,
-    ]];
-    $data[] = [JSONItem::SIZE_NORMAL, [
-      'type' => 'text',
-      'not null' => 1,
-      'size' => 'normal',
-    ]];
-    $data[] = [JSONItem::SIZE_MEDIUM, [
-      'type' => 'text',
-      'not null' => 1,
-      'size' => 'medium',
-    ]];
-    $data[] = [JSONItem::SIZE_BIG, [
-      'type' => 'text',
-      'not null' => 1,
-      'size' => 'big',
-    ]];
+    $data[] = [
+      JsonItem::SIZE_SMALL, [
+        'type' => 'varchar',
+        'not null' => 1,
+        'length' => 255,
+      ],
+    ];
+    $data[] = [
+      JsonItem::SIZE_NORMAL, [
+        'type' => 'text',
+        'not null' => 1,
+        'size' => 'normal',
+      ],
+    ];
+    $data[] = [
+      JsonItem::SIZE_MEDIUM, [
+        'type' => 'text',
+        'not null' => 1,
+        'size' => 'medium',
+      ],
+    ];
+    $data[] = [
+      JsonItem::SIZE_BIG, [
+        'type' => 'text',
+        'not null' => 1,
+        'size' => 'big',
+      ],
+    ];
 
     return $data;
   }
 
   /**
+   * Note: this only works on MySQL.
    *
+   * @todo Work out how to run this test.
    */
-  protected function getTableSchema(Connection $connection, $table) {
-    // Check this is MySQL.
-    if ($connection->databaseType() !== 'mysql') {
-      throw new \RuntimeException('This script can only be used with MySQL database backends.');
-    }
-
+  protected function getTableSchemaMySql(Connection $connection, $table) {
     $query = $connection->query("SHOW FULL COLUMNS FROM {" . $table . "}");
     $definition = [];
     while (($row = $query->fetchAssoc()) !== FALSE) {
       $name = $row['Field'];
       // Parse out the field type and meta information.
       preg_match('@([a-z]+)(?:\((\d+)(?:,(\d+))?\))?\s*(unsigned)?@', $row['Type'], $matches);
-      $type  = $this->fieldTypeMap($connection, $matches[1]);
+      $type = $this->fieldTypeMap($connection, $matches[1]);
       if ($row['Extra'] === 'auto_increment') {
         // If this is an auto increment, then the type is 'serial'.
         $type = 'serial';
@@ -187,7 +221,7 @@ class JsonItemTest extends KernelTestBase {
       elseif (!isset($definition['fields'][$name]['size'])) {
         // Try use the provided length, if it doesn't exist default to 100. It's
         // not great but good enough for our dumps at this point.
-        $definition['fields'][$name]['length'] = isset($matches[2]) ? $matches[2] : 100;
+        $definition['fields'][$name]['length'] = $matches[2] ?? 100;
       }
 
       if (isset($row['Default'])) {
@@ -234,7 +268,7 @@ class JsonItemTest extends KernelTestBase {
    * @param array &$definition
    *   The schema definition to modify.
    */
-  protected function getTableIndexes(Connection $connection, $table, &$definition) {
+  protected function getTableIndexes(Connection $connection, $table, array &$definition) {
     // Note, this query doesn't support ordering, so that is worked around
     // below by keying the array on Seq_in_index.
     $query = $connection->query("SHOW INDEX FROM {" . $table . "}");
@@ -271,12 +305,14 @@ class JsonItemTest extends KernelTestBase {
    * @param array &$definition
    *   The schema definition to modify.
    */
-  protected function getTableCollation(Connection $connection, $table, &$definition) {
+  protected function getTableCollation(Connection $connection, $table, array &$definition) {
     $query = $connection->query("SHOW TABLE STATUS LIKE '{" . $table . "}'");
     $data = $query->fetchAssoc();
 
     // Set `mysql_character_set`. This will be ignored by other backends.
-    $definition['mysql_character_set'] = str_replace('_general_ci', '', $data['Collation']);
+    if (isset($data['Collation'])) {
+      $definition['mysql_character_set'] = str_replace('_general_ci', '', $data['Collation']);
+    }
   }
 
   /**

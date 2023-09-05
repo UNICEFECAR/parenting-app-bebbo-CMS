@@ -42,6 +42,16 @@ class TamperEditForm extends TamperFormBase {
     $this->plugin = $tamper_meta->getTamper($tamper_uuid);
 
     $form = parent::buildForm($form, $form_state);
+
+    $form['source'] = [
+      '#type' => 'value',
+      '#value' => $this->plugin->getSetting('source'),
+    ];
+    $form['uuid'] = [
+      '#type' => 'value',
+      '#value' => $tamper_uuid,
+    ];
+
     $form[self::VAR_TAMPER_ID]['#disabled'] = TRUE;
     return $form;
   }
@@ -50,11 +60,13 @@ class TamperEditForm extends TamperFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+    $source = $form_state->getValue('source');
+    $uuid = $form_state->getValue('uuid');
     $tamper_meta = $this->feedTypeTamperManager->getTamperMeta($this->feedsFeedType);
-    $uuid = $this->plugin->getSetting('uuid');
     $tampers_config = $tamper_meta->getTampers()->getConfiguration();
 
-    $config = $this->prepareConfig($tampers_config[$uuid]['source'], $form_state);
+    $config = $this->prepareConfig($source, $form_state);
     $tamper_meta->setTamperConfig($uuid, $config);
     $this->feedsFeedType->save();
 

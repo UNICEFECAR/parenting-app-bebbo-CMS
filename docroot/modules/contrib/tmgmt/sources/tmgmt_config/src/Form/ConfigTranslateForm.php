@@ -37,7 +37,7 @@ class ConfigTranslateForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'tmgmt_content_translate_form';
+    return 'tmgmt_config_translate_form';
   }
 
   /**

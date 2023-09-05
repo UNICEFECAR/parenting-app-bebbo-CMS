@@ -152,7 +152,10 @@ class FeaturesEditForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $featurename = '') {
-    $session = $this->getRequest()->getSession();
+    if ($this->getRequest()->hasSession()) {
+      $session = $this->getRequest()->getSession();
+    }
+
     $trigger = $form_state->getTriggeringElement();
     if (isset($trigger['#name']) && $trigger['#name'] == 'package') {
       // Save current bundle name for later ajax callback.
@@ -278,7 +281,7 @@ class FeaturesEditForm extends FormBase {
       '#size' => 30,
     ];
 
-    list($full_name, $path) = $this->featuresManager->getExportInfo($this->package, $bundle);
+    [$full_name, $path] = $this->featuresManager->getExportInfo($this->package, $bundle);
     $form['info']['directory'] = [
       '#title' => $this->t('Path'),
       '#description' => $this->t('Path to export package using Write action, relative to root directory.'),
@@ -462,8 +465,66 @@ class FeaturesEditForm extends FormBase {
       '#hidden' => TRUE,
       '#title' => $this->t('Select all'),
       '#attributes' => [
-        'class' => ['features-checkall', 'js-features-checkall'],
+        'class' => [
+          'features-checkall',
+          'js-features-checkall',
+          'features-filter',
+          'js-features-filter',
+        ],
       ],
+      '#label_attributes' => [
+        'title' => $this->t('Select all currently expanded configurations'),
+      ],
+    ];
+    $element['features_filter_wrapper']['toggle-components'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'a',
+      '#value' => $this->t('Expand all'),
+      '#attributes' => [
+        'href' => '#',
+        'title' => $this->t('Expand/collapse components in order to "Select all".'),
+        'class' => [
+          'features-toggle-components',
+          'features-filter',
+          'js-features-filter',
+        ],
+      ],
+    ];
+    $element['features_filter_wrapper']['hide-components'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Hide'),
+      '#options' => [
+        'included' => $this->t('Normal'),
+        'included+groups' => $this->t('Normal (and empty groups)'),
+        'added' => $this->t('Added'),
+        'detected' => $this->t('Auto detected'),
+        'conflict' => $this->t('Conflict'),
+      ],
+      '#empty_option' => $this->t('- None -'),
+      '#default_value' => '',
+      '#attributes' => [
+        'class' => [
+          'features-hide-component',
+          'features-filter',
+          'js-features-filter',
+        ],
+        'title' => $this->t('Hide specific Features components'),
+      ],
+    ];
+    $element['features_filter_wrapper']['features_legend'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Legend'),
+      '#tree' => FALSE,
+      '#prefix' => '<div id="features-legend">',
+      '#suffix' => '</div>',
+    ];
+    $element['features_filter_wrapper']['features_legend']['legend'] = [
+      '#markup' => implode('', [
+        "<span class='features-legend-component features-legend-component--included'>" . $this->t('Normal') . '</span> ',
+        "<span class='features-legend-component features-legend-component--added'>" . $this->t('Added') . '</span> ',
+        "<span class='features-legend-component features-legend-component--detected'>" . $this->t('Auto detected') . '</span> ',
+        "<span class='features-legend-component features-legend-component--conflict'>" . $this->t('Conflict') . '</span> ',
+      ]),
     ];
 
     $sections = ['included', 'detected', 'added'];
@@ -544,24 +605,15 @@ class FeaturesEditForm extends FormBase {
 
     $element['features_missing'] = [
       '#theme' => 'item_list',
+      '#wrapper_attributes' => [
+        'class' => [
+          'features-missing-items',
+        ],
+      ],
       '#items' => $export['missing'],
       '#title' => $this->t('Configuration missing from active site:'),
       '#suffix' => '<div class="description">' . $this->t('Import the feature to create the missing config listed above.') . '</div>',
-    ];
-
-    $element['features_legend'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Legend'),
-      '#tree' => FALSE,
-      '#prefix' => '<div id="features-legend">',
-      '#suffix' => '</div>',
-    ];
-    $element['features_legend']['legend'] = [
-      '#markup' =>
-        "<span class='features-legend-component features-legend-component--included'>" . $this->t('Normal') . "</span> " .
-        "<span class='features-legend-component features-legend-component--added'>" . $this->t('Added') . "</span> " .
-        "<span class='features-legend-component features-legend-component--detected'>" . $this->t('Auto detected') . "</span> " .
-        "<span class='features-legend-component features-legend-component--conflict'>" . $this->t('Conflict') . "</span> ",
+      '#access' => !empty($export['missing']),
     ];
 
     return $element;

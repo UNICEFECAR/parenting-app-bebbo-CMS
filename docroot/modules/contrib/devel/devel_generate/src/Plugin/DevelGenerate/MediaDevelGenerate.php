@@ -12,7 +12,6 @@ use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\devel_generate\DevelGenerateBase;
-use Drush\Utils\StringUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -122,7 +121,8 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
 
     $this->mediaStorage = $entity_type_manager->getStorage('media');
     $this->mediaTypeStorage = $entity_type_manager->getStorage('media_type');
-    $this->userStorage = $entity_type_manager->getStorage('user');;
+    $this->userStorage = $entity_type_manager->getStorage('user');
+    ;
     $this->languageManager = $language_manager;
     $this->urlGenerator = $url_generator;
     $this->dateFormatter = $date_formatter;
@@ -202,6 +202,19 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
       '#max' => 255,
     ];
 
+    $form['skip_fields'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Fields to leave empty'),
+      '#description' => $this->t('Enter the field names as a comma-separated list. These will be skipped and have a default value in the generated content.'),
+      '#default_value' => NULL,
+    ];
+    $form['base_fields'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Base fields to populate'),
+      '#description' => $this->t('Enter the field names as a comma-separated list. These will be populated.'),
+      '#default_value' => NULL,
+    ];
+
     $options = [];
     // We always need a language.
     $languages = $this->languageManager->getLanguages(LanguageInterface::STATE_ALL);
@@ -236,6 +249,11 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
     }
     // Store the normalized value back, in form state.
     $form_state->setValue('media_types', array_combine($media_types, $media_types));
+
+    $skip_fields = is_null($form_state->getValue('skip_fields')) ? [] : self::csvToArray($form_state->getValue('skip_fields'));
+    $base_fields = is_null($form_state->getValue('base_fields')) ? [] : self::csvToArray($form_state->getValue('base_fields'));
+    $form_state->setValue('skip_fields', $skip_fields);
+    $form_state->setValue('base_fields', $base_fields);
   }
 
   /**
@@ -323,7 +341,7 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
       'title' => $this->t('Generating media items'),
       'operations' => $operations,
       'finished' => 'devel_generate_batch_finished',
-      'file' => drupal_get_path('module', 'devel_generate') . '/devel_generate.batch.inc',
+      'file' => \Drupal::service('extension.path.resolver')->getPath('module', 'devel_generate') . '/devel_generate.batch.inc',
     ];
     batch_set($batch);
 
@@ -353,7 +371,7 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
    *
    * @param array $vars
    *   The input values from the settings form.
-   * @param array $context
+   * @param iterable $context
    *   Batch job context.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -365,12 +383,15 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
    *
    * @see self::createMediaItem()
    */
-  public function batchCreateMediaItem(array $vars, &$context) {
+  public function batchCreateMediaItem(array $vars, iterable &$context) {
     if ($this->drushBatch) {
       $this->createMediaItem($vars);
     }
     else {
       $this->createMediaItem($context['results']);
+    }
+    if (!isset($context['results']['num'])) {
+      $context['results']['num'] = 0;
     }
     $context['results']['num']++;
   }
@@ -380,12 +401,12 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
    *
    * @param array $vars
    *   The input values from the settings form.
-   * @param array $context
+   * @param iterable $context
    *   Batch job context.
    *
    * @see self::mediaKill()
    */
-  public function batchMediaKill($vars, &$context) {
+  public function batchMediaKill(array $vars, iterable &$context) {
     if ($this->drushBatch) {
       $this->mediaKill($vars);
     }
@@ -411,8 +432,11 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
     $values['name_length'] = 6;
     $values['num'] = array_shift($args);
 
-    $all_media_types = array_values($this->mediaTypeStorage->getQuery()->execute());
-    $requested_media_types = StringUtils::csvToArray($options['media-types'] ?: $all_media_types);
+    $values['skip_fields'] = is_null($options['skip-fields']) ? [] : self::csvToArray($options['skip-fields']);
+    $values['base_fields'] = is_null($options['base-fields']) ? [] : self::csvToArray($options['base-fields']);
+
+    $all_media_types = array_values($this->mediaTypeStorage->getQuery()->accessCheck(FALSE)->execute());
+    $requested_media_types = self::csvToArray($options['media-types'] ?: $all_media_types);
 
     if (empty($requested_media_types)) {
       throw new \Exception(dt('No media types available'));
@@ -444,6 +468,7 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
   protected function mediaKill(array $values) {
     $mids = $this->mediaStorage->getQuery()
       ->condition('bundle', $values['media_types'], 'IN')
+      ->accessCheck(FALSE)
       ->execute();
 
     if (!empty($mids)) {
@@ -466,6 +491,7 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
     // Get user id.
     $users = array_values($this->userStorage->getQuery()
       ->range(0, 50)
+      ->accessCheck(FALSE)
       ->execute());
     $users = array_merge($users, ['0']);
     $results['users'] = $users;
@@ -498,6 +524,7 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
       'uid' => $uid,
       'revision' => mt_rand(0, 1),
       'status' => TRUE,
+      'moderation_state' => 'published',
       'created' => $this->time->getRequestTime() - mt_rand(0, $results['time_range']),
       'langcode' => $this->getLangcode($results),
     ]);
@@ -505,8 +532,13 @@ class MediaDevelGenerate extends DevelGenerateBase implements ContainerFactoryPl
     // A flag to let hook implementations know that this is a generated item.
     $media->devel_generate = $results;
 
-    // Populate all fields with sample values.
-    $this->populateFields($media);
+    // Populate all non-skipped fields with sample values.
+    $this->populateFields($media, $results['skip_fields'], $results['base_fields']);
+
+    // Remove the fields which are intended to have no value.
+    foreach ($results['skip_fields'] as $field) {
+      unset($media->$field);
+    }
 
     $media->save();
   }

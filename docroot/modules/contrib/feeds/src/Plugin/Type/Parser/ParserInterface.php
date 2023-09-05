@@ -43,4 +43,14 @@ interface ParserInterface extends FeedsPluginInterface {
    */
   public function getMappingSources();
 
+  /**
+   * Returns a list of custom source plugins that this parser supports.
+   *
+   * @return string[]
+   *   A list of custom source plugin ID's.
+   *
+   * @see \Drupal\feeds\Annotation\FeedsCustomSource
+   */
+  public function getSupportedCustomSourcePlugins(): array;
+
 }

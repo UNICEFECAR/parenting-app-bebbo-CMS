@@ -105,6 +105,7 @@ class TamperAddForm extends TamperFormBase {
       return;
     }
 
+    parent::submitForm($form, $form_state);
     $config = $this->prepareConfig($this->sourceField, $form_state);
     $tamper_meta = $this->feedTypeTamperManager->getTamperMeta($this->feedsFeedType);
     $tamper_meta->addTamper($config);

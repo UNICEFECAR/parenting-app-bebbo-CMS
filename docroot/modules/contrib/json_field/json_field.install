@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Update scripts, etc for the JSON Field module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function json_field_requirements($phase) {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  // Use the requirements service to keep this function cleaner.
+  $json_field_requirements = \Drupal::service('json_field.requirements');
+  $library_exists = $json_field_requirements->libraryIsAvailable();
+  $database_is_compatible = $json_field_requirements->databaseIsCompatible();
+
+  return [
+    'json_field_library' => [
+      'title' => t('JSON Field display library'),
+      'description' => $library_exists ? '' : $json_field_requirements->getLibraryWarningMessage(),
+      'severity' => $library_exists ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+      'value' => $library_exists ? t('Installed') : t('Not installed'),
+    ],
+    'json_field_database' => [
+      'title' => t('JSON Field database compatibility'),
+      'description' => $database_is_compatible ? '' : $json_field_requirements->getDatabaseWarningMessage(),
+      'severity' => $database_is_compatible ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+      'value' => $database_is_compatible ? t('Compatible.') : t('Maybe not supported.'),
+    ],
+  ];
+}
+
+/**
+ * Implementations of hook_update_N().
+ */
+
+/**
+ * Enable the widget submodule.
+ */
+function json_field_update_8100() {
+  \Drupal::service('module_installer')->install(['json_field_widget']);
+}
+
+/**
+ * Clear the caches so that the new class names can be used.
+ */
+function json_field_update_8101() {
+  drupal_flush_all_caches();
+}

@@ -40,4 +40,5 @@ class LanguageField extends FieldTargetBase implements ConfigurableTargetInterfa
     }
     $values['value'] = (string) $value;
   }
+
 }

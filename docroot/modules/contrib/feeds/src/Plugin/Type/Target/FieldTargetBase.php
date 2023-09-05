@@ -25,7 +25,7 @@ abstract class FieldTargetBase extends TargetBase implements ConfigurableTargetI
    *
    * @var array
    */
-  protected $fieldSettings;
+  protected $settings;
 
   /**
    * The language manager.
@@ -144,7 +144,7 @@ abstract class FieldTargetBase extends TargetBase implements ConfigurableTargetI
   }
 
   /**
-   * Prepares the the values that will be mapped to an entity.
+   * Prepares the values that will be mapped to an entity.
    *
    * @param array $values
    *   The values.

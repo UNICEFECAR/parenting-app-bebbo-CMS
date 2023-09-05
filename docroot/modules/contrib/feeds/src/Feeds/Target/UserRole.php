@@ -77,7 +77,7 @@ class UserRole extends ConfigEntityReference {
         }
 
         // Merge the remaining values.
-        $values = array_merge($item_list->getValue(), $original_values);
+        $values = $this->mergeRoles($item_list->getValue(), $original_values);
 
         $item_list->setValue($values);
       }
@@ -102,8 +102,8 @@ class UserRole extends ConfigEntityReference {
   /**
    * {@inheritdoc}
    */
-  protected function findEntity($value, $field) {
-    $entity_id = parent::findEntity($value, $field);
+  protected function findEntity(string $field, $search) {
+    $entity_id = parent::findEntity($field, $search);
     if ($entity_id !== FALSE) {
       // Check if the role may be assigned.
       if (isset($this->configuration['allowed_roles'][$entity_id]) && !$this->configuration['allowed_roles'][$entity_id]) {
@@ -117,8 +117,11 @@ class UserRole extends ConfigEntityReference {
     }
 
     // Automatically create a new role.
-    if ($this->configuration['autocreate'] && in_array($this->configuration['reference_by'], ['id', 'label'])) {
-      return $this->createRole($value);
+    if ($this->configuration['autocreate'] && in_array($this->configuration['reference_by'], [
+      'id',
+      'label',
+    ])) {
+      return $this->createRole($search);
     }
   }
 
@@ -132,7 +135,7 @@ class UserRole extends ConfigEntityReference {
    *   The ID of the new role or false if the given label is empty.
    */
   protected function createRole($label) {
-    if (!strlen(trim($label))) {
+    if (!is_string($label) || !strlen(trim($label))) {
       return FALSE;
     }
 
@@ -187,7 +190,7 @@ class UserRole extends ConfigEntityReference {
     $delta = 0;
     foreach ($form_state->getValues() as $key => $value) {
       if (strpos($key, 'target-settings-') === 0) {
-        list(, , $delta) = explode('-', $key);
+        [, , $delta] = explode('-', $key);
         break;
       }
     }
@@ -214,7 +217,7 @@ class UserRole extends ConfigEntityReference {
     $form['revoke_roles'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Revoke roles'),
-      '#description' => t('If enabled, roles that are not provided by the feed will be revoked for the user. This affects only the "Allowed roles" as configured above.'),
+      '#description' => $this->t('If enabled, roles that are not provided by the feed will be revoked for the user. This affects only the "Allowed roles" as configured above.'),
       '#default_value' => $this->configuration['revoke_roles'],
     ];
 
@@ -251,6 +254,37 @@ class UserRole extends ConfigEntityReference {
     }
 
     return $summary;
+  }
+
+  /**
+   * Merge two arrays of user roles together and remove duplicates.
+   *
+   * @param array $roles
+   *   An array of roles.
+   * @param array $merging_roles
+   *   An array of merging roles.
+   *
+   * @return array
+   *   An array of merged roles.
+   */
+  protected function mergeRoles(array $roles, array $merging_roles) {
+    $merged_roles = array_merge($roles, $merging_roles);
+
+    $existing_map = [];
+    $unique_roles = [];
+
+    foreach ($merged_roles as $role) {
+      // Ignore role ids that already exist.
+      if (isset($existing_map[$role['target_id']])) {
+        continue;
+      }
+
+      // Add the role and mark the role id as existed.
+      $unique_roles[] = $role;
+      $existing_map[$role['target_id']] = 1;
+    }
+
+    return $unique_roles;
   }
 
 }

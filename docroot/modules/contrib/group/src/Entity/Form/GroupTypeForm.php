@@ -94,6 +94,12 @@ class GroupTypeForm extends BundleEntityFormBase {
       '#required' => TRUE,
     ];
 
+    $form['new_revision'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Create a new revision when a group is modified'),
+      '#default_value' => $type->shouldCreateNewRevision(),
+    ];
+
     $form['creator_membership'] = [
       '#title' => $this->t('The group creator automatically becomes a member'),
       '#type' => 'checkbox',

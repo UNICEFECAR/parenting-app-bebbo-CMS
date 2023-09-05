@@ -3,6 +3,7 @@
 namespace Drupal\filelog\ProxyClass;
 
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\filelog\LogFileManager as RealLogFileManager;
 use Drupal\filelog\LogFileManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,21 +21,21 @@ class LogFileManager implements LogFileManagerInterface {
    *
    * @var string
    */
-  protected $drupalProxyOriginalServiceId;
+  protected string $drupalProxyOriginalServiceId;
 
   /**
    * The real service, after it was lazy loaded.
    *
    * @var \Drupal\filelog\LogFileManager
    */
-  protected $service;
+  protected RealLogFileManager $service;
 
   /**
    * The service container.
    *
    * @var \Symfony\Component\DependencyInjection\ContainerInterface
    */
-  protected $container;
+  protected ContainerInterface $container;
 
   /**
    * Constructs a ProxyClass Drupal proxy object.
@@ -57,7 +58,9 @@ class LogFileManager implements LogFileManagerInterface {
    */
   protected function lazyLoadItself(): LogFileManagerInterface {
     if (!isset($this->service)) {
-      $this->service = $this->container->get($this->drupalProxyOriginalServiceId);
+      /** @var \Drupal\filelog\LogFileManager $service */
+      $service = $this->container->get($this->drupalProxyOriginalServiceId);
+      $this->service = $service;
     }
 
     return $this->service;

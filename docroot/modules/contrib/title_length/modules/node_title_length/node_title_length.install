@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for title length module.
+ */
+
+use Drupal\Core\Extension\ModuleUninstallValidatorException;
+use Drupal\node_title_length\NodeTitleLength;
+use Drupal\title_length\EntityTitleLengthInterface;
+
+/**
+ * Implements hook_install().
+ */
+function node_title_length_install(): void {
+  Drupal::service('node_title_length.node')
+    ->changeLength(NodeTitleLength::getLength());
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function node_title_length_uninstall(): void {
+  $titleLengthService = Drupal::service('node_title_length.node');
+  if ($titleLengthService->checkIfExistEntitiesWithLongTitles()) {
+    throw new ModuleUninstallValidatorException('Nodes or node revisions exist with long titles. Module cannot be uninstalled.');
+  }
+  $titleLengthService->changeLength(EntityTitleLengthInterface::ORIGINAL_LENGTH);
+}

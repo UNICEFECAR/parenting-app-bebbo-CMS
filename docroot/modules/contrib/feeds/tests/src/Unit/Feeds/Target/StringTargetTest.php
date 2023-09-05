@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\StringTarget;
 class StringTargetTest extends FieldTargetTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'string';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {

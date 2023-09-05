@@ -63,7 +63,7 @@ abstract class TMGMTTestBase extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'tmgmt',
     'tmgmt_test',
     'node',
@@ -74,7 +74,7 @@ abstract class TMGMTTestBase extends WebTestBase {
   /**
    * Overrides DrupalWebTestCase::setUp()
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->default_translator = Translator::load('test_translator');
     $this->drupalPlaceBlock('local_tasks_block');

@@ -10,6 +10,7 @@ use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\devel_generate\DevelGenerateBase;
+use Drupal\system\Entity\Menu;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -116,13 +117,11 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $menu_enabled = $this->moduleHandler->moduleExists('menu_ui');
-    if ($menu_enabled) {
-      $menus = ['__new-menu__' => $this->t('Create new menu(s)')] + menu_ui_get_menus();
-    }
-    else {
-      $menus = menu_list_system_menus();
-    }
+    $menus = array_map(function ($menu) {
+      return $menu->label();
+    }, Menu::loadMultiple());
+    asort($menus);
+    $menus = ['__new-menu__' => $this->t('Create new menu(s)')] + $menus;
     $form['existing_menus'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Generate links for these menus'),
@@ -130,19 +129,17 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
       '#default_value' => ['__new-menu__'],
       '#required' => TRUE,
     ];
-    if ($menu_enabled) {
-      $form['num_menus'] = [
-        '#type' => 'number',
-        '#title' => $this->t('Number of new menus to create'),
-        '#default_value' => $this->getSetting('num_menus'),
-        '#min' => 0,
-        '#states' => [
-          'visible' => [
-            ':input[name="existing_menus[__new-menu__]"]' => ['checked' => TRUE],
-          ],
+    $form['num_menus'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Number of new menus to create'),
+      '#default_value' => $this->getSetting('num_menus'),
+      '#min' => 0,
+      '#states' => [
+        'visible' => [
+          ':input[name="existing_menus[__new-menu__]"]' => ['checked' => TRUE],
         ],
-      ];
-    }
+      ],
+    ];
     $form['num_links'] = [
       '#type' => 'number',
       '#title' => $this->t('Number of links to generate'),
@@ -210,7 +207,7 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
 
     // Delete custom menus.
     if ($values['kill']) {
-      list($menus_deleted, $links_deleted) = $this->deleteMenus();
+      [$menus_deleted, $links_deleted] = $this->deleteMenus();
       $this->setMessage($this->t('Deleted @menus_deleted menu(s) and @links_deleted other link(s).',
         ['@menus_deleted' => $menus_deleted, '@links_deleted' => $links_deleted]));
     }
@@ -274,9 +271,10 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
   protected function deleteMenus() {
     if ($this->moduleHandler->moduleExists('menu_ui')) {
       $menu_ids = [];
-      foreach (menu_ui_get_menus(FALSE) as $menu => $menu_title) {
-        if (strpos($menu, 'devel-') === 0) {
-          $menu_ids[] = $menu;
+      $all = Menu::loadMultiple();
+      foreach ($all as $menu) {
+        if (strpos($menu->id(), 'devel-') === 0) {
+          $menu_ids[] = $menu->id();
         }
       }
 
@@ -290,6 +288,7 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
     $link_ids = $this->menuLinkContentStorage->getQuery()
       ->condition('menu_name', 'devel', '<>')
       ->condition('link__options', '%' . $this->database->escapeLike('s:5:"devel";b:1') . '%', 'LIKE')
+      ->accessCheck(FALSE)
       ->execute();
 
     if ($link_ids) {
@@ -321,7 +320,7 @@ class MenuDevelGenerate extends DevelGenerateBase implements ContainerFactoryPlu
       // machine-name length is 32, so allowing for prefix 'devel-' we can have
       // up to 26 here. For safety avoid accidentally reusing the same id.
       do {
-        $id = 'devel-' . $this->getRandom()->name(mt_rand(2, 26));
+        $id = 'devel-' . $this->getRandom()->word(mt_rand(2, 26));
       } while (array_key_exists($id, $menus));
 
       $menu = $this->menuStorage->create([

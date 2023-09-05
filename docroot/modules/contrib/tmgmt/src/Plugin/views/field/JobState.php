@@ -22,7 +22,7 @@ class JobState extends NumericField {
     switch ($job->getState()) {
       case JobInterface::STATE_UNPROCESSED:
         $label = t('Unprocessed');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/rejected.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/rejected.svg';
         break;
 
       case JobInterface::STATE_ACTIVE:
@@ -37,17 +37,17 @@ class JobState extends NumericField {
           return $highest_weight_icon;
         }
         $label = t('In progress');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/hourglass.svg';
         break;
 
       case JobInterface::STATE_CONTINUOUS:
         $label = t('Continuous');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/continuous.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/continuous.svg';
         break;
 
       case JobInterface::STATE_CONTINUOUS_INACTIVE:
         $label = t('Continuous Inactive');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/continuous_inactive.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/continuous_inactive.svg';
         break;
 
       default:
@@ -58,7 +58,7 @@ class JobState extends NumericField {
     if ($icon && $label) {
       return [
         '#theme' => 'image',
-        '#uri' => file_create_url($icon),
+        '#uri' => \Drupal::service('file_url_generator')->generateAbsoluteString($icon),
         '#title' => $label,
         '#alt' => $label,
         '#width' => 16,

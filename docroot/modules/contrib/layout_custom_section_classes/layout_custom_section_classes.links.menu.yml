@@ -1,0 +1,5 @@
+layout_custom_section_classes.settings:
+  title: Layout Custom Section Classes Settings
+  route_name: layout_custom_section_classes.settings
+  parent: system.admin_config_content
+  description: 'Administer Layout Custom Section Classes Settings'

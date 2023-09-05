@@ -21,12 +21,12 @@ class ConfigSourceUiTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_config', 'views', 'views_ui', 'field_ui', 'config_translation');
+  protected static $modules = array('tmgmt_config', 'views', 'views_ui', 'field_ui', 'config_translation');
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->loginAsAdmin(array(
@@ -53,24 +53,24 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->drupalGet('admin/structure/types/manage/article/translate');
 
     // Assert some basic strings on that page.
-    $this->assertText(t('Translations of Article content type'));
-    $this->assertText(t('There are 0 items in the translation cart.'));
+    $this->assertSession()->pageTextContains(t('Translations of Article content type'));
+    $this->assertSession()->pageTextContains(t('There are 0 items in the translation cart.'));
 
     // Request a translation for german.
     $edit = array(
       'languages[de]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the translate tab.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('Article content type (English to German, Unprocessed)');
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('Article content type (English to German, Unprocessed)');
 
     // Submit.
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/structure/types/manage/article/translate');
+    $this->assertSession()->addressEquals('admin/structure/types/manage/article/translate');
 
     // We are redirected back to the correct page.
     $this->drupalGet('admin/structure/types/manage/article/translate');
@@ -88,25 +88,25 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->assertTrue($found);
 
     // Assert that 'Source' label is displayed properly.
-    $this->assertRaw('<strong>Source</strong>');
+    $this->assertSession()->responseContains('<strong>Source</strong>');
 
     // Verify that the pending translation is shown.
     $this->clickLinkWithImageTitle('Needs review');
-    $this->drupalPostForm(NULL, array(), t('Save'));
+    $this->submitForm([], t('Save'));
 
     // Request a spanish translation.
     $edit = array(
       'languages[es]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the checkout page.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('Article content type (English to Spanish, Unprocessed)');
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('Article content type (English to Spanish, Unprocessed)');
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/structure/types/manage/article/translate');
+    $this->assertSession()->addressEquals('admin/structure/types/manage/article/translate');
 
     // Translated languages should now be listed as Needs review.
     $rows = $this->xpath('//tbody/tr');
@@ -118,14 +118,14 @@ class ConfigSourceUiTest extends TMGMTTestBase {
         $counter++;
       }
     }
-    $this->assertEqual($counter, 2);
+    $this->assertEquals(2, $counter);
 
     // Test that a job can not be accepted if the translator does not exist.
     // Request an italian translation.
     $edit = array(
       'languages[it]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Go back to the originally defined destination URL without submitting.
     $this->drupalGet('admin/structure/types/manage/article/translate');
@@ -137,10 +137,10 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $edit = array(
       'name[translation]' => $this->randomMachineName(),
     );
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     // Verify that we are on the checkout page.
-    $this->assertResponse(200);
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**
@@ -153,29 +153,29 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->drupalGet('admin/structure/types/manage/article/translate');
 
     // Assert some basic strings on that page.
-    $this->assertText(t('Translations of Article content type'));
-    $this->assertText(t('There are 0 items in the translation cart.'));
+    $this->assertSession()->pageTextContains(t('Translations of Article content type'));
+    $this->assertSession()->pageTextContains(t('There are 0 items in the translation cart.'));
 
     // Request a translation for german and spanish.
     $edit = array(
       'languages[de]' => TRUE,
       'languages[es]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the translate tab.
-    $this->assertText(t('2 jobs need to be checked out.'));
+    $this->assertSession()->pageTextContains(t('2 jobs need to be checked out.'));
 
     // Submit all jobs.
-    $this->assertText('Article content type (English to German, Unprocessed)');
-    $this->drupalPostForm(NULL, array(), t('Submit to provider and continue'));
-    $this->assertText('Article content type (English to Spanish, Unprocessed)');
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->assertSession()->pageTextContains('Article content type (English to German, Unprocessed)');
+    $this->submitForm([], t('Submit to provider and continue'));
+    $this->assertSession()->pageTextContains('Article content type (English to Spanish, Unprocessed)');
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the translate tab.
-    $this->assertUrl('admin/structure/types/manage/article/translate');
-    $this->assertText(t('Test translation created.'));
-    $this->assertNoText(t('The translation of @title to @language is finished and can now be reviewed.', array(
+    $this->assertSession()->addressEquals('admin/structure/types/manage/article/translate');
+    $this->assertSession()->pageTextContains(t('Test translation created.'));
+    $this->assertSession()->pageTextNotContains(t('The translation of @title to @language is finished and can now be reviewed.', array(
       '@title' => 'Article',
       '@language' => t('Spanish')
     )));
@@ -190,7 +190,7 @@ class ConfigSourceUiTest extends TMGMTTestBase {
         $counter++;
       }
     }
-    $this->assertEqual($counter, 2);
+    $this->assertEquals(2, $counter);
   }
 
   /**
@@ -203,24 +203,24 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->drupalGet('admin/structure/views/view/content/translate');
 
     // Assert some basic strings on that page.
-    $this->assertText(t('Translations of Content view'));
-    $this->assertText(t('There are 0 items in the translation cart.'));
+    $this->assertSession()->pageTextContains(t('Translations of Content view'));
+    $this->assertSession()->pageTextContains(t('There are 0 items in the translation cart.'));
 
     // Request a translation for german.
     $edit = array(
       'languages[de]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the translate tab.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('Content view (English to German, Unprocessed)');
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('Content view (English to German, Unprocessed)');
 
     // Submit.
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/structure/views/view/content/translate');
+    $this->assertSession()->addressEquals('admin/structure/views/view/content/translate');
 
     // We are redirected back to the correct page.
     $this->drupalGet('admin/structure/views/view/content/translate');
@@ -235,21 +235,21 @@ class ConfigSourceUiTest extends TMGMTTestBase {
 
     // Verify that the pending translation is shown.
     $this->clickLinkWithImageTitle('Needs review');
-    $this->drupalPostForm(NULL, array(), t('Save'));
+    $this->submitForm([], t('Save'));
 
     // Request a spanish translation.
     $edit = array(
       'languages[es]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the checkout page.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('Content view (English to Spanish, Unprocessed)');
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('Content view (English to Spanish, Unprocessed)');
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/structure/views/view/content/translate');
+    $this->assertSession()->addressEquals('admin/structure/views/view/content/translate');
 
     // Translated languages should now be listed as Needs review.
     $rows = $this->xpath('//tbody/tr');
@@ -270,8 +270,8 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $view_content = View::load('content');
     $view_content->delete();
 
-    $this->drupalPostForm(NULL, array(), t('Save as completed'));
-    $this->assertText(t('@id of type @type does not exist, the job can not be completed.', array('@id' => $view_content->id(), '@type' => $view_content->getEntityTypeId())));
+    $this->submitForm([], t('Save as completed'));
+    $this->assertSession()->pageTextContains(t('@id of type @type does not exist, the job can not be completed.', array('@id' => $view_content->id(), '@type' => $view_content->getEntityTypeId())));
   }
 
   /**
@@ -286,40 +286,40 @@ class ConfigSourceUiTest extends TMGMTTestBase {
 
     // Go to sources, field configuration list.
     $this->drupalGet('admin/tmgmt/sources/config/field_config');
-    $this->assertText(t('Configuration ID'));
-    $this->assertText('field.field.node.article.body');
+    $this->assertSession()->pageTextContains(t('Configuration ID'));
+    $this->assertSession()->pageTextContains('field.field.node.article.body');
 
     $edit = [
       'items[field.field.node.article.body]' => TRUE,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Add to cart'));
+    $this->submitForm($edit, t('Add to cart'));
     $this->clickLink(t('cart'));
 
-    $this->assertText('Body');
+    $this->assertSession()->pageTextContains('Body');
 
     $edit = [
       'target_language[]' => 'de',
     ];
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Assert that we cannot add config entities into continuous jobs.
-    $this->assertNoText(t('Check for continuous jobs'));
-    $this->assertNoField('add_all_to_continuous_jobs');
+    $this->assertSession()->pageTextNotContains(t('Check for continuous jobs'));
+    $this->assertSession()->fieldNotExists('add_all_to_continuous_jobs');
 
     // Go to the translate tab.
     $this->drupalGet('admin/structure/types/manage/article/fields/node.article.body/translate');
 
     // Request a german translation.
-    $this->drupalPostForm(NULL, array('languages[de]' => TRUE), t('Request translation'));
+    $this->submitForm(['languages[de]' => TRUE], t('Request translation'));
 
     // Verify that we are on the checkout page.
-    $this->assertResponse(200);
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->submitForm([], t('Submit to provider'));
 
     // Verify that the pending translation is shown.
     $this->clickLinkWithImageTitle('Needs review');
-    $this->drupalPostForm(NULL, array(), t('Save as completed'));
+    $this->submitForm([], t('Save as completed'));
 
   }
   /**
@@ -329,17 +329,19 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->loginAsTranslator(array('translate configuration'));
 
     // Test the source overview.
-    $this->drupalPostForm('admin/structure/views/view/content/translate', array(), t('Add to cart'));
-    $this->drupalPostForm('admin/structure/types/manage/article/translate', array(), t('Add to cart'));
+    $this->drupalGet('admin/structure/views/view/content/translate');
+    $this->submitForm([], t('Add to cart'));
+    $this->drupalGet('admin/structure/types/manage/article/translate');
+    $this->submitForm([], t('Add to cart'));
 
     // Test if the content and article are in the cart.
     $this->drupalGet('admin/tmgmt/cart');
-    $this->assertLink('Content view');
-    $this->assertLink('Article content type');
+    $this->assertSession()->linkExists('Content view');
+    $this->assertSession()->linkExists('Article content type');
 
     // Test the label on the source overivew.
     $this->drupalGet('admin/structure/views/view/content/translate');
-    $this->assertRaw(t('There are @count items in the <a href=":url">translation cart</a> including the current item.',
+    $this->assertSession()->responseContains(t('There are @count items in the <a href=":url">translation cart</a> including the current item.',
         array('@count' => 2, ':url' => Url::fromRoute('tmgmt.cart')->toString())));
   }
 
@@ -353,23 +355,23 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     $this->drupalGet('admin/config/system/site-information/translate');
 
     // Assert some basic strings on that page.
-    $this->assertText(t('Translations of System information'));
+    $this->assertSession()->pageTextContains(t('Translations of System information'));
 
     // Request a translation for german.
     $edit = array(
       'languages[de]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the translate tab.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('System information (English to German, Unprocessed)');
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('System information (English to German, Unprocessed)');
 
     // Submit.
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/config/system/site-information/translate');
+    $this->assertSession()->addressEquals('admin/config/system/site-information/translate');
 
     // We are redirected back to the correct page.
     $this->drupalGet('admin/config/system/site-information/translate');
@@ -388,24 +390,24 @@ class ConfigSourceUiTest extends TMGMTTestBase {
 
     // Verify that the pending translation is shown.
     $this->clickLinkWithImageTitle('Needs review');
-    $this->drupalPostForm(NULL, array('name[translation]' => 'de_Druplicon'), t('Save'));
+    $this->submitForm(['name[translation]' => 'de_Druplicon'], t('Save'));
     $this->clickLinkWithImageTitle('Needs review');
-    $this->assertText('de_Druplicon');
-    $this->drupalPostForm(NULL, array(), t('Save'));
+    $this->assertSession()->pageTextContains('de_Druplicon');
+    $this->submitForm([], t('Save'));
 
     // Request a spanish translation.
     $edit = array(
       'languages[es]' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
 
     // Verify that we are on the checkout page.
-    $this->assertText(t('One job needs to be checked out.'));
-    $this->assertText('System information (English to Spanish, Unprocessed)');
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
+    $this->assertSession()->pageTextContains('System information (English to Spanish, Unprocessed)');
+    $this->submitForm([], t('Submit to provider'));
 
     // Make sure that we're back on the originally defined destination URL.
-    $this->assertUrl('admin/config/system/site-information/translate');
+    $this->assertSession()->addressEquals('admin/config/system/site-information/translate');
 
     // Translated languages should now be listed as Needs review.
     $rows = $this->xpath('//tbody/tr');
@@ -422,16 +424,16 @@ class ConfigSourceUiTest extends TMGMTTestBase {
     // Test translation and validation tags of account settings.
     $this->drupalGet('admin/config/people/accounts/translate');
 
-    $this->drupalPostForm(NULL, ['languages[de]' => TRUE], t('Request translation'));
+    $this->submitForm(['languages[de]' => TRUE], t('Request translation'));
 
     // Submit.
-    $this->drupalPostForm(NULL, array(), t('Submit to provider'));
+    $this->submitForm([], t('Submit to provider'));
     $this->clickLinkWithImageTitle('Needs review');
-    $this->drupalPostForm(NULL, array('user__settings|anonymous[translation]' => 'de_Druplicon'), t('Validate HTML tags'));
-    $this->assertText('de_Druplicon');
-    $this->drupalPostForm(NULL, array(), t('Save'));
+    $this->submitForm(['user__settings|anonymous[translation]' => 'de_Druplicon'], t('Validate HTML tags'));
+    $this->assertSession()->pageTextContains('de_Druplicon');
+    $this->submitForm([], t('Save'));
     $this->clickLinkWithImageTitle('Needs review');
-    $this->assertText('de_Druplicon');
+    $this->assertSession()->pageTextContains('de_Druplicon');
   }
 
 }

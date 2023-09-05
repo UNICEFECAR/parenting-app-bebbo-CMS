@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools;
 
 use Drupal\migrate\MigrateMessageInterface;
@@ -21,7 +23,7 @@ class Drush9LogMigrateMessage implements MigrateMessageInterface, LoggerAwareInt
    *
    * @var array
    */
-  protected $map = [
+  protected array $map = [
     'status' => 'notice',
   ];
 
@@ -40,8 +42,8 @@ class Drush9LogMigrateMessage implements MigrateMessageInterface, LoggerAwareInt
    * @param string $type
    *   The type of message to display.
    */
-  public function display($message, $type = 'status') {
-    $type = isset($this->map[$type]) ? $this->map[$type] : $type;
+  public function display($message, $type = 'status'): void {
+    $type = $this->map[$type] ?? $type;
     $this->logger->log($type, $message);
   }
 

@@ -5,12 +5,20 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\feeds\Feeds\Target\DateTime;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\DateTime
  * @group feeds
  */
 class DateTimeTest extends FieldTargetWithContainerTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'datetime';
 
   /**
    * The feed type entity.
@@ -29,7 +37,7 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->feedType = $this->createMock('Drupal\feeds\FeedTypeInterface');
@@ -45,6 +53,17 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
+    $configuration += [
+      'feed_type' => $this->feedType,
+      'target_definition' => $this->targetDefinition,
+    ];
+    return new DateTime($configuration, static::$pluginId, []);
+  }
+
+  /**
    * Tests preparing a value that succeeds.
    *
    * @covers ::prepareValue
@@ -53,11 +72,7 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
     $method = $this->getMethod('Drupal\feeds\Feeds\Target\DateTime', 'prepareTarget')->getClosure();
     $this->targetDefinition = $method($this->getMockFieldDefinition(['datetime_type' => 'date']));
 
-    $configuration = [
-      'feed_type' => $this->feedType,
-      'target_definition' => $this->targetDefinition,
-    ];
-    $target = new DateTime($configuration, 'datetime', []);
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => 1411606273];
@@ -71,11 +86,7 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
    * @covers ::prepareValue
    */
   public function testWithErrors() {
-    $configuration = [
-      'feed_type' => $this->feedType,
-      'target_definition' => $this->targetDefinition,
-    ];
-    $target = new DateTime($configuration, 'datetime', []);
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => '2000-05-32'];
@@ -89,11 +100,7 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
    * @covers ::prepareValue
    */
   public function testYearValue() {
-    $configuration = [
-      'feed_type' => $this->feedType,
-      'target_definition' => $this->targetDefinition,
-    ];
-    $target = new DateTime($configuration, 'datetime', []);
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => '2000'];
@@ -116,22 +123,19 @@ class DateTimeTest extends FieldTargetWithContainerTestBase {
 
     // Test timezone options with one of the timezones.
     $configuration = [
-      'feed_type' => $this->feedType,
-      'target_definition' => $this->targetDefinition,
       'timezone' => 'Europe/Helsinki',
     ];
-    $target = new DateTime($configuration, 'datetime', []);
+
+    $target = $this->instantiatePlugin($configuration);
     $method = $this->getProtectedClosure($target, 'getTimezoneConfiguration');
 
     $this->assertSame('Europe/Helsinki', $method());
 
     // Test timezone options with site default option.
     $configuration = [
-      'feed_type' => $this->feedType,
-      'target_definition' => $this->targetDefinition,
       'timezone' => '__SITE__',
     ];
-    $target = new DateTime($configuration, 'datetime', []);
+    $target = $this->instantiatePlugin($configuration);
     $method = $this->getProtectedClosure($target, 'getTimezoneConfiguration');
 
     $this->assertSame('UTC', $method());

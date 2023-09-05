@@ -37,8 +37,8 @@ interface SourcePluginInterface extends PluginInspectionInterface {
   /**
    * Return a title for this job item.
    *
-   * @param \Drupal\tmgmt\JobItemInterface $job_item
-   *   The job item entity.
+   * @param string|false
+   *   The label of the job item entity.
    */
   public function getLabel(JobItemInterface $job_item);
 
@@ -83,8 +83,8 @@ interface SourcePluginInterface extends PluginInspectionInterface {
    * @param \Drupal\tmgmt\JobItemInterface $job_item
    *   The job item.
    *
-   * @return string
-   *   Language code.
+   * @return string|false
+   *   Language code or FALSE for unknown.
    */
   public function getSourceLangCode(JobItemInterface $job_item);
 

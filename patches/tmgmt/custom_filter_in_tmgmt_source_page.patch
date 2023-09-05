@@ -1,12 +1,11 @@
 diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/content/src/ContentEntitySourcePluginUi.php
-index e32c33e..9a7b8c2 100644
 --- a/sources/content/src/ContentEntitySourcePluginUi.php
 +++ b/sources/content/src/ContentEntitySourcePluginUi.php
-@@ -50,6 +50,47 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+@@ -50,6 +50,48 @@
        );
      }
  
-+     ## node id custom filter
++         ## node id custom filter
 +
 +    $form['search_wrapper']['search']['node_id'] = array(
 +        '#type' => 'textfield',
@@ -47,10 +46,11 @@ index e32c33e..9a7b8c2 100644
 +      return $form;
 +    }
 +
++
      $form['search_wrapper']['search']['langcode'] = array(
        '#type' => 'language_select',
        '#title' => t('Source Language'),
-@@ -436,6 +477,16 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+@@ -437,6 +479,16 @@
  
      $property_conditions += array('langcode' => $langcodes);
  

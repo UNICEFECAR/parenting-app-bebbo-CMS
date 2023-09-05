@@ -2,15 +2,16 @@
 
 namespace Drupal\admin_toolbar_tools\Plugin\Derivative;
 
-use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Extension\ThemeHandlerInterface;
-use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\system\Entity\Menu;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Component\Plugin\Derivative\DeriverBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -56,14 +57,22 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
   protected $config;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, ModuleHandlerInterface $module_handler, RouteProviderInterface $route_provider, ThemeHandlerInterface $theme_handler, ConfigFactoryInterface $config_factory, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
     $this->routeProvider = $route_provider;
     $this->themeHandler = $theme_handler;
     $this->config = $config_factory->get('admin_toolbar_tools.settings');
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -75,7 +84,8 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       $container->get('module_handler'),
       $container->get('router.route_provider'),
       $container->get('theme_handler'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('current_user')
     );
   }
 
@@ -101,14 +111,14 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
       $content_entity_bundle = $entities['content_entity_bundle'];
       $content_entity = $entities['content_entity'];
       $content_entity_bundle_storage = $this->entityTypeManager->getStorage($content_entity_bundle);
-      $bundles_ids = $content_entity_bundle_storage->getQuery()->pager($max_bundle_number)->execute();
+      $bundles_ids = $content_entity_bundle_storage->getQuery()->sort('weight')->pager($max_bundle_number)->execute();
       $bundles = $this->entityTypeManager->getStorage($content_entity_bundle)->loadMultiple($bundles_ids);
       if (count($bundles) == $max_bundle_number && $this->routeExists('entity.' . $content_entity_bundle . '.collection')) {
         $links[$content_entity_bundle . '.collection'] = [
           'title' => $this->t('All types'),
           'route_name' => 'entity.' . $content_entity_bundle . '.collection',
           'parent' => 'entity.' . $content_entity_bundle . '.collection',
-          'weight' => -1,
+          'weight' => -999,
         ] + $base_plugin_definition;
       }
       foreach ($bundles as $machine_name => $bundle) {
@@ -128,6 +138,10 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
               'entity_id' => $bundle->id(),
             ],
           ] + $base_plugin_definition;
+          $weight = $bundles[$machine_name]->get('weight');
+          if (isset($weight) && is_numeric($weight)) {
+            $links[$content_entity_bundle_root]['weight'] = $weight;
+          }
         }
         if ($this->routeExists('entity.' . $content_entity_bundle . '.edit_form')) {
           $key = 'entity.' . $content_entity_bundle . '.edit_form.' . $machine_name;
@@ -177,6 +191,17 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
               'route_name' => 'entity.entity_view_display.' . $content_entity . '.default',
               'parent' => $base_plugin_definition['id'] . ':' . $content_entity_bundle_root,
               'route_parameters' => [$content_entity_bundle => $machine_name],
+              'weight' => 3,
+            ] + $base_plugin_definition;
+          }
+          if ($this->routeExists('entity.' . $bundle->getEntityTypeId() . '.entity_permissions_form')) {
+            $links['entity.entity_permissions_form.' . $content_entity . '.default.' . $machine_name] = [
+              'title' => $this->t('Manage permissions'),
+              'route_name' => 'entity.' . $bundle->getEntityTypeId() . '.entity_permissions_form',
+              'parent' => $base_plugin_definition['id'] . ':' . $content_entity_bundle_root,
+              'route_parameters' => [
+                $bundle->getEntityTypeId() => $machine_name,
+              ],
               'weight' => 3,
             ] + $base_plugin_definition;
           }
@@ -333,7 +358,7 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
         'title' => $this->t('Add vocabulary'),
         'route_name' => 'entity.taxonomy_vocabulary.add_form',
         'parent' => 'entity.taxonomy_vocabulary.collection',
-        'weight' => -5,
+        'weight' => -998,
       ] + $base_plugin_definition;
     }
 
@@ -376,8 +401,15 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
           'route_parameters' => ['menu' => $menu_id],
         ] + $base_plugin_definition;
         // Un-deletable menus.
-        $menus = ['admin', 'devel', 'footer', 'main', 'tools', 'account'];
-        if (!in_array($menu_id, $menus)) {
+        $un_deletable_menus = [
+          'admin',
+          'devel',
+          'footer',
+          'main',
+          'tools',
+          'account',
+        ];
+        if (!in_array($menu_id, $un_deletable_menus)) {
           $links['entity.menu.delete_form.' . $menu_id] = [
             'title' => $this->t('Delete'),
             'route_name' => 'entity.menu.delete_form',
@@ -534,6 +566,15 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
         'parent' => 'entity.view.collection',
         'weight' => -5,
       ] + $base_plugin_definition;
+      $views = $this->entityTypeManager->getStorage('view')->loadMultiple();
+      foreach ($views as $view) {
+        $links['views_ui.' . $view->id()] = [
+          'title' => $view->label(),
+          'route_name' => 'entity.view.edit_form',
+          'route_parameters' => ['view' => $view->id()],
+          'parent' => 'entity.view.collection',
+        ] + $base_plugin_definition;
+      }
       $links['views_ui.field_list'] = [
         'title' => $this->t('Used in views'),
         'route_name' => 'views_ui.reports_fields',
@@ -585,12 +626,12 @@ class ExtraLinks extends DeriverBase implements ContainerDeriverInterface {
         'route_name' => 'entity.media.collection',
         'parent' => 'system.admin_content',
       ] + $base_plugin_definition;
-      if ($this->moduleHandler->moduleExists('media_library')) {
+      if ($this->moduleHandler->moduleExists('media_library') && $this->routeExists('view.media_library.page')) {
         $links['media_library'] = [
-            'title' => $this->t('Media library'),
-            'route_name' => 'view.media_library.page',
-            'parent' => $base_plugin_definition['id'] . ':media_page',
-          ] + $base_plugin_definition;
+          'title' => $this->t('Media library'),
+          'route_name' => 'view.media_library.page',
+          'parent' => $base_plugin_definition['id'] . ':media_page',
+        ] + $base_plugin_definition;
       }
       $links['add_media'] = [
         'title' => $this->t('Add media'),

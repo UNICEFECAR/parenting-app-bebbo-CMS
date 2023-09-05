@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_tools\Functional;
 
 use Drupal\Tests\BrowserTestBase;
@@ -10,7 +12,7 @@ use Drush\TestTraits\DrushTestTrait;
  *
  * @group migrate_tools
  */
-class DrushBatchImportTest extends BrowserTestBase {
+final class DrushBatchImportTest extends BrowserTestBase {
   use DrushTestTrait;
 
   /**

@@ -5,6 +5,7 @@ namespace Drupal\Tests\tmgmt_content\Kernel;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\pathauto\Entity\PathautoPattern;
+use Drupal\Tests\Traits\Core\PathAliasTestTrait;
 
 /**
  * Tests for the path/pathauto integration.
@@ -13,12 +14,14 @@ use Drupal\pathauto\Entity\PathautoPattern;
  */
 class ContentEntityPathTest extends ContentEntityTestBase {
 
+  use PathAliasTestTrait;
+
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = ['node', 'path', 'path_alias'];
+  protected static $modules = ['node', 'path', 'path_alias'];
 
   /**
    * The entity type used for the tests.
@@ -30,7 +33,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->installSchema('node', ['node_access']);
@@ -62,9 +65,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $node = Node::create($values);
     $node->save();
 
-    /** @var \Drupal\Core\Path\AliasStorageInterface $alias_storage */
-    $alias_storage = \Drupal::service('path.alias_storage');
-    $this->assertTrue($alias_storage->aliasExists('/en-example-path', 'en'));
+    $this->assertPathAliasExists('/en-example-path', 'en', NULL, '');
 
     $job = tmgmt_job_create('en', 'de');
     $job->translator = 'test_translator';
@@ -111,7 +112,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $this->assertEquals('de', $translation->get('path')->langcode);
     $this->assertNotEquals($node->get('path')->pid, $translation->get('path')->pid);
 
-    $this->assertTrue($alias_storage->aliasExists('/de-example-path', 'de'));
+    $this->assertPathAliasExists('/de-example-path', 'de', NULL, '');
   }
 
   /**
@@ -142,9 +143,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $node = Node::create($values);
     $node->save();
 
-    /** @var \Drupal\Core\Path\AliasStorageInterface $alias_storage */
-    $alias_storage = \Drupal::service('path.alias_storage');
-    $this->assertTrue($alias_storage->aliasExists('/en-test-node', 'en'));
+    $this->assertPathAliasExists('/en-test-node', 'en', NULL, '');
 
     $job = tmgmt_job_create('en', 'de');
     $job->translator = 'test_translator';
@@ -191,7 +190,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $this->assertEquals('de', $translation->get('path')->langcode);
     $this->assertNotEquals($node->get('path')->pid, $translation->get('path')->pid);
 
-    $this->assertTrue($alias_storage->aliasExists('/de-dede-ch-test-node', 'de'));
+    $this->assertPathAliasExists('/de-dede-ch-test-node', 'de', NULL, '');
 
     // Repeat with a manual alias.
     $values = [
@@ -207,9 +206,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $node = Node::create($values);
     $node->save();
 
-    /** @var \Drupal\Core\Path\AliasStorageInterface $alias_storage */
-    $alias_storage = \Drupal::service('path.alias_storage');
-    $this->assertTrue($alias_storage->aliasExists('/en-manual-path', 'en'));
+    $this->assertPathAliasExists('/en-manual-path', 'en', NULL, '');
 
     $job = tmgmt_job_create('en', 'de');
     $job->translator = 'test_translator';
@@ -256,7 +253,7 @@ class ContentEntityPathTest extends ContentEntityTestBase {
     $this->assertEquals('de', $translation->get('path')->langcode);
     $this->assertNotEquals($node->get('path')->pid, $translation->get('path')->pid);
 
-    $this->assertTrue($alias_storage->aliasExists('/de-manual-path', 'de'));
+    $this->assertPathAliasExists('/de-manual-path', 'de', NULL, '');
 
   }
 

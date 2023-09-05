@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Defines a class to build a listing of Custom Languages.
+ * Defines a class to build a listing of custom languages.
  *
  * @see \Drupal\user\Entity\CustomLanguage
  */
@@ -26,9 +26,8 @@ class CustomLanguageListBuilder extends DraggableListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Language name');
     $header['langcode'] = $this->t('Language code');
-    $header['native_name'] = $this->t('Language native name');
+    $header['native_name'] = $this->t('Display in native language');
     return $header + parent::buildHeader();
-
   }
 
   /**
@@ -47,14 +46,6 @@ class CustomLanguageListBuilder extends DraggableListBuilder {
    */
   public function getDefaultOperations(EntityInterface $entity) {
     $operations = parent::getDefaultOperations($entity);
-
-    if ($entity->hasLinkTemplate('edit-form')) {
-      $operations['edit'] = [
-        'title' => $this->t('Edit'),
-        'weight' => 20,
-        'url' => $entity->toUrl('edit-form'),
-      ];
-    }
     return $operations;
   }
 

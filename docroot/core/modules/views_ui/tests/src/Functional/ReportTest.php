@@ -14,7 +14,7 @@ class ReportTest extends UITestBase {
    *
    * @var array
    */
-  public static $modules = ['views', 'views_ui'];
+  protected static $modules = ['views', 'views_ui'];
 
   /**
    * {@inheritdoc}
@@ -24,7 +24,7 @@ class ReportTest extends UITestBase {
   /**
    * Stores an admin user used by the different tests.
    *
-   * @var \Drupal\user\User
+   * @var \Drupal\user\Entity\User
    */
   protected $adminUser;
 

@@ -66,7 +66,7 @@ function tmgmt_test_tmgmt_job_item_state_definitions_alter(&$definitions) {
   $definitions['tmgmt_test_generating'] = [
     'label' => t('Translation is requested from the elders of the Internet'),
     'type' => 'translator_state',
-    'icon' => drupal_get_path('module', 'tmgmt') . '/icons/earth.svg',
+    'icon' => \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/earth.svg',
     'show_job_filter' => TRUE,
   ];
 }

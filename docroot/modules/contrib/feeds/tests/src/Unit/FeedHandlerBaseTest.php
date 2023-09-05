@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\feeds\FeedHandlerBase;
@@ -22,6 +23,7 @@ class FeedHandlerBaseTest extends FeedsUnitTestCase {
   public function testConstruct() {
     $container = new ContainerBuilder();
     $container->set('event_dispatcher', $this->createMock(EventDispatcherInterface::class));
+    $container->set('database', $this->createMock(Connection::class));
 
     $mock = $this->getMockForAbstractClass(FeedHandlerBase::class, [], '', FALSE);
     $mock_class = get_class($mock);

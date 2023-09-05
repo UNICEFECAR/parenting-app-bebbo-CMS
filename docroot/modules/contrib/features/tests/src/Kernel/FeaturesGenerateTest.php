@@ -2,10 +2,11 @@
 
 namespace Drupal\Tests\features\Kernel;
 
-use Drupal\features\Entity\FeaturesBundle;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Archiver\ArchiveTar;
+use Drupal\features\Entity\FeaturesBundle;
+use Drupal\features\FeaturesBundleInterface;
+use Drupal\KernelTests\KernelTestBase;
 use org\bovigo\vfs\vfsStream;
 
 /**
@@ -14,16 +15,18 @@ use org\bovigo\vfs\vfsStream;
 class FeaturesGenerateTest extends KernelTestBase {
 
   const PACKAGE_NAME = 'my_test_package';
+
   const BUNDLE_NAME = 'giraffe';
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'features',
     'node',
     'system',
     'user',
+    'test_feature_generation',
   ];
 
   /**
@@ -51,7 +54,7 @@ class FeaturesGenerateTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('features');
@@ -92,7 +95,7 @@ class FeaturesGenerateTest extends KernelTestBase {
     $expected_info = [
       "name" => "My test package",
       "type" => "module",
-      "core_version_requirement" => "^8.9 || ^9",
+      "core_version_requirement" => FeaturesBundleInterface::CORE_VERSION_REQUIREMENT,
     ];
     $info = Yaml::decode($archive->extractInString(self::PACKAGE_NAME . '/' . self::PACKAGE_NAME . '.info.yml'));
     $this->assertEquals($expected_info, $info, 'Incorrect info file generated');
@@ -130,16 +133,11 @@ class FeaturesGenerateTest extends KernelTestBase {
   public function testExportWrite() {
     // Set a fake drupal root, so the testbot can also write into it.
     vfsStream::setup('drupal');
-    \Drupal::getContainer()->set('app.root', 'vfs://drupal');
     $this->featuresManager->setRoot('vfs://drupal');
-
     $package = $this->featuresManager->getPackage(self::PACKAGE_NAME);
     // Find out where package will be exported.
-    list($full_name, $path) = $this->featuresManager->getExportInfo($package, $this->assigner->getBundle());
+    [$full_name, $path] = $this->featuresManager->getExportInfo($package, $this->assigner->getBundle());
     $path = 'vfs://drupal/' . $path . '/' . $full_name;
-    if (file_exists($path)) {
-      file_unmanaged_delete_recursive($path);
-    }
     $this->assertFalse(file_exists($path), 'Package directory already exists.');
 
     $this->generator->generatePackages('write', $this->assigner->getBundle(), [self::PACKAGE_NAME]);
@@ -152,7 +150,7 @@ class FeaturesGenerateTest extends KernelTestBase {
     $expected_info = [
       "name" => "My test package",
       "type" => "module",
-      "core_version_requirement" => "^8.9 || ^9",
+      "core_version_requirement" => FeaturesBundleInterface::CORE_VERSION_REQUIREMENT,
     ];
     $info = Yaml::decode(file_get_contents($info_file_uri));
     $this->assertEquals($expected_info, $info, 'Incorrect info file generated');
@@ -182,7 +180,7 @@ class FeaturesGenerateTest extends KernelTestBase {
     $expected_info = [
       "name" => "My test package",
       "type" => "module",
-      "core_version_requirement" => "^8.9 || ^9",
+      "core_version_requirement" => FeaturesBundleInterface::CORE_VERSION_REQUIREMENT,
       "dependencies" => ["drupal:node", "drupal:user"],
       "mykey" => "test value",
     ];
@@ -213,7 +211,7 @@ class FeaturesGenerateTest extends KernelTestBase {
     $expected_info = [
       "name" => "My test package",
       "type" => "module",
-      "core_version_requirement" => "^8.9 || ^9",
+      "core_version_requirement" => FeaturesBundleInterface::CORE_VERSION_REQUIREMENT,
       "dependencies" => ["drupal:node", "drupal:user"],
       "mykey" => "test value",
     ];

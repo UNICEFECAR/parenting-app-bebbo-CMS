@@ -28,7 +28,7 @@ class Explode extends TamperBase {
   public function defaultConfiguration() {
     $config = parent::defaultConfiguration();
     $config[self::SETTING_SEPARATOR] = ',';
-    $config[self::SETTING_LIMIT] = '';
+    $config[self::SETTING_LIMIT] = NULL;
     return $config;
   }
 
@@ -40,22 +40,14 @@ class Explode extends TamperBase {
       '#type' => 'textfield',
       '#title' => $this->t('String separator'),
       '#default_value' => $this->getSetting(self::SETTING_SEPARATOR),
-      '#description' => $this->t('This will break up sequenced data into an
-      array. For example, "a, b, c" would get broken up into the array(\'a\',
-      \'b\', \'c\'). A space can be represented by %s, tabs by %t, and newlines
-      by %n.'),
+      '#description' => $this->t('This will break up sequenced data into an array. For example, "a, b, c" would get broken up into the array(\'a\', \'b\', \'c\'). A space can be represented by %s, tabs by %t, and newlines by %n.'),
     ];
 
     $form[self::SETTING_LIMIT] = [
       '#type' => 'number',
       '#title' => $this->t('Limit'),
       '#default_value' => $this->getSetting(self::SETTING_LIMIT),
-      '#description' => $this->t('If limit is set and positive, the returned
-        items will contain a maximum of limit with the last item containing the
-        rest of string. If limit is negative, all components except the last
-        -limit are returned. If the limit parameter is zero, then this is
-        treated as 1. If limit is not set, then there will be no limit on the
-        number of items returned.'),
+      '#description' => $this->t('If limit is set and positive, the returned items will contain a maximum of limit with the last item containing the rest of string. If limit is negative, all components except the last -limit are returned. If the limit parameter is zero, then this is treated as 1. If limit is not set, then there will be no limit on the number of items returned.'),
     ];
 
     return $form;

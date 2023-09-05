@@ -6,11 +6,13 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\languagefield\Entity\CustomLanguageManager;
 
 /**
  * Form controller for the CustomLanguage entity edit forms.
  *
- * @todo: copy more code from \Drupal\language\Form\LanguageEditForm.
+ * @todo Copy more code from \Drupal\language\Form\LanguageEditForm.
  */
 class CustomLanguageForm extends EntityForm {
 
@@ -18,46 +20,55 @@ class CustomLanguageForm extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\languagefield\Entity\CustomLanguageInterface $entity */
-    $entity = $this->entity;
+    /** @var \Drupal\languagefield\Entity\CustomLanguageInterface $language */
+    $language = $this->entity;
 
-    if ($entity->isNew()) {
-      $form['langcode'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Language code'),
-        '#default_value' => '',
-        '#size' => 10,
-        '#required' => TRUE,
-        '#maxlength' => 10,
-        '#description' => $this->t('Use language codes as <a href=":w3ctags">defined by the W3C</a> for interoperability. <em>Examples: "en", "en-gb" and "zh-hant".</em>', [':w3ctags' => 'http://www.w3.org/International/articles/language-tags/']),
-      ];
-    }
-    else {
+    if ($language->getId()) {
       $form['langcode_view'] = [
         '#type' => 'item',
         '#title' => $this->t('Language code'),
-        '#markup' => $entity->id(),
+        '#markup' => $language->id(),
       ];
       $form['langcode'] = [
         '#type' => 'value',
-        '#value' => $entity->id(),
+        '#value' => $language->id(),
+      ];
+    }
+    else {
+      $form['langcode'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Language code'),
+        '#maxlength' => CustomLanguageManager::LANGUAGEFIELD_LANGCODE_MAXLENGTH,
+        '#required' => TRUE,
+        '#default_value' => '',
+        '#disabled' => FALSE,
+        '#description' => $this->t('Use language codes as <a href=":w3ctags">defined by the W3C</a> for interoperability. <em>Examples: "en", "en-gb" and "zh-hant".</em>', [':w3ctags' => 'http://www.w3.org/International/articles/language-tags/']),
       ];
     }
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Language name'),
-      '#default_value' => $entity->label(),
-      '#size' => 30,
-      '#required' => TRUE,
       '#maxlength' => 64,
+      '#default_value' => $language->label(),
+      '#required' => TRUE,
     ];
     $form['native_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Native Name'),
-      '#default_value' => $entity->getNativeName(),
-      '#size' => 30,
-      '#required' => TRUE,
+      '#title' => $this->t('Display in native language'),
+      '#default_value' => $language->getNativeName(),
       '#maxlength' => 64,
+      '#required' => TRUE,
+    ];
+    $form['direction'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Direction'),
+      '#required' => TRUE,
+      '#description' => $this->t('Direction that text in this language is presented.'),
+      '#default_value' => $language->getDirection(),
+      '#options' => [
+        LanguageInterface::DIRECTION_LTR => $this->t('Left to right'),
+        LanguageInterface::DIRECTION_RTL => $this->t('Right to left'),
+      ],
     ];
 
     return parent::form($form, $form_state);
@@ -68,15 +79,25 @@ class CustomLanguageForm extends EntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $status = parent::save($form, $form_state);
-    /** @var \Drupal\languagefield\Entity\CustomLanguageInterface $entity */
-    $entity = $this->entity;
+    /** @var \Drupal\languagefield\Entity\CustomLanguageInterface $language */
+    $language = $this->entity;
 
-    //$edit_link = $this->entity->toLink($this->t('Edit'),'edit-form');
+    // $edit_link = $this->entity->toLink($this->t('Edit'),'edit-form');
     $action = $status == SAVED_UPDATED ? 'updated' : 'added';
 
     // Tell the user we've updated their custom language.
-    $this->messenger()->addStatus($this->t('The language %label has been %action.', ['%label' => $entity->label(), '%action' => $action]));
-    $this->logger('languagefield')->notice('The language %label has been %action.', ['%label' => $entity->label(), '%action' => $action]);
+    $this->messenger()->addStatus($this->t(
+      'The language %label has been %action.', [
+        '%label' => $language->label(),
+        '%action' => $action,
+      ])
+    );
+    $this->logger('languagefield')->notice(
+      'The language %label has been %action.', [
+        '%label' => $language->label(),
+        '%action' => $action,
+      ]
+    );
 
     // Redirect back to the list view.
     $form_state->setRedirect('languagefield.custom_language.collection');
@@ -115,19 +136,13 @@ class CustomLanguageForm extends EntityForm {
   protected function copyFormValuesToEntity(EntityInterface $entity, array $form, FormStateInterface $form_state) {
     $langcode = trim($form_state->getValue('langcode'));
     $label = trim($form_state->getValue('label'));
-    $direction = trim($form_state->getValue('direction'));
     $native = trim($form_state->getValue('native_name'));
+    $direction = $form_state->getValue('direction');
 
     $entity->set('id', $langcode);
     $entity->set('label', $label);
     $entity->set('native_name', $native);
     $entity->set('direction', $direction);
-
-    // There is no weight on the edit form. Fetch all configurable languages
-    // ordered by weight and set the new language to be placed after them.
-    //$languages = \Drupal::languageManager()->getLanguages(ConfigurableLanguage::STATE_CONFIGURABLE);
-    //$last_language = end($languages);
-    //$entity->setWeight($last_language->getWeight() + 1);
   }
 
 }

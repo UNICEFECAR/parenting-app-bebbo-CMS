@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension;
 
@@ -110,8 +106,7 @@ abstract class AbstractEntry
      */
     public function getEncoding()
     {
-        $assumed = $this->getDomDocument()->encoding;
-        return $assumed;
+        return $this->getDomDocument()->encoding;
     }
 
     /**
@@ -130,14 +125,16 @@ abstract class AbstractEntry
         }
 
         $this->data['type'] = $type;
-        if ($type === Reader\Reader::TYPE_RSS_10
+        if (
+            $type === Reader\Reader::TYPE_RSS_10
             || $type === Reader\Reader::TYPE_RSS_090
         ) {
             $this->setXpathPrefix('//rss:item[' . ((int) $this->entryKey + 1) . ']');
             return $this;
         }
 
-        if ($type === Reader\Reader::TYPE_ATOM_10
+        if (
+            $type === Reader\Reader::TYPE_ATOM_10
             || $type === Reader\Reader::TYPE_ATOM_03
         ) {
             $this->setXpathPrefix('//atom:entry[' . ((int) $this->entryKey + 1) . ']');

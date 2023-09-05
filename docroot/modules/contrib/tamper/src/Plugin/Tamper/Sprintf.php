@@ -61,8 +61,8 @@ class Sprintf extends TamperBase {
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
-    if (!is_string($data)) {
-      throw new TamperException('Input should be a string.');
+    if (!is_string($data) && !is_numeric($data)) {
+      throw new TamperException('Input should be a string or numeric.');
     }
     return sprintf($this->getSetting(self::SETTING_TEXT_FORMAT), $data);
   }

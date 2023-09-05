@@ -38,7 +38,7 @@ class DateTimeNormalizerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $system_date_config = $this->prophesize(ImmutableConfig::class);
@@ -178,6 +178,8 @@ class DateTimeNormalizerTest extends UnitTestCase {
 
 
 /**
+ * Provides a test class for testing DrupalDateTime.
+ *
  * Note: Prophecy does not support magic methods. By subclassing and specifying
  * an explicit method, Prophecy works.
  * @see https://github.com/phpspec/prophecy/issues/338

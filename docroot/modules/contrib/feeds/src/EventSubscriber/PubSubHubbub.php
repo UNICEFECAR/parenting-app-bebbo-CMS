@@ -52,6 +52,16 @@ class PubSubHubbub implements EventSubscriberInterface {
   }
 
   /**
+   * Adds a new batch.
+   *
+   * @param array $batch_definition
+   *   An associative array defining the batch.
+   */
+  protected function batchSet(array $batch_definition) {
+    return batch_set($batch_definition);
+  }
+
+  /**
    * Subscribes to a feed.
    *
    * @param \Drupal\feeds\Event\FetchEvent $event
@@ -130,13 +140,16 @@ class PubSubHubbub implements EventSubscriberInterface {
       'title' => $this->t('Subscribing to: %title', ['%title' => $feed->label()]),
       'init_message' => $this->t('Subscribing to: %title', ['%title' => $feed->label()]),
       'operations' => [
-        ['Drupal\feeds\EventSubscriber\PubSubHubbub::runSubscribeBatch', [$subscription]],
+        [
+          'Drupal\feeds\EventSubscriber\PubSubHubbub::runSubscribeBatch',
+          [$subscription],
+        ],
       ],
       'progress_message' => $this->t('Subscribing: %title', ['%title' => $feed->label()]),
       'error_message' => $this->t('An error occored while subscribing to %title.', ['%title' => $feed->label()]),
     ];
 
-    batch_set($batch);
+    $this->batchSet($batch);
   }
 
   /**
@@ -158,13 +171,16 @@ class PubSubHubbub implements EventSubscriberInterface {
       'title' => $this->t('Unsubscribing from: %title', ['%title' => $feed->label()]),
       'init_message' => $this->t('Unsubscribing from: %title', ['%title' => $feed->label()]),
       'operations' => [
-        ['Drupal\feeds\EventSubscriber\PubSubHubbub::runSubscribeBatch', [$subscription]],
+        [
+          'Drupal\feeds\EventSubscriber\PubSubHubbub::runSubscribeBatch',
+          [$subscription],
+        ],
       ],
       'progress_message' => $this->t('Unsubscribing: %title', ['%title' => $feed->label()]),
       'error_message' => $this->t('An error occored while unsubscribing from %title.', ['%title' => $feed->label()]),
     ];
 
-    batch_set($batch);
+    $this->batchSet($batch);
   }
 
   /**

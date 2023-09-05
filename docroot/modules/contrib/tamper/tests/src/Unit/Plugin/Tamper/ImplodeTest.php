@@ -24,13 +24,22 @@ class ImplodeTest extends TamperPluginTestBase {
   }
 
   /**
+   * Tests imploding with an object.
+   */
+  public function testImplodeWithObject() {
+    $this->expectException(TamperException::class);
+    $this->expectExceptionMessage('Input should be an array or a string.');
+    $original = new \stdClass();
+    $this->plugin->tamper($original);
+  }
+
+  /**
    * Tests imploding with a single value.
    */
   public function testImplodeWithSingleValue() {
-    $this->expectException(TamperException::class);
-    $this->expectExceptionMessage('Input should be an array.');
-    $original = 'foo';
-    $this->plugin->tamper($original);
+    $original = 'foobar';
+    $expected = 'foobar';
+    $this->assertEquals($expected, $this->plugin->tamper($original));
   }
 
   /**

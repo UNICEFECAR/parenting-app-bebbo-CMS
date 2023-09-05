@@ -3,11 +3,8 @@
 namespace Drupal\content_moderation_notifications\Form;
 
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class ContentModerationNotificationFormBase.
@@ -182,18 +179,20 @@ class ContentModerationNotificationsFormBase extends EntityForm {
 
     $form['emails'] = [
       '#type' => 'textarea',
+      '#rows' => 3,
       '#title' => $this->t('Adhoc email addresses'),
       '#default_value' => $content_moderation_notification->getEmails(),
-      '#description' => $this->t('Send notifications to these email addresses, emails should be entered as a comma separated list and optionally on separate lines.'),
+      '#description' => $this->t('Send notifications to these email addresses. Separate emails with commas or newlines. You may use Twig templating code in this field.'),
     ];
 
     // Email subject line.
     $form['subject'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
+      '#rows' => 1,
       '#title' => $this->t('Email Subject'),
       '#default_value' => $content_moderation_notification->getSubject(),
       '#required' => TRUE,
-      '#maxlength' => 1024,
+      '#description' => $this->t('You may use Twig templating code in this field.'),
     ];
 
     // Email body content.
@@ -202,14 +201,15 @@ class ContentModerationNotificationsFormBase extends EntityForm {
       '#format' => $content_moderation_notification->getMessageFormat() ?: filter_default_format(),
       '#title' => $this->t('Email Body'),
       '#default_value' => $content_moderation_notification->getMessage(),
+      '#description' => $this->t('You may use Twig templating code in this field.'),
     ];
 
     // Add token tree link if module exists.
     if ($this->moduleHandler->moduleExists('token')) {
-      $form['body']['token_tree_link'] =  [
+      $form['body']['token_tree_link'] = [
         '#theme' => 'token_tree_link',
         '#token_types' => array_unique(['user', $selected_workflow, 'node']),
-        '#weight' => 10
+        '#weight' => 10,
       ];
     }
 
@@ -290,12 +290,22 @@ class ContentModerationNotificationsFormBase extends EntityForm {
 
     if ($status == SAVED_UPDATED) {
       // If we edited an existing entity...
-      $this->messenger()->addMessage($this->t('Notification <a href=":url">%label</a> has been updated.', ['%label' => $content_moderation_notification->label(), ':url' => $content_moderation_notification->toUrl('edit-form')->toString()]));
+      $this->messenger()->addMessage($this->t('Notification <a href=":url">%label</a> has been updated.',
+          [
+            '%label' => $content_moderation_notification->label(),
+            ':url' => $content_moderation_notification->toUrl('edit-form')->toString(),
+          ]
+      ));
       $this->logger('content_moderation_notifications')->notice('Notification has been updated.', ['%label' => $content_moderation_notification->label()]);
     }
     else {
       // If we created a new entity...
-      $this->messenger()->addMessage($this->t('Notification <a href=":url">%label</a> has been added.', ['%label' => $content_moderation_notification->label(), ':url' => $content_moderation_notification->toUrl('edit-form')->toString()]));
+      $this->messenger()->addMessage($this->t('Notification <a href=":url">%label</a> has been added.',
+        [
+          '%label' => $content_moderation_notification->label(),
+          ':url' => $content_moderation_notification->toUrl('edit-form')->toString(),
+        ]
+      ));
       $this->logger('content_moderation_notifications')->notice('Notification has been added.', ['%label' => $content_moderation_notification->label()]);
     }
 

@@ -1,0 +1,48 @@
+id: shield_settings
+label: Shield configuration
+migration_tags:
+  - Drupal 7
+  - Configuration
+source:
+  plugin: variable
+  variables:
+    - shield_enabled
+    - shield_allow_cli
+    - shield_ignored_addresses
+    - shield_user
+    - shield_pass
+    - shield_method
+    - shield_paths
+    - shield_print
+  source_module: shield
+process:
+  shield_enable:
+    plugin: static_map
+    source: 'shield_enabled'
+    map:
+      1: true
+    default_value: false
+  credentials/shield/user: shield_user
+  credentials/shield/pass: shield_pass
+  print: shield_print
+  allow_cli:
+    plugin: static_map
+    source: 'shield_allow_cli'
+    map:
+      1: true
+    default_value: false
+# 'method' field in D7 has values 1 and 2 for 'disabled' and 'enabled'
+# respectively, whereas in D9 those are 0 and 1.
+  method:
+    plugin: static_map
+    source: 'shield_method'
+    map:
+      2: 1
+    default_value: 0
+  paths:
+    plugin: shield_paths
+    source: 'shield_paths'
+  allowlist: shield_ignored_addresses
+destination:
+  plugin: config
+  config_name: shield.settings

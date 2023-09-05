@@ -1,18 +1,24 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
 
 use Laminas\Feed\Reader\Exception\InvalidArgumentException;
 
+use function array_key_exists;
+use function is_a;
+use function is_string;
+use function sprintf;
+
+/**
+ * @final this class wasn't designed to be inherited from, but we can't assume that consumers haven't already
+ *        extended it, therefore we cannot add the final marker without a new major release.
+ */
 class StandaloneExtensionManager implements ExtensionManagerInterface
 {
-    private $extensions = [
+    /** @var array<string, class-string> */
+    private array $extensions = [
         'Atom\Entry'              => Extension\Atom\Entry::class,
         'Atom\Feed'               => Extension\Atom\Feed::class,
         'Content\Entry'           => Extension\Content\Entry::class,
@@ -24,6 +30,8 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
         'GooglePlayPodcast\Feed'  => Extension\GooglePlayPodcast\Feed::class,
         'Podcast\Entry'           => Extension\Podcast\Entry::class,
         'Podcast\Feed'            => Extension\Podcast\Feed::class,
+        'PodcastIndex\Entry'      => Extension\PodcastIndex\Entry::class,
+        'PodcastIndex\Feed'       => Extension\PodcastIndex\Feed::class,
         'Slash\Entry'             => Extension\Slash\Entry::class,
         'Syndication\Feed'        => Extension\Syndication\Feed::class,
         'Thread\Entry'            => Extension\Thread\Entry::class,
@@ -34,9 +42,8 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
      * Do we have the extension?
      *
      * @param  string $extension
-     * @return bool
      */
-    public function has($extension)
+    public function has($extension): bool
     {
         return array_key_exists($extension, $this->extensions);
     }
@@ -58,10 +65,12 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
      *
      * @param string $name
      * @param string $class
+     * @return void
      */
     public function add($name, $class)
     {
-        if (is_string($class)
+        if (
+            is_string($class)
             && (is_a($class, Extension\AbstractEntry::class, true)
                 || is_a($class, Extension\AbstractFeed::class, true))
         ) {
@@ -81,6 +90,7 @@ class StandaloneExtensionManager implements ExtensionManagerInterface
      * Remove an extension.
      *
      * @param string $name
+     * @return void
      */
     public function remove($name)
     {

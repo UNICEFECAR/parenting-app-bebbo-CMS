@@ -125,7 +125,7 @@ trait TmgmtTestTrait {
         'another_key' => $this->randomMachineName(),
       ] : []
     ]);
-    $this->assertEqual(SAVED_NEW, $translator->save());
+    $this->assertEquals(SAVED_NEW, $translator->save());
     return $translator;
   }
 
@@ -136,7 +136,7 @@ trait TmgmtTestTrait {
    */
   function createJob($source = 'en', $target = 'de', $uid = 1, $values = array())  {
     $job = tmgmt_job_create($source, $target, $uid, $values);
-    $this->assertEqual(SAVED_NEW, $job->save());
+    $this->assertEquals(SAVED_NEW, $job->save());
 
     // Assert that the translator was assigned a tid.
     $this->assertTrue($job->id() > 0);
@@ -167,11 +167,11 @@ trait TmgmtTestTrait {
    *   Expected existing language codes (translations).
    */
   function assertJobItemLangCodes(JobItemInterface $job_item, $expected_source_lang, array $actual_lang_codes) {
-    $this->assertEqual($job_item->getSourceLangCode(), $expected_source_lang);
+    $this->assertEquals($expected_source_lang, $job_item->getSourceLangCode());
     $existing = $job_item->getExistingLangCodes();
     sort($existing);
     sort($actual_lang_codes);
-    $this->assertEqual($existing, $actual_lang_codes);
+    $this->assertEquals($actual_lang_codes, $existing);
   }
 
   /**
@@ -199,7 +199,7 @@ trait TmgmtTestTrait {
    *   The text to compare.
    */
   protected function assertTextByXpath($xpath, $text) {
-    $this->assertEqual((string) $this->xpath($xpath)[0]->getText(), $text);
+    $this->assertEquals($text, (string) $this->xpath($xpath)[0]->getText());
   }
 
 }

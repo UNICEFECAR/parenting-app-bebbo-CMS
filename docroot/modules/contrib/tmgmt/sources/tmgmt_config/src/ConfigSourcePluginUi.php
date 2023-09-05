@@ -288,6 +288,7 @@ class ConfigSourcePluginUi extends SourcePluginUiBase {
     unset($property_conditions['target_language']);
 
     $search = \Drupal::entityQuery($entity_type_id);
+    $search->accessCheck(TRUE);
     // unset($property_conditions['target_status']);
 
     foreach ($property_conditions as $property_name => $property_value) {

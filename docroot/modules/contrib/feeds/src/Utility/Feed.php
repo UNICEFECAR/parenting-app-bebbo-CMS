@@ -3,8 +3,8 @@
 namespace Drupal\feeds\Utility;
 
 use GuzzleHttp\Psr7\Uri;
-use Zend\Feed\Reader\FeedSet;
-use Zend\Feed\Reader\Reader;
+use Laminas\Feed\Reader\FeedSet;
+use Laminas\Feed\Reader\Reader;
 
 /**
  * Helper functions for dealing with feeds.
@@ -44,7 +44,7 @@ class Feed {
    *   Returns true if this is a parsable feed, false if not.
    */
   public static function isFeed($data) {
-    Reader::setExtensionManager(\Drupal::service('feed.bridge.reader'));
+    Reader::setExtensionManager(\Drupal::service('feeds.bridge.reader'));
 
     try {
       $feed_type = Reader::detectType($data);
@@ -69,12 +69,23 @@ class Feed {
    */
   public static function findFeed($url, $html) {
     $use_error = libxml_use_internal_errors(TRUE);
-    $entity_loader = libxml_disable_entity_loader(TRUE);
+
+    // This mitigates a security issue in libxml older than version 2.9.0.
+    // See http://symfony.com/blog/security-release-symfony-2-0-17-released for
+    // details.
+    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
+    if (\PHP_VERSION_ID < 80000) {
+      $entity_loader = libxml_disable_entity_loader(TRUE);
+    }
 
     $dom = new \DOMDocument();
     $status = $dom->loadHTML(trim($html));
 
-    libxml_disable_entity_loader($entity_loader);
+    // @todo remove when Drupal 9 (and thus PHP 7) is no longer supported.
+    if (\PHP_VERSION_ID < 80000) {
+      libxml_disable_entity_loader($entity_loader);
+    }
+
     libxml_use_internal_errors($use_error);
 
     if (!$status) {

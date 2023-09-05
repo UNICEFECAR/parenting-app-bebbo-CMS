@@ -7,7 +7,6 @@ use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\SitemapItem;
 use Drupal\feeds\Plugin\Type\Parser\ParserInterface;
-use Drupal\feeds\Plugin\Type\PluginBase;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
@@ -18,10 +17,10 @@ use Drupal\feeds\StateInterface;
  * @FeedsParser(
  *   id = "sitemap",
  *   title = @Translation("Sitemap XML"),
- *   description = @Translation("Parse Sitemap XML format feeds.")
+ *   description = @Translation("Parse Sitemap XML format feeds."),
  * )
  */
-class SitemapParser extends PluginBase implements ParserInterface {
+class SitemapParser extends ParserBase implements ParserInterface {
   use XmlParserTrait;
 
   /**

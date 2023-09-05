@@ -30,11 +30,11 @@ class LanguageSwitchingTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create and log in user.
-    $admin_user = $this->drupalCreateUser([
+    $admin_user = $this->createUser([
       'administer blocks',
       'administer languages',
       'access administration pages',
@@ -50,28 +50,32 @@ class LanguageSwitchingTest extends BrowserTestBase {
     $edit = [
       'predefined_langcode' => 'fr',
     ];
-    $this->drupalPostForm('admin/config/regional/language/add', $edit, t('Add language'));
+    $this->drupalGet('admin/config/regional/language/add');
+    $this->submitForm($edit, t('Add language'));
 
     // Enable session language detection and selection.
     $edit = [
       'language_interface[enabled][language-url]' => FALSE,
       'language_interface[enabled][language-session]' => TRUE,
     ];
-    $this->drupalPostForm('admin/config/regional/language/detection', $edit, t('Save settings'));
+    $this->drupalGet('admin/config/regional/language/detection');
+    $this->submitForm($edit, t('Save settings'));
 
     // Enable the language switching block.
-    $this->drupalPlaceBlock('language_dropdown_block:' . LanguageInterface::TYPE_INTERFACE, [
+    $this->placeBlock('language_dropdown_block:' . LanguageInterface::TYPE_INTERFACE, [
       'id' => 'test_language_dropdown_block',
+      'showall' => 1,
+      'hide_only_one' => 0,
     ]);
 
     // Go to the homepage.
     $this->drupalGet('');
     // Make sure default language selected is English.
-    $this->assertEqual(1, count($this->cssSelect('#edit-lang-dropdown-select option[selected=selected]:contains(English)')));
+    $this->assertEquals(1, count($this->cssSelect('#edit-lang-dropdown-select option[selected=selected]:contains(English)')));
     // Go to the homepage for French language.
     $this->drupalGet('', ['query' => ['language' => 'fr']]);
     // Make sure default language selected is French.
-    $this->assertEqual(1, count($this->cssSelect('#edit-lang-dropdown-select option[selected=selected]:contains(French)')));
+    $this->assertEquals(1, count($this->cssSelect('#edit-lang-dropdown-select option[selected=selected]:contains(French)')));
     // @todo Add Ajax testing of language switching.
   }
 

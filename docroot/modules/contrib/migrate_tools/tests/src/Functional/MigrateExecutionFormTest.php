@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_tools\Functional;
 
+use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\VocabularyInterface;
@@ -12,7 +15,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group migrate_tools
  */
-class MigrateExecutionFormTest extends BrowserTestBase {
+final class MigrateExecutionFormTest extends BrowserTestBase {
   use StringTranslationTrait;
 
   /**
@@ -36,29 +39,22 @@ class MigrateExecutionFormTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  /**
-   * The vocabulary.
-   *
-   * @var \Drupal\taxonomy\VocabularyInterface
-   */
-  protected $vocabulary;
-
-  /**
-   * The vocabulary query.
-   *
-   * @var \Drupal\Core\Entity\Query\QueryInterface
-   */
-  protected $vocabularyQuery;
+  private VocabularyInterface $vocabulary;
+  private QueryInterface $vocabularyQuery;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->vocabulary = $this->createVocabulary(['vid' => 'fruit', 'name' => 'Fruit']);
+    $this->vocabulary = $this->createVocabulary([
+      'vid' => 'fruit',
+      'name' => 'Fruit',
+    ]);
     $this->vocabularyQuery = $this->container->get('entity_type.manager')
       ->getStorage('taxonomy_term')
-      ->getQuery();
+      ->getQuery()
+      ->accessCheck(TRUE);
     // Log in as user 1. Migrations in the UI can only be performed as user 1.
     $this->drupalLogin($this->rootUser);
   }
@@ -80,21 +76,24 @@ class MigrateExecutionFormTest extends BrowserTestBase {
     $edit = [
       'operation' => 'import',
     ];
-    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
+    $this->drupalGet($urlPath);
+    $this->submitForm($edit, 'Execute');
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 3;
     $this->assertEquals($expected_count, $real_count);
     $edit = [
       'operation' => 'rollback',
     ];
-    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
+    $this->drupalGet($urlPath);
+    $this->submitForm($edit, 'Execute');
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 0;
     $this->assertEquals($expected_count, $real_count);
     $edit = [
       'operation' => 'import',
     ];
-    $this->drupalPostForm($urlPath, $edit, $this->t('Execute'));
+    $this->drupalGet($urlPath);
+    $this->submitForm($edit, 'Execute');
     $real_count = $this->vocabularyQuery->count()->execute();
     $expected_count = 3;
     $this->assertEquals($expected_count, $real_count);

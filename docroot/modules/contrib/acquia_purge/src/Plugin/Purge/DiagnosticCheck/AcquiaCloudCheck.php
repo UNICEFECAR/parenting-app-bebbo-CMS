@@ -81,7 +81,7 @@ class AcquiaCloudCheck extends DiagnosticCheckBase implements DiagnosticCheckInt
     // Block the entire system when this is a third-party platform.
     if (!$this->platformInfo->isThisAcquiaCloud()) {
       $this->recommendation = $this->t("Acquia Purge only works on your Acquia Cloud environment and doesn't work outside of it.");
-      return self::SEVERITY_ERROR;
+      return self::SEVERITY_INFO;
     }
 
     // Check the balancer composition for crazy setups.

@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Feed\Atom;
 
@@ -13,6 +9,9 @@ use DOMDocument;
 use DOMElement;
 use Laminas\Feed;
 use Laminas\Feed\Writer\Version;
+
+use function array_key_exists;
+use function strtolower;
 
 class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
 {
@@ -24,17 +23,15 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
         parent::__construct($container);
     }
 
+    // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
     /**
      * Set feed language
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setLanguage(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if ($this->getDataContainer()->getLanguage()) {
             $root->setAttribute('xml:lang', $this->getDataContainer()->getLanguage());
         }
@@ -43,15 +40,11 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed title
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      * @throws Feed\Exception\InvalidArgumentException
      */
-    // @codingStandardsIgnoreStart
     protected function _setTitle(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getTitle()) {
             $message   = 'Atom 1.0 feed elements MUST contain exactly one'
                 . ' atom:title element but a title has not been set';
@@ -67,43 +60,35 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
         $title = $dom->createElement('title');
         $root->appendChild($title);
         $title->setAttribute('type', 'text');
-        $text = $dom->createTextNode($this->getDataContainer()->getTitle());
+        $text = $dom->createTextNode((string) $this->getDataContainer()->getTitle());
         $title->appendChild($text);
     }
 
     /**
      * Set feed description
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setDescription(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getDescription()) {
             return;
         }
         $subtitle = $dom->createElement('subtitle');
         $root->appendChild($subtitle);
         $subtitle->setAttribute('type', 'text');
-        $text = $dom->createTextNode($this->getDataContainer()->getDescription());
+        $text = $dom->createTextNode((string) $this->getDataContainer()->getDescription());
         $subtitle->appendChild($text);
     }
 
     /**
      * Set date feed was last modified
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      * @throws Feed\Exception\InvalidArgumentException
      */
-    // @codingStandardsIgnoreStart
     protected function _setDateModified(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getDateModified()) {
             $message   = 'Atom 1.0 feed elements MUST contain exactly one'
                 . ' atom:updated element but a modification date has not been set';
@@ -127,14 +112,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed generator string
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setGenerator(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getGenerator()) {
             $this->getDataContainer()->setGenerator(
                 'Laminas_Feed_Writer',
@@ -146,7 +127,7 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
         $gdata     = $this->getDataContainer()->getGenerator();
         $generator = $dom->createElement('generator');
         $root->appendChild($generator);
-        $text = $dom->createTextNode($gdata['name']);
+        $text = $dom->createTextNode((string) $gdata['name']);
         $generator->appendChild($text);
         if (array_key_exists('uri', $gdata)) {
             $generator->setAttribute('uri', $gdata['uri']);
@@ -159,14 +140,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set link to feed
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setLink(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getLink()) {
             return;
         }
@@ -180,15 +157,11 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed links
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      * @throws Feed\Exception\InvalidArgumentException
      */
-    // @codingStandardsIgnoreStart
     protected function _setFeedLinks(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $flinks = $this->getDataContainer()->getFeedLinks();
         if (! $flinks || ! array_key_exists('atom', $flinks)) {
             $message   = 'Atom 1.0 feed elements SHOULD contain one atom:link '
@@ -217,14 +190,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed authors
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $authors = $this->container->getAuthors();
         if (! $authors || empty($authors)) {
             /**
@@ -239,18 +208,18 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
             $name   = $this->dom->createElement('name');
             $author->appendChild($name);
             $root->appendChild($author);
-            $text = $dom->createTextNode($data['name']);
+            $text = $dom->createTextNode((string) $data['name']);
             $name->appendChild($text);
             if (array_key_exists('email', $data)) {
                 $email = $this->dom->createElement('email');
                 $author->appendChild($email);
-                $text = $dom->createTextNode($data['email']);
+                $text = $dom->createTextNode((string) $data['email']);
                 $email->appendChild($text);
             }
             if (array_key_exists('uri', $data)) {
                 $uri = $this->dom->createElement('uri');
                 $author->appendChild($uri);
-                $text = $dom->createTextNode($data['uri']);
+                $text = $dom->createTextNode((string) $data['uri']);
                 $uri->appendChild($text);
             }
         }
@@ -259,16 +228,13 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed identifier
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      * @throws Feed\Exception\InvalidArgumentException
      */
-    // @codingStandardsIgnoreStart
     protected function _setId(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
-        if (! $this->getDataContainer()->getId()
+        if (
+            ! $this->getDataContainer()->getId()
             && ! $this->getDataContainer()->getLink()
         ) {
             $message   = 'Atom 1.0 feed elements MUST contain exactly one '
@@ -291,21 +257,17 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
         }
         $id = $dom->createElement('id');
         $root->appendChild($id);
-        $text = $dom->createTextNode($this->getDataContainer()->getId());
+        $text = $dom->createTextNode((string) $this->getDataContainer()->getId());
         $id->appendChild($text);
     }
 
     /**
      * Set feed copyright
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setCopyright(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $copyright = $this->getDataContainer()->getCopyright();
         if (! $copyright) {
             return;
@@ -319,35 +281,27 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed level logo (image)
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setImage(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $image = $this->getDataContainer()->getImage();
         if (! $image) {
             return;
         }
         $img = $dom->createElement('logo');
         $root->appendChild($img);
-        $text = $dom->createTextNode($image['uri']);
+        $text = $dom->createTextNode((string) $image['uri']);
         $img->appendChild($text);
     }
 
     /**
      * Set date feed was created
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setDateCreated(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getDateCreated()) {
             return;
         }
@@ -361,14 +315,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set base URL to feed links
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setBaseUrl(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $baseUrl = $this->getDataContainer()->getBaseUrl();
         if (! $baseUrl) {
             return;
@@ -379,14 +329,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set hubs to which this feed pushes
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setHubs(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $hubs = $this->getDataContainer()->getHubs();
         if (! $hubs) {
             return;
@@ -402,14 +348,10 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
     /**
      * Set feed categories
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setCategories(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $categories = $this->getDataContainer()->getCategories();
         if (! $categories) {
             return;
@@ -428,4 +370,6 @@ class AbstractAtom extends Feed\Writer\Renderer\AbstractRenderer
             $root->appendChild($category);
         }
     }
+
+    // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

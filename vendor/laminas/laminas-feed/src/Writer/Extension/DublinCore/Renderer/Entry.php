@@ -1,16 +1,15 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\DublinCore\Renderer;
 
 use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer\Extension;
+
+use function array_key_exists;
+use function strtolower;
 
 class Entry extends Extension\AbstractRenderer
 {
@@ -39,15 +38,15 @@ class Entry extends Extension\AbstractRenderer
         }
     }
 
+    // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
     /**
      * Append namespaces to entry
      *
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _appendNamespaces()
     {
-        // @codingStandardsIgnoreEnd
         $this->getRootElement()->setAttribute(
             'xmlns:dc',
             'http://purl.org/dc/elements/1.1/'
@@ -57,14 +56,10 @@ class Entry extends Extension\AbstractRenderer
     /**
      * Set entry author elements
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $authors = $this->getDataContainer()->getAuthors();
         if (! $authors || empty($authors)) {
             return;
@@ -72,11 +67,13 @@ class Entry extends Extension\AbstractRenderer
         foreach ($authors as $data) {
             $author = $this->dom->createElement('dc:creator');
             if (array_key_exists('name', $data)) {
-                $text = $dom->createTextNode($data['name']);
+                $text = $dom->createTextNode((string) $data['name']);
                 $author->appendChild($text);
                 $root->appendChild($author);
             }
         }
         $this->called = true;
     }
+
+    // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

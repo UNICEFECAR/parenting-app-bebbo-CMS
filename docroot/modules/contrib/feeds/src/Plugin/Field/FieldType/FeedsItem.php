@@ -20,7 +20,7 @@ use Drupal\feeds\FeedsItemInterface;
  *   },
  *   default_formatter = "feeds_item_url",
  *   no_ui = TRUE,
- *   list_class = "\Drupal\Core\Field\EntityReferenceFieldItemList",
+ *   list_class = "\Drupal\feeds\Plugin\Field\FieldType\FeedsItemList",
  * )
  */
 class FeedsItem extends EntityReferenceItem implements FeedsItemInterface {
@@ -129,7 +129,9 @@ class FeedsItem extends EntityReferenceItem implements FeedsItemInterface {
       // Only trim if url is a string.
       $this->url = trim($this->url);
     }
-    $this->guid = trim($this->guid);
+    if (is_string($this->guid)) {
+      $this->guid = trim($this->guid);
+    }
     $this->imported = (int) $this->imported;
   }
 

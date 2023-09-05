@@ -69,7 +69,7 @@ jQuery.fn.sortElements = (function () {
 
 })();
 
-(function ($) {
+(function ($, Drupal) {
 
   "use strict";
 
@@ -81,7 +81,7 @@ jQuery.fn.sortElements = (function () {
       // For (var configType in drupalSettings.features.conflicts) {.
           if (drupalSettings.features.conflicts) {
             var configConflicts = drupalSettings.features.conflicts;
-            $('.js-features-export-wrapper input[type=checkbox]:not(.js-features-checkall)', context).each(function () {
+            $('.js-features-export-wrapper .features-export-parent input[type=checkbox]:not(.js-features-filter)', context).each(function () {
               var key = $(this).attr('name');
               var matches = key.match(/^([^\[]+)(\[.+\])?\[(.+)\]\[(.+)\]$/);
               var component = matches[1];
@@ -159,10 +159,13 @@ jQuery.fn.sortElements = (function () {
         else {
           $(item).removeAttr('checked');
         }
-        $(newParent).parents('.js-features-export-list').removeClass('features-export-empty');
+        var $newParents = $(newParent);
+        $newParents.parents('.js-features-export-list').removeClass('features-export-empty');
+        // Unhide the config type group.
+        $newParents.parents('.features-export-parent').removeClass('features-filter-hidden');
 
         // re-sort new list of checkboxes based on labels.
-        $(newParent).find('label').sortElements(
+        $newParents.find('label').sortElements(
           function (a, b) {
             return $(a).text() > $(b).text() ? 1 : -1;
           },
@@ -199,7 +202,7 @@ jQuery.fn.sortElements = (function () {
         // the auto-detected items.
         var items = [];  // Will contain a list of selected items exported to feature.
         var components = {};  // Contains object of component names that have checked items.
-        $('.js-features-export-wrapper input[type=checkbox]:not(.js-features-checkall):checked', context).each(function () {
+        $('.js-features-export-wrapper .features-export-parent input[type=checkbox]:not(.js-features-filter):checked', context).each(function () {
           var key = $(this).attr('name');
           var matches = key.match(/^([^\[]+)(\[.+\])?\[(.+)\]\[(.+)\]$/);
           components[matches[1]] = matches[1];
@@ -257,7 +260,7 @@ inTimeout--; }
       }
 
       // Handle component selection UI.
-      $('.js-features-export-wrapper input[type=checkbox]', context).click(function () {
+      $('.js-features-export-wrapper .features-export-parent input[type=checkbox]', context).click(function () {
         _resetTimeout();
         if ($(this).hasClass('component-select')) {
           moveCheckbox(this, 'added', true);
@@ -277,15 +280,54 @@ inTimeout--; }
 
       // Handle select/unselect all.
       $('.js-features-checkall', context).click(function () {
+        let $text = $(this).next();
         if ($(this).prop('checked')) {
           _checkAll(true);
-          $(this).next().html(Drupal.t('Deselect all'));
+          $text.text(Drupal.t('Deselect all'))
+            .attr('title', Drupal.t('Deselect all currently expanded configurations'));
         }
         else {
           _checkAll(false);
-          $(this).next().html(Drupal.t('Select all'));
+          $text.text(Drupal.t('Select all'))
+            .attr('title', Drupal.t('Select all currently expanded configurations'));
         }
         _resetTimeout();
+      });
+
+      // Handle hide/show components.
+      $('.js-features-filter .features-hide-component.form-select', context).change(function () {
+        var $exportWrapper = $('.js-features-export-wrapper', context);
+        var componentType = $(this).val();
+        $exportWrapper
+            .find('.js-features-filter-hidden')
+            .removeClass('js-features-filter-hidden');
+        if (componentType) {
+          if (componentType === 'included+groups') {
+            componentType = 'included';
+            // Hide empty config components.
+            $exportWrapper.find('.js-component-count').filter(function() {
+              return $(this).text() === '0';
+            }).parents('.features-export-parent').addClass('js-features-filter-hidden');
+          }
+          $exportWrapper.find('.js-features-export-parent .js-components-' + componentType).addClass('js-features-filter-hidden');
+        }
+      });
+
+      // Collapse/Expand components.
+      $('.js-features-filter .features-toggle-components', context).click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var expandAll = Drupal.t('Expand all');
+        var collapseAll = Drupal.t('Collapse all');
+        var $this = $(this);
+        var $components = $('.features-export-component', context);
+        if (expandAll == $this.text()) {
+          $components.attr('open', true);
+          $this.text(collapseAll);
+        } else {
+          $components.attr('open', false);
+          $this.text(expandAll);
+        }
       });
 
       // Handle filtering.
@@ -394,6 +436,25 @@ inTimeout--; }
           $(this).parents('tr').removeClass('selected');
         }
       });
+      // Show/Hide components.
+      $('.features-diff-header-action-link', context).click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var showAll = Drupal.t('Show all');
+        var hideAll = Drupal.t('Hide all');
+        var $this = $(this);
+        var $checkbox = $this.closest('tr').find('td:nth-child(1) input:checkbox');
+        var $elements = $this.closest('table').find('tr.diff-' + $checkbox.prop('value'));
+        if (hideAll == $this.text()) {
+          $this.text(showAll);
+          $elements.addClass('js-features-diff-hidden');
+        }
+        else {
+          $this.text(hideAll);
+          $elements.removeClass('js-features-diff-hidden');
+        }
+      });
+
       $('.features-diff-listing thead th:nth-child(2)', context).click(function () {
         var checkbox = $(this).parent().find('th input:checkbox');
         checkbox.click();
@@ -401,4 +462,4 @@ inTimeout--; }
     }
   };
 
-})(jQuery);
+})(jQuery, Drupal);

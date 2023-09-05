@@ -15,7 +15,7 @@ class FeaturesBundleIntegrationTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['features'];
+  protected static $modules = ['features'];
 
   /**
    * {@inheritDoc}

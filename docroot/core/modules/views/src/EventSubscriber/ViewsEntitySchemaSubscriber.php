@@ -2,7 +2,6 @@
 
 namespace Drupal\views\EventSubscriber;
 
-use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityTypeEventSubscriberTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeListenerInterface;
@@ -19,12 +18,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventSubscriberInterface {
 
   use EntityTypeEventSubscriberTrait;
-  use DeprecatedServicePropertyTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $deprecatedProperties = ['entityManager' => 'entity.manager'];
 
   /**
    * Indicates that a base table got renamed.
@@ -91,6 +84,13 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
   protected $logger;
 
   /**
+   * Array of views that need to be saved, indexed by view name.
+   *
+   * @var \Drupal\views\ViewEntityInterface[]
+   */
+  protected $viewsToSave = [];
+
+  /**
    * Constructs a ViewsEntitySchemaSubscriber.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -98,12 +98,8 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
    * @param \Psr\Log\LoggerInterface $logger
    *   A logger instance.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger = NULL) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
-    if (!$logger) {
-      @trigger_error('Calling ViewsEntitySchemaSubscriber::__construct() with the $logger argument is supported in drupal:8.7.1 and will be required before drupal:9.0.0. See https://www.drupal.org/project/drupal/issues/3052492.', E_USER_DEPRECATED);
-      $logger = \Drupal::service('logger.channel.default');
-    }
     $this->logger = $logger;
   }
 
@@ -219,17 +215,12 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
       }
     }
 
-    // Filter the list of views that needs to be updated.
-    $views_to_update = array_filter($all_views, function (ViewEntityInterface $view) {
-      return $view->get('_updated') === TRUE;
-    });
-    foreach ($views_to_update as $view) {
+    foreach ($this->viewsToSave as $view) {
       try {
         // All changes done to the views here can be trusted and this might be
         // called during updates, when it is not safe to rely on configuration
         // containing valid schema. Trust the data and disable schema validation
         // and casting.
-        $view->set('_updated', NULL);
         $view->trustData()->save();
       }
       catch (\Exception $e) {
@@ -242,6 +233,7 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
         ]);
       }
     }
+    $this->viewsToSave = [];
   }
 
   /**
@@ -257,7 +249,7 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
 
     $all_views = $this->entityTypeManager->getStorage('view')->loadMultiple(NULL);
     /** @var \Drupal\views\Entity\View $view */
-    foreach ($all_views as $id => $view) {
+    foreach ($all_views as $view) {
 
       // First check just the base table.
       if (in_array($view->get('base_table'), $tables)) {
@@ -311,14 +303,14 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
     foreach ($all_views as $view) {
       if ($view->get('base_table') == $old_base_table) {
         $view->set('base_table', $new_base_table);
-        $view->set('_updated', TRUE);
+        $this->viewsToSave[$view->id()] = $view;
       }
     }
 
     $this->processHandlers($all_views, function (&$handler_config, ViewEntityInterface $view) use ($entity_type_id, $old_base_table, $new_base_table) {
       if (isset($handler_config['entity_type']) && $handler_config['entity_type'] == $entity_type_id && $handler_config['table'] == $old_base_table) {
         $handler_config['table'] = $new_base_table;
-        $view->set('_updated', TRUE);
+        $this->viewsToSave[$view->id()] = $view;
       }
     });
   }
@@ -339,14 +331,14 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
     foreach ($all_views as $view) {
       if ($view->get('base_table') == $old_data_table) {
         $view->set('base_table', $new_data_table);
-        $view->set('_updated', TRUE);
+        $this->viewsToSave[$view->id()] = $view;
       }
     }
 
     $this->processHandlers($all_views, function (&$handler_config, ViewEntityInterface $view) use ($entity_type_id, $old_data_table, $new_data_table) {
       if (isset($handler_config['entity_type']) && $handler_config['entity_type'] == $entity_type_id && $handler_config['table'] == $old_data_table) {
         $handler_config['table'] = $new_data_table;
-        $view->set('_updated', TRUE);
+        $this->viewsToSave[$view->id()] = $view;
       }
     });
   }
@@ -379,7 +371,7 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
         // Move all fields which just exists on the data table.
         if ($handler_config['table'] == $base_table && in_array($handler_config['entity_field'], $data_table_fields) && !in_array($handler_config['entity_field'], $base_table_fields)) {
           $handler_config['table'] = $data_table;
-          $view->set('_updated', TRUE);
+          $this->viewsToSave[$view->id()] = $view;
         }
       }
     });
@@ -403,14 +395,14 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
       if (isset($handler_config['entity_type']) && $handler_config['entity_type'] == $entity_type_id) {
         if ($handler_config['table'] == $old_data_table) {
           $handler_config['table'] = $base_table;
-          $view->set('_updated', TRUE);
+          $this->viewsToSave[$view->id()] = $view;
         }
       }
     });
   }
 
   /**
-   * Updates views if revision support is removed
+   * Updates views if revision support is removed.
    *
    * @param \Drupal\views\Entity\View[] $all_views
    *   All views.
@@ -425,7 +417,7 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
       if (in_array($view->get('base_table'), [$revision_base_table, $revision_data_table])) {
         // Let's disable the views as we no longer support revisions.
         $view->setStatus(FALSE);
-        $view->set('_updated', TRUE);
+        $this->viewsToSave[$view->id()] = $view;
       }
 
       // For any kind of field, let's rely on the broken handler functionality.

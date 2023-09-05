@@ -12,7 +12,7 @@ class FeedsItemTargetIdFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Set display mode for feeds_item to feeds_item_target on article content
@@ -39,7 +39,7 @@ class FeedsItemTargetIdFormatterTest extends FeedsItemFormatterTestBase {
     // Create an article with and set the 'target_id' property on the feeds item
     // field.
     $article = $this->createNodeWithFeedsItem($feed);
-    $article->feeds_item->target_id = $input;
+    $article->get('feeds_item')->getItemByFeed($feed)->target_id = $input;
 
     // Display the article and test we are getting correct output for target id.
     $display = $this->container->get('entity_display.repository')

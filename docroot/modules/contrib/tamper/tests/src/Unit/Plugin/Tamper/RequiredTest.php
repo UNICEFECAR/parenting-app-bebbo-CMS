@@ -33,7 +33,7 @@ class RequiredTest extends TamperPluginTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->invertedPlugin = $this->getInvertedPlugin();
     parent::setUp();
   }
@@ -120,7 +120,7 @@ class RequiredTest extends TamperPluginTestBase {
    * Test required with empty array.
    */
   public function testInvertedRequiredWithEmptyArray() {
-    $this->assertArrayEquals([], $this->invertedPlugin->tamper([]));
+    $this->assertEquals([], $this->invertedPlugin->tamper([]));
   }
 
   /**

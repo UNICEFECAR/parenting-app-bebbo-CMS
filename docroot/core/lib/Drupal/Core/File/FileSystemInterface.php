@@ -33,6 +33,20 @@ interface FileSystemInterface {
   const MODIFY_PERMISSIONS = 2;
 
   /**
+   * A list of insecure extensions.
+   *
+   * @see \Drupal\Core\File\FileSystemInterface::INSECURE_EXTENSION_REGEX
+   */
+  public const INSECURE_EXTENSIONS = ['phar', 'php', 'pl', 'py', 'cgi', 'asp', 'js', 'htaccess', 'phtml'];
+
+  /**
+   * The regex pattern used when checking for insecure file types.
+   *
+   * @see \Drupal\Core\File\FileSystemInterface::INSECURE_EXTENSIONS
+   */
+  public const INSECURE_EXTENSION_REGEX = '/\.(phar|php|pl|py|cgi|asp|js|htaccess|phtml)(\.|$)/i';
+
+  /**
    * Moves an uploaded file to a new location.
    *
    * PHP's move_uploaded_file() does not properly support streams if
@@ -159,8 +173,7 @@ interface FileSystemInterface {
   public function basename($uri, $suffix = NULL);
 
   /**
-   * Creates a directory, optionally creating missing components in the path to
-   * the directory.
+   * Creates a directory, optionally creating missing components in the path.
    *
    * When PHP's mkdir() creates a directory, the requested mode is affected by
    * the process's umask. This function overrides the umask and sets the mode
@@ -231,46 +244,6 @@ interface FileSystemInterface {
    * @ingroup php_wrappers
    */
   public function tempnam($directory, $prefix);
-
-  /**
-   * Returns the scheme of a URI (e.g. a stream).
-   *
-   * @param string $uri
-   *   A stream, referenced as "scheme://target" or "data:target".
-   *
-   * @return string|bool
-   *   A string containing the name of the scheme, or FALSE if none. For
-   *   example, the URI "public://example.txt" would return "public".
-   *
-   * @deprecated in drupal:8.8.0 and is removed from drupal:9.0.0. Use
-   *   Drupal\Core\StreamWrapper\StreamWrapperManagerInterface::getScheme()
-   *   instead.
-   *
-   * @see https://www.drupal.org/node/3035273
-   */
-  public function uriScheme($uri);
-
-  /**
-   * Checks that the scheme of a stream URI is valid.
-   *
-   * Confirms that there is a registered stream handler for the provided scheme
-   * and that it is callable. This is useful if you want to confirm a valid
-   * scheme without creating a new instance of the registered handler.
-   *
-   * @param string $scheme
-   *   A URI scheme, a stream is referenced as "scheme://target".
-   *
-   * @return bool
-   *   Returns TRUE if the string is the name of a validated stream, or FALSE if
-   *   the scheme does not have a registered handler.
-   *
-   * @deprecated in drupal:8.0.0 and is removed from drupal:9.0.0. Use
-   *   Drupal\Core\StreamWrapper\StreamWrapperManagerInterface::isValidScheme()
-   *   instead.
-   *
-   * @see https://www.drupal.org/node/3035273
-   */
-  public function validScheme($scheme);
 
   /**
    * Copies a file to a new location without invoking the file API.
@@ -409,7 +382,7 @@ interface FileSystemInterface {
    * @throws \Drupal\Core\File\Exception\FileException
    *   Implementation may throw FileException or its subtype on failure.
    *
-   * @see file_save_data()
+   * @see \Drupal\file\FileRepositoryInterface::writeData()
    */
   public function saveData($data, $destination, $replace = self::EXISTS_RENAME);
 

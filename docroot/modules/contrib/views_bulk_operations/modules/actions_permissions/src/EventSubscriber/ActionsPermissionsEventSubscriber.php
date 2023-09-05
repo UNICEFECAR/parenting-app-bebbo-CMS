@@ -2,9 +2,9 @@
 
 namespace Drupal\actions_permissions\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 use Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Defines module event subscriber class.
@@ -15,23 +15,26 @@ class ActionsPermissionsEventSubscriber implements EventSubscriberInterface {
 
   // Subscribe to the VBO event with low priority
   // to let other modules alter requirements first.
-  const PRIORITY = -999;
+  private const PRIORITY = -999;
 
   /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[ViewsBulkOperationsActionManager::ALTER_ACTIONS_EVENT][] = ['alterActions', static::PRIORITY];
+    $events[ViewsBulkOperationsActionManager::ALTER_ACTIONS_EVENT][] = [
+      'alterActions',
+      self::PRIORITY,
+    ];
     return $events;
   }
 
   /**
    * Alter the actions' definitions.
    *
-   * @var \Symfony\Component\EventDispatcher\Event $event
+   * @var \Drupal\Component\EventDispatcher\Event $event
    *   The event to respond to.
    */
-  public function alterActions(Event $event) {
+  public function alterActions(Event $event): void {
 
     // Don't alter definitions if this is invoked by the
     // own permissions creating method.

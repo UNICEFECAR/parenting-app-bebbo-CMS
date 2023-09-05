@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools\Controller;
 
 use Drupal\Component\Utility\Html;
@@ -14,25 +16,15 @@ use Drupal\migrate_plus\Entity\MigrationGroupInterface;
 use Drupal\migrate_plus\Entity\MigrationInterface;
 use Drupal\migrate_tools\MigrateBatchExecutable;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Returns responses for migrate_tools migration view routes.
  */
 class MigrationController extends ControllerBase implements ContainerInjectionInterface {
 
-  /**
-   * Plugin manager for migration plugins.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
-   */
-  protected $migrationPluginManager;
-
-  /**
-   * The current route match.
-   *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
-   */
-  protected $currentRouteMatch;
+  protected MigrationPluginManagerInterface $migrationPluginManager;
+  protected CurrentRouteMatch $currentRouteMatch;
 
   /**
    * Constructs a new MigrationController object.
@@ -50,7 +42,7 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('plugin.manager.migration'),
       $container->get('current_route_match')
@@ -68,7 +60,8 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
    * @return array
    *   A render array as expected by drupal_render().
    */
-  public function overview(MigrationGroupInterface $migration_group, MigrationInterface $migration) {
+  public function overview(MigrationGroupInterface $migration_group, MigrationInterface $migration): array {
+    $build = [];
     $build['overview'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Overview'),
@@ -116,13 +109,15 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
    * @return array
    *   A render array as expected by drupal_render().
    */
-  public function source(MigrationGroupInterface $migration_group, MigrationInterface $migration) {
+  public function source(MigrationGroupInterface $migration_group, MigrationInterface $migration): array {
+    $build = [];
     // Source field information.
     $build['source'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Source'),
       '#group' => 'detail',
       '#description' => $this->t('<p>These are the fields available from the source of this migration task. The machine names listed here may be used as sources in the process pipeline.</p>'),
+      '#description_display' => 'after',
       '#attributes' => [
         'id' => 'migration-detail-source',
       ],
@@ -164,7 +159,7 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
    * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
    *   A redirect response if the batch is progressive. Else no return value.
    */
-  public function run(MigrationGroupInterface $migration_group, MigrationInterface $migration) {
+  public function run(MigrationGroupInterface $migration_group, MigrationInterface $migration): ?RedirectResponse {
     $migrateMessage = new MigrateMessage();
     $options = [];
 
@@ -190,7 +185,8 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
    * @return array
    *   A render array as expected by drupal_render().
    */
-  public function process(MigrationGroupInterface $migration_group, MigrationInterface $migration) {
+  public function process(MigrationGroupInterface $migration_group, MigrationInterface $migration): array {
+    $build = [];
     $migration_plugin = $this->migrationPluginManager->createInstance($migration->id(), $migration->toArray());
 
     // Process information.
@@ -247,7 +243,10 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
     $build['process']['run'] = [
       '#type' => 'link',
       '#title' => $this->t('Run'),
-      '#url' => Url::fromRoute('entity.migration.process.run', ['migration_group' => $migration_group->id(), 'migration' => $migration->id()]),
+      '#url' => Url::fromRoute('entity.migration.process.run', [
+        'migration_group' => $migration_group->id(),
+        'migration' => $migration->id(),
+      ]),
     ];
 
     return $build;
@@ -264,7 +263,8 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
    * @return array
    *   A render array as expected by drupal_render().
    */
-  public function destination(MigrationGroupInterface $migration_group, MigrationInterface $migration) {
+  public function destination(MigrationGroupInterface $migration_group, MigrationInterface $migration): array {
+    $build = [];
     $migration_plugin = $this->migrationPluginManager->createInstance($migration->id(), $migration->toArray());
 
     // Destination field information.
@@ -273,6 +273,7 @@ class MigrationController extends ControllerBase implements ContainerInjectionIn
       '#title' => $this->t('Destination'),
       '#group' => 'detail',
       '#description' => $this->t('<p>These are the fields available in the destination plugin of this migration task. The machine names are those available to be used as the keys in the process pipeline.</p>'),
+      '#description_display' => 'after',
       '#attributes' => [
         'id' => 'migration-detail-destination',
       ],

@@ -46,6 +46,20 @@ class FindReplaceRegexTest extends TamperPluginTestBase {
   }
 
   /**
+   * Test the plugin with a single numeric value.
+   */
+  public function testNumericValue() {
+    $config = [
+      FindReplaceRegex::SETTING_FIND => '/5/',
+      FindReplaceRegex::SETTING_REPLACE => '8',
+      FindReplaceRegex::SETTING_LIMIT => '',
+    ];
+    $plugin = new FindReplaceRegex($config, 'find_replace_regex', [], $this->getMockSourceDefinition());
+    $this->assertEquals('8', $plugin->tamper(5));
+    $this->assertEquals('7', $plugin->tamper(7));
+  }
+
+  /**
    * Test the plugin as respecting word boundaries.
    */
   public function testSingleValueWordBoundaries() {

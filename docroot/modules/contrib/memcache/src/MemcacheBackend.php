@@ -117,6 +117,18 @@ class MemcacheBackend implements CacheBackendInterface {
   }
 
   /**
+   * Returns the timestamp for the current request.
+   *
+   * @return int
+   *   A Unix timestamp.
+   *
+   * @see Drupal\Component\Datetime\Time::getRequestTime()
+   */
+  public static function getRequestTime() {
+    return (int) $_SERVER['REQUEST_TIME'] ?? time();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function get($cid, $allow_invalid = FALSE) {
@@ -133,6 +145,10 @@ class MemcacheBackend implements CacheBackendInterface {
     $fetched = [];
 
     foreach ($cache as $result) {
+      if (is_string($result)){
+        continue;
+      }
+
       if (!$this->timeIsGreaterThanBinDeletionTime($result->created)) {
         continue;
       }
@@ -180,11 +196,11 @@ class MemcacheBackend implements CacheBackendInterface {
     $cache->valid = TRUE;
 
     // Items that have expired are invalid.
-    if ($cache->expire != CacheBackendInterface::CACHE_PERMANENT && $cache->expire <= REQUEST_TIME) {
+    if ($cache->expire != CacheBackendInterface::CACHE_PERMANENT && $cache->expire <= static::getRequestTime()) {
       $cache->valid = FALSE;
     }
 
-    // Check if invalidateTags() has been called with any of the items's tags.
+    // Check if invalidateTags() has been called with any of the items tags.
     if (!$this->checksumProvider->isValid($cache->checksum, $cache->tags)) {
       $cache->valid = FALSE;
     }
@@ -362,7 +378,7 @@ class MemcacheBackend implements CacheBackendInterface {
   public function invalidateMultiple(array $cids) {
     foreach ($cids as $cid) {
       if ($item = $this->get($cid)) {
-        $item->expire = REQUEST_TIME - 1;
+        $item->expire = static::getRequestTime() - 1;
         $this->memcache->set($cid, $item);
       }
     }

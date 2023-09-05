@@ -52,7 +52,7 @@ class TestContinuousEventSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events[ContinuousEvents::SHOULD_CREATE_JOB][] = ['onShouldCreateJob'];
     return $events;
   }

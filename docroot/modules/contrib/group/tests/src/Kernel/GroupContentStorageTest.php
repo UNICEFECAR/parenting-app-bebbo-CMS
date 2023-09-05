@@ -15,7 +15,7 @@ class GroupContentStorageTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group_test_plugin'];
+  protected static $modules = ['group_test_plugin'];
 
   /**
    * The group content storage handler.
@@ -27,7 +27,7 @@ class GroupContentStorageTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->storage = $this->entityTypeManager->getStorage('group_content');

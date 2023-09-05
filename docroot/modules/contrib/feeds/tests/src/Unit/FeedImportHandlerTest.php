@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\FeedImportHandler;
@@ -38,12 +39,15 @@ class FeedImportHandlerTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->dispatcher = new EventDispatcher();
     $this->handler = $this->getMockBuilder(FeedImportHandler::class)
-      ->setConstructorArgs([$this->dispatcher])
+      ->setConstructorArgs([
+        $this->dispatcher,
+        $this->createMock(Connection::class),
+      ])
       ->setMethods(['getRequestTime', 'getExecutable'])
       ->getMock();
     $this->handler->setStringTranslation($this->getStringTranslationStub());

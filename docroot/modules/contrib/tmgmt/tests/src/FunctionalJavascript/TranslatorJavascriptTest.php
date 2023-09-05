@@ -19,7 +19,7 @@ class TranslatorJavascriptTest extends WebDriverTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'tmgmt',
     'tmgmt_test',
     'node',
@@ -35,7 +35,7 @@ class TranslatorJavascriptTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     // Login as admin to be able to set environment variables.
@@ -61,11 +61,12 @@ class TranslatorJavascriptTest extends WebDriverTestBase {
     $assert_session = $this->assertSession();
 
     // Add mapping to the file translator.
+    $this->drupalGet('admin/tmgmt/translators/manage/test_translator');
     $edit = array(
       'remote_languages_mappings[pt-br]' => 'pt',
       'remote_languages_mappings[pt-pt]' => 'pt',
     );
-    $this->drupalPostForm('admin/tmgmt/translators/manage/test_translator', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->drupalGet('admin/tmgmt/translators/manage/test_translator');
     $assert_session->fieldValueEquals('edit-remote-languages-mappings-pt-br', 'pt');
 
@@ -78,11 +79,11 @@ class TranslatorJavascriptTest extends WebDriverTestBase {
     $this->drupalGet('admin/tmgmt/jobs/' . $job->id());
 
     $page->selectFieldOption('Target language', 'pt-br');
-    $this->assertFieldByXPath('//select[@id="edit-translator"]//option[@value="test_translator"]', t('Test provider'), 'Provider maps correctly');
-    $this->drupalPostForm(NULL, $edit, t('Submit to provider'));
+    $this->assertSession()->elementTextEquals('xpath', '//select[@id="edit-translator"]//option[@value="test_translator"]', t('Test provider'));
+    $this->submitForm($edit, t('Submit to provider'));
     $assert_session->pageTextContains('Portuguese, Brazil');
 
-    $this->assertEquals(1, count($job->getItems()));
+    $this->assertCount(1, $job->getItems());
     $this->assertNotEmpty($job->getItems()[1]->accepted());
     $this->drupalGet('admin/tmgmt/items/' . 1);
     $assert_session->pageTextContains('pt-br(pt): Text for job item with type ' . $job->getItems()[1]->getItemType() . ' and id ' . $job->getItems()[1]->getItemId() . '.');
@@ -93,10 +94,10 @@ class TranslatorJavascriptTest extends WebDriverTestBase {
     $job->addItem('test_source', 'test', 0);
     $this->drupalGet('admin/tmgmt/jobs/' . $job->id());
     $page->selectFieldOption('Target language', 'pt-pt');
-    $this->assertFieldByXPath('//select[@id="edit-translator"]//option[@value="test_translator"]', t('Test provider'), 'Provider maps correctly');
-    $this->drupalPostForm(NULL, $edit, t('Submit to provider'));
+    $this->assertSession()->elementTextEquals('xpath', '//select[@id="edit-translator"]//option[@value="test_translator"]', t('Test provider'));
+    $this->submitForm($edit, t('Submit to provider'));
     $assert_session->pageTextContains('Portuguese, Portugal');
-    $this->assertEqual(count($job->getItems()), 1);
+    $this->assertCount(1, $job->getItems());
     $this->assertNotEmpty($job->getItems()[2]->accepted());
     $this->drupalGet('admin/tmgmt/items/' . 2);
     $assert_session->pageTextContains('pt-pt(pt): Text for job item with type ' . $job->getItems()[2]->getItemType() . ' and id ' . $job->getItems()[2]->getItemId() . '.');

@@ -12,11 +12,11 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *
  * @ConfigEntityType(
  *   id = "custom_language",
- *   label = @Translation("Custom Language"),
+ *   label = @Translation("Custom language"),
  *   fieldable = FALSE,
  *   module = "languagefield",
  *   config_prefix = "custom_language",
- *   admin_permission = "administer languages",
+ *   admin_permission = "administer languagefield",
  *   handlers = {
  *     "storage" = "Drupal\languagefield\CustomLanguageStorage",
  *     "list_builder" = "Drupal\languagefield\CustomLanguageListBuilder",
@@ -26,8 +26,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     },
  *   },
  *   links = {
- *     "edit-form" = "/admin/config/CustomLanguage/manage/{CustomLanguage}",
- *     "delete-form" = "/admin/config/CustomLanguage/manage/{CustomLanguage}/delete"
+ *     "edit-form" = "/admin/config/regional/custom_language/manage/{custom_language}",
+ *     "delete-form" = "/admin/config/regional/custom_language/manage/{custom_language}/delete"
  *   },
  *   entity_keys = {
  *     "id" = "id",
@@ -37,8 +37,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   config_export = {
  *     "id" = "id",
  *     "label" = "label",
+ *     "direction",
  *     "weight" = "weight",
- *     "langcode" = "langcode",
  *     "native_name" = "native_name",
  *   }
  * )
@@ -65,6 +65,13 @@ class CustomLanguage extends ConfigEntityBase implements CustomLanguageInterface
    * @var string
    */
   protected $native_name;
+
+  /**
+   * The direction of language, either DIRECTION_LTR or DIRECTION_RTL.
+   *
+   * @var int
+   */
+  protected $direction = self::DIRECTION_LTR;
 
   /**
    * The position weight (not physical) of this CustomLanguage.
@@ -120,7 +127,7 @@ class CustomLanguage extends ConfigEntityBase implements CustomLanguageInterface
    * {@inheritdoc}
    */
   public function getDirection() {
-    return $this->direction = static::DIRECTION_LTR;
+    return $this->direction;
   }
 
   /**

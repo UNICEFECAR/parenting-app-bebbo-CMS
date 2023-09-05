@@ -31,10 +31,8 @@
        * @param {jQuery.Event} e
        *   The jQuery event for the keyup event that triggered the filter.
        */
-      const filterBlockList = e => {
-        const query = $(e.target)
-          .val()
-          .toLowerCase();
+      const filterBlockList = (e) => {
+        const query = e.target.value.toLowerCase();
 
         /**
          * Shows or hides the block entry based on the query.
@@ -47,11 +45,14 @@
         const toggleBlockEntry = (index, link) => {
           const $link = $(link);
           const textMatch =
-            $link
-              .text()
-              .toLowerCase()
-              .indexOf(query) !== -1;
-          $link.toggle(textMatch);
+            link.textContent.toLowerCase().indexOf(query) !== -1;
+          // Checks if a category is currently hidden.
+          // Toggles the category on if so.
+          if ($link.closest('.js-layout-builder-category').is(':hidden')) {
+            $link.closest('.js-layout-builder-category').show();
+          }
+          // Toggle the li tag of the matching link.
+          $link.parent().toggle(textMatch);
         };
 
         // Filter if the length of the query is at least 2 characters.
@@ -88,15 +89,17 @@
             .find('.js-layout-builder-category[remember-closed]')
             .removeAttr('open')
             .removeAttr('remember-closed');
+          // Show all categories since filter is turned off.
           $categories.find('.js-layout-builder-category').show();
-          $filterLinks.show();
+          // Show all li tags since filter is turned off.
+          $filterLinks.parent().show();
           announce(Drupal.t('All available blocks are listed.'));
         }
       };
 
-      $('input.js-layout-builder-filter', context)
-        .once('block-filter-text')
-        .on('keyup', debounce(filterBlockList, 200));
+      $(
+        once('block-filter-text', 'input.js-layout-builder-filter', context),
+      ).on('input', debounce(filterBlockList, 200));
     },
   };
 
@@ -114,7 +117,7 @@
    *  in FunctionalJavascript tests. It may be renamed if the test changes.
    *  @see https://www.drupal.org/node/3084730
    */
-  Drupal.layoutBuilderBlockUpdate = function(item, from, to) {
+  Drupal.layoutBuilderBlockUpdate = function (item, from, to) {
     const $item = $(item);
     const $from = $(from);
 
@@ -136,7 +139,7 @@
           $item.data('layout-block-uuid'),
           $item.prev('[data-layout-block-uuid]').data('layout-block-uuid'),
         ]
-          .filter(element => element !== undefined)
+          .filter((element) => element !== undefined)
           .join('/'),
       }).execute();
     }
@@ -155,12 +158,12 @@
       const regionSelector = '.js-layout-builder-region';
       Array.prototype.forEach.call(
         context.querySelectorAll(regionSelector),
-        region => {
+        (region) => {
           Sortable.create(region, {
             draggable: '.js-layout-builder-block',
             ghostClass: 'ui-state-drop',
             group: 'builder-region',
-            onEnd: event =>
+            onEnd: (event) =>
               Drupal.layoutBuilderBlockUpdate(event.item, event.from, event.to),
           });
         },
@@ -189,7 +192,7 @@
           (index, element) =>
             $(element).closest('[data-contextual-id]').length > 0,
         )
-        .on('click mouseup touchstart', e => {
+        .on('click mouseup touchstart', (e) => {
           e.preventDefault();
           e.stopPropagation();
         });
@@ -330,9 +333,8 @@
       const $layoutBuilderContentPreview = $('#layout-builder-content-preview');
 
       // data-content-preview-id specifies the layout being edited.
-      const contentPreviewId = $layoutBuilderContentPreview.data(
-        'content-preview-id',
-      );
+      const contentPreviewId =
+        $layoutBuilderContentPreview.data('content-preview-id');
 
       /**
        * Tracks if content preview is enabled for this layout. Defaults to true
@@ -397,14 +399,12 @@
         // Iterate over all blocks.
         $('[data-layout-content-preview-placeholder-label]').each(
           (i, element) => {
-            $(element)
-              .children()
-              .show();
+            $(element).children().show();
           },
         );
       };
 
-      $('#layout-builder-content-preview', context).on('change', event => {
+      $('#layout-builder-content-preview', context).on('change', (event) => {
         const isChecked = $(event.currentTarget).is(':checked');
 
         localStorage.setItem(contentPreviewId, JSON.stringify(isChecked));
@@ -442,7 +442,9 @@
    * @return {string}
    *   A HTML string of the placeholder label.
    */
-  Drupal.theme.layoutBuilderPrependContentPreviewPlaceholderLabel = contentPreviewPlaceholderText => {
+  Drupal.theme.layoutBuilderPrependContentPreviewPlaceholderLabel = (
+    contentPreviewPlaceholderText,
+  ) => {
     const contentPreviewPlaceholderLabel = document.createElement('div');
     contentPreviewPlaceholderLabel.className =
       'layout-builder-block__content-preview-placeholder-label js-layout-builder-content-preview-placeholder-label';

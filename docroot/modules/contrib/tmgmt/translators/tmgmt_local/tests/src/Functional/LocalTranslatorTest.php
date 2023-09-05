@@ -24,55 +24,63 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
 
     $assignee1 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $this->drupalLogin($assignee1);
+    $this->drupalGet($assignee1->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'en',
     );
-    $this->drupalPostForm('user/' . $assignee1->id() . '/edit', $edit, t('Save'));
-    $this->assertText('The \'from\' and \'to\' language fields can\'t have the same value.');
+    $this->submitForm($edit, t('Save'));
+    $this->assertSession()->pageTextContains('The \'from\' and \'to\' language fields can\'t have the same value.');
+    $this->drupalGet($assignee1->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee1->id() . '/edit', $edit, t('Save'));
-    $this->assertText('The changes have been saved.');
+    $this->submitForm($edit, t('Save'));
+    $this->assertSession()->pageTextContains('The changes have been saved.');
+    $this->drupalGet($assignee1->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[1][language_from]' => 'en',
       'tmgmt_translation_skills[1][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee1->id() . '/edit', $edit, t('Save'));
-    $this->assertText('The language combination has to be unique.');
+    $this->submitForm($edit, t('Save'));
+    $this->assertSession()->pageTextContains('The language combination has to be unique.');
 
     $assignee2 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $this->drupalLogin($assignee2);
+    $this->drupalGet($assignee2->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee2->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee2->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[1][language_from]' => 'de',
       'tmgmt_translation_skills[1][language_to]' => 'en',
     );
-    $this->drupalPostForm('user/' . $assignee2->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $assignee3 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $this->drupalLogin($assignee3);
+    $this->drupalGet($assignee3->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee3->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee3->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[1][language_from]' => 'de',
       'tmgmt_translation_skills[1][language_to]' => 'en',
     );
-    $this->drupalPostForm('user/' . $assignee3->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee3->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[2][language_from]' => 'en',
       'tmgmt_translation_skills[2][language_to]' => 'fr',
     );
-    $this->drupalPostForm('user/' . $assignee3->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $job1 = $this->createJob('en', 'de');
     $job2 = $this->createJob('de', 'en');
@@ -100,47 +108,47 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $local_task3->save();
 
     // Test languages involved in tasks.
-    $this->assertEqual(
+    $this->assertEquals(
+      array(
+        'en' => array('de', 'fr'),
+        'de' => array('en'),
+      ),
       tmgmt_local_tasks_languages(array(
         $local_task1->id(),
         $local_task2->id(),
         $local_task3->id(),
       )),
-      array(
-        'en' => array('de', 'fr'),
-        'de' => array('en'),
-      )
     );
 
     // Test available translators for task en - de.
-    $this->assertEqual(
-      tmgmt_local_get_assignees_for_tasks(array($local_task1->id())),
+    $this->assertEquals(
       array(
         $assignee1->id() => $assignee1->getDisplayName(),
         $assignee2->id() => $assignee2->getDisplayName(),
         $assignee3->id() => $assignee3->getDisplayName(),
-      )
+      ),
+      tmgmt_local_get_assignees_for_tasks(array($local_task1->id())),
     );
 
     // Test available translators for tasks en - de, de - en.
-    $this->assertEqual(
-      tmgmt_local_get_assignees_for_tasks(array($local_task1->id(), $local_task2->id())),
+    $this->assertEquals(
       array(
         $assignee2->id() => $assignee2->getDisplayName(),
         $assignee3->id() => $assignee3->getDisplayName(),
-      )
+      ),
+      tmgmt_local_get_assignees_for_tasks(array($local_task1->id(), $local_task2->id())),
     );
 
     // Test available translators for tasks en - de, de - en, en - fr.
-    $this->assertEqual(
+    $this->assertEquals(
+      array(
+        $assignee3->id() => $assignee3->getDisplayName(),
+      ),
       tmgmt_local_get_assignees_for_tasks(array(
         $local_task1->id(),
         $local_task2->id(),
         $local_task3->id(),
       )),
-      array(
-        $assignee3->id() => $assignee3->getDisplayName(),
-      )
     );
   }
 
@@ -165,7 +173,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     \Drupal::state()->set('tmgmt.test_source_data', [
       'dummy' => [
         'deep_nesting' => [
-          '#text' => file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html'),
+          '#text' => file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html'),
           '#label' => 'Label for job item with type test and id 2.',
           '#translate' => TRUE,
           '#format' => 'basic_html',
@@ -188,20 +196,20 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Make sure that the checkout page works as expected when there are no
     // roles.
     $this->drupalGet($job->toUrl());
-    $this->assertText(t('@translator can not translate from @source to @target.', array(
+    $this->assertSession()->pageTextContains(t('@translator can not translate from @source to @target.', array(
       '@translator' => 'Drupal user',
       '@source' => 'English',
       '@target' => 'German',
     )));
     $element = $this->xpath('//*[@id="edit-translator"]/option')[0];
-    $this->assertEqual($element->getText(), 'Drupal user (unsupported)');
+    $this->assertEquals('Drupal user (unsupported)', $element->getText());
     $this->assignee = $this->drupalCreateUser(
       array_merge($this->localTranslatorPermissions, [$basic_html_format->getPermissionName()])
     );
 
     // The same when there is a single role.
     $this->drupalGet($job->toUrl());
-    $this->assertText(t('@translator can not translate from @source to @target.', array(
+    $this->assertSession()->pageTextContains(t('@translator can not translate from @source to @target.', array(
       '@translator' => 'Drupal user',
       '@source' => 'English',
       '@target' => 'German',
@@ -212,7 +220,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
 
     // And test again with two roles but still no abilities.
     $this->drupalGet($job->toUrl());
-    $this->assertText(t('@translator can not translate from @source to @target.', array(
+    $this->assertSession()->pageTextContains(t('@translator can not translate from @source to @target.', array(
       '@translator' => 'Drupal user',
       '@source' => 'English',
       '@target' => 'German',
@@ -220,33 +228,35 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
 
     $this->drupalLogin($other_assignee_same);
     // Configure language abilities.
+    $this->drupalGet($other_assignee_same->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $other_assignee_same->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     // Check that the user is not listed in the translator selection form.
     $this->loginAsAdmin();
     $this->drupalGet($job->toUrl());
     $element = $this->xpath('//*[@id="edit-translator"]/option')[0];
-    $this->assertEqual($element->getText(), 'Drupal user');
-    $this->assertText(t('Assign job to'));
-    $this->assertText($other_assignee_same->getDisplayName());
-    $this->assertNoText($this->assignee->getDisplayName());
+    $this->assertEquals('Drupal user', $element->getText());
+    $this->assertSession()->pageTextContains(t('Assign job to'));
+    $this->assertSession()->pageTextContains($other_assignee_same->getDisplayName());
+    $this->assertSession()->pageTextNotContains($this->assignee->getDisplayName());
 
     $this->drupalLogin($this->assignee);
     // Configure language abilities.
+    $this->drupalGet($this->assignee->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $this->assignee->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     // Check that the translator is now listed.
     $this->loginAsAdmin();
     $this->drupalGet($job->toUrl());
-    $this->assertText($this->assignee->getDisplayName());
+    $this->assertSession()->pageTextContains($this->assignee->getDisplayName());
 
     // Test assign task while submitting job.
     $job_comment = 'Dummy job comment';
@@ -254,20 +264,20 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       'settings[translator]' => $this->assignee->id(),
       'settings[job_comment]' => $job_comment,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Submit to provider'));
+    $this->submitForm($edit, t('Submit to provider'));
     $this->drupalLogin($this->assignee);
     $this->drupalGet('translate/pending');
-    $this->assertText($job->label());
+    $this->assertSession()->pageTextContains($job->label());
 
     $this->loginAsAdmin($this->localManagerPermissions);
     $this->drupalGet('manage-translate/assigned');
-    $this->assertNoLink(t('Delete'));
+    $this->assertSession()->linkNotExists(t('Delete'));
     $this->clickLink(t('Unassign'));
-    $this->drupalPostForm(NULL, [], t('Unassign'));
+    $this->submitForm([], t('Unassign'));
 
     // Test for job comment in the job checkout info pane.
     $this->drupalGet($job->toUrl());
-    $this->assertText($job_comment);
+    $this->assertSession()->pageTextContains($job_comment);
 
     $this->drupalLogin($this->assignee);
 
@@ -276,25 +286,26 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $other_translator = $this->drupalCreateUser($this->localTranslatorPermissions);
     $this->drupalLogin($other_translator);
     // Configure language abilities.
+    $this->drupalGet($other_translator->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'de',
       'tmgmt_translation_skills[0][language_to]' => 'en',
     );
-    $this->drupalPostForm('user/' . $other_translator->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->drupalGet('translate');
-    $this->assertNoText($job->label());
+    $this->assertSession()->pageTextNotContains($job->label());
 
     $this->drupalLogin($this->assignee);
 
     // Check the translate overview.
     $this->drupalGet('translate');
-    $this->assertText($job->label());
+    $this->assertSession()->pageTextContains($job->label());
     // @todo: Fails, encoding problem?
-    // $this->assertText(t('@from => @to', array('@from' => 'en', '@to' => 'de')));
+    // $this->assertSession()->pageTextContains(t('@from => @to', array('@from' => 'en', '@to' => 'de')));
 
     // Test LocalTaskForm.
     $this->clickLink('View');
-    $this->assertText('Unassigned');
+    $this->assertSession()->pageTextContains('Unassigned');
     $xpath = $this->xpath('//*[@id="edit-status"]');
     $this->assertEmpty($xpath);
 
@@ -306,15 +317,15 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $edit = array(
       'tuid' => $this->assignee->id(),
     );
-    $this->drupalPostForm(NULL, $edit, t('Save task'));
-    $this->assertText(t('Assigned to user @assignee.', ['@assignee' => $this->assignee->getDisplayName()]));
+    $this->submitForm($edit, t('Save task'));
+    $this->assertSession()->pageTextContains(t('Assigned to user @assignee.', ['@assignee' => $this->assignee->getDisplayName()]));
 
     $this->drupalGet('manage-translate/assigned');
     $this->clickLink('View');
     $edit = array(
-      'tuid' => 0,
+      'tuid' => '',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save task'));
+    $this->submitForm($edit, t('Save task'));
 
     $this->drupalLogin($this->assignee);
     $this->drupalGet('translate');
@@ -324,22 +335,22 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       'tmgmt_local_task_bulk_form[0]' => TRUE,
       'action' => 'tmgmt_local_task_assign_to_me',
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
-    $this->assertText(t('Assign to me was applied to 1 item.'));
+    $this->submitForm($edit, t('Apply to selected items'));
+    $this->assertSession()->pageTextContains(t('Assign to me was applied to 1 item.'));
 
     // Unassign again.
     $edit = array(
       'tmgmt_local_task_bulk_form[0]' => TRUE,
       'action' => 'tmgmt_local_task_unassign_multiple',
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
-    $this->assertText(t('Unassign was applied to 1 item.'));
+    $this->submitForm($edit, t('Apply to selected items'));
+    $this->assertSession()->pageTextContains(t('Unassign was applied to 1 item.'));
 
     // Now test the assign link.
     // @todo Action should not redirect to mine.
     $this->drupalGet('translate');
     $this->clickLink(t('Assign to me'));
-    $this->assertText(t('The task has been assigned to you.'));
+    $this->assertSession()->pageTextContains(t('The task has been assigned to you.'));
 
     // Assert created local task and task items.
     $this->drupalGet('translate/pending');
@@ -358,9 +369,9 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // does not see the assigned task.
     $this->drupalLogin($other_assignee_same);
     $this->drupalGet('translate');
-    $this->assertNoText($job->label());
+    $this->assertSession()->pageTextNotContains($job->label());
     $this->drupalGet('translate/items/' . $first_task_item->id());
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
 
     $this->drupalLogin($this->admin_user);
 
@@ -369,61 +380,61 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $edit = [
       'tuid' => '',
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save task'));
+    $this->submitForm($edit, t('Save task'));
     $this->clickLink(t('View'));
 
     // Assign again the task to himself.
     $edit = [
       'tuid' => $this->assignee->id(),
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save task'));
+    $this->submitForm($edit, t('Save task'));
 
     $this->drupalLogin($this->assignee);
 
     // Translate the task.
     $this->drupalGet('translate/' . $task->id());
-    $this->assertText('test_source:test:1');
-    $this->assertText('test_source:test:2');
+    $this->assertSession()->pageTextContains('test_source:test:1');
+    $this->assertSession()->pageTextContains('test_source:test:2');
 
     // Translate the first item.
     $this->drupalGet($first_task_item->toUrl());
 
     // Assert the breadcrumb.
-    $this->assertLink(t('Home'));
-    $this->assertLink(t('Local Tasks'));
-    $this->assertText($job->label());
+    $this->assertSession()->linkExists(t('Home'));
+    $this->assertSession()->linkExists(t('Local Tasks'));
+    $this->assertSession()->pageTextContains($job->label());
 
     // Assert the header.
-    $this->assertLink($first_task_item->getJobItem()->getSourceLabel());
-    $this->assertText($first_task_item->getJobItem()->getSourceType());
-    $this->assertText($first_task_item->getJobItem()->getJob()->getSourceLanguage()->getName());
-    $this->assertText($first_task_item->getJobItem()->getJob()->getTargetLanguage()->getName());
-    $this->assertText(\Drupal::service('date.formatter')->format($first_task_item->getChangedTime()));
-    $this->assertText($first_task_item->getStatus());
-    $this->assertLink($first_task_item->getTask()->label());
+    $this->assertSession()->linkExists($first_task_item->getJobItem()->getSourceLabel());
+    $this->assertSession()->pageTextContains($first_task_item->getJobItem()->getSourceType());
+    $this->assertSession()->pageTextContains($first_task_item->getJobItem()->getJob()->getSourceLanguage()->getName());
+    $this->assertSession()->pageTextContains($first_task_item->getJobItem()->getJob()->getTargetLanguage()->getName());
+    $this->assertSession()->pageTextContains(\Drupal::service('date.formatter')->format($first_task_item->getChangedTime()));
+    $this->assertSession()->pageTextContains($first_task_item->getStatus());
+    $this->assertSession()->linkExists($first_task_item->getTask()->label());
 
-    $this->assertText(t('Dummy'));
+    $this->assertSession()->pageTextContains(t('Dummy'));
     // Check if Save as completed button is displayed.
     $elements = $this->xpath('//*[@id="edit-save-as-completed"]');
     $this->assertTrue(!empty($elements), "'Save as completed' button appears.");
 
     // Job comment is present in the translate tool as well.
-    $this->assertText($job_comment);
-    $this->assertText('test_source:test:1');
+    $this->assertSession()->pageTextContains($job_comment);
+    $this->assertSession()->pageTextContains('test_source:test:1');
 
     // Try to complete a translation when translations are missing.
     $edit = array(
       'dummy|deep_nesting[translation]' => '',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save as completed'));
-    $this->assertText(t('Missing translation.'));
+    $this->submitForm($edit, t('Save as completed'));
+    $this->assertSession()->pageTextContains(t('Missing translation.'));
 
     $edit = array(
       'dummy|deep_nesting[translation]' => $translation1 = 'German translation of source 1',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save as completed'));
-    $this->assertRaw('tmgmt/icons/gray-check.svg" title="Translated"');
-    $this->assertText('The translation for ' . $first_task_item->label() . ' has been saved as completed.');
+    $this->submitForm($edit, t('Save as completed'));
+    $this->assertSession()->responseContains('tmgmt/icons/gray-check.svg" title="Translated"');
+    $this->assertSession()->pageTextContains('The translation for ' . $first_task_item->label() . ' has been saved as completed.');
 
     // Check that the source has not being modified.
     $this->clickLink(t('View'));
@@ -431,7 +442,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $job_items = $job->getItems(['tjiid' => 1]);
     $job_item = reset($job_items);
     $source = $job_item->getData(['dummy', 'deep_nesting', '#text']);
-    $this->assertText($source);
+    $this->assertSession()->pageTextContains($source);
 
     // Review and accept the first item.
     \Drupal::entityTypeManager()->getStorage('tmgmt_job_item')->resetCache();
@@ -450,8 +461,8 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $elements = $this->xpath('//*[@id="edit-save-as-completed"]');
     $this->assertTrue(empty($elements), "'Save as completed' button does not appear.");
     // Checking if the item status is not displayed.
-    $this->assertNoRaw('title="Finish"');
-    $this->assertNoRaw('title="Reject"');
+    $this->assertSession()->responseNotContains('title="Finish"');
+    $this->assertSession()->responseNotContains('title="Reject"');
 
     // We can go back to the Task from the item.
     $this->drupalGet('translate/items/1');
@@ -470,17 +481,17 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $second_task_item->updateData('dummy|deep_nesting', ['#format' => 'full_html']);
     $second_task_item->save();
     $this->clickLink(t('Translate'));
-    $this->assertFieldByName('dummy|deep_nesting[translation]');
-    $this->assertRaw('Save as completed" class="button button--primary js-form-submit form-submit"');
+    $this->assertSession()->responseContains('Save as completed" class="button button--primary js-form-submit form-submit"');
+    $this->assertSession()->fieldExists('dummy|deep_nesting[translation]');
     $translation_field = $this->xpath('//*[@id="edit-dummydeep-nesting-translation"]')[0];
-    $this->assertEqual($translation_field->getText(), '');
+    $this->assertEquals('', $translation_field->getText());
 
     // Translate the second item but do not mark as translated it yet.
     $second_task_item->updateData('dummy|deep_nesting', ['#format' => 'basic_html']);
     $second_task_item->save();
     $this->drupalGet('translate/items/' . $second_task_item->id());
     $title = $this->xpath('//*[@id="edit-dummydeep-nesting-translation-format-guidelines"]/div/h4')[0];
-    $this->assertEqual($title->getText(), t('Basic HTML'));
+    $this->assertEquals(t('Basic HTML'), $title->getText());
 
     // Assert the order of the displayed elements.
     $translate_elements = $this->xpath('//*[@id="edit-translation"]/table');
@@ -490,15 +501,15 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       $ids[] = (string) $translate_element->getAttribute('id');
     }
 
-    $this->assertEqual($ids[0], 'tmgmt-local-element-dummy-deep-nesting');
-    $this->assertEqual($ids[1], 'tmgmt-local-element-second');
-    $this->assertEqual($ids[2], 'tmgmt-local-element-third');
+    $this->assertEquals('tmgmt-local-element-dummy-deep-nesting', $ids[0]);
+    $this->assertEquals('tmgmt-local-element-second', $ids[1]);
+    $this->assertEquals('tmgmt-local-element-third', $ids[2]);
 
     $edit = array(
       'dummy|deep_nesting[translation][value]' => $translation2 = 'German translation of source 2',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save'));
-    $this->assertText('The translation for ' . $second_task_item->label() . ' has been saved.');
+    $this->submitForm($edit, t('Save'));
+    $this->assertSession()->pageTextContains('The translation for ' . $second_task_item->label() . ' has been saved.');
 
     drupal_static_reset('tmgmt_local_task_statistics_load');
     /** @var \Drupal\tmgmt_local\Entity\LocalTask $task */
@@ -510,7 +521,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $this->clickLink(t('Translate'));
     $page = $this->getSession()->getPage();
     $page->pressButton('finish-dummy|deep_nesting');
-    $this->assertRaw('name="reject-dummy|deep_nesting"', "'✗' button appears.");
+    $this->assertSession()->responseContains('name="reject-dummy|deep_nesting"');
     $this->drupalGet('translate/' . $task->id());
 
     \Drupal::entityTypeManager()->getStorage('tmgmt_local_task_item')->resetCache();
@@ -534,7 +545,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
 
     // Check the overview page, the task should still show in progress.
     $this->drupalGet('translate');
-    $this->assertText(t('Pending'));
+    $this->assertSession()->pageTextContains(t('Pending'));
 
     // Mark the second item as completed now.
     $this->clickLink(t('View'));
@@ -543,8 +554,8 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       'second[translation]' => 'Third translation',
       'third[translation]' => 'Third translation',
     ];
-    $this->drupalPostForm(NULL, $remaining_translations, t('Save as completed'));
-    $this->assertText('The translation for ' . $second_task_item->label() . ' has been saved as completed.');
+    $this->submitForm($remaining_translations, t('Save as completed'));
+    $this->assertSession()->pageTextContains('The translation for ' . $second_task_item->label() . ' has been saved as completed.');
     $this->clickLink('View');
 
     // Review and accept the second item.
@@ -557,10 +568,10 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $this->drupalGet('translate');
     // We should have been redirect back to the overview, the task should be
     // completed now.
-    $this->assertNoText($task->getJob()->label());
+    $this->assertSession()->pageTextNotContains($task->getJob()->label());
     $this->clickLink(t('Closed'));
-    $this->assertText($task->getJob()->label());
-    $this->assertText(t('Completed'));
+    $this->assertSession()->pageTextContains($task->getJob()->label());
+    $this->assertSession()->pageTextContains(t('Completed'));
 
     \Drupal::entityTypeManager()->getStorage('tmgmt_local_task_item')->resetCache();
     $task = LocalTask::load($task->id());
@@ -575,18 +586,18 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Job was accepted and finished automatically due to the default approve
     // setting.
     $this->assertTrue($job->isFinished());
-    $this->assertEqual($item1->getData(array(
+    $this->assertEquals($translation1, $item1->getData(array(
       'dummy',
       'deep_nesting',
       '#translation',
       '#text',
-    )), $translation1);
-    $this->assertEqual($item2->getData(array(
+    )));
+    $this->assertEquals($translation2, $item2->getData(array(
       'dummy',
       'deep_nesting',
       '#translation',
       '#text',
-    )), $translation2);
+    )));
 
     // Delete the job, make sure that the corresponding task and task items were
     // deleted.
@@ -617,7 +628,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $job = \Drupal::entityTypeManager()->getStorage('tmgmt_job')->loadUnchanged($job->id());
     $job->translator = $translator->id();
 
-    $this->assertIdentical(NULL, $job->requestTranslation(), 'Translation request was successfull');
+    $this->assertNull($job->requestTranslation(), 'Translation request was successfull');
     $this->assertTrue($job->isActive());
   }
 
@@ -632,44 +643,50 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $assignee1 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $all_assignees[$assignee1->id()] = $assignee1->getDisplayName();
     $this->drupalLogin($assignee1);
+    $this->drupalGet($assignee1->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee1->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $assignee2 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $all_assignees[$assignee2->id()] = $assignee2->getDisplayName();
     $this->drupalLogin($assignee2);
+    $this->drupalGet($assignee2->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'ru',
     );
-    $this->drupalPostForm('user/' . $assignee2->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee2->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[1][language_from]' => 'en',
       'tmgmt_translation_skills[1][language_to]' => 'fr',
     );
-    $this->drupalPostForm('user/' . $assignee2->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee2->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[2][language_from]' => 'fr',
       'tmgmt_translation_skills[2][language_to]' => 'it',
     );
-    $this->drupalPostForm('user/' . $assignee2->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $assignee3 = $this->drupalCreateUser($this->localTranslatorPermissions);
     $all_assignees[$assignee3->id()] = $assignee3->getDisplayName();
     $this->drupalLogin($assignee3);
+    $this->drupalGet($assignee3->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'fr',
       'tmgmt_translation_skills[0][language_to]' => 'ru',
     );
-    $this->drupalPostForm('user/' . $assignee3->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
+    $this->drupalGet($assignee3->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[1][language_from]' => 'it',
       'tmgmt_translation_skills[1][language_to]' => 'en',
     );
-    $this->drupalPostForm('user/' . $assignee3->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     // Test target languages.
     $target_languages = tmgmt_local_supported_target_languages('fr');
@@ -680,7 +697,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $this->assertTrue(isset($target_languages['ru']));
 
     // Test language pairs.
-    $this->assertEqual(tmgmt_local_supported_language_pairs(), array (
+    $this->assertEquals(array(
       'en__de' =>
         array(
           'source_language' => 'en',
@@ -711,14 +728,14 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
           'source_language' => 'it',
           'target_language' => 'en',
         ),
-    ));
-    $this->assertEqual(tmgmt_local_supported_language_pairs('fr', array($assignee2->id())), array(
+    ), tmgmt_local_supported_language_pairs());
+    $this->assertEquals(array(
       'fr__it' =>
         array(
           'source_language' => 'fr',
           'target_language' => 'it',
         ),
-    ));
+    ), tmgmt_local_supported_language_pairs('fr', array($assignee2->id())));
 
     // Test if we got all translators.
     $assignees = tmgmt_local_assignees();
@@ -750,29 +767,30 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Create another local translator with the required abilities.
     $assignee = $this->loginAsTranslator($this->localTranslatorPermissions);
     // Configure language abilities.
+    $this->drupalGet($assignee->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $job->requestTranslation();
 
     $this->drupalGet('manage-translate');
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
     $this->drupalGet('translate');
     $edit = array(
       'tmgmt_local_task_bulk_form[0]' => TRUE,
       'action' => 'tmgmt_local_task_assign_to_me',
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
-    $this->assertText(t('Assign to me was applied to 1 item.'));
+    $this->submitForm($edit, t('Apply to selected items'));
+    $this->assertSession()->pageTextContains(t('Assign to me was applied to 1 item.'));
     $edit = array(
       'tmgmt_local_task_bulk_form[0]' => TRUE,
       'action' => 'tmgmt_local_task_unassign_multiple',
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
-    $this->assertText(t('Unassign was applied to 1 item.'));
+    $this->submitForm($edit, t('Apply to selected items'));
+    $this->assertSession()->pageTextContains(t('Unassign was applied to 1 item.'));
 
     // Login as admin and check VBO submit actions are present.
     $this->loginAsAdmin($this->localManagerPermissions);
@@ -781,12 +799,12 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       'tmgmt_local_task_bulk_form[0]' => TRUE,
       'action' => 'tmgmt_local_task_assign_multiple',
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
+    $this->submitForm($edit, t('Apply to selected items'));
     $edit = array(
       'tuid' => $assignee->id(),
     );
-    $this->drupalPostForm(NULL, $edit, t('Assign tasks'));
-    $this->assertText(t('Assigned 1 to user @assignee.', ['@assignee' => $assignee->getAccountName()]));
+    $this->submitForm($edit, t('Assign tasks'));
+    $this->assertSession()->pageTextContains(t('Assigned 1 to user @assignee.', ['@assignee' => $assignee->getAccountName()]));
   }
 
   /**
@@ -798,11 +816,12 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Create assignee with the skills.
     $assignee1 = $this->drupalCreateUser($this->localManagerPermissions);
     $this->drupalLogin($assignee1);
+    $this->drupalGet($assignee1->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $assignee1->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     // Login as translator.
     $this->loginAsTranslator();
@@ -835,7 +854,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $job->addItem('test_source', 'test', '2');
     $job->save();
     $this->drupalGet($job->toUrl());
-    $this->drupalPostForm(NULL, NULL, t('Submit to provider'));
+    $this->submitForm([], t('Submit to provider'));
 
     // Login as assignee.
     $this->drupalLogin($assignee1);
@@ -848,14 +867,14 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       'action' => 'tmgmt_local_task_assign_to_me',
       'tmgmt_local_task_bulk_form[0]' => 1,
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
+    $this->submitForm($edit, t('Apply to selected items'));
     $this->assertTaskStatusIcon(1, 'manage-translate-task', 'assigned', 'Needs action');
     // Unassign it back.
     $edit = array(
       'action' => 'tmgmt_local_task_unassign_multiple',
       'tmgmt_local_task_bulk_form[0]' => 1,
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
+    $this->submitForm($edit, t('Apply to selected items'));
     // Check its unassigned icon.
     $this->drupalGet('/manage-translate');
     $this->assertTaskStatusIcon(1, 'manage-translate-task', 'unassigned', 'Unassigned');
@@ -865,9 +884,10 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Check the unassigned status.
     $this->assertTaskStatusIcon(1, 'task-overview', 'unassigned', 'Unassigned');
     $edit = array(
+      'action' => 'tmgmt_local_task_assign_to_me',
       'tmgmt_local_task_bulk_form[0]' => 1,
     );
-    $this->drupalPostForm(NULL, $edit, t('Apply to selected items'));
+    $this->submitForm($edit, t('Apply to selected items'));
     // Check the needs action status.
     $this->assertTaskStatusIcon(1, 'task-overview', 'my-tasks', 'Needs action');
 
@@ -911,10 +931,11 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $this->assertTaskStatusIcon(1, 'manage-translate-task', 'assigned', 'Needs action');
 
     // Save the first item as completed and check item icons and progress.
+    $this->drupalGet('/translate/items/1');
     $edit = [
       'dummy|deep_nesting[translation]' => 'German translation',
     ];
-    $this->drupalPostForm('/translate/items/1', $edit, t('Save as completed'));
+    $this->submitForm($edit, t('Save as completed'));
     $this->assertTaskItemStatusIcon('test_source:test:1', 'Translated');
     $this->assertTaskItemStatusIcon('test_source:test:2', 'Untranslated');
     $this->assertTaskItemProgress('test_source:test:1', 0, 0, 1);
@@ -927,11 +948,12 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $this->assertTaskStatusIcon(1, 'manage-translate-task', 'assigned', 'Needs action');
 
     // Save the second item as completed.
+    $this->drupalGet('/translate/items/2');
     $edit = [
       'title|deep_nesting[translation]' => 'German translation of title',
       'text|deep_nesting[translation]' => 'German translation of text',
     ];
-    $this->drupalPostForm('/translate/items/2', $edit, t('Save as completed'));
+    $this->submitForm($edit, t('Save as completed'));
     // Check the icon a progress bar of the task.
     $this->assertTaskProgress(1, 'my-tasks', 0, 0, 3);
     $this->assertTaskStatusIcon(1, 'task-overview', 'my-tasks', 'In review');
@@ -962,7 +984,7 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
 
     // Assert the legend.
     $this->drupalGet('/translate/items/' . $item1->id());
-    $this->assertRaw('class="tmgmt-color-legend');
+    $this->assertSession()->responseContains('class="tmgmt-color-legend');
   }
 
   /**
@@ -979,46 +1001,47 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
       $user = $this->drupalCreateUser([$permission]);
       $this->drupalLogin($user);
       $this->drupalGet('admin/tmgmt');
-      $this->assertText('Translation');
+      $this->assertSession()->pageTextContains('Translation');
     }
     $user = $this->drupalCreateUser(['provide translation services']);
     $this->drupalLogin($user);
     $this->drupalGet('admin/tmgmt');
-    $this->assertText('Local Tasks');
+    $this->assertSession()->pageTextContains('Local Tasks');
   }
 
   /**
    * Test the settings of TMGMT local.
    */
   public function testSettings() {
-    \Drupal::getContainer()->get('theme_installer')->install(['seven']);
+    \Drupal::getContainer()->get('theme_installer')->install(['claro']);
     $this->drupalPlaceBlock('system_menu_block:account');
     $this->loginAsAdmin($this->localManagerPermissions);
+    $this->drupalGet('admin/appearance');
     $edit = [
-      'admin_theme' => 'seven',
+      'admin_theme' => 'claro',
       'use_admin_theme' => TRUE,
     ];
-    $this->drupalPostForm('admin/appearance', $edit, t('Save configuration'));
+    $this->submitForm($edit, t('Save configuration'));
 
     $settings = \Drupal::config('tmgmt_local.settings');
     $this->assertTrue($settings->get('use_admin_theme'));
     $this->drupalGet('admin/tmgmt');
-    $this->assertText('Translate');
+    $this->assertSession()->pageTextContains('Translate');
     $this->drupalGet('<front>');
-    $this->assertNoText('Translate');
+    $this->assertSession()->pageTextNotContains('Translate');
 
     $this->drupalGet('admin/tmgmt/settings');
     $edit = [
       'use_admin_theme' => FALSE,
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save configuration'));
+    $this->submitForm($edit, t('Save configuration'));
 
     $settings = \Drupal::config('tmgmt_local.settings');
     $this->assertFalse($settings->get('use_admin_theme'));
     $this->drupalGet('admin/tmgmt');
-    $this->assertNoText('Translate');
+    $this->assertSession()->pageTextNotContains('Translate');
     $this->drupalGet('<front>');
-    $this->assertText('Translate');
+    $this->assertSession()->pageTextContains('Translate');
   }
 
   /**
@@ -1028,18 +1051,19 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     // Prepare the scenario.
     $translator = Translator::load('local');
     $this->loginAsTranslator($this->localTranslatorPermissions);
+    $this->drupalGet($this->translator_user->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $this->translator_user->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $job = $this->createJob();
     $job->translator = $translator->id();
     $first_job_item = $job->addItem('test_source', 'test', '1');
     \Drupal::state()->set('tmgmt.test_source_data', [
       'dummy' => [
         'deep_nesting' => [
-          '#text' => file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html'),
+          '#text' => file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html'),
           '#label' => 'Label for job item with type test and id 2.',
           '#translate' => TRUE,
           '#format' => 'basic_html',
@@ -1048,18 +1072,19 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     ]);
     $second_job_item = $job->addItem('test_source', 'test', '2');
     $job->save();
+    $this->drupalGet($job->toUrl());
     $edit = [
       'settings[translator]' => $this->translator_user->id(),
     ];
-    $this->drupalPostForm($job->toUrl(), $edit, t('Submit to provider'));
+    $this->submitForm($edit, t('Submit to provider'));
 
     // Check Job Item abort, close the task item.
     $this->drupalGet('admin/tmgmt/items/' . $first_job_item->id() . '/abort');
-    $this->drupalPostForm(NULL, [], t('Confirm'));
+    $this->submitForm([], t('Confirm'));
     $this->drupalGet('translate');
-    $this->assertNoRaw('views-field-progress">Closed');
+    $this->assertSession()->responseNotContains('views-field-progress">Closed');
     $this->clickLink(t('View'));
-    $this->assertRaw('views-field-progress">Closed');
+    $this->assertSession()->responseContains('views-field-progress">Closed');
     $this->assertNotEmpty(preg_match('|translate/(\d+)|', $this->getUrl(), $matches), 'Task found');
     /** @var \Drupal\tmgmt_local\Entity\LocalTask $task */
     $task = \Drupal::entityTypeManager()->getStorage('tmgmt_local_task')->load($matches[1]);
@@ -1079,16 +1104,16 @@ class LocalTranslatorTest extends LocalTranslatorTestBase {
     $elements = $this->xpath('//*[@id="edit-dummydeep-nesting-actions-finish-dummydeep-nesting"]');
     $this->assertTrue(empty($elements), "'✓' button does not appear.");
     // Checking translation is readonly.
-    $this->assertRaw('data-drupal-selector="edit-dummydeep-nesting-translation" readonly="readonly"');
+    $this->assertSession()->responseContains('data-drupal-selector="edit-dummydeep-nesting-translation" readonly="readonly"');
 
     // Check closing all task items also closes the task.
     $this->drupalGet('admin/tmgmt/items/' . $second_job_item->id() . '/abort');
-    $this->drupalPostForm(NULL, [], t('Confirm'));
+    $this->submitForm([], t('Confirm'));
     $this->drupalGet('translate/closed');
-    $this->assertText($task->label());
+    $this->assertSession()->pageTextContains($task->label());
     $task = \Drupal::entityTypeManager()->getStorage('tmgmt_local_task')->loadUnchanged($matches[1]);
     $this->assertTrue($task->isClosed());
-    $this->assertRaw('views-field-progress">Closed');
+    $this->assertSession()->responseContains('views-field-progress">Closed');
   }
 
 }

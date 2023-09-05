@@ -151,7 +151,7 @@ class GroupPermission extends AccessPluginBase implements CacheableDependencyInt
     $permissions = [];
     foreach ($this->permissionHandler->getPermissions(TRUE) as $permission_name => $permission) {
       $display_name = $this->moduleHandler->getName($permission['provider']);
-      $permissions[$display_name][$permission_name] = strip_tags($permission['title']);
+      $permissions[$display_name . ' : ' . $permission['section']][$permission_name] = strip_tags($permission['title']);
     }
 
     $form['group_permission'] = [

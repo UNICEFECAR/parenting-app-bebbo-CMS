@@ -12,7 +12,7 @@ abstract class GroupBrowserTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group', 'group_test_config'];
+  protected static $modules = ['group', 'group_test_config'];
 
   /**
    * The entity type manager service.
@@ -36,7 +36,7 @@ abstract class GroupBrowserTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->groupCreator = $this->drupalCreateUser($this->getGlobalPermissions());

@@ -120,6 +120,17 @@ class FeedForm extends ContentEntityForm {
       $element['import']['#submit'][] = '::import';
     }
 
+    // Add an "unlock" button.
+    if ($this->entity->access('unlock')) {
+      $element['submit']['#dropbutton'] = 'save';
+      $element['submit']['#weight'] = 1;
+      $element['unlock'] = $element['submit'];
+      $element['unlock']['#dropbutton'] = 'save';
+      $element['unlock']['#value'] = $this->t('Unlock and Save');
+      $element['unlock']['#weight'] = 0;
+      $element['unlock']['#submit'][] = '::unlock';
+    }
+
     $element['delete']['#access'] = $this->entity->access('delete');
 
     return $element;
@@ -255,6 +266,20 @@ class FeedForm extends ContentEntityForm {
    */
   protected function pluginHasForm(FeedsPluginInterface $plugin, $operation) {
     return $this->formFactory->hasForm($plugin, $operation);
+  }
+
+  /**
+   * Form submission handler for the 'unlock' action.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function unlock(array $form, FormStateInterface $form_state) {
+    $feed = $this->entity;
+    $feed->unlock();
+    return $feed;
   }
 
 }

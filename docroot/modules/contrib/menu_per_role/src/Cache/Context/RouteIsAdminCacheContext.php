@@ -18,7 +18,7 @@ class RouteIsAdminCacheContext implements CacheContextInterface {
    *
    * @const string
    */
-  const CONTEXT_ID = 'route.is_admin';
+  public const CONTEXT_ID = 'route.is_admin';
 
   /**
    * The router admin context service.
@@ -43,7 +43,7 @@ class RouteIsAdminCacheContext implements CacheContextInterface {
    * {@inheritdoc}
    */
   public static function getLabel() {
-    return t('Route is admin');
+    return \t('Route is admin');
   }
 
   /**

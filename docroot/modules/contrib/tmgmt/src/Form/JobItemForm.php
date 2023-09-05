@@ -213,6 +213,7 @@ class JobItemForm extends TmgmtFormBase {
         '#url' => $item->getSourcePlugin()->getPreviewUrl($item),
         '#attributes' => [
           'target' => '_blank',
+          'class' => ['action-link'],
         ],
       ];
     }
@@ -534,16 +535,16 @@ class JobItemForm extends TmgmtFormBase {
         break;
       case TMGMT_DATA_ITEM_STATE_REVIEWED:
         $title = t('Reviewed');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/gray-check.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/gray-check.svg';
         break;
       case TMGMT_DATA_ITEM_STATE_TRANSLATED:
         $title = t('Translated');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/ready.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ready.svg';
         break;
       case TMGMT_DATA_ITEM_STATE_PENDING:
       default:
         $title = t('Pending');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/hourglass.svg';
         break;
     }
 

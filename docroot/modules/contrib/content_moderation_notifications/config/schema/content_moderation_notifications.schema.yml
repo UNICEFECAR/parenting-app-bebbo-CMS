@@ -10,8 +10,8 @@ content_moderation_notifications.content_moderation_notification.*:
       type: string
       label: 'UUID'
     workflow:
-       type: string
-       label: 'Workflow'
+      type: string
+      label: 'Workflow'
     transitions:
       type: sequence
       sequence:
@@ -29,21 +29,14 @@ content_moderation_notifications.content_moderation_notification.*:
       type: boolean
       label: Disable site mail
     emails:
-       type: string
-       label: 'Emails'
+      type: string
+      label: 'Emails'
     subject:
-       type: label
-       label: 'Subject'
+      type: label
+      label: 'Subject'
     body:
       type: text_format
       label: 'Email'
-      mapping:
-        value:
-          type: label
-          label: 'Value'
-        format:
-          type: string
-          label: 'Text format'
     label:
       type: label
       label: 'Label'

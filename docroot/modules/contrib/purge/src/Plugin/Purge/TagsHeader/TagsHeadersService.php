@@ -85,7 +85,7 @@ class TagsHeadersService extends ServiceBase implements TagsHeadersServiceInterf
    *
    * @ingroup countable
    */
-  public function count() {
+  public function count(): int {
     $this->initializePluginInstances();
     return count($this->instances);
   }

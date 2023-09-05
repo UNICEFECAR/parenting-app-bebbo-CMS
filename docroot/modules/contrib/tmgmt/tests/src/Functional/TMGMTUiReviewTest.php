@@ -18,12 +18,12 @@ class TMGMTUiReviewTest extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['tmgmt_content', 'image', 'node'];
+  protected static $modules = ['tmgmt_content', 'image', 'node'];
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->addLanguage('de');
@@ -82,9 +82,9 @@ class TMGMTUiReviewTest extends TMGMTTestBase {
     // Assert that translator has no permission to review/update "body" field.
     $source_field_message = $this->xpath('//*[@id="edit-bodydeep-nesting-source"]')[0];
     $translation_field_message = $this->xpath('//*[@id="edit-bodydeep-nesting-translation"]')[0];
-    $this->assertEqual($source_field_message->getText(), t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'));
-    $this->assertEqual($translation_field_message->getText(), t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'));
-    $this->assertNoRaw('Save as completed" class="button button--primary js-form-submit form-submit"');
+    $this->assertEquals(t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'), $source_field_message->getText());
+    $this->assertEquals(t('This field has been disabled because you do not have sufficient permissions to edit it. It is not possible to review or accept this job item.'), $translation_field_message->getText());
+    $this->assertSession()->responseNotContains('Save as completed" class="button button--primary js-form-submit form-submit"');
 
     // Remove full html format from the body field.
     $item1->updateData('body|deep_nesting', ['#format' => '']);
@@ -92,10 +92,10 @@ class TMGMTUiReviewTest extends TMGMTTestBase {
 
     // Translator should see enabled translation field again.
     $this->drupalGet('admin/tmgmt/items/' . $item1->id());
-    $this->assertRaw('Save as completed" class="button button--primary js-form-submit form-submit"');
-    $this->assertFieldByName('body|deep_nesting[translation]');
+    $this->assertSession()->responseContains('Save as completed" class="button button--primary js-form-submit form-submit"');
+    $this->assertSession()->fieldExists('body|deep_nesting[translation]');
     $translation_field = $this->xpath('//*[@id="edit-bodydeep-nesting-translation"]')[0];
-    $this->assertEqual($translation_field->getText(), '');
+    $this->assertEquals('', $translation_field->getText());
   }
 
 }

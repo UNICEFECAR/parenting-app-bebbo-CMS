@@ -9,6 +9,7 @@ function tmgmt_post_update_json(&$sandbox = NULL) {
   $job_item_storage = \Drupal::entityTypeManager()->getStorage('tmgmt_job_item');
   if (!isset($sandbox['current_count'])) {
     $query = $job_item_storage->getQuery();
+    $query->accessCheck(FALSE);
     $sandbox['total_count'] = $query->count()->execute();
     $sandbox['current_count'] = 0;
 
@@ -19,6 +20,7 @@ function tmgmt_post_update_json(&$sandbox = NULL) {
   }
 
   $query = $job_item_storage->getQuery();
+  $query->accessCheck(FALSE);
   $query->range($sandbox['current_count'], 25);
   $query->sort('tjiid');
   $result = $query->execute();

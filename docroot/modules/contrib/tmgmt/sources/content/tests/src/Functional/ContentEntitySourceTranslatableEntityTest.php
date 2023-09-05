@@ -23,10 +23,9 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'node',
     'field',
-    'entity_reference',
     'tmgmt_composite_test',
     'tmgmt_content',
   );
@@ -34,7 +33,7 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->addLanguage('de');
@@ -60,9 +59,9 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
     $xpath = '//*[@id="edit-content"]';
     $embedded_entity = '<label for="edit-always-embedded">Always embedded</label>';
     $embedded_node = '<span class="fieldset-legend">Content</span>';
-    $this->assertNoText('Authored by (User)');
-    $this->assertNotContains($embedded_entity, $this->xpath($xpath)[0]->getOuterHtml());
-    $this->assertNotContains($embedded_node, $this->xpath($xpath)[0]->getOuterHtml());
+    $this->assertSession()->pageTextNotContains('Authored by (User)');
+    $this->assertStringNotContainsString($embedded_entity, $this->xpath($xpath)[0]->getOuterHtml());
+    $this->assertStringNotContainsString($embedded_node, $this->xpath($xpath)[0]->getOuterHtml());
 
     // Create the reference field to the composite entity test.
     $this->createEntityReferenceField('node', 'article', 'entity_test_composite', 'entity_test_composite', 'entity_test_composite');
@@ -70,8 +69,8 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
 
     // Assert there IS the entity_test_composite as entity embedded now.
     $this->drupalGet('/admin/tmgmt/settings');
-    $this->assertText('Content: entity_test_composite');
-    $this->assertContains($embedded_entity, $this->xpath($xpath)[0]->getOuterHtml());
+    $this->assertSession()->pageTextContains('Content: entity_test_composite');
+    $this->assertStringContainsString($embedded_entity, $this->xpath($xpath)[0]->getOuterHtml());
 
     // Create the composite entity test.
     $composite = EntityTestComposite::create(array(
@@ -95,15 +94,15 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
     // Get the data and check it contains the data for the composite entity.
     $data = $job_item->getData();
     $this->assertTrue(isset($data['entity_test_composite']));
-    $this->assertEqual($data['entity_test_composite']['#label'], 'entity_test_composite');
+    $this->assertEquals('entity_test_composite', $data['entity_test_composite']['#label']);
     $this->assertFalse(isset($data['entity_test_composite'][0]['#label']));
-    $this->assertEqual($data['entity_test_composite'][0]['entity']['name']['#label'], 'Name');
-    $this->assertEqual($data['entity_test_composite'][0]['entity']['name'][0]['value']['#text'], 'composite name');
+    $this->assertEquals('Name', $data['entity_test_composite'][0]['entity']['name']['#label']);
+    $this->assertEquals('composite name', $data['entity_test_composite'][0]['entity']['name'][0]['value']['#text']);
 
     // Ensure that only Content is shown in the source select form.
     $this->drupalGet('/admin/tmgmt/sources');
-    $this->assertOption('edit-source', 'content:node');
-    $this->assertNoOption('edit-source', 'content:entity_test_composite');
+    $this->assertSession()->optionExists('edit-source', 'content:node');
+    $this->assertSession()->optionNotExists('edit-source', 'content:entity_test_composite');
 
     // Now request a translation and save it back.
     $job->translator = $this->default_translator->id();
@@ -119,7 +118,7 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
     $this->assertEquals($node->get('entity_test_composite')->target_id, $translation->get('entity_test_composite')->target_id);
     $composite = EntityTestComposite::load($translation->get('entity_test_composite')->target_id);
     $composite = $composite->getTranslation('de');
-    $this->assertEqual('de(de-ch): composite name', $composite->label());
+    $this->assertEquals('de(de-ch): composite name', $composite->label());
   }
 
   /**
@@ -133,8 +132,8 @@ class ContentEntitySourceTranslatableEntityTest extends TMGMTTestBase {
 
     // Assert there is the entity_test_composite as entity embedded now.
     $this->drupalGet('/admin/tmgmt/settings');
-    $this->assertFieldByName('embedded_fields[node][entity_test_t_composite]');
-    $this->assertText('Note: This is a translatable field to an untranslatable target. A copy of the target will be created when translating.');
+    $this->assertSession()->fieldExists('embedded_fields[node][entity_test_t_composite]');
+    $this->assertSession()->pageTextContains('Note: This is a translatable field to an untranslatable target. A copy of the target will be created when translating.');
   }
 }
 

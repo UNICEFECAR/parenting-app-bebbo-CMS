@@ -3,12 +3,15 @@
 namespace Drupal\tmgmt\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InsertCommand;
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\Core\Render\Markup;
 use Drupal\tmgmt\Entity\Job;
 use Drupal\tmgmt\Entity\JobItem;
 use Drupal\tmgmt\JobCheckoutManager;
@@ -267,17 +270,18 @@ class JobForm extends TmgmtFormBase {
       );
     }
 
-    if(!$job->isContinuous()) {
-      // Checkout whether given source already has items in translation.
-      $num_of_existing_items = count($job->getConflictingItemIds());
-      $form['message'] = array(
+    if (!$job->isContinuous()) {
+      $message = $this->getConflictingItemsMessage($job);
+
+      $form['message'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => \Drupal::translation()->formatPlural($num_of_existing_items, '1 item conflict with pending item and will be dropped on submission.', '@count items conflict with pending items and will be dropped on submission.'),
         '#prefix' => '<div class="messages existing-items messages--warning hidden">',
         '#suffix' => '</div>',
-      );
-      if ($num_of_existing_items) {
+      ];
+
+      if ($message) {
+        $form['message']['#value'] = $message;
         $form['message']['#prefix'] = '<div class="messages existing-items messages--warning">';
       }
     }
@@ -425,10 +429,11 @@ class JobForm extends TmgmtFormBase {
       // Add the provider logo in the settings wrapper.
       /** @var \Drupal\tmgmt\Entity\Translator $entity */
       $definition = \Drupal::service('plugin.manager.tmgmt.translator')->getDefinition($job->getTranslatorPlugin()->getPluginId());
+      $npath = \Drupal::service('extension.list.module')->getPath($definition['provider']);
       if (isset($definition['logo'])) {
         $form['translator_wrapper']['logo'] = $logo_render_array = [
           '#theme' => 'image',
-          '#uri' => file_create_url(drupal_get_path('module', $definition['provider']) . '/' . $definition['logo']),
+          '#uri' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/' . $definition['logo']),
           '#alt' => $definition['label'],
           '#title' => $definition['label'],
           '#attributes' => [
@@ -740,17 +745,18 @@ class JobForm extends TmgmtFormBase {
    * target / source language dropdowns.
    */
   public function ajaxLanguageSelect(array $form, FormStateInterface $form_state) {
-    $number_of_existing_items = count($this->entity->getConflictingItemIds());
+    $message = $this->getConflictingItemsMessage($this->entity);
     $replace = $form_state->getUserInput()['_triggering_element_name'] == 'source_language' ? 'target_language' : 'source_language';
     $response = new AjaxResponse();
     $response->addCommand(new ReplaceCommand('#tmgmt-ui-translator-wrapper', $form['translator_wrapper']));
     $response->addCommand(new ReplaceCommand('#tmgmt-ui-' . str_replace('_', '-', $replace), $form['info'][$replace]));
-    if ($number_of_existing_items) {
+    if ($message) {
       $response->addCommand(new InvokeCommand('.existing-items', 'removeClass', array('hidden')));
-      $response->addCommand(new ReplaceCommand('.existing-items > div', \Drupal::translation()->formatPlural($number_of_existing_items, '1 item conflict with pending item and will be dropped on submission.', '@count items conflict with pending items and will be dropped on submission.')));
+      $response->addCommand(new ReplaceCommand('.existing-items > div', $message));
     }
     else {
       $response->addCommand(new InvokeCommand('.existing-items', 'addClass', array('hidden')));
+      $response->addCommand(new ReplaceCommand('.existing-items > div', ''));
     }
     return $response;
   }
@@ -861,6 +867,41 @@ class JobForm extends TmgmtFormBase {
   public function submitBuildJob(array $form, FormStateInterface $form_state) {
     $this->entity = $this->buildEntity($form, $form_state);
     $form_state->setRebuild();
+  }
+
+  /**
+   * Builds a message on conflicting job items.
+   *
+   * @param \Drupal\tmgmt\JobInterface $job
+   *   The job to build the message for.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
+   *   Either a message with the inforamtion about the conflicting items or
+   *   null if there are none.
+   */
+  protected function getConflictingItemsMessage(JobInterface $job): ?TranslatableMarkup {
+    // Checkout whether given source already has items in translation.
+    $conflicting_items_by_item = $job->getConflictingItems();
+
+    if (!$conflicting_items_by_item) {
+      return NULL;
+    }
+
+    // Make a list of links to the existing items causing the conflicts.
+    $conflicts = [];
+    $num_of_existing_items = 0;
+    foreach ($conflicting_items_by_item as $conflicting_items) {
+      $num_of_existing_items += count($conflicting_items);
+      foreach (JobItem::loadMultiple($conflicting_items) as $id => $conflicting_item) {
+        $conflicts[] = Link::createFromRoute($conflicting_item->label(), 'entity.tmgmt_job_item.canonical', ['tmgmt_job_item' => $id])->toString();
+      }
+    }
+
+    // Make the links usable in formatPlural().
+    $conflict_list = Markup::create(implode(', ', $conflicts));
+
+    return \Drupal::translation()
+      ->formatPlural($num_of_existing_items, '1 item conflicts with pending item and will be dropped on submission. Conflicting item: @items.', '@count items conflict with pending items and will be dropped on submission. Conflicting items: @items.', ['@items' => $conflict_list]);
   }
 
 }

@@ -12,7 +12,7 @@ class EntityAccessTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group_test_plugin'];
+  protected static $modules = ['group_test_plugin'];
 
   /**
    * The test entity storage to use in testing.
@@ -45,7 +45,7 @@ class EntityAccessTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('entity_test_with_owner');

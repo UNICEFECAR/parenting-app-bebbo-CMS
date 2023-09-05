@@ -7,6 +7,7 @@ use Drupal\Core\State\StateInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\filelog\FileLogException;
 use Drupal\filelog\LogFileManager;
+use Drupal\filelog\LogFileManagerInterface;
 use Drupal\filelog\LogRotator;
 use function date;
 use function date_default_timezone_set;
@@ -30,21 +31,21 @@ class FileLogRotationTest extends FileLogTestBase {
    *
    * @var \Drupal\filelog\LogFileManagerInterface
    */
-  protected $fileManager;
+  protected LogFileManagerInterface $fileManager;
 
   /**
    * A mock of the token service.
    *
    * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * A mock of the datetime.time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected $time;
+  protected TimeInterface $time;
 
   /**
    * {@inheritdoc}
@@ -147,7 +148,7 @@ class FileLogRotationTest extends FileLogTestBase {
     }
 
     // Check that no other files exist.
-    foreach (scandir('vfs://filelog', 0) as $name) {
+    foreach (scandir('vfs://filelog') as $name) {
       if ($name === '.htaccess') {
         continue;
       }

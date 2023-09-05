@@ -64,7 +64,7 @@ class LanguageSelectWidget extends WidgetBase {
       return $summary;
     }
 
-    foreach ($settings as $key => $value) {
+    foreach ($settings as $value) {
       switch ($value) {
         case '0':
           // Option is not selected.
@@ -100,7 +100,7 @@ class LanguageSelectWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    /** @var LanguageItem $item */
+    /** @var \Drupal\languagefield\Plugin\Field\FieldType\LanguageItem $item */
     $item = $items[$delta];
     $value = isset($item->value) ? $item->value : NULL;
     $languages = $item->getSettableOptions();
@@ -108,8 +108,7 @@ class LanguageSelectWidget extends WidgetBase {
     $element['value'] = [
       '#title' => ($element['#title_display'] == 'invisible') ? NULL : $element['#title'],
       '#description' => $element['#description'],
-      // Do not use language_select. It has no advantage, and needs a dependency on core Language module.
-      // '#type' => 'language_select',
+      // Using 'language_select' would add dependency on core Language module.
       '#type' => 'select',
       '#required' => $element['#required'],
       '#options' => $languages,

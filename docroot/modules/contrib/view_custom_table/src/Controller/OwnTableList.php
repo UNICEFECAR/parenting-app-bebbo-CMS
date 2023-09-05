@@ -3,6 +3,7 @@
 namespace Drupal\view_custom_table\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,14 +30,26 @@ class OwnTableList extends ControllerBase {
   protected $config;
 
   /**
+   * Drupal\Core\Render\RendererInterface definition.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * OwnTableList constructor.
    *
    * @param \Drupal\Core\Session\AccountProxyInterface $account
+   *   The user account.
    * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config variable.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The Renderer.
    */
-  public function __construct(AccountProxyInterface $account, ImmutableConfig $config) {
+  public function __construct(AccountProxyInterface $account, ImmutableConfig $config, RendererInterface $renderer) {
     $this->account = $account;
     $this->config = $config;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -45,7 +58,8 @@ class OwnTableList extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('current_user'),
-      $container->get('config.factory')->get('view_custom_table.tables')
+      $container->get('config.factory')->get('view_custom_table.tables'),
+      $container->get('renderer')
     );
   }
 
@@ -94,7 +108,7 @@ class OwnTableList extends ControllerBase {
               'name' => $rowData['table_name'],
               'database' => $all_database_connections[$rowData['table_database']]['default']['database'],
               'description' => $rowData['description'],
-              'operations' => render($links),
+              'operations' => $this->renderer->render($links),
             ];
           }
         }
@@ -107,7 +121,7 @@ class OwnTableList extends ControllerBase {
         return [
           '#theme' => 'table',
           '#header' => $headers,
-          '#rows' => isset($rows) ? $rows : [],
+          '#rows' => $rows ?? [],
         ];
       }
       else {

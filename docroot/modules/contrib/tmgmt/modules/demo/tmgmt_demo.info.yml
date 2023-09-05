@@ -2,7 +2,7 @@ name: Translation Management Demo
 type: module
 description: All elements for a functioning demo.
 package: Translation Management
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9.3 || ^10
 hidden: false
 
 dependencies:
@@ -15,13 +15,14 @@ dependencies:
  - drupal:path
  - drupal:text
  - drupal:menu_ui
+ - drupal:toolbar
 
 simplytest_dependencies:
  - paragraphs:paragraphs_demo
 
 #@todo add the google_chart_tools dependancy
 
-# Information added by Drupal.org packaging script on 2021-02-09
-version: '8.x-1.12'
+# Information added by Drupal.org packaging script on 2023-04-04
+version: '8.x-1.15'
 project: 'tmgmt'
-datestamp: 1612891041
+datestamp: 1680643415

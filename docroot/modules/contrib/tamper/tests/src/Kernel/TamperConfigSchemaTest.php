@@ -20,7 +20,7 @@ class TamperConfigSchemaTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['entity_test', 'tamper', 'tamper_test'];
+  protected static $modules = ['entity_test', 'tamper', 'tamper_test'];
 
   /**
    * The config entity to add third party settings to.
@@ -32,7 +32,7 @@ class TamperConfigSchemaTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('entity_test_bundle');

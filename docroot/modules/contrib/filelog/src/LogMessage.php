@@ -20,28 +20,28 @@ class LogMessage {
    *
    * @var string[]
    */
-  protected static $levels;
+  protected static array $levels;
 
   /**
    * The log message, with placeholders.
    *
    * @var string
    */
-  protected $message;
+  protected string $message;
 
   /**
    * The processed log message, with placeholders replaced.
    *
    * @var string
    */
-  protected $text;
+  protected string $text;
 
   /**
    * Placeholders of the log message.
    *
    * @var array
    */
-  protected $placeholders;
+  protected array $placeholders;
 
   /**
    * Variables of the log message.
@@ -50,28 +50,28 @@ class LogMessage {
    *
    * @var array
    */
-  protected $variables;
+  protected array $variables;
 
   /**
    * Context variables of the log message.
    *
    * @var array
    */
-  protected $context;
+  protected array $context;
 
   /**
    * Severity level.
    *
    * @var int
    */
-  protected $level;
+  protected int $level;
 
   /**
    * User who triggered the event.
    *
    * @var \Drupal\user\UserInterface
    */
-  protected $user;
+  protected UserInterface $user;
 
   /**
    * LogMessage constructor.
@@ -121,7 +121,7 @@ class LogMessage {
    *   An associative array of RFC levels to labels.
    */
   public static function getLevels(): array {
-    if (!static::$levels) {
+    if (!isset(static::$levels)) {
       static::$levels = RfcLogLevel::getLevels();
       foreach (static::$levels as $id => $label) {
         /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $label */
@@ -159,7 +159,7 @@ class LogMessage {
    *   The rendered text.
    */
   public function getText(): string {
-    if (!$this->text) {
+    if (!isset($this->text)) {
       $this->text = $this->message;
       if (!empty($this->placeholders)) {
         $this->text = strtr($this->text, $this->placeholders);
@@ -232,7 +232,7 @@ class LogMessage {
    *   The user object.
    */
   public function getUser(): UserInterface {
-    if (!$this->user) {
+    if (!isset($this->user)) {
       $this->user = User::load($this->context['uid']);
     }
     return $this->user;

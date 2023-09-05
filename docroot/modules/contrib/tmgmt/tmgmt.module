@@ -77,6 +77,7 @@ function tmgmt_cron() {
     // Delete all finished translation jobs that haven't been changed for a
     // time span longer than the given offset.
     $ids = \Drupal::entityQuery('tmgmt_job')
+      ->accessCheck(TRUE)
       ->condition('state', Job::STATE_FINISHED)
       ->condition('changed', \Drupal::time()->getRequestTime() - $offset, '<=')
       ->execute();
@@ -93,6 +94,7 @@ function tmgmt_cron() {
 
     // Look for inactive job items of continuous jobs.
     $ids = \Drupal::entityQuery('tmgmt_job_item')
+      ->accessCheck(TRUE)
       ->condition('tjid.entity.job_type', JobInterface::TYPE_CONTINUOUS)
       ->condition('state', JobItemInterface::STATE_INACTIVE)
       ->range(0, $tmgmt_settings->get('job_items_cron_limit'))
@@ -174,7 +176,7 @@ function tmgmt_job_item_load_latest($plugin, $item_type, $item_id, $source_langu
     // Only query for jobs that are currently active.
     ->condition('tj.state', [Job::STATE_UNPROCESSED, Job::STATE_ACTIVE, Job::STATE_CONTINUOUS], 'IN')
     // And only query for job items that are not yet finished.
-    ->condition('tji.state', JobItem::STATE_ACCEPTED, '<>')
+    ->condition('tji.state', [JobItem::STATE_ACCEPTED, JobItem::STATE_ABORTED], 'NOT IN')
     ->condition('tji.plugin', $plugin)
     ->condition('tji.item_type', $item_type)
     ->condition('tji.item_id', $item_id)
@@ -252,6 +254,7 @@ function tmgmt_job_item_load_all_latest($plugin, $item_type, $item_id, $source_l
 function tmgmt_job_match_item($source_language, $target_language, $account = NULL) {
   $account = isset($account) ? $account : \Drupal::currentUser();
   $tjid = \Drupal::entityQuery('tmgmt_job')
+    ->accessCheck(TRUE)
     ->condition('source_language', $source_language)
     ->condition('target_language', $target_language)
     ->condition('uid', $account->id())
@@ -274,6 +277,7 @@ function tmgmt_job_match_item($source_language, $target_language, $account = NUL
  */
 function tmgmt_job_check_finished($tjid) {
   return !\Drupal::entityQuery('tmgmt_job_item')
+    ->accessCheck(TRUE)
     ->condition('tjid', $tjid)
     ->condition('state', [JobItem::STATE_ACCEPTED, JobItem::STATE_ABORTED], 'NOT IN')
     ->range(0, 1)
@@ -459,6 +463,7 @@ function tmgmt_translator_load_available($job) {
  */
 function tmgmt_translator_busy($translator) {
   return (bool) \Drupal::entityQuery('tmgmt_job')
+    ->accessCheck(TRUE)
     ->condition('state', [Job::STATE_ACTIVE, Job::STATE_CONTINUOUS], 'IN')
     ->condition('translator', $translator)
     ->range(0, 1)
@@ -939,19 +944,19 @@ function tmgmt_redirect_queue_dequeue() {
 function tmgmt_color_legend() {
   $items = [
     [
-      'icon' => file_create_url('core/misc/icons/bebebe/house.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/bebebe/house.svg'),
       'legend' => t('Original language'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/bebebe/ex.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/bebebe/ex.svg'),
       'legend' => t('Not translated'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/73b355/check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/73b355/check.svg'),
       'legend' => t('Translated'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/outdated.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/outdated.svg'),
       'legend' => t('Translation Outdated'),
     ],
   ];
@@ -967,7 +972,7 @@ function tmgmt_color_legend() {
   foreach (JobItem::getStateDefinitions() as $state_definition) {
     if (!empty($state_definition['icon'])) {
       $items[] = [
-        'icon' => file_url_transform_relative(file_create_url($state_definition['icon'])),
+        'icon' => \Drupal::service('file_url_generator')->transformRelative(\Drupal::service('file_url_generator')->generateAbsoluteString($state_definition['icon'])),
         'legend' => $state_definition['label'],
       ];
     }
@@ -998,7 +1003,7 @@ function tmgmt_color_job_item_legend() {
   foreach (JobItem::getStateDefinitions() as $state_definition) {
     if (!empty($state_definition['icon'])) {
       $items[] = [
-        'icon' => file_url_transform_relative(file_create_url($state_definition['icon'])),
+        'icon' => \Drupal::service('file_url_generator')->transformRelative(\Drupal::service('file_url_generator')->generateAbsoluteString($state_definition['icon'])),
         'legend' => $state_definition['label'],
       ];
     }
@@ -1025,7 +1030,7 @@ function tmgmt_color_job_item_legend() {
 function tmgmt_color_job_legend() {
   $items = [
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/rejected.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/rejected.svg'),
       'legend' => t('Unprocessed'),
     ],
   ];
@@ -1033,7 +1038,7 @@ function tmgmt_color_job_legend() {
   foreach (JobItem::getStateDefinitions() as $state_definition) {
     if (!empty($state_definition['icon'])) {
       $items[] = [
-        'icon' => file_url_transform_relative(file_create_url($state_definition['icon'])),
+        'icon' => \Drupal::service('file_url_generator')->transformRelative(\Drupal::service('file_url_generator')->generateAbsoluteString($state_definition['icon'])),
         'legend' => $state_definition['label'],
       ];
     }
@@ -1041,7 +1046,7 @@ function tmgmt_color_job_legend() {
 
   if (\Drupal::service('tmgmt.continuous')->hasContinuousJobs()) {
     $items[] = [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/continuous.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/continuous.svg'),
       'legend' => t('Continuous'),
     ];
   };
@@ -1067,19 +1072,19 @@ function tmgmt_color_job_legend() {
 function tmgmt_color_review_legend() {
   $items = [
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/hourglass.svg'),
       'legend' => t('Pending'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/ready.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ready.svg'),
       'legend' => t('Translated'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/gray-check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/gray-check.svg'),
       'legend' => t('Reviewed'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/73b355/check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/73b355/check.svg'),
       'legend' => t('Accepted'),
     ],
   ];

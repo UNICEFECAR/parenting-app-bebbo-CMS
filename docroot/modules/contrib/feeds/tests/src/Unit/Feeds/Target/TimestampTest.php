@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\Timestamp;
 class TimestampTest extends FieldTargetWithContainerTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'timestamp';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {
@@ -21,14 +28,7 @@ class TimestampTest extends FieldTargetWithContainerTestBase {
    * @covers ::prepareValue
    */
   public function testPrepareValue() {
-    $method = $this->getMethod(Timestamp::class, 'prepareTarget')->getClosure();
-    $target_definition = $method($this->getMockFieldDefinition());
-
-    $configuration = [
-      'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
-      'target_definition' => $target_definition,
-    ];
-    $target = new Timestamp($configuration, 'timestamp', []);
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     // Test valid timestamp.

@@ -20,12 +20,12 @@ use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Memsource translation plugin controller.
+ * Phrase TMS translation plugin controller.
  *
  * @TranslatorPlugin(
  *   id = "memsource",
- *   label = @Translation("Memsource"),
- *   description = @Translation("Memsource translator service."),
+ *   label = @Translation("phrase"),
+ *   description = @Translation("Phrase TMS translator service."),
  *   ui = "Drupal\tmgmt_memsource\MemsourceTranslatorUi",
  * )
  */
@@ -34,6 +34,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
 
   const PASSWORD_V2_PREFIX = 'MEMSOURCE_V2___';
   const PASSWORD_V2_PREFIX_LENGTH = 15;
+  const CHECK_JOB_MAX_RETRIES = 5;
 
   /**
    * The translator.
@@ -62,6 +63,23 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    * @var string|null
    */
   protected $moduleVersion = NULL;
+
+  /**
+   * Memsource action generated for session.
+   *
+   * @var string|null
+   */
+  private $memsourceActionId = NULL;
+
+  /**
+   * @var string|null
+   */
+  protected $itemType = NULL;
+
+  /**
+   * @var string
+   */
+  protected $itemId = NULL;
 
   /**
    * Constructs a MemsourceTranslator object.
@@ -111,6 +129,27 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
   }
 
   /**
+   * Checks if plugin is able to connect to Memsource
+   */
+  public function checkMemsourceConnection(TranslatorInterface $translator): bool
+  {
+    $users = [];
+    $this->setTranslator($translator);
+
+    try {
+      $users = $this->sendApiRequest('/api2/v1/users');
+    } catch (\Exception $e) {
+      // Ignore exception, only testing connection.
+    }
+
+    if ($users) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getSupportedRemoteLanguages(TranslatorInterface $translator) {
@@ -118,8 +157,11 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     $this->setTranslator($translator);
     try {
       $supported_languages = $this->sendApiRequest('/api2/v1/languages');
-      foreach ($supported_languages['languages'] as $language) {
-        $supported_remote_languages[$language['code']] = $language['name'];
+      if (isset($supported_languages['languages']) &&
+        (is_array($supported_languages['languages']) || is_object($supported_languages['languages']))) {
+        foreach ($supported_languages['languages'] as $language) {
+          $supported_remote_languages[$language['code']] = $language['name'];
+        }
       }
     }
     catch (\Exception $e) {
@@ -127,6 +169,30 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     }
     asort($supported_remote_languages);
     return $supported_remote_languages;
+  }
+
+  /**
+   * Gets all Drupal connectors.
+   */
+  public function getDrupalConnectors(TranslatorInterface $translator): array {
+    $tokens = [];
+    $this->setTranslator($translator);
+    try {
+      $connectors = $this->sendApiRequest('/api2/v1/connectors');
+
+      $connectors = array_filter($connectors['connectors'], static function ($connector) {
+          return $connector['type'] === 'DRUPAL_PLUGIN';
+      });
+
+      foreach ($connectors as $connector) {
+        $tokens[$connector['localToken']] = $connector['name'];
+      }
+    }
+    catch (\Exception $e) {
+      // Ignore exception, nothing we can do.
+    }
+
+    return $tokens;
   }
 
   /**
@@ -157,10 +223,16 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    */
   public function requestJobItemsTranslation(array $job_items) {
     /** @var \Drupal\tmgmt\Entity\Job $job */
+
+    // Assign url parameters for the selected connector.
+    $this->itemType = reset($job_items)->get('item_type')->getString();
+    $this->itemId = reset($job_items)->get('item_id')->getString();
+
     $job = reset($job_items)->getJob();
     $this->setTranslator($job->getTranslator());
     $due_date = $job->getSetting('due_date');
     $project_id = NULL;
+    $job_part_uids = [];
 
     if ($job->getSetting('group_jobs')) {
       $project_id = $this->getMemsourceProjectIdByBatchId(reset($job_items));
@@ -172,11 +244,11 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
 
     try {
       if ($project_id) {
-        $job->addMessage('Using an existing project in Memsource with the id: @id', ['@id' => $project_id], 'debug');
+        $job->addMessage('Using an existing project in Phrase TMS with the id: @id', ['@id' => $project_id], 'debug');
       }
       else {
         $project_id = $this->newTranslationProject($job);
-        $job->addMessage('Created a new project in Memsource with the id: @id', ['@id' => $project_id], 'debug');
+        $job->addMessage('Created a new project in Phrase TMS with the id: @id', ['@id' => $project_id], 'debug');
       }
 
       /** @var \Drupal\tmgmt\Entity\JobItem $job_item */
@@ -201,13 +273,14 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         if ($job_item->getJob()->isContinuous()) {
           $job_item->active();
         }
+        $job_part_uids[] = $job_part_id;
       }
-      $this->assignMemsourceProviders($project_id, $job);
+      $this->assignMemsourceProviders($project_id, $job, $job_part_uids);
     }
     catch (TMGMTException $e) {
       $job->rejected(
-        'Job has been rejected with following error: @error',
-        ['@error' => $e->getMessage()],
+        'Job has been rejected with following error: @error, memsourceId: @memsourceId',
+        ['@error' => $e->getMessage(), '@memsourceId' => $this->getMemsourceActionId()],
         'error'
       );
 
@@ -238,6 +311,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         ->condition('item_id', $job_item->getItemId())
         ->condition('tjiid', $job_item->id(), '<>')
         ->sort('tjiid', 'DESC')
+        ->accessCheck(FALSE)
         ->execute();
 
       if (!empty($raw_items)) {
@@ -249,6 +323,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         $raw_remotes = \Drupal::entityQuery('tmgmt_remote')
           ->condition('tjiid', $item->id())
           ->sort('trid', 'DESC')
+          ->accessCheck(FALSE)
           ->execute();
 
         if (!empty($raw_remotes)) {
@@ -300,6 +375,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         ->condition('settings', $batch_id, 'CONTAINS')
         ->condition('tjid', $job->id(), '<>')
         ->sort('tjid', 'DESC')
+        ->accessCheck(FALSE)
         ->execute();
 
       if (!empty($rawJobs)) {
@@ -354,7 +430,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     try {
       $result = $this->request('/api2/v1/auth/login', 'POST', $params);
 
-      if ($result['token']) {
+      if (isset($result['token']) && $result['token']) {
         // Store the token.
         $this->storeToken($result['token']);
 
@@ -362,7 +438,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
       }
     }
     catch (TMGMTException $ex) {
-      $this->logWarn('Unable to log in to Memsource API: ' . $ex->getMessage());
+      $this->logWarn('Unable to log in to Phrase TMS API: ' . $ex->getMessage());
     }
 
     return FALSE;
@@ -378,7 +454,7 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    *   Encoded password.
    */
   public function encodePassword($password) {
-    if (substr($password, 0, self::PASSWORD_V2_PREFIX_LENGTH) !== self::PASSWORD_V2_PREFIX) {
+    if (is_string($password) && (substr($password, 0, self::PASSWORD_V2_PREFIX_LENGTH) !== self::PASSWORD_V2_PREFIX)) {
       $password = self::PASSWORD_V2_PREFIX . bin2hex($password);
     }
 
@@ -493,13 +569,13 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     $options = ['headers' => []];
 
     if (!$this->translator) {
-      throw new TMGMTException('There is no Translator entity. Access to the Memsource API is not possible.');
+      throw new TMGMTException('There is no Translator entity. Access to the Phrase TMS API is not possible.');
     }
 
     $service_url = $this->translator->getSetting('service_url');
 
     if (!$service_url) {
-      $this->logWarn("Attempt to call Memsource API when service_url is not set: $path");
+      $this->logWarn("Attempt to call Phrase TMS API when service_url is not set: $path");
       return [];
     }
 
@@ -523,20 +599,24 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
       $options['json'] = $params;
     }
 
+    $logOptions = $options;
+    if (isset($logOptions['headers']['Authorization'])) {
+      $logOptions['headers']['Authorization'] = '******';
+    }
     $log = [
       '%method' => $method,
       '%url' => $url,
-      '%request' => json_encode($options),
+      '%request' => json_encode($logOptions),
     ];
 
     try {
       $response = $this->client->request($method, $url, $options);
     }
     catch (RequestException $e) {
-      error_log("Error: {$e->getMessage()}");
+      error_log("Error: {$e->getMessage()}, \nmemsource-action-id=" . $this->getMemsourceActionId());
       $responseContents = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : 'NULL';
       $this->logDebug(
-        "=> REQUEST:\n%method %url\n%request\n\n=> RESPONSE:\n%response\n\n=> CODE:\n%code",
+        "=> REQUEST:\n%method %url\n%request\n\n=> RESPONSE:\n%response\n\n=> CODE:\n%code\n",
         $log + [
           '%response' => $responseContents,
           '%code' => $e->getCode(),
@@ -548,7 +628,8 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
           return $e->getCode();
         }
 
-        throw new TMGMTException('Unable to connect to Memsource API due to following error: @error', ['@error' => $e->getMessage()], $e->getCode());
+        throw new TMGMTException('Unable to connect to Phrase TMS API [memsource-action-id=@actionId] due to following error: @error',
+            ['@error' => $e->getMessage(), '@actionId' => $this->getMemsourceActionId()], $e->getCode());
       }
 
       $response = $e->getResponse();
@@ -559,13 +640,14 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         return $response->getStatusCode();
       }
 
-      throw new TMGMTException('Unable to connect to Memsource API due to following error: @error', ['@error' => $response->getReasonPhrase()], $response->getStatusCode());
+      throw new TMGMTException('Unable to connect to Phrase TMS API [memsource-action-id=@actionId] due to following error: @error',
+          ['@error' => $response->getReasonPhrase(), '@actionId' => $this->getMemsourceActionId()], $response->getStatusCode());
     }
 
     $received_data = $response->getBody()->getContents();
 
     $this->logDebug(
-      "=> REQUEST:\n%method %url\n%request\n\n=> RESPONSE:\n%response",
+      "=> REQUEST:\n%method %url\n%request\n\n=> RESPONSE:\n%response\n",
       $log + ['%response' => $received_data]
     );
 
@@ -574,8 +656,14 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     }
 
     if (!in_array($response->getStatusCode(), [200, 201], TRUE)) {
-      throw new TMGMTException('Unable to connect to the Memsource API due to following error: @error at @url',
-        ['@error' => $response->getStatusCode(), '@url' => $url]);
+      throw new TMGMTException(
+        'Unable to connect to the Phrase TMS API [memsource-action-id=@actionId] due to following error: @error at @url',
+        [
+          '@error' => $response->getStatusCode(),
+          '@url' => $url,
+          '@actionId' => $this->getMemsourceActionId(),
+        ]
+      );
     }
 
     if ($download) {
@@ -670,14 +758,47 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    * @param \Drupal\tmgmt\JobInterface $job
    *   The job.
    */
-  public function assignMemsourceProviders($project_id, JobInterface $job) {
+  private function assignMemsourceProviders($project_id, JobInterface $job, $job_part_uids) {
     $template_id = $job->getSetting('project_template');
 
     if ($template_id !== NULL && $template_id !== '0') {
-      $this->sendApiRequest(
-        "/api2/v1/projects/$project_id/applyTemplate/$template_id/assignProviders",
-        'POST'
-      );
+      $this->checkJobsCreated($project_id, $job_part_uids);
+      try {
+        $this->sendApiRequest(
+          "/api2/v1/projects/$project_id/applyTemplate/$template_id/assignProviders",
+          'POST'
+        );
+      } catch (\Exception $e) {
+        $job->addMessage('Unable to assign providers. Phrase TMS project: @id', ['@id' => $project_id], 'error');
+        $this->logError("Unable to assign providers. projectId=$project_id, templateId=$template_id");
+      }
+    }
+  }
+
+  /**
+   * Check that all the jobs were created in Phrase TMS. If not, sleep for a while and try again until CHECK_JOB_MAX_RETRIES is reached.
+   *
+   * @param string $project_id
+   *   Project UID.
+   * @param string[] $job_part_uids
+   *   Job part UID.
+   */
+  private function checkJobsCreated($project_id, $job_part_uids) {
+    foreach ($job_part_uids as $job_part_uid) {
+      for ($retries = 0; true; $retries++) {
+        try {
+          $response = $this->sendApiRequest("/api2/v1/projects/$project_id/jobs/$job_part_uid");
+          if (isset($response['importStatus']['status']) && in_array($response['importStatus']['status'], ['ERROR', 'OK'], true)) {
+            break;
+          }
+        } catch (\Exception $e) {}
+        $this->logDebug("Job uid=$job_part_uid import not finished, going to sleep for $retries seconds");
+        sleep($retries);
+        if ($retries > self::CHECK_JOB_MAX_RETRIES) {
+          $this->logWarn("Job uid=$job_part_uid not found, max retries reached");
+          break;
+        }
+      }
     }
   }
 
@@ -706,6 +827,8 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     $conditions = ['tjiid' => ['value' => $job_item_id]];
     $xliff = $xliff_converter->export($job_item->getJob(), $conditions);
     $name = "JobID_{$job_id}_{$job_item_label}_{$source_language}_{$target_language}";
+
+    $job_item->addMessage('Created memsource-action-id=' . $this->getMemsourceActionId(), [], 'debug');
 
     return $this->createJob($project_id, $target_language, $due_date, $xliff, $name);
   }
@@ -738,6 +861,11 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
         'clientVersion' => $this->getMemsourceModuleVersion(),
         'hostVersion' => \Drupal::VERSION,
       ],
+      'remotePreview' => [
+          'connectorToken' => $this->translator->getSetting('memsource_connector_token'),
+          'remoteFolder' => $this->itemType,
+          'remoteFileName' => $this->itemId,
+      ]
     ];
 
     if (strlen($due_date) > 0) {
@@ -745,11 +873,19 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
     }
 
     $headers = [
-      'Content-Disposition' => "filename*=UTF-8''$name.xliff",
+      'Content-Disposition' => "filename*=UTF-8''" . urlencode($name) . ".xliff",
       'Memsource' => json_encode($params),
+      'memsource-action-id' => $this->getMemsourceActionId(),
     ];
 
-    $result = $this->sendApiRequest("/api2/v1/projects/$project_id/jobs", 'POST', $headers, FALSE, FALSE, $xliff);
+    $result = $this->sendApiRequest(
+      "/api2/v1/projects/$project_id/jobs",
+      'POST',
+      $headers,
+      FALSE,
+      FALSE,
+      $xliff
+    );
 
     return $this->getUidOfLatestJob($result['jobs']);
   }
@@ -826,13 +962,14 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
             $info = $this->sendApiRequest("/api2/v1/projects/$project_id/jobs/$job_uid");
           }
           catch (TMGMTException $e) {
-            $job->addMessage('Error fetching the job item @job_item. Memsource job @job_uid not found: @error',
+            $job->addMessage('Error fetching the job item @job_item. Phrase TMS Action: @actionId. Phrase TMS job @job_uid not found: @error',
               [
                 '@job_item' => $job_item->label(),
                 '@job_uid' => $job_uid,
+                '@actionId' => $this->getMemsourceActionId(),
                 '@error' => $e->getMessage(),
               ], 'error');
-            $errors[] = 'Memsource job ' . $job_uid . ' not found, it was probably deleted.';
+            $errors[] = 'Phrase TMS job ' . $job_uid . ' not found, it was probably deleted.';
           }
           if (isset($info['status']) && $this->remoteTranslationCompleted($info['status'])) {
             try {
@@ -998,7 +1135,8 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    *   Log message context.
    */
   private function logError($message, array $context = []) {
-    \Drupal::logger('tmgmt_memsource')->error($message, $context);
+    $context['%actionId'] = $this->getMemsourceActionId();
+    \Drupal::logger('tmgmt_memsource')->error($message . " \nmemsource-action-id=%actionId", $context);
   }
 
   /**
@@ -1011,7 +1149,8 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    */
   private function logWarn($message, array $context = []) {
     if ($this->isDebugEnabled()) {
-      \Drupal::logger('tmgmt_memsource')->warning($message, $context);
+      $context['%actionId'] = $this->getMemsourceActionId();
+      \Drupal::logger('tmgmt_memsource')->warning($message . " \nmemsource-action-id=%actionId", $context);
     }
   }
 
@@ -1025,7 +1164,8 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    */
   private function logDebug($message, array $context = []) {
     if ($this->isDebugEnabled()) {
-      \Drupal::logger('tmgmt_memsource')->debug($message, $context);
+      $context['%actionId'] = $this->getMemsourceActionId();
+      \Drupal::logger('tmgmt_memsource')->debug($message . " \nmemsource-action-id=%actionId", $context);
     }
   }
 
@@ -1037,6 +1177,23 @@ class MemsourceTranslator extends TranslatorPluginBase implements ContainerFacto
    */
   private function isDebugEnabled() {
     return \Drupal::configFactory()->get('tmgmt_memsource.settings')->get('debug');
+  }
+
+  /**
+   * Returns generated MemsourceActionId, unique per instance.
+   *
+   * @return string|null
+   *   Returns generated memsource action id
+   */
+  public function getMemsourceActionId(): string {
+    if ($this->memsourceActionId === NULL) {
+      $this->memsourceActionId = sprintf("%s-%s",
+        (new \DateTime('now'))->format('u'),
+        bin2hex(random_bytes(6))
+      );
+    }
+
+    return $this->memsourceActionId;
   }
 
 }

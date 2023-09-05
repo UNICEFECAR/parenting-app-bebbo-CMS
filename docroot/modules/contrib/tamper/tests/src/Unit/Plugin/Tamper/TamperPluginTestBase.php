@@ -22,7 +22,7 @@ abstract class TamperPluginTestBase extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->plugin = $this->instantiatePlugin();
     $this->plugin->setStringTranslation($this->createMock(TranslationInterface::class));
 

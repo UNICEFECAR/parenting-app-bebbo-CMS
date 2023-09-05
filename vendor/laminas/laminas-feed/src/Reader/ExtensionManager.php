@@ -1,27 +1,31 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader;
+
+use function call_user_func_array;
+use function method_exists;
+use function sprintf;
 
 /**
  * Default implementation of ExtensionManagerInterface
  *
  * Decorator of ExtensionPluginManager.
+ *
+ * @final this class wasn't designed to be inherited from, but we can't assume that consumers haven't already
+ *        extended it, therefore we cannot add the final marker without a new major release.
  */
 class ExtensionManager implements ExtensionManagerInterface
 {
+    /** @var ExtensionPluginManager */
     protected $pluginManager;
 
     /**
      * Seeds the extension manager with a plugin manager; if none provided,
      * creates an instance.
      */
-    public function __construct(ExtensionPluginManager $pluginManager = null)
+    public function __construct(?ExtensionPluginManager $pluginManager = null)
     {
         if (null === $pluginManager) {
             $pluginManager = new ExtensionPluginManager();
@@ -45,7 +49,7 @@ class ExtensionManager implements ExtensionManagerInterface
             throw new Exception\BadMethodCallException(sprintf(
                 'Method by name of %s does not exist in %s',
                 $method,
-                __CLASS__
+                self::class
             ));
         }
         return call_user_func_array([$this->pluginManager, $method], $args);
@@ -54,22 +58,21 @@ class ExtensionManager implements ExtensionManagerInterface
     /**
      * Get the named extension
      *
-     * @param  string $name
+     * @param  string $extension
      * @return Extension\AbstractEntry|Extension\AbstractFeed
      */
-    public function get($name)
+    public function get($extension)
     {
-        return $this->pluginManager->get($name);
+        return $this->pluginManager->get($extension);
     }
 
     /**
      * Do we have the named extension?
      *
-     * @param  string $name
-     * @return bool
+     * @param  string $extension
      */
-    public function has($name)
+    public function has($extension): bool
     {
-        return $this->pluginManager->has($name);
+        return $this->pluginManager->has($extension);
     }
 }

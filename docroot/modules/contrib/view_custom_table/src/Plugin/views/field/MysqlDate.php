@@ -105,13 +105,13 @@ class MysqlDate extends FieldPluginBase implements ContainerFactoryPluginInterfa
         'inverse time span' => $this->t('Time span (past dates have "-" prepended)'),
         'time span' => $this->t('Time span (with "ago/hence" appended)'),
       ],
-      '#default_value' => isset($this->options['date_format']) ? $this->options['date_format'] : 'small',
+      '#default_value' => $this->options['date_format'] ?? 'small',
     ];
     $form['custom_date_format'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Custom date format'),
       '#description' => $this->t('If "Custom", see <a href="http://us.php.net/manual/en/function.date.php" target="_blank">the PHP docs</a> for date formats. Otherwise, enter the number of different time units to display, which defaults to 2.'),
-      '#default_value' => isset($this->options['custom_date_format']) ? $this->options['custom_date_format'] : '',
+      '#default_value' => $this->options['custom_date_format'] ?? '',
     ];
     $customDateFormat = [
       'custom',
@@ -188,13 +188,25 @@ class MysqlDate extends FieldPluginBase implements ContainerFactoryPluginInterfa
           return $this->t('%time hence', ['%time' => $this->dateFormatter->formatTimeDiffUntil($value, ['granularity' => is_numeric($custom_format) ? $custom_format : 2])]);
 
         case 'raw time span':
-          return ($time_diff < 0 ? '-' : '') . $this->dateFormatter->formatTimeDiffSince($value, ['strict' => FALSE, 'granularity' => is_numeric($custom_format) ? $custom_format : 2]);
+          return ($time_diff < 0 ? '-' : '') . $this->dateFormatter
+            ->formatTimeDiffSince($value, [
+              'strict' => FALSE,
+              'granularity' => is_numeric($custom_format) ? $custom_format : 2,
+            ]);
 
         case 'inverse time span':
-          return ($time_diff > 0 ? '-' : '') . $this->dateFormatter->formatTimeDiffSince($value, ['strict' => FALSE, 'granularity' => is_numeric($custom_format) ? $custom_format : 2]);
+          return ($time_diff > 0 ? '-' : '') . $this->dateFormatter
+            ->formatTimeDiffSince($value, [
+              'strict' => FALSE,
+              'granularity' => is_numeric($custom_format) ? $custom_format : 2,
+            ]);
 
         case 'time span':
-          $time = $this->dateFormatter->formatTimeDiffSince($value, ['strict' => FALSE, 'granularity' => is_numeric($custom_format) ? $custom_format : 2]);
+          $time = $this->dateFormatter
+            ->formatTimeDiffSince($value, [
+              'strict' => FALSE,
+              'granularity' => is_numeric($custom_format) ? $custom_format : 2,
+            ]);
           return ($time_diff < 0) ? $this->t('%time hence', ['%time' => $time]) : $this->t('%time ago', ['%time' => $time]);
 
         case 'custom':

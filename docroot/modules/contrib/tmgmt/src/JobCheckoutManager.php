@@ -4,7 +4,7 @@ namespace Drupal\tmgmt;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandler;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -28,7 +28,7 @@ class JobCheckoutManager {
   protected $requestStack;
 
   /**
-   * @var \Drupal\Core\Extension\ModuleHandler
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;
 
@@ -47,7 +47,7 @@ class JobCheckoutManager {
    */
   protected $entityTypeManager;
 
-  public function __construct(RequestStack $request_stack, JobQueue $job_queue, ModuleHandler $module_handler, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(RequestStack $request_stack, JobQueue $job_queue, ModuleHandlerInterface $module_handler, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
     $this->requestStack = $request_stack;
     $this->jobQueue = $job_queue;
     $this->moduleHandler = $module_handler;
@@ -232,7 +232,7 @@ class JobCheckoutManager {
    * @param int|null $template_job_id
    *   (optional) A template job to use for the translator and settings.
    */
-  static public function batchSubmit($job_id, $template_job_id = NULL, &$context) {
+  static public function batchSubmit($job_id, $template_job_id = NULL) {
     \Drupal::service('tmgmt.job_checkout_manager')->doBatchSubmit($job_id, $template_job_id);
   }
 

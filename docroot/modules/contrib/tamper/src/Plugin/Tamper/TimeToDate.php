@@ -26,7 +26,7 @@ class TimeToDate extends TamperBase {
    */
   public function defaultConfiguration() {
     $config = parent::defaultConfiguration();
-    $config[self::SETTING_DATE_FORMAT] = "\I\\t'\s g \o'\c\l\o\c\k \J\i\m\.";
+    $config[self::SETTING_DATE_FORMAT] = '';
     return $config;
   }
 

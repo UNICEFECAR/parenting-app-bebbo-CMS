@@ -16,7 +16,7 @@ class Crc32 {
    *
    * @var int
    */
-  private $crc1;
+  private int $crc1;
 
   /**
    * Start a new CRC32 hash.

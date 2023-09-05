@@ -24,7 +24,7 @@ class GroupTypeTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->groupType = $this->entityTypeManager
       ->getStorage('group_type')
@@ -38,7 +38,7 @@ class GroupTypeTest extends GroupKernelTestBase {
    */
   public function testMaximumIdLength() {
     $this->expectException(ConfigEntityIdLengthException::class);
-    $this->expectExceptionMessageRegExp('/Attempt to create a group type with an ID longer than \d+ characters: \w+\./');
+    $this->expectExceptionMessageMatches('/Attempt to create a group type with an ID longer than \d+ characters: \w+\./');
     $this->entityTypeManager
       ->getStorage('group_type')
       ->create([

@@ -18,7 +18,7 @@ class ChainedTamperTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['tamper'];
+  protected static $modules = ['tamper'];
 
   /**
    * Tests the outcome of chaining multiple tamper plugins together.
@@ -95,7 +95,7 @@ class ChainedTamperTest extends KernelTestBase {
         ],
       ],
       [
-        'expected' => NULL,
+        'expected' => 'a|b|c',
         'input' => 'a,b,c',
         'tampers' => [
           [
@@ -114,6 +114,42 @@ class ChainedTamperTest extends KernelTestBase {
             'plugin' => 'implode',
             'config' => [
               'glue' => ';',
+            ],
+          ],
+        ],
+      ],
+      [
+        'expected' => NULL,
+        'input' => 'a,b,c',
+        'tampers' => [
+          [
+            'plugin' => 'explode',
+            'config' => [
+              'separator' => ',',
+            ],
+          ],
+          [
+            'plugin' => 'implode',
+            'config' => [
+              'glue' => '|',
+            ],
+          ],
+          [
+            'plugin' => 'explode',
+            'config' => [
+              'separator' => '|',
+            ],
+          ],
+          [
+            'plugin' => 'explode',
+            'config' => [
+              'separator' => ',',
+            ],
+          ],
+          [
+            'plugin' => 'explode',
+            'config' => [
+              'separator' => '|',
             ],
             'expected_exception' => TamperException::class,
           ],

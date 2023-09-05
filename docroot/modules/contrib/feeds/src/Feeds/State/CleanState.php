@@ -2,13 +2,11 @@
 
 namespace Drupal\feeds\Feeds\State;
 
-use ArrayIterator;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\feeds\State;
-use RuntimeException;
 
 /**
  * State for the clean stage.
@@ -21,6 +19,13 @@ class CleanState extends State implements CleanStateInterface {
    * The database table name.
    */
   const TABLE_NAME = 'feeds_clean_list';
+
+  /**
+   * The number of Feed items cleaned.
+   *
+   * @var int
+   */
+  public $cleaned = 0;
 
   /**
    * The ID of the feed this state belongs to.
@@ -134,7 +139,7 @@ class CleanState extends State implements CleanStateInterface {
       ->execute();
 
     $this->total = $this->count();
-    $this->progress($this->total, $this->updated);
+    $this->progress($this->total, $this->cleaned);
   }
 
   /**
@@ -157,7 +162,7 @@ class CleanState extends State implements CleanStateInterface {
     if (!$storage) {
       $entity_type_id = $this->getEntityTypeId();
       if (!$entity_type_id) {
-        throw new RuntimeException('The clean state does not have an entity type assigned.');
+        throw new \RuntimeException('The clean state does not have an entity type assigned.');
       }
       $storage = \Drupal::entityTypeManager()->getStorage($this->getEntityTypeId());
     }
@@ -189,14 +194,14 @@ class CleanState extends State implements CleanStateInterface {
   /**
    * {@inheritdoc}
    */
-  public function getIterator() {
-    return new ArrayIterator($this->getList());
+  public function getIterator(): \Traversable {
+    return new \ArrayIterator($this->getList());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function count() {
+  public function count(): int {
     return (int) $this->connection->query('SELECT COUNT(feed_id) FROM {' . static::TABLE_NAME . '} WHERE feed_id = :feed_id', [':feed_id' => $this->feedId])
       ->fetchField();
   }

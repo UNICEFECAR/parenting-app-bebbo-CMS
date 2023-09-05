@@ -55,7 +55,7 @@ class DiagnosticsService extends ServiceBase implements DiagnosticsServiceInterf
    *
    * @ingroup countable
    */
-  public function count() {
+  public function count(): int {
     $this->initializePluginInstances();
     return count($this->instances);
   }
@@ -240,7 +240,7 @@ class DiagnosticsService extends ServiceBase implements DiagnosticsServiceInterf
    *
    * @ingroup iterator
    */
-  public function next() {
+  public function next(): void {
     // The following two lines are copied from parent::next(), since we cannot
     // call protected IteratingServiceBaseTrait::initializePluginInstances().
     $this->initializePluginInstances();

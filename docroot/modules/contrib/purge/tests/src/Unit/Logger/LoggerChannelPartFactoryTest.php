@@ -22,7 +22,7 @@ class LoggerChannelPartFactoryTest extends UnitTestCase {
   /**
    * The mocked logger channel.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Psr\Log\LoggerInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Psr\Log\LoggerInterface
    */
   protected $loggerChannelPurge;
 

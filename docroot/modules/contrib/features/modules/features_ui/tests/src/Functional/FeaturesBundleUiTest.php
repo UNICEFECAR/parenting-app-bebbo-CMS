@@ -91,14 +91,14 @@ class FeaturesBundleUiTest extends BrowserTestBase {
 
     // Check initial form.
     $this->drupalGet('admin/config/development/features/bundle/_exclude/default');
-    $this->assertFieldChecked('edit-types-config-features-bundle', 'features_bundle is checked');
-    $this->assertNoFieldChecked('edit-types-config-system-simple', 'system_simple is not checked');
-    $this->assertNoFieldChecked('edit-types-config-user-role', 'user_role is not checked');
-    $this->assertFieldChecked('edit-curated', 'curated is checked');
-    $this->assertFieldChecked('edit-module-namespace', 'namespace is checked');
+    $this->assertSession()->checkboxChecked('edit-types-config-features-bundle');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-system-simple');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-user-role');
+    $this->assertSession()->checkboxChecked('edit-curated');
+    $this->assertSession()->checkboxChecked('edit-module-namespace');
 
     // Configure the form.
-    $this->drupalPostForm(NULL, [
+    $this->submitForm([
       'types[config][system_simple]' => TRUE,
       'types[config][user_role]' => FALSE,
       'curated' => TRUE,
@@ -107,11 +107,11 @@ class FeaturesBundleUiTest extends BrowserTestBase {
 
     // Check form results.
     $this->drupalGet('admin/config/development/features/bundle/_exclude/default');
-    $this->assertFieldChecked('edit-types-config-features-bundle', 'Saved, features_bundle is checked');
-    $this->assertFieldChecked('edit-types-config-system-simple', 'Saved, system_simple is checked');
-    $this->assertNoFieldChecked('edit-types-config-user-role', 'Saved, user_role is not checked');
-    $this->assertFieldChecked('edit-curated', 'Saved, curated is checked');
-    $this->assertNoFieldChecked('edit-module-namespace', 'Saved, namespace is not checked');
+    $this->assertSession()->checkboxChecked('edit-types-config-features-bundle');
+    $this->assertSession()->checkboxChecked('edit-types-config-system-simple');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-user-role');
+    $this->assertSession()->checkboxChecked('edit-curated');
+    $this->assertSession()->checkboxNotChecked('edit-module-namespace');
 
     // Check final values.
     $settings = $this->defaultBundle()->getAssignmentSettings('exclude');
@@ -143,19 +143,19 @@ class FeaturesBundleUiTest extends BrowserTestBase {
 
     // Can we visit the config page with no settings?
     $this->drupalGet('admin/config/development/features/bundle/_exclude/default');
-    $this->assertNoFieldChecked('edit-types-config-features-bundle', 'features_bundle is not checked');
-    $this->assertNoFieldChecked('edit-types-config-system-simple', 'system_simple is not checked');
-    $this->assertNoFieldChecked('edit-types-config-user-role', 'user_role is not checked');
-    $this->assertNoFieldChecked('edit-curated', 'curated is not checked');
-    $this->assertNoFieldChecked('edit-module-namespace', 'namespace is not checked');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-features-bundle');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-system-simple');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-user-role');
+    $this->assertSession()->checkboxNotChecked('edit-curated');
+    $this->assertSession()->checkboxNotChecked('edit-module-namespace');
 
     // Can we enable the method?
     $this->drupalGet('admin/config/development/features/bundle');
-    $this->assertNoFieldChecked('edit-enabled-exclude', 'Exclude disabled');
-    $this->drupalPostForm(NULL, [
+    $this->assertSession()->checkboxNotChecked('edit-enabled-exclude');
+    $this->submitForm([
       'enabled[exclude]' => TRUE,
     ], 'Save settings');
-    $this->assertFieldChecked('edit-enabled-exclude', 'Exclude enabled');
+    $this->assertSession()->checkboxChecked('edit-enabled-exclude');
 
     // Check new settings.
     $settings = $this->defaultBundle()->getAssignmentSettings('exclude');
@@ -168,9 +168,10 @@ class FeaturesBundleUiTest extends BrowserTestBase {
 
     // Can we run assignment with no settings?
     $this->drupalGet('admin/config/development/features');
+    $this->drupalGet('admin/config/development/features/bundle/_exclude/default');
 
     // Can we configure the method?
-    $this->drupalPostForm('admin/config/development/features/bundle/_exclude/default', [
+    $this->submitForm([
       'types[config][system_simple]' => TRUE,
       'types[config][user_role]' => FALSE,
       'curated' => TRUE,
@@ -179,11 +180,11 @@ class FeaturesBundleUiTest extends BrowserTestBase {
 
     // Check form results.
     $this->drupalGet('admin/config/development/features/bundle/_exclude/default');
-    $this->assertNoFieldChecked('edit-types-config-features-bundle', 'Saved, features_bundle is not checked');
-    $this->assertFieldChecked('edit-types-config-system-simple', 'Saved, system_simple is checked');
-    $this->assertNoFieldChecked('edit-types-config-user-role', 'Saved, user_role is not checked');
-    $this->assertFieldChecked('edit-curated', 'Saved, curated is checked');
-    $this->assertNoFieldChecked('edit-module-namespace', 'Saved, namespace is not checked');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-features-bundle');
+    $this->assertSession()->checkboxChecked('edit-types-config-system-simple');
+    $this->assertSession()->checkboxNotChecked('edit-types-config-user-role');
+    $this->assertSession()->checkboxChecked('edit-curated');
+    $this->assertSession()->checkboxNotChecked('edit-module-namespace');
 
     // Check final values.
     $settings = $this->defaultBundle()->getAssignmentSettings('exclude');

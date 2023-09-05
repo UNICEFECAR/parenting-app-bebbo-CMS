@@ -18,7 +18,7 @@ class FeedAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $feed, $operation, AccountInterface $account) {
-    $has_perm = $account->hasPermission('administer feeds') || $account->hasPermission("$operation {$feed->bundle()} feeds");
+    $has_perm = $account->hasPermission('administer feeds') || $account->hasPermission("$operation {$feed->bundle()} feeds") || ($account->hasPermission("$operation own {$feed->bundle()} feeds") && $this->isFeedOwner($feed, $account));
 
     switch ($operation) {
       case 'view':
@@ -48,6 +48,17 @@ class FeedAccessControlHandler extends EntityAccessControlHandler {
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     $has_perm = $account->hasPermission('administer feeds') || $account->hasPermission("create $entity_bundle feeds");
     return AccessResult::allowedIf($has_perm);
+  }
+
+  /**
+   * Performs check if current user is feed owner.
+   *
+   * @return bool
+   *   True if the current user is the feed owner. False otherwise.
+   */
+  public function isFeedOwner(EntityInterface $feed, AccountInterface $account) {
+    $user = $feed->get('uid')->entity;
+    return $user->id() === $account->id();
   }
 
 }

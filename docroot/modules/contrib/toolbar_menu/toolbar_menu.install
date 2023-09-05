@@ -2,8 +2,10 @@
 
 /**
  * @file
- * Contains installation and update hooks..
+ * Contains installation and update hooks...
  */
+
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Transform all current toolbar_menu items to toolbar_menu_element entities.
@@ -21,7 +23,7 @@ function toolbar_menu_update_8001() {
   // Create 'toolbar_menu_element' entity type.
   $entity_manager->clearCachedDefinitions();
   $toolbar_menu_entity_type = $entity_manager->getDefinition('toolbar_menu_element');
-  if ($toolbar_menu_entity_type && $toolbar_menu_entity_type instanceof \Drupal\Core\Entity\EntityTypeInterface) {
+  if ($toolbar_menu_entity_type && $toolbar_menu_entity_type instanceof EntityTypeInterface) {
     \Drupal::entityDefinitionUpdateManager()->installEntityType($toolbar_menu_entity_type);
   }
 

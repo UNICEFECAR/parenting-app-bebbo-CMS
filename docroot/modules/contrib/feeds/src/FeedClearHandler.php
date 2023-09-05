@@ -28,7 +28,7 @@ class FeedClearHandler extends FeedHandlerBase {
       'error_message' => $this->t('An error occored while clearing %title.', ['%title' => $feed->label()]),
     ];
 
-    batch_set($batch);
+    $this->batchSet($batch);
   }
 
   /**

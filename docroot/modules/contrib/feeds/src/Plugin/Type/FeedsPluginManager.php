@@ -44,6 +44,7 @@ class FeedsPluginManager extends DefaultPluginManager {
       'parser' => 'Drupal\feeds\Annotation\FeedsParser',
       'processor' => 'Drupal\feeds\Annotation\FeedsProcessor',
       'source' => 'Drupal\feeds\Annotation\FeedsSource',
+      'custom_source' => 'Drupal\feeds\Annotation\FeedsCustomSource',
       'target' => 'Drupal\feeds\Annotation\FeedsTarget',
     ];
     $plugin_interfaces = [
@@ -51,11 +52,15 @@ class FeedsPluginManager extends DefaultPluginManager {
       'parser' => 'Drupal\feeds\Plugin\Type\Parser\ParserInterface',
       'processor' => 'Drupal\feeds\Plugin\Type\Processor\ProcessorInterface',
       'source' => 'Drupal\feeds\Plugin\Type\Source\SourceInterface',
+      'custom_source' => 'Drupal\feeds\Plugin\Type\CustomSource\CustomSourceInterface',
       'target' => 'Drupal\feeds\Plugin\Type\Target\TargetInterface',
     ];
 
     $this->pluginType = $type;
     $this->subdir = 'Feeds/' . ucfirst($type);
+    if ($type == 'custom_source') {
+      $this->subdir = 'Feeds/CustomSource';
+    }
     $this->discovery = new AnnotatedClassDiscovery($this->subdir, $namespaces, $type_annotations[$type]);
     $this->discovery = new OverridableDerivativeDiscoveryDecorator($this->discovery);
     $this->factory = new FeedsAnnotationFactory($this, $plugin_interfaces[$type]);

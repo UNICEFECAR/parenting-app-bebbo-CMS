@@ -2,13 +2,12 @@
 
 namespace Drupal\purge\Logger;
 
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 /**
  * Provides logging services for purge components.
  */
 trait PurgeLoggerAwareTrait {
-  use LoggerAwareTrait;
 
   /**
    * Channel logger.
@@ -25,6 +24,15 @@ trait PurgeLoggerAwareTrait {
       throw new \LogicException('Logger unavailable, call ::setLogger().');
     }
     return $this->logger;
+  }
+
+  /**
+   * Sets a logger.
+   *
+   * @param LoggerInterface $logger
+   */
+  public function setLogger(LoggerInterface $logger): void {
+    $this->logger = $logger;
   }
 
 }

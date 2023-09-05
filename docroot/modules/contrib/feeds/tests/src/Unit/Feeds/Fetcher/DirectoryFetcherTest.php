@@ -7,7 +7,6 @@ use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Feeds\Fetcher\DirectoryFetcher;
 use Drupal\feeds\State;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
-use RuntimeException;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\DirectoryFetcher
@@ -39,7 +38,7 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $feed_type = $this->createMock('Drupal\feeds\FeedTypeInterface');
@@ -92,7 +91,7 @@ class DirectoryFetcherTest extends FeedsUnitTestCase {
     $this->assertSame('vfs://feeds/test_file_2.txt', $this->fetcher->fetch($this->feed, $this->state)->getFilePath());
 
     chmod('vfs://feeds', 0333);
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $result = $this->fetcher->fetch($this->feed, $this->state);
   }
 

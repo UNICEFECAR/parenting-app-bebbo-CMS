@@ -1,0 +1,29 @@
+uuid: f49bfe7c-bc74-435f-8f27-391dc0c33567
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.story.field_json
+    - node.type.story
+  module:
+    - json_field
+    - user
+id: node.story.default
+targetEntityType: node
+bundle: story
+mode: default
+content:
+  field_json:
+    type: json
+    label: above
+    settings:
+      attach_library: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

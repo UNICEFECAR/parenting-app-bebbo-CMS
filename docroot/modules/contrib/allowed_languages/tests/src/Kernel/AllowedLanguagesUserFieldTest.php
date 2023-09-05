@@ -12,14 +12,14 @@ class AllowedLanguagesUserFieldTest extends AllowedLanguagesKernelTestBase {
   /**
    * Test that the field has been applied to the user entity.
    */
-  public function testAllowedLanguagesFieldExists() {
+  public function testAllowedLanguagesFieldExists(): void {
     $this->assertTrue($this->user->hasField('allowed_languages'));
   }
 
   /**
    * Test the allowed languages function to get a users languages.
    */
-  public function testAllowedLanguageGetAllowedLanguagesForUser() {
+  public function testAllowedLanguageGetAllowedLanguagesForUser(): void {
     $allowed_languages = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages($this->user);
 
     $this->assertEquals($allowed_languages, ['sv', 'en']);
@@ -28,7 +28,7 @@ class AllowedLanguagesUserFieldTest extends AllowedLanguagesKernelTestBase {
   /**
    * Test the function to get allowed language options.
    */
-  public function testAllowedLanguagesGetLanguageOptions() {
+  public function testAllowedLanguagesGetLanguageOptions(): void {
     $language_options = allowed_languages_get_language_options();
 
     $this->assertEquals($language_options, [

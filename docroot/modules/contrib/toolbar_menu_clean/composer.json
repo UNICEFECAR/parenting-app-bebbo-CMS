@@ -1,0 +1,22 @@
+{
+    "name": "drupal/toolbar_menu_clean",
+    "description": "This module used with Toolbar Menu module allow you can disable Administration and Shortcuts Toolbar menu.",
+    "type": "drupal-module",
+    "keywords": [
+        "Drupal",
+        "toolbar_menu_clean"
+    ],
+    "homepage": "https://www.drupal.org/project/toolbar_menu_clean",
+    "authors": [
+        {
+            "name": "Thao Huynh Khac (zipme_hkt)",
+            "homepage": "https://www.drupal.org/u/zipme_hkt",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://drupal.org/project/issues/toolbar_menu_clean",
+        "source": "https://git.drupalcode.org/project/toolbar_menu_clean"
+    }
+}
+

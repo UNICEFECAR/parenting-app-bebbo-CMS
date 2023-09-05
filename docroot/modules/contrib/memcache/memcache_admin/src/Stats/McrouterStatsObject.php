@@ -26,7 +26,7 @@ class McrouterStatsObject extends MemcacheStatsObject implements MemcacheStatsIn
    * @inheritDoc
    */
   public function getExtension(): string {
-    return isset($this->stats['version']) ?? self::NA;
+    return $this->stats['version'] ?? self::NA;
   }
 
   /**

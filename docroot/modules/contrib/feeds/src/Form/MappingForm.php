@@ -2,11 +2,16 @@
 
 namespace Drupal\feeds\Form;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Markup;
 use Drupal\feeds\Exception\MissingTargetException;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\MissingTargetDefinition;
@@ -23,7 +28,7 @@ class MappingForm extends FormBase {
   /**
    * The feed type.
    *
-   * @var \Drupal\feeds\FeedTypeInterface
+   * @var \Drupal\feeds\FeedTypeInterface|null
    */
   protected $feedType;
 
@@ -39,16 +44,40 @@ class MappingForm extends FormBase {
    *
    * @var array
    */
-  protected $mappings;
+  protected $mappings = [];
+
+  /**
+   * The mapping targets for this feed type.
+   *
+   * @var array
+   */
+  protected $targets = [];
+
+  /**
+   * A list of available mapping sources, used for a select form element.
+   *
+   * @var array
+   */
+  protected $sourceOptions = [];
+
+  /**
+   * The custom source plugin manager.
+   *
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   */
+  protected $customSourcePluginManager;
 
   /**
    * Constructs a new MappingForm object.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $feed_type_storage
    *   The feed type storage.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $custom_source_plugin_manager
+   *   The custom source plugin manager.
    */
-  public function __construct(ConfigEntityStorageInterface $feed_type_storage) {
+  public function __construct(ConfigEntityStorageInterface $feed_type_storage, PluginManagerInterface $custom_source_plugin_manager) {
     $this->feedTypeStorage = $feed_type_storage;
+    $this->customSourcePluginManager = $custom_source_plugin_manager;
   }
 
   /**
@@ -56,7 +85,8 @@ class MappingForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')->getStorage('feeds_feed_type')
+      $container->get('entity_type.manager')->getStorage('feeds_feed_type'),
+      $container->get('plugin.manager.feeds.custom_source')
     );
   }
 
@@ -74,22 +104,34 @@ class MappingForm extends FormBase {
     $feed_type = $this->feedType = $feeds_feed_type;
     $this->targets = $targets = $feed_type->getMappingTargets();
 
-    // Denormalize targets.
+    // Determine available mapping sources.
     $this->sourceOptions = [];
-    foreach ($feed_type->getMappingSources() as $key => $info) {
-      $this->sourceOptions[$key] = $info['label'];
+    foreach ($this->getMappingSourcesPerType() as $type => $sources) {
+      foreach ($sources as $key => $source) {
+        $this->sourceOptions[$type][$key] = $source['label'];
+        // Add machine name between parentheses to the option label in case it's
+        // not equal to the source label.
+        if (isset($source['machine_name']) && $source['label'] != $source['machine_name']) {
+          $this->sourceOptions[$type][$key] .= ' (' . $source['machine_name'] . ')';
+        }
+      }
     }
-    $this->sourceOptions = $this->sortOptions($this->sourceOptions);
-    $this->sourceOptions = [
-      '__new' => $this->t('New source...'),
-      '----' => '----',
-    ] + $this->sourceOptions;
+    // Sort sources on label within each group.
+    foreach ($this->sourceOptions as $type => $values) {
+      $this->sourceOptions[$type] = $this->sortOptions($values);
+    }
 
+    // Determine available mapping targets.
     $target_options = [];
     foreach ($targets as $key => $target) {
       $target_options[$key] = $target->getLabel() . ' (' . $key . ')';
     }
+    // Sort targets on label.
     $target_options = $this->sortOptions($target_options);
+
+    // Check if two mappings are exactly the same. If so, display a warning
+    // about that to the user.
+    $this->checkDuplicateMappings($feed_type, $target_options);
 
     if ($form_state->getValues()) {
       $this->processFormState($form, $form_state);
@@ -113,19 +155,7 @@ class MappingForm extends FormBase {
     $form['#suffix'] = '</div>';
     $form['#attached']['library'][] = 'feeds/feeds';
 
-    $table = [
-      '#type' => 'table',
-      '#header' => [
-        $this->t('Source'),
-        $this->t('Target'),
-        $this->t('Summary'),
-        $this->t('Configure'),
-        $this->t('Unique'),
-        $this->t('Remove'),
-      ],
-      '#sticky' => TRUE,
-    ];
-
+    $table = [];
     foreach ($feed_type->getMappings() as $delta => $mapping) {
       $table[$delta] = $this->buildRow($form, $form_state, $mapping, $delta);
     }
@@ -172,7 +202,147 @@ class MappingForm extends FormBase {
       }
     }
 
+    // In the after build callback, put the mapping form in a table.
+    $form['mappings']['#after_build'][] = [$this, 'afterBuild'];
+
     return $form;
+  }
+
+  /**
+   * Puts mapping form in a table, with one row per property.
+   */
+  public function afterBuild($element, FormStateInterface $form_state) {
+    $element['#type'] = 'table';
+    $header = [
+      'source' => $this->t('Source'),
+      'target' => $this->t('Target'),
+      'summary' => $this->t('Summary'),
+      'configure' => $this->t('Configure'),
+      'unique' => $this->t('Unique'),
+      'remove' => $this->t('Remove'),
+    ];
+    $element['#header'] = [];
+    foreach ($header as $key => $label) {
+      $element['#header'][$key] = [
+        'class' => $key,
+        'data' => $label,
+      ];
+    }
+    $element['#sticky'] = TRUE;
+
+    $rows = [];
+    // Loop through all mapping rows.
+    foreach (Element::children($element) as $index) {
+      // Check if the form element is a mapping row. One form element that is
+      // not a mapping row is the row for adding a new mapping target.
+      if (!isset($element[$index]['map'])) {
+        // Not a mapping row, but set to turn off striping to prevent that this
+        // row gets a css class called 'odd' or 'even'.
+        $element[$index]['#attributes']['no_striping'] = TRUE;
+        continue;
+      }
+
+      $properties = Element::children($element[$index]['map']);
+      // Count how many properties there are for the current mapping, this is
+      // used to span some columns across multiple rows.
+      $property_count = count($properties);
+      // Keep track of on which number of property we are. Some columns only
+      // need a value for the first property row.
+      $property_delta = 0;
+
+      // Loop through all properties of the current mapping row.
+      foreach ($properties as $property) {
+        $row = [
+          '#attributes' => [
+            'class' => ['mapping-property'],
+            'data-drupal-selector' => 'edit-mappings-' . $index . '-' . $property,
+            // Prevent css classes from 'odd' or 'even' being added as that
+            // could make it harder to see which table rows belong to the same
+            // mapping row.
+            'no_striping' => TRUE,
+          ],
+          '#weight' => $element[$index]['#weight'],
+          '#parents' => $element['#parents'] + [
+            $index . '.' . $property,
+          ],
+          '#array_parents' => $element['#array_parents'] + [
+            $index . '.' . $property,
+          ],
+        ];
+        // Add a css class for the mapping's first property.
+        if ($property_delta === 0) {
+          $row['#attributes']['class'][] = 'mapping-property-first';
+        }
+        // Add a css class for the mapping's last property.
+        if ($property_delta == $property_count - 1) {
+          $row['#attributes']['class'][] = 'mapping-property-last';
+        }
+
+        // Source column.
+        $row['source'] = $element[$index]['map'][$property];
+
+        // Target column.
+        $row['target'] = $element[$index]['targets'][$property];
+
+        // Summary and configure columns, these are only displayed once per
+        // mapping row.
+        if ($property_delta === 0) {
+          $row['summary'] = $element[$index]['settings'] + [
+            '#wrapper_attributes' => [
+              'rowspan' => $property_count,
+            ],
+          ];
+          $row['configure'] = $element[$index]['configure'] + [
+            '#wrapper_attributes' => [
+              'rowspan' => $property_count,
+            ],
+          ];
+        }
+
+        // Unique column. Not every property can be configured as unique.
+        if (isset($element[$index]['unique'][$property])) {
+          $row['unique'] = $element[$index]['unique'][$property];
+        }
+        else {
+          $row['unique'] = [
+            '#markup' => '',
+            '#parents' => $element['#parents'] + [
+              $index . '.' . $property,
+              'unique',
+            ],
+            '#array_parents' => $element['#array_parents'] + [
+              $index . '.' . $property,
+              'unique',
+            ],
+          ];
+        }
+
+        // Remove column. This is only displayed once per mapping row.
+        if ($property_delta === 0) {
+          $row['remove'] = $element[$index]['remove'] + [
+            '#wrapper_attributes' => [
+              'rowspan' => $property_count,
+            ],
+          ];
+        }
+
+        $rows[$index . '.' . $property] = $row;
+        $property_delta++;
+      }
+
+      // Remove the old built mapping row.
+      unset($element[$index]);
+    }
+
+    $element = array_merge($element, $rows);
+
+    // Set weight of "add" row.
+    $element['add']['#weight'] = 100;
+
+    // And sort again.
+    uasort($element, [SortArray::class, 'sortByWeightProperty']);
+
+    return $element;
   }
 
   /**
@@ -222,6 +392,7 @@ class MappingForm extends FormBase {
       $target_definition = MissingTargetDefinition::create();
     }
 
+    // If a config wheel is clicked, check which one was clicked.
     $ajax_delta = -1;
     $triggering_element = (array) $form_state->getTriggeringElement() + ['#op' => ''];
     if ($triggering_element['#op'] === 'configure') {
@@ -230,11 +401,6 @@ class MappingForm extends FormBase {
 
     $row = ['#attributes' => ['class' => ['draggable', 'tabledrag-leaf']]];
     $row['map'] = ['#type' => 'container'];
-    $row['targets'] = [
-      '#theme' => 'item_list',
-      '#items' => [],
-      '#attributes' => ['class' => ['target']],
-    ];
 
     if ($target_definition instanceof MissingTargetDefinition) {
       $row['#attributes']['class'][] = 'missing-target';
@@ -246,6 +412,8 @@ class MappingForm extends FormBase {
         unset($mapping['map'][$column]);
         continue;
       }
+
+      // Source selection.
       $row['map'][$column] = [
         'select' => [
           '#type' => 'select',
@@ -254,38 +422,11 @@ class MappingForm extends FormBase {
           '#empty_option' => $this->t('- Select a source -'),
           '#attributes' => ['class' => ['feeds-table-select-list']],
         ],
-        '__new' => [
-          '#type' => 'container',
-          '#states' => [
-            'visible' => [
-              ':input[name="mappings[' . $delta . '][map][' . $column . '][select]"]' => ['value' => '__new'],
-            ],
-          ],
-          'value' => [
-            '#type' => 'textfield',
-            '#states' => [
-              'visible' => [
-                ':input[name="mappings[' . $delta . '][map][' . $column . '][select]"]' => ['value' => '__new'],
-              ],
-            ],
-          ],
-          'machine_name' => [
-            '#type' => 'machine_name',
-            '#machine_name' => [
-              'exists' => [$this, 'customSourceExists'],
-              'source' => ['mappings', $delta, 'map', $column, '__new', 'value'],
-              'standalone' => TRUE,
-              'label' => '',
-            ],
-            '#default_value' => '',
-            '#required' => FALSE,
-            '#disabled' => '',
-          ],
-        ],
       ];
+      $this->buildCustomSourceForms($row['map'][$column], $form_state, $delta, $column);
 
+      // Target label.
       $label = Html::escape($target_definition->getLabel() . ' (' . $mapping['target'] . ')');
-
       if (count($mapping['map']) > 1) {
         $desc = $target_definition->getPropertyLabel($column);
       }
@@ -295,7 +436,7 @@ class MappingForm extends FormBase {
       if ($desc) {
         $label .= ': ' . $desc;
       }
-      $row['targets']['#items'][] = $label;
+      $row['targets'][$column] = ['#markup' => $label];
     }
 
     $default_button = [
@@ -312,6 +453,7 @@ class MappingForm extends FormBase {
     $row['configure']['#markup'] = '';
     if ($plugin && $this->pluginHasSettingsForm($plugin, $form_state)) {
       if ($delta == $ajax_delta) {
+        // The settings form is open.
         $row['settings'] = $plugin->buildConfigurationForm([], $form_state);
         $row['settings']['actions'] = [
           '#type' => 'actions',
@@ -333,6 +475,7 @@ class MappingForm extends FormBase {
         $row['#attributes']['class'][] = 'feeds-mapping-settings-editing';
       }
       else {
+        // The settings form is closed.
         $row['settings'] = [
           '#parents' => ['config_summary', $delta],
         ] + $this->buildSummary($plugin);
@@ -349,7 +492,7 @@ class MappingForm extends FormBase {
       if (!empty($summary)) {
         $row['settings'] = [
           '#parents' => ['config_summary', $delta],
-        ] + $this->buildSummary($plugin);
+        ] + $summary;
       }
     }
 
@@ -384,6 +527,69 @@ class MappingForm extends FormBase {
     }
 
     return $row;
+  }
+
+  /**
+   * Builds the form for entering a new custom source.
+   *
+   * @param array $element
+   *   The element to which the subform is added.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param int $delta
+   *   The row on the mapping form.
+   * @param string $column
+   *   The mapping source property.
+   */
+  protected function buildCustomSourceForms(array &$element, FormStateInterface $form_state, $delta, $column) {
+    $supported_custom_source_plugins = $this->feedType->getParser()->getSupportedCustomSourcePlugins();
+    $supported_custom_source_plugins[] = 'blank';
+    foreach ($supported_custom_source_plugins as $custom_source_plugin_id) {
+      $element['custom__' . $custom_source_plugin_id] = [
+        '#type' => 'container',
+        '#delta' => $delta,
+        '#column' => $column,
+        '#machine_name_source' => 'value',
+      ];
+
+      $plugin_state = $this->createSubFormState($custom_source_plugin_id . '_' . $delta . '_' . $column . '_configuration', $form_state);
+      $plugin = $this->customSourcePluginManager->createInstance($custom_source_plugin_id, [
+        'feed_type' => $this->feedType,
+      ]);
+      $element['custom__' . $custom_source_plugin_id] = $plugin->buildConfigurationForm($element['custom__' . $custom_source_plugin_id], $plugin_state);
+
+      foreach (Element::children($element['custom__' . $custom_source_plugin_id]) as $field) {
+        $element['custom__' . $custom_source_plugin_id][$field]['#states']['visible'][':input[name="mappings[' . $delta . '][map][' . $column . '][select]"]'] = ['value' => 'custom__' . $custom_source_plugin_id];
+      }
+
+      // Add machine name.
+      $element['custom__' . $custom_source_plugin_id]['machine_name'] = [
+        '#type' => 'machine_name',
+        '#machine_name' => [
+          'exists' => [$this, 'customSourceExists'],
+          'source' => [
+            'mappings',
+            $delta,
+            'map',
+            $column,
+            'custom__' . $custom_source_plugin_id,
+            $element['custom__' . $custom_source_plugin_id]['#machine_name_source'],
+          ],
+          'standalone' => TRUE,
+          'label' => '',
+        ],
+        '#default_value' => '',
+        '#required' => FALSE,
+        '#disabled' => '',
+        '#weight' => -1,
+      ];
+    }
+
+    // Add the appropriate new custom source options to the select source
+    // dropdown.
+    $options = $element['select']['#options'] ?? [];
+    $new = (string) $this->t('New...');
+    $element['select']['#options'] = [$new => $this->getCustomSourceOptions()] + $options;
   }
 
   /**
@@ -461,6 +667,7 @@ class MappingForm extends FormBase {
         '#header' => [
           $this->t('Name'),
           $this->t('Machine name'),
+          $this->t('Type'),
           $this->t('Description'),
         ],
         '#rows' => [],
@@ -477,14 +684,16 @@ class MappingForm extends FormBase {
       ],
     ];
 
-    foreach ($this->feedType->getMappingSources() as $key => $info) {
-      $element['sources']['#rows'][$key] = [
-        'label' => $info['label'],
-        'name' => $key,
-        'description' => isset($info['description']) ? $info['description'] : NULL,
-      ];
+    foreach ($this->getMappingSourcesPerType() as $type => $sources) {
+      foreach ($sources as $key => $source) {
+        $element['sources']['#rows'][$key] = [
+          'label' => $source['label'],
+          'name' => $key,
+          'type' => $source['type'],
+          'description' => $source['description'] ?? NULL,
+        ];
+      }
     }
-    asort($element['sources']['#rows']);
 
     /** @var \Drupal\feeds\TargetDefinitionInterface $definition */
     foreach ($this->targets as $key => $definition) {
@@ -535,9 +744,10 @@ class MappingForm extends FormBase {
         }
 
         // Check if for this mapping row a new source is selected.
-        if ($value['select'] == '__new') {
+        $select = $value['select'];
+        if (strpos($select, 'custom__') === 0) {
           // Compare the new source's name with the name to check.
-          $map_name = $mappings[$delta]['map'][$column] = $value['__new']['machine_name'];
+          $map_name = $mappings[$delta]['map'][$column] = $value[$select]['machine_name'];
           if ($name == $map_name) {
             // Name is already used by an other mapper.
             return TRUE;
@@ -551,6 +761,30 @@ class MappingForm extends FormBase {
   }
 
   /**
+   * Returns a list of custom source options, used by the mapping form.
+   *
+   * @return array
+   *   A list of custom source options using id => label.
+   */
+  protected function getCustomSourceOptions(): array {
+    $custom_sources = [];
+    $supported_custom_source_plugins = $this->feedType->getParser()->getSupportedCustomSourcePlugins();
+    // The blank source plugin is available for all parsers.
+    $supported_custom_source_plugins[] = 'blank';
+
+    foreach ($supported_custom_source_plugins as $custom_source_plugin_id) {
+      $custom_source_plugin = $this->customSourcePluginManager->createInstance($custom_source_plugin_id, [
+        'feed_type' => $this->feedType,
+      ]);
+      $custom_sources['custom__' . $custom_source_plugin_id] = $this->t('New @type source...', [
+        '@type' => $custom_source_plugin->getLabel(),
+      ]);
+    }
+
+    return $custom_sources;
+  }
+
+  /**
    * Processes the form state, populating the mappings on the feed type.
    *
    * @param array $form
@@ -559,6 +793,8 @@ class MappingForm extends FormBase {
    *   The current state of the complete form.
    */
   protected function processFormState(array $form, FormStateInterface $form_state) {
+    $custom_source_prefix_length = strlen('custom__');
+
     // Process any plugin configuration.
     $triggering_element = $form_state->getTriggeringElement() + ['#op' => ''];
     if ($triggering_element['#op'] === 'update') {
@@ -568,15 +804,21 @@ class MappingForm extends FormBase {
     $mappings = $this->feedType->getMappings();
     foreach (array_filter((array) $form_state->getValue('mappings', [])) as $delta => $mapping) {
       foreach ($mapping['map'] as $column => $value) {
-        if ($value['select'] == '__new') {
+        $selected_source = $value['select'];
+        if (strpos($selected_source, 'custom__') === 0) {
           // Add a new source.
-          $this->feedType->addCustomSource($value['__new']['machine_name'], [
-            'label' => $value['__new']['value'],
-          ] + $value['__new']);
-          $mappings[$delta]['map'][$column] = $value['__new']['machine_name'];
+          $source_name = $value[$selected_source]['machine_name'];
+          $source_values = $value[$selected_source] + [
+            'type' => substr($selected_source, $custom_source_prefix_length),
+          ];
+          if (empty($source_values['label'])) {
+            $source_values['label'] = $value[$selected_source]['value'];
+          }
+          $this->feedType->addCustomSource($source_name, $source_values);
+          $mappings[$delta]['map'][$column] = $source_name;
         }
         else {
-          $mappings[$delta]['map'][$column] = $value['select'];
+          $mappings[$delta]['map'][$column] = $selected_source;
         }
       }
       if (isset($mapping['unique'])) {
@@ -618,6 +860,38 @@ class MappingForm extends FormBase {
       foreach ($this->feedType->getPlugins() as $plugin) {
         if ($plugin instanceof MappingPluginFormInterface) {
           $plugin->mappingFormValidate($form, $form_state);
+        }
+      }
+    }
+
+    // Validate custom source forms.
+    $mappings = $form_state->getValue('mappings');
+    if (!empty($mappings)) {
+      foreach ($mappings as $delta => $mapping) {
+        foreach ($mapping['map'] as $column => $value) {
+          // Check if for this mapping row a new source is selected.
+          $select = $value['select'];
+          if (strpos($select, 'custom__') === 0) {
+            $custom_source_plugin_id = substr($select, strlen('custom__'));
+            $form_state_key = [
+              'mappings',
+              $delta,
+              'map',
+              $column,
+              $select,
+            ];
+            $plugin_state = $this->createSubFormState($form_state_key, $form_state);
+            $plugin = $this->customSourcePluginManager->createInstance($custom_source_plugin_id, [
+              'feed_type' => $this->feedType,
+            ]);
+            $element = $form['mappings'][$delta . '.' . $column]['source'][$select];
+            $plugin->validateConfigurationForm($element, $plugin_state);
+
+            // Move errors to form_state above.
+            foreach ($plugin_state->getErrors() as $name => $error) {
+              $form_state->setErrorByName($name, $error);
+            }
+          }
         }
       }
     }
@@ -684,6 +958,108 @@ class MappingForm extends FormBase {
    */
   public function mappingTitle(FeedTypeInterface $feeds_feed_type) {
     return $this->t('Mappings @label', ['@label' => $feeds_feed_type->label()]);
+  }
+
+  /**
+   * Creates a FormStateInterface object for a plugin.
+   *
+   * @param string|array $key
+   *   The form state key.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to copy values from.
+   *
+   * @return \Drupal\Core\Form\FormStateInterface
+   *   A new form state object.
+   *
+   * @see FormStateInterface::getValue()
+   */
+  protected function createSubFormState($key, FormStateInterface $form_state) {
+    // There might turn out to be other things that need to be copied and passed
+    // into plugins. This works for now.
+    return (new FormState())->setValues($form_state->getValue($key, []));
+  }
+
+  /**
+   * Returns available mapping sources, categorized per type.
+   *
+   * @return array
+   *   An array of mapping sources, grouped by type.
+   *   Each mapping source contains the following:
+   *   - label (string): the source's label.
+   *   - type (string): the source's type. This can refer to the custom source
+   *     type, in case the source is a custom source.
+   *   - description (string, optional): if available, the source's description.
+   *   - machine_name (string, optional): for custom sources, a machine name is
+   *     defined.
+   *   Each source can have more properties, this can differ per type.
+   */
+  protected function getMappingSourcesPerType(): array {
+    $sources = [];
+    foreach ($this->feedType->getMappingSources() as $key => $source) {
+      if (!strlen($key)) {
+        continue;
+      }
+
+      // Determine the type of the source. This is used to group sources of the
+      // same type.
+      if (!isset($source['type'])) {
+        $type = (string) $this->t('Predefined');
+      }
+      else {
+        $type = $source['type'];
+
+        // If a source is custom, get the label of the custom source type and
+        // use that to group custom sources of the same type.
+        $definition = $this->customSourcePluginManager->getDefinition($type, FALSE);
+        if (isset($definition['title'])) {
+          $type = (string) $definition['title'];
+        }
+      }
+
+      $source['type'] = $type;
+      $sources[$type][$key] = $source;
+    }
+
+    return $sources;
+  }
+
+  /**
+   * Displays a warning when two duplicate configured mappings are found.
+   *
+   * Two mappings are considered a duplicate if they are configured the same. So
+   * the same source, the same target and the same target configuration.
+   *
+   * @param \Drupal\feeds\FeedTypeInterface $feed_type
+   *   The feed type.
+   * @param array $target_options
+   *   The mapping sources target list.
+   */
+  protected function checkDuplicateMappings(FeedTypeInterface $feed_type, array $target_options) {
+    $output = [];
+    $existing_mappings = $feed_type->getMappings();
+    $existing_mappings_json_strings = array_map(
+      static function ($item) {
+        return json_encode($item, JSON_THROW_ON_ERROR);
+      }, $existing_mappings
+    );
+    $count_existing_mappings = array_count_values($existing_mappings_json_strings);
+    $duplicates = [];
+    foreach ($count_existing_mappings as $key => $count) {
+      if ($count > 1) {
+        $duplicates[] = json_decode($key, TRUE, 512, JSON_THROW_ON_ERROR);
+      }
+    }
+
+    $duplicates = array_map(
+      function ($item) use ($target_options) {
+        return $this->t('The target %target pairs more than once with the same source and the same settings.', [
+          '%target' => $target_options[$item['target']],
+        ]);
+      }, $duplicates
+    );
+
+    $message = array_filter(array_merge($output, $duplicates), 'strlen');
+    !empty($message) ? $this->messenger()->addWarning(Markup::create(implode('<br />', $message))) : TRUE;
   }
 
 }

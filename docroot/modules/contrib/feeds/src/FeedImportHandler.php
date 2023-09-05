@@ -83,6 +83,72 @@ class FeedImportHandler extends FeedHandlerBase {
   }
 
   /**
+   * Checks if there are still tasks on the feeds queue.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed to look for in the queue.
+   *
+   * @return bool
+   *   True if there are still tasks on the queue. False otherwise.
+   */
+  public function hasQueueTasks(FeedInterface $feed): bool {
+    // First check if the queue table exists.
+    if (!$this->database->schema()->tableExists('queue')) {
+      // No queue table exists, so no tasks can exist on it.
+      return FALSE;
+    }
+
+    $result = $this->database->select('queue')
+      ->fields('queue', [])
+      ->condition('data', 'a:3:{i:0;i:' . $feed->id() . ';%', 'LIKE')
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+
+    return $result > 0;
+  }
+
+  /**
+   * Removes all queue tasks for the given feed.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed for which to remove queue tasks.
+   */
+  public function clearQueueTasks(FeedInterface $feed): void {
+    if (!$this->database->schema()->tableExists('queue')) {
+      return;
+    }
+    $this->database->delete('queue')
+      ->condition('data', 'a:3:{i:0;i:' . $feed->id() . ';%', 'LIKE')
+      ->execute();
+  }
+
+  /**
+   * Checks if there was recent import activity.
+   *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed to check.
+   * @param int $seconds
+   *   (optional) How far to look back. Defaults to 3600 seconds (one hour).
+   *
+   * @return bool
+   *   True if there was recently progress reported. False otherwise.
+   */
+  public function hasRecentProgress(FeedInterface $feed, int $seconds = 3600): bool {
+    // Get the last activity for this feed.
+    $last_activity = \Drupal::keyValue('feeds_feed.' . $feed->id())->get('last_activity');
+
+    if (!$last_activity) {
+      // No last activity known.
+      return FALSE;
+    }
+
+    // Check if the last activity was within the last specified number of
+    // seconds.
+    return $last_activity > ($this->getRequestTime() - $seconds);
+  }
+
+  /**
    * Returns the timestamp for the current request.
    *
    * @return int

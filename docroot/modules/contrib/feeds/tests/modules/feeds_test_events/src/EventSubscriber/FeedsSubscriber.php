@@ -6,6 +6,7 @@ use Drupal\feeds\Event\CleanEvent;
 use Drupal\feeds\Event\ClearEvent;
 use Drupal\feeds\Event\DeleteFeedsEvent;
 use Drupal\feeds\Event\EntityEvent;
+use Drupal\feeds\Event\EventBase;
 use Drupal\feeds\Event\ExpireEvent;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Event\FetchEvent;
@@ -56,63 +57,63 @@ class FeedsSubscriber implements EventSubscriberInterface {
    * Acts on multiple feeds getting deleted.
    */
   public function onDelete(DeleteFeedsEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on an import being initiated.
    */
   public function onInitImport(InitEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event before fetching.
    */
   public function preFetch(FetchEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on fetcher result.
    */
   public function postFetch(FetchEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event before parsing.
    */
   public function preParse(ParseEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on parser result.
    */
   public function postParse(ParseEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event before processing.
    */
   public function preProcess(ProcessEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on process result.
    */
   public function postProcess(ProcessEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on an entity before validation.
    */
   public function prevalidate(EntityEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
 
     $feed_type_id = $event->getFeed()->getType()->id();
     switch ($feed_type_id) {
@@ -128,7 +129,7 @@ class FeedsSubscriber implements EventSubscriberInterface {
    * Acts on presaving an entity.
    */
   public function preSave(EntityEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
 
     $feed_type_id = $event->getFeed()->getType()->id();
     switch ($feed_type_id) {
@@ -145,49 +146,72 @@ class FeedsSubscriber implements EventSubscriberInterface {
    * Acts on postsaving an entity.
    */
   public function postSave(EntityEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on the cleaning stage.
    */
   public function onClean(CleanEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event before deleting items begins.
    */
   public function onInitClear(InitEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event where deleting items has began.
    */
   public function onClear(ClearEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event before expiring items begins.
    */
   public function onInitExpire(InitEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on event where expiring items has began.
    */
   public function onExpire(ExpireEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
   }
 
   /**
    * Acts on the completion of an import.
    */
   public function onFinish(ImportFinishedEvent $event) {
-    $GLOBALS['feeds_test_events'][] = (__METHOD__ . ' called');
+    $this->saveState($event, __METHOD__);
+  }
+
+  /**
+   * Records which methods were called.
+   *
+   * @param \Drupal\feeds\Event\EventBase $event
+   *   The event being dispatched.
+   * @param string $method
+   *   The method that was called.
+   */
+  protected function saveState(EventBase $event, string $method) {
+    if ($event instanceof InitEvent) {
+      $method .= '(' . $event->getStage() . ')';
+    }
+
+    // Save to a global variable.
+    $GLOBALS['feeds_test_events'][] = ($method . ' called');
+
+    // And save to a state variable, useful when testing with multiple cron
+    // runs.
+    $feed_test_events = \Drupal::state()->get('feeds_test_events', []);
+    $feed_test_events[] = $method;
+    \Drupal::state()->set('feeds_test_events', $feed_test_events);
   }
 
 }

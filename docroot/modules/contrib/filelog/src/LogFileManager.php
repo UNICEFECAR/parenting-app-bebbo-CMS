@@ -3,6 +3,7 @@
 namespace Drupal\filelog;
 
 use Drupal\Component\FileSecurity\FileSecurity;
+use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\File\FileSystemInterface;
 
@@ -21,14 +22,14 @@ class LogFileManager implements LogFileManagerInterface {
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $config;
+  protected Config $config;
 
   /**
    * The file system service.
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fileSystem;
+  protected FileSystemInterface $fileSystem;
 
   /**
    * LogFileManager constructor.

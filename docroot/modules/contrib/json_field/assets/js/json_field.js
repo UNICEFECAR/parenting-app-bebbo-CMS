@@ -1,10 +1,9 @@
 /**
  * @file
- * Attaches behavior for the JSON FIELD module.
+ * Custom JS for the JSON Field formatter.
  */
 
-(function ($, Drupal, drupalSettings) {
-
+(function ($, Drupal, drupalSettings, once) {
   'use strict';
 
   var options = $.extend(drupalSettings.json_field,
@@ -24,10 +23,10 @@
   Drupal.behaviors.json_field = {
     attach: function (context) {
       // Initialize the Quick Edit app once per page load.
-      $(context).find('.field.field--type-json.field__item').once('json-field-init').each(function () {
-        $(this).JSONView($(this).find('pre code').text());
+      $(once('json-field-init', 'pre.json-field', context)).each(function () {
+        $(this).parent().JSONView($(this).parent().find('pre code').text());
       });
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);

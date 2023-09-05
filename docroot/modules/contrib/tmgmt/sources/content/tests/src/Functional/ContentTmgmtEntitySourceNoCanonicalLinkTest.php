@@ -19,7 +19,7 @@ class ContentTmgmtEntitySourceNoCanonicalLinkTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'content_translation_test',
     'language',
     'entity_test',
@@ -29,7 +29,7 @@ class ContentTmgmtEntitySourceNoCanonicalLinkTest extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->loginAsAdmin(array(
@@ -62,22 +62,22 @@ class ContentTmgmtEntitySourceNoCanonicalLinkTest extends TMGMTTestBase {
 
     // Go to the overview page and assert that the entity label appears.
     $this->drupalGet('admin/tmgmt/sources/content/entity_test_translatable_UI_skip');
-    $this->assertText($entity->label());
+    $this->assertSession()->pageTextContains($entity->label());
 
     // Add a translation to the entity and submit it to the provider.
     $edit = ['items[' . $entity->id() . ']' => TRUE];
-    $this->drupalPostForm(NULL, $edit, 'Request translation');
-    $this->drupalPostForm(NULL, NULL, 'Submit to provider');
-    $this->assertText('The translation of ' . $entity->label() . ' to German is finished and can now be reviewed.');
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains('The translation of ' . $entity->label() . ' to German is finished and can now be reviewed.');
 
     // Review and save the entity translation.
     $this->clickLink('reviewed');
     // Non-publishable and non-moderated entities do not have publish status
     // form element.
-    $this->assertNoText('Translation publish status');
-    $this->assertNoField('edit-moderation-state-new-state');
-    $this->drupalPostForm(NULL, NULL, 'Save as completed');
-    $this->assertTitle($entity->label() . ' (English to German, Finished) | Drupal');
-    $this->assertText('The translation for name english has been accepted as de(de-ch): name english.');
+    $this->assertSession()->pageTextNotContains('Translation publish status');
+    $this->assertSession()->fieldNotExists('edit-moderation-state-new-state');
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->titleEquals($entity->label() . ' (English to German, Finished) | Drupal');
+    $this->assertSession()->pageTextContains('The translation for name english has been accepted as de(de-ch): name english.');
   }
 }

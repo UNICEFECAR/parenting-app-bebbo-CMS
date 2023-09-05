@@ -1,5 +1,4 @@
 drupal.features_ui.admin:
-  version: VERSION
   css:
     theme:
       css/features_ui.admin.css: {}

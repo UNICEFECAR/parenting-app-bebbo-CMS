@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+echo PHP_EOL .
+    '===========================================================' . PHP_EOL . PHP_EOL .
+    '  ____  _              ____ ____ ____    _     _       _   ' . PHP_EOL .
+    ' |  _ \| |__  _ __    / ___/ ___/ ___|  | |   (_)_ __ | |_ ' . PHP_EOL .
+    ' | |_) | \'_ \| \'_ \  | |   \___ \___ \  | |   | | \'_ \| __|' . PHP_EOL .
+    ' |  __/| | | | |_) | | |___ ___) |__) | | |___| | | | | |_ ' . PHP_EOL .
+    ' |_|   |_| |_| .__/   \____|____/____/  |_____|_|_| |_|\__|' . PHP_EOL .
+    '             |_|                                           ' . PHP_EOL . PHP_EOL .
+    '===========================================================' . PHP_EOL . PHP_EOL;
+
+$sComposerAutoloaderWorkingDirectory = getcwd() . '/vendor/autoload.php';
+if (is_file($sComposerAutoloaderWorkingDirectory)) {
+    require_once $sComposerAutoloaderWorkingDirectory;
+}
+
+if (!class_exists('CssLint\CssLint', true)) {
+    // consider being in bin dir
+    $sComposerAutoloader = __DIR__ . '/../vendor/autoload.php';
+    if (!is_file($sComposerAutoloader)) {
+        // consider being in vendor/neilime/php-css-lint/scripts
+        $sComposerAutoloader = __DIR__ . '/../../../autoload.php';
+    }
+
+    require_once $sComposerAutoloader;
+}
+
+$oCssLintCli = new \CssLint\Cli();
+$iReturnCode = $oCssLintCli->run($_SERVER['argv']);
+
+exit($iReturnCode);

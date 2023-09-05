@@ -35,7 +35,7 @@ class ArrayFilterTest extends TamperPluginTestBase {
   public function testArrayFilterWithMultipleValues() {
     $original = ['foo', 0, '', 'bar', FALSE, 'baz', [], 'zip'];
     $expected = ['foo', 'bar', 'baz', 'zip'];
-    $this->assertArrayEquals($expected, $this->plugin->tamper($original));
+    $this->assertEquals($expected, $this->plugin->tamper($original));
   }
 
 }

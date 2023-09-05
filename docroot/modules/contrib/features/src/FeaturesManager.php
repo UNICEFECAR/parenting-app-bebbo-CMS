@@ -1,23 +1,23 @@
 <?php
 
 namespace Drupal\features;
-use Drupal\Core\Config\ImmutableConfig;
-use Drupal;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\config_update\ConfigRevertInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigManagerInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Config\InstallStorage;
 use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\Dependency;
 use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ExtensionDiscovery;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\config_update\ConfigRevertInterface;
 
 /**
  * The FeaturesManager provides helper functions for building packages.
@@ -149,8 +149,10 @@ class FeaturesManager implements FeaturesManagerInterface {
    *   The config revert interface.
    * @param \Drupal\Core\Extension\ModuleExtensionList $module_extension_list
    *   The module extension list service.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extension_path_resolver
+   *   Instance of the extension path resolver service.
    */
-  public function __construct($root, EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, StorageInterface $config_storage, ConfigManagerInterface $config_manager, ModuleHandlerInterface $module_handler, ConfigRevertInterface $config_reverter, ModuleExtensionList $module_extension_list) {
+  public function __construct($root, EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, StorageInterface $config_storage, ConfigManagerInterface $config_manager, ModuleHandlerInterface $module_handler, ConfigRevertInterface $config_reverter, ModuleExtensionList $module_extension_list, ExtensionPathResolver $extension_path_resolver) {
     $this->root = $root;
     $this->entityTypeManager = $entity_type_manager;
     $this->configStorage = $config_storage;
@@ -160,7 +162,7 @@ class FeaturesManager implements FeaturesManagerInterface {
     $this->configReverter = $config_reverter;
     $this->moduleExtensionList = $module_extension_list;
     $this->settings = $config_factory->getEditable('features.settings');
-    $this->extensionStorages = new FeaturesExtensionStoragesByDirectory($this->configStorage);
+    $this->extensionStorages = new FeaturesExtensionStoragesByDirectory($this->configStorage, $extension_path_resolver);
     $this->extensionStorages->addStorage(InstallStorage::CONFIG_INSTALL_DIRECTORY);
     $this->extensionStorages->addStorage(InstallStorage::CONFIG_OPTIONAL_DIRECTORY);
     $this->packages = [];
@@ -788,7 +790,7 @@ class FeaturesManager implements FeaturesManagerInterface {
     /** @var \Drupal\features\Package[] $packages */
     foreach ($packages as $package) {
       foreach ($package->getConfig() as $item_name) {
-        if (!empty($config_collection[$item_name]->getData()['dependencies']['config'])) {
+        if (!empty($config_collection[$item_name]) && !empty($config_collection[$item_name]->getData()['dependencies']['config'])) {
           foreach ($config_collection[$item_name]->getData()['dependencies']['config'] as $dependency_name) {
             if (isset($config_collection[$dependency_name]) &&
               // For configuration in the
@@ -1030,6 +1032,9 @@ class FeaturesManager implements FeaturesManagerInterface {
     if ($package->getConfig()) {
       // Add configuration files.
       foreach ($package->getConfig() as $name) {
+        if (empty($config_collection[$name])) {
+          continue;
+        }
         $config = $config_collection[$name];
 
         $package->appendFile([

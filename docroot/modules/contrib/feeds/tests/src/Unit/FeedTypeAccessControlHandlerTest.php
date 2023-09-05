@@ -18,7 +18,7 @@ class FeedTypeAccessControlHandlerTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $cache_contexts_manager = $this->prophesize(CacheContextsManager::class);
@@ -42,6 +42,9 @@ class FeedTypeAccessControlHandlerTest extends FeedsUnitTestCase {
    * @covers ::checkAccess
    */
   public function testCheckAccess() {
+    $this->entity->id()->willReturn('feed_type');
+    $this->account->hasPermission('view feed_type feeds')->willReturn(TRUE);
+
     $method = $this->getMethod(FeedTypeAccessControlHandler::class, 'checkAccess');
     $result = $method->invokeArgs($this->controller, [
       $this->entity->reveal(),
@@ -50,25 +53,16 @@ class FeedTypeAccessControlHandlerTest extends FeedsUnitTestCase {
     ]);
     $this->assertTrue($result->isAllowed());
 
+    $this->entity->getCacheContexts()->willReturn([]);
+    $this->entity->getCacheTags()->willReturn([]);
+    $this->entity->getCacheMaxAge()->willReturn(0);
+
     $result = $method->invokeArgs($this->controller, [
       $this->entity->reveal(),
       'delete',
       $this->account->reveal(),
     ]);
     $this->assertTrue($result->isAllowed());
-
-    $this->entity->getCacheContexts()->willReturn([]);
-    $this->entity->getCacheTags()->willReturn([]);
-    $this->entity->getCacheMaxAge()->willReturn(0);
-
-    $this->entity->isLocked()->willReturn(TRUE);
-    $this->entity->isNew()->willReturn(FALSE);
-    $result = $method->invokeArgs($this->controller, [
-      $this->entity->reveal(),
-      'delete',
-      $this->account->reveal(),
-    ]);
-    $this->assertFalse($result->isAllowed());
 
     $this->account->hasPermission('administer feeds')->willReturn(FALSE);
     $result = $method->invokeArgs($this->controller, [
@@ -78,6 +72,7 @@ class FeedTypeAccessControlHandlerTest extends FeedsUnitTestCase {
     ]);
     $this->assertFalse($result->isAllowed());
 
+    $this->account->hasPermission('view feed_type feeds')->willReturn(FALSE);
     $result = $method->invokeArgs($this->controller, [
       $this->entity->reveal(),
       'view',

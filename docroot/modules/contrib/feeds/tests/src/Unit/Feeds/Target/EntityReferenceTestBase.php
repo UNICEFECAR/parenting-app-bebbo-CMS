@@ -5,7 +5,7 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\feeds\EntityFinderInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FieldTargetDefinition;
 
@@ -29,30 +29,22 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
   protected $entityStorage;
 
   /**
-   * Entity repository used in the test.
+   * The Feeds entity finder service.
    *
-   * @var \Prophecy\Prophecy\ProphecyInterface|\Drupal\Core\Entity\EntityRepositoryInterface
+   * @var \Drupal\feeds\EntityFinderInterface
    */
-  protected $entityRepository;
-
-  /**
-   * The FeedsTarget plugin being tested.
-   *
-   * @var \Drupal\feeds\Plugin\Type\Target\FieldTargetBase
-   */
-  protected $targetPlugin;
+  protected $entityFinder;
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $referencable_entity_type_id = $this->getReferencableEntityTypeId();
 
     // Entity type manager.
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
-    $this->entityRepository = $this->prophesize(EntityRepositoryInterface::class);
 
     // Entity storage (needed for entity queries).
     $this->entityStorage = $this->prophesize($this->getEntityStorageClass());
@@ -60,6 +52,9 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
 
     // Made-up entity type that we are referencing to.
     $this->entityTypeManager->getDefinition($referencable_entity_type_id)->willReturn($this->createReferencableEntityType())->shouldBeCalled();
+
+    // Entity finder.
+    $this->entityFinder = $this->prophesize(EntityFinderInterface::class);
   }
 
   /**
@@ -136,12 +131,26 @@ abstract class EntityReferenceTestBase extends FieldTargetTestBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function getTargetProperties(): array {
+    $field_definition_mock = $this->getMockFieldDefinition();
+    $field_definition_mock->expects($this->once())
+      ->method('getSetting')
+      ->will($this->returnValue($this->getReferencableEntityTypeId()));
+
+    $method = $this->getMethod($this->getTargetClass(), 'prepareTarget')->getClosure();
+    return $method($field_definition_mock)
+      ->getProperties();
+  }
+
+  /**
    * Tests prepareValue() without passing values.
    *
    * @covers ::prepareValue
    */
   public function testPrepareValueEmptyFeed() {
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($this->instantiatePlugin(), 'prepareValue');
     $values = ['target_id' => ''];
     $this->expectException(EmptyFeedException::class);
     $method(0, $values);

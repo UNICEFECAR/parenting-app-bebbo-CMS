@@ -20,7 +20,7 @@ class GroupIdArgumentTest extends ViewsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group', 'options', 'entity', 'variationcache', 'field', 'text', 'group_test_config', 'group_test_views'];
+  protected static $modules = ['group', 'options', 'entity', 'variationcache', 'field', 'text', 'group_test_config', 'group_test_views'];
 
   /**
    * Views used by this test.
@@ -32,7 +32,7 @@ class GroupIdArgumentTest extends ViewsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
+  protected function setUp($import_test_views = TRUE): void {
     parent::setUp($import_test_views);
 
     $this->installEntitySchema('user');

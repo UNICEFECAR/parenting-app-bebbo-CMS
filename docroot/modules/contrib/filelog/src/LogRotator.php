@@ -4,6 +4,7 @@ namespace Drupal\filelog;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\State\StateInterface;
@@ -30,42 +31,42 @@ class LogRotator {
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $config;
+  protected Config $config;
 
   /**
    * The state service.
    *
    * @var \Drupal\Core\State\StateInterface
    */
-  protected $state;
+  protected StateInterface $state;
 
   /**
    * The token service.
    *
    * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * The datetime.time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected $time;
+  protected TimeInterface $time;
 
   /**
    * The filelog.file_manager service.
    *
    * @var \Drupal\filelog\LogFileManagerInterface
    */
-  protected $fileManager;
+  protected LogFileManagerInterface $fileManager;
 
   /**
    * The file_system service.
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fileSystem;
+  protected FileSystemInterface $fileSystem;
 
   /**
    * LogRotator constructor.
@@ -127,18 +128,13 @@ class LogRotator {
    */
   public function shouldRun(int $now): bool {
     $last = $this->state->get('filelog.rotation');
-    switch ($this->config->get('rotation.schedule')) {
-      case 'monthly':
-        return date('m', $last) !== date('m', $now);
+    return match ($this->config->get('rotation.schedule')) {
+      'monthly' => date('m', $last) !== date('m', $now),
+      'weekly'  => date('W', $last) !== date('W', $now),
+      'daily'   => date('d', $last) !== date('d', $now),
+      default   => FALSE,
+    };
 
-      case 'weekly':
-        return date('W', $last) !== date('W', $now);
-
-      case 'daily':
-        return date('d', $last) !== date('d', $now);
-    }
-
-    return FALSE;
   }
 
   /**

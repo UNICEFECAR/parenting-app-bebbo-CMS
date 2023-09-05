@@ -3,7 +3,7 @@
 namespace Drupal\feeds\Event;
 
 use Drupal\feeds\FeedInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Helper class for events that need a feed.

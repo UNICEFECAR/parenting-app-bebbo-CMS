@@ -14,6 +14,9 @@ class MetatagsFieldProcessor extends DefaultFieldProcessor {
    * {@inheritdoc}
    */
   public function extractTranslatableData(FieldItemListInterface $field) {
+    if (empty($field->value)) {
+      return [];
+    }
 
     $metatag_manager = \Drupal::service('metatag.manager');
     $meta_tag_values = unserialize($field->value);

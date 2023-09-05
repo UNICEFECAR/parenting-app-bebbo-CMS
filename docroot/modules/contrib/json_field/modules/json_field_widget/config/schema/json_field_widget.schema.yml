@@ -1,0 +1,23 @@
+field.widget.settings.json_editor:
+  type: field.widget.settings.string_textarea
+  label: 'Json editor'
+  mapping:
+    mode:
+      type: string
+    modes:
+      type: mapping
+      mapping:
+        code:
+          type: string
+        form:
+          type: string
+        text:
+          type: string
+        tree:
+          type: string
+        view:
+          type: string
+    schema:
+      type: string
+    schema_validate:
+      type: boolean

@@ -33,6 +33,7 @@ feeds.unlock_action:
   title: Unlock
   appears_on:
     - entity.feeds_feed.canonical
+    - feeds.item_list
   cache_tags:
     - feeds_feed_locked
 

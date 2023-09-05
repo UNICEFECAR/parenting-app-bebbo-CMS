@@ -175,6 +175,9 @@ class SourceOverviewForm extends FormBase {
       '#validate' => array('::validateItemsSelected'),
       '#value' => t('Request translation'),
       '#submit' => array('::submitForm'),
+      '#attributes' => [
+        'class' => ['request-button'],
+      ],
     );
 
     $form['operations']['checkout']['target_languages'] = [

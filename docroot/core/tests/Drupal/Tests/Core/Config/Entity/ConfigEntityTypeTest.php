@@ -24,7 +24,7 @@ class ConfigEntityTypeTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->typedConfigManager = $this->createMock(TypedConfigManagerInterface::class);
     $container = new ContainerBuilder();
     $container->set('config.typed', $this->typedConfigManager);
@@ -49,6 +49,8 @@ class ConfigEntityTypeTest extends UnitTestCase {
   }
 
   /**
+   * Tests when the prefix length exceeds the maximum defined prefix length.
+   *
    * Tests that we get an exception when the length of the config prefix that is
    * returned by getConfigPrefix() exceeds the maximum defined prefix length.
    *
@@ -68,6 +70,8 @@ class ConfigEntityTypeTest extends UnitTestCase {
   }
 
   /**
+   * Tests when the prefix length is valid.
+   *
    * Tests that a valid config prefix returned by getConfigPrefix()
    * does not throw an exception and is formatted as expected.
    *
@@ -189,22 +193,6 @@ class ConfigEntityTypeTest extends UnitTestCase {
       ],
     ];
     return $data;
-  }
-
-  /**
-   * @covers ::getPropertiesToExport
-   *
-   * @group legacy
-   * @expectedDeprecation Entity type "example_config_entity_type" is using config schema as a fallback for a missing `config_export` definition is deprecated in Drupal 8.7.0 and will be removed before Drupal 9.0.0. See https://www.drupal.org/node/2949023.
-   */
-  public function testGetPropertiesToExportSchemaFallback() {
-    $this->typedConfigManager->expects($this->once())
-      ->method('getDefinition')
-      ->will($this->returnValue(['mapping' => ['id' => '', 'dependencies' => '']]));
-    $config_entity_type = new ConfigEntityType([
-      'id' => 'example_config_entity_type',
-    ]);
-    $this->assertEquals(['id' => 'id', 'dependencies' => 'dependencies'], $config_entity_type->getPropertiesToExport('test'));
   }
 
   /**

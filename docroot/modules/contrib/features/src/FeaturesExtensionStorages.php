@@ -5,6 +5,7 @@ namespace Drupal\features;
 use Drupal\Core\Config\InstallStorage;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Extension\Extension;
+use Drupal\Core\Extension\ExtensionPathResolver;
 
 /**
  * Wraps FeaturesInstallStorage to support multiple configuration directories.
@@ -17,6 +18,13 @@ class FeaturesExtensionStorages implements FeaturesExtensionStoragesInterface {
    * @var \Drupal\Core\Config\StorageInterface
    */
   protected $configStorage;
+
+  /**
+   * Instance of the extension path resolver service.
+   *
+   * @var \Drupal\Core\Extension\ExtensionPathResolver
+   */
+  protected ExtensionPathResolver $extensionPathResolver;
 
   /**
    * The extension storages.
@@ -37,9 +45,12 @@ class FeaturesExtensionStorages implements FeaturesExtensionStoragesInterface {
    *
    * @param \Drupal\Core\Config\StorageInterface $config_storage
    *   The configuration storage.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extension_path_resolver
+   *   Instance of the extension path resolver service.
    */
-  public function __construct(StorageInterface $config_storage) {
+  public function __construct(StorageInterface $config_storage, ExtensionPathResolver $extension_path_resolver) {
     $this->configStorage = $config_storage;
+    $this->extensionPathResolver = $extension_path_resolver;
   }
 
   /**
@@ -53,7 +64,7 @@ class FeaturesExtensionStorages implements FeaturesExtensionStoragesInterface {
    * {@inheritdoc}
    */
   public function addStorage($directory = InstallStorage::CONFIG_INSTALL_DIRECTORY) {
-    $this->extensionStorages[$directory] = new FeaturesInstallStorage($this->configStorage, $directory);
+    $this->extensionStorages[$directory] = new FeaturesInstallStorage($this->configStorage, $this->extensionPathResolver, $directory);
     $this->reset();
   }
 

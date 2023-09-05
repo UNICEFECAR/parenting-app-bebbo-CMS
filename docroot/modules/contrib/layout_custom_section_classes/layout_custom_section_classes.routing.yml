@@ -1,0 +1,7 @@
+layout_custom_section_classes.settings:
+  path: '/admin/config/content/layout-builder-section-attributes'
+  defaults:
+    _form: '\Drupal\layout_custom_section_classes\Form\GlobalSettingsForm'
+    _title: 'Layout Custom Section Classes Settings'
+  requirements:
+    _permission: 'administer layout builder section classes module settings'

@@ -3,6 +3,7 @@
 namespace Drupal\view_custom_table\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Database\Database;
@@ -21,10 +22,23 @@ class AllTableList extends ControllerBase {
   protected $config;
 
   /**
-   * Class constructor.
+   * Drupal\Core\Render\RendererInterface definition.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
    */
-  public function __construct(ImmutableConfig $config) {
+  protected $renderer;
+
+  /**
+   * Class constructor.
+   *
+   * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config variable.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The Renderer.
+   */
+  public function __construct(ImmutableConfig $config, RendererInterface $renderer) {
     $this->config = $config;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -32,7 +46,8 @@ class AllTableList extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory')->get('view_custom_table.tables')
+      $container->get('config.factory')->get('view_custom_table.tables'),
+      $container->get('renderer')
     );
   }
 
@@ -80,7 +95,7 @@ class AllTableList extends ControllerBase {
             'name' => $rowData['table_name'],
             'database' => $all_database_connections[$rowData['table_database']]['default']['database'],
             'description' => $rowData['description'],
-            'operations' => render($links),
+            'operations' => $this->renderer->render($links),
           ];
         }
         $headers = [
@@ -92,7 +107,7 @@ class AllTableList extends ControllerBase {
         return [
           '#theme' => 'table',
           '#header' => $headers,
-          '#rows' => isset($rows) ? $rows : [],
+          '#rows' => $rows ?? [],
         ];
       }
       else {

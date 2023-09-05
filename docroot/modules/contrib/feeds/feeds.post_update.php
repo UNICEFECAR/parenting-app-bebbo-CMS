@@ -6,7 +6,10 @@
  */
 
 use Drupal\Core\Config\Entity\ConfigEntityUpdater;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Feeds\Parser\CsvParser;
+use Drupal\field\FieldStorageConfigInterface;
 
 /**
  * Replace deprecated action ID's for 'update_non_existent' setting.
@@ -34,4 +37,73 @@ function feeds_post_update_actions_update_non_existent(&$sandbox = NULL) {
       };
       return FALSE;
     });
+}
+
+/**
+ * Add types to existing custom sources on feeds parsers.
+ */
+function feeds_post_update_custom_sources(&$sandbox = NULL) {
+  \Drupal::classResolver(ConfigEntityUpdater::class)
+    ->update($sandbox, 'feeds_feed_type', function (FeedTypeInterface $feed_type) {
+      $parser = $feed_type->getParser();
+      if ($parser instanceof CsvParser) {
+        $custom_source_type = 'csv';
+      }
+      else {
+        return FALSE;
+      }
+
+      // Add type to custom sources to those that don't have it yet.
+      foreach ($feed_type->getCustomSources() as $name => $custom_source) {
+        if (empty($custom_source['type'])) {
+          $custom_source['type'] = $custom_source_type;
+          $feed_type->addCustomSource($name, $custom_source);
+        }
+      }
+
+      return TRUE;
+    });
+}
+
+/**
+ * The feeds_item field storage config is updated to unlimited cardinality.
+ */
+function feeds_post_update_ensure_feeds_item_storage_config_cardinality_is_unlimited(&$sandbox = NULL) {
+  \Drupal::classResolver(ConfigEntityUpdater::class)
+    ->update($sandbox, 'field_storage_config', function (FieldStorageConfigInterface $field_storage_config) {
+      if ($field_storage_config->getType() !== 'feeds_item') {
+        return FALSE;
+      }
+
+      $field_storage_config->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+      return TRUE;
+    });
+}
+
+/**
+ * Adds action plugin 'feeds_feed_clear_action'.
+ */
+function feeds_post_update_add_feeds_feed_clear_action() {
+  \Drupal::entityTypeManager()->getStorage('action')
+    ->create([
+      'id' => 'feeds_feed_clear_action',
+      'label' => 'Delete imported items of selected feeds',
+      'type' => 'feeds_feed',
+      'plugin' => 'feeds_feed_clear_action',
+    ])
+    ->save();
+}
+
+/**
+ * Adds action plugin 'feeds_feed_import_action'.
+ */
+function feeds_post_update_add_feeds_feed_import_action() {
+  \Drupal::entityTypeManager()->getStorage('action')
+    ->create([
+      'id' => 'feeds_feed_import_action',
+      'label' => 'Import selected feeds',
+      'type' => 'feeds_feed',
+      'plugin' => 'feeds_feed_import_action',
+    ])
+    ->save();
 }

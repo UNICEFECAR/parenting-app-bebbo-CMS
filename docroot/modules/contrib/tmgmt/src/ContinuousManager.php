@@ -77,6 +77,7 @@ class ContinuousManager {
    */
   public function hasContinuousJobs() {
     $id = $this->entityTypeManager->getStorage('tmgmt_job')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('job_type', Job::TYPE_CONTINUOUS)
       ->range(0, 1)
       ->execute();
@@ -95,6 +96,7 @@ class ContinuousManager {
   public function getContinuousJobs($source_langcode) {
     $jobs = array();
     $ids = $this->entityTypeManager->getStorage('tmgmt_job')->getQuery()
+      ->accessCheck(TRUE)
       ->condition('source_language', $source_langcode)
       ->condition('job_type', Job::TYPE_CONTINUOUS)
       ->condition('state', Job::STATE_CONTINUOUS)
@@ -135,7 +137,7 @@ class ContinuousManager {
 
     // Some modules might want to filter out candidates for items.
     $event = new ShouldCreateJobEvent($job, $plugin, $item_type, $item_id, $should_create_item);
-    $this->eventDispatcher->dispatch(ContinuousEvents::SHOULD_CREATE_JOB, $event);
+    $this->eventDispatcher->dispatch($event, ContinuousEvents::SHOULD_CREATE_JOB);
 
     if ($event->shouldCreateItem()) {
       if ($most_recent_job_item) {

@@ -85,7 +85,7 @@ class GroupContentListBuilder extends EntityListBuilder {
       $query->pager($this->limit);
     }
 
-    return $query->execute();
+    return $query->accessCheck()->execute();
   }
 
   /**

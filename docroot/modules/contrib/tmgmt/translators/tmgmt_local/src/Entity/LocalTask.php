@@ -210,6 +210,7 @@ class LocalTask extends ContentEntityBase implements LocalTaskInterface {
    */
   public function getItems($conditions = array()) {
     $query = \Drupal::entityQuery('tmgmt_local_task_item');
+    $query->accessCheck(TRUE);
     $query->condition('tltid', $this->id());
     foreach ($conditions as $key => $condition) {
       if (is_array($condition)) {
@@ -384,6 +385,7 @@ class LocalTask extends ContentEntityBase implements LocalTaskInterface {
   public static function postDelete(EntityStorageInterface $storage, array $entities) {
     parent::postDelete($storage, $entities);
     $ids = \Drupal::entityQuery('tmgmt_local_task_item')
+      ->accessCheck(TRUE)
       ->condition('tltid', array_keys($entities), 'IN')
       ->execute();
     if (!empty($ids)) {

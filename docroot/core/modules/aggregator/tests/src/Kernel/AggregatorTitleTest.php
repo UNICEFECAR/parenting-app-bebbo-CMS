@@ -9,7 +9,8 @@ use Drupal\KernelTests\KernelTestBase;
 /**
  * Tests the aggregator_title formatter.
  *
- * @group field
+ * @group aggregator
+ * @group legacy
  */
 class AggregatorTitleTest extends KernelTestBase {
 
@@ -18,7 +19,7 @@ class AggregatorTitleTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'file',
     'field',
     'options',
@@ -36,14 +37,12 @@ class AggregatorTitleTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig(['field']);
     $this->installEntitySchema('aggregator_feed');
     $this->installEntitySchema('aggregator_item');
-
-    \Drupal::service('router.builder')->rebuild();
 
     $this->fieldName = 'title';
   }
@@ -64,7 +63,7 @@ class AggregatorTitleTest extends KernelTestBase {
       'title' => 'test title',
       'fid' => $aggregator_feed->id(),
       'link' => 'http://www.example.com',
-      ]);
+    ]);
     $aggregator_item->save();
 
     // Verify aggregator feed title with and without links.

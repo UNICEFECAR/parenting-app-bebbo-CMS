@@ -3,12 +3,12 @@
 namespace Drupal\features\Plugin\FeaturesGeneration;
 
 use Drupal\Core\Access\CsrfTokenGenerator;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\features\FeaturesGenerationMethodBase;
 use Drupal\Core\Archiver\ArchiveTar;
-use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\features\FeaturesBundleInterface;
+use Drupal\features\FeaturesGenerationMethodBase;
 use Drupal\features\Package;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -41,7 +41,7 @@ class FeaturesGenerationArchive extends FeaturesGenerationMethodBase implements 
   /**
    * The file system service.
    *
-   * @var \Drupal\Core\File\FileSystem
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
@@ -52,10 +52,10 @@ class FeaturesGenerationArchive extends FeaturesGenerationMethodBase implements 
    *   The app root.
    * @param \Drupal\Core\Access\CsrfTokenGenerator $csrf_token
    *   The CSRF token generator.
-   * @param \Drupal\Core\File\FileSystem $file_system
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
    *   The file system service.
    */
-  public function __construct($root, CsrfTokenGenerator $csrf_token, FileSystem $file_system) {
+  public function __construct($root, CsrfTokenGenerator $csrf_token, FileSystemInterface $file_system) {
     $this->root = $root;
     $this->csrfToken = $csrf_token;
     $this->fileSystem = $file_system;
@@ -66,7 +66,7 @@ class FeaturesGenerationArchive extends FeaturesGenerationMethodBase implements 
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('app.root'),
+      $container->getParameter('app.root'),
       $container->get('csrf_token'),
       $container->get('file_system')
     );

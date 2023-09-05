@@ -1,0 +1,13 @@
+name: Node title length
+type: module
+description: Increases maximum length of node titles.
+core_version_requirement: ^8 || ^9 || ^10
+package: Other
+dependencies:
+  - drupal:node
+  - drupal:title_length
+
+# Information added by Drupal.org packaging script on 2022-07-05
+version: '2.0.0-rc0'
+project: 'title_length'
+datestamp: 1657000018

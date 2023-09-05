@@ -218,7 +218,7 @@ class VariationCache implements VariationCacheInterface {
    */
   protected function maxAgeToExpire($max_age) {
     if ($max_age !== Cache::PERMANENT) {
-      return (int) $this->requestStack->getMasterRequest()->server->get('REQUEST_TIME') + $max_age;
+      return (int) $this->requestStack->getMainRequest()->server->get('REQUEST_TIME') + $max_age;
     }
     return $max_age;
   }
@@ -240,7 +240,7 @@ class VariationCache implements VariationCacheInterface {
    */
   protected function createCacheId(array $keys, CacheableMetadata &$cacheable_metadata) {
     if ($contexts = $cacheable_metadata->getCacheContexts()) {
-      $context_cache_keys = $this->cacheContextsManager->convertTokensToKeys($cacheable_metadata->getCacheContexts());
+      $context_cache_keys = $this->cacheContextsManager->convertTokensToKeys($contexts);
       $keys = array_merge($keys, $context_cache_keys->getKeys());
       $cacheable_metadata = $cacheable_metadata->merge($context_cache_keys);
     }
@@ -263,7 +263,7 @@ class VariationCache implements VariationCacheInterface {
    */
   protected function createCacheIdFast(array $keys, CacheableDependencyInterface $cacheability) {
     if ($contexts = $cacheability->getCacheContexts()) {
-      $context_cache_keys = $this->cacheContextsManager->convertTokensToKeys($cacheability->getCacheContexts());
+      $context_cache_keys = $this->cacheContextsManager->convertTokensToKeys($contexts);
       $keys = array_merge($keys, $context_cache_keys->getKeys());
     }
     return implode(':', $keys);

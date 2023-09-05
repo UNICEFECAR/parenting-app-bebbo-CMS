@@ -59,8 +59,10 @@ class Trim extends TamperBase {
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
-    $this->setConfiguration([self::SETTING_CHARACTER => $form_state->getValue(self::SETTING_CHARACTER)]);
-    $this->setConfiguration([self::SETTING_SIDE => $form_state->getValue(self::SETTING_SIDE)]);
+    $this->setConfiguration([
+      self::SETTING_CHARACTER => $form_state->getValue(self::SETTING_CHARACTER),
+      self::SETTING_SIDE => $form_state->getValue(self::SETTING_SIDE),
+    ]);
   }
 
   /**
@@ -81,6 +83,11 @@ class Trim extends TamperBase {
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
+    // Don't process empty or null values.
+    if (is_null($data) || $data === '') {
+      return $data;
+    }
+
     if (!is_string($data)) {
       throw new TamperException('Input should be a string.');
     }

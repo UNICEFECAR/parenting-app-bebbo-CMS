@@ -24,7 +24,7 @@ class HashTest extends TamperPluginTestBase {
   /**
    * Get a mock item to use in the test.
    *
-   * @return \Drupal\tamper\TamperableItemInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @return \Drupal\tamper\TamperableItemInterface|\PHPUnit\Framework\MockObject\MockObject
    *   The mock of a tamperable item to use in the test.
    */
   protected function getMockItem() {

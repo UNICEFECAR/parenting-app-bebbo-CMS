@@ -2,45 +2,55 @@
 
 namespace Drupal\views_bulk_operations\Commands;
 
-use Drush\Commands\DrushCommands;
+use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\views_bulk_operations\Service\ViewsbulkOperationsViewDataInterface;
-use Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionManager;
-use Drupal\user\Entity\User;
+use Drupal\user\UserStorageInterface;
 use Drupal\views\Views;
+use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionCompletedTrait;
+use Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionManager;
+use Drupal\views_bulk_operations\Service\ViewsbulkOperationsViewDataInterface;
 use Drupal\views_bulk_operations\ViewsBulkOperationsBatch;
+use Drush\Commands\DrushCommands;
+use Drush\Drush;
+use Psr\Log\LogLevel;
 
 /**
  * Defines Drush commands for the module.
  */
 class ViewsBulkOperationsCommands extends DrushCommands {
 
+  use ViewsBulkOperationsActionCompletedTrait {
+    message as traitMessage;
+  }
+
   /**
    * The current user object.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $currentUser;
+  protected AccountInterface $currentUser;
+
+  /**
+   * The user storage.
+   */
+  protected UserStorageInterface $userStorage;
 
   /**
    * Object that gets the current view data.
-   *
-   * @var \Drupal\views_bulk_operations\Service\ViewsbulkOperationsViewDataInterface
    */
-  protected $viewData;
+  protected ViewsbulkOperationsViewDataInterface $viewData;
 
   /**
    * Views Bulk Operations action manager.
-   *
-   * @var \Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionManager
    */
-  protected $actionManager;
+  protected ViewsBulkOperationsActionManager $actionManager;
 
   /**
    * ViewsBulkOperationsCommands object constructor.
    *
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The current user object.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
    * @param \Drupal\views_bulk_operations\Service\ViewsbulkOperationsViewDataInterface $viewData
    *   VBO View data service.
    * @param \Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionManager $actionManager
@@ -48,10 +58,12 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    */
   public function __construct(
     AccountInterface $currentUser,
+    EntityTypeManagerInterface $entityTypeManager,
     ViewsbulkOperationsViewDataInterface $viewData,
     ViewsBulkOperationsActionManager $actionManager
   ) {
     $this->currentUser = $currentUser;
+    $this->userStorage = $entityTypeManager->getStorage('user');
     $this->viewData = $viewData;
     $this->actionManager = $actionManager;
   }
@@ -68,10 +80,7 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    * @param array $options
    *   (optional) An array of options.
    *
-   * @return string
-   *   The summary message.
-   *
-   * @command views-bulk-operations:execute
+   * @command views:bulk-operations:execute
    *
    * @option display-id
    *   ID of the display to use.
@@ -86,7 +95,7 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    * @option user-id
    *   The ID of the user account used for performing the operation.
    *
-   * @usage drush views-bulk-operations:execute some_view some_action
+   * @usage drush views:bulk-operations:execute some_view some_action
    *   Execute some action on some view.
    * @usage drush vbo-execute some_view some_action --args=arg1/arg2 --batch-size=50
    *   Execute some action on some view with arg1 and arg2 as
@@ -94,7 +103,7 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    * @usage drush vbo-exec some_view some_action --configuration=&quot;key1=value1&amp;key2=value2&quot;
    *   Execute some action on some view with the specified action configuration.
    *
-   * @aliases vbo-execute, vbo-exec
+   * @aliases vbo-execute, vbo-exec, views-bulk-operations:execute
    */
   public function vboExecute(
     $view_id,
@@ -107,17 +116,16 @@ class ViewsBulkOperationsCommands extends DrushCommands {
       'configuration' => '',
       'user-id' => 1,
     ]
-  ) {
-
+  ): void {
     if (empty($view_id) || empty($action_id)) {
-      throw new \Exception($this->t('You must specify the view ID and the action ID parameters.'));
+      throw new \Exception('You must specify the view ID and the action ID parameters.');
     }
 
     $this->timer($options['verbose']);
 
     // Prepare options.
     if ($options['args']) {
-      $options['args'] = explode('/', $options['args']);
+      $options['args'] = \explode('/', $options['args']);
     }
     else {
       $options['args'] = [];
@@ -125,8 +133,8 @@ class ViewsBulkOperationsCommands extends DrushCommands {
 
     // Decode query string format options.
     foreach (['configuration', 'exposed'] as $name) {
-      if (!empty($options[$name]) && !is_array($options[$name])) {
-        parse_str($options[$name], $options[$name]);
+      if (!empty($options[$name]) && !\is_array($options[$name])) {
+        \parse_str($options[$name], $options[$name]);
       }
       else {
         $options[$name] = [];
@@ -147,19 +155,20 @@ class ViewsBulkOperationsCommands extends DrushCommands {
       // We set the clear_on_exposed parameter to true, otherwise with empty
       // selection exposed filters are not taken into account.
       'clear_on_exposed' => TRUE,
+      'exclude_mode' => FALSE,
     ];
 
-    // Login as superuser, as drush 9 doesn't support the
-    // --user parameter.
-    $account = User::load($options['user-id']);
+    // Login as the provided user, as drush 9+ doesn't support the
+    // --user parameter. Default: user 1.
+    $account = $this->userStorage->load($options['user-id']);
     $this->currentUser->setAccount($account);
 
     // Initialize the view to check if parameters are correct.
     if (!$view = Views::getView($vbo_data['view_id'])) {
-      throw new \Exception($this->t('Incorrect view ID provided.'));
+      throw new \Exception('Incorrect view ID provided.');
     }
     if (!$view->setDisplay($vbo_data['display_id'])) {
-      throw new \Exception($this->t('Incorrect view display ID provided.'));
+      throw new \Exception('Incorrect view display ID provided.');
     }
     if (!empty($vbo_data['arguments'])) {
       $view->setArguments($vbo_data['arguments']);
@@ -215,22 +224,57 @@ class ViewsBulkOperationsCommands extends DrushCommands {
       }
     } while ($context['finished'] < 1);
 
-    // Output a summary message.
-    $operations = array_count_values($context['results']['operations']);
-    $details = [];
-    foreach ($operations as $op => $count) {
-      $details[] = $op . ' (' . $count . ')';
-    }
-
     // Display debug information.
     if ($options['verbose']) {
       $this->timer($options['verbose'], 'execute');
-      $this->logger->info($this->t('Initialization time: @time ms.', ['@time' => $this->timer($options['verbose'], 'init')]));
-      $this->logger->info($this->t('Entity list generation time: @time ms.', ['@time' => $this->timer($options['verbose'], 'list')]));
-      $this->logger->info($this->t('Execution time: @time ms.', ['@time' => $this->timer($options['verbose'], 'execute')]));
+      $this->logger->info($this->t('Initialization time: @time ms.', [
+        '@time' => $this->timer($options['verbose'], 'init'),
+      ]));
+      $this->logger->info($this->t('Entity list generation time: @time ms.', [
+        '@time' => $this->timer($options['verbose'], 'list'),
+      ]));
+      $this->logger->info($this->t('Execution time: @time ms.', [
+        '@time' => $this->timer($options['verbose'], 'execute'),
+      ]));
     }
 
-    return $this->t('Action processing results: @results.', ['@results' => implode(', ', $details)]);
+    static::finished(TRUE, $context['results'], []);
+  }
+
+  /**
+   * List available actions for a view.
+   *
+   * @return string
+   *   The summary message.
+   *
+   * @command views:bulk-operations:list
+   *
+   * @table-style default
+   * @field-labels
+   *   id: ID
+   *   label: Label
+   *   entity_type_id: Entity type ID
+   * @default-fields id,label,entity_type_id
+   *
+   * @usage drush views:bulk-operations:list some_view some_action
+   *   Execute some action on some view.
+   * @usage drush vbo-list
+   *   List all available actions info.
+   *
+   * @aliases vbo-list
+   */
+  public function vboList($options = ['format' => 'table']): RowsOfFields {
+    $rows = [];
+    $actions = $this->actionManager->getDefinitions(['nocache' => TRUE]);
+    foreach ($actions as $id => $definition) {
+      $rows[] = [
+        'id' => $id,
+        'label' => $definition['label'],
+        'entity_type_id' => $definition['type'] ?: \dt('(any)'),
+      ];
+    }
+
+    return new RowsOfFields($rows);
   }
 
   /**
@@ -244,32 +288,34 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    * @return mixed
    *   NULL or value of a specific timer if set.
    */
-  protected function timer($debug = TRUE, $id = NULL) {
+  protected function timer($debug = TRUE, $id = NULL): ?float {
     if (!$debug) {
-      return;
+      return NULL;
     }
 
     static $timers = [];
 
     if (!isset($id)) {
-      $timers['start'] = microtime(TRUE);
+      $timers['start'] = \microtime(TRUE);
     }
     else {
       if (isset($timers[$id])) {
-        end($timers);
+        \end($timers);
         do {
-          if (key($timers) === $id) {
-            return round((current($timers) - prev($timers)) * 1000, 3);
+          if (\key($timers) === $id) {
+            return \round((\current($timers) - \prev($timers)) * 1000, 3);
           }
           else {
-            $result = prev($timers);
+            $result = \prev($timers);
           }
         } while ($result);
       }
       else {
-        $timers[$id] = microtime(TRUE);
+        $timers[$id] = \microtime(TRUE);
       }
     }
+
+    return NULL;
   }
 
   /**
@@ -283,8 +329,21 @@ class ViewsBulkOperationsCommands extends DrushCommands {
    * @return string
    *   The translated message.
    */
-  protected function t($message, array $arguments = []) {
-    return dt($message, $arguments);
+  protected function t($message, array $arguments = []): string {
+    return \dt($message, $arguments);
+  }
+
+  /**
+   * Message method.
+   *
+   * Overrides the one from the trait and uses Drush logger.
+   */
+  public static function message($message = NULL, $type = 'status', $repeat = TRUE): void {
+    // Status type no longer exists, mapping required.
+    if ($type === 'status') {
+      $type = LogLevel::INFO;
+    }
+    Drush::logger()->log($type, $message, []);
   }
 
 }

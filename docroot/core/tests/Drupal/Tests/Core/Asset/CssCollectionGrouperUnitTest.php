@@ -19,7 +19,10 @@ class CssCollectionGrouperUnitTest extends UnitTestCase {
    */
   protected $grouper;
 
-  protected function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
 
     $this->grouper = new CssCollectionGrouper();
@@ -86,7 +89,7 @@ class CssCollectionGrouperUnitTest extends UnitTestCase {
         'type' => 'file',
         'weight' => 0.001,
         'preprocess' => TRUE,
-        'data' => 'core/themes/bartik/css/base/elements.css',
+        'data' => 'core/themes/example/css/base/elements.css',
         'browsers' => ['IE' => TRUE, '!IE' => TRUE],
         'basename' => 'elements.css',
       ],
@@ -96,7 +99,7 @@ class CssCollectionGrouperUnitTest extends UnitTestCase {
         'type' => 'file',
         'weight' => 0.003,
         'preprocess' => TRUE,
-        'data' => 'core/themes/bartik/css/print.css',
+        'data' => 'core/themes/example/css/print.css',
         'browsers' => ['IE' => TRUE, '!IE' => TRUE],
         'basename' => 'print.css',
       ],
@@ -111,46 +114,46 @@ class CssCollectionGrouperUnitTest extends UnitTestCase {
     $this->assertSame(-100, $group['group']);
     $this->assertSame('file', $group['type']);
     $this->assertSame('all', $group['media']);
-    $this->assertSame(TRUE, $group['preprocess']);
+    $this->assertTrue($group['preprocess']);
     $this->assertCount(3, $group['items']);
-    $this->assertContains($css_assets['system.base.css'], $group['items']);
-    $this->assertContains($css_assets['js.module.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['system.base.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['js.module.css'], $group['items']);
 
     // Check group 2.
     $group = $groups[1];
     $this->assertSame(0, $group['group']);
     $this->assertSame('file', $group['type']);
     $this->assertSame('all', $group['media']);
-    $this->assertSame(TRUE, $group['preprocess']);
+    $this->assertTrue($group['preprocess']);
     $this->assertCount(1, $group['items']);
-    $this->assertContains($css_assets['field.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['field.css'], $group['items']);
 
     // Check group 3.
     $group = $groups[2];
     $this->assertSame(0, $group['group']);
     $this->assertSame('external', $group['type']);
     $this->assertSame('all', $group['media']);
-    $this->assertSame(TRUE, $group['preprocess']);
+    $this->assertTrue($group['preprocess']);
     $this->assertCount(1, $group['items']);
-    $this->assertContains($css_assets['external.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['external.css'], $group['items']);
 
     // Check group 4.
     $group = $groups[3];
     $this->assertSame(100, $group['group']);
     $this->assertSame('file', $group['type']);
     $this->assertSame('all', $group['media']);
-    $this->assertSame(TRUE, $group['preprocess']);
+    $this->assertTrue($group['preprocess']);
     $this->assertCount(1, $group['items']);
-    $this->assertContains($css_assets['elements.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['elements.css'], $group['items']);
 
     // Check group 5.
     $group = $groups[4];
     $this->assertSame(100, $group['group']);
     $this->assertSame('file', $group['type']);
     $this->assertSame('print', $group['media']);
-    $this->assertSame(TRUE, $group['preprocess']);
+    $this->assertTrue($group['preprocess']);
     $this->assertCount(1, $group['items']);
-    $this->assertContains($css_assets['print.css'], $group['items']);
+    $this->assertContainsEquals($css_assets['print.css'], $group['items']);
   }
 
 }

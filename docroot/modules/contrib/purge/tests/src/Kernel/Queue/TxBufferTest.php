@@ -8,7 +8,7 @@ use Drupal\purge\Plugin\Purge\Queue\TxBufferInterface;
 use Drupal\Tests\purge\Kernel\KernelTestBase;
 
 /**
- * Tests \Drupal\purge\Tests\Queue\TxBufferTest.
+ * Tests \Drupal\purge\Plugin\Purge\Queue\TxBuffer.
  *
  * @group purge
  */
@@ -17,7 +17,7 @@ class TxBufferTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['purge_purger_test'];
+  protected static $modules = ['purge_purger_test'];
 
   /**
    * {@inheritdoc}

@@ -15,7 +15,7 @@ class GroupTypeImportTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // The system.site key is required for import validation.

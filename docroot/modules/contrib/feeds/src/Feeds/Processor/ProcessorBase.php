@@ -37,8 +37,8 @@ abstract class ProcessorBase extends PluginBase implements ProcessorInterface {
 
     // Find out how many items were cleaned.
     $clean_state = $feed->getState(StateInterface::CLEAN);
-    if ($clean_state->updated) {
-      $clean_state->setMessage($this->formatPlural($clean_state->updated, '@feed: Cleaned @count @item.', '@feed: Cleaned @count @items.', $tokens));
+    if ($clean_state->cleaned) {
+      $clean_state->setMessage($this->formatPlural($clean_state->cleaned, '@feed: Cleaned @count @item.', '@feed: Cleaned @count @items.', $tokens));
     }
   }
 

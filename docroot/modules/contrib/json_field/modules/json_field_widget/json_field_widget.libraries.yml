@@ -1,0 +1,25 @@
+jsoneditor:
+  version: "5.29.1"
+  remote: https://github.com/josdejong/jsoneditor
+  license:
+    name: Apache-2.0
+    url: https://github.com/josdejong/jsoneditor/blob/v5.29.1/LICENSE
+    gpl-compatible: false
+  js:
+    /libraries/jsoneditor/dist/jsoneditor.min.js: {minified: true}
+  css:
+    component:
+      /libraries/jsoneditor/dist/jsoneditor.min.css: {minified: true}
+
+json_editor.widget:
+  js:
+    assets/js/json_widget.js: {}
+  css:
+    component:
+      assets/css/json_widget.css: {}
+  dependencies:
+    - json_field_widget/jsoneditor
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - core/jquery

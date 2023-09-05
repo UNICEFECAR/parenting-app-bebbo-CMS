@@ -10,7 +10,7 @@ use Drupal\Component\FileSecurity\FileSecurity;
 /**
  * Implements hook_install().
  */
-function filelog_install() {
+function filelog_install(): void {
   $config = Drupal::configFactory()->getEditable('filelog.settings');
   $path = $config->get('location');
   $fileSystem = Drupal::service('file_system');
@@ -34,7 +34,7 @@ function filelog_install() {
 /**
  * Adds the new 'channels_type' and 'channels' keys to the module settings.
  */
-function filelog_update_8101(&$sandbox) {
+function filelog_update_8101(&$sandbox): void {
   $config = Drupal::configFactory()->getEditable('filelog.settings');
   $config->set('channels_type', $config->get('channels_type') ?? 'exclude');
   $config->set('channels', $config->get('channels') ?? []);
@@ -44,7 +44,7 @@ function filelog_update_8101(&$sandbox) {
 /**
  * Replaces the token [log:type] with [log:channel] in format string.
  */
-function filelog_update_8201(&$sandbox) {
+function filelog_update_8201(&$sandbox): void {
   $config = Drupal::configFactory()->getEditable('filelog.settings');
   $config->set('format', str_replace('[log:type]', '[log:channel]', $config->get('format')));
   $config->save();

@@ -28,7 +28,7 @@ abstract class ConfigEntityReferenceTestBase extends EntityReferenceTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->transliteration = $this->prophesize(TransliterationInterface::class);

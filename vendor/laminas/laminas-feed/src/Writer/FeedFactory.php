@@ -1,15 +1,21 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer;
 
 use Traversable;
 
+use function array_key_exists;
+use function gettype;
+use function is_array;
+use function is_object;
+use function method_exists;
+use function sprintf;
+use function str_replace;
+use function strtolower;
+
+// phpcs:ignore WebimpressCodingStandard.NamingConventions.AbstractClass.Prefix
 abstract class FeedFactory
 {
     /**
@@ -25,7 +31,7 @@ abstract class FeedFactory
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s expects an array or Traversable argument; received "%s"',
                 __METHOD__,
-                is_object($data) ? get_class($data) : gettype($data)
+                is_object($data) ? $data::class : gettype($data)
             ));
         }
 
@@ -89,8 +95,8 @@ abstract class FeedFactory
         if (! is_array($entries) && ! $entries instanceof Traversable) {
             throw new Exception\InvalidArgumentException(sprintf(
                 '%s::factory expects the "entries" value to be an array or Traversable; received "%s"',
-                get_called_class(),
-                is_object($entries) ? get_class($entries) : gettype($entries)
+                static::class,
+                is_object($entries) ? $entries::class : gettype($entries)
             ));
         }
 
@@ -99,7 +105,7 @@ abstract class FeedFactory
                 throw new Exception\InvalidArgumentException(sprintf(
                     '%s expects an array, Traversable, or Laminas\Feed\Writer\Entry argument; received "%s"',
                     __METHOD__,
-                    is_object($data) ? get_class($data) : gettype($data)
+                    is_object($data) ? $data::class : gettype($data)
                 ));
             }
 

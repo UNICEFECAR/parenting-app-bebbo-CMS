@@ -69,6 +69,23 @@ class StrPadTest extends TamperPluginTestBase {
   }
 
   /**
+   * Test adding leading zeros.
+   *
+   * @covers ::tamper
+   */
+  public function testStrPadLeftWithLeadingZeros() {
+    $config = [
+      StrPad::SETTING_PAD_LENGTH => '5',
+      StrPad::SETTING_PAD_STRING => '0',
+      StrPad::SETTING_PAD_TYPE => STR_PAD_LEFT,
+    ];
+    $plugin = new StrPad($config, 'StrPad', [], $this->getMockSourceDefinition());
+    $this->assertEquals('00123', $plugin->tamper(123));
+    $this->assertEquals('00008', $plugin->tamper(8));
+    $this->assertEquals('12345', $plugin->tamper(12345));
+  }
+
+  /**
    * @covers ::tamper
    */
   public function testTamperExceptionWithInvalidInput() {

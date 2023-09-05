@@ -1,14 +1,14 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Extension\Podcast;
 
 use Laminas\Feed\Reader\Extension;
+
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
 
 class Entry extends Extension\AbstractEntry
 {
@@ -105,6 +105,7 @@ class Entry extends Extension\AbstractEntry
      *
      * @deprecated since 2.10.0; itunes:keywords is no longer part of the
      *     iTunes podcast RSS specification.
+     *
      * @return string
      */
     public function getKeywords()
@@ -112,7 +113,7 @@ class Entry extends Extension\AbstractEntry
         trigger_error(
             'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
             . ' and should not be relied on.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
 
         if (isset($this->data['keywords'])) {

@@ -47,7 +47,7 @@ class SprintfTest extends TamperPluginTestBase {
     ];
     $plugin = new Sprintf($config, 'sprintf', [], $this->getMockSourceDefinition());
 
-    $this->assertEquals('A', $plugin->tamper('65'));
+    $this->assertEquals('A', $plugin->tamper(65));
   }
 
 }

@@ -14,7 +14,7 @@ use Drupal\tamper\TamperBase;
  *   id = "keyword_filter",
  *   label = @Translation("Keyword filter"),
  *   description = @Translation("Filter based on a list of words/phrases."),
- *   category = "Text",
+ *   category = "Filter",
  *   handle_multiples = TRUE
  * )
  */
@@ -149,9 +149,12 @@ class KeywordFilter extends TamperBase {
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     $is_multibyte = (Unicode::getStatus() == Unicode::STATUS_MULTIBYTE) ? TRUE : FALSE;
 
-    $word_list = str_replace("\r", '', $form_state->getValue(self::WORDS));
-    $word_list = explode("\n", $word_list);
+    $words = str_replace("\r", '', $form_state->getValue(self::WORDS));
+    $word_list = explode("\n", $form_state->getValue(self::WORDS));
     $word_list = array_map('trim', $word_list);
+    // Remove empty words from the list.
+    $word_list = array_filter($word_list);
+
     $setting_regex = FALSE;
     $setting_function = 'matchRegex';
 
@@ -183,6 +186,7 @@ class KeywordFilter extends TamperBase {
       $setting_function = $is_multibyte ? 'mb_stripos' : 'stripos';
     }
 
+    $form_state->setValue(self::WORDS, $words);
     $form_state->setValue(self::WORD_LIST, $word_list);
     $form_state->setValue(self::REGEX, $setting_regex);
     $form_state->setValue(self::FUNCTION, $setting_function);

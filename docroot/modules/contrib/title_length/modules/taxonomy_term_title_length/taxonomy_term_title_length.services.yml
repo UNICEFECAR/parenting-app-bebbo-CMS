@@ -1,0 +1,4 @@
+services:
+  taxonomy_term_title_length.taxonomy_term:
+    class: Drupal\taxonomy_term_title_length\TaxonomyTermTitleLength
+    arguments: ['@database', '@entity_type.manager', '@entity.definition_update_manager']

@@ -15,7 +15,7 @@ class FeedsItemTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->setUpBodyField();
   }
@@ -173,7 +173,7 @@ class FeedsItemTest extends FeedsKernelTestBase {
 
     // Assert that the imported nodes no longer reference the feed.
     $node = Node::load(1);
-    $this->assertTrue($node->feeds_item->isEmpty());
+    $this->assertNotTrue($node->get('feeds_item')->hasItem($feed));
   }
 
 }

@@ -33,6 +33,18 @@ services:
     class: 'Drupal\group\Access\GroupContentCreateAnyEntityAccessCheck'
     tags:
       - { name: 'access_check', applies_to: '_group_content_create_any_entity_access' }
+  access_check.group_latest_revision:
+    class: 'Drupal\group\Entity\Access\GroupLatestRevisionCheck'
+    arguments: ['@entity_type.manager']
+    calls:
+      - ['setContentModerationInfo', ['@?content_moderation.moderation_information']]
+    tags:
+      - { name: 'access_check', applies_to: '_group_latest_revision' }
+  access_check.group_revision:
+    class: 'Drupal\group\Entity\Access\GroupRevisionCheck'
+    arguments: ['@entity_type.manager', '@current_route_match']
+    tags:
+      - { name: 'access_check', applies_to: '_group_revision' }
 
   cache.group_permission:
     class: 'Drupal\Core\Cache\CacheBackendInterface'
@@ -60,6 +72,14 @@ services:
   group.admin_path.route_subscriber:
     class: 'Drupal\group\Routing\GroupAdminRouteSubscriber'
     arguments: ['@config.factory']
+    tags:
+      - { name: 'event_subscriber' }
+  group.latest_revision.route_subscriber:
+    class: 'Drupal\group\Entity\Routing\GroupLatestRevisionRouteSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  group.revision.route_subscriber:
+    class: 'Drupal\group\Entity\Routing\GroupRevisionRouteSubscriber'
     tags:
       - { name: 'event_subscriber' }
   group.config_subscriber:

@@ -105,7 +105,7 @@ class LanguageFormatter extends StringFormatter implements ContainerFactoryPlugi
       $summary[] = $this->t('** Not set **');
     }
     else {
-      foreach ($settings as $key => $value) {
+      foreach ($settings as $value) {
         switch ($value) {
           case '0':
             // Option is not selected.
@@ -134,7 +134,7 @@ class LanguageFormatter extends StringFormatter implements ContainerFactoryPlugi
     // the benefit of added custom languages.
     $language = CustomLanguageManager::createFromLangcode($langcode);
 
-    $language_translated_name = $language->getName();
+    $language_translated_name = $this->t($language->getName());
     // Create the markup for this value.
     $markup = [];
 
@@ -142,11 +142,11 @@ class LanguageFormatter extends StringFormatter implements ContainerFactoryPlugi
       $markup[] = $langcode;
     }
     if (!empty($settings['format']['name'])) {
-      // @todo: Use language of user of of content entity?
+      // @todo Use language of user of of content entity?
       $markup[] = $language_translated_name;
     }
     if (!empty($settings['format']['name_native'])) {
-      // @todo: Create feature request to add function to D8 core.
+      // @todo Create feature request to add function to D8 core.
       $native_name = $item->getNativeName();
       $markup[] = (empty($settings['format']['name'])) ? $native_name : '(' . $native_name . ')';
     }

@@ -24,8 +24,6 @@ group.add_member:
   title: 'Add existing member'
   appears_on:
     - 'view.group_members.page_1'
-  requirements:
-    _role: 'global_admin'
 
 group.create_member:
   route_name: 'entity.group_content.create_form'

@@ -14,7 +14,7 @@ class ItemListControllerTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'entity_test',
     'feeds',
     'feeds_test_entity',
@@ -53,9 +53,9 @@ class ItemListControllerTest extends FeedsBrowserTestBase {
 
     // Go to the items page and assert that two items are shown there.
     $this->drupalGet('/feed/1/list');
-    $this->assertNoText('The website encountered an unexpected error.');
-    $this->assertText('Lorem ipsum');
-    $this->assertText('Ut wisi enim ad minim veniam');
+    $this->assertSession()->responseNotContains('The website encountered an unexpected error.');
+    $this->assertSession()->responseContains('Lorem ipsum');
+    $this->assertSession()->responseContains('Ut wisi enim ad minim veniam');
   }
 
 }

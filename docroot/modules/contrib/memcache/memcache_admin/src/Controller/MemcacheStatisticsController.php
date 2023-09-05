@@ -2,12 +2,17 @@
 
 namespace Drupal\memcache_admin\Controller;
 
+use Drupal\Component\Datetime\Time;
+use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\memcache\Driver\MemcacheDriverFactory;
 use Drupal\memcache_admin\Event\MemcacheStatsEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Memcache Statistics.
@@ -16,6 +21,64 @@ class MemcacheStatisticsController extends ControllerBase {
 
   use MessengerTrait;
   use StringTranslationTrait;
+
+  /**
+   * Memcache Driver Factory.
+   * 
+   * @var \Drupal\memcache\Driver\MemcacheDriverFactory
+   */
+  protected $memcacheDriverFactory;
+
+  /**
+   * Event Dispatcher Service.
+   * 
+   * @var \Symfony\Component\EventDispatcher\EventDispatcher
+   */
+  protected $dispatcher;
+
+  /**
+   * Core Date Formatter Service.
+   * 
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
+
+  /**
+   * Core DateTime Service.
+   * 
+   * @var \Drupal\Component\Datetime\Time
+   */
+  protected $time;
+
+  /**
+   * ModalFormContactController constructor.
+   *
+   * @param \Drupal\Core\Form\FormBuilder $form_builder
+   *   The form builder.
+   */
+  public function __construct(MemcacheDriverFactory $memcacheDriverFactory, ContainerAwareEventDispatcher $dispatcher, DateFormatterInterface $dateFormatter, Time $time) {
+    $this->memcacheDriverFactory = $memcacheDriverFactory;
+    $this->dispatcher = $dispatcher;
+    $this->dateFormatter = $dateFormatter;
+    $this->time = $time;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The Drupal service container.
+   *
+   * @return static
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('memcache.factory'),
+      $container->get('event_dispatcher'),
+      $container->get('date.formatter'),
+      $container->get('datetime.time'),
+    );
+  }
 
   /**
    * Callback for the Memcache Stats page.
@@ -29,14 +92,13 @@ class MemcacheStatisticsController extends ControllerBase {
   public function statsTable($bin = 'default') {
     $bin = $this->getBinMapping($bin);
     /** @var $memcache \Drupal\memcache\DrupalMemcacheInterface */
-    $memcache = \Drupal::service('memcache.factory')->get($bin, TRUE);
+    $memcache = $this->memcacheDriverFactory->get($bin, TRUE);
 
     // Instantiate our event.
     $event = new MemcacheStatsEvent($memcache, $bin);
 
     // Get the event_dispatcher service and dispatch the event.
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch(MemcacheStatsEvent::BUILD_MEMCACHE_STATS, $event);
+    $this->dispatcher->dispatch($event, MemcacheStatsEvent::BUILD_MEMCACHE_STATS);
 
     // Report the PHP Memcache(d) driver version.
     if ($memcache->getMemcache() instanceof \Memcached) {
@@ -47,8 +109,7 @@ class MemcacheStatisticsController extends ControllerBase {
     }
 
     // Get the event_dispatcher service and dispatch the event.
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch(MemcacheStatsEvent::REPORT_MEMCACHE_STATS, $event);
+    $this->dispatcher->dispatch($event, MemcacheStatsEvent::REPORT_MEMCACHE_STATS);
 
     $output = ['#markup' => '<p>' . $raw_stats['driver_version']];
     $output[] = $this->statsTablesOutput($bin, $event->getServers(), $event->getReport());
@@ -74,7 +135,7 @@ class MemcacheStatisticsController extends ControllerBase {
     $server = str_replace('!', '/', $server);
 
     $slab = \Drupal::routeMatch()->getParameter('slab');
-    $memcache = \Drupal::service('memcache.factory')->get($cluster, TRUE);
+    $memcache = $this->memcacheDriverFactory->get($cluster, TRUE);
     if ($type == 'slabs' && !empty($slab)) {
       $stats = $memcache->stats($cluster, $slab, FALSE);
     }
@@ -115,7 +176,7 @@ class MemcacheStatisticsController extends ControllerBase {
    * Helper function, reverse map the memcache_bins variable.
    */
   private function binMapping($bin = 'cache') {
-    $memcache      = \Drupal::service('memcache.factory')->get(NULL, TRUE);
+    $memcache      = $this->memcacheDriverFactory->get(NULL, TRUE);
     $memcache_bins = $memcache->getBins();
 
     $bins = array_flip($memcache_bins);
@@ -168,7 +229,7 @@ class MemcacheStatisticsController extends ControllerBase {
    * Generates render array for output.
    */
   private function statsTablesOutput($bin, $servers, $stats) {
-    $memcache      = \Drupal::service('memcache.factory')->get(NULL, TRUE);
+    $memcache      = $this->memcacheDriverFactory->get(NULL, TRUE);
     $memcache_bins = $memcache->getBins();
 
     $links = [];
@@ -220,7 +281,7 @@ class MemcacheStatisticsController extends ControllerBase {
   private function statsTablesRawOutput($cluster, $server, $stats, $type) {
     $user          = \Drupal::currentUser();
     $current_type  = isset($type) ? $type : 'default';
-    $memcache      = \Drupal::service('memcache.factory')->get(NULL, TRUE);
+    $memcache      = $this->memcacheDriverFactory->get(NULL, TRUE);
     $memcache_bins = $memcache->getBins();
     $bin           = isset($memcache_bins[$cluster]) ? $memcache_bins[$cluster] : 'default';
     $slab = \Drupal::routeMatch()->getParameter('slab');
@@ -293,7 +354,7 @@ class MemcacheStatisticsController extends ControllerBase {
               $v = $this->t('infinite');
             }
             else {
-              $v = $this->t('in @time', ['@time' => \Drupal::service('date.formatter')->formatInterval($v - \Drupal::time()->getRequestTime())]);
+              $v = $this->t('in @time', ['@time' => $this->dateFormatter->formatInterval($v - $this->time->getRequestTime())]);
             }
           }
           $build['table'][$row]['value'][$subrow] = [
@@ -316,7 +377,7 @@ class MemcacheStatisticsController extends ControllerBase {
    * Helper function, reverse map the memcache_bins variable.
    */
   protected function getBinMapping($bin = 'cache') {
-    $memcache      = \Drupal::service('memcache.factory')->get(NULL, TRUE);
+    $memcache      = $this->memcacheDriverFactory->get(NULL, TRUE);
     $memcache_bins = $memcache->getBins();
 
     $bins = array_flip($memcache_bins);

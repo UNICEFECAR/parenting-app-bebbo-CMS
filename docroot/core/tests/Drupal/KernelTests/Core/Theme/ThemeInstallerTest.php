@@ -21,7 +21,7 @@ class ThemeInstallerTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['system'];
+  protected static $modules = ['system'];
 
   /**
    * {@inheritdoc}
@@ -34,7 +34,10 @@ class ThemeInstallerTest extends KernelTestBase {
       ->register('router.dumper', 'Drupal\Core\Routing\NullMatcherDumper');
   }
 
-  protected function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['system']);
   }
@@ -52,7 +55,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->assertNotEmpty($this->themeHandler()->rebuildThemeData()['stark'], 'ThemeHandler::rebuildThemeData() yields all available themes.');
 
     // theme_get_setting() should return global default theme settings.
-    $this->assertIdentical(theme_get_setting('features.favicon'), TRUE);
+    $this->assertTrue(theme_get_setting('features.favicon'));
   }
 
   /**
@@ -66,16 +69,16 @@ class ThemeInstallerTest extends KernelTestBase {
 
     $this->themeInstaller()->install([$name]);
 
-    $this->assertIdentical($this->extensionConfig()->get("theme.$name"), 0);
+    $this->assertSame(0, $this->extensionConfig()->get("theme.{$name}"));
 
     $themes = $this->themeHandler()->listInfo();
     $this->assertTrue(isset($themes[$name]));
-    $this->assertEqual($themes[$name]->getName(), $name);
+    $this->assertEquals($name, $themes[$name]->getName());
 
     // Verify that test_basetheme.settings is active.
-    $this->assertIdentical(theme_get_setting('features.favicon', $name), FALSE);
-    $this->assertEqual(theme_get_setting('base', $name), 'only');
-    $this->assertEqual(theme_get_setting('override', $name), 'base');
+    $this->assertFalse(theme_get_setting('features.favicon', $name));
+    $this->assertEquals('only', theme_get_setting('base', $name));
+    $this->assertEquals('base', theme_get_setting('override', $name));
   }
 
   /**
@@ -154,6 +157,19 @@ class ThemeInstallerTest extends KernelTestBase {
   }
 
   /**
+   * Tests trying to install a deprecated theme.
+   *
+   * @covers ::install
+   *
+   * @group legacy
+   */
+  public function testInstallDeprecated() {
+    $this->expectDeprecation("The theme 'deprecated_theme_test' is deprecated. See https://example.com/deprecated");
+    $this->themeInstaller()->install(['deprecated_theme_test']);
+    $this->assertTrue(\Drupal::service('theme_handler')->themeExists('deprecated_theme_test'));
+  }
+
+  /**
    * Data provider for testInstallThemeWithUnmetModuleDependencies().
    */
   public function providerTestInstallThemeWithUnmetModuleDependencies() {
@@ -217,7 +233,7 @@ class ThemeInstallerTest extends KernelTestBase {
    */
   public function testUninstallDefault() {
     $name = 'stark';
-    $other_name = 'bartik';
+    $other_name = 'olivero';
     $this->themeInstaller()->install([$name, $other_name]);
     $this->config('system.theme')->set('default', $name)->save();
 
@@ -244,7 +260,7 @@ class ThemeInstallerTest extends KernelTestBase {
    */
   public function testUninstallAdmin() {
     $name = 'stark';
-    $other_name = 'bartik';
+    $other_name = 'olivero';
     $this->themeInstaller()->install([$name, $other_name]);
     $this->config('system.theme')->set('admin', $name)->save();
 
@@ -352,7 +368,7 @@ class ThemeInstallerTest extends KernelTestBase {
     $this->themeInstaller()->install([$name]);
     $themes = $this->themeHandler()->listInfo();
     $this->assertTrue(isset($themes[$name]));
-    $this->assertEqual($themes[$name]->getName(), $name);
+    $this->assertEquals($name, $themes[$name]->getName());
     $this->assertNotEmpty($this->config("$name.settings")->get());
   }
 
@@ -378,7 +394,7 @@ class ThemeInstallerTest extends KernelTestBase {
    * @see module_test_system_info_alter()
    */
   public function testThemeInfoAlter() {
-    $name = 'seven';
+    $name = 'stark';
     $this->container->get('state')->set('module_test.hook_system_info_alter', TRUE);
 
     $this->themeInstaller()->install([$name]);

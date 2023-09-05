@@ -65,15 +65,9 @@ class CsvParserTest extends FeedsUnitTestCase {
       $item = str_replace("\r\n", "\n", $item);
     });
 
-    $mac = $expected;
-    array_walk_recursive($mac, function (&$item, $key) {
-      $item = str_replace("\r\n", "\r", $item);
-    });
-
     return [
       [$expected, "\r\n"],
       [$unix, "\n"],
-      [$mac, "\r"],
     ];
   }
 

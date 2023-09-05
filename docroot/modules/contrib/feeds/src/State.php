@@ -2,10 +2,19 @@
 
 namespace Drupal\feeds;
 
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\feeds\Event\EventDispatcherTrait;
+use Drupal\feeds\Event\FeedsEvents;
+use Drupal\feeds\Event\ReportEvent;
+
 /**
  * Status of the import or clearing operation of a Feed.
  */
+#[\AllowDynamicProperties]
 class State implements StateInterface {
+
+  use DependencySerializationTrait;
+  use EventDispatcherTrait;
 
   /**
    * Denotes the progress made.
@@ -81,6 +90,26 @@ class State implements StateInterface {
    * @var array
    */
   protected $messages = [];
+
+  /**
+   * Reports a processed item.
+   *
+   * @param string $code
+   *   What happened to the imported item.
+   * @param string|\Drupal\Component\Render\MarkupInterface $message
+   *   (optional) The reported message.
+   * @param array $context
+   *   (optional) Context data.
+   */
+  public function report($code, $message = '', array $context = []) {
+    $this->$code++;
+
+    if (isset($context['feed']) && $context['feed'] instanceof FeedInterface) {
+      $feed = $context['feed'];
+      unset($context['feed']);
+      $this->dispatchEvent(FeedsEvents::REPORT, new ReportEvent($feed, $code, $message, $context));
+    }
+  }
 
   /**
    * {@inheritdoc}

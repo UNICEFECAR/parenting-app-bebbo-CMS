@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Allowed languages views integration.
+ */
+
 use Drupal\Core\Entity\ContentEntityType;
 
 /**

@@ -218,6 +218,15 @@ span.features-component-list .features-dependency {
   font-weight: bold !important;
 }
 
+.features-diff-header-action {
+  font-size: small;
+}
+
+.js-features-filter-hidden,
+.js-features-diff-hidden {
+  display: none !important;
+}
+
 .features-filter .form-text {
   width: 200px;
 }

@@ -2,17 +2,22 @@
 
 namespace Drupal\feeds\Feeds\Processor;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\feeds\Entity\FeedType;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\Exception\EmptyFeedException;
@@ -28,9 +33,11 @@ use Drupal\feeds\Plugin\Type\Processor\EntityProcessorInterface;
 use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 use Drupal\feeds\Plugin\Type\Target\TranslatableTargetInterface;
 use Drupal\feeds\StateInterface;
+use Drupal\feeds\StateType;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\user\EntityOwnerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -83,6 +90,41 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   protected $languageManager;
 
   /**
+   * The datetime interface for getting the system time.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $dateTime;
+
+  /**
+   * The action plugin manager.
+   *
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   */
+  protected $actionManager;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The logger for feeds channel.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * The database service.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * Constructs an EntityProcessorBase object.
    *
    * @param array $configuration
@@ -97,13 +139,28 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    *   The entity type bundle info.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
+   * @param \Drupal\Component\Datetime\TimeInterface $date_time
+   *   The datetime service for getting the system time.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $action_manager
+   *   The action plugin manager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger for the feeds channel.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, LanguageManagerInterface $language_manager, TimeInterface $date_time, PluginManagerInterface $action_manager, RendererInterface $renderer, LoggerInterface $logger, Connection $database) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityType = $entity_type_manager->getDefinition($plugin_definition['entity_type']);
     $this->storageController = $entity_type_manager->getStorage($plugin_definition['entity_type']);
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->languageManager = $language_manager;
+    $this->dateTime = $date_time;
+    $this->actionManager = $action_manager;
+    $this->renderer = $renderer;
+    $this->logger = $logger;
+    $this->database = $database;
 
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -118,7 +175,12 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('entity_type.bundle.info'),
-      $container->get('language_manager')
+      $container->get('language_manager'),
+      $container->get('datetime.time'),
+      $container->get('plugin.manager.action'),
+      $container->get('renderer'),
+      $container->get('logger.factory')->get('feeds'),
+      $container->get('database'),
     );
   }
 
@@ -132,6 +194,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $this->initCleanList($feed, $clean_state);
     }
 
+    $skip_new = $this->configuration['insert_new'] == static::SKIP_NEW;
     $existing_entity_id = $this->existingEntityId($feed, $item);
     $skip_existing = $this->configuration['update_existing'] == static::SKIP_EXISTING;
 
@@ -142,8 +205,12 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     }
 
     // Bulk load existing entities to save on db queries.
-    if ($skip_existing && $existing_entity_id) {
-      $state->skipped++;
+    if (($skip_existing && $existing_entity_id) || (!$existing_entity_id && $skip_new)) {
+      $state->report(StateType::SKIP, 'Skipped because the entity already exists.', [
+        'feed' => $feed,
+        'item' => $item,
+        'entity_label' => [$existing_entity_id, 'id'],
+      ]);
       return;
     }
 
@@ -153,32 +220,42 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     }
 
     $hash = $this->hash($item);
-    $changed = $existing_entity_id && ($hash !== $entity->get('feeds_item')->hash);
+    $changed = $existing_entity_id && ($hash !== $entity->get('feeds_item')->getItemHashByFeed($feed));
 
     // Do not proceed if the item exists, has not changed, and we're not
     // forcing the update.
     if ($existing_entity_id && !$changed && !$this->configuration['skip_hash_check']) {
-      $state->skipped++;
+      $state->report(StateType::SKIP, 'Skipped because the source data has not changed.', [
+        'feed' => $feed,
+        'item' => $item,
+        'entity' => $entity,
+        'entity_label' => $this->identifyEntity($entity, $feed),
+      ]);
       return;
     }
 
     // Build a new entity.
-    if (!$existing_entity_id) {
+    if (!$existing_entity_id && !$skip_new) {
       $entity = $this->newEntity($feed);
     }
 
     try {
       // Set feeds_item values.
-      $feeds_item = $entity->get('feeds_item');
-      $feeds_item->target_id = $feed->id();
+      $feeds_item = $entity->get('feeds_item')->getItemByFeed($feed, TRUE);
       $feeds_item->hash = $hash;
+
+      // Set new revision if needed.
+      if ($this->configuration['revision']) {
+        $entity->setNewRevision(TRUE);
+        $entity->setRevisionCreationTime($this->dateTime->getRequestTime());
+      }
 
       // Set field values.
       $this->map($feed, $entity, $item);
 
       // Validate the entity.
       $feed->dispatchEntityEvent(FeedsEvents::PROCESS_ENTITY_PREVALIDATE, $entity, $item);
-      $this->entityValidate($entity);
+      $this->entityValidate($entity, $feed);
 
       // Dispatch presave event.
       $feed->dispatchEntityEvent(FeedsEvents::PROCESS_ENTITY_PRESAVE, $entity, $item);
@@ -186,7 +263,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       // This will throw an exception on failure.
       $this->entitySaveAccess($entity);
       // Set imported time.
-      $entity->get('feeds_item')->imported = \Drupal::service('datetime.time')->getRequestTime();
+      $feeds_item->imported = $this->dateTime->getRequestTime();
 
       // And... Save! We made it.
       $this->storageController->save($entity);
@@ -195,19 +272,40 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $feed->dispatchEntityEvent(FeedsEvents::PROCESS_ENTITY_POSTSAVE, $entity, $item);
 
       // Track progress.
-      $existing_entity_id ? $state->updated++ : $state->created++;
+      $operation = $existing_entity_id ? StateType::UPDATE : StateType::CREATE;
+      $state->report($operation, '', [
+        'feed' => $feed,
+        'item' => $item,
+        'entity' => $entity,
+        'entity_label' => $this->identifyEntity($entity, $feed),
+      ]);
     }
     catch (EmptyFeedException $e) {
       // Not an error.
-      $state->skipped++;
+      $state->report(StateType::SKIP, 'Skipped because a value appeared to be empty.', [
+        'feed' => $feed,
+        'item' => $item,
+        'entity' => $entity,
+        'entity_label' => $this->identifyEntity($entity, $feed),
+      ]);
     }
     // Something bad happened, log it.
     catch (ValidationException $e) {
-      $state->failed++;
+      $state->report(StateType::FAIL, $e->getFormattedMessage(), [
+        'feed' => $feed,
+        'item' => $item,
+        'entity' => $entity,
+        'entity_label' => $this->identifyEntity($entity, $feed),
+      ]);
       $state->setMessage($e->getFormattedMessage(), 'warning');
     }
     catch (\Exception $e) {
-      $state->failed++;
+      $state->report(StateType::FAIL, $e->getMessage(), [
+        'feed' => $feed,
+        'item' => $item,
+        'entity' => $entity,
+        'entity_label' => $this->identifyEntity($entity, $feed),
+      ]);
       $state->setMessage($e->getMessage(), 'warning');
     }
   }
@@ -235,6 +333,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $ids = $this->entityTypeManager
       ->getStorage($this->entityType())
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id())
       ->condition('feeds_item.hash', $this->getConfiguration('update_non_existent'), '<>')
       ->execute();
@@ -255,6 +354,9 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       return;
     }
 
+    $message = '';
+    $variables = [];
+
     switch ($update_non_existent) {
       case static::KEEP_NON_EXISTENT:
         // No action to take on this entity.
@@ -262,17 +364,19 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
 
       case static::DELETE_NON_EXISTENT:
         $entity->delete();
+        $message = 'Deleted because the item was no longer in the source.';
         break;
 
       default:
         try {
           // Apply action on entity.
-          \Drupal::service('plugin.manager.action')
-            ->createInstance($update_non_existent)
-            ->execute($entity);
+          $action = $this->actionManager->createInstance($update_non_existent);
+          $action->execute($entity);
+          $message = 'Applied action @action because the item was no longer in the source.';
+          $variables['@action'] = $action->getPluginDefinition()['label'];
         }
         catch (PluginNotFoundException $e) {
-          $state->setMessage(t('Cleaning %entity failed because of non-existing action plugin %name.', [
+          $state->setMessage($this->t('Cleaning %entity failed because of non-existing action plugin %name.', [
             '%entity' => $entity->label(),
             '%name' => $update_non_existent,
           ]), 'error');
@@ -283,17 +387,21 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     }
 
     // Check if the entity was deleted.
-    $entity = $this->storageController->load($entity->id());
+    $entity_reloaded = $this->storageController->load($entity->id());
 
     // If the entity was not deleted, update hash.
-    if (isset($entity->feeds_item)) {
-      $entity->get('feeds_item')->hash = $update_non_existent;
-      $this->storageController->save($entity);
+    if (isset($entity_reloaded->feeds_item)) {
+      $entity_reloaded->get('feeds_item')->getItemByFeed($feed)->hash = $update_non_existent;
+      $this->storageController->save($entity_reloaded);
     }
 
     // State progress.
-    $state->updated++;
-    $state->progress($state->total, $state->updated);
+    $state->report(StateType::CLEAN, $message, [
+      'feed' => $feed,
+      'entity' => $entity,
+      'entity_label' => $this->identifyEntity($entity, $feed),
+    ] + $variables);
+    $state->progress($state->total, $state->cleaned);
   }
 
   /**
@@ -304,6 +412,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $query = $this->entityTypeManager
       ->getStorage($this->entityType())
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id());
 
     // If there is no total, query it.
@@ -518,6 +627,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     if ($entity->id()) {
       $result = $this->storageController
         ->getQuery()
+        ->accessCheck(FALSE)
         ->condition($this->entityType->getKey('id'), $entity->id())
         ->execute();
       return !empty($result);
@@ -529,7 +639,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   /**
    * {@inheritdoc}
    */
-  protected function entityValidate(EntityInterface $entity) {
+  protected function entityValidate(EntityInterface $entity, FeedInterface $feed) {
     // Check if an entity with the same ID already exists if the given entity is
     // new.
     if ($entity->isNew() && $this->entityExists($entity)) {
@@ -575,28 +685,43 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       '#items' => $errors,
     ];
 
-    // Compose error message. If available, use the entity label to indicate
-    // which item failed. Fallback to the GUID value (if available) or else
-    // no indication.
-    $label = $entity->label();
-    $guid = $entity->get('feeds_item')->guid;
-
+    $entity_details = $this->identifyEntity($entity, $feed);
     $messages = [];
     $args = [
       '@entity' => mb_strtolower($this->entityTypeLabel()),
-      '%label' => $label,
-      '%guid' => $guid,
-      '@errors' => \Drupal::service('renderer')->renderRoot($element),
+      '%label' => $entity_details['label'] ?? '',
+      '@id' => $entity_details['id'] ?? '',
+      '@errors' => $this->renderer->renderRoot($element),
       ':url' => $this->url('entity.feeds_feed_type.mapping', ['feeds_feed_type' => $this->feedType->id()]),
     ];
-    if ($label || $label === '0' || $label === 0) {
-      $messages[] = $this->t('The @entity %label failed to validate with the following errors: @errors', $args);
-    }
-    elseif ($guid || $guid === '0' || $guid === 0) {
-      $messages[] = $this->t('The @entity with GUID %guid failed to validate with the following errors: @errors', $args);
+
+    if (empty($entity_details['type'])) {
+      $messages[] = $this->t('An entity of type "@entity" failed to validate with the following errors: @errors', $args);
     }
     else {
-      $messages[] = $this->t('An entity of type "@entity" failed to validate with the following errors: @errors', $args);
+      switch ($entity_details['type']) {
+        case 'label':
+          if ($entity_details['id'] || $entity_details['id'] === '0') {
+            $messages[] = $this->t('The @entity %label (@id) failed to validate with the following errors: @errors', $args);
+          }
+          else {
+            $messages[] = $this->t('The @entity %label failed to validate with the following errors: @errors', $args);
+          }
+          break;
+
+        case 'guid':
+          if ($entity_details['id'] || $entity_details['id'] === '0') {
+            $messages[] = $this->t('The @entity with GUID %label (@id) failed to validate with the following errors: @errors', $args);
+          }
+          else {
+            $messages[] = $this->t('The @entity with GUID %label failed to validate with the following errors: @errors', $args);
+          }
+          break;
+
+        case 'id':
+          $messages[] = $this->t('The @entity with ID %label failed to validate with the following errors: @errors', $args);
+          break;
+      }
     }
     $messages[] = $this->t('Please check your <a href=":url">mappings</a>.', $args);
 
@@ -604,9 +729,65 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     $message_element = [
       '#markup' => implode("\n", $messages),
     ];
-    $message = \Drupal::service('renderer')->renderRoot($message_element);
+    $message = $this->renderer->renderRoot($message_element);
 
     throw new ValidationException($message);
+  }
+
+  /**
+   * Tries to identify the entity, even if it is new.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity to identify.
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed that is importing the entity.
+   *
+   * @return array|null
+   *   An array with the following data (in this order):
+   *   - label (string): the label of the entity.
+   *   - type (string): the type of identification.
+   *   - id (int): the entity ID, if there is one.
+   *   Or null if the entity couldn't be identified.
+   */
+  protected function identifyEntity(EntityInterface $entity, FeedInterface $feed): ?array {
+    $identify_keys = [
+      'label',
+      'guid',
+      'id',
+    ];
+    foreach ($identify_keys as $key) {
+      switch ($key) {
+        case 'label':
+          $label = (string) $entity->label();
+          break;
+
+        case 'guid':
+          if ($entity->hasField('feeds_item')) {
+            $label = (string) $entity->get('feeds_item')->getItemByFeed($feed)->guid;
+          }
+          else {
+            $label = NULL;
+          }
+          break;
+
+        case 'id':
+          $label = (string) $entity->id();
+          break;
+      }
+      if ($label || $label === '0') {
+        // An identification method has worked. Break out of the loop.
+        break;
+      }
+    }
+
+    if ($label || $label === '0') {
+      return [
+        'label' => $label,
+        'type' => $key,
+        'id' => $entity->id(),
+      ];
+    }
+    return NULL;
   }
 
   /**
@@ -681,11 +862,13 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    */
   public function defaultConfiguration() {
     $defaults = [
+      'insert_new' => static::INSERT_NEW,
       'update_existing' => static::SKIP_EXISTING,
       'update_non_existent' => static::KEEP_NON_EXISTENT,
       'skip_hash_check' => FALSE,
       'values' => [],
       'authorize' => $this->entityType->entityClassImplements('Drupal\user\EntityOwnerInterface'),
+      'revision' => FALSE,
       'expire' => static::EXPIRE_NEVER,
       'owner_id' => 0,
       'owner_feed_author' => 0,
@@ -735,6 +918,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
         'entity_type' => $this->entityType(),
         'type' => 'feeds_item',
         'translatable' => FALSE,
+        'cardinality' => FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED,
       ])->save();
     }
     // Create field instance if it doesn't exist.
@@ -811,10 +995,11 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     if ($time == static::EXPIRE_NEVER) {
       return;
     }
-    $expire_time = \Drupal::service('datetime.time')->getRequestTime() - $time;
+    $expire_time = $this->dateTime->getRequestTime() - $time;
     return $this->entityTypeManager
       ->getStorage($this->entityType())
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id())
       ->condition('feeds_item.imported', $expire_time, '<')
       ->execute();
@@ -835,6 +1020,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     return $this->entityTypeManager
       ->getStorage($this->entityType())
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id())
       ->count()
       ->execute();
@@ -847,6 +1033,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
     return $this->entityTypeManager
       ->getStorage($this->entityType())
       ->getQuery()
+      ->accessCheck(FALSE)
       ->condition('feeds_item.target_id', $feed->id())
       ->execute();
   }
@@ -989,6 +1176,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       $this->isLocked = (bool) $this->entityTypeManager
         ->getStorage('feeds_feed')
         ->getQuery()
+        ->accessCheck(FALSE)
         ->condition('type', $this->feedType->id())
         ->range(0, 1)
         ->execute();
@@ -1036,7 +1224,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       }
 
       // Clear the target.
-      $this->clearTarget($entity, $this->feedType->getTargetPlugin($delta), $mapping['target']);
+      $this->clearTarget($feed, $entity, $this->feedType->getTargetPlugin($delta), $mapping['target']);
     }
 
     // Gather all of the values for this item.
@@ -1097,6 +1285,8 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
   /**
    * Clears the target on the entity.
    *
+   * @param \Drupal\feeds\FeedInterface $feed
+   *   The feed object.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to clear the target on.
    * @param \Drupal\feeds\Plugin\Type\Target\TargetInterface $target
@@ -1104,7 +1294,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
    * @param string $target_name
    *   The property to clear on the entity.
    */
-  protected function clearTarget(EntityInterface $entity, TargetInterface $target, $target_name) {
+  protected function clearTarget(FeedInterface $feed, EntityInterface $entity, TargetInterface $target, $target_name) {
     if (!$target->isMutable()) {
       // Don't clear immutable targets.
       return;
@@ -1134,22 +1324,38 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
       }
     }
 
-    unset($entity_target->{$target_name});
+    $target->clearTarget($feed, $entity_target, $target_name);
   }
 
   /**
    * {@inheritdoc}
    *
-   * @todo Sort this out so that we aren't calling \Drupal::database()->delete()
-   * here.
+   * @todo Avoid using the database service. Find an other way to clean up
+   * references to feeds that are being removed.
+   * @todo the cache clearing logic of target entity could probably be addressed
+   * along with the todo above.
    */
   public function onFeedDeleteMultiple(array $feeds) {
     $fids = [];
     foreach ($feeds as $feed) {
       $fids[] = $feed->id();
     }
-    $table = $this->entityType() . '__feeds_item';
-    \Drupal::database()->delete($table)
+
+    $entity_type_id = $this->entityType();
+    $table = "{$entity_type_id}__feeds_item";
+
+    // Clear the cache of associated target entities so that they won't
+    // reference to the deleted feeds items.
+    $target_entities = $this->database->select($table, 'fi')
+      ->condition('feeds_item_target_id', $fids, 'IN')
+      ->fields('fi', ['entity_id'])
+      ->execute()
+      ->fetchCol();
+
+    $unique_ids = array_unique($target_entities);
+    $this->entityTypeManager->getStorage($entity_type_id)->resetCache($unique_ids);
+
+    $this->database->delete($table)
       ->condition('feeds_item_target_id', $fids, 'IN')
       ->execute();
   }
@@ -1177,7 +1383,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
 
       default:
         try {
-          $definition = \Drupal::service('plugin.manager.action')->getDefinition($this->getConfiguration('update_non_existent'));
+          $definition = $this->actionManager->getDefinition($this->getConfiguration('update_non_existent'));
           if (isset($definition['provider'])) {
             $this->addDependency('module', $definition['provider']);
           }
@@ -1185,7 +1391,7 @@ abstract class EntityProcessorBase extends ProcessorBase implements EntityProces
         catch (PluginNotFoundException $e) {
           // It's possible that the selected action plugin no longer exists. Log
           // an error about it.
-          \Drupal::logger('feeds')->warning('The selected option for the setting "Previously imported items" in the feed type %feed_type_id no longer exists. Please edit the feed type and select a different option for that setting.', [
+          $this->logger->warning('The selected option for the setting "Previously imported items" in the feed type %feed_type_id no longer exists. Please edit the feed type and select a different option for that setting.', [
             '%feed_type_id' => $this->feedType->id(),
           ]);
         }

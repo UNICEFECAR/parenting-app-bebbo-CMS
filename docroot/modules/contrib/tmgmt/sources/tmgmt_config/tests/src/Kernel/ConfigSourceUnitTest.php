@@ -19,12 +19,12 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt', 'tmgmt_config', 'tmgmt_test', 'node', 'filter', 'language', 'config_translation', 'locale', 'views', 'views_ui', 'options');
+  protected static $modules = array('tmgmt', 'tmgmt_config', 'tmgmt_test', 'node', 'filter', 'language', 'config_translation', 'locale', 'views', 'views_ui', 'options');
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Add the languages.
@@ -64,15 +64,15 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the name property.
-    $this->assertEqual($data['name']['#label'], 'Name');
-    $this->assertEqual($data['name']['#text'], $node_type->label());
-    $this->assertEqual($data['name']['#translate'], TRUE);
-    $this->assertEqual($data['description']['#label'], 'Description');
-    $this->assertEqual($data['description']['#text'], $node_type->getDescription());
-    $this->assertEqual($data['description']['#translate'], TRUE);
+    $this->assertEquals('Name', $data['name']['#label']);
+    $this->assertEquals($node_type->label(), $data['name']['#text']);
+    $this->assertTrue($data['name']['#translate']);
+    $this->assertEquals('Description', $data['description']['#label']);
+    $this->assertEquals($node_type->getDescription(), $data['description']['#text']);
+    $this->assertTrue($data['description']['#translate']);
 
     // Test item types.
-    $this->assertEqual($source_plugin->getItemTypes()['node_type'], t('Content type'));
+    $this->assertEquals(t('Content type'), $source_plugin->getItemTypes()['node_type']);
 
     // Now request a translation and save it back.
     $job->requestTranslation();
@@ -86,8 +86,8 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $language_manager->setConfigOverrideLanguage($language_manager->getLanguage('de'));
     $node_type = NodeType::load($node_type->id());
 
-    $this->assertEqual($node_type->label(), $data['name']['#translation']['#text']);
-    $this->assertEqual($node_type->getDescription(), $data['description']['#translation']['#text']);
+    $this->assertEquals($data['name']['#translation']['#text'], $node_type->label());
+    $this->assertEquals($data['description']['#translation']['#text'], $node_type->getDescription());
   }
 
   /**
@@ -106,25 +106,25 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the name property.
-    $this->assertEqual($data['label']['#label'], 'Label');
-    $this->assertEqual($data['label']['#text'], $view->label());
-    $this->assertEqual($data['label']['#translate'], TRUE);
-    $this->assertEqual($data['description']['#label'], 'Administrative description');
-    $this->assertEqual($data['description']['#text'], 'Gives a bulk operation overview of translation jobs in the system.');
-    $this->assertEqual($data['description']['#translate'], TRUE);
-    $this->assertEqual($data['display']['default']['display_title']['#text'], 'Master');
-    $this->assertEqual($data['display']['default']['display_options']['exposed_form']['options']['submit_button']['#label'], 'Submit button text');
-    $this->assertEqual($data['display']['default']['display_options']['pager']['options']['expose']['items_per_page_label']['#label'], 'Items per page label');
+    $this->assertEquals('Label', $data['label']['#label']);
+    $this->assertEquals($view->label(), $data['label']['#text']);
+    $this->assertTrue($data['label']['#translate']);
+    $this->assertEquals('Administrative description', $data['description']['#label']);
+    $this->assertEquals('Gives a bulk operation overview of translation jobs in the system.', $data['description']['#text']);
+    $this->assertTrue($data['description']['#translate']);
+    $this->assertEquals('Master', $data['display']['default']['display_title']['#text']);
+    $this->assertEquals('Submit button text', $data['display']['default']['display_options']['exposed_form']['options']['submit_button']['#label']);
+    $this->assertEquals('Items per page label', $data['display']['default']['display_options']['pager']['options']['expose']['items_per_page_label']['#label']);
 
     // Tests for labels on more levels.
-    $this->assertEqual($data['display']['default']['display_options']['pager']['options']['expose']['#label'], 'Exposed options');
-    $this->assertEqual($data['display']['default']['display_options']['pager']['options']['#label'], 'Paged output, full pager');
-    $this->assertEqual($data['display']['default']['display_options']['pager']['#label'], 'Pager');
-    $this->assertEqual($data['display']['default']['display_options']['#label'], 'Default display options');
-    $this->assertEqual($data['display']['default']['#label'], 'Display settings');
+    $this->assertEquals('Exposed options', $data['display']['default']['display_options']['pager']['options']['expose']['#label']);
+    $this->assertEquals('Paged output, full pager', $data['display']['default']['display_options']['pager']['options']['#label']);
+    $this->assertEquals('Pager', $data['display']['default']['display_options']['pager']['#label']);
+    $this->assertEquals('Default display options', $data['display']['default']['display_options']['#label']);
+    $this->assertEquals('Display settings', $data['display']['default']['#label']);
 
     // Test item types.
-    $this->assertEqual($source_plugin->getItemTypes()['view'], t('View'));
+    $this->assertEquals(t('View'), $source_plugin->getItemTypes()['view']);
 
     // Now request a translation and save it back.
     $job->requestTranslation();
@@ -138,12 +138,12 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $language_manager->setConfigOverrideLanguage($language_manager->getLanguage('de'));
     $view = View::load('tmgmt_job_overview');
 
-    $this->assertEqual($view->label(), $data['label']['#translation']['#text']);
-    $this->assertEqual($view->get('description'), $data['description']['#translation']['#text']);
+    $this->assertEquals($data['label']['#translation']['#text'], $view->label());
+    $this->assertEquals($data['description']['#translation']['#text'], $view->get('description'));
 
     $display = $view->get('display');
-    $this->assertEqual($display['default']['display_options']['title'], $data['label']['#translation']['#text']);
-    $this->assertEqual($display['default']['display_options']['exposed_form']['options']['submit_button'], $data['display']['default']['display_options']['exposed_form']['options']['submit_button']['#translation']['#text']);
+    $this->assertEquals($data['label']['#translation']['#text'], $display['default']['display_options']['title']);
+    $this->assertEquals($data['display']['default']['display_options']['exposed_form']['options']['submit_button']['#translation']['#text'], $display['default']['display_options']['exposed_form']['options']['submit_button']);
   }
 
   /**
@@ -162,12 +162,12 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the name property.
-    $this->assertEqual($data['slogan']['#label'], 'Slogan');
-    $this->assertEqual($data['slogan']['#text'], 'Test slogan');
-    $this->assertEqual($data['slogan']['#translate'], TRUE);
+    $this->assertEquals('Slogan', $data['slogan']['#label']);
+    $this->assertEquals('Test slogan', $data['slogan']['#text']);
+    $this->assertTrue($data['slogan']['#translate']);
 
     // Test item types.
-    $this->assertEqual($source_plugin->getItemTypes()['view'], t('View'));
+    $this->assertEquals(t('View'), $source_plugin->getItemTypes()['view']);
 
     // Now request a translation and save it back.
     $job->requestTranslation();
@@ -180,7 +180,7 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $language_manager = \Drupal::languageManager();
     $language_manager->setConfigOverrideLanguage($language_manager->getLanguage('de'));
 
-    $this->assertEqual(\Drupal::config('system.site')->get('slogan'), $data['slogan']['#translation']['#text']);
+    $this->assertEquals($data['slogan']['#translation']['#text'], \Drupal::config('system.site')->get('slogan'));
   }
   /**
    * Tests the user config entity.
@@ -198,12 +198,12 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the name property.
-    $this->assertEqual($data['user__settings']['anonymous']['#label'], 'Name');
-    $this->assertEqual($data['user__settings']['anonymous']['#text'], 'Test Anonymous');
-    $this->assertEqual($data['user__settings']['anonymous']['#translate'], TRUE);
+    $this->assertEquals('Name', $data['user__settings']['anonymous']['#label']);
+    $this->assertEquals('Test Anonymous', $data['user__settings']['anonymous']['#text']);
+    $this->assertTrue($data['user__settings']['anonymous']['#translate']);
 
     // Test item types.
-    $this->assertEqual($source_plugin->getItemTypes()['view'], t('View'));
+    $this->assertEquals(t('View'), $source_plugin->getItemTypes()['view']);
 
     // Now request a translation and save it back.
     $job->requestTranslation();
@@ -216,6 +216,6 @@ class ConfigSourceUnitTest extends TMGMTKernelTestBase {
     $language_manager = \Drupal::languageManager();
     $language_manager->setConfigOverrideLanguage($language_manager->getLanguage('de'));
 
-    $this->assertEqual(\Drupal::config('user.settings')->get('anonymous'), $data['user__settings']['anonymous']['#translation']['#text']);
+    $this->assertEquals($data['user__settings']['anonymous']['#translation']['#text'], \Drupal::config('user.settings')->get('anonymous'));
   }
 }

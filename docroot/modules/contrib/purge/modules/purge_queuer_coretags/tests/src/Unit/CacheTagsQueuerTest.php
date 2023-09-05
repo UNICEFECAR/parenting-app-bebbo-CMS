@@ -7,7 +7,7 @@ use Drupal\purge\Plugin\Purge\Invalidation\InvalidationInterface;
 use Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface;
 use Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface;
 use Drupal\purge\Plugin\Purge\Queuer\QueuerBase;
-use Drupal\purge\Plugin\Purge\Queuers\QueuersServiceInterface;
+use Drupal\purge\Plugin\Purge\Queuer\QueuersServiceInterface;
 use Drupal\purge_queuer_coretags\CacheTagsQueuer;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -30,7 +30,7 @@ class CacheTagsQueuerTest extends UnitTestCase {
   /**
    * The mocked config factory.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Drupal\Core\Config\ConfigFactoryInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
@@ -44,21 +44,21 @@ class CacheTagsQueuerTest extends UnitTestCase {
   /**
    * The mocked queue service.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\purge\Plugin\Purge\Queue\QueueServiceInterface
    */
   protected $purgeQueue;
 
   /**
    * The mocked queuers service.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Drupal\purge\Plugin\Purge\Queuers\QueuersServiceInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\purge\Plugin\Purge\Queuer\QueuersServiceInterface
    */
   protected $purgeQueuers;
 
   /**
    * The mocked invalidations factory.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\purge\Plugin\Purge\Invalidation\InvalidationsServiceInterface
    */
   protected $purgeInvalidationFactory;
 
@@ -66,8 +66,8 @@ class CacheTagsQueuerTest extends UnitTestCase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    $this->purgeQueue = $this->getMockBuilder(QueueServiceInterface::class)->setMethods([])->getMock();
-    $this->purgeQueuers = $this->getMockBuilder(QueuersServiceInterface::class)->setMethods(['get'])->getMock();
+    $this->purgeQueue = $this->getMockBuilder(QueueServiceInterface::class)->onlyMethods([])->getMock();
+    $this->purgeQueuers = $this->createMock(QueuersServiceInterface::class);
     $this->purgeInvalidationFactory = $this->getMockForAbstractClass(InvalidationsServiceInterface::class);
 
     // Create a container with all dependent services in it.

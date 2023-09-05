@@ -3,6 +3,7 @@
 namespace Drupal\view_custom_table\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,14 +20,24 @@ class TablesViews extends ControllerBase {
    */
   protected $entityManager;
 
-/**
-  * TablesViews class constructor.
-  *
-  * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
-  *   EntityTypeManager.
-  */
-  public function __construct(EntityTypeManagerInterface $entityManager) {
+  /**
+   * Drupal\Core\Render\RendererInterface definition.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * TablesViews class constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
+   *   EntityTypeManager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The Renderer.
+   */
+  public function __construct(EntityTypeManagerInterface $entityManager, RendererInterface $renderer) {
     $this->entityManager = $entityManager;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -34,14 +45,15 @@ class TablesViews extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('renderer')
     );
   }
 
   /**
    * Display views created by custom tables.
    *
-   * @param null $table_name
+   * @param string $table_name
    *   Table name.
    *
    * @return array
@@ -51,7 +63,7 @@ class TablesViews extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function content($table_name = NULL) {
+  public function content($table_name = '') {
     $properties = ['base_table' => $table_name];
     $views = $this->entityManager->getStorage('view')->loadByProperties($properties);
     if (!empty($views)) {
@@ -124,7 +136,7 @@ class TablesViews extends ControllerBase {
           'name' => $view->label(),
           'machine_name' => $machine_name,
           'description' => $view->get('description'),
-          'operations' => render($links),
+          'operations' => $this->renderer->render($links),
         ];
       }
       $headers = [
@@ -136,7 +148,7 @@ class TablesViews extends ControllerBase {
       return [
         '#theme' => 'table',
         '#header' => $headers,
-        '#rows' => isset($rows) ? $rows : [],
+        '#rows' => $rows ?? [],
       ];
     }
     else {

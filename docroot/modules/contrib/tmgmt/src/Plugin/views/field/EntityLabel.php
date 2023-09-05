@@ -39,7 +39,7 @@ class EntityLabel extends FieldPluginBase {
    * {@inheritdoc}
    */
   function render(ResultRow $values) {
-    if ($entity = $this->getEntity($values)) {
+    if ($this->getValue($values) && $entity = $this->getEntity($values)) {
 
       if (!empty($this->options['link_to_entity'])) {
         $this->options['alter']['url'] = $entity->toUrl();

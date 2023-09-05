@@ -25,4 +25,13 @@ class FeedsSource extends FeedsBase {
    */
   public $field_types;
 
+  /**
+   * The category to which the source plugin belongs.
+   *
+   * This category gets displayed on the source selector on the mapping form.
+   *
+   * @var \Drupal\Core\Annotation\Translation
+   */
+  public $category;
+
 }

@@ -22,11 +22,11 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_content', 'taxonomy', 'comment');
+  protected static $modules = array('tmgmt_content', 'taxonomy', 'comment');
 
   protected $nodes = array();
 
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->loginAsAdmin();
 
@@ -99,10 +99,10 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // Limit to the first vocabulary.
     $edit = array();
     $edit['search[vid]'] = $vocabulary1->id();
-    $this->drupalPostForm(NULL, $edit, t('Search'));
+    $this->submitForm($edit, t('Search'));
     // Only term 1 should be displayed now.
     $this->assertSession()->pageTextContains($term1->label());
-    $this->assertNoText($term2->label());
+    $this->assertSession()->pageTextNotContains($term2->label());
     $this->assertNotEmpty($this->xpath('//td[text()=@vocabulary]', array('@vocabulary' => $vocabulary1->label())));
     $this->assertEmpty($this->xpath('//td[text()=@vocabulary]', array('@vocabulary' => $vocabulary2->label())));
 
@@ -122,11 +122,11 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // We expect article title as article node type is entity translatable.
     $this->assertSession()->pageTextContains($this->nodes['article']['en'][0]->label());
     // Page node type should not be listed as it is not entity translatable.
-    $this->assertNoText($this->nodes['page']['en'][0]->label());
+    $this->assertSession()->pageTextNotContains($this->nodes['page']['en'][0]->label());
     // If the source language is not defined, don't display it.
-    $this->assertNoText($this->nodes['article'][LanguageInterface::LANGCODE_NOT_SPECIFIED][0]->label());
+    $this->assertSession()->pageTextNotContains($this->nodes['article'][LanguageInterface::LANGCODE_NOT_SPECIFIED][0]->label());
     // If the source language is not applicable, don't display it.
-    $this->assertNoText($this->nodes['article'][LanguageInterface::LANGCODE_NOT_APPLICABLE][0]->label());
+    $this->assertSession()->pageTextNotContains($this->nodes['article'][LanguageInterface::LANGCODE_NOT_APPLICABLE][0]->label());
   }
 
   function testTranslationStatuses() {
@@ -136,8 +136,8 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $langstatus_en = $this->xpath('//table[@id="edit-items"]/tbody/tr[1]/td[@class="langstatus-en"]/a/img');
     $langstatus_de = $this->xpath('//table[@id="edit-items"]/tbody/tr[1]/td[@class="langstatus-de"]/img');
 
-    $this->assertEqual($langstatus_en[0]->getAttribute('title'), t('Original language'));
-    $this->assertEqual($langstatus_de[0]->getAttribute('title'), t('Not translated'));
+    $this->assertEquals(t('Original language'), $langstatus_en[0]->getAttribute('title'));
+    $this->assertEquals(t('Not translated'), $langstatus_de[0]->getAttribute('title'));
 
     // Test status: Active job item.
     $job = $this->createJob('en', 'de');
@@ -155,7 +155,7 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $states = JobItem::getStates();
     $label = t('Active job item: @state', array('@state' => $states[reset($items)->getState()]));
 
-    $this->assertEqual((string)$langstatus_de[0]->getAttribute('title'), $label);
+    $this->assertEquals($label, (string)$langstatus_de[0]->getAttribute('title'));
 
     // Test status: Current
     foreach ($job->getItems() as $job_item) {
@@ -165,28 +165,48 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $this->drupalGet('admin/tmgmt/sources/content/node');
     $langstatus_de = $this->xpath('//table[@id="edit-items"]/tbody/tr[1]/td[@class="langstatus-de"]/a/img');
 
-    $this->assertEqual($langstatus_de[0]->getAttribute('title'), t('Translation up to date'));
+    $this->assertEquals(t('Translation up to date'), $langstatus_de[0]->getAttribute('title'));
+
+    // Test status: Inactive job.
+    $job = $this->createJob('en', 'de');
+    $job->translator = $this->default_translator->id();
+    $job->settings = array();
+    $job->save();
+
+    $job->addItem('content', 'node', $this->nodes['article']['en'][0]->id());
+
+    $this->drupalGet('admin/tmgmt/sources/content/node');
+    $langstatus_de = $this->xpath('//table[@id="edit-items"]/tbody/tr[1]/td[@class="langstatus-de"]/a/img');
+
+    $items = $job->getItems();
+    $states = JobItem::getStates();
+    $label = t('Active job item: @state', array('@state' => $states[reset($items)->getState()]));
+
+    $this->assertEquals($label, (string)$langstatus_de[1]->getAttribute('title'));
   }
 
   function testTranslationSubmissions() {
 
     // Simple submission.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $nid = $this->nodes['article']['en'][0]->id();
     $edit = array();
     $edit["items[$nid]"] = 1;
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
 
     // Submission of two entities of the same original language.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $nid1 = $this->nodes['article']['en'][0]->id();
     $nid2 = $this->nodes['article']['en'][1]->id();
     $edit = array();
     $edit["items[$nid1]"] = 1;
     $edit["items[$nid2]"] = 1;
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('One job needs to be checked out.'));
 
     // Submission of several entities of different original languages.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $nid1 = $this->nodes['article']['en'][0]->id();
     $nid2 = $this->nodes['article']['en'][1]->id();
     $nid3 = $this->nodes['article']['en'][2]->id();
@@ -201,11 +221,12 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $edit["items[$nid5]"] = 1;
     $edit["items[$nid6]"] = 1;
     $edit['target_language'] = 'it';
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('@count jobs need to be checked out.', array('@count' => '3')));
 
     // Submission of several entities of different original languages to multiple
     // target languages.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $edit = array();
     $edit["items[$nid1]"] = 1;
     $edit["items[$nid2]"] = 1;
@@ -223,11 +244,12 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // DE => FR
     // FR => DE
 
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('@count jobs need to be checked out.', array('@count' => 4)));
 
     // Submission of several entities of different original languages to all
     // target languages.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $edit = array();
     $edit["items[$nid1]"] = 1;
     $edit["items[$nid2]"] = 1;
@@ -248,11 +270,12 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // FR => IT
     // FR => EN
 
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('@count jobs need to be checked out.', array('@count' => 9)));
 
     // Submission of several entities of different original languages to all
     // target languages and force a source language.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $edit = array();
     $edit["items[$nid1]"] = 1;
     $edit["items[$nid2]"] = 1;
@@ -268,7 +291,7 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // FR => IT
     // FR => EN
 
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Request translation'));
+    $this->submitForm($edit, t('Request translation'));
     $this->assertSession()->pageTextContains(t('@count jobs need to be checked out.', array('@count' => 3)));
   }
 
@@ -300,17 +323,38 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     // Try the search by content type.
     $edit = array();
     $edit['search[type]'] = 'article';
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Search'));
+    $this->submitForm($edit, t('Search'));
     // There should be article present.
     $this->assertSession()->pageTextContains($this->nodes['article']['en'][0]->label());
     // The page node should not be listed.
-    $this->assertNoText($page_node_translatable->label());
+    $this->assertSession()->pageTextNotContains($page_node_translatable->label());
 
     // Try cancel button - despite we do post content type search value
     // we should get nodes of botch content types.
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Cancel'));
+    $this->drupalGet('admin/tmgmt/sources/content/node');
+    $this->submitForm($edit, t('Cancel'));
     $this->assertSession()->pageTextContains($this->nodes['article']['en'][0]->label());
     $this->assertSession()->pageTextContains($page_node_translatable->label());
+
+    // Ensure that the pager limit works as expected if there are translations
+    // and revisions.
+    $this->config('tmgmt.settings')
+      ->set('source_list_limit', 8)
+      ->save();
+    $translation = $this->nodes['article']['de'][0]->addTranslation('en', $this->nodes['article']['de'][0]->toArray());
+    $translation->setNewRevision(TRUE);
+    $translation->save();
+
+    $this->drupalGet('admin/tmgmt/sources/content/node');
+    $this->assertSession()->linkNotExists('Next');
+
+    $this->config('tmgmt.settings')
+      ->set('source_list_limit', 4)
+      ->save();
+    $this->drupalGet('admin/tmgmt/sources/content/node');
+    $this->assertSession()->linkExists('Next');
+    $this->assertSession()->linkExists('Go to page 2');
+    $this->assertSession()->linkNotExists('Go to page 3');
   }
 
   function testEntitySourceListSearch() {
@@ -325,14 +369,15 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $this->nodes['article']['en'][0]->save();
 
     // Submit partial node title and see if we have a result.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $edit = array();
     $edit['search[title]'] = "$title_part_1 $title_part_3";
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, t('Search'));
-    $this->assertSession()->pageTextContains("$title_part_1 $title_part_2 $title_part_3", 'Searching on partial node title must return the result.');
+    $this->submitForm($edit, t('Search'));
+    $this->assertSession()->pageTextContains("$title_part_1 $title_part_2 $title_part_3");
 
     // Check if there is only one result in the list.
     $search_result_rows = $this->xpath('//table[@id="edit-items"]/tbody/tr');
-    $this->assert(count($search_result_rows) == 1, 'The search result must return only one row.');
+    $this->assertCount(1, $search_result_rows, 'The search result must return only one row.');
 
     // To test if other entity types work go for simple comment search.
     $this->addDefaultCommentField('node', 'article');
@@ -349,21 +394,33 @@ class ContentTmgmtEntitySourceListTest extends TMGMTTestBase {
     $comment = Comment::create($values);
     $comment->save();
     // Do search for the comment.
+    $this->drupalGet('admin/tmgmt/sources/content/comment');
     $edit = array();
     $edit['search[subject]'] = $comment->getSubject();
-    $this->drupalPostForm('admin/tmgmt/sources/content/comment', $edit, t('Search'));
-    $this->assertSession()->pageTextContains($comment->getSubject(), 'Searching for a comment subject.');
+    $this->submitForm($edit, t('Search'));
+    $this->assertSession()->pageTextContains($comment->getSubject());
 
     // Tests that search bundle filter works.
-    $this->drupalPostForm('/admin/tmgmt/sources/content/node', ['search[title]' => $this->nodes['article']['en'][0]->label()], 'Search');
+    $this->drupalGet('/admin/tmgmt/sources/content/node');
+    $this->submitForm(['search[title]' => $this->nodes['article']['en'][0]->label()], 'Search');
     $this->assertSession()->pageTextContains(t('Content overview'));
     $this->assertSession()->pageTextContains($this->nodes['article']['en'][0]->label());
-    $this->drupalPostForm('/admin/tmgmt/sources/content/node', ['search[title]' => 'wrong_value'], 'Search');
+    $this->submitForm(['search[title]' => 'wrong_value'], 'Search');
     $this->assertSession()->pageTextContains(t('Content overview'));
     $this->assertSession()->pageTextNotContains($this->nodes['article']['en'][0]->label());
-    $edit = array('any_key' => 'any_value');
-    $this->drupalGet('/admin/tmgmt/sources/content/node', $edit);
-    $this->assertResponse(200);
+    $options = ['query' => ['any_key' => 'any_value']];
+    $this->drupalGet('/admin/tmgmt/sources/content/node', $options);
+    $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($this->nodes['article']['en'][0]->label());
+
+    // Test combined title and language filter.
+    $this->drupalGet('/admin/tmgmt/sources/content/node');
+    $edit = [
+      'search[target_language]' => 'de',
+      'search[title]' => $this->nodes['article']['en'][0]->label(),
+    ];
+    $this->submitForm($edit, 'Search');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->linkExists($this->nodes['article']['en'][0]->label());
   }
 }

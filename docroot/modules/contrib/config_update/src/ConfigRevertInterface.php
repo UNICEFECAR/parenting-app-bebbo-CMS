@@ -8,12 +8,28 @@ namespace Drupal\config_update;
 interface ConfigRevertInterface {
 
   /**
+   * Name of the event triggered before configuration import.
+   *
+   * @see \Drupal\config_update\ConfigPreRevertEvent
+   * @see \Drupal\config_update\ConfigRevertInterface::import()
+   */
+  const PRE_IMPORT = 'config_update.pre_import';
+
+  /**
    * Name of the event triggered on configuration import.
    *
    * @see \Drupal\config_update\ConfigRevertEvent
    * @see \Drupal\config_update\ConfigRevertInterface::import()
    */
   const IMPORT = 'config_update.import';
+
+  /**
+   * Name of the event triggered before configuration revert.
+   *
+   * @see \Drupal\config_update\ConfigPreRevertEvent
+   * @see \Drupal\config_update\ConfigRevertInterface::revert()
+   */
+  const PRE_REVERT = 'config_update.pre_revert';
 
   /**
    * Name of the event triggered on configuration revert.
@@ -26,8 +42,9 @@ interface ConfigRevertInterface {
   /**
    * Imports configuration from extension storage to active storage.
    *
-   * This action triggers a ConfigRevertInterface::IMPORT event if the
-   * configuration could be imported.
+   * This action triggers the ConfigRevertInterface::PRE_IMPORT and
+   * ConfigRevertInterface::IMPORT events if the configuration could be
+   * imported.
    *
    * @param string $type
    *   The type of configuration.
@@ -39,6 +56,7 @@ interface ConfigRevertInterface {
    *   be found to import. May also throw exceptions if there is a problem
    *   during saving the configuration.
    *
+   * @see \Drupal\config_update\ConfigRevertInterface::PRE_IMPORT
    * @see \Drupal\config_update\ConfigRevertInterface::IMPORT
    */
   public function import($type, $name);
@@ -46,7 +64,9 @@ interface ConfigRevertInterface {
   /**
    * Reverts configuration to the value from extension storage.
    *
-   * This action triggers a ConfigRevertInterface::REVERT event.
+   * This action triggers the ConfigRevertInterface::PRE_REVERT and
+   * ConfigRevertInterface::REVERT events if the configuration could be
+   * reverted.
    *
    * @param string $type
    *   The type of configuration.
@@ -58,6 +78,7 @@ interface ConfigRevertInterface {
    *   not be found to revert to. May also throw exceptions if there is a
    *   problem during saving the configuration.
    *
+   * @see \Drupal\config_update\ConfigRevertInterface::PRE_REVERT
    * @see \Drupal\config_update\ConfigRevertInterface::REVERT
    */
   public function revert($type, $name);

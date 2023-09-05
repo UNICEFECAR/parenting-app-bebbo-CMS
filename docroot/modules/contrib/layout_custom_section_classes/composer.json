@@ -1,0 +1,15 @@
+{
+    "name": "drupal/layout_custom_section_classes",
+    "description": "Allows editors to add HTML attributes to Layout Builder sections and its regions",
+    "type": "drupal-module",
+    "homepage": "https://drupal.org/project/layout_custom_section_classes",
+    "support": {
+        "issues": "https://drupal.org/project/issues/layout_custom_section_classes",
+        "source": "https://cgit.drupalcode.org/layout_custom_section_classes"
+    },
+    "license": "GPL-2.0+",
+    "require": {
+        "drupal/core": "^8.8|^9|^10",
+        "neilime/php-css-lint": "^2.0|^3.0"
+    }
+}

@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Feed;
 
@@ -82,8 +78,7 @@ class Atom extends AbstractAtom implements Renderer\RendererInterface
             $renderer->setRootElement($this->dom->documentElement);
             $renderer->render();
             $element  = $renderer->getElement();
-            $deep     = version_compare(PHP_VERSION, '7', 'ge') ? 1 : true;
-            $imported = $this->dom->importNode($element, $deep);
+            $imported = $this->dom->importNode($element, true);
             $root->appendChild($imported);
         }
         return $this;

@@ -33,7 +33,7 @@ class FindReplace extends TamperBase {
     $config[self::SETTING_FIND] = '';
     $config[self::SETTING_REPLACE] = '';
     $config[self::SETTING_CASE_SENSITIVE] = FALSE;
-    $config[self::SETTING_CASE_SENSITIVE] = FALSE;
+    $config[self::SETTING_WORD_BOUNDARIES] = FALSE;
     $config[self::SETTING_WHOLE] = FALSE;
     return $config;
   }
@@ -96,8 +96,8 @@ class FindReplace extends TamperBase {
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
-    if (!is_string($data)) {
-      throw new TamperException('Input should be a string.');
+    if (!is_string($data) && !is_numeric($data)) {
+      throw new TamperException('Input should be a string or numeric.');
     }
 
     $function = $this->getFunction();

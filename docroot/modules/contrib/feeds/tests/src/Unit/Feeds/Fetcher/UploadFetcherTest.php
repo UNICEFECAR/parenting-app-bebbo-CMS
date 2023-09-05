@@ -10,7 +10,6 @@ use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Fetcher\UploadFetcher;
 use Drupal\feeds\StateInterface;
 use Drupal\file\FileUsage\FileUsageInterface;
-use RuntimeException;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Fetcher\UploadFetcher
@@ -42,7 +41,7 @@ class UploadFetcherTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->fileStorage = $this->createMock(EntityStorageInterface::class);
@@ -92,7 +91,7 @@ class UploadFetcherTest extends FeedsUnitTestCase {
       ->method('getSource')
       ->will($this->returnValue('vfs://feeds/test_file'));
 
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $this->fetcher->fetch($feed, $this->state);
   }
 

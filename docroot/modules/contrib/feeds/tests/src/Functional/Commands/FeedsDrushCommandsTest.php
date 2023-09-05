@@ -26,13 +26,13 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->feedType = $this->createFeedType([
       'fetcher' => 'directory',
       'fetcher_configuration' => [
-        'allowed_extensions' => 'rss2',
+        'allowed_extensions' => 'rss2 atom',
       ],
     ]);
   }
@@ -190,6 +190,181 @@ class FeedsDrushCommandsTest extends FeedsBrowserTestBase {
 
     // Assert that nodes got imported now.
     $this->assertNodeCount(25);
+  }
+
+  /**
+   * Tests importing all feeds of all types.
+   *
+   * @covers ::importAllFeeds
+   */
+  public function testImportAllFeeds() {
+    // Create three feeds.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Foo',
+      'source' => $this->resourcesPath() . '/rss/drupalplanet.rss2',
+    ]);
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Bar',
+      'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // This feed is disabled and should not be imported.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Baz',
+      'source' => $this->resourcesPath() . '/atom/entries.atom',
+      'status' => FALSE,
+    ]);
+
+    // Create a second feed type.
+    $feed_type2 = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+    $this->createFeed($feed_type2->id(), [
+      'title' => 'Qux',
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+
+    // Import feeds using drush.
+    $this->drush('feeds:import-all');
+    $this->assertStringContainsString('Foo: Created 25 Article items.', $this->getErrorOutput());
+    $this->assertStringContainsString('Bar: Created 6 Article items.', $this->getErrorOutput());
+    $this->assertStringNotContainsString('Baz', $this->getErrorOutput());
+    $this->assertStringContainsString('Qux: Created 2 Article items.', $this->getErrorOutput());
+
+    $this->assertNodeCount(33);
+    $node = Node::load(1);
+    $this->assertEquals('Adaptivethemes: Why I killed Node, may it RIP', $node->title->value);
+  }
+
+  /**
+   * Tests importing all feeds of all types, including disabled ones.
+   *
+   * @covers ::importAllFeeds
+   */
+  public function testImportAllFeedsIncludingDisabled() {
+    // Create feeds.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Foo',
+      'source' => $this->resourcesPath() . '/rss/drupalplanet.rss2',
+    ]);
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Bar',
+      'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // Create a disabled feed that should be imported.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Baz',
+      'source' => $this->resourcesPath() . '/atom/entries.atom',
+      'status' => FALSE,
+    ]);
+
+    // Create a second feed type.
+    $feed_type2 = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+    $this->createFeed($feed_type2->id(), [
+      'title' => 'Qux',
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+
+    // Import feeds using drush.
+    $this->drush('feeds:import-all --import-disabled');
+    $this->assertStringContainsString('Foo: Created 25 Article items.', $this->getErrorOutput());
+    $this->assertStringContainsString('Bar: Created 6 Article items.', $this->getErrorOutput());
+    $this->assertStringContainsString('Baz: Created 3 Article items.', $this->getErrorOutput());
+    $this->assertStringContainsString('Qux: Created 2 Article items.', $this->getErrorOutput());
+
+    $this->assertNodeCount(36);
+    $node = Node::load(1);
+    $this->assertEquals('Adaptivethemes: Why I killed Node, may it RIP', $node->title->value);
+  }
+
+  /**
+   * Tests importing all feeds of one specific type.
+   *
+   * @covers ::importAllFeeds
+   */
+  public function testImportAllFeedsOfOneType() {
+    // Create two feeds.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Foo',
+      'source' => $this->resourcesPath() . '/rss/drupalplanet.rss2',
+    ]);
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Bar',
+      'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // Create a second feed type.
+    $feed_type2 = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+    $this->createFeed($feed_type2->id(), [
+      'title' => 'Qux',
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+
+    // Import feeds using drush.
+    $this->drush('feeds:import-all ' . $feed_type2->id());
+    $this->assertStringNotContainsString('Foo', $this->getErrorOutput());
+    $this->assertStringNotContainsString('Bar', $this->getErrorOutput());
+    $this->assertStringContainsString('Qux: Created 2 Article items.', $this->getErrorOutput());
+
+    $this->assertNodeCount(2);
+    $node = Node::load(1);
+    $this->assertEquals('Lorem ipsum', $node->title->value);
+  }
+
+  /**
+   * Tests importing all feeds of two specific types.
+   *
+   * @covers ::importAllFeeds
+   */
+  public function testImportAllFeedsOfTwoTypes() {
+    // Create two feeds.
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Foo',
+      'source' => $this->resourcesPath() . '/rss/drupalplanet.rss2',
+    ]);
+    $this->createFeed($this->feedType->id(), [
+      'title' => 'Bar',
+      'source' => $this->resourcesPath() . '/rss/googlenewstz.rss2',
+    ]);
+
+    // Create a second feed type.
+    $feed_type2 = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
+    $this->createFeed($feed_type2->id(), [
+      'title' => 'Qux',
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+
+    // Create a third feed type.
+    $feed_type3 = $this->createFeedTypeForCsv([
+      'guid' => 'GUID',
+      'title' => 'Title',
+    ]);
+    $this->createFeed($feed_type3->id(), [
+      'title' => 'Thud',
+      'source' => $this->resourcesPath() . '/csv/nodes.csv',
+    ]);
+
+    // Import feeds using drush.
+    $this->drush('feeds:import-all ' . $this->feedType->id() . ' ' . $feed_type3->id());
+    $this->assertStringContainsString('Foo: Created 25 Article items.', $this->getErrorOutput());
+    $this->assertStringContainsString('Bar: Created 6 Article items.', $this->getErrorOutput());
+    $this->assertStringNotContainsString('Qux', $this->getErrorOutput());
+    $this->assertStringContainsString('Thud: Created 8 Article items.', $this->getErrorOutput());
+
+    $this->assertNodeCount(39);
+    $node = Node::load(1);
+    $this->assertEquals('Adaptivethemes: Why I killed Node, may it RIP', $node->title->value);
   }
 
   /**

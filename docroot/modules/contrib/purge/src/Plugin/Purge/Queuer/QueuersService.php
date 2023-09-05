@@ -40,7 +40,7 @@ class QueuersService extends ServiceBase implements QueuersServiceInterface {
    *
    * @ingroup countable
    */
-  public function count() {
+  public function count(): int {
     $this->initializePluginInstances();
     return count($this->instances);
   }

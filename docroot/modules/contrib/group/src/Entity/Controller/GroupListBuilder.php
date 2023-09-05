@@ -106,6 +106,11 @@ class GroupListBuilder extends EntityListBuilder {
         'specifier' =>'type',
         'field' => 'type',
       ],
+      'status' => [
+        'data' => $this->t('Status'),
+        'specifier' =>'status',
+        'field' => 'status',
+      ],
       'uid' => [
         'data' => $this->t('Owner'),
       ],
@@ -123,7 +128,8 @@ class GroupListBuilder extends EntityListBuilder {
     // need to add the render array using the 'data' key.
     $row['name']['data'] = $entity->toLink()->toRenderable();
     $row['type'] = $entity->getGroupType()->label();
-    $row['uid'] = $entity->uid->entity->label();
+    $row['status'] = $entity->isPublished() ? $this->t('Published') : $this->t('Unpublished');
+    $row['uid'] = $entity->getOwner()->label();
     return $row + parent::buildRow($entity);
   }
 
@@ -151,7 +157,7 @@ class GroupListBuilder extends EntityListBuilder {
       $query->pager($this->limit);
     }
 
-    return $query->execute();
+    return $query->accessCheck()->execute();
   }
 
   /**
@@ -169,6 +175,14 @@ class GroupListBuilder extends EntityListBuilder {
           'url' => Url::fromRoute('view.group_members.page_1', ['group' => $entity->id()]),
         ];
       }
+    }
+
+    if ($entity->getGroupType()->shouldCreateNewRevision() && $entity->hasPermission('view group revisions', $this->currentUser)) {
+      $operations['revisions'] = [
+        'title' => $this->t('Revisions'),
+        'weight' => 20,
+        'url' => $entity->toUrl('version-history'),
+      ];
     }
 
     // Add the current path or destination as a redirect to the operation links.

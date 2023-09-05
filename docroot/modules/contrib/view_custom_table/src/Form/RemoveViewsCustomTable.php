@@ -9,11 +9,17 @@ use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Config\Config;
+use Drupal\Core\Messenger\MessengerTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Cache\CacheBackendInterface;
 
 /**
  * Add views custom table form.
  */
 class RemoveViewsCustomTable extends FormBase {
+
+  use StringTranslationTrait;
+  use MessengerTrait;
 
   /**
    * Drupal\Core\Config\ImmutableConfig definition.
@@ -30,9 +36,28 @@ class RemoveViewsCustomTable extends FormBase {
   protected $configEditable;
 
   /**
+   * Drupal\Core\Cache\CacheBackendInterface definition.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheDefault;
+
+  /**
+   * Drupal\Core\Cache\CacheBackendInterface definition.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheDiscovery;
+
+  /**
    * Class constructor.
    */
-  public function __construct(ImmutableConfig $config, Config $configEditable) {
+  public function __construct(CacheBackendInterface $cacheDiscovery,
+  CacheBackendInterface $cacheDefault,
+  ImmutableConfig $config,
+  Config $configEditable) {
+    $this->cacheDiscovery = $cacheDiscovery;
+    $this->cacheDefault = $cacheDefault;
     $this->config = $config;
     $this->configEditable = $configEditable;
   }
@@ -42,6 +67,8 @@ class RemoveViewsCustomTable extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('cache.discovery'),
+      $container->get('cache.default'),
       $container->get('config.factory')->get('view_custom_table.tables'),
       $container->get('config.factory')->getEditable('view_custom_table.tables')
     );
@@ -115,12 +142,14 @@ class RemoveViewsCustomTable extends FormBase {
     $this->configEditable->clear($table_name);
     $result = $this->configEditable->save();
     if ($result) {
-      drupal_set_message($this->t('@table is removed from views custom table data.', [
+      $this->messenger()->addStatus($this->t('@table is removed from views custom table data.', [
         '@table' => $table_name,
       ]));
+      $this->cacheDiscovery->invalidateAll();
+      $this->cacheDefault->invalidateAll();
     }
     else {
-      drupal_set_message($this->t('Could not remove table from views view_custom_table.tables, please check log messages for error.'), 'error');
+      $this->messenger()->addError($this->t('Could not remove table from views view_custom_table.tables, please check log messages for error.'));
     }
     $form_state->setRedirect('view_custom_table.customtable');
   }

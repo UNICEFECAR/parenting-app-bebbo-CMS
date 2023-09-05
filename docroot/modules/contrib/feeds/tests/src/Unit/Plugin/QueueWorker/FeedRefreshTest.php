@@ -20,7 +20,6 @@ use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
 use Drupal\Tests\feeds\Unit\FeedsUnitTestCase;
 use Prophecy\Argument;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -53,7 +52,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->dispatcher = new EventDispatcher();
     $queue_factory = $this->createMock(QueueFactory::class, [], [], '', FALSE);
@@ -69,7 +68,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
     $executable->setStringTranslation($this->getStringTranslationStub());
 
     $this->plugin = $this->getMockBuilder(FeedRefresh::class)
-      ->setMethods(['feedExists', 'getExecutable'])
+      ->setMethods(['feedExists', 'feedLoad', 'getExecutable'])
       ->setConstructorArgs([
         [],
         'feeds_feed_refresh',
@@ -80,28 +79,105 @@ class FeedRefreshTest extends FeedsUnitTestCase {
         $entity_type_manager,
       ])
       ->getMock();
-    $this->plugin->expects($this->any())
-      ->method('feedExists')
-      ->will($this->returnValue(TRUE));
-    $this->plugin->expects($this->any())
-      ->method('getExecutable')
-      ->will($this->returnValue($executable));
 
     $connection = $this->prophesize(Connection::class);
     $connection->query(Argument::type('string'), Argument::type('array'))->willReturn($this->createMock(StatementInterface::class));
 
     $this->feed = $this->getMockFeed();
+
+    // For all tests, the feed ID is 1.
+    $this->feed->expects($this->any())
+      ->method('id')
+      ->will($this->returnValue(1));
+
+    // Make sure a CleanState object is returned when asking for state object in
+    // the clean phase.
     $this->feed->expects($this->any())
       ->method('getState')
       ->with(StateInterface::CLEAN)
       ->will($this->returnValue(new CleanState(1, $connection->reveal())));
+
+    $this->plugin->expects($this->any())
+      ->method('getExecutable')
+      ->will($this->returnValue($executable));
+  }
+
+  /**
+   * Sets the expected return value for feedLoad().
+   */
+  protected function setExpectedFeed($expected) {
+    $this->plugin->expects($this->any())
+      ->method('feedLoad')
+      ->will($this->returnValue($expected));
+  }
+
+  /**
+   * Tests processing an empty task.
+   */
+  public function testEmptyTask() {
+    // Process should be aborted early on.
+    $this->plugin->expects($this->never())
+      ->method('getExecutable');
+
+    $this->plugin->processItem(NULL);
   }
 
   /**
    * Tests initiating an import.
    */
   public function testBeginStage() {
-    $this->plugin->processItem(NULL);
+    $this->setExpectedFeed($this->feed);
+    $this->plugin->processItem([
+      $this->feed->id(),
+      FeedsExecutableInterface::BEGIN,
+      [],
+    ]);
+  }
+
+  /**
+   * Tests with a non-existing feed.
+   */
+  public function testBeginStageWithNonExistingFeed() {
+    $this->setExpectedFeed(NULL);
+
+    // Process should be aborted early on.
+    $this->plugin->expects($this->never())
+      ->method('getExecutable');
+
+    $this->plugin->processItem([
+      $this->feed->id(),
+      FeedsExecutableInterface::BEGIN,
+      [],
+    ]);
+  }
+
+  /**
+   * Tests initiating an import with a full feed object.
+   */
+  public function testBeginStageWithFullFeedObject() {
+    $this->plugin->expects($this->atLeastOnce())
+      ->method('feedExists')
+      ->will($this->returnValue(TRUE));
+
+    $this->plugin->processItem([
+      $this->feed,
+      FeedsExecutableInterface::BEGIN,
+      [],
+    ]);
+  }
+
+  /**
+   * Tests initiating an import with a full feed object that no longer exists.
+   */
+  public function testBeginStageWithNonExistingFullFeedObject() {
+    $this->plugin->expects($this->atLeastOnce())
+      ->method('feedExists')
+      ->will($this->returnValue(FALSE));
+
+    // Process should be aborted early on.
+    $this->plugin->expects($this->never())
+      ->method('getExecutable');
+
     $this->plugin->processItem([
       $this->feed,
       FeedsExecutableInterface::BEGIN,
@@ -113,11 +189,12 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * Tests that an import cannot start when the feed is locked.
    */
   public function testLockException() {
+    $this->setExpectedFeed($this->feed);
     $this->feed->expects($this->once())
       ->method('lock')
       ->will($this->throwException(new LockException()));
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::BEGIN,
       [],
     ]);
@@ -127,13 +204,14 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * Tests that a fetch event is dispatched when initiating an import.
    */
   public function testExceptionOnFetchEvent() {
+    $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::FETCH, function ($parse_event) {
-      throw new RuntimeException();
+      throw new \RuntimeException();
     });
 
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::FETCH,
       [],
     ]);
@@ -143,6 +221,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * Tests the parse stage of an import.
    */
   public function testParseStage() {
+    $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::PARSE, function ($parse_event) {
       $parser_result = new ParserResult();
       $parser_result->addItem(new DynamicItem());
@@ -152,7 +231,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
     $fetcher_result = new FetcherResult('');
 
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::PARSE, [
         'fetcher_result' => $fetcher_result,
       ],
@@ -166,13 +245,14 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * dispatched.
    */
   public function testExceptionOnParseEvent() {
+    $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::PARSE, function ($parse_event) {
-      throw new RuntimeException();
+      throw new \RuntimeException();
     });
 
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::PARSE, [
         'fetcher_result' => new FetcherResult(''),
       ],
@@ -183,8 +263,9 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * Tests the process stage of an import.
    */
   public function testProcessStage() {
+    $this->setExpectedFeed($this->feed);
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::PROCESS, [
         'item' => new DynamicItem(),
       ],
@@ -198,13 +279,14 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * dispatched.
    */
   public function testExceptionOnProcessEvent() {
+    $this->setExpectedFeed($this->feed);
     $this->dispatcher->addListener(FeedsEvents::PROCESS, function ($parse_event) {
-      throw new RuntimeException();
+      throw new \RuntimeException();
     });
 
-    $this->expectException(RuntimeException::class);
+    $this->expectException(\RuntimeException::class);
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::PROCESS, [
         'item' => new DynamicItem(),
       ],
@@ -215,8 +297,9 @@ class FeedRefreshTest extends FeedsUnitTestCase {
    * Tests the final stage of an import.
    */
   public function testFinalPass() {
+    $this->setExpectedFeed($this->feed);
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::FINISH, [
         'fetcher_result' => new FetcherResult(''),
       ],
@@ -227,7 +310,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
       ->will($this->returnValue(StateInterface::BATCH_COMPLETE));
 
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::FINISH, [
         'fetcher_result' => new FetcherResult(''),
       ],
@@ -236,7 +319,7 @@ class FeedRefreshTest extends FeedsUnitTestCase {
       ->method('progressFetching')
       ->will($this->returnValue(StateInterface::BATCH_COMPLETE));
     $this->plugin->processItem([
-      $this->feed,
+      $this->feed->id(),
       FeedsExecutableInterface::FINISH, [
         'fetcher_result' => new FetcherResult(''),
       ],

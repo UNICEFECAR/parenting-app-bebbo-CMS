@@ -10,11 +10,11 @@ use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Acquia Platform CDN (beta).
+ * Acquia Platform CDN.
  *
  * @PurgePurger(
  *   id = "acquia_platform_cdn",
- *   label = @Translation("Acquia Platform CDN (beta)"),
+ *   label = @Translation("Acquia Platform CDN"),
  *   configform = "",
  *   cooldown_time = 0.0,
  *   description = @Translation("Invalidate content from Acquia Platform CDN."),

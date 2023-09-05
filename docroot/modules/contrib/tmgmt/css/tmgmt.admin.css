@@ -147,8 +147,21 @@ table.tmgmt-ui-review tbody th {
   margin: 20px 0 0 0;
 }
 
-.tmgmt-source-operations-wrapper .form-item-add-all-to-continuous-jobs {
+.tmgmt-source-operations-wrapper .form-item-add-all-to-continuous-jobs,
+.tmgmt-source-operations-wrapper .form-item--add-all-to-continuous-jobs {
   display: inline-block;
+}
+
+.tmgmt-source-operations-wrapper .seven-details__wrapper .form-item-add-all-to-continuous-jobs,
+.tmgmt-source-operations-wrapper .seven-details__wrapper .form-item--add-all-to-continuous-jobs {
+  margin-bottom: 0.3rem;
+  margin-top: 10px;
+}
+
+.tmgmt-source-operations-wrapper .claro-details__wrapper .form-item-add-all-to-continuous-jobs,
+.tmgmt-source-operations-wrapper .claro-details__wrapper .form-item--add-all-to-continuous-jobs {
+  margin-bottom: 1.75rem;
+  margin-top: 1rem;
 }
 
 .view-tmgmt-node-source-overview .view-filters, .tmgmt-sources-wrapper {

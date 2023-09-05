@@ -69,7 +69,7 @@ class GroupRoleListBuilder extends DraggableListBuilder {
       $query->pager($this->limit);
     }
 
-    return array_values($query->execute());
+    return array_values($query->accessCheck()->execute());
   }
 
   /**

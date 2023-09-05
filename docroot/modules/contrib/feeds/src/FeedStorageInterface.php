@@ -2,10 +2,10 @@
 
 namespace Drupal\feeds;
 
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\ContentEntityStorageInterface;
 
 /**
  * Defines an interface for feed entity storage classes.
  */
-interface FeedStorageInterface extends EntityStorageInterface {
+interface FeedStorageInterface extends ContentEntityStorageInterface {
 }

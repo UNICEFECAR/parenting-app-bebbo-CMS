@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\purge\Unit\Logger;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\purge\Logger\LoggerService;
 use Drupal\Tests\purge\Unit\FixGetConfigFactoryStubTrait;
 use Drupal\Tests\UnitTestCase;
@@ -40,17 +41,34 @@ class LoggerServiceTest extends UnitTestCase {
   /**
    * The mocked channel part factory.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Drupal\purge\Logger\LoggerChannelPartFactoryInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\purge\Logger\LoggerChannelPartFactoryInterface
    */
   protected $loggerChannelPartFactory;
+
+  /**
+   * The mocked config installer service.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Drupal\Core\Config\ConfigInstallerInterface
+   */
+  protected $configInstaller;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     $this->loggerChannelPartFactory = $this->createMock('\Drupal\purge\Logger\LoggerChannelPartFactoryInterface');
+    $this->configInstaller = $this->createMock('Drupal\Core\Config\ConfigInstallerInterface');
     $this->loggerChannelPartFactory->method('create')
       ->willReturn($this->createMock('\Drupal\purge\Logger\LoggerChannelPartInterface'));
+
+    $this->configInstaller
+      ->expects($this->any())
+      ->method('isSyncing')
+      ->willReturn(FALSE);
+
+    $container = new ContainerBuilder();
+    $container->set('config.installer', $this->configInstaller);
+    \Drupal::setContainer($container);
   }
 
   /**
@@ -60,6 +78,8 @@ class LoggerServiceTest extends UnitTestCase {
    */
   public function testDestruct($expect_write, $call = NULL, $arguments = []): void {
     $config_factory = $this->getConfigFactoryStub($this->defaultConfig);
+
+
     $config_factory
       ->expects($expect_write ? $this->once() : $this->never())
       ->method('getEditable')

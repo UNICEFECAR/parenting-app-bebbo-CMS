@@ -134,13 +134,20 @@ class FeaturesDiffForm extends FormBase {
         $missing = $this->featuresManager->reorderMissing($this->featuresManager->detectMissing($package));
         $overrides = $this->featuresManager->detectOverrides($package, TRUE);
         if (!empty($overrides) || !empty($missing)) {
+          $header_title = $this->t(
+            '@package_name <small class="features-diff-header-action">(<a class="features-diff-header-action-link" href="#">@action</a>)</small>',
+            [
+              '@package_name' => Html::escape($package->getName()),
+              '@action' => $this->t('Hide all'),
+            ]
+          );
           $options += [
             $package->getMachineName() => [
               'row' => [
                 'data' => [
                   '#type' => 'html_tag',
                   '#tag' => 'h2',
-                  '#value' => Html::escape($package->getName()),
+                  '#value' => $header_title,
                 ],
               ],
               '#attributes' => [

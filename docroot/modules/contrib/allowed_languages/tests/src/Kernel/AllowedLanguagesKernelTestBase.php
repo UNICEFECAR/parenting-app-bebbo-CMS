@@ -9,14 +9,12 @@ use Drupal\user\Entity\User;
 /**
  * Kernel test base for the allowed languages module.
  */
-class AllowedLanguagesKernelTestBase extends KernelTestBase {
+abstract class AllowedLanguagesKernelTestBase extends KernelTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'allowed_languages',
     'content_translation',
     'field',
@@ -35,7 +33,7 @@ class AllowedLanguagesKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');

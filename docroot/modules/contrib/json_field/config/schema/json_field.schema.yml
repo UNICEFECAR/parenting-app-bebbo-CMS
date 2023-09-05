@@ -16,3 +16,11 @@ field.storage_settings.json:
     size:
       type: integer
       label: Size
+
+field.formatter.settings.json:
+  type: mapping
+  label: 'JSON field library attach settings'
+  mapping:
+    attach_library:
+      type: boolean
+      label: 'Attach library'

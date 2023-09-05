@@ -76,13 +76,15 @@ class ProcessorAddForm extends ConfigFormBase {
     ];
 
     // Update the buttons and bind callbacks.
-    $form['actions']['submit'] = [
-      '#access' => count($options),
-      '#type' => 'submit',
-      '#button_type' => 'primary',
-      '#value' => $this->t("Add"),
-      '#ajax' => ['callback' => '::addProcessor'],
-    ];
+    if (count($options)) {
+      $form['actions']['submit'] = [
+        '#type' => 'submit',
+        '#button_type' => 'primary',
+        '#value' => $this->t("Add"),
+        '#ajax' => ['callback' => '::addProcessor'],
+      ];
+    }
+
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('Cancel'),

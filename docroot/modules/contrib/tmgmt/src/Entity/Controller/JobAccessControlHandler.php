@@ -18,6 +18,7 @@ class JobAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+    /** @var \Drupal\tmgmt\JobInterface $entity */
     if ($account->hasPermission('administer tmgmt')) {
       // Administrators can do everything.
       return AccessResult::allowed()->cachePerPermissions();
@@ -30,8 +31,7 @@ class JobAccessControlHandler extends EntityAccessControlHandler {
         break;
 
       case 'delete':
-        // Only administrators can delete jobs.
-        return AccessResult::forbidden();
+        return AccessResult::allowedIfHasPermission($account, 'delete translation jobs')->andIf(AccessResult::allowedIf(!$entity->isActive()))->addCacheableDependency($entity);
         break;
 
       // Custom operations.

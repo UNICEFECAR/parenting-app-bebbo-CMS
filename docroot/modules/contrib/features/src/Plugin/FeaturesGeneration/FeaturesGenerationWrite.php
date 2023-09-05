@@ -58,7 +58,7 @@ class FeaturesGenerationWrite extends FeaturesGenerationMethodBase implements Co
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('app.root'),
+      $container->getParameter('app.root'),
       $container->get('file_system')
     );
   }

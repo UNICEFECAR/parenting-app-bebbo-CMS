@@ -91,7 +91,7 @@ class FeedListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    if (!$entity->access('view') && !$entity->access('update') && !$entity->access('import') && !$entity->access('schedule_import') && !$entity->access('clear')) {
+    if (!$entity->access('view') && !$entity->access('update') && !$entity->access('import') && !$entity->access('schedule_import') && !$entity->access('clear') && !$entity->access('unlock')) {
       return [];
     }
 
@@ -155,6 +155,14 @@ class FeedListBuilder extends EntityListBuilder {
         'title' => $this->t('Delete items'),
         'weight' => 4,
         'url' => $entity->toUrl('clear-form'),
+      ];
+    }
+
+    if ($entity->access('unlock') && $entity->hasLinkTemplate('unlock')) {
+      $operations['unlock'] = [
+        'title' => $this->t('Unlock'),
+        'weight' => 5,
+        'url' => $entity->toUrl('unlock'),
       ];
     }
 

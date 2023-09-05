@@ -8,9 +8,9 @@
 use Drupal\Component\Render\PlainTextOutput;
 use Drupal\content_moderation_notifications\ContentModerationNotificationInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\TranslatableRevisionableInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Entity\TranslatableRevisionableInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -31,7 +31,7 @@ function content_moderation_notifications_entity_update(EntityInterface $entity)
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_entity_insert().
  */
 function content_moderation_notifications_entity_insert(EntityInterface $entity) {
   \Drupal::service('content_moderation_notifications.notification')->processEntity($entity);
@@ -74,7 +74,6 @@ function content_moderation_notifications_mail($key, &$message, $params) {
 function _content_moderation_notifications_ensure_revision(EntityInterface $entity) {
   $notification_info = Drupal::service('content_moderation_notifications.notification_information');
   if ($notification_info->isModeratedEntity($entity) && !isset($entity->last_revision)) {
-    $entity->last_revision = $notification_info->getLatestRevision($entity->getEntityTypeId(), $entity->id());
     if ($entity instanceof TranslatableRevisionableInterface) {
       // This entity is translatable and revisionable simultaneously. This means
       // we wanna load not the latest revision but the latest translation

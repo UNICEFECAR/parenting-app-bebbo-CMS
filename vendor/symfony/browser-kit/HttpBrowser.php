@@ -82,7 +82,7 @@ class HttpBrowser extends AbstractBrowser
         $fields = $request->getParameters();
 
         if ($uploadedFiles = $this->getUploadedFiles($request->getFiles())) {
-            $part = new FormDataPart(array_merge($fields, $uploadedFiles));
+            $part = new FormDataPart(array_replace_recursive($fields, $uploadedFiles));
 
             return [$part->bodyToIterable(), $part->getPreparedHeaders()->toArray()];
         }
@@ -100,7 +100,7 @@ class HttpBrowser extends AbstractBrowser
         foreach ($request->getServer() as $key => $value) {
             $key = strtolower(str_replace('_', '-', $key));
             $contentHeaders = ['content-length' => true, 'content-md5' => true, 'content-type' => true];
-            if (0 === strpos($key, 'http-')) {
+            if (str_starts_with($key, 'http-')) {
                 $headers[substr($key, 5)] = $value;
             } elseif (isset($contentHeaders[$key])) {
                 // CONTENT_* are not prefixed with HTTP_

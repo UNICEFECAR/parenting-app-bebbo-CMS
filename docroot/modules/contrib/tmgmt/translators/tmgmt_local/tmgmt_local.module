@@ -73,12 +73,10 @@ function tmgmt_local_theme() {
     'tmgmt_local_translation_form_element' => array(
       'render element' => 'element',
       'file' => 'tmgmt_local.theme.inc',
-      'function' => 'tmgmt_local_translation_form_element',
     ),
     'tmgmt_local_translation_form_element_status' => array(
       'render element' => 'status',
       'file' => 'tmgmt_local.theme.inc',
-      'function' => 'theme_tmgmt_local_translation_form_element_status',
     ),
     'tmgmt_local_progress_bar' => array(
       'variables' => array(
@@ -253,6 +251,7 @@ function tmgmt_local_translation_access(LocalTask $task, AccountInterface $accou
  */
 function tmgmt_local_clear_languages_cache() {
   $results = \Drupal::entityQuery('tmgmt_translator')
+    ->accessCheck(TRUE)
     ->condition('plugin', 'local')
     ->execute();
   if ($results) {
@@ -421,6 +420,7 @@ function tmgmt_local_tmgmt_job_item_update(JobItemInterface $job_item) {
 
       // Check if the task can be marked as closed as well.
       $unclosed_tasks = \Drupal::entityQuery('tmgmt_local_task_item')
+        ->accessCheck(TRUE)
         ->condition('tltid', $task_item->id())
         ->condition('status', LocalTaskItemInterface::STATUS_CLOSED, '<>')
         ->count()
@@ -439,6 +439,7 @@ function tmgmt_local_tmgmt_job_item_update(JobItemInterface $job_item) {
  */
 function tmgmt_local_tmgmt_job_delete(JobInterface $job) {
   $tltids = \Drupal::entityQuery('tmgmt_local_task')
+    ->accessCheck(TRUE)
     ->condition('tjid', $job->id())
     ->execute();
   if (!empty($tltids)) {
@@ -701,21 +702,22 @@ function tmgmt_local_rules_component_access($type, $name) {
  *   Color legend render array.
  */
 function tmgmt_color_legend_local_task_item() {
+  $npath = \Drupal::service('extension.list.module')->getPath('tmgmt');
   $items = [
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/ready.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/ready.svg'),
       'legend' => t('Untranslated'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/gray-check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/gray-check.svg'),
       'legend' => t('Translated'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/rejected.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/rejected.svg'),
       'legend' => t('Rejected'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/73b355/check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/73b355/check.svg'),
       'legend' => t('Completed'),
     ],
   ];
@@ -739,25 +741,26 @@ function tmgmt_color_legend_local_task_item() {
  *   Color legend render array.
  */
 function tmgmt_color_legend_local_task() {
+  $npath = \Drupal::service('extension.list.module')->getPath('tmgmt');
   $items = [
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/rejected.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/rejected.svg'),
       'legend' => t('Unassigned'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/ready.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/ready.svg'),
       'legend' => t('Needs action'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/hourglass.svg'),
       'legend' => t('In review'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/ex-red.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/ex-red.svg'),
       'legend' => t('Rejected'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/73b355/check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/73b355/check.svg'),
       'legend' => t('Closed'),
     ],
   ];
@@ -781,17 +784,18 @@ function tmgmt_color_legend_local_task() {
  *   Color legend render array.
  */
 function tmgmt_color_local_review_legend() {
+  $npath = \Drupal::service('extension.list.module')->getPath('tmgmt');
   $items = [
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/ready.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/ready.svg'),
       'legend' => t('Untranslated'),
     ],
     [
-      'icon' => file_create_url(drupal_get_path('module', 'tmgmt') . '/icons/gray-check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($npath . '/icons/gray-check.svg'),
       'legend' => t('Translated'),
     ],
     [
-      'icon' => file_create_url('core/misc/icons/73b355/check.svg'),
+      'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString('core/misc/icons/73b355/check.svg'),
       'legend' => t('Accepted'),
     ],
   ];

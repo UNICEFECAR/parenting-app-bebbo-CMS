@@ -3,14 +3,13 @@
 namespace Drupal\views\Plugin\views\display;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Database\Query\Condition;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * The plugin that handles an EntityReference display.
  *
  * "entity_reference_display" is a custom property, used with
- * \Drupal\views\Views::getApplicableViews() to retrieve all views with a
+ * \Drupal\views\Views::getApplicableViews() to retrieve all views with an
  * 'Entity Reference' display.
  *
  * @ingroup views_display_plugins
@@ -156,7 +155,18 @@ class EntityReference extends DisplayPluginBase {
     $id_table = $this->view->storage->get('base_table');
     $this->id_field_alias = $this->view->query->addField($id_table, $id_field);
 
-    $options = $this->getOption('entity_reference_options');
+    $options = $this->getOption('entity_reference_options') ?? [];
+    // The entity_reference_options are typically set during a call to
+    // Drupal\views\Plugin\EntityReferenceSelection\ViewsSelection::initializeView().
+    // If any entity_reference_options are not yet set, we apply the same
+    // default values that would typically be added by that method.
+    $default_options = [
+      'match' => NULL,
+      'match_operator' => 'CONTAINS',
+      'limit' => 0,
+      'ids' => NULL,
+    ];
+    $options += $default_options;
 
     // Restrict the autocomplete options based on what's been typed already.
     if (isset($options['match'])) {
@@ -169,8 +179,8 @@ class EntityReference extends DisplayPluginBase {
         }
       }
 
-      // Multiple search fields are OR'd together.
-      $conditions = new Condition('OR');
+      // Multiple search fields are ORed together.
+      $conditions = $this->view->query->getConnection()->condition('OR');
 
       // Build the condition using the selected search fields.
       foreach ($style_options['options']['search_fields'] as $field_id) {

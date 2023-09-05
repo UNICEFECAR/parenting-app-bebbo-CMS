@@ -7,7 +7,6 @@ use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\OpmlItem;
 use Drupal\feeds\Plugin\Type\Parser\ParserInterface;
-use Drupal\feeds\Plugin\Type\PluginBase;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
@@ -21,7 +20,7 @@ use Drupal\feeds\StateInterface;
  *   description = @Translation("Parse OPML files.")
  * )
  */
-class OpmlParser extends PluginBase implements ParserInterface {
+class OpmlParser extends ParserBase implements ParserInterface {
 
   /**
    * {@inheritdoc}
@@ -60,8 +59,6 @@ class OpmlParser extends PluginBase implements ParserInterface {
     $items = [];
 
     foreach ($outlines as $outline) {
-      // PHPunit is being weird about our array appending.
-      // @codeCoverageIgnoreStart
       $outline += [
         '#title' => '',
         '#text' => '',
@@ -69,7 +66,6 @@ class OpmlParser extends PluginBase implements ParserInterface {
         '#htmlurl' => '',
         'outlines' => [],
       ];
-      // @codeCoverageIgnoreEnd
 
       $item = new OpmlItem();
       // Assume it is an actual feed if the URL is set.

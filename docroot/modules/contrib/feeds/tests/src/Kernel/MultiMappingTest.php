@@ -15,7 +15,7 @@ class MultiMappingTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'feeds',
@@ -27,7 +27,7 @@ class MultiMappingTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig(['field', 'filter', 'node', 'datetime']);

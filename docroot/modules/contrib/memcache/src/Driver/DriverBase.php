@@ -140,6 +140,7 @@ abstract class DriverBase implements DrupalMemcacheInterface {
     if ($collect_stats) {
       $this->statsWrite('flush', 'cache', ['' => $result]);
     }
+    return $result;
   }
 
   /**

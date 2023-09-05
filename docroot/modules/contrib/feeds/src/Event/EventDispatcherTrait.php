@@ -2,7 +2,7 @@
 
 namespace Drupal\feeds\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -28,14 +28,14 @@ trait EventDispatcherTrait {
    *
    * @param string $event_name
    *   The name of the event.
-   * @param \Symfony\Component\EventDispatcher\Event $event
+   * @param \Symfony\Contracts\EventDispatcher\Event $event
    *   The event to dispatch.
    *
-   * @return \Symfony\Component\EventDispatcher\Event
+   * @return \Symfony\Contracts\EventDispatcher\Event
    *   The invoked event.
    */
   protected function dispatchEvent($event_name, Event $event = NULL) {
-    return $this->getEventDispatcher()->dispatch($event_name, $event);
+    return $this->getEventDispatcher()->dispatch($event, $event_name);
   }
 
   /**
@@ -55,7 +55,7 @@ trait EventDispatcherTrait {
    * Sets the event dispatcher service to use.
    *
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
-   *   The string translation service.
+   *   The event dispatcher service.
    */
   public function setEventDispatcher(EventDispatcherInterface $event_dispatcher) {
     $this->_eventDispatcher = $event_dispatcher;

@@ -19,17 +19,18 @@ class LocaleSourceUiTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_locale');
+  protected static $modules = array('tmgmt_locale');
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->langcode = 'de';
     $this->context = 'default';
     $file = new \stdClass();
-    $file->uri =  \Drupal::service('file_system')->realpath(drupal_get_path('module', 'tmgmt_locale') . '/tests/test.xx.po');
+    $npath = \Drupal::service('extension.list.module')->getPath('tmgmt_locale');
+    $file->uri =  \Drupal::service('file_system')->realpath($npath . '/tests/test.xx.po');
     $file->langcode = $this->langcode;
     Gettext::fileToDatabase($file, array());
     $this->addLanguage($this->langcode);
@@ -40,26 +41,26 @@ class LocaleSourceUiTest extends TMGMTTestBase {
     $this->loginAsTranslator();
     $this->drupalGet('admin/tmgmt/sources/locale/default');
 
-    $this->assertText('Hello World');
-    $this->assertText('Example');
+    $this->assertSession()->pageTextContains('Hello World');
+    $this->assertSession()->pageTextContains('Example');
     $rows = $this->xpath('//tbody/tr');
     $found = FALSE;
     foreach ($rows as $row) {
       if ($row->find('css', 'td:nth-child(2)')->getText() == 'Hello World') {
         $found = TRUE;
-        $this->assertEqual((string) $row->find('css', 'td:nth-child(3)')->getText(), 'tmgmt_locale');
-        $this->assertEqual((string) $row->find('css', 'td:nth-child(5) img')->getAttribute('title'), t('Translation up to date'));
-        $this->assertEqual((string) $row->find('css', 'td:nth-child(6) img')->getAttribute('title'), t('Not translated'));
+        $this->assertEquals('tmgmt_locale', (string) $row->find('css', 'td:nth-child(3)')->getText());
+        $this->assertEquals(t('Translation up to date'), (string) $row->find('css', 'td:nth-child(5) img')->getAttribute('title'));
+        $this->assertEquals(t('Not translated'), (string) $row->find('css', 'td:nth-child(6) img')->getAttribute('title'));
       }
     }
     $this->assertTrue($found);
 
     // Filter on the label.
     $edit = array('search[label]' => 'Hello');
-    $this->drupalPostForm(NULL, $edit, t('Search'));
+    $this->submitForm($edit, t('Search'));
 
-    $this->assertText('Hello World');
-    $this->assertNoText('Example');
+    $this->assertSession()->pageTextContains('Hello World');
+    $this->assertSession()->pageTextNotContains('Example');
 
     $locale_object = \Drupal::database()->query('SELECT * FROM {locales_source} WHERE source = :source LIMIT 1', array(':source' => 'Hello World'))->fetchObject();
 
@@ -67,36 +68,37 @@ class LocaleSourceUiTest extends TMGMTTestBase {
     $edit = array(
       'items[' . $locale_object->lid . ']' => TRUE,
     );
-    $this->drupalPostForm(NULL, $edit, t('Add to cart'));
-    $this->assertRaw(t('@count content source was added into the <a href=":url">cart</a>.', array('@count' => 1, ':url' => Url::fromRoute('tmgmt.cart')->toString())));
+    $this->submitForm($edit, t('Add to cart'));
+    $this->assertSession()->responseContains(t('@count content source was added into the <a href=":url">cart</a>.', array('@count' => 1, ':url' => Url::fromRoute('tmgmt.cart')->toString())));
     $edit['target_language[]'] = array('gsw-berne');
-    $this->drupalPostForm('admin/tmgmt/cart', $edit, t('Request translation'));
+    $this->drupalGet('admin/tmgmt/cart');
+    $this->submitForm($edit, t('Request translation'));
 
     // Assert that the job item is displayed.
-    $this->assertText('Hello World');
-    $this->assertText(t('Locale'));
-    $this->assertText('2');
-    $this->drupalPostForm(NULL, array('target_language' => 'gsw-berne'), t('Submit to provider'));
+    $this->assertSession()->pageTextContains('Hello World');
+    $this->assertSession()->pageTextContains(t('Locale'));
+    $this->assertSession()->pageTextContains('2');
+    $this->submitForm(['target_language' => 'gsw-berne'], t('Submit to provider'));
 
     // Test for the translation flag title.
     $this->drupalGet('admin/tmgmt/sources/locale/default');
-    $this->assertRaw(t('Active job item: Needs review'));
+    $this->assertSession()->responseContains(t('Active job item: Needs review'));
 
     // Review and accept the job item.
     $job_items = tmgmt_job_item_load_latest('locale', 'default', $locale_object->lid, 'en');
     $this->drupalGet('admin/tmgmt/items/' . $job_items['gsw-berne']->id());
-    $this->assertRaw('gsw-berne: Hello World');
-    $this->drupalPostForm(NULL, array(), t('Save as completed'));
+    $this->assertSession()->responseContains('gsw-berne: Hello World');
+    $this->submitForm([], t('Save as completed'));
     $this->drupalGet('admin/tmgmt/sources/locale/default');
 
-    $this->assertNoRaw(t('Active job item: Needs review'));
+    $this->assertSession()->responseNotContains(t('Active job item: Needs review'));
     $rows = $this->xpath('//tbody/tr');
     $found = FALSE;
     foreach ($rows as $row) {
       if ($row->find('css', 'td:nth-child(2)')->getText() == 'Hello World') {
         $found = TRUE;
-        $this->assertEqual((string) $row->find('css', 'td:nth-child(5) img')->getAttribute('title'), t('Translation up to date'));
-        $this->assertEqual((string) $row->find('css', 'td:nth-child(6) img')->getAttribute('title'), t('Translation up to date'));
+        $this->assertEquals(t('Translation up to date'), (string) $row->find('css', 'td:nth-child(5) img')->getAttribute('title'));
+        $this->assertEquals(t('Translation up to date'), (string) $row->find('css', 'td:nth-child(6) img')->getAttribute('title'));
       }
     }
     $this->assertTrue($found);
@@ -110,16 +112,16 @@ class LocaleSourceUiTest extends TMGMTTestBase {
 
     // Filter on the "Not translated to".
     $edit = array('search[missing_target_language]' => 'gsw-berne');
-    $this->drupalPostForm(NULL, $edit, t('Search'));
+    $this->submitForm($edit, t('Search'));
     // Hello world is translated to "gsw-berne" therefore it must not show up
     // in the list.
-    $this->assertNoText('Hello World');
+    $this->assertSession()->pageTextNotContains('Hello World');
 
     // Filter on the tmgmt_locale context.
     $this->drupalGet('admin/tmgmt/sources/locale/default');
     $edit = array('search[context]' => 'tmgmt_locale');
-    $this->drupalPostForm(NULL, $edit, t('Search'));
-    $this->assertText('Hello World');
-    $this->assertNoText('Example');
+    $this->submitForm($edit, t('Search'));
+    $this->assertSession()->pageTextContains('Hello World');
+    $this->assertSession()->pageTextNotContains('Example');
   }
 }

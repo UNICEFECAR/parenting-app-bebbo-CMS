@@ -4,13 +4,13 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\ReferenceNotFoundException;
 use Drupal\feeds\Exception\TargetValidationException;
 use Drupal\feeds\Feeds\Target\UserRole;
 use Drupal\feeds\FeedTypeInterface;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 use Drupal\user\RoleStorageInterface;
 use Drupal\user\RoleInterface;
 
@@ -21,9 +21,16 @@ use Drupal\user\RoleInterface;
 class UserRoleTest extends ConfigEntityReferenceTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'user_role';
+
+  /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->transliteration->transliterate('Bar', LanguageInterface::LANGCODE_DEFAULT, '_')
@@ -61,13 +68,18 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
     ]);
 
     $this->buildContainer();
+  }
 
-    $configuration = [
+  /**
+   * {@inheritdoc}
+   */
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
+    $configuration += [
       'feed_type' => $this->createMock(FeedTypeInterface::class),
       'target_definition' => $this->createTargetDefinitionMock(),
       'reference_by' => 'label',
     ];
-    $this->targetPlugin = new UserRole($configuration, 'user_role', [], $this->entityTypeManager->reveal(), $this->entityRepository->reveal(), $this->transliteration->reveal(), $this->typedConfigManager->reveal());
+    return new UserRole($configuration, static::$pluginId, [], $this->entityTypeManager->reveal(), $this->entityFinder->reveal(), $this->transliteration->reveal(), $this->typedConfigManager->reveal());
   }
 
   /**
@@ -111,14 +123,11 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValue() {
-    // Entity query.
-    $entity_query = $this->prophesize(QueryInterface::class);
-    $entity_query->condition('label', 'Foo')->willReturn($entity_query);
-    $entity_query->range(0, 1)->willReturn($entity_query);
-    $entity_query->execute()->willReturn(['foo']);
-    $this->entityStorage->getQuery()->willReturn($entity_query)->shouldBeCalled();
+    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Foo')
+      ->willReturn(['foo'])
+      ->shouldBeCalled();
 
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($this->instantiatePlugin(), 'prepareValue');
     $values = ['target_id' => 'Foo'];
     $method(0, $values);
     $this->assertSame($values, ['target_id' => 'foo']);
@@ -131,14 +140,11 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValueReferenceNotFound() {
-    // Entity query.
-    $entity_query = $this->prophesize(QueryInterface::class);
-    $entity_query->condition('label', 'Bar')->willReturn($entity_query);
-    $entity_query->range(0, 1)->willReturn($entity_query);
-    $entity_query->execute()->willReturn([]);
-    $this->entityStorage->getQuery()->willReturn($entity_query)->shouldBeCalled();
+    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Bar')
+      ->willReturn([])
+      ->shouldBeCalled();
 
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($this->instantiatePlugin(), 'prepareValue');
     $values = ['target_id' => 'Bar'];
     $this->expectException(ReferenceNotFoundException::class);
     $this->expectExceptionMessage("The role <em class=\"placeholder\">Bar</em> cannot be assigned because it does not exist.");
@@ -152,20 +158,16 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::findEntity
    */
   public function testPrepareValueNonAllowedRole() {
-    // Entity query.
-    $entity_query = $this->prophesize(QueryInterface::class);
-    $entity_query->condition('label', 'Foo')->willReturn($entity_query);
-    $entity_query->range(0, 1)->willReturn($entity_query);
-    $entity_query->execute()->willReturn(['foo']);
-    $this->entityStorage->getQuery()->willReturn($entity_query)->shouldBeCalled();
+    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Foo')
+      ->willReturn(['foo'])
+      ->shouldBeCalled();
 
     // The 'Foo' role may not be used.
-    $config = $this->targetPlugin->getConfiguration();
-    $this->targetPlugin->setConfiguration([
+    $target_plugin = $this->instantiatePlugin([
       'allowed_roles' => ['foo' => FALSE],
-    ] + $config);
+    ]);
 
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($target_plugin, 'prepareValue');
     $values = ['target_id' => 'Foo'];
     $this->expectException(TargetValidationException::class, 'The role <em class=\"placeholder\">foo</em> may not be referenced.');
     $method(0, $values);
@@ -179,11 +181,9 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::createRole
    */
   public function testPrepareValueWithNewRole() {
-    $entity_query = $this->prophesize(QueryInterface::class);
-    $entity_query->condition('label', 'Bar')->willReturn($entity_query);
-    $entity_query->range(0, 1)->willReturn($entity_query);
-    $entity_query->execute()->willReturn([]);
-    $this->entityStorage->getQuery()->willReturn($entity_query)->shouldBeCalled();
+    $this->entityFinder->findEntities($this->getReferencableEntityTypeId(), 'label', 'Bar')
+      ->willReturn([])
+      ->shouldBeCalled();
 
     $role = $this->prophesize(RoleInterface::class);
     $role->save()->willReturn(TRUE);
@@ -192,12 +192,11 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
       ->willReturn($role->reveal())
       ->shouldBeCalled();
 
-    $config = $this->targetPlugin->getConfiguration();
-    $this->targetPlugin->setConfiguration([
+    $target_plugin = $this->instantiatePlugin([
       'autocreate' => TRUE,
-    ] + $config);
+    ]);
 
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($target_plugin, 'prepareValue');
     $values = ['target_id' => 'Bar'];
     $method(0, $values);
     $this->assertSame($values, ['target_id' => 'bar']);
@@ -211,12 +210,11 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
    * @covers ::createRole
    */
   public function testPrepareValueEmptyFeedWithAutoCreateRole() {
-    $config = $this->targetPlugin->getConfiguration();
-    $this->targetPlugin->setConfiguration([
+    $target_plugin = $this->instantiatePlugin([
       'autocreate' => TRUE,
-    ] + $config);
+    ]);
 
-    $method = $this->getProtectedClosure($this->targetPlugin, 'prepareValue');
+    $method = $this->getProtectedClosure($target_plugin, 'prepareValue');
     $values = ['target_id' => ' '];
     $this->expectException(EmptyFeedException::class);
     $method(0, $values);
@@ -232,7 +230,7 @@ class UserRoleTest extends ConfigEntityReferenceTestBase {
       'Only assign existing roles',
       'Revoke roles: no',
     ];
-    $summary = $this->targetPlugin->getSummary();
+    $summary = $this->instantiatePlugin()->getSummary();
     foreach ($summary as $key => $value) {
       $summary[$key] = (string) $value;
     }

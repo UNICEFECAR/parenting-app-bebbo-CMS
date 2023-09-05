@@ -27,7 +27,7 @@ class AssignmentBaseForm extends AssignmentFormBase {
 
     // Pass the last argument to limit the select to config entity types that
     // provide bundles for other entity types.
-    $this->setConfigTypeSelect($form, $settings['types']['config'], $this->t('base'), TRUE);
+    $this->setConfigTypeSelect($form, $settings['types']['config'], $this->t('base'));
     // Pass the last argument to limit the select to content entity types do
     // not have config entity provided bundles, thus avoiding duplication with
     // the config type select options.

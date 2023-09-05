@@ -19,7 +19,7 @@ class GroupToGroupContentRelationshipTest extends ViewsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'group',
     'options',
     'entity',
@@ -48,7 +48,7 @@ class GroupToGroupContentRelationshipTest extends ViewsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp($import_test_views = TRUE) {
+  protected function setUp($import_test_views = TRUE): void {
     parent::setUp($import_test_views);
 
     $this->entityTypeManager = $this->container->get('entity_type.manager');

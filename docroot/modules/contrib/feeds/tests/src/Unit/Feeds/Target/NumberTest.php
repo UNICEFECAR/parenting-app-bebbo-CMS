@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\Number;
 class NumberTest extends FieldTargetTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'number';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {
@@ -21,14 +28,7 @@ class NumberTest extends FieldTargetTestBase {
    * @covers ::prepareValue
    */
   public function testPrepareValue() {
-    $method = $this->getMethod('Drupal\feeds\Feeds\Target\Number', 'prepareTarget')->getClosure();
-
-    $configuration = [
-      'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
-      'target_definition' => $method($this->getMockFieldDefinition()),
-    ];
-    $target = new Number($configuration, 'link', []);
-
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => 'string'];

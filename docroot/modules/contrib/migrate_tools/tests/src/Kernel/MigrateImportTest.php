@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_tools\Kernel;
 
 use Drupal\migrate_tools\MigrateExecutable;
@@ -10,16 +12,16 @@ use Drupal\Tests\migrate\Kernel\MigrateTestBase;
 /**
  * Tests imports.
  *
- * @group migrate
+ * @group migrate_tools
  */
-class MigrateImportTest extends MigrateTestBase {
+final class MigrateImportTest extends MigrateTestBase {
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'system',
     'taxonomy',
@@ -83,7 +85,7 @@ class MigrateImportTest extends MigrateTestBase {
     $vocabulary = Vocabulary::load(2);
     $this->assertInstanceOf(VocabularyInterface::class, $vocabulary);
     $map_row = $vocabulary_id_map->getRowBySource(['id' => 2]);
-    $this->assertEqual($map_row['destid1'], $vocabulary->id());
+    $this->assertEquals($map_row['destid1'], $vocabulary->id());
   }
 
 }

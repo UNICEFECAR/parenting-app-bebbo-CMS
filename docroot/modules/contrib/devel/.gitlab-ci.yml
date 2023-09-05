@@ -1,9 +1,12 @@
 include:
-  - project: 'drupalspoons/composer-plugin'
-    # Best practice is to pin to a tag or a SHA1. https://docs.gitlab.com/ee/ci/yaml/#includefile
-    ref: "2.1.0"
-    # The template below may be inspected at https://gitlab.com/drupalspoons/composer-plugin/-/blob/master/templates/.gitlab-ci.yml
-    file: 'templates/.gitlab-ci.yml'
+  # This remote project centralize our CI "golden path" https://docs.gitlab.com/ee/ci/yaml/#includefile
+  - remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/$DCI_REF/templates/.gitlab-ci.yml'
+    rules:
+      - if: $DCI_REF != null
+  # This is here just to satisfy local CI lint with `glab`.
+  - remote: 'https://gitlab.com/drupalspoons/composer-plugin/-/raw/master/templates/.gitlab-ci.yml'
+    rules:
+      - if: $DCI_REF == null
 
 #
 # Projects may override anything in the template above.
@@ -11,19 +14,46 @@ include:
 # copying this file to your new project.
 #
 
-# Run tests on Drupal 9.1 by default, including a phpspec/prophecy-phpunit requirement.
-composer_node:
-  variables:
-    # https://getcomposer.org/doc/articles/versions.md#next-significant-release-operators
-    DRUPAL_CORE_CONSTRAINT: ~9.1.0
-  after_script:
-    # See https://www.drupal.org/project/drupal/issues/3182653
-    # This will fail on PHPUnit 8-, that is OK as its not needed there.
-    - vendor/bin/spoon require --no-progress phpspec/prophecy-phpunit:^2 || true
+variables:
+  PHP_TAG: "8.2"
+  # Disable default phpunit job in favor of the d9/10 variants below.
+  DCI_SKIP_PHPUNIT: 1
 
-
-# Add /webprofiler to ignored paths.
+# Set allow_failure to false so that the test fails for coding standards faults.
 phpcs:
-  script:
-    - PWD=$(pwd) && vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1 --ignore=$PWD/web/,$PWD/vendor/,$PWD/webprofiler/ --report-junit=junit.xml --report-full --report-summary
+  allow_failure: false
 
+composer:
+  parallel:
+    matrix:
+      - PHP_TAG: [ "7.4" ]
+        DRUPAL_CORE_CONSTRAINT: [ "^9" ]
+      - PHP_TAG: [ "8.2" ]
+        DRUPAL_CORE_CONSTRAINT: [ "^10" ]
+
+.phpunit-local:
+  variables:
+    DCI_SKIP_PHPUNIT: 0
+  parallel:
+    matrix:
+      # Run test groups in parallel for better dev velocity.
+      - DCI_PHPUNIT_EXTRA: [ "--group devel", "--group devel_generate" ]
+
+phpunit-d9:
+  dependencies:
+    # This syntax comes from https://gitlab.com/gitlab-org/gitlab/-/merge_requests/82734/diffs
+    - "composer: [7.4, ^9]"
+  variables:
+    PHP_TAG: "7.4"
+  extends:
+    - .phpunit-base
+    - .phpunit-local
+
+phpunit-d10:
+  dependencies:
+    - "composer: [8.2, ^10]"
+  variables:
+    PHP_TAG: "8.2"
+  extends:
+    - .phpunit-base
+    - .phpunit-local

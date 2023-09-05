@@ -33,7 +33,7 @@ class GroupPermissionsCacheContextTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->currentUser = $this->prophesize(AccountProxyInterface::class);
     $this->permissionsHashGenerator = $this->prophesize(GroupPermissionsHashGeneratorInterface::class);

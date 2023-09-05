@@ -57,7 +57,7 @@ class GroupContentCreateAnyAccessCheck implements AccessInterface {
     $storage = $this->entityTypeManager->getStorage('group_content_type');
     $entity_query = $storage->getQuery();
     $entity_query->condition('group_type', $group->bundle());
-    $group_content_type_ids = $entity_query->execute();
+    $group_content_type_ids = $entity_query->accessCheck(FALSE)->execute();
 
     // Find out which ones the user has access to create.
     foreach ($group_content_type_ids as $group_content_type_id) {

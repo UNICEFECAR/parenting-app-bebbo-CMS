@@ -219,6 +219,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
     // Since we are deleting one or multiple job items here we also need to
     // delete the attached messages.
     $mids = \Drupal::entityQuery('tmgmt_message')
+      ->accessCheck(TRUE)
       ->condition('tjiid', array_keys($entities), 'IN')
       ->execute();
     if (!empty($mids)) {
@@ -227,6 +228,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
     }
 
     $trids = \Drupal::entityQuery('tmgmt_remote')
+      ->accessCheck(TRUE)
       ->condition('tjiid', array_keys($entities), 'IN')
       ->execute();
     if (!empty($trids)) {
@@ -275,7 +277,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    */
   public function label($langcode = NULL) {
     $label = $this->getSourceLabel() ?: parent::label();
-    if (strlen($label) > Job::LABEL_MAX_LENGTH) {
+    if ($label && strlen($label) > Job::LABEL_MAX_LENGTH) {
       $label = Unicode::truncate($label, Job::LABEL_MAX_LENGTH, TRUE);
     }
     return $label;
@@ -305,10 +307,11 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    * {@inheritdoc}
    */
   public function getSourceLabel() {
+    $label = FALSE;
     if ($plugin = $this->getSourcePlugin()) {
-      return (string) $plugin->getLabel($this);
+      $label = $plugin->getLabel($this);
     }
-    return FALSE;
+    return is_bool($label) ? $label : (string) $label;
   }
 
   /**
@@ -883,7 +886,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    * {@inheritdoc}
    */
   public function abortTranslation() {
-    if (!$this->isActive() || !$this->getTranslatorPlugin()) {
+    if (!$this->isAbortable() || !$this->getTranslatorPlugin()) {
       throw new TMGMTException('Cannot abort job item.');
     }
     $this->setState(JobItemInterface::STATE_ABORTED);
@@ -900,6 +903,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    */
   public function getMessages($conditions = array()) {
     $query = \Drupal::entityQuery('tmgmt_message')
+      ->accessCheck(TRUE)
       ->condition('tjiid', $this->id());
     foreach ($conditions as $key => $condition) {
       if (is_array($condition)) {
@@ -922,6 +926,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    */
   public function getSiblings() {
     $ids = \Drupal::entityQuery('tmgmt_job_item')
+      ->accessCheck(TRUE)
       ->condition('tjiid', $this->id(), '<>')
       ->condition('tjid', $this->getJobId())
       ->execute();
@@ -971,6 +976,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
    */
   public function getRemoteMappings() {
     $trids = \Drupal::entityQuery('tmgmt_remote')
+      ->accessCheck(TRUE)
       ->condition('tjiid', $this->id())
       ->execute();
 
@@ -1150,14 +1156,15 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
       static::STATE_ACTIVE => [
         'label' => t('In progress'),
         'type' => 'state',
-        'icon' => drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg',
+        
+        'icon' => \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/hourglass.svg',
         'weight' => 0,
         'show_job_filter' => TRUE,
       ],
       static::STATE_REVIEW => [
         'label' => t('Needs review'),
         'type' => 'state',
-        'icon' => drupal_get_path('module', 'tmgmt') . '/icons/ready.svg',
+        'icon' => \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ready.svg',
         'weight' => 5,
         'show_job_filter' => TRUE,
       ],
@@ -1174,6 +1181,7 @@ class JobItem extends ContentEntityBase implements JobItemInterface {
       static::STATE_INACTIVE => [
         'label' => t('Inactive'),
         'type' => 'state',
+        'icon' => \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/rejected.svg',
         'weight' => 20,
       ],
     ];

@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\tmgmt_content\Kernel;
 
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\entity_test\Entity\EntityTestMul;
@@ -29,17 +30,20 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'file', 'image', 'entity_reference'];
+  protected static $modules = ['node', 'file', 'image'];
 
   protected $image_label;
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
-    $filter = FilterFormat::create(['format' => 'unallowed_format']);
+    $filter = FilterFormat::create([
+      'format' => 'unallowed_format',
+      'name' => 'Unallowed Format',
+    ]);
     $filter->save();
 
     $this->config('tmgmt.settings')
@@ -186,66 +190,66 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the name property.
-    $this->assertEqual($data['name']['#label'], 'Name');
+    $this->assertEquals('Name', $data['name']['#label']);
     $this->assertFalse(isset($data['name'][0]['#label']));
     $this->assertFalse(isset($data['name'][0]['value']['#label']));
-    $this->assertEqual($data['name'][0]['value']['#text'], $entity_test->name->value);
-    $this->assertEqual($data['name'][0]['value']['#translate'], TRUE);
+    $this->assertEquals($entity_test->name->value, $data['name'][0]['value']['#text']);
+    $this->assertTrue($data['name'][0]['value']['#translate']);
 
     // Test the test field.
-    $this->assertEqual($data['field_test_text']['#label'], 'Test text-field');
-    $this->assertEqual($data['field_test_text'][0]['#label'], 'Delta #0');
+    $this->assertEquals('Test text-field', $data['field_test_text']['#label']);
+    $this->assertEquals('Delta #0', $data['field_test_text'][0]['#label']);
     $this->assertFalse(isset($data['field_test_text'][0]['value']['#label']));
-    $this->assertEqual($data['field_test_text'][0]['value']['#text'], $entity_test->field_test_text->value);
-    $this->assertEqual($data['field_test_text'][0]['value']['#translate'], TRUE);
+    $this->assertEquals($entity_test->field_test_text->value, $data['field_test_text'][0]['value']['#text']);
+    $this->assertTrue($data['field_test_text'][0]['value']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][0]['format']['#label']));
-    $this->assertEqual($data['field_test_text'][0]['value']['#format'], 'text_plain');
-    $this->assertEqual($data['field_test_text'][0]['format']['#text'], $entity_test->field_test_text->format);
-    $this->assertEqual($data['field_test_text'][0]['format']['#translate'], FALSE);
+    $this->assertEquals('text_plain', $data['field_test_text'][0]['value']['#format']);
+    $this->assertEquals($entity_test->field_test_text->format, $data['field_test_text'][0]['format']['#text']);
+    $this->assertFalse($data['field_test_text'][0]['format']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][0]['processed']));
 
-    $this->assertEqual($data['field_test_text'][1]['#label'], 'Delta #1');
+    $this->assertEquals('Delta #1', $data['field_test_text'][1]['#label']);
     $this->assertFalse(isset($data['field_test_text'][1]['value']['#label']));
-    $this->assertEqual($data['field_test_text'][1]['value']['#text'], $entity_test->field_test_text[1]->value);
-    $this->assertEqual($data['field_test_text'][1]['value']['#translate'], TRUE);
+    $this->assertEquals($entity_test->field_test_text[1]->value, $data['field_test_text'][1]['value']['#text']);
+    $this->assertTrue($data['field_test_text'][1]['value']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][1]['format']['#label']));
-    $this->assertEqual($data['field_test_text'][1]['value']['#format'], 'text_plain');
-    $this->assertEqual($data['field_test_text'][1]['format']['#text'], $entity_test->field_test_text[1]->format);
-    $this->assertEqual($data['field_test_text'][1]['format']['#translate'], FALSE);
+    $this->assertEquals('text_plain', $data['field_test_text'][1]['value']['#format']);
+    $this->assertEquals($entity_test->field_test_text[1]->format, $data['field_test_text'][1]['format']['#text']);
+    $this->assertFalse($data['field_test_text'][1]['format']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][1]['processed']));
 
-    $this->assertEqual($data['field_test_text'][2]['#label'], 'Delta #2');
+    $this->assertEquals('Delta #2', $data['field_test_text'][2]['#label']);
     $this->assertFalse(isset($data['field_test_text'][2]['value']['#label']));
-    $this->assertEqual($data['field_test_text'][2]['value']['#text'], $entity_test->field_test_text[2]->value);
-    $this->assertEqual($data['field_test_text'][2]['value']['#translate'], FALSE);
+    $this->assertEquals($entity_test->field_test_text[2]->value, $data['field_test_text'][2]['value']['#text']);
+    $this->assertFalse($data['field_test_text'][2]['value']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][2]['format']['#label']));
-    $this->assertEqual($data['field_test_text'][2]['format']['#text'], $entity_test->field_test_text[2]->format);
-    $this->assertEqual($data['field_test_text'][2]['format']['#translate'], FALSE);
+    $this->assertEquals($entity_test->field_test_text[2]->format, $data['field_test_text'][2]['format']['#text']);
+    $this->assertFalse($data['field_test_text'][2]['format']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][2]['processed']));
 
-    $this->assertEqual($data['field_test_text'][3]['#label'], 'Delta #3');
+    $this->assertEquals('Delta #3', $data['field_test_text'][3]['#label']);
     $this->assertFalse(isset($data['field_test_text'][3]['value']['#label']));
-    $this->assertEqual($data['field_test_text'][3]['value']['#format'], 'text_plain');
-    $this->assertEqual($data['field_test_text'][3]['value']['#text'], $entity_test->field_test_text[3]->value);
-    $this->assertEqual($data['field_test_text'][3]['value']['#translate'], TRUE);
+    $this->assertEquals('text_plain', $data['field_test_text'][3]['value']['#format']);
+    $this->assertEquals($entity_test->field_test_text[3]->value, $data['field_test_text'][3]['value']['#text']);
+    $this->assertTrue($data['field_test_text'][3]['value']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][3]['format']['#label']));
-    $this->assertEqual($data['field_test_text'][3]['format']['#text'], $entity_test->field_test_text[3]->format);
-    $this->assertEqual($data['field_test_text'][3]['format']['#translate'], FALSE);
+    $this->assertEquals($entity_test->field_test_text[3]->format, $data['field_test_text'][3]['format']['#text']);
+    $this->assertFalse($data['field_test_text'][3]['format']['#translate']);
     $this->assertFalse(isset($data['field_test_text'][3]['processed']));
 
     // Test the image field.
     $image_item = $data['image_test'][0];
-    $this->assertEqual($data['image_test']['#label'], $this->image_label);
+    $this->assertEquals($this->image_label, $data['image_test']['#label']);
     $this->assertFalse(isset($image_item['#label']));
     $this->assertFalse($image_item['target_id']['#translate']);
     $this->assertFalse($image_item['width']['#translate']);
     $this->assertFalse($image_item['height']['#translate']);
     $this->assertTrue($image_item['alt']['#translate']);
-    $this->assertEqual($image_item['alt']['#label'], t('Alternative text'));
-    $this->assertEqual($image_item['alt']['#text'], $entity_test->image_test->alt);
+    $this->assertEquals(t('Alternative text'), $image_item['alt']['#label']);
+    $this->assertEquals($entity_test->image_test->alt, $image_item['alt']['#text']);
     $this->assertTrue($image_item['title']['#translate']);
-    $this->assertEqual($image_item['title']['#label'], t('Title'));
-    $this->assertEqual($image_item['title']['#text'], $entity_test->image_test->title);
+    $this->assertEquals(t('Title'), $image_item['title']['#label']);
+    $this->assertEquals($entity_test->image_test->title, $image_item['title']['#text']);
 
     // Test the ignored field.
     $this->assertFalse(isset($data['ignored_field']));
@@ -265,11 +269,11 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $entity_test = \Drupal::entityTypeManager()->getStorage($this->entityTypeId)->load($entity_test->id());
     $translation = $entity_test->getTranslation('de');
 
-    $this->assertEqual($translation->name->value, $data['name'][0]['value']['#translation']['#text']);
-    $this->assertEqual($translation->field_test_text[0]->value, $data['field_test_text'][0]['value']['#translation']['#text']);
-    $this->assertEqual($translation->field_test_text[1]->value, $data['field_test_text'][1]['value']['#translation']['#text']);
-    $this->assertEqual($translation->field_test_text[2]->value, $data['field_test_text'][2]['value']['#text']);
-    $this->assertEqual($translation->field_test_text[3]->value, $data['field_test_text'][3]['value']['#translation']['#text']);
+    $this->assertEquals($data['name'][0]['value']['#translation']['#text'], $translation->name->value);
+    $this->assertEquals($data['field_test_text'][0]['value']['#translation']['#text'], $translation->field_test_text[0]->value);
+    $this->assertEquals($data['field_test_text'][1]['value']['#translation']['#text'], $translation->field_test_text[1]->value);
+    $this->assertEquals($data['field_test_text'][2]['value']['#text'], $translation->field_test_text[2]->value);
+    $this->assertEquals($data['field_test_text'][3]['value']['#translation']['#text'], $translation->field_test_text[3]->value);
 
     // Test adding data to the source and translating again.
     $source = $entity_test->getTranslation('en');
@@ -288,14 +292,14 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the later addition field.
-    $this->assertEqual($data['later_addition']['#label'], $this->later_addition_label);
+    $this->assertEquals($this->later_addition_label, $data['later_addition']['#label']);
     $this->assertFalse(isset($data['later_addition'][0]['value']['#label']));
-    $this->assertEqual($data['later_addition'][0]['value']['#text'], $entity_test->later_addition->value);
-    $this->assertEqual($data['later_addition'][0]['value']['#translate'], TRUE);
+    $this->assertEquals($entity_test->later_addition->value, $data['later_addition'][0]['value']['#text']);
+    $this->assertTrue($data['later_addition'][0]['value']['#translate']);
     $this->assertFalse(isset($data['later_addition'][0]['format']['#label']));
-    $this->assertEqual($data['later_addition'][0]['value']['#format'], 'text_plain');
-    $this->assertEqual($data['later_addition'][0]['format']['#text'], $entity_test->later_addition->format);
-    $this->assertEqual($data['later_addition'][0]['format']['#translate'], FALSE);
+    $this->assertEquals('text_plain', $data['later_addition'][0]['value']['#format']);
+    $this->assertEquals($entity_test->later_addition->format, $data['later_addition'][0]['format']['#text']);
+    $this->assertFalse($data['later_addition'][0]['format']['#translate']);
     $this->assertFalse(isset($data['later_addition'][0]['processed']));
 
     // Now request a translation again and save it back.
@@ -310,7 +314,7 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $translation = $entity_test->getTranslation('de');
 
     // Ensure no item was created for the removed delta.
-    $this->assertEqual($translation->later_addition[0]->value, $data['later_addition'][0]['value']['#translation']['#text']);
+    $this->assertEquals($data['later_addition'][0]['value']['#translation']['#text'], $translation->later_addition[0]->value);
   }
 
   /**
@@ -350,39 +354,39 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $data = $source_plugin->getData($job_item);
 
     // Test the title property.
-    $this->assertEqual($data['title']['#label'], 'Title');
+    $this->assertEquals('Title', $data['title']['#label']);
     $this->assertFalse(isset($data['title'][0]['#label']));
     $this->assertFalse(isset($data['title'][0]['value']['#label']));
-    $this->assertEqual($data['title'][0]['value']['#text'], $node->title->value);
-    $this->assertEqual($data['title'][0]['value']['#translate'], TRUE);
+    $this->assertEquals($node->getTitle(), $data['title'][0]['value']['#text']);
+    $this->assertTrue($data['title'][0]['value']['#translate']);
 
     // Test the body field.
     // @todo: Fields need better labels, needs to be fixed in core.
-    $this->assertEqual($data['body']['#label'], 'Body');
-    $this->assertEqual($data['body'][0]['#label'], 'Delta #0');
-    $this->assertEqual((string) $data['body'][0]['value']['#label'], 'Text');
-    $this->assertEqual($data['body'][0]['value']['#text'], $node->body->value);
-    $this->assertEqual($data['body'][0]['value']['#translate'], TRUE);
-    $this->assertEqual($data['body'][0]['value']['#format'], 'text_plain');
-    $this->assertEqual((string) $data['body'][0]['summary']['#label'], 'Summary');
-    $this->assertEqual($data['body'][0]['summary']['#text'], $node->body->summary);
-    $this->assertEqual($data['body'][0]['summary']['#translate'], TRUE);
-    $this->assertEqual((string) $data['body'][0]['format']['#label'], 'Text format');
-    $this->assertEqual($data['body'][0]['format']['#text'], $node->body->format);
-    $this->assertEqual($data['body'][0]['format']['#translate'], FALSE);
+    $this->assertEquals('Body', $data['body']['#label']);
+    $this->assertEquals('Delta #0', $data['body'][0]['#label']);
+    $this->assertEquals('Text', (string) $data['body'][0]['value']['#label']);
+    $this->assertEquals($node->body->value, $data['body'][0]['value']['#text']);
+    $this->assertTrue($data['body'][0]['value']['#translate']);
+    $this->assertEquals('text_plain', $data['body'][0]['value']['#format']);
+    $this->assertEquals('Summary', (string) $data['body'][0]['summary']['#label']);
+    $this->assertEquals($node->body->summary, $data['body'][0]['summary']['#text']);
+    $this->assertTrue($data['body'][0]['summary']['#translate']);
+    $this->assertEquals('Text format', (string) $data['body'][0]['format']['#label']);
+    $this->assertEquals($node->body->format, $data['body'][0]['format']['#text']);
+    $this->assertFalse($data['body'][0]['format']['#translate']);
     $this->assertFalse(isset($data['body'][0]['processed']));
 
-    $this->assertEqual($data['body'][1]['#label'], 'Delta #1');
-    $this->assertEqual((string) $data['body'][1]['value']['#label'], 'Text');
-    $this->assertEqual($data['body'][1]['value']['#text'], $node->body[1]->value);
-    $this->assertEqual($data['body'][1]['value']['#translate'], TRUE);
-    $this->assertEqual((string) $data['body'][1]['summary']['#label'], 'Summary');
-    $this->assertEqual($data['body'][1]['summary']['#text'], $node->body[1]->summary);
-    $this->assertEqual($data['body'][1]['summary']['#translate'], TRUE);
-    $this->assertEqual($data['body'][0]['summary']['#format'], 'text_plain');
-    $this->assertEqual((string) $data['body'][1]['format']['#label'], 'Text format');
-    $this->assertEqual($data['body'][1]['format']['#text'], $node->body[1]->format);
-    $this->assertEqual($data['body'][1]['format']['#translate'], FALSE);
+    $this->assertEquals('Delta #1', $data['body'][1]['#label']);
+    $this->assertEquals('Text', (string) $data['body'][1]['value']['#label']);
+    $this->assertEquals($node->body[1]->value, $data['body'][1]['value']['#text']);
+    $this->assertTrue($data['body'][1]['value']['#translate']);
+    $this->assertEquals('Summary', (string) $data['body'][1]['summary']['#label']);
+    $this->assertEquals($node->body[1]->summary, $data['body'][1]['summary']['#text']);
+    $this->assertTrue($data['body'][1]['summary']['#translate']);
+    $this->assertEquals('text_plain', $data['body'][0]['summary']['#format']);
+    $this->assertEquals('Text format', (string) $data['body'][1]['format']['#label']);
+    $this->assertEquals($node->body[1]->format, $data['body'][1]['format']['#text']);
+    $this->assertFalse($data['body'][1]['format']['#translate']);
     $this->assertFalse(isset($data['body'][1]['processed']));
 
     // Test if language neutral entities can't be added to a translation job.
@@ -393,16 +397,14 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
       'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
     ]);
     $node->save();
-    try {
-      $job = tmgmt_job_create(LanguageInterface::LANGCODE_NOT_SPECIFIED, 'de');
-      $job->save();
-      $job_item = tmgmt_job_item_create('content', 'node', $node->id(), array('tjid' => $job->id()));
-      $job_item->save();
-      $this->fail("Adding of language neutral to a translation job did not fail.");
-    }
-    catch (\Exception $e){
-      $this->pass("Adding of language neutral to a translation job did fail.");
-    }
+
+    // Check that adding of language neutral to a translation job fails.
+    $job = tmgmt_job_create(LanguageInterface::LANGCODE_NOT_SPECIFIED, 'de');
+    $job->save();
+    $job_item = tmgmt_job_item_create('content', 'node', $node->id(), array('tjid' => $job->id()));
+    $this->expectException(EntityStorageException::class);
+    $this->expectExceptionMessage('Entity <em class="placeholder">und</em> could not be translated because the language <em class="placeholder">Not specified</em> is not applicable');
+    $job_item->save();
   }
 
   /**
@@ -434,7 +436,7 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     /** @var \Drupal\tmgmt\Entity\JobItem $item */
     $item = reset($items);
     // As was set to auto_accept, should be accepted.
-    $this->assertEqual($item->getState(), JobItemInterface::STATE_ACCEPTED);
+    $this->assertEquals(JobItemInterface::STATE_ACCEPTED, $item->getState());
 
     // Test that the source language is set correctly.
     $node = Node::load($node->id());
@@ -463,14 +465,14 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
 
     $node = $node->addTranslation('en');
 
-    $node->title->appendItem(array('value' => $this->randomMachineName()));
+    $node->get('title')->appendItem(array('value' => $this->randomMachineName()));
     $value = array(
       'value' => $this->randomMachineName(),
       'summary' => $this->randomMachineName(),
       'format' => 'text_plain'
     );
-    $node->body->appendItem($value);
-    $node->body->appendItem($value);
+    $node->get('body')->appendItem($value);
+    $node->get('body')->appendItem($value);
     $node->save();
 
     $job = tmgmt_job_create('en', 'de');
@@ -480,7 +482,7 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
 
     $source_plugin = $this->container->get('plugin.manager.tmgmt.source')->createInstance('content');
     $data = $source_plugin->getData($job_item);
-    $this->assertEqual($data['body'][0]['value']['#text'], $value['value']);
+    $this->assertEquals($value['value'], $data['body'][0]['value']['#text']);
   }
 
   /**
@@ -756,7 +758,7 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     $translation->save();
 
     // Test that there are now two items for english node.
-    $this->assertEqual(count($continuous_job->getItems()), 2, 'Continuous job item is automatically created for an updated english node.');
+    $this->assertCount(2, $continuous_job->getItems(), 'Continuous job item is automatically created for an updated english node.');
 
     $continuous_job_item_recent = $continuous_job->getMostRecentItem('content', $node->getEntityTypeId(), $node->id());
 
@@ -823,24 +825,24 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
 
     $first_items = array_values($first_job->getItems());
     foreach ($first_items as $job_item) {
-      $this->assertEqual($job_item->getState(), JobItemInterface::STATE_INACTIVE, 'Job item is inactive before cron run');
+      $this->assertEquals(JobItemInterface::STATE_INACTIVE, $job_item->getState(), 'Job item is inactive before cron run');
     }
 
     // Test that there is one job item for an english node.
-    $this->assertEqual(count($first_job->getItems()), 1, 'There is one job item for an english node.');
+    $this->assertCount(1, $first_job->getItems(), 'There is one job item for an english node.');
 
     // Update english node.
     $first_node->set('title', $this->randomMachineName());
     $first_node->save();
 
     // Test that there is no new job item for updated english node.
-    $this->assertEqual(count($first_job->getItems()), 1, 'There are no new job items for updated english node.');
+    $this->assertCount(1, $first_job->getItems(), 'There are no new job items for updated english node.');
 
     // Test that job item's data is updated properly.
     $first_job_items = $first_job->getItems();
     $first_job_item = reset($first_job_items);
     $data = $first_job_item->getData();
-    $this->assertEqual($first_node->label(), $data['title'][0]['value']['#text'], 'Data in job item has been updated properly.');
+    $this->assertEquals($first_node->label(), $data['title'][0]['value']['#text'], 'Data in job item has been updated properly.');
 
     $second_job = tmgmt_job_create('de', 'en', $account->id(), [
       'job_type' => Job::TYPE_CONTINUOUS,
@@ -868,7 +870,7 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
 
     $second_items = array_values($second_job->getItems());
     foreach ($second_items as $job_item) {
-      $this->assertEqual($job_item->getState(), JobItemInterface::STATE_INACTIVE, 'Job item is inactive before cron run');
+      $this->assertEquals(JobItemInterface::STATE_INACTIVE, $job_item->getState(), 'Job item is inactive before cron run');
     }
 
     $third_job = tmgmt_job_create('cs', 'en', $account->id(), [
@@ -903,14 +905,14 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
     ];
 
     // Check job items is properly grouped and we have exactly 2 groups.
-    $this->assertEqual(\Drupal::state()->get('job_item_groups'), $expected_groups, 'Job items groups are equal');
+    $this->assertEquals($expected_groups, \Drupal::state()->get('job_item_groups'), 'Job items groups are equal');
 
     foreach ($first_job->getItems() as $job_item) {
-      $this->assertEqual($job_item->getState(), JobItemInterface::STATE_REVIEW, 'Job item is active after cron run');
+      $this->assertEquals(JobItemInterface::STATE_REVIEW, $job_item->getState(), 'Job item is active after cron run');
     }
 
     foreach ($second_job->getItems() as $job_item) {
-      $this->assertEqual($job_item->getState(), JobItemInterface::STATE_REVIEW, 'Job item is active after cron run');
+      $this->assertEquals(JobItemInterface::STATE_REVIEW, $job_item->getState(), 'Job item is active after cron run');
     }
 
     // Run cron again to process 3 remaining job items.
@@ -923,9 +925,9 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
       ['item_id' => $third_items[2]->id(), 'job_id' => $third_items[2]->getJobId()],
     ];
     // Assert there are 3 new job items appeared from the third job.
-    $this->assertEqual(\Drupal::state()->get('job_item_groups'), $expected_groups, 'Job items groups are equal');
+    $this->assertEquals($expected_groups, \Drupal::state()->get('job_item_groups'), 'Job items groups are equal');
     foreach ($third_job->getItems() as $job_item) {
-      $this->assertEqual($job_item->getState(), JobItemInterface::STATE_REVIEW, 'Job item is active after cron run');
+      $this->assertEquals(JobItemInterface::STATE_REVIEW, $job_item->getState(), 'Job item is active after cron run');
     }
   }
 
@@ -977,8 +979,8 @@ class ContentEntitySourceUnitTest extends ContentEntityTestBase {
 
     // Assert that node has not been captured.
     $updated_continuous_job = Job::load($continuous_job->id());
-    $this->assertEqual($updated_continuous_job->getItems(), []);
-    $this->assertEqual($updated_continuous_job->getState(), Job::STATE_ABORTED);
+    $this->assertEquals([], $updated_continuous_job->getItems());
+    $this->assertEquals(Job::STATE_ABORTED, $updated_continuous_job->getState());
   }
 
 }

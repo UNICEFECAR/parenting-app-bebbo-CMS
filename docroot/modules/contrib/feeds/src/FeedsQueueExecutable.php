@@ -6,7 +6,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Session\AccountSwitcherInterface;
-use Exception;
+use Drupal\feeds\Exception\EmptyFeedException;
+use Drupal\feeds\Result\FetcherResultInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -64,13 +65,17 @@ class FeedsQueueExecutable extends FeedsExecutable {
   /**
    * {@inheritdoc}
    */
-  protected function handleException(FeedInterface $feed, $stage, array $params, Exception $exception) {
-    $feed->finishImport();
-
+  protected function handleException(FeedInterface $feed, $stage, array $params, \Exception $exception) {
     if ($exception instanceof EmptyFeedException) {
+      if (isset($params['fetcher_result']) && $params['fetcher_result'] instanceof FetcherResultInterface) {
+        $params['fetcher_result']->cleanUp();
+      }
+      $feed->finishImport();
       return;
     }
 
+    // On an exception, the queue item remains on the queue so we need to keep
+    // the feed locked.
     throw $exception;
   }
 

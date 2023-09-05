@@ -12,7 +12,7 @@ class FeedsItemImportedFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Set display mode for feeds_item to feeds_item_imported on article content
@@ -58,7 +58,7 @@ class FeedsItemImportedFormatterTest extends FeedsItemFormatterTestBase {
 
     // Create an article and set imported time.
     $article = $this->createNodeWithFeedsItem($feed);
-    $article->feeds_item->imported = $input;
+    $article->get('feeds_item')->getItemByFeed($feed)->imported = $input;
 
     // Set custom date format for last test to m-d-Y.
     if ($input == '1543370515') {
@@ -79,7 +79,10 @@ class FeedsItemImportedFormatterTest extends FeedsItemFormatterTestBase {
    */
   public function providerImported() {
     return [
-      'timestamp default date format' => ['1543374515', '<div>Wed, 11/28/2018 - 14:08</div>'],
+      'timestamp default date format' => [
+        '1543374515',
+        '<div>Wed, 11/28/2018 - 14:08</div>',
+      ],
       'timestamp custom date format' => ['1543370515', '<div>11-28-2018</div>'],
     ];
   }

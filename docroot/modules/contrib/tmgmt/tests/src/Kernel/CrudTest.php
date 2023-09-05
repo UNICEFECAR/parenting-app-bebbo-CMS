@@ -20,7 +20,7 @@ class CrudTest extends TMGMTKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     \Drupal::service('router.builder')->rebuild();
     $this->installEntitySchema('tmgmt_remote');
@@ -33,18 +33,18 @@ class CrudTest extends TMGMTKernelTestBase {
     $translator = $this->createTranslator();
 
     $loaded_translator = Translator::load($translator->id());
-    $this->assertEqual($translator->id(), $loaded_translator->id());
-    $this->assertEqual($translator->label(), $loaded_translator->label());
-    $this->assertEqual($translator->getSettings(), $loaded_translator->getSettings());
+    $this->assertEquals($translator->id(), $loaded_translator->id());
+    $this->assertEquals($translator->label(), $loaded_translator->label());
+    $this->assertEquals($translator->getSettings(), $loaded_translator->getSettings());
 
     // Update the settings.
     $translator->setSetting('new_key', $this->randomString());
     $translator->save();
 
     $loaded_translator = Translator::load($translator->id());
-    $this->assertEqual($translator->id(), $loaded_translator->id());
-    $this->assertEqual($translator->label(), $loaded_translator->label());
-    $this->assertEqual($translator->getSettings(), $loaded_translator->getSettings());
+    $this->assertEquals($translator->id(), $loaded_translator->id());
+    $this->assertEquals($translator->label(), $loaded_translator->label());
+    $this->assertEquals($translator->getSettings(), $loaded_translator->getSettings());
 
     // Delete the translator, make sure the translator is gone.
     $translator->delete();
@@ -86,26 +86,26 @@ class CrudTest extends TMGMTKernelTestBase {
   function testJobs() {
     $job = $this->createJob();
 
-    $this->assertEqual(Job::TYPE_NORMAL, $job->getJobType());
+    $this->assertEquals(Job::TYPE_NORMAL, $job->getJobType());
 
     $loaded_job = Job::load($job->id());
 
-    $this->assertEqual($job->getSourceLangcode(), $loaded_job->getSourceLangcode());
-    $this->assertEqual($job->getTargetLangcode(), $loaded_job->getTargetLangcode());
+    $this->assertEquals($job->getSourceLangcode(), $loaded_job->getSourceLangcode());
+    $this->assertEquals($job->getTargetLangcode(), $loaded_job->getTargetLangcode());
 
     // Assert that the created and changed information has been set to the
     // default value.
     $this->assertTrue($loaded_job->getCreatedTime() > 0);
     $this->assertTrue($loaded_job->getChangedTime() > 0);
-    $this->assertEqual(0, $loaded_job->getState());
+    $this->assertEquals(0, $loaded_job->getState());
 
     // Update the settings.
     $job->reference = 7;
-    $this->assertEqual(SAVED_UPDATED, $job->save());
+    $this->assertEquals(SAVED_UPDATED, $job->save());
 
     $loaded_job = Job::load($job->id());
 
-    $this->assertEqual($job->getReference(), $loaded_job->getReference());
+    $this->assertEquals($job->getReference(), $loaded_job->getReference());
 
     // Test the job items.
     $item1 = $job->addItem('test_source', 'type', 5);
@@ -113,14 +113,14 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // Load and compare the items.
     $items = $job->getItems();
-    $this->assertEqual(2, count($items));
+    $this->assertCount(2, $items);
 
-    $this->assertEqual($item1->getPlugin(), $items[$item1->id()]->getPlugin());
-    $this->assertEqual($item1->getItemType(), $items[$item1->id()]->getItemType());
-    $this->assertEqual($item1->getItemId(), $items[$item1->id()]->getItemId());
-    $this->assertEqual($item2->getPlugin(), $items[$item2->id()]->getPlugin());
-    $this->assertEqual($item2->getItemType(), $items[$item2->id()]->getItemType());
-    $this->assertEqual($item2->getItemId(), $items[$item2->id()]->getItemId());
+    $this->assertEquals($item1->getPlugin(), $items[$item1->id()]->getPlugin());
+    $this->assertEquals($item1->getItemType(), $items[$item1->id()]->getItemType());
+    $this->assertEquals($item1->getItemId(), $items[$item1->id()]->getItemId());
+    $this->assertEquals($item2->getPlugin(), $items[$item2->id()]->getPlugin());
+    $this->assertEquals($item2->getItemType(), $items[$item2->id()]->getItemType());
+    $this->assertEquals($item2->getItemId(), $items[$item2->id()]->getItemId());
 
     // Delete the job and make sure it is gone.
     $job->delete();
@@ -146,7 +146,7 @@ class CrudTest extends TMGMTKernelTestBase {
     );
 
     $result = $item1->addRemoteMapping($data_key, 'id11', $mapping_data);
-    $this->assertEqual($result, SAVED_NEW);
+    $this->assertEquals(SAVED_NEW, $result);
 
     $job_mappings = $job->getRemoteMappings();
     $item_mappings = $item1->getRemoteMappings();
@@ -155,34 +155,34 @@ class CrudTest extends TMGMTKernelTestBase {
     $item_mapping = array_shift($item_mappings);
 
     $_job = $job_mapping->getJob();
-    $this->assertEqual($job->id(), $_job->id());
+    $this->assertEquals($job->id(), $_job->id());
 
     $_job = $item_mapping->getJob();
-    $this->assertEqual($job->id(), $_job->id());
+    $this->assertEquals($job->id(), $_job->id());
 
     $_item1 = $item_mapping->getJobItem();
-    $this->assertEqual($item1->id(), $_item1->id());
+    $this->assertEquals($item1->id(), $_item1->id());
 
     $remote_mappings = RemoteMapping::loadByRemoteIdentifier('id11', 'id12', 'id13');
     $remote_mapping = array_shift($remote_mappings);
-    $this->assertEqual($remote_mapping->id(), $item1->id());
-    $this->assertEqual($remote_mapping->getAmount(), $mapping_data['amount']);
-    $this->assertEqual($remote_mapping->getCurrency(), $mapping_data['currency']);
+    $this->assertEquals($item1->id(), $remote_mapping->id());
+    $this->assertEquals($mapping_data['amount'], $remote_mapping->getAmount());
+    $this->assertEquals($mapping_data['currency'], $remote_mapping->getCurrency());
 
-    $this->assertEqual(count(RemoteMapping::loadByRemoteIdentifier('id11')), 1);
-    $this->assertEqual(count(RemoteMapping::loadByRemoteIdentifier('id11', '')), 0);
-    $this->assertEqual(count(RemoteMapping::loadByRemoteIdentifier('id11', NULL, '')), 0);
-    $this->assertEqual(count(RemoteMapping::loadByRemoteIdentifier(NULL, NULL, 'id13')), 1);
+    $this->assertCount(1, RemoteMapping::loadByRemoteIdentifier('id11'));
+    $this->assertCount(0, RemoteMapping::loadByRemoteIdentifier('id11', ''));
+    $this->assertCount(0, RemoteMapping::loadByRemoteIdentifier('id11', NULL, ''));
+    $this->assertCount(1, RemoteMapping::loadByRemoteIdentifier(NULL, NULL, 'id13'));
 
-    $this->assertEqual($remote_mapping->getRemoteIdentifier1(), 'id11');
-    $this->assertEqual($remote_mapping->getRemoteIdentifier2(), 'id12');
-    $this->assertEqual($remote_mapping->getRemoteIdentifier3(), 'id13');
+    $this->assertEquals('id11', $remote_mapping->getRemoteIdentifier1());
+    $this->assertEquals('id12', $remote_mapping->getRemoteIdentifier2());
+    $this->assertEquals('id13', $remote_mapping->getRemoteIdentifier3());
 
     // Test remote data.
     $item_mapping->addRemoteData('test_data', 'test_value');
     $item_mapping->save();
     $item_mapping = RemoteMapping::load($item_mapping->id());
-    $this->assertEqual($item_mapping->getRemoteData('test_data'), 'test_value');
+    $this->assertEquals('test_value', $item_mapping->getRemoteData('test_data'));
 
     // Add mapping to the other job item as well.
     $item2->addRemoteMapping($data_key, 'id21', array('remote_identifier_2' => 'id22', 'remote_identifier_3' => 'id23'));
@@ -193,14 +193,14 @@ class CrudTest extends TMGMTKernelTestBase {
     $item1->delete();
     // Test if mapping for item1 has been removed as well.
 
-    $this->assertEqual(count(RemoteMapping::loadByLocalData(NULL, $item1->id())), 0);
+    $this->assertCount(0, RemoteMapping::loadByLocalData(NULL, $item1->id()));
 
     // We still should have mapping for item2.
-    $this->assertEqual(count(RemoteMapping::loadByLocalData(NULL, $item2->id())), 1);
+    $this->assertCount(1, RemoteMapping::loadByLocalData(NULL, $item2->id()));
 
     // Now delete the job and see if remaining mappings were removed as well.
     $job->delete();
-    $this->assertEqual(count(RemoteMapping::loadByLocalData(NULL, $item2->id())), 0);
+    $this->assertCount(0, RemoteMapping::loadByLocalData(NULL, $item2->id()));
   }
 
   /**
@@ -215,21 +215,21 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // Test single load callback.
     $item = JobItem::load($item1->id());
-    $this->assertEqual($item1->getPlugin(), $item->getPlugin());
-    $this->assertEqual($item1->getItemType(), $item->getItemType());
-    $this->assertEqual($item1->getItemId(), $item->getItemId());
+    $this->assertEquals($item1->getPlugin(), $item->getPlugin());
+    $this->assertEquals($item1->getItemType(), $item->getItemType());
+    $this->assertEquals($item1->getItemId(), $item->getItemId());
 
     // Test multiple load callback.
     $items = JobItem::loadMultiple(array($item1->id(), $item2->id()));
 
-    $this->assertEqual(2, count($items));
+    $this->assertCount(2, $items);
 
-    $this->assertEqual($item1->getPlugin(), $items[$item1->id()]->getPlugin());
-    $this->assertEqual($item1->getItemType(), $items[$item1->id()]->getItemType());
-    $this->assertEqual($item1->getItemId(), $items[$item1->id()]->getItemId());
-    $this->assertEqual($item2->getPlugin(), $items[$item2->id()]->getPlugin());
-    $this->assertEqual($item2->getItemType(), $items[$item2->id()]->getItemType());
-    $this->assertEqual($item2->getItemId(), $items[$item2->id()]->getItemId());
+    $this->assertEquals($item1->getPlugin(), $items[$item1->id()]->getPlugin());
+    $this->assertEquals($item1->getItemType(), $items[$item1->id()]->getItemType());
+    $this->assertEquals($item1->getItemId(), $items[$item1->id()]->getItemId());
+    $this->assertEquals($item2->getPlugin(), $items[$item2->id()]->getPlugin());
+    $this->assertEquals($item2->getItemType(), $items[$item2->id()]->getItemType());
+    $this->assertEquals($item2->getItemId(), $items[$item2->id()]->getItemId());
     // Test the second item label length - it must not exceed the
     // TMGMT_JOB_LABEL_MAX_LENGTH.
     $this->assertTrue(Job::LABEL_MAX_LENGTH >= strlen($items[$item2->id()]->label()));
@@ -275,15 +275,15 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // Check job messages.
     $messages = $job->getMessages();
-    $this->assertEqual(count($messages), 1);
+    $this->assertCount(1, $messages);
     $last_message = end($messages);
-    $this->assertEqual($last_message->message->value, 'The translation of <a href=":source_url">@source</a> to @language is finished and can now be <a href=":review_url">reviewed</a>.');
+    $this->assertEquals('The translation of <a href=":source_url">@source</a> to @language is finished and can now be <a href=":review_url">reviewed</a>.', $last_message->message->value);
 
     // Initial state - translation has been received for the first time.
-    $this->assertEqual($data['#translation']['#text'], 'translated 1');
+    $this->assertEquals('translated 1', $data['#translation']['#text']);
     $this->assertTrue(empty($data['#translation']['#text_revisions']));
-    $this->assertEqual($data['#translation']['#origin'], 'remote');
-    $this->assertEqual($data['#translation']['#timestamp'], \Drupal::time()->getRequestTime());
+    $this->assertEquals('remote', $data['#translation']['#origin']);
+    $this->assertEquals(\Drupal::time()->getRequestTime(), $data['#translation']['#timestamp']);
 
     // Set status back to pending as if the data item was rejected.
     $item1->updateData(array('dummy', 'deep_nesting'), array('#status' => TMGMT_DATA_ITEM_STATE_PENDING));
@@ -292,7 +292,7 @@ class CrudTest extends TMGMTKernelTestBase {
     $item1->addTranslatedData($translation);
     $data = $item1->getData($key);
     // Check if the status has been updated back to translated.
-    $this->assertEqual($data['#status'], TMGMT_DATA_ITEM_STATE_TRANSLATED);
+    $this->assertEquals(TMGMT_DATA_ITEM_STATE_TRANSLATED, $data['#status']);
 
     // Add translation, however locally customized.
     $translation['dummy']['deep_nesting']['#text'] = 'translated 2';
@@ -302,19 +302,19 @@ class CrudTest extends TMGMTKernelTestBase {
     $data = $item1->getData($key);
 
     // The translation text is updated.
-    $this->assertEqual($data['#translation']['#text'], 'translated 2');
-    $this->assertEqual($data['#translation']['#timestamp'], \Drupal::time()->getRequestTime() - 5);
+    $this->assertEquals('translated 2', $data['#translation']['#text']);
+    $this->assertEquals(\Drupal::time()->getRequestTime() - 5, $data['#translation']['#timestamp']);
 
     // Previous translation is among text_revisions.
-    $this->assertEqual($data['#translation']['#text_revisions'][0]['#text'], 'translated 1');
-    $this->assertEqual($data['#translation']['#text_revisions'][0]['#origin'], 'remote');
-    $this->assertEqual($data['#translation']['#text_revisions'][0]['#timestamp'], \Drupal::time()->getRequestTime());
+    $this->assertEquals('translated 1', $data['#translation']['#text_revisions'][0]['#text']);
+    $this->assertEquals('remote', $data['#translation']['#text_revisions'][0]['#origin']);
+    $this->assertEquals(\Drupal::time()->getRequestTime(), $data['#translation']['#text_revisions'][0]['#timestamp']);
     // Current translation origin is local.
-    $this->assertEqual($data['#translation']['#origin'], 'local');
+    $this->assertEquals('local', $data['#translation']['#origin']);
 
     // Check job messages.
     $messages = $job->getMessages();
-    $this->assertEqual(count($messages), 1);
+    $this->assertCount(1, $messages);
 
     // Add translation - not local.
     $translation['dummy']['deep_nesting']['#text'] = 'translated 3';
@@ -324,44 +324,44 @@ class CrudTest extends TMGMTKernelTestBase {
     $data = $item1->getData($key);
 
     // The translation text is NOT updated.
-    $this->assertEqual($data['#translation']['#text'], 'translated 2');
-    $this->assertEqual($data['#translation']['#timestamp'], \Drupal::time()->getRequestTime() - 5);
+    $this->assertEquals('translated 2', $data['#translation']['#text']);
+    $this->assertEquals(\Drupal::time()->getRequestTime() - 5, $data['#translation']['#timestamp']);
     // Received translation is the latest revision.
     $last_revision = end($data['#translation']['#text_revisions']);
-    $this->assertEqual($last_revision['#text'], 'translated 3');
-    $this->assertEqual($last_revision['#origin'], 'remote');
-    $this->assertEqual($last_revision['#timestamp'], \Drupal::time()->getRequestTime());
+    $this->assertEquals('translated 3', $last_revision['#text']);
+    $this->assertEquals('remote', $last_revision['#origin']);
+    $this->assertEquals(\Drupal::time()->getRequestTime(), $last_revision['#timestamp']);
     // Current translation origin is local.
-    $this->assertEqual($data['#translation']['#origin'], 'local');
+    $this->assertEquals('local', $data['#translation']['#origin']);
 
     // Check job messages.
     $messages = $job->getMessages();
-    $this->assertEqual(count($messages), 2);
+    $this->assertCount(2, $messages);
     $last_message = end($messages);
-    $this->assertEqual($last_message->message->value, 'Translation for customized @key received. Revert your changes if you wish to use it.');
+    $this->assertEquals('Translation for customized @key received. Revert your changes if you wish to use it.', $last_message->message->value);
 
     // Revert to previous revision which is the latest received translation.
     $item1->dataItemRevert($key);
     $data = $item1->getData($key);
 
     // The translation text is updated.
-    $this->assertEqual($data['#translation']['#text'], 'translated 3');
-    $this->assertEqual($data['#translation']['#origin'], 'remote');
-    $this->assertEqual($data['#translation']['#timestamp'], \Drupal::time()->getRequestTime());
+    $this->assertEquals('translated 3', $data['#translation']['#text']);
+    $this->assertEquals('remote', $data['#translation']['#origin']);
+    $this->assertEquals(\Drupal::time()->getRequestTime(), $data['#translation']['#timestamp']);
     // Latest revision is now the formerly added local translation.
     $last_revision = end($data['#translation']['#text_revisions']);
     $this->assertNotEmpty($last_revision['#text'], 'translated 2');
     $this->assertNotEmpty($last_revision['#origin'], 'remote');
-    $this->assertEqual($last_revision['#timestamp'], \Drupal::time()->getRequestTime() - 5);
+    $this->assertEquals(\Drupal::time()->getRequestTime() - 5, $last_revision['#timestamp']);
 
     // Check job messages.
     $messages = $job->getMessages();
-    $this->assertEqual(count($messages), 3);
+    $this->assertCount(3, $messages);
     $last_message = end($messages);
-    $this->assertEqual($last_message->message->value, 'Translation for @key reverted to the latest version.');
+    $this->assertEquals('Translation for @key reverted to the latest version.', $last_message->message->value);
 
     // There should be three revisions now.
-    $this->assertEqual(count($data['#translation']['#text_revisions']), 3);
+    $this->assertCount(3, $data['#translation']['#text_revisions']);
 
     // Attempt to update the translation with the same text, this should not
     // lead to a new revision.
@@ -370,7 +370,7 @@ class CrudTest extends TMGMTKernelTestBase {
     //unset($translation['dummy']['deep_nesting']['#timestamp']);
     $item1->addTranslatedData($translation);
     $data = $item1->getData($key);
-    $this->assertEqual(count($data['#translation']['#text_revisions']), 3);
+    $this->assertCount(3, $data['#translation']['#text_revisions']);
 
     // Mark the translation as reviewed, a new translation should not update the
     // existing one but create a new translation.
@@ -380,19 +380,19 @@ class CrudTest extends TMGMTKernelTestBase {
     $data = $item1->getData($key);
 
     // The translation text is NOT updated.
-    $this->assertEqual($data['#translation']['#text'], 'translated 3');
+    $this->assertEquals('translated 3', $data['#translation']['#text']);
     // Received translation is the latest revision.
-    $this->assertEqual(count($data['#translation']['#text_revisions']), 4);
+    $this->assertCount(4, $data['#translation']['#text_revisions']);
     $last_revision = end($data['#translation']['#text_revisions']);
-    $this->assertEqual($last_revision['#text'], 'translated 4');
-    $this->assertEqual($last_revision['#origin'], 'remote');
-    $this->assertEqual($last_revision['#timestamp'], \Drupal::time()->getRequestTime());
+    $this->assertEquals('translated 4', $last_revision['#text']);
+    $this->assertEquals('remote', $last_revision['#origin']);
+    $this->assertEquals(\Drupal::time()->getRequestTime(), $last_revision['#timestamp']);
 
     // Check job messages.
     $messages = $job->getMessages();
-    $this->assertEqual(count($messages), 4);
+    $this->assertCount(4, $messages);
     $last_message = end($messages);
-    $this->assertEqual($last_message->message->value, 'Translation for already reviewed @key received and stored as a new revision. Revert to it if you wish to use it.');
+    $this->assertEquals('Translation for already reviewed @key received and stored as a new revision. Revert to it if you wish to use it.', $last_message->message->value);
 
     // Add a new job item.
     $new_item = $job->addItem('test_source', 'test_with_long_label', 6);
@@ -444,11 +444,11 @@ class CrudTest extends TMGMTKernelTestBase {
     );
 
     // No data items.
-    $this->assertEqual(0, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountTranslated());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(0, $job->getCountAccepted());
-    $this->assertEqual(0, $job->getWordCount());
+    $this->assertEquals(0, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountTranslated());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(0, $job->getCountAccepted());
+    $this->assertEquals(0, $job->getWordCount());
 
     // Add a test items.
     $job_item1 = tmgmt_job_item_create('plugin', 'type', 4, array('tjid' => $job->id()));
@@ -458,14 +458,14 @@ class CrudTest extends TMGMTKernelTestBase {
     $job = Job::load($job->id());
     $job_item1 = JobItem::load($job_item1->id());
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(0, $job_item1->getCountPending());
-    $this->assertEqual(0, $job_item1->getCountTranslated());
-    $this->assertEqual(0, $job_item1->getCountReviewed());
-    $this->assertEqual(0, $job_item1->getCountAccepted());
-    $this->assertEqual(0, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountTranslated());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(0, $job->getCountAccepted());
+    $this->assertEquals(0, $job_item1->getCountPending());
+    $this->assertEquals(0, $job_item1->getCountTranslated());
+    $this->assertEquals(0, $job_item1->getCountReviewed());
+    $this->assertEquals(0, $job_item1->getCountAccepted());
+    $this->assertEquals(0, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountTranslated());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(0, $job->getCountAccepted());
 
     // Add an untranslated data item.
     $job_item1->updateData('data_item1', $data1);
@@ -475,14 +475,14 @@ class CrudTest extends TMGMTKernelTestBase {
     $job = Job::load($job->id());
     $job_item1 = JobItem::load($job_item1->id());
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(1, $job_item1->getCountPending());
-    $this->assertEqual(0, $job_item1->getCountTranslated());
-    $this->assertEqual(0, $job_item1->getCountReviewed());
-    $this->assertEqual(5, $job_item1->getWordCount());
-    $this->assertEqual(1, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(0, $job->getCountTranslated());
-    $this->assertEqual(5, $job->getWordCount());
+    $this->assertEquals(1, $job_item1->getCountPending());
+    $this->assertEquals(0, $job_item1->getCountTranslated());
+    $this->assertEquals(0, $job_item1->getCountReviewed());
+    $this->assertEquals(5, $job_item1->getWordCount());
+    $this->assertEquals(1, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(0, $job->getCountTranslated());
+    $this->assertEquals(5, $job->getWordCount());
 
 
     // Add another untranslated data item.
@@ -494,14 +494,14 @@ class CrudTest extends TMGMTKernelTestBase {
     $job = Job::load($job->id());
     $job_item1 = JobItem::load($job_item1->id());
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(1, $job_item1->getCountPending());
-    $this->assertEqual(0, $job_item1->getCountTranslated());
-    $this->assertEqual(0, $job_item1->getCountReviewed());
-    $this->assertEqual(5, $job_item1->getWordCount());
-    $this->assertEqual(1, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountTranslated());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(5, $job->getWordCount());
+    $this->assertEquals(1, $job_item1->getCountPending());
+    $this->assertEquals(0, $job_item1->getCountTranslated());
+    $this->assertEquals(0, $job_item1->getCountReviewed());
+    $this->assertEquals(5, $job_item1->getWordCount());
+    $this->assertEquals(1, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountTranslated());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(5, $job->getWordCount());
 
     // Add a translated data item.
     $job_item1->updateData('data_item1', $data3, TRUE);
@@ -509,12 +509,12 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // One translated data items.
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(0, $job_item1->getCountPending());
-    $this->assertEqual(1, $job_item1->getCountTranslated());
-    $this->assertEqual(0, $job_item1->getCountReviewed());
-    $this->assertEqual(0, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(1, $job->getCountTranslated());
+    $this->assertEquals(0, $job_item1->getCountPending());
+    $this->assertEquals(1, $job_item1->getCountTranslated());
+    $this->assertEquals(0, $job_item1->getCountReviewed());
+    $this->assertEquals(0, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(1, $job->getCountTranslated());
 
     // Add a confirmed data item.
     $job_item1->updateData('data_item1', $data4, TRUE);
@@ -522,8 +522,8 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // One reviewed data item.
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(1, $job_item1->getCountReviewed());
-    $this->assertEqual(1, $job->getCountReviewed());
+    $this->assertEquals(1, $job_item1->getCountReviewed());
+    $this->assertEquals(1, $job->getCountReviewed());
 
     // Add a translated and an untranslated and a confirmed data item
     $job = Job::load($job->id());
@@ -535,10 +535,10 @@ class CrudTest extends TMGMTKernelTestBase {
 
     // One pending and translated data items each.
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(1, $job->getCountPending());
-    $this->assertEqual(1, $job->getCountTranslated());
-    $this->assertEqual(1, $job->getCountReviewed());
-    $this->assertEqual(16, $job->getWordCount());
+    $this->assertEquals(1, $job->getCountPending());
+    $this->assertEquals(1, $job->getCountTranslated());
+    $this->assertEquals(1, $job->getCountReviewed());
+    $this->assertEquals(16, $job->getWordCount());
 
     // Add nested data items.
     $job_item1->updateData('data_item1', $data5, TRUE);
@@ -547,8 +547,8 @@ class CrudTest extends TMGMTKernelTestBase {
     // One pending data items.
     $job = Job::load($job->id());
     $job_item1 = JobItem::load($job_item1->id());
-    $this->assertEqual('label', $job_item1->getData()['data_item1']['#label']);
-    $this->assertEqual(3, count($job_item1->getData()['data_item1']));
+    $this->assertEquals('label', $job_item1->getData()['data_item1']['#label']);
+    $this->assertCount(3, $job_item1->getData()['data_item1']);
 
     // Add a greater number of data items
     for ($index = 1; $index <= 3; $index++) {
@@ -565,14 +565,14 @@ class CrudTest extends TMGMTKernelTestBase {
     // 3 pending and 7 translated data items each.
     $job = Job::load($job->id());
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(3, $job->getCountPending());
-    $this->assertEqual(7, $job->getCountTranslated());
-    $this->assertEqual(5, $job->getCountReviewed());
+    $this->assertEquals(3, $job->getCountPending());
+    $this->assertEquals(7, $job->getCountTranslated());
+    $this->assertEquals(5, $job->getCountReviewed());
 
     // Check for HTML tags count.
     $job_item1->updateData('data_item1', $data6);
     $job_item1->save();
-    $this->assertEqual(2, $job_item1->getTagsCount());
+    $this->assertEquals(2, $job_item1->getTagsCount());
 
     // Add several job items
     $job_item2 = tmgmt_job_item_create('plugin', 'type', 5, array('tjid' => $job->id()));
@@ -590,9 +590,9 @@ class CrudTest extends TMGMTKernelTestBase {
     // 3 pending and 7 translated data items each.
     $job = Job::load($job->id());
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(7, $job->getCountPending());
-    $this->assertEqual(15, $job->getCountTranslated());
-    $this->assertEqual(9, $job->getCountReviewed());
+    $this->assertEquals(7, $job->getCountPending());
+    $this->assertEquals(15, $job->getCountTranslated());
+    $this->assertEquals(9, $job->getCountReviewed());
 
     // Accept the job items.
     foreach ($job->getItems() as $item) {
@@ -602,10 +602,10 @@ class CrudTest extends TMGMTKernelTestBase {
       $item->save();
     }
     drupal_static_reset('tmgmt_job_statistics_load');
-    $this->assertEqual(0, $job->getCountPending());
-    $this->assertEqual(0, $job->getCountTranslated());
-    $this->assertEqual(0, $job->getCountReviewed());
-    $this->assertEqual(31, $job->getCountAccepted());
+    $this->assertEquals(0, $job->getCountPending());
+    $this->assertEquals(0, $job->getCountTranslated());
+    $this->assertEquals(0, $job->getCountReviewed());
+    $this->assertEquals(31, $job->getCountAccepted());
   }
 
   /**
@@ -617,7 +617,7 @@ class CrudTest extends TMGMTKernelTestBase {
 
     $job = $this->createJob('en', 'de', 0, ['job_type' => Job::TYPE_CONTINUOUS]);
 
-    $this->assertEqual(Job::TYPE_CONTINUOUS, $job->getJobType());
+    $this->assertEquals(Job::TYPE_CONTINUOUS, $job->getJobType());
     $job->translator = $translator->id();
     $job->save();
 
@@ -628,7 +628,7 @@ class CrudTest extends TMGMTKernelTestBase {
     $plugin = $job->getTranslatorPlugin();
     $plugin->requestJobItemsTranslation([$item]);
 
-    $this->assertEqual($item->getData()['dummy']['deep_nesting']['#translation']['#text'], 'de(de-ch): Text for job item with type test and id 1.');
+    $this->assertEquals('de(de-ch): Text for job item with type test and id 1.', $item->getData()['dummy']['deep_nesting']['#translation']['#text']);
   }
 
   /**
@@ -648,17 +648,17 @@ class CrudTest extends TMGMTKernelTestBase {
     // Test with preliminary state.
     $translation['dummy']['deep_nesting']['#text'] = 'translated';
     $item->addTranslatedData($translation, [], TMGMT_DATA_ITEM_STATE_PRELIMINARY);
-    $this->assertEqual($item->getData($key)['#status'], TMGMT_DATA_ITEM_STATE_PRELIMINARY);
+    $this->assertEquals(TMGMT_DATA_ITEM_STATE_PRELIMINARY, $item->getData($key)['#status']);
     $this->assertTrue($item->isActive());
 
     // Test with empty state.
     $item->addTranslatedData($translation);
-    $this->assertEqual($item->getData($key)['#status'], TMGMT_DATA_ITEM_STATE_PRELIMINARY);
+    $this->assertEquals(TMGMT_DATA_ITEM_STATE_PRELIMINARY, $item->getData($key)['#status']);
     $this->assertTrue($item->isActive());
 
     // Test without state.
     $item->addTranslatedData($translation, [], TMGMT_DATA_ITEM_STATE_TRANSLATED);
-    $this->assertEqual($item->getData($key)['#status'], TMGMT_DATA_ITEM_STATE_TRANSLATED);
+    $this->assertEquals(TMGMT_DATA_ITEM_STATE_TRANSLATED, $item->getData($key)['#status']);
     $this->assertTrue($item->isNeedsReview());
   }
 

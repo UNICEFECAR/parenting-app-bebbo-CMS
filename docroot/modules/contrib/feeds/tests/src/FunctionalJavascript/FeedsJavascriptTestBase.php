@@ -30,7 +30,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'node',
     'user',
@@ -46,7 +46,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a content type.
@@ -91,12 +91,15 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
    *   - unique: (optional) an array of mapping targets to set as unique or not.
    *     The keys are the name of the subtargets, the value is a boolean: 'true'
    *     for setting as unique, 'false' for not.
+   * @param string $custom_source_type
+   *   (optional) The type of custom source to add, when needed. Defaults to
+   *   'custom__blank'.
    * @param array $edit
    *   (optional) Additional field values to submit.
    * @param bool $assert_mappings
    *   (optional) Whether or not to assert the mappings. Defaults to true.
    */
-  protected function addMappings($feed_type_id, array $mappings, array $edit = [], $assert_mappings = TRUE) {
+  protected function addMappings(string $feed_type_id, array $mappings, string $custom_source_type = 'custom__blank', array $edit = [], $assert_mappings = TRUE) {
     $this->drupalGet('/admin/structure/feeds/manage/' . $feed_type_id . '/mapping');
 
     $session = $this->getSession();
@@ -104,7 +107,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
     $page = $session->getPage();
 
     // Compose edit values.
-    $edit += $this->mappingGetEditValues($mappings);
+    $edit += $this->mappingGetEditValues($mappings, $custom_source_type);
     foreach ($mappings as $i => $mapping) {
       // Add target.
       $assert_session->fieldExists('add_target');
@@ -116,7 +119,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
         if (is_array($source)) {
           // Custom source.
           $assert_session->fieldExists("mappings[$i][map][$key][select]");
-          $page->selectFieldOption("mappings[$i][map][$key][select]", '__new');
+          $page->selectFieldOption("mappings[$i][map][$key][select]", $custom_source_type);
         }
       }
 
@@ -127,7 +130,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
     }
 
     // Set the form values, including machine name.
-    $this->mappingSetMappings($edit);
+    $this->mappingSetMappings($edit, $custom_source_type);
 
     $this->submitForm($edit, 'Save');
 
@@ -144,20 +147,23 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
    *
    * @param array $mappings
    *   An array of mapping arrays.
+   * @param string $custom_source_type
+   *   (optional) The type of custom source to add, when needed. Defaults to
+   *   'custom__blank'.
    *
    * @return array
    *   A list of edit values.
    */
-  protected function mappingGetEditValues(array $mappings) {
+  protected function mappingGetEditValues(array $mappings, string $custom_source_type = 'custom__blank') {
     $edit = [];
 
     foreach ($mappings as $i => $mapping) {
       // Select sources.
       foreach ($mapping['map'] as $key => $source) {
         if (is_array($source)) {
-          $edit["mappings[$i][map][$key][select]"] = '__new';
+          $edit["mappings[$i][map][$key][select]"] = $custom_source_type;
           foreach ($source as $source_key => $source_value) {
-            $edit["mappings[$i][map][$key][__new][$source_key]"] = $source_value;
+            $edit["mappings[$i][map][$key][$custom_source_type][$source_key]"] = $source_value;
           }
         }
         else {
@@ -182,20 +188,25 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
    *
    * @param array $edit
    *   The form values.
+   * @param string $custom_source_type
+   *   (optional) The type of custom source to add, when needed. Defaults to
+   *   'custom__blank'.
    */
-  protected function mappingSetMappings(array $edit) {
+  protected function mappingSetMappings(array $edit, string $custom_source_type = 'custom__blank') {
+    $html_custom_source_type = str_replace('__', '-', $custom_source_type);
+
     // Set the form values, including machine name.
     $assert_session = $this->assertSession();
     $submit_button = $assert_session->buttonExists('Save');
     $form = $assert_session->elementExists('xpath', './ancestor::form', $submit_button);
 
     foreach ($edit as $name => $value) {
-      if (strpos($name, '[__new][machine_name]') !== FALSE) {
+      if (strpos($name, '[' . $custom_source_type . '][machine_name]') !== FALSE) {
         // Make machine name appear.
         $i = preg_replace('/^mappings\[([0-9]+)\].+$/', '${1}', $name);
         $key = preg_replace('/^.+\[map\]\[([^\]]+)\].+$/', '${1}', $name);
         $key = Html::cleanCssIdentifier($key);
-        $base_xpath = 'descendant-or-self::div[@data-drupal-selector=\'edit-mappings-' . $i . '-map-' . $key . '-new\']';
+        $base_xpath = 'descendant-or-self::div[@data-drupal-selector=\'edit-mappings-' . $i . '-map-' . $key . '-' . $html_custom_source_type . '\']';
 
         // First, wait for machine name button to become visible.
         $xpath = $base_xpath . '/descendant-or-self::*/button';
@@ -204,7 +215,7 @@ abstract class FeedsJavascriptTestBase extends WebDriverTestBase {
         $this->getSession()->getDriver()->click($xpath);
 
         // Wait for machine name text field to become visible.
-        $xpath = $base_xpath . '/' . $this->cssSelectToXpath('div.form-type-machine-name input.machine-name-target');
+        $xpath = $base_xpath . '/' . $this->cssSelectToXpath('div.js-form-type-machine-name input.machine-name-target');
         $assert_session->waitForElementVisible('xpath', $xpath);
       }
 

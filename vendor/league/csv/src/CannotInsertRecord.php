@@ -18,26 +18,17 @@ namespace League\Csv;
  */
 class CannotInsertRecord extends Exception
 {
-    /**
-     * The record submitted for insertion.
-     *
-     * @var array
-     */
-    protected $record;
-
-    /**
-     * Validator which did not validated the data.
-     *
-     * @var string
-     */
-    protected $name = '';
+    /** The record submitted for insertion. */
+    protected array $record;
+    /** Validator which did not validated the data. */
+    protected string $name = '';
 
     /**
      * Create an Exception from a record insertion into a stream.
      */
     public static function triggerOnInsertion(array $record): self
     {
-        $exception = new static('Unable to write record to the CSV document');
+        $exception = new self('Unable to write record to the CSV document');
         $exception->record = $record;
 
         return $exception;
@@ -48,7 +39,7 @@ class CannotInsertRecord extends Exception
      */
     public static function triggerOnValidation(string $name, array $record): self
     {
-        $exception = new static('Record validation failed');
+        $exception = new self('Record validation failed');
         $exception->name = $name;
         $exception->record = $record;
 

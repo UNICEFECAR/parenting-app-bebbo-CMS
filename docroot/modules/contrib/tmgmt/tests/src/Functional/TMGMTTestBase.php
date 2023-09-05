@@ -24,7 +24,7 @@ abstract class TMGMTTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'tmgmt',
     'tmgmt_test',
     'node',
@@ -35,12 +35,12 @@ abstract class TMGMTTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'classy';
+  protected $defaultTheme = 'starterkit_theme';
 
   /**
    * Overrides DrupalWebTestCase::setUp()
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->default_translator = Translator::load('test_translator');
     $this->drupalPlaceBlock('local_tasks_block');

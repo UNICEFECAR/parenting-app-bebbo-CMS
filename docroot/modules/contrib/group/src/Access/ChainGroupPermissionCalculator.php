@@ -217,7 +217,7 @@ class ChainGroupPermissionCalculator implements ChainGroupPermissionCalculatorIn
    *   The combined persistent cache contexts from all calculators.
    */
   protected function getPersistentCacheContexts($constant_name) {
-    $cid = 'group_permission:chain_calulator:contexts:' . $constant_name;
+    $cid = 'group_permission:chain_calculator:contexts:' . $constant_name;
 
     // Retrieve the contexts from the regular static cache if available.
     if ($static_cache = $this->regularStatic->get($cid)) {

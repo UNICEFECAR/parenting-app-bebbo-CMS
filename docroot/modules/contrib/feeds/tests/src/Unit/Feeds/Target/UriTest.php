@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\Uri;
 class UriTest extends FieldTargetTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'uri';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {

@@ -1,0 +1,4 @@
+services:
+  node_title_length.node:
+    class: Drupal\node_title_length\NodeTitleLength
+    arguments: ['@database', '@entity_type.manager', '@entity.definition_update_manager']

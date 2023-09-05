@@ -2,6 +2,7 @@
 
 namespace Drupal\security_review\Commands;
 
+use Consolidation\AnnotatedCommand\CommandResult;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drupal\security_review\Checklist;
 use Drupal\security_review\CheckResult;
@@ -9,9 +10,7 @@ use Drupal\security_review\SecurityReview;
 use Drush\Commands\DrushCommands;
 
 /**
- * Class SecurityReviewCommands.
- *
- * @package Drupal\security_review\Commands
+ * Provides drush command for running security review module.
  */
 class SecurityReviewCommands extends DrushCommands {
 
@@ -53,9 +52,11 @@ class SecurityReviewCommands extends DrushCommands {
    * @option lastrun
    *   Do not run the checklist, just print last results
    * @option check
-   *   Comma-separated list of specified checks to run. See README.txt for list of options
+   *   Comma-separated list of specified checks to run. See README.txt for
+   *    list of options
    * @option skip
-   *   Comma-separated list of specified checks not to run. This takes precedence over --check
+   *   Comma-separated list of specified checks not to run. This takes
+   *    precedence over --check
    * @option short
    *   Short result messages instead of full description (e.g. 'Text formats')
    * @option results
@@ -74,7 +75,7 @@ class SecurityReviewCommands extends DrushCommands {
    *   message: Message
    *   status: Status
    *
-   * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
+   * @return \Consolidation\AnnotatedCommand\CommandResult
    *   Row of results.
    */
   public function securityReview(
@@ -175,7 +176,16 @@ class SecurityReviewCommands extends DrushCommands {
       }
     }
 
-    return new RowsOfFields($this->formatResults($results, $short_titles, $show_findings));
+    $exitCode = self::EXIT_SUCCESS;
+    foreach ($results as $result) {
+      if ($result->result() == CheckResult::FAIL) {
+        // At least one check failed.
+        $exitCode = self::EXIT_FAILURE;
+        break;
+      }
+    }
+
+    return CommandResult::dataWithExitCode(new RowsOfFields($this->formatResults($results, $short_titles, $show_findings)), $exitCode);
   }
 
   /**
@@ -260,7 +270,7 @@ class SecurityReviewCommands extends DrushCommands {
 
     // Set namespace and title if explicitly defined.
     if (strpos($check_name, ':') !== FALSE) {
-      list($namespace, $title) = explode(':', $check_name);
+      [$namespace, $title] = explode(':', $check_name);
     }
 
     // Return the found check if any.

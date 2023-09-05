@@ -24,9 +24,9 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
 
     $form['service_url'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Memsource Home URL'),
+      '#title' => $this->t('Phrase TMS Home URL'),
       '#default_value' => $translator->getSetting('service_url') ?: 'https://cloud.memsource.com/web',
-      '#description' => $this->t('Please enter the Memsource Home URL.'),
+      '#description' => $this->t('Please enter the Phrase TMS Home URL.'),
       '#required' => TRUE,
       '#placeholder' => 'https://cloud.memsource.com/web',
     ];
@@ -34,7 +34,7 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
       '#type' => 'textfield',
       '#title' => $this->t('User name'),
       '#default_value' => $translator->getSetting('memsource_user_name'),
-      '#description' => $this->t('Please enter your Memsource Cloud user name.'),
+      '#description' => $this->t('Please enter your Phrase TMS user name.'),
       '#required' => TRUE,
       '#placeholder' => 'user name',
     ];
@@ -68,18 +68,34 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
     $form['memsource_password'] = [
       '#type' => 'password',
       '#title' => $this->t('Password'),
-      '#description' => $this->t('Please enter your Memsource Cloud password.'),
+      '#description' => $this->t('Please enter your Phrase TMS password.'),
       '#placeholder' => 'password',
 
     ] + $passwordFieldAttributes;
 
     $form['memsource_update_job_status'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Set Memsource job status to Delivered after import to Drupal'),
+      '#title' => $this->t('Set Phrase TMS job status to Delivered after import to Drupal'),
       '#default_value' => $translator->getSetting('memsource_update_job_status'),
     ];
 
     $form += parent::addConnectButton();
+
+    if ($translator->getPlugin()->checkMemsourceConnection($translator)) {
+      $form['memsource_connector_token'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Preview connector'),
+        '#description' => $this->t('Please select your preview connector.'),
+        '#default_value' => $translator->getSetting('memsource_connector_token'),
+        '#empty_option' => $this->t('- Select -'),
+        '#options' => $translator->getPlugin()->getDrupalConnectors($translator),
+      ];
+    } else {
+      $form['memsource_connector_token'] = [
+        '#type' => 'markup',
+        '#markup' => '<div class="messages messages--warning">' . $this->t('Unable to authenticate to Phrase TMS. Please check your login credentials and try to connect again.') . '</div>'
+      ];
+    }
 
     return $form;
   }
@@ -117,6 +133,14 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
    * {@inheritdoc}
    */
   public function checkoutSettingsForm(array $form, FormStateInterface $form_state, JobInterface $job) {
+
+    if (!$job->getTranslator()->getPlugin()->checkMemsourceConnection($job->getTranslator())) {
+      return [
+        '#type' => 'markup',
+        '#markup' => '<div class="messages messages--warning">' . $this->t('Unable to authenticate to Phrase TMS. Please select a different provider or check your login credentials.') . '</div>'
+      ];
+    }
+
     $form_values = $form_state->getUserInput();
     $settings = [];
     if (array_key_exists('settings', $form_values)) {
@@ -175,7 +199,7 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
       '#type' => 'select',
       '#title' => $this->t('Project template'),
       '#options' => $options,
-      '#description' => $this->t('Select a Memsource Cloud project template.'),
+      '#description' => $this->t('Select a Phrase TMS project template.'),
     ];
 
     $settings['due_date'] = [
@@ -188,7 +212,7 @@ class MemsourceTranslatorUi extends TranslatorPluginUiBase {
 
     $settings['group_jobs'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Group all translation jobs in a single Memsource project.'),
+      '#title' => $this->t('Group all translation jobs in a single Phrase TMS project.'),
     ];
 
     $settings['batch_id'] = [

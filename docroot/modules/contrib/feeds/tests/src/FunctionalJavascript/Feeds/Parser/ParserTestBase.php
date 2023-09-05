@@ -26,7 +26,7 @@ abstract class ParserTestBase extends FeedsJavascriptTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Create a feed type.

@@ -29,7 +29,7 @@ class MemcacheSettingsTest extends UnitTestCase {
   /**
    * @covers ::__construct
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->config = [
       'memcache' => [
         'servers' => ['127.0.0.2:12345' => 'default'],

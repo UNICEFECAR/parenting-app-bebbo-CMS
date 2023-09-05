@@ -1,6 +1,6 @@
 # Drupal Spec Tool
 
-[![Packagist](https://img.shields.io/packagist/v/acquia/drupal-spec-tool.svg)](https://packagist.org/packages/acquia/drupal-spec-tool) [![Build Status](https://travis-ci.org/acquia/drupal-spec-tool.svg?branch=master)](https://travis-ci.org/acquia/drupal-spec-tool)
+[![Packagist](https://img.shields.io/packagist/v/acquia/drupal-spec-tool.svg)](https://packagist.org/packages/acquia/drupal-spec-tool) [![Build Status](https://app.travis-ci.com/acquia/drupal-spec-tool.svg?branch=develop)](https://app.travis-ci.com/acquia/drupal-spec-tool)
 
 This project provides a tool for specifying Drupal architecture details and generating automated tests for them. It consists of 1) [a Google Sheet](#google-sheet) for capturing specification and generating tests from it and 2) the Behat contexts that automate the generated tests ([examples](../features)).
 
@@ -8,7 +8,7 @@ This project provides a tool for specifying Drupal architecture details and gene
 
 ### Google sheet
 
-Copy [the current version of the Google sheet](https://docs.google.com/spreadsheets/d/1FC2HSsumZUMOr83rq8mmI8g9l8g_peI_pEBnc79-Rks/edit?usp=sharing) to your Google Drive.
+Copy [the current Google sheet](https://docs.google.com/spreadsheets/d/1pVQNyE5Rqhdnzk-6dHN5nnH_FsGfjub2_bzQF5MewSs/edit?usp=sharing) to your Google Drive:
 
 ![Google Sheet Screenshot](images/screenshot.png)
 
@@ -41,7 +41,7 @@ Assuming you already have [Behat installed](http://behat.org/en/latest/quick_sta
 1. Copy [the default feature files](../features) (representing the out-of-the-box configuration of Lightning) to your features directory. For example, given a [BLT](https://github.com/acquia/blt)-based project:
 
     ```bash
-    mkdir tests/behat/features/drupal-spec-tool
+    mkdir -p tests/behat/features/drupal-spec-tool
     cp vendor/acquia/drupal-spec-tool/features/*.feature tests/behat/features/drupal-spec-tool/
     ```
 
@@ -53,7 +53,47 @@ Assuming you already have [Behat installed](http://behat.org/en/latest/quick_sta
 
 Learn more about the features of the tool and best practices for using it in [the announcement blog post on the Acquia Developer Center](https://dev.acquia.com/blog/a-specification-tool-for-drupal-8-/30/05/2018/19606).
 
-## Advanced
+## Customization
+
+You can supplement or override out-of-the-box behavior by extending and replacing the default context classes with your own, e.g.:
+
+   ```php
+   namespace AcmeCorp;
+
+   class CustomContentModelContext extends Acquia\DrupalSpecTool\Context\ContentModelContext {
+
+     /**
+      * Override existing functionality.
+      *
+      * @Then exactly the following content entity type bundles should exist
+      */
+     public function assertBundles(TableNode $expected) {
+       // ...
+     }
+
+     /**
+      * Add new functionality.
+      *
+      * @Then something new should be true
+      */
+     public function assertSomethingNew(TableNode $expected) {
+       // ...
+     }
+
+   }
+   ```
+
+   ```diff
+    # behat.yml
+    default:
+      suites:
+        default:
+          contexts:
+   -        - Acquia\DrupalSpecTool\Context\ContentModelContext
+   +        - AcmeCorp\CustomContentModelContext
+   ```
+
+## Automation
 
 Automate test updates with [`nickwilde1990/drupal-spec-tool-commands`](https://packagist.org/packages/nickwilde1990/drupal-spec-tool-commands).
 

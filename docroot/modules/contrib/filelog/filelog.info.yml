@@ -1,11 +1,11 @@
 name: File Log
 type: module
 description: Logs system events to a file.
-core_version_requirement: ^8.8 | ^9
+core_version_requirement: ^9 || ^10
 package: Logging
 configure: system.logging_settings
 
-# Information added by Drupal.org packaging script on 2021-11-26
-version: '2.0.2'
+# Information added by Drupal.org packaging script on 2022-06-16
+version: '2.1.1'
 project: 'filelog'
-datestamp: 1637952507
+datestamp: 1655354918

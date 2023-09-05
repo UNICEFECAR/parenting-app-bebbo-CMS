@@ -9,10 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Database\Database;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Config\Config;
-use Drupal\Component\Render\FormattableMarkup;
 
 /**
  * Edit views custom table form.
@@ -44,8 +42,11 @@ class EditTableRelations extends FormBase {
    * EditTableRelations constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
+   *   The entity type manager service.
    * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config service.
    * @param \Drupal\Core\Config\Config $configEditable
+   *   The editable config service.
    */
   public function __construct(EntityTypeManagerInterface $entityManager, ImmutableConfig $config, Config $configEditable) {
     $this->entityManager = $entityManager;
@@ -76,7 +77,7 @@ class EditTableRelations extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $table_name = NULL) {
     $config = $this->config->getRawData();
-    $table_relations = unserialize($config[$table_name]['column_relations']);
+    $table_relations = unserialize($config[$table_name]['column_relations'], ['allowed_classes' => FALSE]);
     $properties = ['base_table' => $table_name];
     $views = $this->entityManager->getStorage('view')->loadByProperties($properties);
     $form['table_name'] = [
@@ -104,9 +105,16 @@ class EditTableRelations extends FormBase {
         $entities[$table] = $table;
       }
     }
-    $int_types = ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'];
+    $int_types = [
+      'tinyint',
+      'smallint',
+      'mediumint',
+      'int',
+      'int unsigned',
+      'bigint'
+    ];
     $connection = Database::getConnection('default', $config[$table_name]['table_database']);
-    $text_query = 'DESCRIBE ' . $connection->escapeTable($table_name);
+    $text_query = 'DESCRIBE ' . $connection->tablePrefix($table_name) . $connection->escapeTable($table_name);
     $query = $connection->query($text_query);
     foreach ($query as $row) {
       $row_type = explode('(', $row->Type);

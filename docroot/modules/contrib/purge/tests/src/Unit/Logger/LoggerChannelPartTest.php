@@ -5,6 +5,7 @@ namespace Drupal\Tests\purge\Unit\Logger;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\purge\Logger\LoggerChannelPart;
 use Drupal\Tests\UnitTestCase;
+use Psr\Log\LogLevel;
 
 /**
  * @coversDefaultClass \Drupal\purge\Logger\LoggerChannelPart
@@ -16,7 +17,7 @@ class LoggerChannelPartTest extends UnitTestCase {
   /**
    * The mocked logger channel.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Psr\Log\LoggerInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Psr\Log\LoggerInterface
    */
   protected $loggerChannelPurge;
 
@@ -32,11 +33,21 @@ class LoggerChannelPartTest extends UnitTestCase {
    */
   private function helperForSeverityMethods($id, array $grants, $output, $severity): void {
     $occurrence = is_null($output) ? $this->never() : $this->once();
+    $level_translation = [
+      LogLevel::EMERGENCY => RfcLogLevel::EMERGENCY,
+      LogLevel::ALERT => RfcLogLevel::ALERT,
+      LogLevel::CRITICAL => RfcLogLevel::CRITICAL,
+      LogLevel::ERROR => RfcLogLevel::ERROR,
+      LogLevel::WARNING => RfcLogLevel::WARNING,
+      LogLevel::NOTICE => RfcLogLevel::NOTICE,
+      LogLevel::INFO => RfcLogLevel::INFO,
+      LogLevel::DEBUG => RfcLogLevel::DEBUG,
+    ];
     $this->loggerChannelPurge
       ->expects($occurrence)
       ->method('log')
       ->with(
-        $this->stringContains($severity),
+        $this->equalTo($level_translation[$severity]),
         $this->stringContains('@purge_channel_part: @replaceme'),
         $this->callback(function ($subject) use ($id, $output) {
           return ($subject['@purge_channel_part'] === $id) && ($subject['@replaceme'] === $output);
@@ -244,19 +255,21 @@ class LoggerChannelPartTest extends UnitTestCase {
    *
    * @dataProvider providerTestLog()
    */
-  public function testLog($id, $level, $message, $output): void {
+  public function testLog($id, $message, $output): void {
     $this->loggerChannelPurge
       ->expects($this->once())
       ->method('log')
       ->with(
-        $this->stringContains($level),
+        $this->equalTo(RfcLogLevel::DEBUG),
         $this->stringContains('@purge_channel_part: ' . $message),
         $this->callback(function ($subject) use ($id, $output) {
           return ($subject['@purge_channel_part'] === $id) && ($subject['@replaceme'] === $output);
         })
       );
-    $part = new LoggerChannelPart($this->loggerChannelPurge, $id);
-    $part->log($level, $message, ['@replaceme' => $output]);
+    $part = new LoggerChannelPart($this->loggerChannelPurge, $id, [
+      RfcLogLevel::DEBUG,
+    ]);
+    $part->log(LogLevel::DEBUG, $message, ['@replaceme' => $output]);
   }
 
   /**
@@ -264,9 +277,9 @@ class LoggerChannelPartTest extends UnitTestCase {
    */
   public function providerTestLog(): array {
     return [
-      ['id1', 'level1', 'message @placeholder', ['@placeholder' => 'foo']],
-      ['id2', 'level2', 'message @placeholder', ['@placeholder' => 'bar']],
-      ['id3', 'level3', 'message @placeholder', ['@placeholder' => 'baz']],
+      ['id1', 'message @placeholder', ['@placeholder' => 'foo']],
+      ['id2', 'message @placeholder', ['@placeholder' => 'bar']],
+      ['id3', 'message @placeholder', ['@placeholder' => 'baz']],
     ];
   }
 

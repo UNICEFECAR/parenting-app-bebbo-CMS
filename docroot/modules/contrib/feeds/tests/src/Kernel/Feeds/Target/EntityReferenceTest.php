@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -172,6 +173,9 @@ class EntityReferenceTest extends FeedsKernelTestBase {
     $this->assertEquals('Page 1', $node->title->value);
     $node2 = $this->reloadEntity($node2);
     $this->assertEquals('Page 2', $node2->title->value);
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -323,6 +327,9 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       $node = $this->reloadEntity($nodes[$i]);
       $this->assertEquals('Article ' . $i, $node->title->value);
     }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -431,6 +438,197 @@ class EntityReferenceTest extends FeedsKernelTestBase {
       $term = $this->reloadEntity($terms[$i]);
       $this->assertEquals('Description of term ' . $i, $term->description->value);
     }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
+  }
+
+  /**
+   * Tests if only a single entity is referenced per value.
+   *
+   * In case multiple entities exist for a source value mapped to an entity
+   * reference field, ensure that by default only one entity is returned.
+   */
+  public function testWithSingleReference() {
+    // Create a content type for which entities will be referenced.
+    $type = NodeType::create([
+      'type' => 'event',
+      'name' => 'Event',
+    ]);
+    $type->save();
+    // Add a text field on this type that will be used as the field to reference
+    // by.
+    $this->createFieldWithStorage('field_alpha', [
+      'bundle' => 'event',
+    ]);
+
+    // Create two event nodes, both with the same value for the field "alpha".
+    Node::create([
+      'title' => 'Event 1',
+      'type' => 'event',
+      'field_alpha' => 'Lorem',
+    ])->save();
+    Node::create([
+      'title' => 'Event 2',
+      'type' => 'event',
+      'field_alpha' => 'Lorem',
+    ])->save();
+
+    // Add an entity reference field to the content type "article", referencing
+    // nodes of type "event" and accepting multiple values.
+    $this->createEntityReferenceField('node', 'article', 'field_event', 'Event', 'node', 'default', [
+      'target_bundles' => ['event'],
+    ], FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED);
+
+    // Create a feed type for importing articles, with a mapper to the
+    // entityreference field 'field_event'.
+    $feed_type = $this->createFeedTypeForCsv([
+      'title' => 'title',
+      'guid' => 'guid',
+      'alpha' => 'alpha',
+    ], [
+      'mappings' => array_merge($this->getDefaultMappings(), [
+        [
+          'target' => 'field_event',
+          'map' => ['target_id' => 'alpha'],
+          'settings' => [
+            'reference_by' => 'field_alpha',
+          ],
+        ],
+      ]),
+    ]);
+
+    // Import articles.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+
+    // Assert that now four nodes in total exist.
+    $this->assertNodeCount(4);
+
+    // Assert that the first article references only one entity and the second
+    // none.
+    $expected_values_per_node = [
+      3 => [
+        ['target_id' => 1],
+      ],
+      4 => [],
+    ];
+    foreach ($expected_values_per_node as $nid => $expected_value) {
+      $node = Node::load($nid);
+      $this->assertEquals($expected_value, $node->field_event->getValue());
+    }
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
+  }
+
+  /**
+   * Tests if terms can get automatically created.
+   */
+  public function testAutocreateTerms() {
+    // Install the taxonomy module with a vocabulary.
+    $this->installTaxonomyModuleWithVocabulary();
+
+    // Create an entityreference field to this taxonomy.
+    $this->createEntityReferenceField('node', 'article', 'field_tags', 'Tags', 'taxonomy_term', 'default', [
+      'target_bundles' => ['tags'],
+    ]);
+
+    // Create a feed type for importing articles, with a mapper to the
+    // entityreference field 'field_tags'.
+    $feed_type = $this->createFeedTypeForCsv([
+      'title' => 'title',
+      'guid' => 'guid',
+      'alpha' => 'alpha',
+    ], [
+      'mappings' => array_merge($this->getDefaultMappings(), [
+        [
+          'target' => 'field_tags',
+          'map' => ['target_id' => 'alpha'],
+          'settings' => [
+            'reference_by' => 'name',
+            'autocreate' => TRUE,
+          ],
+        ],
+      ]),
+    ]);
+
+    // Import articles.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(2);
+
+    // Assert that two terms were added to the vocabulary 'tags'.
+    $this->assertTermCount(2);
+    $term = Term::load(1);
+    $this->assertEquals('Lorem', $term->name->value);
+    $term = Term::load(2);
+    $this->assertEquals('Ut wisi', $term->name->value);
+
+    // Assert that on the imported nodes the terms are referenced.
+    $node = Node::load(1);
+    $this->assertEquals(1, $node->field_tags->target_id);
+    $node = Node::load(2);
+    $this->assertEquals(2, $node->field_tags->target_id);
+  }
+
+  /**
+   * Tests if terms can get automatically created in the right vocabulary.
+   */
+  public function testAutocreateTermsWithBundleSelection() {
+    // Install the taxonomy module with a vocabulary.
+    $this->installTaxonomyModuleWithVocabulary();
+
+    // Add another vocabulary.
+    $this->entityTypeManager->getStorage('taxonomy_vocabulary')->create([
+      'vid' => 'foo',
+      'name' => 'Foo',
+    ])->save();
+
+    // Create an entityreference field.
+    $this->createEntityReferenceField('node', 'article', 'field_term', 'Term', 'taxonomy_term', 'default', [
+      'target_bundles' => ['tags', 'foo'],
+    ]);
+
+    // Create a feed type for importing articles, with a mapper to the
+    // entityreference field 'field_term'.
+    $feed_type = $this->createFeedTypeForCsv([
+      'title' => 'title',
+      'guid' => 'guid',
+      'alpha' => 'alpha',
+    ], [
+      'mappings' => array_merge($this->getDefaultMappings(), [
+        [
+          'target' => 'field_term',
+          'map' => ['target_id' => 'alpha'],
+          'settings' => [
+            'reference_by' => 'name',
+            'autocreate' => TRUE,
+            'autocreate_bundle' => 'foo',
+          ],
+        ],
+      ]),
+    ]);
+
+    // Import articles.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+    $this->assertNodeCount(2);
+
+    // Assert that the created terms are inside the vocabulary 'foo'.
+    $this->assertTermCount(2);
+    $term = Term::load(1);
+    $this->assertEquals('Lorem', $term->name->value);
+    $this->assertEquals('foo', $term->bundle());
+    $term = Term::load(2);
+    $this->assertEquals('Ut wisi', $term->name->value);
+    $this->assertEquals('foo', $term->bundle());
   }
 
 }

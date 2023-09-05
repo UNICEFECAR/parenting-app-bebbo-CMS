@@ -29,7 +29,13 @@ entity.feeds_feed_type.mapping:
   route_name: entity.feeds_feed_type.mapping
   title: Mapping
   base_route: entity.feeds_feed_type.edit_form
-  weight: 0
+  weight: -10
+
+entity.feeds_feed_type.sources:
+  route_name: entity.feeds_feed_type.sources
+  title: Custom sources
+  base_route: entity.feeds_feed_type.edit_form
+  weight: -8
 
 feeds.admin:
   route_name: feeds.admin

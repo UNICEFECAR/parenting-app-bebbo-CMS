@@ -15,7 +15,7 @@ class UserRoleTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'user',
     'feeds',
@@ -46,7 +46,7 @@ class UserRoleTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');
@@ -170,6 +170,9 @@ class UserRoleTest extends FeedsKernelTestBase {
     // - manager.
     $roles = $this->roleStorage->loadMultiple();
     $this->assertEquals(1, count($roles), 'Only one role exists.');
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -317,6 +320,9 @@ class UserRoleTest extends FeedsKernelTestBase {
     // - tester.
     $roles = $this->roleStorage->loadMultiple();
     $this->assertEquals(2, count($roles), 'Two roles exist.');
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
   /**
@@ -503,6 +509,51 @@ class UserRoleTest extends FeedsKernelTestBase {
     $this->assertHasRole($account, 'manager', 'Pugsley still has the manager role.');
     $this->assertHasRole($account, 'editor', 'Pugsley still has the editor role.');
     $this->assertRoleCount(2, $account, 'Pugsley has two roles.');
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
+  }
+
+  /**
+   * Tests updating a user with an existing role.
+   */
+  public function testImportWithExistingRole() {
+    // Create a user with the editor role.
+    $this->createRole([], 'editor');
+    $user = $this->createUser([
+      'name' => 'Morticia',
+    ]);
+    $user->addRole('editor');
+    $user->save();
+
+    // Add mapping to role.
+    $this->feedType->addMapping([
+      'target' => 'roles',
+      'map' => ['target_id' => 'role_ids'],
+      'settings' => [
+        'allowed_roles' => [
+          'editor' => 'editor',
+        ],
+      ],
+    ]);
+    $this->feedType->save();
+
+    // Import CSV file.
+    $feed = $this->createFeed($this->feedType->id(), [
+      'source' => $this->resourcesPath() . '/csv/users_roles.csv',
+    ]);
+    $feed->import();
+
+    /** @var \Drupal\user\Entity\User $account */
+    $account = user_load_by_name('Morticia');
+
+    // Assert that the editor role is still there.
+    $this->assertHasRole($account, 'editor');
+    // Assert that there is only 1 role, editor.
+    $this->assertRoleCount(1, $account);
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
 }

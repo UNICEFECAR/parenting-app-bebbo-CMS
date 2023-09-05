@@ -1,16 +1,16 @@
-name: Memsource Cloud Translator
+name: Phrase TMS Translator
 type: module
 description: 'Localize Drupal websites with the help of professional translation tools.'
 package: Translation Management
-author: Memsource
+author: Phrase
 core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8 || ^9 || ^10
 dependencies:
   - drupal:tmgmt
   - drupal:tmgmt_file
 configure: entity.tmgmt_translator.collection
 
-# Information added by Drupal.org packaging script on 2021-03-22
-version: '8.x-1.13'
+# Information added by Drupal.org packaging script on 2023-09-04
+version: '8.x-1.17'
 project: 'tmgmt_memsource'
-datestamp: 1616431915
+datestamp: 1693821700

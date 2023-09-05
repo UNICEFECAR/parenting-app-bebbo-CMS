@@ -66,7 +66,7 @@ abstract class MenuPerRoleFunctionalTestBase extends BrowserTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createMenu(string $menuId) : void {
+  protected function createMenu(string $menuId): void {
     $menu = Menu::create([
       'id' => $menuId,
       'label' => $this->randomMachineName(16),
@@ -86,7 +86,7 @@ abstract class MenuPerRoleFunctionalTestBase extends BrowserTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createOrUpdateMenuLink(string $menuLinkTitle, array $showMenuRoles, array $hideMenuRoles) : void {
+  protected function createOrUpdateMenuLink(string $menuLinkTitle, array $showMenuRoles, array $hideMenuRoles): void {
     $menu_link_storage = $this->entityTypeManager->getStorage('menu_link_content');
 
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface[] $existing_menu_links */
@@ -102,7 +102,7 @@ abstract class MenuPerRoleFunctionalTestBase extends BrowserTestBase {
       ]);
     }
     else {
-      $menuLink = array_shift($existing_menu_links);
+      $menuLink = \array_shift($existing_menu_links);
       $menuLink->set('menu_per_role__show_role', $showMenuRoles);
       $menuLink->set('menu_per_role__hide_role', $hideMenuRoles);
     }

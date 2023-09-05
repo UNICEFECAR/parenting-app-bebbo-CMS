@@ -31,7 +31,12 @@ class CsvParser extends ParserBase {
   public function parse(FeedInterface $feed, FetcherResultInterface $fetcher_result, StateInterface $state) {
     // Get sources.
     $sources = [];
+    $skip_sources = [];
     foreach ($feed->getType()->getMappingSources() as $key => $info) {
+      if (isset($info['type']) && $info['type'] != 'csv') {
+        $skip_sources[$key] = $key;
+        continue;
+      }
       if (isset($info['value']) && trim(strval($info['value'])) !== '') {
         $sources[$info['value']] = $key;
       }
@@ -60,6 +65,10 @@ class CsvParser extends ParserBase {
 
       foreach ($row as $delta => $cell) {
         $key = isset($header[$delta]) ? $header[$delta] : $delta;
+        if (isset($skip_sources[$key])) {
+          // Skip custom sources that are not of type "csv".
+          continue;
+        }
         // Pick machine name of source, if one is found.
         if (isset($sources[$key])) {
           $key = $sources[$key];
@@ -94,18 +103,8 @@ class CsvParser extends ParserBase {
   /**
    * {@inheritdoc}
    */
-  protected function configSourceLabel() {
-    return $this->t('CSV source');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function configSourceDescription() {
-    if ($this->getConfiguration('no_headers')) {
-      return $this->t('Enter which column number of the CSV file to use: 0, 1, 2, etc.');
-    }
-    return $this->t('Enter the exact CSV column name. This is case-sensitive.');
+  public function getSupportedCustomSourcePlugins(): array {
+    return ['csv'];
   }
 
   /**

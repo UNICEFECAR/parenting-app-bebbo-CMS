@@ -15,7 +15,7 @@ class FeedsEventsTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'feeds',
@@ -46,7 +46,7 @@ class FeedsEventsTest extends FeedsKernelTestBase {
     // Sort the positions and ensure they remain in the same order.
     $sorted = $positions;
     sort($sorted);
-    $this->assertTrue($sorted == $positions, 'The event subscriber messages appear in the correct order.');
+    $this->assertEquals($positions, $sorted, 'The event subscriber messages appear in the correct order.');
   }
 
   /**
@@ -78,6 +78,7 @@ class FeedsEventsTest extends FeedsKernelTestBase {
 
     // Clear messages.
     \Drupal::messenger()->deleteAll();
+    $this->logger->clearMessages();
 
     // Now create a feed type with the same settings. This time, ensure that
     // \Drupal\feeds_test_events\EventSubscriber::prevalidate() sets a title on
@@ -114,7 +115,10 @@ class FeedsEventsTest extends FeedsKernelTestBase {
    * Tests skip import on presave feature.
    */
   public function testSkipImportOnPresave() {
-    $feed_type = $this->createFeedTypeForCsv(['guid' => 'guid', 'title' => 'title'], [
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ], [
       'id' => 'import_skip',
     ]);
 
@@ -136,7 +140,10 @@ class FeedsEventsTest extends FeedsKernelTestBase {
   public function testEventDispatchOrderOnImport() {
     $GLOBALS['feeds_test_events'] = [];
 
-    $feed_type = $this->createFeedTypeForCsv(['guid' => 'guid', 'title' => 'title']);
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
 
     // Import feed.
     $feed = $this->createFeed($feed_type->id(), [
@@ -146,22 +153,22 @@ class FeedsEventsTest extends FeedsKernelTestBase {
 
     $this->assertEventSubscriberMessageOrder([
       // Import starts with fetching.
-      FeedsSubscriber::class . '::onInitImport called',
+      FeedsSubscriber::class . '::onInitImport(fetch) called',
       FeedsSubscriber::class . '::preFetch called',
       FeedsSubscriber::class . '::postFetch called',
       // Second stage is parsing.
-      FeedsSubscriber::class . '::onInitImport called',
+      FeedsSubscriber::class . '::onInitImport(parse) called',
       FeedsSubscriber::class . '::preParse called',
       FeedsSubscriber::class . '::postParse called',
       // Third stage is processing, process events occur per item.
-      FeedsSubscriber::class . '::onInitImport called',
+      FeedsSubscriber::class . '::onInitImport(process) called',
       FeedsSubscriber::class . '::preProcess called',
       FeedsSubscriber::class . '::prevalidate called',
       FeedsSubscriber::class . '::preSave called',
       FeedsSubscriber::class . '::postSave called',
       FeedsSubscriber::class . '::postProcess called',
       // Second item being processed.
-      FeedsSubscriber::class . '::onInitImport called',
+      FeedsSubscriber::class . '::onInitImport(process) called',
       FeedsSubscriber::class . '::preProcess called',
       FeedsSubscriber::class . '::prevalidate called',
       FeedsSubscriber::class . '::preSave called',
@@ -177,7 +184,10 @@ class FeedsEventsTest extends FeedsKernelTestBase {
    */
   public function testEventDispatchOrderOnExpire() {
     // Import items first.
-    $feed_type = $this->createFeedTypeForCsv(['guid' => 'guid', 'title' => 'title'], [
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ], [
       'processor_configuration' => [
         'authorize' => FALSE,
         'values' => [
@@ -195,7 +205,7 @@ class FeedsEventsTest extends FeedsKernelTestBase {
     // that they expire.
     for ($i = 1; $i <= 2; $i++) {
       $node = Node::load($i);
-      $node->feeds_item->imported = \Drupal::service('datetime.time')->getRequestTime() - 3601;
+      $node->get('feeds_item')->getItemByFeed($feed)->imported = \Drupal::service('datetime.time')->getRequestTime() - 3601;
       $node->save();
     }
 
@@ -207,9 +217,9 @@ class FeedsEventsTest extends FeedsKernelTestBase {
     batch_process();
 
     $this->assertEventSubscriberMessageOrder([
-      FeedsSubscriber::class . '::onInitExpire called',
+      FeedsSubscriber::class . '::onInitExpire() called',
       FeedsSubscriber::class . '::onExpire called',
-      FeedsSubscriber::class . '::onInitExpire called',
+      FeedsSubscriber::class . '::onInitExpire() called',
       FeedsSubscriber::class . '::onExpire called',
     ]);
   }
@@ -219,7 +229,10 @@ class FeedsEventsTest extends FeedsKernelTestBase {
    */
   public function testEventDispatchOrderOnClear() {
     // Import items first.
-    $feed_type = $this->createFeedTypeForCsv(['guid' => 'guid', 'title' => 'title']);
+    $feed_type = $this->createFeedTypeForCsv([
+      'guid' => 'guid',
+      'title' => 'title',
+    ]);
     $feed = $this->createFeed($feed_type->id(), [
       'source' => $this->resourcesPath() . '/csv/content.csv',
     ]);
@@ -233,7 +246,7 @@ class FeedsEventsTest extends FeedsKernelTestBase {
     batch_process();
 
     $this->assertEventSubscriberMessageOrder([
-      FeedsSubscriber::class . '::onInitClear called',
+      FeedsSubscriber::class . '::onInitClear() called',
       FeedsSubscriber::class . '::onClear called',
     ]);
   }

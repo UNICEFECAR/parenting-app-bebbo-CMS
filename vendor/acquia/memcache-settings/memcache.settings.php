@@ -3,6 +3,8 @@
 /**
  * @file
  * Contains caching configuration.
+ *
+ * Last change: 07/07/2022.
  */
 
 use Composer\Autoload\ClassLoader;
@@ -14,12 +16,20 @@ use Composer\Autoload\ClassLoader;
  * installed. Avoids the need to patch core and allows for overriding the
  * default backend when installing Drupal.
  *
+ * Sites on Acquia Cloud Next should allow platform to enable memcache instead
+ * of using this snippet.
+ *
  * @see https://www.drupal.org/node/2766509
  */
+
+// Determine if site is currently running under Acquia Cloud Next.
+$is_acquia_cloud_next = (getenv("HOME") == "/home/clouduser");
+
 if (getenv('AH_SITE_ENVIRONMENT') &&
   array_key_exists('memcache', $settings) &&
   array_key_exists('servers', $settings['memcache']) &&
-  !empty($settings['memcache']['servers'])
+  !empty($settings['memcache']['servers']) &&
+  !$is_acquia_cloud_next
 ) {
   // Check for PHP Memcached libraries.
   $memcache_exists = class_exists('Memcache', FALSE);
@@ -98,6 +108,10 @@ if (getenv('AH_SITE_ENVIRONMENT') &&
           ],
         ],
       ];
+
+      // Content Hub 2.x requires the Depcalc module which needs to use the
+      // database backend.
+      $settings['cache']['bins']['depcalc'] = 'cache.backend.database';
 
       // Use memcache for bootstrap, discovery, config instead of fast chained
       // backend to properly invalidate caches on multiple webs.

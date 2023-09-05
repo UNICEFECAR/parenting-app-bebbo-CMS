@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\ITunes;
 
@@ -12,6 +8,28 @@ use Laminas\Feed\Uri;
 use Laminas\Feed\Writer;
 use Laminas\Stdlib\StringUtils;
 use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
+
+use function array_key_exists;
+use function count;
+use function ctype_alpha;
+use function ctype_digit;
+use function implode;
+use function in_array;
+use function is_array;
+use function is_bool;
+use function is_object;
+use function is_string;
+use function lcfirst;
+use function method_exists;
+use function preg_match;
+use function sprintf;
+use function strlen;
+use function substr;
+use function trigger_error;
+use function ucfirst;
+use function var_export;
+
+use const E_USER_DEPRECATED;
 
 class Feed
 {
@@ -67,7 +85,7 @@ class Feed
     /**
      * Set a block value of "yes" or "no". You may also set an empty string.
      *
-     * @param  string
+     * @param string $value
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
@@ -195,7 +213,8 @@ class Feed
     public function setItunesDuration($value)
     {
         $value = (string) $value;
-        if (! ctype_digit($value)
+        if (
+            ! ctype_digit($value)
             && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}$/', $value)
             && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/', $value)
         ) {
@@ -210,18 +229,33 @@ class Feed
     /**
      * Set "explicit" flag
      *
+     * @see https://help.apple.com/itc/podcasts_connect/#/itcb54353390
+     *
      * @param  bool $value
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function setItunesExplicit($value)
     {
-        if (! in_array($value, ['yes', 'no', 'clean'])) {
+        // "yes", "no" and "clean" are valid values for a previous version
+        if (! is_bool($value) && ! in_array($value, ['yes', 'no', 'clean'])) {
             throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "explicit" may only be one of "yes", "no" or "clean"'
+                'invalid parameter: "explicit" must be a boolean value'
             );
         }
-        $this->data['explicit'] = $value;
+
+        switch ($value) {
+            case 'yes':
+                $value = true;
+                break;
+
+            case 'no':
+            case 'clean':
+                $value = false;
+                break;
+        }
+
+        $this->data['explicit'] = $value ? 'true' : 'false';
         return $this;
     }
 
@@ -230,6 +264,8 @@ class Feed
      *
      * @deprecated since 2.10.0; itunes:keywords is no longer part of the
      *     iTunes podcast RSS specification.
+     *
+     * @param string[] $value
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
@@ -238,7 +274,7 @@ class Feed
         trigger_error(
             'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
             . ' and should not be relied on.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
 
         if (count($value) > 12) {
@@ -302,7 +338,8 @@ class Feed
                 'invalid parameter: any "owner" must be an array containing keys "name" and "email"'
             );
         }
-        if ($this->stringWrapper->strlen($value['name']) > 255
+        if (
+            $this->stringWrapper->strlen($value['name']) > 255
             || $this->stringWrapper->strlen($value['email']) > 255
         ) {
             throw new Writer\Exception\InvalidArgumentException(
@@ -367,7 +404,7 @@ class Feed
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "type" MUST be one of [%s]; received %s',
                 implode(', ', $validTypes),
-                is_object($type) ? get_class($type) : var_export($type, true)
+                is_object($type) ? $type::class : var_export($type, true)
             ));
         }
         $this->data['type'] = $type;
@@ -386,7 +423,7 @@ class Feed
         if (! is_bool($status)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "complete" MUST be boolean; received %s',
-                is_object($status) ? get_class($status) : var_export($status, true)
+                is_object($status) ? $status::class : var_export($status, true)
             ));
         }
 
@@ -408,7 +445,8 @@ class Feed
     public function __call($method, array $params)
     {
         $point = lcfirst(substr($method, 9));
-        if (! method_exists($this, 'setItunes' . ucfirst($point))
+        if (
+            ! method_exists($this, 'setItunes' . ucfirst($point))
             && ! method_exists($this, 'addItunes' . ucfirst($point))
         ) {
             throw new Writer\Exception\BadMethodCallException(

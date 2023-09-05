@@ -15,7 +15,7 @@ class BundlePluginTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'system',
     'entity',
   ];
@@ -23,7 +23,7 @@ class BundlePluginTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Install the modules properly. Putting them into static::$modules doesn't trigger the install
@@ -84,12 +84,14 @@ class BundlePluginTest extends KernelTestBase {
     $result = $this->container->get('entity_type.manager')->getStorage('entity_test_bundle_plugin')
       ->getQuery()
       ->condition('second_mail', 'admin@example.com')
+      ->accessCheck(TRUE)
       ->execute();
     $this->assertEquals([$second_entity->id() => $second_entity->id()], $result);
 
     $result = $this->container->get('entity_type.manager')->getStorage('entity_test_bundle_plugin')
       ->getQuery()
       ->condition('type', 'first')
+      ->accessCheck(TRUE)
       ->execute();
     $this->assertEquals([$first_entity->id() => $first_entity->id()], $result);
 

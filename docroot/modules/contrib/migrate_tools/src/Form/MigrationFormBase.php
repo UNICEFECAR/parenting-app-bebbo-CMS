@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\migrate_plus\Entity\Migration;
 use Drupal\migrate_plus\Entity\MigrationGroup;
 
 /**
- * Class MigrationFormBase.
+ * Base form for a migration.
  *
  * @package Drupal\migrate_tools\Form
  *
@@ -28,12 +31,12 @@ class MigrationFormBase extends EntityForm {
    * @return array
    *   An associative array containing the migration add/edit form.
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     // Get anything we need from the base class.
     $form = parent::buildForm($form, $form_state);
 
-    /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
     $migration = $this->entity;
+    assert($migration instanceof Migration);
 
     $form['warning'] = [
       '#markup' => $this->t('Creating migrations is not yet supported. See <a href=":url">:url</a>', [
@@ -95,8 +98,10 @@ class MigrationFormBase extends EntityForm {
    * @return bool
    *   TRUE if this format already exists, FALSE otherwise.
    */
-  public function exists($entity_id, array $element, FormStateInterface $form_state) {
-    $query = $this->entityTypeManager->getStorage('migration')->getQuery();
+  public function exists($entity_id, array $element, FormStateInterface $form_state): bool {
+    $query = $this->entityTypeManager->getStorage('migration')
+      ->getQuery()
+      ->accessCheck(TRUE);
 
     // Query the entity ID to see if its in use.
     $result = $query->condition('id', $element['#field_prefix'] . $entity_id)
@@ -117,7 +122,7 @@ class MigrationFormBase extends EntityForm {
    * @return array
    *   An array of supported actions for the current entity form.
    */
-  protected function actions(array $form, FormStateInterface $form_state) {
+  protected function actions(array $form, FormStateInterface $form_state): array {
     // Get the basic actions from the base class.
     $actions = parent::actions($form, $form_state);
 
@@ -131,7 +136,7 @@ class MigrationFormBase extends EntityForm {
   /**
    * {@inheritdoc}
    */
-  public function save(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state): void {
     $migration = $this->getEntity();
     $status = $migration->save();
 

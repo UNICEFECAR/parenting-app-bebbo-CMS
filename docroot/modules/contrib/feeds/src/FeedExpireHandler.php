@@ -47,7 +47,7 @@ class FeedExpireHandler extends FeedHandlerBase {
     }
     $batch['operations'][] = [[$this, 'postExpire'], [$feed]];
 
-    batch_set($batch);
+    $this->batchSet($batch);
   }
 
   /**

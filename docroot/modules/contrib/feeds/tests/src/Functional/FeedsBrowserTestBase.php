@@ -27,7 +27,7 @@ abstract class FeedsBrowserTestBase extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'node',
     'user',
@@ -44,7 +44,7 @@ abstract class FeedsBrowserTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a content type.
@@ -67,6 +67,27 @@ abstract class FeedsBrowserTestBase extends BrowserTestBase {
   protected function batchImport(FeedInterface $feed) {
     $this->drupalGet('feed/' . $feed->id() . '/import');
     $this->submitForm([], 'Import');
+  }
+
+  /**
+   * Asserts number of files in the feeds "in progress" dir.
+   *
+   * @param int $count
+   *   The expected number of files.
+   * @param string $subdirectory
+   *   (optional) The directory to look into within the "in progress" dir.
+   * @param string $stream
+   *   (optional) The stream to use: 'public' or 'private'. Defaults to
+   *   'private'.
+   */
+  protected function assertCountFilesInProgressDir(int $count, string $subdirectory = '', string $stream = 'private') {
+    // Assert that a file exists in the in_progress dir.
+    $dir = $stream . '://feeds/in_progress';
+    if ($subdirectory) {
+      $dir .= '/' . $subdirectory;
+    }
+    $files = $this->container->get('file_system')->scanDirectory($dir, '/.*/');
+    $this->assertCount($count, $files);
   }
 
 }

@@ -12,7 +12,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Config\Config;
-use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Cache\CacheBackendInterface;
 
 /**
  * Add views custom table form.
@@ -30,7 +30,7 @@ class AddViewsCustomTable extends FormBase {
    *
    * @var array
    */
-  protected $PreviousStepData;
+  protected $previousStepData;
 
   /**
    * Entity Manager for calss.
@@ -61,16 +61,45 @@ class AddViewsCustomTable extends FormBase {
   protected $configEditable;
 
   /**
+   * Drupal\Core\Cache\CacheBackendInterface definition.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheDefault;
+
+  /**
+   * Drupal\Core\Cache\CacheBackendInterface definition.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cacheDiscovery;
+
+  /**
    * AddViewsCustomTable constructor.
    *
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cacheDiscovery
+   *   The cache backend to be used.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cacheDefault
+   *   The cache backend to be used.
    * @param \Drupal\Core\Session\AccountProxyInterface $account
+   *   The user account.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityManager
+   *   The entity type manager service.
    * @param \Drupal\Core\Config\ImmutableConfig $config
+   *   The config service.
    * @param \Drupal\Core\Config\Config $configEditable
+   *   The editable config service.
    */
-  public function __construct(AccountProxyInterface $account, EntityTypeManagerInterface $entityManager, ImmutableConfig $config, Config $configEditable) {
+  public function __construct(CacheBackendInterface $cacheDiscovery,
+  CacheBackendInterface $cacheDefault,
+  AccountProxyInterface $account,
+  EntityTypeManagerInterface $entityManager,
+  ImmutableConfig $config,
+  Config $configEditable) {
+    $this->cacheDiscovery = $cacheDiscovery;
+    $this->cacheDefault = $cacheDefault;
     $this->step = 1;
-    $this->PreviousStepData = [];
+    $this->previousStepData = [];
     $this->account = $account;
     $this->entityManager = $entityManager;
     $this->config = $config;
@@ -82,6 +111,8 @@ class AddViewsCustomTable extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('cache.discovery'),
+      $container->get('cache.default'),
       $container->get('current_user'),
       $container->get('entity_type.manager'),
       $container->get('config.factory')->get('view_custom_table.tables'),
@@ -132,8 +163,8 @@ class AddViewsCustomTable extends FormBase {
       ];
     }
     elseif ($this->step == 2) {
-      $table_name = $this->PreviousStepData['table_name'];
-      $databaseName = $this->PreviousStepData['table_database'];
+      $table_name = $this->previousStepData['table_name'];
+      $databaseName = $this->previousStepData['table_database'];
       $form['columns'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('"@table" Int Type Columns', [
@@ -158,9 +189,16 @@ class AddViewsCustomTable extends FormBase {
           }
         }
       }
-      $int_types = ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'];
+      $int_types = [
+        'tinyint',
+        'smallint',
+        'mediumint',
+        'int',
+        'bigint',
+        'varchar',
+      ];
       $connection = Database::getConnection('default', $databaseName);
-      $text_query = 'DESCRIBE ' . $connection->escapeTable($table_name);
+      $text_query = 'DESCRIBE ' . $connection->tablePrefix($table_name) . $connection->escapeTable($table_name);
       $query = $connection->query($text_query);
       foreach ($query as $row) {
         $row_type = explode('(', $row->Type);
@@ -237,15 +275,15 @@ class AddViewsCustomTable extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $opeation = $form_state->getValue('op')->render();
     if ($opeation == $this->t('Next')) {
-      $this->PreviousStepData = $form_state->cleanValues()->getValues();
+      $this->previousStepData = $form_state->cleanValues()->getValues();
       $form_state->setRebuild();
       $this->step++;
     }
     if ($opeation == $this->t('Save')) {
       $user = $this->account;
-      $table_name = $this->PreviousStepData['table_name'];
-      $table_database = $this->PreviousStepData['table_database'];
-      $description = $this->PreviousStepData['description'];
+      $table_name = $this->previousStepData['table_name'];
+      $table_database = $this->previousStepData['table_database'];
+      $description = $this->previousStepData['description'];
       $relations = $form_state->getValue('columns');
       $column_relations = [];
       foreach ($relations as $relation) {
@@ -265,7 +303,10 @@ class AddViewsCustomTable extends FormBase {
         $this->messenger()->addStatus($this->t('@table is added to views. Please clear cache to see changes.', [
           '@table' => $table_name,
         ]));
-        drupal_flush_all_caches();
+        /* \Drupal::service('cache.discovery')->invalidateAll();
+        \Drupal::service('cache.default')->invalidateAll(); */
+        $this->cacheDiscovery->invalidateAll();
+        $this->cacheDefault->invalidateAll();
       }
       else {
         $this->messenger()->addError($this->t('Could not add table to views, please check log messages for error.'));

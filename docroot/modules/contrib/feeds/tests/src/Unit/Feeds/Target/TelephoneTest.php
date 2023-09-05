@@ -3,12 +3,20 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
 use Drupal\feeds\Feeds\Target\Telephone;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Telephone
  * @group feeds
  */
 class TelephoneTest extends FieldTargetTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'telephone';
 
   /**
    * {@inheritdoc}
@@ -18,10 +26,9 @@ class TelephoneTest extends FieldTargetTestBase {
   }
 
   /**
-   * @covers ::prepareValue
-   * @dataProvider dataProviderPrepareValue
+   * {@inheritdoc}
    */
-  public function testPrepareValue($expected, $value) {
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
     $method = $this->getMethod('Drupal\feeds\Feeds\Target\Telephone', 'prepareTarget')->getClosure();
     $field_definition = $this->getMockFieldDefinition();
     $field_definition->expects($this->any())
@@ -31,8 +38,15 @@ class TelephoneTest extends FieldTargetTestBase {
       'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
       'target_definition' => $method($field_definition),
     ];
-    $target = new Telephone($configuration, 'telephone', []);
+    return new Telephone($configuration, static::$pluginId, []);
+  }
 
+  /**
+   * @covers ::prepareValue
+   * @dataProvider dataProviderPrepareValue
+   */
+  public function testPrepareValue($expected, $value) {
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => $value];

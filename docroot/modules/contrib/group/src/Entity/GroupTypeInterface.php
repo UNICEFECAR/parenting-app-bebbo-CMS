@@ -4,11 +4,12 @@ namespace Drupal\group\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityDescriptionInterface;
+use Drupal\Core\Entity\RevisionableEntityBundleInterface;
 
 /**
  * Provides an interface defining a group type entity.
  */
-interface GroupTypeInterface extends ConfigEntityInterface, EntityDescriptionInterface {
+interface GroupTypeInterface extends ConfigEntityInterface, EntityDescriptionInterface, RevisionableEntityBundleInterface {
 
   /**
    * The maximum length of the ID, in characters.
@@ -90,6 +91,14 @@ interface GroupTypeInterface extends ConfigEntityInterface, EntityDescriptionInt
    *   The ID of the generic member group role this group type uses.
    */
   public function getMemberRoleId();
+
+  /**
+   * Sets whether a new revision should be created by default.
+   *
+   * @param bool $new_revision
+   *   TRUE if a new revision should be created by default.
+   */
+  public function setNewRevision($new_revision);
 
   /**
    * Returns whether the group creator automatically receives a membership.

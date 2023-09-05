@@ -40,7 +40,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'tmgmt',
     'tmgmt_test',
     'tmgmt_content',
@@ -58,7 +58,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->addLanguage('de');
@@ -121,10 +121,10 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $assert_session->pageTextContains(t('Testing output of review data item element @key from the testing provider.', array('@key' => $key)));
 
     // Test the review tool source textarea.
-    $this->assertFieldByName('dummy|deep_nesting[source]', $data[$key]['#text']);
+    $this->assertSession()->fieldValueEquals('dummy|deep_nesting[source]', $data[$key]['#text']);
 
     // Save translation.
-    $this->drupalPostForm(NULL, array('dummy|deep_nesting[translation]' => $data[$key]['#text'] . 'translated'), t('Save'));
+    $this->submitForm(['dummy|deep_nesting[translation]' => $data[$key]['#text'] . 'translated'], t('Save'));
 
     // Test review data item.
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
@@ -136,29 +136,29 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     \Drupal::entityTypeManager()->getStorage('tmgmt_job_item')->resetCache();
     /** @var JobItem $item */
     $item = JobItem::load($item->id());
-    $this->assertEqual($item->getCountReviewed(), 1, 'Item reviewed correctly.');
+    $this->assertEquals(1, $item->getCountReviewed(), 'Item reviewed correctly.');
 
     // Check if translation has been saved.
-    $this->assertFieldByName('dummy|deep_nesting[translation]', $data[$key]['#text'] . 'translated');
+    $this->assertSession()->fieldValueEquals('dummy|deep_nesting[translation]', $data[$key]['#text'] . 'translated');
 
     // Tests for the minimum height of the textareas.
     $rows = $this->xpath('//textarea[@name="dummy|deep_nesting[source]"]');
-    $this->assertEqual((string) $rows[0]->getAttribute('rows'), 3);
+    $this->assertEquals(3, (string) $rows[0]->getAttribute('rows'));
 
     $rows2 = $this->xpath('//textarea[@name="dummy|deep_nesting[translation]"]');
-    $this->assertEqual((string) $rows2[0]->getAttribute('rows'), 3);
+    $this->assertEquals(3, (string) $rows2[0]->getAttribute('rows'));
 
     // Test data item status when content changes.
-    $this->drupalPostForm(NULL, array(), t('Save'));
+    $this->submitForm([], t('Save'));
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
     $assert_session->responseContains('icons/gray-check.svg" alt="Reviewed"');
     $edit = [
       'dummy|deep_nesting[translation]' => 'New text for job item',
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
     $assert_session->responseContains('icons/gray-check.svg" alt="Reviewed"');
-    $this->assertFieldByName('dummy|deep_nesting[translation]', 'New text for job item');
+    $this->assertSession()->fieldValueEquals('dummy|deep_nesting[translation]', 'New text for job item');
 
     // Test for the dynamical height of the source textarea.
     \Drupal::state()->set('tmgmt.test_source_data', array(
@@ -173,7 +173,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $this->drupalGet('admin/tmgmt/items/' . $item2->id());
 
     $rows3 = $this->xpath('//textarea[@name="dummy|deep_nesting[source]"]');
-    $this->assertEqual((string) $rows3[0]->getAttribute('rows'), 4);
+    $this->assertEquals(4, (string) $rows3[0]->getAttribute('rows'));
 
     // Test for the maximum height of the source textarea.
     \Drupal::state()->set('tmgmt.test_source_data', array(
@@ -188,7 +188,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $this->drupalGet('admin/tmgmt/items/' . $item3->id());
 
     $rows4 = $this->xpath('//textarea[@name="dummy|deep_nesting[source]"]');
-    $this->assertEqual((string) $rows4[0]->getAttribute('rows'), 15);
+    $this->assertEquals(15, (string) $rows4[0]->getAttribute('rows'));
 
     // Tests the HTML tags validation.
     \Drupal::state()->set('tmgmt.test_source_data', array(
@@ -212,7 +212,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $edit = array(
       'title|deep_nesting[translation]' => '<em>Translated italic text missing paragraph</em>',
     );
-    $this->drupalPostForm(NULL, $edit, t('Validate HTML tags'));
+    $this->submitForm($edit, t('Validate HTML tags'));
     $assert_session->responseContains(t('Expected tags @tags not found.', array('@tags' => '<p>,<strong>,</strong>,</p>')));
     $assert_session->responseContains(t('@tag expected 1, found 0.', array('@tag' => '<p>')));
     $assert_session->responseContains(t('@tag expected 1, found 0.', array('@tag' => '<strong>')));
@@ -224,7 +224,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $edit = array(
       'title|deep_nesting[translation]' => '<p><strong><em>Translated text Italic and bold</em></strong></p>',
     );
-    $this->drupalPostForm(NULL, $edit, t('Validate HTML tags'));
+    $this->submitForm($edit, t('Validate HTML tags'));
     $assert_session->pageTextContains(t('Order of the HTML tags are incorrect.'));
     $assert_session->pageTextContains(t('HTML tag validation failed for 1 field(s).'));
 
@@ -232,7 +232,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $edit = array(
       'title|deep_nesting[translation]' => '<p><p><p><p><strong><em><em>Translated text Italic and bold, many tags</em></strong></strong></strong></p>',
     );
-    $this->drupalPostForm(NULL, $edit, t('Validate HTML tags'));
+    $this->submitForm($edit, t('Validate HTML tags'));
     $assert_session->responseContains(t('@tag expected 1, found 4.', array('@tag' => '<p>')));
     $assert_session->responseContains(t('@tag expected 1, found 2.', array('@tag' => '<em>')));
     $assert_session->responseContains(t('@tag expected 1, found 3.', array('@tag' => '</strong>')));
@@ -243,7 +243,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
       'title|deep_nesting[translation]' => '<p><p><p><p><strong><em><em>Translated text Italic and bold, many tags</em></strong></strong></strong></p>',
       'body|deep_nesting[translation]' => '<p>Source body bold and Italic</strong></em></p>',
     );
-    $this->drupalPostForm(NULL, $edit, t('Validate HTML tags'));
+    $this->submitForm($edit, t('Validate HTML tags'));
     $assert_session->pageTextContains(t('HTML tag validation failed for 2 field(s).'));
 
     // Tests that there is always a title.
@@ -270,7 +270,8 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     ]);
     $item5 = $job->addItem('test_source', 'test', 4);
 
-    $this->drupalPostForm('admin/tmgmt/items/' . $item5->id(), [], t('Validate'));
+    $this->drupalGet($item5->toUrl());
+    $this->submitForm([], t('Validate'));
     $assert_session->pageTextContains(t('The field is empty.'));
 
     // Test review just one data item.
@@ -282,8 +283,8 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
 
     // Check if translation has been saved.
     $this->drupalGet('admin/tmgmt/items/' . $item5->id());
-    $this->assertFieldByName('title|0|value[translation][value]', $text . 'translated');
-    $this->assertNoFieldByName('body|deep_nesting[translation][value]', $text . 'no save');
+    $this->assertSession()->fieldValueEquals('title|0|value[translation][value]', $text . 'translated');
+    $this->assertSession()->fieldValueNotEquals('body|deep_nesting[translation][value]', $text . 'no save');
 
     // Tests field is less than max_length.
     \Drupal::state()->set('tmgmt.test_source_data', [
@@ -308,7 +309,8 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     ]);
     $item5 = $job->addItem('test_source', 'test', 4);
 
-    $this->drupalPostForm('admin/tmgmt/items/' . $item5->id(), [
+    $this->drupalGet($item5->toUrl());
+    $this->submitForm([
       'title|0|value[translation]' => $text,
       'body|deep_nesting[translation]' => $text,
     ], t('Save'));
@@ -323,7 +325,7 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
 
     // Test if the validation is properly done.
     $page->pressButton('reviewed-body|deep_nesting');
-    $this->assertUniqueText(t('The field has @size characters while the limit is @limit.', [
+    $this->assertSession()->pageTextContainsOnce(t('The field has @size characters while the limit is @limit.', [
       '@size' => strlen($text),
       '@limit' => 10,
     ]));
@@ -348,31 +350,32 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $title_element = $page->find('css', 'title');
     $this->assertEquals('Job item ' . $item->label() . ' | Drupal', $title_element->getHtml());
 
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'target_language' => 'de',
       'settings[action]' => 'submit',
     );
-    $this->drupalPostForm('admin/tmgmt/jobs/' . $job->id(), $edit, t('Submit to provider'));
+    $this->submitForm($edit, t('Submit to provider'));
 
     $this->drupalGet('admin/tmgmt/items/' . $item5->id());
     $xpath = $this->xpath('//*[@id="edit-dummydeep-nesting-translation-format-guidelines"]/div//h4');
-    $this->assertEqual($xpath[0]->getHtml(), t('Filtered HTML'));
+    $this->assertEquals(t('Filtered HTML'), $xpath[0]->getHtml());
     $rows5 = $this->xpath('//textarea[@name="dummy|deep_nesting[source][value]"]');
-    $this->assertEqual((string) $rows5[0]->getAttribute('rows'), 3);
+    $this->assertEquals(3, (string) $rows5[0]->getAttribute('rows'));
 
-    $this->drupalPostForm(NULL, [], t('Save'));
+    $this->submitForm([], t('Save'));
     $assert_session->pageTextNotContains('has been saved successfully.');
     $this->drupalGet('admin/tmgmt/items/' . $item5->id());
     $assert_session->pageTextContains('In progress');
     $edit = array(
       'dummy|deep_nesting[translation][value]' => 'Translated text for job item',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $assert_session->pageTextContains('The translation for ' . trim($item5->label()) . ' has been saved successfully.');
     $this->drupalGet('admin/tmgmt/items/' . $item5->id());
     $assert_session->pageTextContains('Translated text for job item');
-    $this->drupalPostForm(NULL, $edit, t('Save as completed'));
-    $this->assertEqual(\Drupal::state()->get('tmgmt_test_saved_translation_' . $item5->getItemType() . '_' . $item5->getItemId())['dummy']['deep_nesting']['#translation']['#text'], 'Translated text for job item');
+    $this->submitForm($edit, t('Save as completed'));
+    $this->assertEquals('Translated text for job item', \Drupal::state()->get('tmgmt_test_saved_translation_' . $item5->getItemType() . '_' . $item5->getItemId())['dummy']['deep_nesting']['#translation']['#text']);
 
     // Test if the icons are displayed.
     $assert_session->responseContains('views-field-progress">Accepted');
@@ -386,8 +389,8 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $this->drupalGet('admin/tmgmt/jobs');
 
     // Assert that translators are in dropdown list.
-    $this->assertOption('edit-translator', $translator1->id());
-    $this->assertOption('edit-translator', $translator2->id());
+    $this->assertSession()->optionExists('edit-translator', $translator1->id());
+    $this->assertSession()->optionExists('edit-translator', $translator2->id());
 
     // Assign each job to a translator.
     $job1 = $this->createJob();
@@ -406,25 +409,25 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     // Filter jobs by translator and assert values.
     $this->drupalGet('admin/tmgmt/jobs', array('query' => array('translator' => $translator1->id())));
     $label = trim($this->xpath('//table/tbody/tr/td[5]')[0]->getHtml());
-    $this->assertEqual($label, $translator1->label(), 'Found provider label in table');
-    $this->assertNotEqual($label, $translator2->label(), "Providers filtered in table");
+    $this->assertEquals($translator1->label(), $label, 'Found provider label in table');
+    $this->assertNotEquals($translator2->label(), $label,"Providers filtered in table");
     $this->drupalGet('admin/tmgmt/jobs', array('query' => array('translator' => $translator2->id())));
     $label = trim($this->xpath('//table/tbody/tr/td[5]')[0]->getHtml());
-    $this->assertEqual($label, $translator2->label(), 'Found provider label in table');
-    $this->assertNotEqual($label, $translator1->label(), "Providers filtered in table");
+    $this->assertEquals($translator2->label(), $label, 'Found provider label in table');
+    $this->assertNotEquals($translator1->label(), $label,"Providers filtered in table");
 
     $edit = array(
       'dummy|deep_nesting[translation]' => '',
     );
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
-    $this->drupalPostForm(NULL, $edit, t('Validate'));
+    $this->submitForm($edit, t('Validate'));
     $assert_session->pageTextContains(t('The field is empty.'));
 
-    $this->drupalPostForm(NULL, [], t('Save'));
+    $this->submitForm([], t('Save'));
     $assert_session->pageTextNotContains(t('The field is empty.'));
 
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
-    $this->drupalPostForm(NULL, [], t('Save as completed'));
+    $this->submitForm([], t('Save as completed'));
     $assert_session->pageTextContains(t('The field is empty.'));
 
     // Test validation message for 'Validate' button.
@@ -433,11 +436,11 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $edit = array(
       'dummy|deep_nesting[translation]' => $translation_field,
     );
-    $this->drupalPostForm(NULL, $edit, t('Validate'));
+    $this->submitForm($edit, t('Validate'));
     $assert_session->pageTextContains(t('Validation completed successfully.'));
 
     // Test validation message for 'Validate HTML tags' button.
-    $this->drupalPostForm(NULL, $edit, t('Validate HTML tags'));
+    $this->submitForm($edit, t('Validate HTML tags'));
     $assert_session->pageTextContains(t('Validation completed successfully.'));
 
     // Test that normal job item are shown in job items overview.
@@ -476,18 +479,18 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $edit = [
       'dummy|deep_nesting[translation]' => 'any_value',
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->clickLink(t('Review'));
     $edit = [
       'dummy|deep_nesting[translation]' => 'any_different_value',
     ];
-    $this->drupalPostForm(NULL, $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->clickLink(t('Review'));
     $page = $this->getSession()->getPage();
     $page->pressButton('revert-dummy|deep_nesting');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->assertSession()->pageTextContains('Translation for dummy reverted to the latest version.');
-    $this->assertFieldByName('dummy|deep_nesting[translation]', 'any_value');
+    $this->assertSession()->fieldValueEquals('dummy|deep_nesting[translation]', 'any_value');
   }
 
   /**
@@ -540,11 +543,12 @@ class TMGMTUiJavascriptTest extends WebDriverTestBase {
     $job->addItem('test_source', 'test', '1');
     $job->save();
 
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'target_language' => 'de',
       'settings[action]' => 'submit',
     );
-    $this->drupalPostForm('admin/tmgmt/jobs/' . $job->id(), $edit, t('Submit to provider'));
+    $this->submitForm($edit, t('Submit to provider'));
 
     $job->requestTranslation();
 

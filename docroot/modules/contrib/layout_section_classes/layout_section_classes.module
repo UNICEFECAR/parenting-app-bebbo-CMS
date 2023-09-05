@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Module file.
+ */
+
+use Drupal\Core\Layout\LayoutDefault;
+use Drupal\layout_section_classes\ClassyLayout;
+
+/**
+ * Implements hook_layouts_alter().
+ */
+function layout_section_classes_layout_alter(&$definitions) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition[] $definitions */
+  foreach ($definitions as &$definition) {
+    if ($definition->get('class') === LayoutDefault::class && $definition->get('classes') !== NULL) {
+      $definition->setClass(ClassyLayout::class);
+    }
+  }
+}

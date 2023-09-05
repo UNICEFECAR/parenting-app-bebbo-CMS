@@ -188,7 +188,10 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
       throw new CapacityException('Capacity limits exceeded.');
     }
     if (($count = count($invalidations)) > $inv_limit) {
-      $this->logger->debug("capacity limit allows @limit invalidations during this request, @no given.", ['@limit' => $inv_limit, '@no' => $count]);
+      $this->logger->debug(
+        "capacity limit allows @limit invalidations during this request, @no given.",
+        ['@limit' => $inv_limit, '@no' => $count]
+      );
       throw new CapacityException("Capacity limit allows $inv_limit invalidations during this request, $count given.");
     }
 
@@ -238,6 +241,7 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
       // Put the plugin instances into $setting and use the order as key.
       if (!is_null($plugins)) {
         $setting = [];
+        $plugins = array_filter($plugins);
         foreach ($plugins as $inst) {
           if (!in_array($inst['plugin_id'], $plugin_ids)) {
             // When a third-party provided purger was configured and its module
@@ -414,96 +418,103 @@ class PurgersService extends ServiceBase implements PurgersServiceInterface {
       return;
     }
 
-    // Remove states from old purgers that got uninstalled.
-    $purger_ids = array_keys($this->getPluginsEnabled());
-    foreach ($invalidations as $invalidation) {
-      foreach ($invalidation->getStateContexts() as $purger_id) {
-        if (!in_array($purger_id, $purger_ids)) {
-          $invalidation->removeStateContext($purger_id);
-        }
-      }
-    }
+    // If an exception is thrown in a plugin, we need to reliably release the
+    // lock acquired in ::checksBeforeTakeoff().
+    try {
 
-    // Discover types in need of processing and - just to be sure - reset state.
-    $types = [];
-    foreach ($invalidations as $i => $invalidation) {
-      $types[$i] = $invalidation->getType();
-      $invalidation->setStateContext(NULL);
-    }
-
-    // Iterate the purgers and start invalidating the items each one supports.
-    $typesByPurger = $this->getTypesByPurger();
-    foreach ($this->purgers as $id => $purger) {
-      $groups = [];
-
-      // Set context and presort the invalidations that this purger supports.
-      foreach ($invalidations as $i => $invalidation) {
-        $invalidation->setStateContext($id);
-        if ($invalidation->getState() == InvalidationInterface::SUCCEEDED) {
-          continue;
-        }
-        if (!in_array($types[$i], $typesByPurger[$id])) {
-          $invalidation->setState(InvalidationInterface::NOT_SUPPORTED);
-          continue;
-        }
-      }
-
-      // Filter supported objects and group them by the right purger methods.
-      foreach ($typesByPurger[$id] as $type) {
-        $method = $purger->routeTypeToMethod($type);
-        if (!isset($groups[$method])) {
-          $groups[$method] = [];
-        }
-        foreach ($types as $i => $invalidation_type) {
-          if ($invalidation_type === $type) {
-            $groups[$method][$i] = $invalidations[$i];
+      // Remove states from old purgers that got uninstalled.
+      $purger_ids = array_keys($this->getPluginsEnabled());
+      foreach ($invalidations as $invalidation) {
+        foreach ($invalidation->getStateContexts() as $purger_id) {
+          if (!in_array($purger_id, $purger_ids)) {
+            $invalidation->removeStateContext($purger_id);
           }
         }
       }
 
-      // Invalidate objects by offering each group to its method on the purger.
-      foreach ($groups as $method => $offers) {
-        if (!count($offers)) {
-          continue;
+      // Discover types in need of processing and - just to be sure - reset state.
+      $types = [];
+      foreach ($invalidations as $i => $invalidation) {
+        $types[$i] = $invalidation->getType();
+        $invalidation->setStateContext(NULL);
+      }
+
+      // Iterate the purgers and start invalidating the items each one supports.
+      $typesByPurger = $this->getTypesByPurger();
+      foreach ($this->purgers as $id => $purger) {
+        $groups = [];
+
+        // Set context and presort the invalidations that this purger supports.
+        foreach ($invalidations as $i => $invalidation) {
+          $invalidation->setStateContext($id);
+          if ($invalidation->getState() == InvalidationInterface::SUCCEEDED) {
+            continue;
+          }
+          if (!in_array($types[$i], $typesByPurger[$id])) {
+            $invalidation->setState(InvalidationInterface::NOT_SUPPORTED);
+            continue;
+          }
         }
 
-        // Leave a trace in the logs, when errors occur, its likely after this.
-        $this->logger->debug("offering @no items to @plugin's @id::@method()", [
-          '@no' => count($offers),
-          '@id' => $id,
-          '@plugin' => $purger->getPluginId(),
-          '@method' => $method,
-        ]);
-
-        // Feed the offers either with runtime measurement running or without.
-        $has_runtime_measurement = $purger->hasRuntimeMeasurement();
-        if ($has_runtime_measurement) {
-          $instrument = $purger->getRuntimeMeasurement();
-          $instrument->start();
-          $purger->$method($offers);
-          $instrument->stop($offers);
+        // Filter supported objects and group them by the right purger methods.
+        foreach ($typesByPurger[$id] as $type) {
+          $method = $purger->routeTypeToMethod($type);
+          if (!isset($groups[$method])) {
+            $groups[$method] = [];
+          }
+          foreach ($types as $i => $invalidation_type) {
+            if ($invalidation_type === $type) {
+              $groups[$method][$i] = $invalidations[$i];
+            }
+          }
         }
-        else {
-          $purger->$method($offers);
+
+        // Invalidate objects by offering each group to its method on the purger.
+        foreach ($groups as $method => $offers) {
+          if (!count($offers)) {
+            continue;
+          }
+
+          // Leave a trace in the logs, when errors occur, its likely after this.
+          $this->logger->debug("offering @no items to @plugin's @id::@method()", [
+            '@no' => count($offers),
+            '@id' => $id,
+            '@plugin' => $purger->getPluginId(),
+            '@method' => $method,
+          ]);
+
+          // Feed the offers either with runtime measurement running or without.
+          $has_runtime_measurement = $purger->hasRuntimeMeasurement();
+          if ($has_runtime_measurement) {
+            $instrument = $purger->getRuntimeMeasurement();
+            $instrument->start();
+            $purger->$method($offers);
+            $instrument->stop($offers);
+          }
+          else {
+            $purger->$method($offers);
+          }
+        }
+
+        // Wait configured cooldown time before other purgers kick in.
+        if (count($groups)) {
+          $this->capacityTracker()->waitCooldownTime($id);
         }
       }
 
-      // Wait configured cooldown time before other purgers kick in.
-      if (count($groups)) {
-        $this->capacityTracker()->waitCooldownTime($id);
+      // As processing finished we have the obligation to reset context. A call to
+      // getState() will now lead to evaluation of the outcome for each object.
+      foreach ($invalidations as $i => $invalidation) {
+        $invalidation->setStateContext(NULL);
       }
-    }
 
-    // As processing finished we have the obligation to reset context. A call to
-    // getState() will now lead to evaluation of the outcome for each object.
-    foreach ($invalidations as $i => $invalidation) {
-      $invalidation->setStateContext(NULL);
+      // Update the counters with runtime information and release the lock.
+      $this->capacityTracker()->spentInvalidations()->increment(count($invalidations));
+      $this->capacityTracker()->spentExecutionTime()->increment(microtime(TRUE) - $execution_time_start);
     }
-
-    // Update the counters with runtime information and release the lock.
-    $this->capacityTracker()->spentInvalidations()->increment(count($invalidations));
-    $this->capacityTracker()->spentExecutionTime()->increment(microtime(TRUE) - $execution_time_start);
-    $this->lock->release(self::LOCKNAME);
+    finally {
+      $this->lock->release(self::LOCKNAME);
+    }
   }
 
   /**

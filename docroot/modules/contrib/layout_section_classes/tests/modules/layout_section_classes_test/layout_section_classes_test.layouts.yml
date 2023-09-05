@@ -1,0 +1,48 @@
+test_layout:
+  label: Test
+  category: 'LSC'
+  template: templates/test-layout
+  classes:
+    style:
+      label: 'Style'
+      multiple: true
+      required: false
+      options:
+        'background--primary-light': 'Light background'
+        'background--wave-dark background--primary-light': 'Wave background'
+      description: 'Select the visual style for this region.'
+      region_classes:
+        'background--wave-dark background--primary-light':
+          content: 'a-region-class'
+      attributes:
+        'background--wave-dark background--primary-light':
+          data-some-attribute: foo
+    spacing:
+      label: 'Spacing'
+      multiple: false
+      required: true
+      default: 'section--bottom-l section--top-l'
+      options:
+        'section--bottom-l section--top-l': 'Standard'
+        '': 'Tight'
+  regions:
+    content:
+      label: Content
+
+custom_class_layout:
+  label: Custom class
+  category: 'LSC'
+  template: templates/test-layout
+  class: '\Drupal\layout_section_classes_test\NewTestClassyLayout'
+  classes:
+    spacing:
+      label: 'Spacing'
+      multiple: false
+      required: true
+      default: 'section--bottom-l section--top-l'
+      options:
+        'section--bottom-l section--top-l': 'Standard'
+        '': 'Tight'
+  regions:
+    content:
+      label: Content

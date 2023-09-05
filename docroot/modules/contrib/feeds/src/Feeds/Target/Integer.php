@@ -33,7 +33,7 @@ class Integer extends Number {
    * {@inheritdoc}
    */
   protected function prepareValue($delta, array &$values) {
-    $value = trim($values['value']);
+    $value = is_string($values['value']) ? trim($values['value']) : $values['value'];
     $values['value'] = is_numeric($value) ? (int) $value : '';
   }
 

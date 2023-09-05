@@ -18,7 +18,7 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group_test_plugin'];
+  protected static $modules = ['group_test_plugin'];
 
   /**
    * The query access handler.
@@ -44,7 +44,7 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create uid: 1 here so that it's skipped in test cases.
@@ -74,7 +74,7 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     foreach (['view', 'update', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.permissions'], $conditions->getCacheContexts());
       $this->assertFalse($conditions->isAlwaysFalse());
     }
   }
@@ -89,7 +89,7 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     foreach (['view', 'update', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -116,13 +116,13 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     ];
     $this->assertEquals(1, $conditions->count());
     $this->assertEquals($expected_conditions, $conditions->getConditions());
-    $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+    $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
     $this->assertFalse($conditions->isAlwaysFalse());
 
     foreach (['update', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -147,13 +147,13 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     ];
     $this->assertEquals(1, $conditions->count());
     $this->assertEquals($expected_conditions, $conditions->getConditions());
-    $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+    $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
     $this->assertFalse($conditions->isAlwaysFalse());
 
     foreach (['view', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -187,13 +187,13 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     $this->assertEquals(2, $conditions->count());
     $this->assertEquals('OR', $conditions->getConjunction());
     $this->assertEquals($expected_conditions, $conditions->getConditions());
-    $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+    $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
     $this->assertFalse($conditions->isAlwaysFalse());
 
     foreach (['update', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -224,13 +224,13 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     $this->assertEquals(1, $conditions->count());
     $this->assertEquals('OR', $conditions->getConjunction());
     $this->assertEquals($expected_conditions, $conditions->getConditions());
-    $this->assertEquals(['user', 'user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+    $this->assertEqualsCanonicalizing(['user', 'user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
     $this->assertFalse($conditions->isAlwaysFalse());
 
     foreach (['view', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -260,13 +260,13 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
     $this->assertEquals(1, $conditions->count());
     $this->assertEquals('OR', $conditions->getConjunction());
     $this->assertEquals($expected_conditions, $conditions->getConditions());
-    $this->assertEquals(['user', 'user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+    $this->assertEqualsCanonicalizing(['user', 'user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
     $this->assertFalse($conditions->isAlwaysFalse());
 
     foreach (['view', 'delete'] as $operation) {
       $conditions = $this->handler->getConditions($operation, $user);
       $this->assertEquals(0, $conditions->count());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertTrue($conditions->isAlwaysFalse());
     }
   }
@@ -294,7 +294,7 @@ class GroupContentQueryAccessHandlerTest extends GroupKernelTestBase {
       $this->assertEquals(1, $conditions->count());
       $this->assertEquals('OR', $conditions->getConjunction());
       $this->assertEquals($expected_conditions, $conditions->getConditions());
-      $this->assertEquals(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
+      $this->assertEqualsCanonicalizing(['user.group_permissions', 'user.permissions'], $conditions->getCacheContexts());
       $this->assertFalse($conditions->isAlwaysFalse());
     }
   }

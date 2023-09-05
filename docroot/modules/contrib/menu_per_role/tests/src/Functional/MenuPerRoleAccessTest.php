@@ -197,7 +197,7 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testRoleAccess() {
+  public function testRoleAccess(): void {
     // Test "Show roles" by role.
     $this->prepareMenuLinkAndExpectations('link 1 - show anonymous', [AccountInterface::ANONYMOUS_ROLE], [], [
       'anonymous' => TRUE,
@@ -259,100 +259,128 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
     ]);
 
     // Test combinations of roles to show.
-    $this->prepareMenuLinkAndExpectations('link 9 - show anonymous and role 1', [
-      AccountInterface::ANONYMOUS_ROLE,
-      $this->user1Role,
-    ],
-    [],
-    [
-      'anonymous' => TRUE,
-      'user1' => TRUE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 10 - show role 1 and role 2', [
-      $this->user1Role,
-      $this->user2Role,
-    ],
-    [],
-    [
-      'anonymous' => FALSE,
-      'user1' => TRUE,
-      'user2' => TRUE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 11 - show role 2 and role 3', [
-      $this->user2Role,
-      $this->user3Role,
-    ],
-    [],
-    [
-      'anonymous' => FALSE,
-      'user1' => FALSE,
-      'user2' => TRUE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 12 - show anonymous and role 3', [
-      AccountInterface::ANONYMOUS_ROLE,
-      $this->user3Role,
-    ],
-    [],
-    [
-      'anonymous' => TRUE,
-      'user1' => FALSE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
+    $this->prepareMenuLinkAndExpectations(
+      'link 9 - show anonymous and role 1',
+      [
+        AccountInterface::ANONYMOUS_ROLE,
+        $this->user1Role,
+      ],
+      [],
+      [
+        'anonymous' => TRUE,
+        'user1' => TRUE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 10 - show role 1 and role 2',
+      [
+        $this->user1Role,
+        $this->user2Role,
+      ],
+      [],
+      [
+        'anonymous' => FALSE,
+        'user1' => TRUE,
+        'user2' => TRUE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 11 - show role 2 and role 3',
+      [
+        $this->user2Role,
+        $this->user3Role,
+      ],
+      [],
+      [
+        'anonymous' => FALSE,
+        'user1' => FALSE,
+        'user2' => TRUE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 12 - show anonymous and role 3',
+      [
+        AccountInterface::ANONYMOUS_ROLE,
+        $this->user3Role,
+      ],
+      [],
+      [
+        'anonymous' => TRUE,
+        'user1' => FALSE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
 
     // Test combinations of roles to hide.
-    $this->prepareMenuLinkAndExpectations('link 13 - hide anonymous and role 1', [], [
-      AccountInterface::ANONYMOUS_ROLE,
-      $this->user1Role,
-    ],
-    [
-      'anonymous' => FALSE,
-      'user1' => FALSE,
-      'user2' => TRUE,
-      'user3' => TRUE,
-      'user4' => TRUE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 14 - hide role 1 and role 2', [], [
-      $this->user1Role,
-      $this->user2Role,
-    ],
-    [
-      'anonymous' => TRUE,
-      'user1' => FALSE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => TRUE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 15 - hide role 1 and role 3', [], [
-      $this->user1Role,
-      $this->user3Role,
-    ],
-    [
-      'anonymous' => TRUE,
-      'user1' => FALSE,
-      'user2' => TRUE,
-      'user3' => TRUE,
-      'user4' => TRUE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 16 - hide anonymous and role 2', [], [
-      AccountInterface::ANONYMOUS_ROLE,
-      $this->user2Role,
-    ],
-    [
-      'anonymous' => FALSE,
-      'user1' => TRUE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => TRUE,
-    ]);
+    $this->prepareMenuLinkAndExpectations(
+      'link 13 - hide anonymous and role 1',
+      [],
+      [
+        AccountInterface::ANONYMOUS_ROLE,
+        $this->user1Role,
+      ],
+      [
+        'anonymous' => FALSE,
+        'user1' => FALSE,
+        'user2' => TRUE,
+        'user3' => TRUE,
+        'user4' => TRUE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 14 - hide role 1 and role 2',
+      [],
+      [
+        $this->user1Role,
+        $this->user2Role,
+      ],
+      [
+        'anonymous' => TRUE,
+        'user1' => FALSE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => TRUE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 15 - hide role 1 and role 3',
+      [],
+      [
+        $this->user1Role,
+        $this->user3Role,
+      ],
+      [
+        'anonymous' => TRUE,
+        'user1' => FALSE,
+        'user2' => TRUE,
+        'user3' => TRUE,
+        'user4' => TRUE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 16 - hide anonymous and role 2',
+      [],
+      [
+        AccountInterface::ANONYMOUS_ROLE,
+        $this->user2Role,
+      ],
+      [
+        'anonymous' => FALSE,
+        'user1' => TRUE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => TRUE,
+      ]
+    );
 
     // Test combinations of roles to show and hide.
     $this->prepareMenuLinkAndExpectations('link 17 - show anonymous and hide role 1', [AccountInterface::ANONYMOUS_ROLE], [$this->user1Role], [
@@ -369,30 +397,37 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
       'user3' => TRUE,
       'user4' => FALSE,
     ]);
-    $this->prepareMenuLinkAndExpectations('link 19 - show anonymous and hide role 1 and role 3', [AccountInterface::ANONYMOUS_ROLE], [
-      $this->user1Role,
-      $this->user3Role,
-    ],
-    [
-      'anonymous' => TRUE,
-      'user1' => FALSE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
-    $this->prepareMenuLinkAndExpectations('link 20 - show anonymous and role 1 and role 3 and hide role 2', [
-      AccountInterface::ANONYMOUS_ROLE,
-      $this->user1Role,
-      $this->user3Role,
-    ],
-    [$this->user2Role],
-    [
-      'anonymous' => TRUE,
-      'user1' => TRUE,
-      'user2' => FALSE,
-      'user3' => TRUE,
-      'user4' => FALSE,
-    ]);
+    $this->prepareMenuLinkAndExpectations(
+      'link 19 - show anonymous and hide role 1 and role 3',
+      [AccountInterface::ANONYMOUS_ROLE],
+      [
+        $this->user1Role,
+        $this->user3Role,
+      ],
+      [
+        'anonymous' => TRUE,
+        'user1' => FALSE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
+    $this->prepareMenuLinkAndExpectations(
+      'link 20 - show anonymous and role 1 and role 3 and hide role 2',
+      [
+        AccountInterface::ANONYMOUS_ROLE,
+        $this->user1Role,
+        $this->user3Role,
+      ],
+      [$this->user2Role],
+      [
+        'anonymous' => TRUE,
+        'user1' => TRUE,
+        'user2' => FALSE,
+        'user3' => TRUE,
+        'user4' => FALSE,
+      ]
+    );
 
     $this->linksAccessTest();
   }
@@ -403,7 +438,7 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function testAdminBypass() {
+  public function testAdminBypass(): void {
     // No bypass.
     $config = $this->configFactory->getEditable('menu_per_role.settings');
     $config->set($this->adminBypassSetting, FALSE);
@@ -477,7 +512,7 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function prepareMenuLinkAndExpectations(string $menuLinkTitle, array $showMenuRoles, array $hideMenuRoles, array $expectationsPerUser) : void {
+  protected function prepareMenuLinkAndExpectations(string $menuLinkTitle, array $showMenuRoles, array $hideMenuRoles, array $expectationsPerUser): void {
     $this->createOrUpdateMenuLink($menuLinkTitle, $showMenuRoles, $hideMenuRoles);
 
     foreach ($expectationsPerUser as $userProperty => $expectationPerUser) {
@@ -490,7 +525,7 @@ class MenuPerRoleAccessTest extends MenuPerRoleFunctionalTestBase {
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  protected function linksAccessTest() : void {
+  protected function linksAccessTest(): void {
     foreach ($this->expectations as $userProperty => $expectations) {
       if ($userProperty == 'anonymous') {
         $this->drupalLogout();

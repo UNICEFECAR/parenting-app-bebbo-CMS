@@ -10,9 +10,9 @@
       "source": "http://cgit.drupalcode.org/feeds_tamper"
     },
     "require": {
-        "drupal/feeds": "~3.0",
-        "drupal/tamper": "~1.0",
-        "drupal/core": "^8 || ^9"
+        "drupal/feeds": "^3.0",
+        "drupal/tamper": "^1.0-alpha3",
+        "drupal/core": "^8 || ^9 || ^10"
     },
     "require-dev": {
         "drupal/feeds": "3.x-dev"

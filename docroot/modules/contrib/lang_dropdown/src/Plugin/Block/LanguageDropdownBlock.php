@@ -17,6 +17,8 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\lang_dropdown\Form\LanguageDropdownForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\TypedData\TranslationStatusInterface;
 
 /**
  * Provides a 'Language dropdown switcher' block.
@@ -127,6 +129,7 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
   public function defaultConfiguration() {
     return [
       'showall' => 0,
+      'hide_only_one' => 1,
       'tohome' => 0,
       'width' => 165,
       'display' => LANGDROPDOWN_DISPLAY_NATIVE,
@@ -185,6 +188,13 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
       '#default_value' => $this->configuration['showall'],
     ];
 
+    $form['lang_dropdown']['hide_only_one'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide if only one language is available'),
+      '#description' => $this->t('If only a single language is available, go ahead and hide the block'),
+      '#default_value' => $this->configuration['hide_only_one'],
+    ];
+
     $form['lang_dropdown']['tohome'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Redirect to home on switch'),
@@ -209,6 +219,7 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
         LANGDROPDOWN_DISPLAY_TRANSLATED => $this->t('Translated into Current Language'),
         LANGDROPDOWN_DISPLAY_NATIVE => $this->t('Language Native Name'),
         LANGDROPDOWN_DISPLAY_LANGCODE => $this->t('Language Code'),
+        LANGDROPDOWN_DISPLAY_SELFTRANSLATED => $this->t('Translated into Target Language'),
       ],
       '#default_value' => $this->configuration['display'],
     ];
@@ -636,6 +647,7 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
     /** @var array[][] $lang_dropdown */
     $lang_dropdown = $form_state->getValue('lang_dropdown');
     $this->configuration['showall'] = $lang_dropdown['showall'];
+    $this->configuration['hide_only_one'] = $lang_dropdown['hide_only_one'];
     $this->configuration['tohome'] = $lang_dropdown['tohome'];
     $this->configuration['width'] = $lang_dropdown['width'];
     $this->configuration['display'] = $lang_dropdown['display'];
@@ -703,31 +715,47 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
       return [];
     }
 
-    $route = $this->pathMatcher->isFrontPage() ? '<front>' : '<current>';
-    $url = Url::fromRoute($route);
-    list(, $type) = explode(':', $this->getPluginId());
-    /** @var \stdClass $languages */
-    $languages = $this->languageManager->getLanguageSwitchLinks($type, $url);
-    $roles = $this->currentUser->getRoles();
+    $type = $this->getDerivativeId();
+    $languages = $this->languageManager->getLanguageSwitchLinks($type, Url::fromRouteMatch(\Drupal::routeMatch()));
 
-    foreach ($languages->links as $langcode => $link) {
-      $hide_language = TRUE;
+    if (isset($languages) && isset($languages->links) && is_array($languages->links)) {
+      $roles = $this->currentUser->getRoles();
 
-      foreach ($roles as $role) {
-        if (!isset($this->configuration['hidden_languages'][$role]) || !in_array($langcode, $this->configuration['hidden_languages'][$role], FALSE)) {
-          $hide_language = FALSE;
-          break;
+      list($entities, $accessible_translations) = $this->getEntitiesAndTranslations();
+      foreach (array_keys($languages->links) as $langcode) {
+        $hide_language = TRUE;
+
+        foreach ($roles as $role) {
+          if (!isset($this->configuration['hidden_languages'][$role]) || !in_array($langcode, $this->configuration['hidden_languages'][$role], FALSE)) {
+            $hide_language = FALSE;
+            break;
+          }
+        }
+
+        if ($entities && !$this->configuration['showall'] && !in_array($langcode, $accessible_translations)) {
+          $hide_language = TRUE;
+        }
+
+        // Remove the language if it should be hidden.
+        if ($hide_language) {
+          unset($languages->links[$langcode]);
+        }
+        else {
+          $languages->links[$langcode]['language'] = $this->languageManager->getLanguage($langcode);
         }
       }
-
-      if ($hide_language) {
-        unset($languages->links[$langcode]['href']);
-        $languages->links[$langcode]['attributes']['class'][] = 'locale-untranslated';
-      }
-      $languages->links[$langcode]['language'] = $this->languageManager->getLanguage($langcode);
     }
 
     if (empty($languages->links)) {
+      return [];
+    }
+
+    // Return an empty render array if accessible translations
+    // or language links are one or zero.
+    if (
+      $this->configuration['hide_only_one'] &&
+      (count($accessible_translations) === 1 || count($languages->links) === 1)
+    ) {
       return [];
     }
 
@@ -737,6 +765,59 @@ class LanguageDropdownBlock extends BlockBase implements ContainerFactoryPluginI
       'lang_dropdown_form' => $form,
       '#cache' => ['max-age' => 0],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    if (!$this->configuration['showall'] || $this->configuration['hide_only_one']) {
+      list($entities,) = $this->getEntitiesAndTranslations();
+      if (!empty($entities)) {
+        $tags = parent::getCacheTags();
+        foreach ($entities as $entity) {
+          $tags = Cache::mergeTags($tags, $entity->getCacheTags());
+        }
+        return $tags;
+      }
+    }
+
+    return parent::getCacheTags();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    if ($this->configuration['hide_only_one']) {
+      return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
+    }
+    return parent::getCacheContexts();
+  }
+
+  /**
+   * Get current route's translatable entities and accessible translations.
+   */
+  private function getEntitiesAndTranslations() {
+    $entities = [];
+    $accessible_translations = [];
+    if (!$this->configuration['showall']) {
+      foreach (\Drupal::routeMatch()->getParameters() as $param) {
+        if ($param instanceof TranslationStatusInterface) {
+          $entities[] = $param;
+          $entity = $param;
+          $accessible_translations = array_merge(
+            $accessible_translations,
+            array_filter(array_keys($entity->getTranslationLanguages()), function ($langcode) use ($entity) {
+              $translation = method_exists($entity, 'getTranslation') ? $entity->getTranslation($langcode) : FALSE;
+              return $translation && method_exists($translation, 'access') && $translation->access('view');
+            })
+          );
+        }
+      }
+    }
+
+    return [$entities, $accessible_translations];
   }
 
 }

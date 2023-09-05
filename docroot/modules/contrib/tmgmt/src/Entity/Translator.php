@@ -250,6 +250,7 @@ class Translator extends ConfigEntityBase implements TranslatorInterface {
     foreach ($entities as $key => $name) {
       // Find active jobs associated with the translator that is being deleted.
       $job_ids = \Drupal::entityQuery('tmgmt_job')
+        ->accessCheck(TRUE)
         ->condition('state', [Job::STATE_ACTIVE, Job::STATE_CONTINUOUS, Job::STATE_UNPROCESSED], 'IN')
         ->condition('translator', $key)
         ->execute();

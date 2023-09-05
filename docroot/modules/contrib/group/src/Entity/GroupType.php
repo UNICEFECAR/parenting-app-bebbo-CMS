@@ -50,6 +50,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "id",
  *     "label",
  *     "description",
+ *     "new_revision",
  *     "creator_membership",
  *     "creator_wizard",
  *     "creator_roles",
@@ -78,6 +79,13 @@ class GroupType extends ConfigEntityBundleBase implements GroupTypeInterface {
    * @var string
    */
   protected $description;
+
+  /**
+   * Whether a new revision should be created by default.
+   *
+   * @var bool
+   */
+  protected $new_revision = TRUE;
 
   /**
    * The group creator automatically receives a membership.
@@ -152,7 +160,7 @@ class GroupType extends ConfigEntityBundleBase implements GroupTypeInterface {
       $query->condition('internal', FALSE);
     }
 
-    return $query->execute();
+    return $query->accessCheck(FALSE)->execute();
   }
 
   /**
@@ -201,6 +209,20 @@ class GroupType extends ConfigEntityBundleBase implements GroupTypeInterface {
    */
   public function getMemberRoleId() {
     return $this->id() . '-member';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function shouldCreateNewRevision() {
+    return $this->new_revision;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setNewRevision($new_revision) {
+    $this->new_revision = $new_revision;
   }
 
   /**

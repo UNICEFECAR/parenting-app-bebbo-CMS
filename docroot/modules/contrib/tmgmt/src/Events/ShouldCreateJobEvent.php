@@ -2,8 +2,8 @@
 
 namespace Drupal\tmgmt\Events;
 
+use Drupal\Component\EventDispatcher\Event;
 use Drupal\tmgmt\JobInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Represents a job item about to be added to a continuous job.

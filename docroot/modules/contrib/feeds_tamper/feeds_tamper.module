@@ -36,23 +36,6 @@ function feeds_tamper_entity_operation(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_menu_links_discovered_alter().
- */
-function feeds_tamper_menu_links_discovered_alter(&$links) {
-  // Add "Tamper" link for each feed type.
-  foreach (\Drupal::entityTypeManager()->getStorage('feeds_feed_type')->loadMultiple() as $machine_name => $bundle) {
-    $links['entity.feeds_feed_type.tamper' . $machine_name] = [
-      'title' => t('Tamper'),
-      'route_name' => 'entity.feeds_feed_type.tamper',
-      'menu_name' => 'admin',
-      'parent' => 'entity.feeds_feed_type.edit_form.' . $machine_name,
-      'route_parameters' => ['feeds_feed_type' => $machine_name],
-      'weight' => 0,
-    ];
-  }
-}
-
-/**
  * Implements hook_entity_type_alter().
  *
  * Adds link template for tamper operation to the feed type entity.

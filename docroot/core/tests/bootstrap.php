@@ -8,17 +8,7 @@
  */
 
 use Drupal\Component\Assertion\Handle;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Constraint\Count;
-use PHPUnit\Framework\Error\Error;
-use PHPUnit\Framework\Error\Warning;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\MockObject\Matcher\InvokedRecorder;
-use PHPUnit\Framework\SkippedTestError;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Test;
-use PHPUnit\Util\Xml;
+use Drupal\TestTools\PhpUnitCompatibility\PhpUnit8\ClassWriter;
 
 /**
  * Finds all valid extension directories recursively within a given directory.
@@ -56,11 +46,12 @@ function drupal_phpunit_find_extension_directories($scan_directory) {
  */
 function drupal_phpunit_contrib_extension_directory_roots($root = NULL) {
   if ($root === NULL) {
-    $root = dirname(dirname(__DIR__));
+    $root = dirname(__DIR__, 2);
   }
   $paths = [
     $root . '/core/modules',
     $root . '/core/profiles',
+    $root . '/core/themes',
     $root . '/modules',
     $root . '/profiles',
     $root . '/themes',
@@ -76,7 +67,7 @@ function drupal_phpunit_contrib_extension_directory_roots($root = NULL) {
     $paths[] = is_dir("$path/profiles") ? realpath("$path/profiles") : NULL;
     $paths[] = is_dir("$path/themes") ? realpath("$path/themes") : NULL;
   }
-  return array_filter($paths, 'file_exists');
+  return array_filter($paths);
 }
 
 /**
@@ -105,7 +96,7 @@ function drupal_phpunit_get_extension_namespaces($dirs) {
           $namespaces['Drupal\\Tests\\' . $extension . '\\' . $suite_name . '\\'][] = $suite_dir;
         }
       }
-      // Extensions can have a \Drupal\extension\Traits namespace for
+      // Extensions can have a \Drupal\Tests\extension\Traits namespace for
       // cross-suite trait code.
       $trait_dir = $test_dir . '/Traits';
       if (is_dir($trait_dir)) {
@@ -162,7 +153,10 @@ function drupal_phpunit_populate_class_loader() {
 }
 
 // Do class loader population.
-drupal_phpunit_populate_class_loader();
+$loader = drupal_phpunit_populate_class_loader();
+class_alias('\Drupal\Tests\DocumentElement', '\Behat\Mink\Element\DocumentElement', TRUE);
+
+ClassWriter::mutateTestBase($loader);
 
 // Set sane locale settings, to ensure consistent string, dates, times and
 // numbers handling.
@@ -186,17 +180,41 @@ date_default_timezone_set('Australia/Sydney');
 // if they weren't on already.
 Handle::register();
 
-// PHPUnit 4 to PHPUnit 6 bridge. Tests written for PHPUnit 4 need to work on
-// PHPUnit 6 with a minimum of fuss.
-// @todo provided for BC; remove in Drupal 9.
-class_alias(AssertionFailedError::class, '\PHPUnit_Framework_AssertionFailedError');
-class_alias(Count::class, '\PHPUnit_Framework_Constraint_Count');
-class_alias(Error::class, '\PHPUnit_Framework_Error');
-class_alias(Warning::class, '\PHPUnit_Framework_Error_Warning');
-class_alias(ExpectationFailedException::class, '\PHPUnit_Framework_ExpectationFailedException');
-class_alias(Exception::class, '\PHPUnit_Framework_Exception');
-class_alias(InvokedRecorder::class, '\PHPUnit_Framework_MockObject_Matcher_InvokedRecorder');
-class_alias(SkippedTestError::class, '\PHPUnit_Framework_SkippedTestError');
-class_alias(TestCase::class, '\PHPUnit_Framework_TestCase');
-class_alias(Test::class, '\PHPUnit_Util_Test');
-class_alias(Xml::class, '\PHPUnit_Util_XML');
+// Drupal 9 uses PHP syntax that's deprecated in PHP 8.2. Therefore, for
+// PHP 8.2, the error handler registered in
+// \Drupal\Tests\Listeners\DeprecationListenerTrait::registerErrorHandler()
+// ignores E_DEPRECATED errors. However, that error handler is not used
+// during:
+// - The execution of data providers.
+// - The child process of tests that are executed in a separate (isolated)
+//   process, such as kernel tests.
+//
+// To silence E_DEPRECATED errors during the above, re-register the error
+// handler that has already been set by symfony/phpunit-bridge/bootstrap.php,
+// but constrain it to not get called for E_DEPRECATED errors. It is still
+// useful for E_USER_DEPRECATED and other error types.
+if (PHP_VERSION_ID >= 80200) {
+  // Get the current error handler without changing it.
+  $error_handler = set_error_handler(NULL);
+  restore_error_handler();
+
+  if ($error_handler) {
+    // Replace the current error handler with the same one, but filter out
+    // E_DEPRECATED errors.
+    restore_error_handler();
+    set_error_handler($error_handler, E_ALL & ~E_DEPRECATED);
+
+    // The above results in PHP's built-in error handler getting called for
+    // E_DEPRECATED errors. Silence those errors too. Note that
+    // \PHPUnit\TextUI\TestRunner::handleConfiguration() can get called twice
+    // (once before running data providers, then again before running tests),
+    // whereas tests/bootstrap.php is included via include_once(), so the 2nd
+    // handleConfiguration() call can reset error_reporting to the value in
+    // phpunit.xml. However, that's okay, because for those cases, the error
+    // handler registered in
+    // \Drupal\Tests\Listeners\DeprecationListenerTrait::registerErrorHandler()
+    // is in use, and it ignores E_DEPRECATED errors for PHP 8.2 regardless of
+    // the error_reporting value.
+    error_reporting(error_reporting() & ~E_DEPRECATED);
+  }
+}

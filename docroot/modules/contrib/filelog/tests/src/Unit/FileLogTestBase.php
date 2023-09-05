@@ -4,10 +4,12 @@ namespace Drupal\Tests\filelog\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,14 +22,14 @@ abstract class FileLogTestBase extends UnitTestCase {
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $fileSystem;
+  protected FileSystemInterface $fileSystem;
 
   /**
    * The virtual file system, for manipulating files in-memory.
    *
    * @var \org\bovigo\vfs\vfsStreamDirectory
    */
-  protected $virtualFileSystem;
+  protected vfsStreamDirectory $virtualFileSystem;
 
   /**
    * {@inheritdoc}

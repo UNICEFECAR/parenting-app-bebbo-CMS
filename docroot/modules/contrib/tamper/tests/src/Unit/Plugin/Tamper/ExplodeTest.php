@@ -26,7 +26,7 @@ class ExplodeTest extends TamperPluginTestBase {
   public function testExplodeWithSingleValue() {
     $original = 'foo,bar,baz,zip';
     $expected = ['foo', 'bar', 'baz', 'zip'];
-    $this->assertArrayEquals($expected, $this->getPluginDefaultConfig()->tamper($original));
+    $this->assertEquals($expected, $this->getPluginDefaultConfig()->tamper($original));
   }
 
   /**
@@ -45,7 +45,7 @@ class ExplodeTest extends TamperPluginTestBase {
   public function testExplodeWithSingleValueAndLimit() {
     $original = 'foo,bar,baz,zip';
     $expected = ['foo', 'bar,baz,zip'];
-    $this->assertArrayEquals($expected, $this->getPluginWithLimit()->tamper($original));
+    $this->assertEquals($expected, $this->getPluginWithLimit()->tamper($original));
   }
 
   /**

@@ -53,7 +53,10 @@ class FeedScheduleImportForm extends ContentEntityConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->startCronImport();
 
-    $args = ['@type' => $this->entity->getType()->label(), '%title' => $this->entity->label()];
+    $args = [
+      '@type'  => $this->entity->getType()->label(),
+      '%title' => $this->entity->label(),
+    ];
     $this->logger('feeds')->notice('@type: scheduled import for %title.', $args);
     $this->messenger()->addStatus($this->t('%title has been scheduled for import.', $args));
 

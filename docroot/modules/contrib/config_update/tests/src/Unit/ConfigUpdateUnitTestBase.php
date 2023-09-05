@@ -2,9 +2,10 @@
 
 namespace Drupal\Tests\config_update\Unit;
 
+use Drupal\config_update\ConfigPreRevertEvent;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Tests\UnitTestCase;
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Base class for unit testing in Config Update Manager.
@@ -203,6 +204,10 @@ abstract class ConfigUpdateUnitTestBase extends UnitTestCase {
         ],
         ['in.both', ['in.both' => 'active']],
         ['in.optional', ['in.optional' => 'active']],
+        ['in.extension.pre_revert',
+          ['prop' => 'active.pre_revert_value', '_core' => 'core_for_in.extension'],
+        ],
+        ['foo.bar.pre_revert', ['foo.bar.pre_revert' => 'active', 'id' => 'pre_revert', 'prop' => 'active.pre_revert_value', ]],
       ];
       $storage
         ->method('read')
@@ -232,7 +237,11 @@ abstract class ConfigUpdateUnitTestBase extends UnitTestCase {
         ['in.optional', FALSE],
         ['foo.bar.one', ['foo.bar.one' => 'extension', 'id' => 'one']],
         ['another', ['another' => 'extension', 'id' => 'one']],
+        ['in.extension.pre_import', ['prop' => 'extension.pre_import_value']],
+        ['in.extension.pre_revert', ['prop' => 'extension.pre_revert_value']],
+        ['foo.bar.pre_revert', ['foo.bar.pre_revert' => 'extension', 'id' => 'pre_revert', 'prop' => 'extension.pre_revert_value']],
         ['missing2', FALSE],
+        ['missing2.pre_import', FALSE],
       ];
       $storage
         ->method('read')
@@ -341,10 +350,56 @@ abstract class ConfigUpdateUnitTestBase extends UnitTestCase {
   /**
    * Mocks event dispatch.
    *
-   * For \Symfony\Component\EventDispatcher\EventDispatchInterface::dispatch().
+   * @see \Symfony\Component\EventDispatcher\EventDispatcherInterface::dispatch()
    */
-  public function mockDispatch($name, Event $event = NULL) {
+  public function mockDispatch(Event $event, $name = NULL) {
     $this->dispatchedEvents[] = [$name, $event];
+    if ($event instanceof ConfigPreRevertEvent) {
+      $this->handlePreRevertDispatch($event);
+    }
+    return $event;
+  }
+
+  /**
+   * Handle the pre-revert events.
+   *
+   * @param \Drupal\config_update\ConfigPreRevertEvent $event
+   *   The dispatched event.
+   */
+  protected function handlePreRevertDispatch(ConfigPreRevertEvent $event) {
+    $name = $event->getName();
+    // Only modify configurations with the pre_import or pre_revert names.
+    $import = strpos($name, 'pre_import') !== FALSE;
+    $revert = strpos($name, 'pre_revert') !== FALSE;
+    if (!$import && !$revert) {
+      return;
+    }
+
+    $active = $event->getActive();
+    $value = $event->getValue();
+
+    // Always add the new property.
+    $value['new_prop'] = 'new_value';
+
+    // Alter the original property.
+    if (isset($value['prop'])) {
+      if ($active) {
+        // A revert operation is being done, read properties from it.
+        if (isset($active['prop'])) {
+          // Don't override the original property.
+          $value['prop'] = $active['prop'];
+        }
+        else {
+          $value['prop'] = 'altered_active_value';
+        }
+      }
+      else {
+        $value['prop'] = 'altered_value';
+      }
+    }
+
+    // Store the modified value.
+    $event->setValue($value);
   }
 
   /**

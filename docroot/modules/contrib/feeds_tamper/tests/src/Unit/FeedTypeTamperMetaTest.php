@@ -22,59 +22,30 @@ class FeedTypeTamperMetaTest extends UnitTestCase {
    */
   protected $feedTypeTamperMeta;
 
+
+  /**
+   * The mock FeedType used to create the FeedTypeTamperMeta.
+   *
+   * @var \Drupal\feeds\Entity\FeedType
+   */
+  protected $feedType;
+
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
-    // Mock the UUID generator and let it always return 'uuid3'.
-    $uuid_generator = $this->createMock(UuidInterface::class);
-    $uuid_generator->expects($this->any())
-      ->method('generate')
-      ->will($this->returnValue('uuid3'));
+    $mapping_sources = [
+      'alpha' => [
+        'label' => 'Alpha',
+      ],
+      'beta' => [
+        'label' => 'Beta',
+      ],
+    ];
 
-    // Get the tamper manager.
-    $tamper_manager = $this->createMock(TamperManagerInterface::class);
-    $tamper_manager->expects($this->any())
-      ->method('createInstance')
-      ->will($this->returnValue($this->createMock(TamperInterface::class)));
-
-    // Mock the feed type and let it always return two tampers.
-    $feed_type = $this->createMock(FeedTypeInterface::class);
-    $feed_type->expects($this->any())
-      ->method('getThirdPartySetting')
-      ->with('feeds_tamper', 'tampers')
-      ->will($this->returnValue([
-        'uuid1' => [
-          'uuid' => 'uuid1',
-          'plugin' => 'explode',
-          'separator' => '|',
-          'source' => 'alpha',
-          'description' => 'Explode with pipe character',
-        ],
-        'uuid2' => [
-          'uuid' => 'uuid2',
-          'plugin' => 'convert_case',
-          'operation' => 'strtoupper',
-          'source' => 'beta',
-          'description' => 'Convert all characters to uppercase',
-        ],
-      ]));
-
-    $feed_type->expects($this->any())
-      ->method('getMappingSources')
-      ->will($this->returnValue([
-        'alpha' => [
-          'label' => 'Alpha',
-        ],
-        'beta' => [
-          'label' => 'Beta',
-        ],
-      ]));
-
-    // Instantiate a feeds type tamper meta object.
-    $this->feedTypeTamperMeta = new FeedTypeTamperMeta($uuid_generator, $tamper_manager, $feed_type);
+    $this->feedTypeTamperMeta = $this->createFeedTypeTamperMeta($mapping_sources);
   }
 
   /**
@@ -148,6 +119,88 @@ class FeedTypeTamperMetaTest extends UnitTestCase {
 
     // Assert that one tamper exists in total.
     $this->assertCount(1, $tampers);
+  }
+
+  /**
+   * @covers ::getSourceDefinition
+   */
+  public function testGetSourceDefinition() {
+    // Test labels are in the source definition when we have them.
+    $source = $this->feedTypeTamperMeta->getSourceDefinition();
+    $source_list = $source->getList();
+    $this->assertEquals($source_list['alpha'], 'Alpha');
+    $this->assertEquals($source_list['beta'], 'Beta');
+  }
+
+  /**
+   * @covers ::getSourceDefinition
+   */
+  public function testSourceDefinitionWithBlankLabels() {
+    $mapping_sources = [
+      'alpha' => [],
+      'beta' => [],
+    ];
+
+    $feed_type_tamper_meta = $this->createFeedTypeTamperMeta($mapping_sources);
+
+    // Assert that the source's keys are used as label in the source definition
+    // when the sources do not provide labels.
+    $source = $feed_type_tamper_meta->getSourceDefinition();
+    $source_list = $source->getList();
+    $this->assertEquals($source_list['alpha'], 'alpha');
+    $this->assertEquals($source_list['beta'], 'beta');
+  }
+
+  /**
+   * Creates a new FeedTypeTamperMeta.
+   *
+   * @param array $mapping_sources
+   *   The array which will be returned by FeedType's mappingSources().
+   *
+   * @return Drupal\feeds_tamper\FeedTypeTamperMeta
+   *   The FeedTypeTamperMeta object used for testing.
+   */
+  public function createFeedTypeTamperMeta(array $mapping_sources) {
+    // Mock the UUID generator and let it always return 'uuid3'.
+    $uuid_generator = $this->createMock(UuidInterface::class);
+    $uuid_generator->expects($this->any())
+      ->method('generate')
+      ->will($this->returnValue('uuid3'));
+
+    // Get the tamper manager.
+    $tamper_manager = $this->createMock(TamperManagerInterface::class);
+    $tamper_manager->expects($this->any())
+      ->method('createInstance')
+      ->will($this->returnValue($this->createMock(TamperInterface::class)));
+
+    // Mock the feed type and let it always return two tampers.
+    $this->feed_type = $this->createMock(FeedTypeInterface::class);
+    $this->feed_type->expects($this->any())
+      ->method('getThirdPartySetting')
+      ->with('feeds_tamper', 'tampers')
+      ->will($this->returnValue([
+        'uuid1' => [
+          'uuid' => 'uuid1',
+          'plugin' => 'explode',
+          'separator' => '|',
+          'source' => 'alpha',
+          'description' => 'Explode with pipe character',
+        ],
+        'uuid2' => [
+          'uuid' => 'uuid2',
+          'plugin' => 'convert_case',
+          'operation' => 'strtoupper',
+          'source' => 'beta',
+          'description' => 'Convert all characters to uppercase',
+        ],
+      ]));
+
+    $this->feed_type->expects($this->any())
+      ->method('getMappingSources')
+      ->will($this->returnValue($mapping_sources));
+
+    // Instantiate a feeds type tamper meta object.
+    return new FeedTypeTamperMeta($uuid_generator, $tamper_manager, $this->feed_type);
   }
 
 }

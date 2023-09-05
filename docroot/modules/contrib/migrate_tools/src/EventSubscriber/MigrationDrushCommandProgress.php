@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools\EventSubscriber;
 
 use Drupal\migrate\Event\MigrateEvents;
@@ -14,12 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MigrationDrushCommandProgress implements EventSubscriberInterface {
 
-  /**
-   * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
+  protected LoggerInterface $logger;
+  protected ?ProgressBar $symfonyProgressBar = NULL;
 
   /**
    * MigrationDrushCommandProgress constructor.
@@ -32,16 +30,9 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
   }
 
   /**
-   * The progress bar.
-   *
-   * @var \Symfony\Component\Console\Helper\ProgressBar
-   */
-  protected $symfonyProgressBar;
-
-  /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = [];
     $events[MigrateEvents::POST_ROW_SAVE][] = ['updateProgressBar', -10];
     $events[MigrateEvents::MAP_DELETE][] = ['updateProgressBar', -10];
@@ -59,8 +50,10 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
    *   The output.
    * @param \Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration.
+   * @param array $options
+   *   Additional options of the command.
    */
-  public function initializeProgress(OutputInterface $output, MigrationInterface $migration) {
+  public function initializeProgress(OutputInterface $output, MigrationInterface $migration, array $options = []): void {
     // Don't display progress bar if explicitly disabled.
     if (!empty($migration->skipProgressBar)) {
       return;
@@ -73,7 +66,12 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
     try {
       // Clone so that any generators aren't initialized prematurely.
       $source = clone $migration->getSourcePlugin();
-      $this->symfonyProgressBar = new ProgressBar($output, $source->count());
+      $count = (int) $source->count();
+      // In case the --limit option is set, reduce the count.
+      if (array_key_exists('limit', $options) && $options['limit'] > 0 && $options['limit'] < $count) {
+        $count = (int) $options['limit'];
+      }
+      $this->symfonyProgressBar = new ProgressBar($output, $count);
     }
     catch (\Exception $exception) {
       if (!empty($migration->continueOnFailure)) {
@@ -88,7 +86,7 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
   /**
    * Event callback for advancing the progress bar.
    */
-  public function updateProgressBar() {
+  public function updateProgressBar(): void {
     if ($this->isProgressBar()) {
       $this->symfonyProgressBar->advance();
     }
@@ -97,7 +95,7 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
   /**
    * Event callback for removing the progress bar after operation is finished.
    */
-  public function clearProgress() {
+  public function clearProgress(): void {
     if ($this->isProgressBar()) {
       $this->symfonyProgressBar->clear();
     }
@@ -109,10 +107,10 @@ class MigrationDrushCommandProgress implements EventSubscriberInterface {
    * @return bool
    *   TRUE if a progress bar should be displayed, FALSE otherwise.
    */
-  protected function isProgressBar() {
+  protected function isProgressBar(): bool {
     // Can't do anything if the progress bar is not initialised; this probably
-    // means we're not running as a Drush command and so we should do nothing.
-    if (!$this->symfonyProgressBar) {
+    // means we're not running as a Drush command, therefore do nothing.
+    if ($this->symfonyProgressBar === NULL) {
       return FALSE;
     }
     return TRUE;

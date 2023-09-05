@@ -18,12 +18,12 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_locale');
+  protected static $modules = array('tmgmt_locale');
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->langcode = 'de';
     $this->context = 'default';
@@ -31,7 +31,8 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
     \Drupal::service('router.builder')->rebuild();
     $this->installSchema('locale', array('locales_source', 'locales_target'));
     $file = new \stdClass();
-    $file->uri =  \Drupal::service('file_system')->realpath(drupal_get_path('module', 'tmgmt_locale') . '/tests/test.xx.po');
+    $npath = \Drupal::service('extension.list.module')->getPath('tmgmt_locale');
+    $file->uri =  \Drupal::service('file_system')->realpath($npath . '/tests/test.xx.po');
     $file->langcode = $this->langcode;
     Gettext::fileToDatabase($file, array());
     $this->addLanguage('es');
@@ -54,9 +55,9 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
     $item1 = $job->addItem('locale', 'default', $locale_object->lid);
 
     // Check the structure of the imported data.
-    $this->assertEqual($item1->getItemId(), $locale_object->lid, 'Locale Strings object correctly saved');
-    $this->assertEqual('Locale', $item1->getSourceType());
-    $this->assertEqual('Hello World', $item1->getSourceLabel());
+    $this->assertEquals($locale_object->lid, $item1->getItemId(), 'Locale Strings object correctly saved');
+    $this->assertEquals('Locale', $item1->getSourceType());
+    $this->assertEquals('Hello World', $item1->getSourceLabel());
     $job->requestTranslation();
 
     foreach ($job->getItems() as $item) {
@@ -79,8 +80,8 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
     $job->save();
 
     $item1 = $job->addItem('locale', 'default', $locale_object->lid);
-    $this->assertEqual('Locale', $item1->getSourceType());
-    $this->assertEqual($expected_translation, $item1->getSourceLabel());
+    $this->assertEquals('Locale', $item1->getSourceType());
+    $this->assertEquals($expected_translation, $item1->getSourceLabel());
     $job->requestTranslation();
 
     foreach ($job->getItems() as $item) {
@@ -117,7 +118,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
     $job->addItem('locale', 'default', $locale_object->lid);
 
     $data = $job->getData();
-    $this->assertEqual($data[1]['singular']['#text'], 'de translation');
+    $this->assertEquals('de translation', $data[1]['singular']['#text']);
 
     // Create new job item with a source language for which the translation
     // does not exit.
@@ -130,7 +131,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
     catch (\Exception $e) {
       $languages = \Drupal::languageManager()->getLanguages();
       // @todo Job item id missing because it is not saved yet.
-      $this->assertEqual(t('Unable to load %language translation for the locale %id',
+      $this->assertEquals(t('Unable to load %language translation for the locale %id',
         array('%language' => $languages['es']->getName(), '%id' => $locale_object->lid)), $e->getMessage());
     }
   }
@@ -157,7 +158,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
       20 => array('string' => '%to'),
       27 => array('string' => '!esc_aped'),
     );
-    $this->assertEqual($data['singular']['#escape'], $expected_escape);
+    $this->assertEquals($expected_escape, $data['singular']['#escape']);
 
     // Invalid patterns that should be ignored.
     $lid = \Drupal::database()->insert('locales_source')
@@ -193,7 +194,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
       $this->fail('Job item add with an inexistant locale.');
     }
     catch (\Exception $e) {
-      $this->pass('Exception thrown when trying to translate non-existing locale string');
+      // Exception thrown when trying to translate non-existing locale string.
     }
 
     // Try to translate a source string without translation from german to
@@ -214,7 +215,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
       $this->fail('Job item add with an non-existing locale did not fail.');
     }
     catch (\Exception $e) {
-      $this->pass('Job item add with an non-existing locale did fail.');
+      // Job item add with an non-existing locale did fail.
     }
   }
 
@@ -233,7 +234,7 @@ class LocaleSourceTest extends TMGMTKernelTestBase {
       ':lid' => $lid,
       ':language' => $target_langcode
     ))->fetch();
-    $this->assertEqual($actual_translation->translation, $expected_translation);
-    $this->assertEqual($actual_translation->customized, LOCALE_CUSTOMIZED);
+    $this->assertEquals($expected_translation, $actual_translation->translation);
+    $this->assertEquals(LOCALE_CUSTOMIZED, $actual_translation->customized);
   }
 }

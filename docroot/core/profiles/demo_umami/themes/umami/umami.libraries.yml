@@ -25,6 +25,7 @@ global:
       css/components/fields/recipe-instruction.css: {}
       css/components/fields/summary.css: {}
       css/components/forms/buttons.css: {}
+      css/components/forms/container-inline.module.css: {}
       css/components/views/promoted-items.css: {}
       css/components/views/frontpage.css: {}
       css/components/navigation/menu-footer/menu-footer.css: {}
@@ -39,6 +40,7 @@ global:
       css/components/regions/header/header.css: {}
       css/components/regions/highlighted/highlighted.css: {}
       css/components/regions/pre-header/pre-header.css: {}
+      css/components/regions/tabs/tabs.css: {}
       css/components/toolbar/toolbar.css: {}
       css/components/layout_builder/layout-builder.css: {}
     layout:
@@ -76,25 +78,11 @@ two-columns:
     layout:
       css/layout/layout-2-col.css: {}
 
-webfonts-open-sans:
-  remote: https://fonts.google.com
-  license:
-    name: Apache License, Version 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-    gpl-compatible: false
+user:
+  version: VERSION
   css:
-    theme:
-      'https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i': { type: external, minified: true }
-
-webfonts-scope-one:
-  remote: https://fonts.google.com
-  license:
-    name: SIL Open Font License, Version 1.1
-    url: http://scripts.sil.org/OFL_web
-    gpl-compatible: false
-  css:
-    theme:
-      'https://fonts.googleapis.com/css?family=Scope+One': { type: external, minified: true }
+    component:
+      css/components/user/user.css: { weight: -10 }
 
 view-mode-card:
   css:
@@ -121,15 +109,21 @@ view-mode-card-common-alt:
 
 demo-umami-tour:
   css:
-   theme:
+    theme:
       css/components/tour/tour.theme.css: {}
   dependencies:
-    - seven/tour-styling
+    - claro/tour-styling
 
 oneplusfourgrid_section:
   css:
     theme:
       layouts/oneplusfourgrid_section/oneplusfourgrid_section.css: {}
+
+filter:
+  version: VERSION
+  css:
+    component:
+      css/theme/filter.admin.css: {}
 
 classy.base:
   version: VERSION
@@ -189,12 +183,6 @@ classy.forum:
     component:
       css/classy/components/forum.css: { weight: -10 }
 
-classy.image-widget:
-  version: VERSION
-  css:
-    component:
-      css/classy/components/image-widget.css: {}
-
 classy.indented:
   version: VERSION
   css:
@@ -236,8 +224,8 @@ classy.search-results:
     component:
       css/classy/components/search-results.css: {}
 
-classy.user:
+drupal.node.preview:
   version: VERSION
   css:
-    component:
-      css/classy/components/user.css: { weight: -10 }
+    theme:
+      css/components/content/node-preview.css: {}

@@ -17,10 +17,11 @@ use Drupal\menu_per_role\Form\MenuPerRoleAdminSettings;
 /**
  * Implements hook_help().
  */
-function menu_per_role_help($route_name, RouteMatchInterface $route_match) {
+function menu_per_role_help(string $route_name, RouteMatchInterface $route_match) : string {
+  $output = '';
+
   switch ($route_name) {
     case 'help.page.menu_per_role':
-      $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('The Menu Per Role module allows you to restrict access of menu items per roles.') . '</p>';
       $output .= '<h3>' . t('Limitation') . '</h3>';
@@ -28,8 +29,9 @@ function menu_per_role_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<h3>' . t('Configuration') . '</h3>';
       $output .= '<p>' . t('Just activate the Menu Per Role module and edit a menu item as usual. There will be one or two fieldsets, depending on the configuration of the module, that allows you to restrict access by role.') . '</p>';
       $output .= '<p>' . t("If you don't check any roles the default access permissions will be kept. Otherwise the module will additionally restrict access to the chosen user roles.") . '</p>';
-      return $output;
   }
+
+  return $output;
 }
 
 /**
@@ -37,7 +39,7 @@ function menu_per_role_help($route_name, RouteMatchInterface $route_match) {
  *
  * Adds two fields to menu_link_content, so access restrictions can be set.
  */
-function menu_per_role_entity_base_field_info(EntityTypeInterface $entity_type) {
+function menu_per_role_entity_base_field_info(EntityTypeInterface $entity_type) : array {
   $fields = [];
 
   if ($entity_type->id() != 'menu_link_content') {
@@ -74,7 +76,7 @@ function menu_per_role_entity_base_field_info(EntityTypeInterface $entity_type) 
  *
  * Alter menu_link_content fields to hide extra fields on content.
  */
-function menu_per_role_form_menu_link_content_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function menu_per_role_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, string $form_id) : void {
   $config = \Drupal::config('menu_per_role.settings');
 
   // Get config properties.
@@ -96,7 +98,7 @@ function menu_per_role_form_menu_link_content_form_alter(&$form, FormStateInterf
           // Nodes routes will contain a 'node' with 'nid' value.
           if ($hide_on_content_mode == MenuPerRoleAdminSettings::MODE_DISPLAY_ON_CONTENT_NO_NODE_ACCESS) {
             // For the existence of any hook_node_grants() implementations.
-            $is_content = !empty(\Drupal::moduleHandler()->getImplementations('node_grants'));
+            $is_content = \Drupal::moduleHandler()->hasImplementations('node_grants');
           }
           // If false, then check if the setting is display never.
           $is_content = $is_content || $hide_on_content_mode == MenuPerRoleAdminSettings::MODE_DISPLAY_ON_CONTENT_NEVER;

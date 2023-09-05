@@ -5,6 +5,7 @@
  * Source plugin for the Translation Management system that handles entities.
  */
 
+use Drupal\Component\Uuid\Uuid;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +19,7 @@ use Drupal\tmgmt_content\LinkFieldProcessor;
 use Drupal\tmgmt_content\MetatagsFieldProcessor;
 use Drupal\tmgmt_content\PathFieldProcessor;
 use Drupal\tmgmt_content\Plugin\tmgmt\Source\ContentEntitySource;
+use Drupal\workflows\Entity\Workflow;
 
 /**
  * Implements hook_tmgmt_source_suggestions().
@@ -44,6 +46,10 @@ function tmgmt_content_tmgmt_source_suggestions(array $items, JobInterface $job)
 
       if (!empty($menu_items)) {
         foreach ($menu_items as $menu_item) {
+          // Skip if the item has no valid UUID.
+          if (!Uuid::isValid($menu_item->getDerivativeId())) {
+            continue;
+          }
           /** @var \Drupal\menu_link_content\MenuLinkContentInterface $target */
           $target = \Drupal::service('entity.repository')->loadEntityByUuid($menu_item->getBaseId(), $menu_item->getDerivativeId());
           if ($target->hasTranslation($job->getSourceLangcode())) {
@@ -101,7 +107,7 @@ function tmgmt_content_tmgmt_source_suggestions(array $items, JobInterface $job)
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
 function tmgmt_content_form_tmgmt_settings_form_alter(array &$form, FormStateInterface $form_state) {
-  module_load_include('inc', 'views', 'views.views');
+  \Drupal::moduleHandler()->loadInclude('views', 'inc', 'views.views');
   $entity_types = \Drupal::entitytypeManager()->getDefinitions();
 
   $form['content'] = array(
@@ -228,6 +234,34 @@ function tmgmt_content_form_tmgmt_settings_form_alter(array &$form, FormStateInt
     );
   }
 
+  if (\Drupal::moduleHandler()->moduleExists('content_moderation')) {
+    $form['workflows'] = [
+      '#type' => 'details',
+      '#title' => t('Default moderation states'),
+      '#description' => t('Default moderation states for each workflow used in translations when Content Moderation is enabled.'),
+      '#open' => TRUE,
+    ];
+    $form['workflows']['default_moderation_states'] = [
+      '#tree' => TRUE,
+    ];
+    // Loop over all workflows.
+    foreach (Workflow::loadMultipleByType('content_moderation') as $workflow) {
+      $options = [];
+      $states = $workflow->getTypePlugin()->getStates();
+      foreach ($states as $state_id => $state) {
+        $options[$state_id] = $state->label();
+      }
+      // Add a default moderation state select.
+      $form['workflows']['default_moderation_states'][$workflow->id()] = [
+        '#title' => t($workflow->label()),
+        '#type' => 'select',
+        '#options' => $options,
+        '#default_value' => \Drupal::config('tmgmt_content.settings')->get('default_moderation_states.' . $workflow->id()),
+        '#empty_option' => '- Same as source -'
+      ];
+    }
+  }
+
   $form['#submit'][] = 'tmgmt_content_settings_submit';
 }
 
@@ -244,6 +278,7 @@ function tmgmt_content_settings_submit(array &$form, FormStateInterface $form_st
 
   \Drupal::configFactory()->getEditable('tmgmt_content.settings')
     ->set('embedded_fields', $embedded_fields)
+    ->set('default_moderation_states', $form_state->getValue('default_moderation_states', []))
     ->save();
 }
 

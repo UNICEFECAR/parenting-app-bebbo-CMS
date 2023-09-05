@@ -129,8 +129,8 @@ class RefinableCalculatedGroupPermissionsTest extends UnitTestCase {
     $this->assertNotFalse($calculated_permissions->getItem(CGPII::SCOPE_GROUP_TYPE, 'bar'), 'Original item that did not conflict was kept.');
     $this->assertNotFalse($calculated_permissions->getItem(CGPII::SCOPE_GROUP_TYPE, 'baz'), 'Incoming item that did not conflict was added.');
     $this->assertSame(['baz', 'bob', 'charlie'], $calculated_permissions->getItem(CGPII::SCOPE_GROUP_TYPE, 'foo')->getPermissions(), 'Permissions were merged properly.');
-    $this->assertSame(['bar', 'foo'], $calculated_permissions->getCacheContexts(), 'Cache contexts were merged properly');
-    $this->assertSame(['bar', 'foo'], $calculated_permissions->getCacheTags(), 'Cache tags were merged properly');
+    $this->assertEqualsCanonicalizing(['bar', 'foo'], $calculated_permissions->getCacheContexts(), 'Cache contexts were merged properly');
+    $this->assertEqualsCanonicalizing(['bar', 'foo'], $calculated_permissions->getCacheTags(), 'Cache tags were merged properly');
   }
 
 }

@@ -53,7 +53,7 @@ class SynchronizedGroupPermissionCalculator extends GroupPermissionCalculatorBas
     $group_role_storage = $this->entityTypeManager->getStorage('group_role');
     $roles = $account->getRoles(TRUE);
 
-    foreach ($group_type_storage->getQuery()->execute() as $group_type_id) {
+    foreach ($group_type_storage->getQuery()->accessCheck(FALSE)->execute() as $group_type_id) {
       $permission_sets = [];
 
       $group_role_ids = [];

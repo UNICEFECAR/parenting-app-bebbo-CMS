@@ -118,7 +118,6 @@ class FastlyBackend extends BackendBase implements BackendInterface {
     $request_opt = $this->fastlyRequestOpt();
     $request_opt['verify'] = FALSE;
     unset($request_opt['headers']['Accept']);
-    unset($request_opt['headers']['Fastly-Key']);
 
     // Iterate over each URL and attempt to purge it.
     foreach ($invalidations as $invalidation) {

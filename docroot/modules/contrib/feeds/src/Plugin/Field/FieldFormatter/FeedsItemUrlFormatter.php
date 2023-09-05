@@ -6,7 +6,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\feeds\FeedsItemInterface;
-use InvalidArgumentException;
 
 /**
  * Plugin implementation of the 'feeds_item_url' formatter.
@@ -74,7 +73,7 @@ class FeedsItemUrlFormatter extends FeedsItemFormatterBase {
         $url = $this->buildUrl($item);
         $element[$delta] = $this->generateLink($url);
       }
-      catch (InvalidArgumentException $e) {
+      catch (\InvalidArgumentException $e) {
         // Value is not an url, continue to next item.
         continue;
       }

@@ -26,15 +26,17 @@ class CustomLanguageManager {
   // All custom languages from languagefield.
   const LANGUAGEFIELD_LANGUAGES_CUSTOM = 12;
 
-  // const LANGUAGEFIELD_LANGUAGES_ENABLED = 13; // disabled languages are no more in D8.
-
   /**
    * The list of Custom languages.
+   *
+   * @var array
    */
   protected static $customLanguages;
 
   /**
    * The unique manager.
+   *
+   * @var CustomLanguageManager
    */
   protected static $customLanguageManager;
 
@@ -74,7 +76,7 @@ class CustomLanguageManager {
       $custom_language = CustomLanguage::create([
         'id' => $langcode,
         'label' => $custom_languages[$langcode][0],
-        'direction' => isset($custom_languages[$langcode][2]) ? $custom_languages[$langcode][2] : ConfigurableLanguage::DIRECTION_LTR,
+        'direction' => isset($custom_languages[$langcode][2]) ? $custom_languages[$langcode][2] : LanguageInterface::DIRECTION_LTR,
       ]);
       return $custom_language;
     }
@@ -132,7 +134,7 @@ class CustomLanguageManager {
    * @return array|\Drupal\Core\Language\LanguageInterface[]
    *   Array or language interface.
    */
-  public static function allowed_values(array $settings) {
+  public static function allowedValues(array $settings) {
     $languages = [];
     $subsets = $settings['language_range'];
 
@@ -144,32 +146,30 @@ class CustomLanguageManager {
 
       switch ($subset) {
         case LanguageInterface::STATE_CONFIGURABLE:
-        case LanguageInterface::STATE_LOCKED:
         case LanguageInterface::STATE_ALL:
           $subsettable_languages = \Drupal::languageManager()
             ->getLanguages($subset);
           // Convert to $langcode => $name array.
           foreach ($subsettable_languages as $langcode => $language) {
-            $subsettable_languages[$langcode] = $language->isLocked() ? t('- @name -', ['@name' => $language->getName()]) : $language->getName();
+            if (!$language->isLocked()) {
+              $subsettable_languages[$langcode] = $language->getName();
+            }
           }
           break;
 
-        /*
-         * The following values are copied from
-         * LanguageConfiguration::getDefaultOptions()
-         * The following evaluations are copied from
-         * function language_get_default_langcode()
-         * LanguageInterface::LANGCODE_SITE_DEFAULT =>
-         * t("Site's default language", array('@language' =>
-         * \Drupal::languageManager()->getDefaultLanguage()->name)),
-         * 'current_interface' => t('Current interface language'),
-         * 'authors_default' => t("Author's preferred language"),
-         */
-
-        case LanguageInterface::LANGCODE_NOT_SPECIFIED:
-          $subsettable_languages = [LanguageInterface::LANGCODE_NOT_SPECIFIED => 'Language neutral'];
+        case LanguageInterface::STATE_LOCKED:
+          $subsettable_languages = \Drupal::languageManager()
+            ->getLanguages($subset);
+          foreach ($subsettable_languages as $langcode => $language) {
+            // @todo Fix/test LanguageInterface::STATE_LOCKED for D8-10,
+            // for both standard and custom languages.
+            if ($language->isLocked()) {
+              $subsettable_languages[$langcode] = t('- @name -', ['@name' => $language->getName()]);
+            }
+          }
           break;
 
+        case LanguageInterface::LANGCODE_NOT_SPECIFIED:
         case CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_CUSTOM:
         case LanguageInterface::LANGCODE_SITE_DEFAULT:
         case 'current_interface':
@@ -177,11 +177,12 @@ class CustomLanguageManager {
           $subsettable_languages = self::getLanguageConfigurationOptions($subset);
           break;
 
-        case CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_PREDEFINED: // 'All predefined languages'
+        case CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_PREDEFINED:
+          // 'All predefined languages'.
           $standard_languages = \Drupal::languageManager()
             ->getStandardLanguageList();
           foreach ($standard_languages as $langcode => $language_names) {
-            $subsettable_languages[$langcode] = $language_names[0];
+            $subsettable_languages[$langcode] = t($language_names[0]);
           }
           asort($subsettable_languages);
 
@@ -246,17 +247,7 @@ class CustomLanguageManager {
   /**
    * Helper function to get special languages.
    *
-   * The following values are copied from
-   * LanguageConfiguration::getDefaultOptions()
-   * The following evaluations are
-   * copied from function language_get_default_langcode()
-   * - LanguageInterface::LANGCODE_SITE_DEFAULT => t("Site's default language",
-   * array('@language' =>
-   * \Drupal::languageManager()->getDefaultLanguage()->name)),
-   * - 'current_interface' => t('Current interface language'),
-   * - 'authors_default' => t("Author's preferred language"),
-   *
-   * @param string $code
+   * @param string $subset
    *   Formatting hint.
    *
    * @return array
@@ -265,31 +256,42 @@ class CustomLanguageManager {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  private static function getLanguageConfigurationOptions($code) {
+  private static function getLanguageConfigurationOptions($subset) {
     $values = [];
 
-    switch ($code) {
+    switch ($subset) {
+      case LanguageInterface::LANGCODE_NOT_SPECIFIED:
+        $values = [LanguageInterface::LANGCODE_NOT_SPECIFIED => t('Language neutral')];
+        break;
+
       case LanguageInterface::LANGCODE_SITE_DEFAULT:
+        // Copied from function language_get_default_langcode(),
+        // and from function LanguageConfiguration::getDefaultOptions().
         $values = [
-          LanguageInterface::LANGCODE_SITE_DEFAULT => t("Site's default language", [
-            '@language' => \Drupal::languageManager()
+          LanguageInterface::LANGCODE_SITE_DEFAULT => t("Site's default language (@language)", [
+            '@language' => t(\Drupal::languageManager()
               ->getDefaultLanguage()
-              ->getName(),
+              ->getName()
+            ),
           ]),
         ];
         break;
 
       case 'current_interface':
+        // Copied from function language_get_default_langcode(),
+        // and from function LanguageConfiguration::getDefaultOptions().
         $values = ['current_interface' => t('Current interface language')];
         break;
 
       case 'authors_default':
+        // Copied from function language_get_default_langcode(),
+        // and from function LanguageConfiguration::getDefaultOptions().
         $values = ['authors_default' => t("Author's preferred language")];
         break;
 
       case CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_CUSTOM:
         foreach (CustomLanguageManager::getCustomLanguages() as $key => $labels) {
-          $values[$key] = $labels->label();
+          $values[$key] = t($labels->label());
         }
         break;
     }

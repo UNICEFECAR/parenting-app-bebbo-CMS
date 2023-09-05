@@ -110,7 +110,7 @@ class DatabaseBackend implements CacheBackendInterface {
     // ::select() is a much smaller proportion of the request.
     $result = [];
     try {
-      $result = $this->connection->query('SELECT cid, data, created, expire, serialized, tags, checksum FROM {' . $this->connection->escapeTable($this->bin) . '} WHERE cid IN ( :cids[] ) ORDER BY cid', [':cids[]' => array_keys($cid_mapping)]);
+      $result = $this->connection->query('SELECT [cid], [data], [created], [expire], [serialized], [tags], [checksum] FROM {' . $this->connection->escapeTable($this->bin) . '} WHERE [cid] IN ( :cids[] ) ORDER BY [cid]', [':cids[]' => array_keys($cid_mapping)]);
     }
     catch (\Exception $e) {
       // Nothing to do.
@@ -153,7 +153,7 @@ class DatabaseBackend implements CacheBackendInterface {
     // Check expire time.
     $cache->valid = $cache->expire == Cache::PERMANENT || $cache->expire >= REQUEST_TIME;
 
-    // Check if invalidateTags() has been called with any of the items's tags.
+    // Check if invalidateTags() has been called with any of the item's tags.
     if (!$this->checksumProvider->isValid($cache->checksum, $cache->tags)) {
       $cache->valid = FALSE;
     }
@@ -370,7 +370,7 @@ class DatabaseBackend implements CacheBackendInterface {
         $first_invalid_create_time = $this->connection->select($this->bin)
           ->fields($this->bin, ['created'])
           ->orderBy("{$this->bin}.created", 'DESC')
-          ->range($this->maxRows, $this->maxRows + 1)
+          ->range($this->maxRows, 1)
           ->execute()
           ->fetchField();
 

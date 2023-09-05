@@ -6,6 +6,7 @@ use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\entity_test\Entity\EntityTestRev;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 
 /**
  * Test sending of notifications for moderation state changes.
@@ -17,11 +18,12 @@ class NotificationsTest extends KernelTestBase {
   use AssertMailTrait;
   use ContentModerationNotificationCreateTrait;
   use ContentModerationNotificationTestTrait;
+  use UserCreationTrait;
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'content_moderation',
     'content_moderation_notifications',
     'content_moderation_notifications_test',
@@ -36,7 +38,7 @@ class NotificationsTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp():void {
     parent::setUp();
 
     $this->installEntitySchema('entity_test_rev');
@@ -49,6 +51,11 @@ class NotificationsTest extends KernelTestBase {
 
     // Attach workflow to entity test.
     $this->enableModeration();
+
+    // Create the User entity for UID 1. This is necessary for the getOwner()
+    // method to work as expected (which gets called once we start using the
+    // 'author' flag in the notification.
+    $this->setUpCurrentUser();
   }
 
   /**
@@ -121,6 +128,7 @@ class NotificationsTest extends KernelTestBase {
     $this->assertBccRecipients('altered@example.com,foo' . $entity->id() . '@example.com');
     $this->assertMail('id', 'content_moderation_notifications_content_moderation_notification');
     $this->assertMail('subject', PlainTextOutput::renderFromHtml($notification->getSubject()));
+    $this->assertCount(4, $this->getMails());
 
     // Send notication to the site email address if settings disabled.
     $notification->set('site_mail', FALSE)->save();
@@ -132,6 +140,27 @@ class NotificationsTest extends KernelTestBase {
     $this->assertBccRecipients('altered@example.com,foo' . $entity->id() . '@example.com');
     $this->assertMail('id', 'content_moderation_notifications_content_moderation_notification');
     $this->assertMail('subject', PlainTextOutput::renderFromHtml($notification->getSubject()));
+    $this->assertCount(5, $this->getMails());
+
+    // Turn off the alter hook again.
+    \Drupal::state()->set('content_moderation_notifications_test.alter', FALSE);
+    // Enable the send-to-author setting and clear out the custom ad-hoc emails.
+    $notification->set('author', TRUE)->set('emails', '')->save();
+    $entity = \Drupal::entityTypeManager()->getStorage('entity_test_rev')->loadUnchanged($entity->id());
+    $entity->moderation_state = 'published';
+    $entity->save();
+    $owner = $entity->getOwner();
+    $this->assertMail('from', 'admin@example.com');
+    $this->assertMail('to', 'admin@example.com');
+    $this->assertBccRecipients($owner->getEmail());
+    $this->assertCount(6, $this->getMails());
+
+    // Block the $owner user and try again.
+    $owner->block()->save();
+    $entity = \Drupal::entityTypeManager()->getStorage('entity_test_rev')->loadUnchanged($entity->id());
+    $entity->moderation_state = 'published';
+    $entity->save();
+    $this->assertCount(6, $this->getMails());
   }
 
   /**

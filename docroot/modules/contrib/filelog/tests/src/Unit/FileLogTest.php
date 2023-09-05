@@ -5,6 +5,7 @@ namespace Drupal\Tests\filelog\Unit;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\FileSecurity\FileSecurity;
 use Drupal\Core\Logger\LogMessageParser;
+use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\filelog\LogFileManager;
@@ -25,28 +26,21 @@ class FileLogTest extends FileLogTestBase {
    *
    * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * The logger.log_message_parser service.
    *
    * @var \Drupal\Core\Logger\LogMessageParserInterface
    */
-  protected $logMessageParser;
+  protected LogMessageParserInterface $logMessageParser;
 
   /**
    * A mock of the datetime.time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected $time;
-
-  /**
-   * The virtual file-system.
-   *
-   * @var \org\bovigo\vfs\vfsStreamDirectory
-   */
-  protected $virtualFileSystem;
+  protected TimeInterface $time;
 
   /**
    * {@inheritdoc}

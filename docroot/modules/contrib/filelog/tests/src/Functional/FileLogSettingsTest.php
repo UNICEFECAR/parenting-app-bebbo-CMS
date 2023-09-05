@@ -4,6 +4,7 @@ namespace Drupal\Tests\filelog\Functional;
 
 use Drupal\Component\FileSecurity\FileSecurity;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Test the filelog settings form.
@@ -29,7 +30,7 @@ class FileLogSettingsTest extends BrowserTestBase {
    *
    * @var \Drupal\user\Entity\User
    */
-  private $adminUser;
+  private User $adminUser;
 
   /**
    * {@inheritdoc}

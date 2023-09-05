@@ -11,7 +11,10 @@ use Drupal\Tests\BrowserTestBase;
  */
 class UserRolesAssignmentTest extends BrowserTestBase {
 
-  protected function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
     $admin_user = $this->drupalCreateUser([
       'administer permissions',
@@ -26,29 +29,29 @@ class UserRolesAssignmentTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests that a user can be assigned a role and that the role can be removed
-   * again.
+   * Test that user can be assigned role and that the role can be removed again.
    */
   public function testAssignAndRemoveRole() {
     $rid = $this->drupalCreateRole(['administer users']);
     $account = $this->drupalCreateUser();
 
     // Assign the role to the user.
-    $this->drupalPostForm('user/' . $account->id() . '/edit', ["roles[$rid]" => $rid], t('Save'));
-    $this->assertText(t('The changes have been saved.'));
-    $this->assertFieldChecked('edit-roles-' . $rid, 'Role is assigned.');
+    $this->drupalGet('user/' . $account->id() . '/edit');
+    $this->submitForm(["roles[{$rid}]" => $rid], 'Save');
+    $this->assertSession()->pageTextContains('The changes have been saved.');
+    $this->assertSession()->checkboxChecked('edit-roles-' . $rid);
     $this->userLoadAndCheckRoleAssigned($account, $rid);
 
     // Remove the role from the user.
-    $this->drupalPostForm('user/' . $account->id() . '/edit', ["roles[$rid]" => FALSE], t('Save'));
-    $this->assertText(t('The changes have been saved.'));
-    $this->assertNoFieldChecked('edit-roles-' . $rid, 'Role is removed from user.');
+    $this->drupalGet('user/' . $account->id() . '/edit');
+    $this->submitForm(["roles[{$rid}]" => FALSE], 'Save');
+    $this->assertSession()->pageTextContains('The changes have been saved.');
+    $this->assertSession()->checkboxNotChecked('edit-roles-' . $rid);
     $this->userLoadAndCheckRoleAssigned($account, $rid, FALSE);
   }
 
   /**
-   * Tests that when creating a user the role can be assigned. And that it can
-   * be removed again.
+   * Tests assigning a role at user creation and removing the role.
    */
   public function testCreateUserWithRole() {
     $rid = $this->drupalCreateRole(['administer users']);
@@ -60,19 +63,21 @@ class UserRolesAssignmentTest extends BrowserTestBase {
       'pass[pass2]' => $pass,
       "roles[$rid]" => $rid,
     ];
-    $this->drupalPostForm('admin/people/create', $edit, t('Create new account'));
-    $this->assertText(t('Created a new user account for @name.', ['@name' => $edit['name']]));
+    $this->drupalGet('admin/people/create');
+    $this->submitForm($edit, 'Create new account');
+    $this->assertSession()->pageTextContains('Created a new user account for ' . $edit['name'] . '.');
     // Get the newly added user.
     $account = user_load_by_name($edit['name']);
 
     $this->drupalGet('user/' . $account->id() . '/edit');
-    $this->assertFieldChecked('edit-roles-' . $rid, 'Role is assigned.');
+    $this->assertSession()->checkboxChecked('edit-roles-' . $rid);
     $this->userLoadAndCheckRoleAssigned($account, $rid);
 
     // Remove the role again.
-    $this->drupalPostForm('user/' . $account->id() . '/edit', ["roles[$rid]" => FALSE], t('Save'));
-    $this->assertText(t('The changes have been saved.'));
-    $this->assertNoFieldChecked('edit-roles-' . $rid, 'Role is removed from user.');
+    $this->drupalGet('user/' . $account->id() . '/edit');
+    $this->submitForm(["roles[{$rid}]" => FALSE], 'Save');
+    $this->assertSession()->pageTextContains('The changes have been saved.');
+    $this->assertSession()->checkboxNotChecked('edit-roles-' . $rid);
     $this->userLoadAndCheckRoleAssigned($account, $rid, FALSE);
   }
 

@@ -22,12 +22,12 @@ class FileTranslatorTest extends TMGMTTestBase {
    *
    * @var array
    */
-  static public $modules = array('tmgmt_file', 'tmgmt');
+  protected static $modules = array('tmgmt_file', 'tmgmt');
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     $this->loginAsAdmin();
     $this->addLanguage('de');
@@ -49,7 +49,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     ]);
 
     // Get the source text.
-    $source_text = trim(file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html'));
+    $source_text = trim(file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html'));
 
     // Create the reader instance, it will be used through the tests.
     $reader = new \XMLReader();
@@ -86,10 +86,11 @@ class FileTranslatorTest extends TMGMTTestBase {
     $message = reset($messages);
     $translated_file = 'public://tmgmt_file/translated.xlf';
     $this->createTranslationFile($message->variables->{'@link'}, 'one paragraph', 'one translated paragraph', $translated_file);
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $translated_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
+    $this->submitForm($edit, t('Import'));
     // Reset caches and reload job.
     \Drupal::entityTypeManager()->getStorage('tmgmt_job')->resetCache();
     \Drupal::entityTypeManager()->getStorage('tmgmt_job_item')->resetCache();
@@ -98,7 +99,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     // Do the comparison of the translation text and the source. It must be the
     // same as there was no change done to the translation.
     $item_data = $job->getData(array(1, 'dummy', 'deep_nesting'));
-    $this->assertEqual(trim($item_data[1]['#translation']['#text']), str_replace('one paragraph', 'one translated paragraph', $source_text));
+    $this->assertEquals(str_replace('one paragraph', 'one translated paragraph', $source_text), trim($item_data[1]['#translation']['#text']));
     $job_items = $job->getItems();
     $job_item = array_shift($job_items);
     // Job item must be in review.
@@ -119,10 +120,11 @@ class FileTranslatorTest extends TMGMTTestBase {
     // trigger an error and not import the translation.
     $translated_file = 'public://tmgmt_file/translated.xlf';
     $this->createTranslationFile($message->variables->{'@link'}, '<x id="tjiid2-4" ctype="lb"/>', '', $translated_file);
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $translated_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
+    $this->submitForm($edit, t('Import'));
     \Drupal::entityTypeManager()->getStorage('tmgmt_job')->resetCache();
     \Drupal::entityTypeManager()->getStorage('tmgmt_job_item')->resetCache();
     $job = Job::load($job->id());
@@ -138,7 +140,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     $job->addItem('test_html_source', 'test', '1');
     $job->requestTranslation();
     $targets = $this->getTransUnitsContent($job);
-    $this->assertEqual(trim(html_entity_decode($targets['0']['source'])), $source_text);
+    $this->assertEquals($source_text, trim(html_entity_decode($targets['0']['source'])));
   }
 
   /**
@@ -154,7 +156,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     ]);
 
     // Get the source text.
-    $source_text = trim(file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html'));
+    $source_text = trim(file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html'));
 
     // Create a new job.
     $job = $this->createJob();
@@ -172,7 +174,7 @@ class FileTranslatorTest extends TMGMTTestBase {
 
     $dom = new \DOMDocument();
     $dom->loadXML($xliff);
-    $this->assertTrue($dom->schemaValidate(drupal_get_path('module', 'tmgmt_file') . '/xliff-core-1.2-strict.xsd'));
+    $this->assertTrue($dom->schemaValidate(\Drupal::service('extension.list.module')->getPath('tmgmt_file') . '/xliff-core-1.2-strict.xsd'));
 
     // "Translate" items.
     $xml = simplexml_import_dom($dom);
@@ -181,7 +183,7 @@ class FileTranslatorTest extends TMGMTTestBase {
       foreach ($group->children() as $transunit) {
         if ($transunit->getName() == 'trans-unit') {
           // The target should be empty.
-          $this->assertEqual($transunit->target, '');
+          $this->assertEquals('', $transunit->target);
 
           // Update translations using CDATA.
           $node = dom_import_simplexml($transunit->target);
@@ -198,10 +200,11 @@ class FileTranslatorTest extends TMGMTTestBase {
     $xml->asXML($translated_file);
 
     // Import the file and check translation for the "dummy" item.
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $translated_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
+    $this->submitForm($edit, t('Import'));
 
     // Reset caches and reload job.
     \Drupal::entityTypeManager()->getStorage('tmgmt_job')->resetCache();
@@ -209,7 +212,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     $job = Job::load($job->id());
 
     $item_data = $job->getData(array(1, 'dummy', 'deep_nesting'));
-    $this->assertEqual(trim($item_data[1]['#translation']['#text']), str_replace($source_text, $xml->file['target-language'] . '_' . $source_text, $source_text));
+    $this->assertEquals(str_replace($source_text, $xml->file['target-language'] . '_' . $source_text, $source_text), trim($item_data[1]['#translation']['#text']));
   }
 
   /**
@@ -295,7 +298,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     \Drupal::state()->set('tmgmt.test_source_data', array(
       'dummy' => array(
         'deep_nesting' => array(
-          '#text' => file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html') . ' @id.',
+          '#text' => file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html') . ' @id.',
           '#label' => 'Label of deep nested item @id',
         ),
         '#label' => 'Dummy item',
@@ -324,7 +327,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     $xliff = file_get_contents($download_url);
     $dom = new \DOMDocument();
     $dom->loadXML($xliff);
-    $this->assertTrue($dom->schemaValidate(drupal_get_path('module', 'tmgmt_file') . '/xliff-core-1.2-strict.xsd'));
+    $this->assertTrue($dom->schemaValidate(\Drupal::service('extension.list.module')->getPath('tmgmt_file') . '/xliff-core-1.2-strict.xsd'));
 
     // Build a list of expected note labels.
     $expected_notes = [
@@ -341,9 +344,9 @@ class FileTranslatorTest extends TMGMTTestBase {
       foreach ($group->children() as $transunit) {
         if ($transunit->getName() == 'trans-unit') {
           // The target should contain the source data.
-          $this->assertEqual($transunit->target, $transunit->source);
+          $this->assertEquals($transunit->source, $transunit->target);
           // Assert that notes contain parent and non-parent labels.
-          $this->assertEqual($expected_notes[(string) $transunit['id']], (string) $transunit->note);
+          $this->assertEquals($expected_notes[(string) $transunit['id']], (string) $transunit->note);
           $transunit->target = $xml->file['target-language'] . '_' . (string) $transunit->source;
           // Store the text to allow assertions later on.
           $translated_text[(string) $group['id']][(string) $transunit['id']] = (string) $transunit->target;
@@ -366,11 +369,12 @@ class FileTranslatorTest extends TMGMTTestBase {
     $wrong_xml->file->header->{'phase-group'}->phase['job-id'] = 500;
     $wrong_file = 'public://tmgmt_file/wrong_file.xlf';
     $wrong_xml->asXML($wrong_file);
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $wrong_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
-    $this->assertText(t('Failed to validate file, import aborted.'));
+    $this->submitForm($edit, t('Import'));
+    $this->assertSession()->pageTextContains(t('Failed to validate file, import aborted.'));
 
     // Change the job id to a wrong one and try to import it.
     $wrong_xml = clone $xml;
@@ -387,11 +391,12 @@ class FileTranslatorTest extends TMGMTTestBase {
     $wrong_xml->file->header->{'phase-group'}->phase['job-id'] = $second_job->id();
     $wrong_file = 'public://tmgmt_file/wrong_file.xlf';
     $wrong_xml->asXML($wrong_file);
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $wrong_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
-    $this->assertRaw(t('The imported file job id @file_id does not match the job id @job_id.', array(
+    $this->submitForm($edit, t('Import'));
+    $this->assertSession()->responseContains(t('The imported file job id @file_id does not match the job id @job_id.', array(
       '@file_id' => $second_job->id(),
       '@job_id' => $job->id(),
     )));
@@ -401,11 +406,12 @@ class FileTranslatorTest extends TMGMTTestBase {
     $xml->asXML($translated_file);
 
     // Import the file and accept translation for the "dummy" item.
+    $this->drupalGet($job->toUrl());
     $edit = array(
         'files[file]' => $translated_file,
       );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
-    $this->assertText(t('The translation of @job_item to German is finished and can now be reviewed.', ['@job_item' => $first_item->label()]));
+    $this->submitForm($edit, t('Import'));
+    $this->assertSession()->pageTextContains(t('The translation of @job_item to German is finished and can now be reviewed.', ['@job_item' => $first_item->label()]));
 
     $this->clickLink(t('Review'));
     $this->getSession()->getPage()->pressButton('reviewed-dummy|deep_nesting');
@@ -413,24 +419,25 @@ class FileTranslatorTest extends TMGMTTestBase {
     // Update the translation for "another" item and import.
     $xml->file->body->group[0]->{'trans-unit'}[1]->target = $xml->file->body->group[0]->{'trans-unit'}[1]->target . ' updated';
     $xml->asXML($translated_file);
+    $this->drupalGet($job->toUrl());
     $edit = array(
         'files[file]' => $translated_file,
       );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
+    $this->submitForm($edit, t('Import'));
 
     // At this point we must have the "dummy" item accepted and intact. The
     // "another" item must have updated translation.
-    $this->assertText('Review');
+    $this->assertSession()->pageTextContains('Review');
     $this->drupalGet($first_item->toUrl());
-    $this->assertFieldByName('dummy|deep_nesting[translation]', 'de_' . $first_item_data['dummy][deep_nesting']['#text']);
-    $this->assertFieldByName('another_item[translation]', 'de_' . $first_item_data['another_item']['#text'] . ' updated');
+    $this->assertSession()->fieldValueEquals('dummy|deep_nesting[translation]', 'de_' . $first_item_data['dummy][deep_nesting']['#text']);
+    $this->assertSession()->fieldValueEquals('another_item[translation]', 'de_' . $first_item_data['another_item']['#text'] . ' updated');
 
     // Now finish the import/save as completed process doing another extra
     // import. The extra import will test that a duplicate import of the same
     // file does not break the process.
     $this->importFile($translated_file, $translated_text, $job);
 
-    $this->assertNoText(t('Import translated file'));
+    $this->assertSession()->pageTextNotContains(t('Import translated file'));
 
     // Create a job, assign to the file translator and delete before attaching
     // a file.
@@ -440,7 +447,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     $other_job->delete();
     // Make sure the file of the other job still exists.
     $response = \Drupal::httpClient()->get($download_url);
-    $this->assertEqual(200, $response->getStatusCode());
+    $this->assertEquals(200, $response->getStatusCode());
 
     // Delete the job and then make sure that the file has been deleted.
     $job->delete();
@@ -449,7 +456,7 @@ class FileTranslatorTest extends TMGMTTestBase {
       $this->fail('Expected exception not thrown.');
     }
     catch (RequestException $e) {
-      $this->assertEqual(404, $e->getResponse()->getStatusCode());
+      $this->assertEquals(404, $e->getResponse()->getStatusCode());
     }
   }
 
@@ -482,7 +489,7 @@ class FileTranslatorTest extends TMGMTTestBase {
     $this->clickLink(t('Manage'));
 
     // Assert that the label field is only shown once in page.
-    $this->assertEqual((count($this->xpath('//div[@id="tmgmt-ui-label"]'))), 1);
+    $this->assertCount(1, $this->xpath('//div[@id="tmgmt-ui-label"]'));
 
     $download_url = $message->variables->{'@link'};
     $this->assertFalse((bool) strpos('< a', $download_url));
@@ -490,51 +497,52 @@ class FileTranslatorTest extends TMGMTTestBase {
     // Verify that the URL is served using the private file system and the
     // access checks work.
     $this->assertNotEmpty(preg_match('|system/files|', $download_url));
-    $this->assertResponse(200);
+    $this->assertSession()->statusCodeEquals(200);
 
     $this->drupalLogout();
     // Verify that access is now protected.
     $this->drupalGet($download_url);
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
   }
 
   protected function importFile($translated_file, $translated_text, JobInterface $job) {
     // To test the upload form functionality, navigate to the edit form.
+    $this->drupalGet($job->toUrl());
     $edit = array(
       'files[file]' => $translated_file,
     );
-    $this->drupalPostForm($job->toUrl(), $edit, t('Import'));
+    $this->submitForm($edit, t('Import'));
 
     // Make sure the translations have been imported correctly.
-    $this->assertNoRaw('title="In progress"');
+    $this->assertSession()->responseNotContains('title="In progress"');
     // @todo: Enable this assertion once new releases for views and entity
     // module are out.
-    //$this->assertText(t('Needs review'));
+    //$this->assertSession()->pageTextContains(t('Needs review'));
 
     // Review both items.
     list($item1, $item2) = array_values($job->getItems());
     $this->drupalGet($item1->toUrl());
     foreach ($translated_text[1] as $key => $value) {
-      $this->assertText(Html::escape($value));
+      $this->assertSession()->responseContains(Html::escape($value));
     }
     foreach ($translated_text[2] as $key => $value) {
-      $this->assertNoText(Html::escape($value));
+      $this->assertSession()->responseNotContains(Html::escape($value));
     }
-    $this->drupalPostForm(NULL, array(), t('Save as completed'));
+    $this->submitForm([], t('Save as completed'));
     // Review both items.
     $this->drupalGet($item2->toUrl());
     foreach ($translated_text[1] as $key => $value) {
-      $this->assertNoText(Html::escape($value));
+      $this->assertSession()->responseNotContains(Html::escape($value));
     }
     foreach ($translated_text[2] as $key => $value) {
-      $this->assertText(Html::escape($value));
+      $this->assertSession()->responseContains(Html::escape($value));
     }
-    $this->drupalPostForm(NULL, array(), t('Save as completed'));
+    $this->submitForm([], t('Save as completed'));
     // @todo: Enable this assertion once new releases for views and entity
     // module are out.
-    //$this->assertText(t('Accepted'));
-    $this->assertText(t('Finished'));
-    $this->assertNoRaw('title="Needs review"');
+    //$this->assertSession()->pageTextContains(t('Accepted'));
+    $this->assertSession()->pageTextContains(t('Finished'));
+    $this->assertSession()->responseNotContains('title="Needs review"');
   }
 
   /**

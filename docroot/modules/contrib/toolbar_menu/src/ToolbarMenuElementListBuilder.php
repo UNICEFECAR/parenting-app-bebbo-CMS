@@ -31,7 +31,9 @@ class ToolbarMenuElementListBuilder extends DraggableListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var \Drupal\toolbar_menu\Entity\ToolbarMenuElement $entity */
+    /**
+     * @var \Drupal\toolbar_menu\Entity\ToolbarMenuElement $entity
+     */
     $row['label'] = $entity->label();
     $row['menu']['#markup'] = $entity->loadMenu()->label();
     $row['rewrite_label']['#markup'] = $entity->rewriteLabel() ? $this->t('Yes') : $this->t('No');

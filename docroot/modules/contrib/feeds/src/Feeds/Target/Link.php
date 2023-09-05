@@ -29,6 +29,11 @@ class Link extends FieldTargetBase {
    * {@inheritdoc}
    */
   protected function prepareValue($delta, array &$values) {
+    // If the uri isn't set or isn't a string, we can't work with it.
+    if (!isset($values['uri']) || !is_string($values['uri'])) {
+      return;
+    }
+
     $values['uri'] = trim($values['uri']);
 
     // Support linking to nothing.

@@ -23,7 +23,7 @@ abstract class DateTargetBase extends FieldTargetBase implements ConfigurableTar
    *   has errors.
    */
   protected function convertToDate($value) {
-    $value = trim($value);
+    $value = trim((string) $value);
 
     // This is a year value.
     if (ctype_digit($value) && strlen($value) === 4) {

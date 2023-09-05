@@ -22,7 +22,7 @@ class TestHtmlSource extends TestSource {
     return array(
       'dummy' => array(
         'deep_nesting' => array(
-          '#text' => file_get_contents(drupal_get_path('module', 'tmgmt') . '/tests/testing_html/sample.html'),
+          '#text' => file_get_contents(\Drupal::service('extension.list.module')->getPath('tmgmt') . '/tests/testing_html/sample.html'),
           '#label' => 'Label for job item with type ' . $job_item->getItemType() . ' and id ' . $job_item->getItemId() . '.',
         ),
       ),

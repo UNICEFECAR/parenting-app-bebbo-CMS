@@ -7,11 +7,11 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\feeds\EntityFinderInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\ReferenceNotFoundException;
 use Drupal\feeds\Exception\TargetValidationException;
@@ -40,11 +40,11 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
   protected $entityTypeManager;
 
   /**
-   * The entity repository service.
+   * The Feeds entity finder service.
    *
-   * @var \Drupal\Core\Entity\EntityRepositoryInterface
+   * @var \Drupal\feeds\EntityFinderInterface
    */
-  protected $entityRepository;
+  protected $entityFinder;
 
   /**
    * The transliteration manager.
@@ -71,16 +71,16 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
    *   The plugin definition.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository service.
+   * @param \Drupal\feeds\EntityFinderInterface $entity_finder
+   *   The Feeds entity finder service.
    * @param \Drupal\Component\Transliteration\TransliterationInterface $transliteration
    *   The transliteration manager.
    * @param \Drupal\Core\Config\TypedConfigManagerInterface $typed_config_manager
    *   The manager for managing config schema type plugins.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityRepositoryInterface $entity_repository, TransliterationInterface $transliteration, TypedConfigManagerInterface $typed_config_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFinderInterface $entity_finder, TransliterationInterface $transliteration, TypedConfigManagerInterface $typed_config_manager) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->entityRepository = $entity_repository;
+    $this->entityFinder = $entity_finder;
     $this->transliteration = $transliteration;
     $this->typedConfigManager = $typed_config_manager;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -95,7 +95,7 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('entity.repository'),
+      $container->get('feeds.entity_finder'),
       $container->get('transliteration'),
       $container->get('config.typed')
     );
@@ -131,7 +131,7 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
         // import process more efficient by ignoring items it has already seen.
         // In this case we need to destroy the hash in order to be able to
         // import the reference on a next import.
-        $entity->get('feeds_item')->hash = NULL;
+        $entity->get('feeds_item')->getItemByFeed($feed)->hash = NULL;
         $feed->getState(StateInterface::PROCESS)->setMessage($e->getFormattedMessage(), 'warning', TRUE);
       }
       catch (EmptyFeedException $e) {
@@ -210,7 +210,7 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
       throw new EmptyFeedException();
     }
 
-    if ($target_id = $this->findEntity($values['target_id'], $this->configuration['reference_by'])) {
+    if ($target_id = $this->findEntity($this->configuration['reference_by'], $values['target_id'])) {
       $values['target_id'] = $target_id;
       return;
     }
@@ -224,32 +224,18 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
   /**
    * Searches for an entity by entity key.
    *
-   * @param string $value
-   *   The value to search for.
    * @param string $field
    *   The subfield to search in.
+   * @param string $search
+   *   The value to search for.
    *
    * @return int|bool
    *   The entity id, or false, if not found.
    */
-  protected function findEntity($value, $field) {
-    switch ($field) {
-      case 'uuid':
-        if (NULL !== ($entity = $this->entityRepository->loadEntityByUuid($this->getEntityType(), $value))) {
-          return $entity->id();
-        }
-        break;
-
-      default:
-        $ids = $this->entityTypeManager->getStorage($this->getEntityType())
-          ->getQuery()
-          ->condition($field, $value)
-          ->range(0, 1)
-          ->execute();
-
-        if ($ids) {
-          return reset($ids);
-        }
+  protected function findEntity(string $field, $search) {
+    $ids = $this->entityFinder->findEntities($this->getEntityType(), $field, $search);
+    if ($ids) {
+      return reset($ids);
     }
 
     return FALSE;
@@ -300,7 +286,7 @@ class ConfigEntityReference extends FieldTargetBase implements ConfigurableTarge
     // Hack to find out the target delta.
     foreach ($form_state->getValues() as $key => $value) {
       if (strpos($key, 'target-settings-') === 0) {
-        list(, , $delta) = explode('-', $key);
+        [, , $delta] = explode('-', $key);
         break;
       }
     }

@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains taxonomy_term_title_length.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\taxonomy_term_title_length\TaxonomyTermTitleLength;
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function taxonomy_term_title_length_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type): void {
+  if (!empty($fields['name']) && $entity_type->id() === 'taxonomy_term') {
+    $fields['name']->setSetting('max_length', TaxonomyTermTitleLength::getLength());
+  }
+}

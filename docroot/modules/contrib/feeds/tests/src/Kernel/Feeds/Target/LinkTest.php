@@ -23,7 +23,7 @@ class LinkTest extends FeedsKernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'feeds',
@@ -35,7 +35,7 @@ class LinkTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->createFieldWithStorage('field_link', [
@@ -86,6 +86,9 @@ class LinkTest extends FeedsKernelTestBase {
     $this->assertStringContainsString("field_link.0: The path 'string' is invalid.", (string) $messages[0]);
     $this->assertStringContainsString('The content <em class="placeholder">Another invalid url</em> failed to validate', (string) $messages[1]);
     $this->assertStringContainsString('field_link.0.uri: This value should be of the correct primitive type.', (string) $messages[1]);
+
+    // Clear the logged messages so no failure is reported on tear down.
+    $this->logger->clearMessages();
   }
 
 }

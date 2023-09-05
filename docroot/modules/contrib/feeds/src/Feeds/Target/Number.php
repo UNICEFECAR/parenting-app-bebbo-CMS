@@ -42,7 +42,7 @@ class Number extends FieldTargetBase {
    * {@inheritdoc}
    */
   protected function prepareValue($delta, array &$values) {
-    $values['value'] = trim($values['value']);
+    $values['value'] = is_string($values['value']) ? trim($values['value']) : $values['value'];
 
     if (!is_numeric($values['value'])) {
       $values['value'] = '';

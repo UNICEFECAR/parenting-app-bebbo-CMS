@@ -16,12 +16,12 @@ class ToolbarMenuFunctionalTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['toolbar_menu', 'toolbar'];
+  protected static $modules = ['toolbar_menu', 'toolbar'];
 
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
+  protected $defaultTheme = 'claro';
 
   /**
    * Tests crop type crud pages.
@@ -64,7 +64,8 @@ class ToolbarMenuFunctionalTest extends BrowserTestBase {
       'menu' => $menu_name,
       'rewrite_label' => FALSE,
     ];
-    $this->drupalPostForm('admin/config/user-interface/toolbar-menu/elements/add', $create_toolbar_element, t('Save'));
+    $this->drupalGet('admin/config/user-interface/toolbar-menu/elements/add');
+    $this->submitForm($create_toolbar_element, 'Save');
 
     // Enforce refresh caches.
     drupal_flush_all_caches();
@@ -85,7 +86,8 @@ class ToolbarMenuFunctionalTest extends BrowserTestBase {
     $update_toolbar_element = [
       'rewrite_label' => TRUE,
     ];
-    $this->drupalPostForm('admin/config/user-interface/toolbar-menu/elements/' . $toolbar_id, $update_toolbar_element, t('Save'));
+    $this->drupalGet('admin/config/user-interface/toolbar-menu/elements/' . $toolbar_id);
+    $this->submitForm($update_toolbar_element, 'Save');
 
     $this->drupalGet('<front>');
     $this->assertSession()->responseContains($menu_name, 'Custom menu is viewed in toolbar');

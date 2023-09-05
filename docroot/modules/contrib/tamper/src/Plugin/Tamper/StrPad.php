@@ -89,8 +89,8 @@ class StrPad extends TamperBase {
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
-    if (!is_string($data)) {
-      throw new TamperException('Input should be a string.');
+    if (!is_string($data) && !is_numeric($data)) {
+      throw new TamperException('Input should be a string or numeric.');
     }
 
     return str_pad($data, $this->getSetting(self::SETTING_PAD_LENGTH), $this->getSetting(self::SETTING_PAD_STRING), $this->getSetting(self::SETTING_PAD_TYPE));

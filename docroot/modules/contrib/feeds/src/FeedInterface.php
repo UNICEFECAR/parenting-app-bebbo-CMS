@@ -49,6 +49,9 @@ interface FeedInterface extends ContentEntityInterface, EntityChangedInterface, 
    *
    * @return \Drupal\feeds\FeedTypeInterface
    *   The feed type object.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   *   In case the feed type could not be loaded.
    */
   public function getType();
 
@@ -128,15 +131,6 @@ interface FeedInterface extends ContentEntityInterface, EntityChangedInterface, 
   public function startCronImport();
 
   /**
-   * Start deleting all imported items of a feed via the batch API.
-   *
-   * @throws \Exception
-   *   If processing in background is enabled, the first batch chunk of the
-   *   clear task will be executed on the current page request.
-   */
-  public function startBatchClear();
-
-  /**
    * Imports a raw string.
    *
    * This does not batch. It assumes that the input is small enough to not need
@@ -155,12 +149,45 @@ interface FeedInterface extends ContentEntityInterface, EntityChangedInterface, 
   public function pushImport($raw);
 
   /**
+   * Start deleting all imported items of a feed via the batch API.
+   *
+   * @throws \Exception
+   *   If processing in background is enabled, the first batch chunk of the
+   *   clear task will be executed on the current page request.
+   */
+  public function startBatchClear();
+
+  /**
    * Removes all expired items from a feed via batch api.
    *
    * @throws \Exception
    *   Re-throws any exception that bubbles up.
    */
   public function startBatchExpire();
+
+  /**
+   * Checks if there are still tasks on the feeds queue.
+   *
+   * @return bool
+   *   True if there are still tasks on the queue. False otherwise.
+   */
+  public function hasQueueTasks(): bool;
+
+  /**
+   * Removes all queue tasks for the current feed.
+   */
+  public function clearQueueTasks(): void;
+
+  /**
+   * Checks if there was recent import activity.
+   *
+   * @param int $seconds
+   *   (optional) How far to look back. Defaults to 3600 seconds (one hour).
+   *
+   * @return bool
+   *   True if there was recently progress reported. False otherwise.
+   */
+  public function hasRecentProgress(int $seconds = 3600): bool;
 
   /**
    * Dispatches an entity event.

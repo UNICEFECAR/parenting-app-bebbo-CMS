@@ -30,32 +30,32 @@ class WellKnownController extends ControllerBase {
     $cacheMeta = new CacheableMetadata();
     $cacheMeta->addCacheTags($config->getCacheTags());
 
-    $package_name = $config->get('package_name');
-    if (empty($package_name)) {
-      throw new CacheableNotFoundHttpException($cacheMeta);
-    }
-		
-	$target = ['namespace'=>'android_app','package_name'=>$package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
-	$relation = ['delegate_permission/common.handle_all_urls'];
-    $body[] = [
-      'relation'=>$relation,
-      'target'=>$target,
-    ];
-	
-	 /* Kosovo Details */
+    $body = [];
+    $android_packages = $config->get('android_packages');
+    if (!empty($android_packages)) {
+      foreach ($android_packages as $android_package) {
+           $target = ['namespace'=>'android_app','package_name'=>$package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
+           $relation = ['delegate_permission/common.handle_all_urls'];
+           $item[] = [
+             'relation'=>$relation,
+             'target'=>$target,
+             ];
 
+        $body[] = $item;
+      }
+    }
+    /* Kosovo Details */
     $kosovo_package_name = $config->get('kosovo_package_name');
     if (empty($kosovo_package_name)) {
       throw new CacheableNotFoundHttpException($cacheMeta);
     }
-
     $kosovo_target = ['namespace'=>'android_app','package_name'=>$kosovo_package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),];
     $kosovo_relation = ['delegate_permission/common.handle_all_urls'];
     $body[] = [
       'relation'=>$kosovo_relation,
       'target'=>$kosovo_target,
     ];
-
+ 
     $response = new CacheableJsonResponse(json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 200, [], TRUE);
     $response->addCacheableDependency($cacheMeta);
     return $response;
@@ -79,7 +79,7 @@ class WellKnownController extends ControllerBase {
     if (empty($body)) {
       throw new CacheableNotFoundHttpException($cacheMeta);
     }
-
+    $component_path = explode(PHP_EOL, $config->get('paths'));
     $response = new CacheableResponse($body, 200, ['Content-Type' => 'text/plain']);
     $response->addCacheableDependency($cacheMeta);
     return $response;
@@ -122,65 +122,63 @@ class WellKnownController extends ControllerBase {
     $cacheMeta = new CacheableMetadata();
     $cacheMeta->addCacheTags($config->getCacheTags());
 
-	$appID = $config->get('appID');
+    $appID = $config->get('appID');
     if (empty($appID)) {
       throw new CacheableNotFoundHttpException($cacheMeta);
     }
-	
-	/* UAT app config details */
-	$appID_Test = $config->get('appID_Test');
-	if(!empty($appID_Test)){
-		$app_test_path = explode(PHP_EOL, $config->get('paths_Test'));
-		$prod_details[] =  [
-            'appID' => $appID_Test,
-			'components' => [ [
-				'/' => $app_test_path[0],
-				'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
-			]],
-            'paths' => explode(PHP_EOL, $config->get('paths_Test'))
-          ];
-	}
 
-	/* Prod app config details */
-	$component_path = explode(PHP_EOL, $config->get('paths'));
-	$prod_details[] = [
-            'appID' => $appID,
-			'components' => [ [
-				'/' => $component_path[0],
-				'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
-			]],
-            'paths' => explode(PHP_EOL, $config->get('paths'))
-    ];
-	
-	/* Kosovo app config details */
-	$kosovo_appID_Test = $config->get('kosovo_appID_Test');
-	if(!empty($kosovo_appID_Test)){
-		$kosovo_paths_Test = explode(PHP_EOL, $config->get('kosovo_paths_Test'));
-		$prod_details[] =  [
-            'appID' => $kosovo_appID_Test,
-			'components' => [ [
-				'/' => $kosovo_paths_Test[0],
-				'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
-			]],
-            'paths' => explode(PHP_EOL, $config->get('kosovo_paths_Test'))
-          ];
-	}
-	
-    $kosovo_appID = $config->get('kosovo_appID');
-    if(!empty($kosovo_appID)){
-        $kosovo_paths = explode(PHP_EOL, $config->get('kosovo_paths'));
-        $prod_details[] =  [
-          'appID' => $kosovo_appID,
-          'components' => [ [
-                  '/' => $kosovo_paths[0],
-                  'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
-            ]],
-          'paths' => explode(PHP_EOL, $config->get('kosovo_paths'))
+      /* UAT app config details */
+      $appID_Test = $config->get('appID_Test');
+      if(!empty($appID_Test)){
+              $app_test_path = explode(PHP_EOL, $config->get('paths_Test'));
+              $prod_details[] =  [
+          'appID' => $appID_Test,
+                      'components' => [ [
+                              '/' => $app_test_path[0],
+                              'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+                      ]],
+          'paths' => explode(PHP_EOL, $config->get('paths_Test'))
         ];
-    }
-	
-	
-	
+      }
+
+      /* Prod app config details */
+      $component_path = explode(PHP_EOL, $config->get('paths'));
+      $prod_details[] = [
+          'appID' => $appID,
+                      'components' => [ [
+                              '/' => $component_path[0],
+                              'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+                      ]],
+          'paths' => explode(PHP_EOL, $config->get('paths'))
+        ];
+      
+    	/* Kosovo app config details */
+    	$kosovo_appID_Test = $config->get('kosovo_appID_Test');
+    	if(!empty($kosovo_appID_Test)){
+    		$kosovo_paths_Test = explode(PHP_EOL, $config->get('kosovo_paths_Test'));
+    		$prod_details[] =  [
+                'appID' => $kosovo_appID_Test,
+    			'components' => [ [
+    				'/' => $kosovo_paths_Test[0],
+    				'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+    			]],
+                'paths' => explode(PHP_EOL, $config->get('kosovo_paths_Test'))
+              ];
+    	}
+    	
+      $kosovo_appID = $config->get('kosovo_appID');
+      if(!empty($kosovo_appID)){
+          $kosovo_paths = explode(PHP_EOL, $config->get('kosovo_paths'));
+          $prod_details[] =  [
+            'appID' => $kosovo_appID,
+            'components' => [ [
+                    '/' => $kosovo_paths[0],
+                    'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link"
+              ]],
+            'paths' => explode(PHP_EOL, $config->get('kosovo_paths'))
+          ];
+      }
+    
     $body = [
       'applinks' => [
         'apps' => [],

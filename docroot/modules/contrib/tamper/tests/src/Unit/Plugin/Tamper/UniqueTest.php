@@ -35,7 +35,7 @@ class UniqueTest extends TamperPluginTestBase {
   public function testUniqueWithMultipleValues() {
     $original = ['foo', 'foo', 'bar', 'baz', 'baz'];
     $expected = ['foo', 'bar', 'baz'];
-    $this->assertArrayEquals($expected, $this->plugin->tamper($original));
+    $this->assertEquals($expected, $this->plugin->tamper($original));
   }
 
 }

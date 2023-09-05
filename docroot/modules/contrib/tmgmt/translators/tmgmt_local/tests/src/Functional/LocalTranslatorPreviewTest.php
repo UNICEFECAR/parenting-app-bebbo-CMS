@@ -16,7 +16,7 @@ class LocalTranslatorPreviewTest extends LocalTranslatorTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'tmgmt_content',
   ];
 
@@ -40,17 +40,18 @@ class LocalTranslatorPreviewTest extends LocalTranslatorTestBase {
     // Create another local translator with the required abilities.
     $this->loginAsAdmin($this->localManagerPermissions);
     // Configure language abilities.
+    $this->drupalGet($this->admin_user->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $this->admin_user->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
 
     $this->drupalGet('admin/tmgmt/jobs/' . $job->id());
     $edit = [
       'settings[translator]' => $this->admin_user->id(),
     ];
-    $this->drupalPostForm(NULL, $edit, t('Submit to provider'));
+    $this->submitForm($edit, t('Submit to provider'));
 
     $this->drupalGet('translate');
     $this->clickLink('View');
@@ -61,25 +62,25 @@ class LocalTranslatorPreviewTest extends LocalTranslatorTestBase {
       'title|0|value[translation]' => $translation1 = 'German translation of title',
       'body|0|value[translation][value]' => $translation2 = 'German translation of body',
     );
-    $this->drupalPostForm(NULL, $edit, t('Preview'));
-    $this->assertResponse(200);
-    $this->assertText($translation1);
-    $this->assertText($translation2);
+    $this->submitForm($edit, t('Preview'));
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains($translation1);
+    $this->assertSession()->pageTextContains($translation2);
 
     $this->drupalGet('translate');
     $this->clickLink('View');
     $this->clickLink('Translate');
 
     // Assert source link.
-    $this->assertLink($node->getTitle());
+    $this->assertSession()->linkExists($node->getTitle());
 
     // Test that local translator can access an unpublished node.
     $this->clickLink($node->getTitle());
-    $this->assertText($node->getTitle());
+    $this->assertSession()->pageTextContains($node->getTitle());
 
     $this->drupalGet('admin/tmgmt/items/' . $job_item->id());
     // Check the preliminary state warning appears.
-    $this->assertText('The translations below are in preliminary state and can not be changed.');
+    $this->assertSession()->pageTextContains('The translations below are in preliminary state and can not be changed.');
     // Checking if the 'Save as completed' button is not displayed.
     $elements = $this->xpath('//*[@id="edit-save-as-completed"]');
     $this->assertTrue(empty($elements), "'Save as completed' button does not appear.");
@@ -99,7 +100,7 @@ class LocalTranslatorPreviewTest extends LocalTranslatorTestBase {
     $elements = $this->xpath('//*[@id="edit-title0value-actions-finish-title0value"]');
     $this->assertTrue(empty($elements), "'✓' button does not appear.");
     // Checking translation is readonly.
-    $this->assertRaw('data-drupal-selector="edit-title0value-translation" disabled="disabled"');
+    $this->assertSession()->responseContains('data-drupal-selector="edit-title0value-translation" disabled="disabled"');
   }
 
 }

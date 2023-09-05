@@ -40,7 +40,11 @@ class FeedsQueueBatch extends FeedsBatchBase {
     // Queue all operations now.
     foreach ($this->operations as $operation) {
       $this->queueFactory->get('feeds_feed_refresh:' . $this->feed->bundle())
-        ->createItem([$this->feed, $operation['stage'], $operation['params']]);
+        ->createItem([
+          $this->feed->id(),
+          $operation['stage'],
+          $operation['params'],
+        ]);
     }
   }
 

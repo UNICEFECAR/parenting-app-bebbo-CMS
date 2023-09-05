@@ -1,3 +1,37 @@
+1.10.0 / 2022-03-28
+===================
+
+New features:
+
+* Added support for `symfony/css-selector` 6
+* Added `WebAssert::elementAttributeNotExists`
+
+Removed:
+
+* Removed support for PHP <7.2
+* Removed support for `symfony/css-selector` <4.4
+
+Bug fixes:
+
+* Fixed phpdoc for a bunch of arguments that were not properly marked as nullable
+
+1.9.0 / 2021-10-11
+==================
+
+New features:
+
+* Fixed deprecation warnings on PHP 8.1
+* Improved responsiveness of `Element::waitFor`
+* Allowed selectors and replacements to be registered late
+
+Removed:
+
+* Removed support for PHP 5.3
+
+Testsuite:
+
+* Added CI jobs for PHP 8.0 and 8.1
+
 1.8.1 / 2020-03-11
 ==================
 

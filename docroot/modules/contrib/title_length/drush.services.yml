@@ -1,0 +1,5 @@
+services:
+  title_length.commands:
+    class: Drupal\title_length\Commands\TitleLengthCommands
+    tags:
+      - { name: drush.command }

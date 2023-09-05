@@ -15,7 +15,7 @@ class PasswordTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'feeds',
     'user',
   ];
@@ -37,8 +37,14 @@ class PasswordTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
+
+    // Install Password Compatibility module if it exists.
+    $module_data = $this->container->get('extension.list.module')->reset()->getList();
+    if (isset($module_data['phpass'])) {
+      $this->container->get('module_installer')->install(['phpass']);
+    }
 
     // Create a feed type for importing users with passwords.
     $this->feedType = $this->createFeedTypeForCsv([

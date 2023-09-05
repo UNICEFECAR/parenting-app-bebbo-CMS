@@ -32,7 +32,10 @@ class YamlDiscoveryTest extends UnitTestCase {
     'test_2' => 'test_2_b',
   ];
 
-  protected function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
 
     $base_path = __DIR__ . '/Fixtures';

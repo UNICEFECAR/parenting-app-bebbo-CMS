@@ -3,17 +3,26 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Password\PasswordInterface;
 use Drupal\Core\Password\PhpassHashedPassword;
 use Drupal\feeds\Exception\TargetValidationException;
 use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Target\Password;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Password
  * @group feeds
  */
 class PasswordTest extends FieldTargetTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'password';
 
   /**
    * The password hash service.
@@ -25,8 +34,9 @@ class PasswordTest extends FieldTargetTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     $this->passwordHasher = $this->prophesize(PasswordInterface::class);
+    $this->moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
 
     $container = new ContainerBuilder();
     $container->set('string_translation', $this->getStringTranslationStub());
@@ -34,15 +44,9 @@ class PasswordTest extends FieldTargetTestBase {
   }
 
   /**
-   * Instantiates the FeedsTarget plugin "password".
-   *
-   * @param array $configuration
-   *   (optional) The configuration to pass to the plugin.
-   *
-   * @return \Drupal\feeds\Feeds\Target\Password
-   *   A password target instance.
+   * {@inheritdoc}
    */
-  protected function instantiatePlugin(array $configuration = []) {
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
     $method = $this->getMethod(Password::class, 'prepareTarget')->getClosure();
 
     $configuration += [
@@ -50,7 +54,7 @@ class PasswordTest extends FieldTargetTestBase {
       'target_definition' => $method($this->getMockFieldDefinition()),
     ];
 
-    return new Password($configuration, 'password', [], $this->passwordHasher->reveal());
+    return new Password($configuration, static::$pluginId, [], $this->passwordHasher->reveal(), $this->moduleHandler->reveal());
   }
 
   /**

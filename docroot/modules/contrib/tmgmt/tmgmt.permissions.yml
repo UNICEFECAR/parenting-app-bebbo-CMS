@@ -3,6 +3,9 @@ administer tmgmt:
   restrict access: true
 create translation jobs:
   title: 'Create translation jobs'
+delete translation jobs:
+  title: 'Delete inactive translation jobs'
+  description: 'Allows to delete jobs that have not been submitted or have been aborted.'
 submit translation jobs:
   title: 'Submit translation jobs'
 accept translation jobs:

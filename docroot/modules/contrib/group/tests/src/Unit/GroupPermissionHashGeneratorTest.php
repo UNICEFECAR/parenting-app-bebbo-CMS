@@ -55,7 +55,7 @@ class GroupPermissionHashGeneratorTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     new Settings(['hash_salt' => 'SALT']);
     $private_key = $this->prophesize(PrivateKey::class);

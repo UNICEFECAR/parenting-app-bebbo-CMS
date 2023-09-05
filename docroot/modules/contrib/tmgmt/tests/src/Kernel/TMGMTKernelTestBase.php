@@ -24,12 +24,12 @@ abstract class TMGMTKernelTestBase extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('user', 'system', 'field', 'text', 'entity_test', 'language', 'locale', 'tmgmt', 'tmgmt_test', 'options');
+  protected static $modules = array('user', 'system', 'field', 'text', 'entity_test', 'language', 'locale', 'tmgmt', 'tmgmt_test', 'options');
 
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');
@@ -84,7 +84,7 @@ abstract class TMGMTKernelTestBase extends KernelTestBase {
    */
   protected function createJob($source = 'en', $target = 'de', $uid = 0, array $values = array()) {
     $job = tmgmt_job_create($source, $target, $uid, $values);
-    $this->assertEqual(SAVED_NEW, $job->save());
+    $this->assertEquals(SAVED_NEW, $job->save());
 
     // Assert that the translator was assigned a tid.
     $this->assertTrue($job->id() > 0);
@@ -115,11 +115,11 @@ abstract class TMGMTKernelTestBase extends KernelTestBase {
    *   Expected existing language codes (translations).
    */
   function assertJobItemLangCodes(JobItemInterface $job_item, $expected_source_lang, array $actual_lang_codes) {
-    $this->assertEqual($job_item->getSourceLangCode(), $expected_source_lang);
+    $this->assertEquals($expected_source_lang, $job_item->getSourceLangCode());
     $existing = $job_item->getExistingLangCodes();
     sort($existing);
     sort($actual_lang_codes);
-    $this->assertEqual($existing, $actual_lang_codes);
+    $this->assertEquals($actual_lang_codes, $existing);
   }
 
 }

@@ -29,7 +29,7 @@ class TamperableFeedItemAdapterTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     $this->feedItem = $this->createMock(ItemInterface::class);
     $this->adapter = new TamperableFeedItemAdapter($this->feedItem);
   }
@@ -50,9 +50,10 @@ class TamperableFeedItemAdapterTest extends UnitTestCase {
   public function testGetSourceProperty() {
     $this->feedItem->expects($this->once())
       ->method('get')
-      ->with('foo');
+      ->with('foo')
+      ->willReturn('bar');
 
-    $this->adapter->getSourceProperty('foo');
+    $this->assertEquals('bar', $this->adapter->getSourceProperty('foo'));
   }
 
   /**

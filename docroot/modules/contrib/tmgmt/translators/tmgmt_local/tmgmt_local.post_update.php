@@ -9,6 +9,7 @@ function tmgmt_local_post_update_json(&$sandbox = NULL) {
   $task_item_storage = \Drupal::entityTypeManager()->getStorage('tmgmt_local_task_item');
   if (!isset($sandbox['current_count'])) {
     $query = $task_item_storage->getQuery();
+    $query->accessCheck(FALSE);
     $sandbox['total_count'] = $query->count()->execute();
     $sandbox['current_count'] = 0;
 
@@ -19,6 +20,7 @@ function tmgmt_local_post_update_json(&$sandbox = NULL) {
   }
 
   $query = $task_item_storage->getQuery();
+  $query->accessCheck(FALSE);
   $query->range($sandbox['current_count'], 25);
   $query->sort('tltiid');
   $result = $query->execute();

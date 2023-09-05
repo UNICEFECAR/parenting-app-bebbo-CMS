@@ -17,7 +17,7 @@ abstract class ContentEntityTestBase extends EntityKernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'tmgmt',
     'tmgmt_content',
     'tmgmt_test',
@@ -31,7 +31,7 @@ abstract class ContentEntityTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Add the languages.

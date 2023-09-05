@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Renderer\Entry;
 
@@ -13,6 +9,8 @@ use DOMDocument;
 use DOMElement;
 use Laminas\Feed\Writer;
 use Laminas\Feed\Writer\Renderer;
+
+use function array_key_exists;
 
 class AtomDeleted extends Renderer\AbstractRenderer implements Renderer\RendererInterface
 {
@@ -42,17 +40,15 @@ class AtomDeleted extends Renderer\AbstractRenderer implements Renderer\Renderer
         return $this;
     }
 
+    // phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
     /**
      * Set tombstone comment
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setComment(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         if (! $this->getDataContainer()->getComment()) {
             return;
         }
@@ -66,14 +62,10 @@ class AtomDeleted extends Renderer\AbstractRenderer implements Renderer\Renderer
     /**
      * Set entry authors
      *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
      * @return void
      */
-    // @codingStandardsIgnoreStart
     protected function _setBy(DOMDocument $dom, DOMElement $root)
     {
-        // @codingStandardsIgnoreEnd
         $data = $this->container->getBy();
         if (! $data || empty($data)) {
             return;
@@ -82,19 +74,21 @@ class AtomDeleted extends Renderer\AbstractRenderer implements Renderer\Renderer
         $name   = $this->dom->createElement('name');
         $author->appendChild($name);
         $root->appendChild($author);
-        $text = $dom->createTextNode($data['name']);
+        $text = $dom->createTextNode((string) $data['name']);
         $name->appendChild($text);
         if (array_key_exists('email', $data)) {
             $email = $this->dom->createElement('email');
             $author->appendChild($email);
-            $text = $dom->createTextNode($data['email']);
+            $text = $dom->createTextNode((string) $data['email']);
             $email->appendChild($text);
         }
         if (array_key_exists('uri', $data)) {
             $uri = $this->dom->createElement('uri');
             $author->appendChild($uri);
-            $text = $dom->createTextNode($data['uri']);
+            $text = $dom->createTextNode((string) $data['uri']);
             $uri->appendChild($text);
         }
     }
+
+    // phpcs:enable PSR2.Methods.MethodDeclaration.Underscore
 }

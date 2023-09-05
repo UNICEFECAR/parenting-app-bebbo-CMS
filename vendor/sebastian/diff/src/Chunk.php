@@ -7,35 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 final class Chunk
 {
-    /**
-     * @var int
-     */
-    private $start;
-
-    /**
-     * @var int
-     */
-    private $startRange;
-
-    /**
-     * @var int
-     */
-    private $end;
-
-    /**
-     * @var int
-     */
-    private $endRange;
-
-    /**
-     * @var Line[]
-     */
-    private $lines;
+    private int $start;
+    private int $startRange;
+    private int $end;
+    private int $endRange;
+    private array $lines;
 
     public function __construct(int $start = 0, int $startRange = 1, int $end = 0, int $endRange = 1, array $lines = [])
     {
@@ -67,7 +47,7 @@ final class Chunk
     }
 
     /**
-     * @return Line[]
+     * @psalm-return list<Line>
      */
     public function getLines(): array
     {
@@ -75,7 +55,7 @@ final class Chunk
     }
 
     /**
-     * @param Line[] $lines
+     * @psalm-param list<Line> $lines
      */
     public function setLines(array $lines): void
     {

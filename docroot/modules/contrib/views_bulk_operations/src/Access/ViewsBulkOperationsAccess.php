@@ -2,24 +2,25 @@
 
 namespace Drupal\views_bulk_operations\Access;
 
-use Drupal\Core\Routing\Access\AccessInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Routing\RouteMatch;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\Core\Routing\RouteMatch;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\views\Views;
+use Drupal\views_bulk_operations\Form\ViewsBulkOperationsFormTrait;
 
 /**
  * Defines module access rules.
  */
 class ViewsBulkOperationsAccess implements AccessInterface {
 
+  use ViewsBulkOperationsFormTrait;
+
   /**
    * The tempstore service.
-   *
-   * @var \Drupal\Core\TempStore\PrivateTempStoreFactory
    */
-  protected $tempStoreFactory;
+  protected PrivateTempStoreFactory $tempStoreFactory;
 
   /**
    * Object constructor.
@@ -36,10 +37,15 @@ class ViewsBulkOperationsAccess implements AccessInterface {
    * @param \Drupal\Core\Routing\RouteMatch $routeMatch
    *   The matched route.
    */
-  public function access(AccountInterface $account, RouteMatch $routeMatch) {
+  public function access(AccountInterface $account, RouteMatch $routeMatch): AccessResult {
     $parameters = $routeMatch->getParameters()->all();
 
     if ($view = Views::getView($parameters['view_id'])) {
+      // Set view arguments, sometimes needed for access checks.
+      $view_data = $this->getTempstore($parameters['view_id'], $parameters['display_id'])->get($account->id());
+      if ($view_data !== NULL) {
+        $view->setArguments($view_data['arguments']);
+      }
       if ($view->access($parameters['display_id'], $account)) {
         return AccessResult::allowed();
       }

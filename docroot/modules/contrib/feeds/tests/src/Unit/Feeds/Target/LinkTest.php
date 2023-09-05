@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
-use Drupal\feeds\FeedTypeInterface;
 use Drupal\feeds\Feeds\Target\Link;
 
 /**
@@ -10,6 +9,13 @@ use Drupal\feeds\Feeds\Target\Link;
  * @group feeds
  */
 class LinkTest extends FieldTargetTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'link';
 
   /**
    * {@inheritdoc}
@@ -29,14 +35,7 @@ class LinkTest extends FieldTargetTestBase {
    * @dataProvider providerUris
    */
   public function testPrepareValue($expected_uri, $input_uri) {
-    $method = $this->getMethod(Link::class, 'prepareTarget')->getClosure();
-
-    $configuration = [
-      'feed_type' => $this->createMock(FeedTypeInterface::class),
-      'target_definition' => $method($this->getMockFieldDefinition()),
-    ];
-    $target = new Link($configuration, 'link', []);
-
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['uri' => $input_uri];

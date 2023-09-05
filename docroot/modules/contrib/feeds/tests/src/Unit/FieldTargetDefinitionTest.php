@@ -30,7 +30,7 @@ class FieldTargetDefinitionTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->itemDefinition = $this->prophesize(ComplexDataDefinitionInterface::class);

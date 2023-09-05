@@ -10,8 +10,7 @@ use Drupal\user\Entity\User;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
- * Tests node_access and select queries with node_access tag functionality with
- * multiple languages with node_access_test_language which is language-aware.
+ * Tests multilingual node access with a language-aware module.
  *
  * @group node
  */
@@ -22,7 +21,7 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
    *
    * @var array
    */
-  public static $modules = ['language', 'node_access_test_language'];
+  protected static $modules = ['language', 'node_access_test_language'];
 
   /**
    * A set of nodes to use in testing.
@@ -45,7 +44,10 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
    */
   protected $webUser;
 
-  protected function setUp() {
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
     parent::setUp();
 
     // Create the 'private' field, which allows the node to be marked as private
@@ -89,13 +91,13 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
 
     // Create six nodes:
     // 1. Four Hungarian nodes with Catalan translations
-    //   - One with neither language marked as private.
-    //   - One with only the Hungarian translation private.
-    //   - One with only the Catalan translation private.
-    //   - One with both the Hungarian and Catalan translations private.
+    //    - One with neither language marked as private.
+    //    - One with only the Hungarian translation private.
+    //    - One with only the Catalan translation private.
+    //    - One with both the Hungarian and Catalan translations private.
     // 2. Two nodes with no language specified.
-    //   - One public.
-    //   - One private.
+    //    - One public.
+    //    - One private.
     $this->nodes['both_public'] = $node = $this->drupalCreateNode([
       'body' => [[]],
       'langcode' => 'hu',
@@ -205,7 +207,7 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
     // - Node with both translations public.
     // - Node with only the Catalan translation marked as private.
     // - No language node marked as public.
-    $this->assertCount(3, $nids, 'db_select() returns 3 nodes when no langcode is specified.');
+    $this->assertCount(3, $nids, '$connection->select() returns 3 nodes when no langcode is specified.');
     $this->assertArrayHasKey($this->nodes['both_public']->id(), $nids);
     $this->assertArrayHasKey($this->nodes['ca_private']->id(), $nids);
     $this->assertArrayHasKey($this->nodes['no_language_public']->id(), $nids);
@@ -247,7 +249,7 @@ class NodeAccessLanguageAwareTest extends NodeAccessTestBase {
     $nids = $select->execute()->fetchAllAssoc('nid');
 
     // There are no nodes with German translations, so no results are returned.
-    $this->assertTrue(empty($nids), 'Query returns an empty result when the de langcode is specified.');
+    $this->assertEmpty($nids, 'Query returns an empty result when the de langcode is specified.');
 
     // Query the nodes table as admin user (full access) with the node access
     // tag and no specific langcode.

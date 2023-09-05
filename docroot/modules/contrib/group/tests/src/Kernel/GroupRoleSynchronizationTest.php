@@ -21,7 +21,7 @@ class GroupRoleSynchronizationTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // The sheer functionality of the synchronizer service is tested elsewhere

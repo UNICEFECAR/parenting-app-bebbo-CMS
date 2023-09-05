@@ -83,6 +83,11 @@ final class FeedsEvents {
   const EXPIRE = 'feeds.expire';
 
   /**
+   * Fired when a modification on an item gets reported.
+   */
+  const REPORT = 'feeds.report';
+
+  /**
    * Fired after an import has finished.
    */
   const IMPORT_FINISHED = 'feeds.import_finished';

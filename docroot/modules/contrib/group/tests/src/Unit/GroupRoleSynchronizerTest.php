@@ -35,7 +35,7 @@ class GroupRoleSynchronizerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->groupRoleSynchronizer = new GroupRoleSynchronizer($this->entityTypeManager->reveal());
@@ -121,6 +121,7 @@ class GroupRoleSynchronizerTest extends UnitTestCase {
     if (!empty($entity_ids)) {
       $query = $this->prophesize(QueryInterface::class);
       $query->execute()->willReturn($entity_ids);
+      $query->accessCheck(FALSE)->willReturn($query);
       $storage->getQuery()->willReturn($query->reveal());
     }
 

@@ -51,11 +51,11 @@ function allowed_languages_entity_base_field_info(EntityTypeInterface $entity_ty
 }
 
 /**
- * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_single_element_WIDGET_TYPE_form_alter().
  *
  * Apply a pre-render function to the language select field widget.
  */
-function allowed_languages_field_widget_language_select_form_alter(&$element, FormStateInterface $form_state, $context) {
+function allowed_languages_field_widget_single_element_language_select_form_alter(&$element, FormStateInterface $form_state, $context) {
   $form_object = $form_state->getFormObject();
 
   // We're only interested in altering forms for content entities.
@@ -167,9 +167,9 @@ function allowed_languages_entity_access(EntityInterface $entity, $operation, Ac
   }
 
   $language = $entity->language();
-  $user = \Drupal::service('allowed_languages.allowed_languages_manager')->userEntityFromProxy($account);
+  $user = \Drupal::service('allowed_languages.allowed_languages_manager')->accountFromProxy($account);
   if (\Drupal::service('allowed_languages.allowed_languages_manager')->hasPermissionForLanguage($language, $user)) {
-    return AccessResult::allowed()->cachePerUser()->addCacheableDependency($user);
+    return AccessResult::neutral()->cachePerUser()->addCacheableDependency($user);
   }
 
   // Access check failed so do not allow the user to translate the specified

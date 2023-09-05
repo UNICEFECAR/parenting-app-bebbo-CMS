@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, update functions for the Layout Custom Section Classes module.
+ */
+
+/**
+ * Add default configuration.
+ */
+function layout_custom_section_classes_update_8001(&$sandbox) {
+  $config = \Drupal::configFactory()->getEditable('layout_custom_section_classes.settings');
+  $everythingChecked = [
+    'id' => TRUE,
+    'class_list' => TRUE,
+    'class' => TRUE,
+    'style' => TRUE,
+    'data' => TRUE,
+  ];
+  $config->set('allowed_section_attributes', $everythingChecked);
+  $config->set('allowed_section_region_attributes', $everythingChecked);
+  $config->set('class_list', []);
+  $config->save();
+}

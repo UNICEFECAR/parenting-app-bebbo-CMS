@@ -33,7 +33,7 @@ Setting it all up shouldn't take long:
    ```
    ```
    drush p:purger-ls|grep acquia_platform_cdn
-     f0eed62e59   acquia_platform_cdn   Acquia Platform CDN (beta)
+     f0eed62e59   acquia_platform_cdn   Acquia Platform CDN
    ```
    ```
    drush p:purger-mvu f0eed62e59
@@ -43,7 +43,7 @@ Setting it all up shouldn't take long:
     ------------ --------------------- ----------------------------
      Instance     Plugin                Label
     ------------ --------------------- ----------------------------
-     f0eed62e59   acquia_platform_cdn   Acquia Platform CDN (beta)
+     f0eed62e59   acquia_platform_cdn   Acquia Platform CDN
      bcddfb627d   acquia_purge          Acquia Cloud
     ------------ --------------------- ----------------------------
    ```

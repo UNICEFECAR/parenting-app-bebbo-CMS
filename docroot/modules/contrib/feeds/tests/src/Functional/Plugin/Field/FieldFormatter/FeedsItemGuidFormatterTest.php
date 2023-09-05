@@ -12,7 +12,7 @@ class FeedsItemGuidFormatterTest extends FeedsItemFormatterTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Set display mode for feeds_item to feeds_item_guid on article content
@@ -38,7 +38,7 @@ class FeedsItemGuidFormatterTest extends FeedsItemFormatterTestBase {
 
     // Create an article and set the feeds item guid value.
     $article = $this->createNodeWithFeedsItem($feed);
-    $article->feeds_item->guid = $input;
+    $article->get('feeds_item')->getItemByFeed($feed)->guid = $input;
 
     // Display the article and test we are getting correct output for guid.
     $display = $this->container->get('entity_display.repository')
@@ -64,8 +64,14 @@ class FeedsItemGuidFormatterTest extends FeedsItemFormatterTestBase {
       'integer guid' => ['1', '<div>1</div>'],
       'empty guid' => ['', NULL],
       'zero guid' => ['0', '<div>0</div>'],
-      'http url guid' => ['http://en.wikipedia.org/wiki/Civilization_(video_game)', '<div><a href="http://en.wikipedia.org/wiki/Civilization_(video_game)">http://en.wikipedia.org/wiki/Civilization_(video_game)</a></div>'],
-      'https url guid' => ['https://en.wikipedia.org/wiki/Duke_Nukem_3D', '<div><a href="https://en.wikipedia.org/wiki/Duke_Nukem_3D">https://en.wikipedia.org/wiki/Duke_Nukem_3D</a></div>'],
+      'http url guid' => [
+        'http://en.wikipedia.org/wiki/Civilization_(video_game)',
+        '<div><a href="http://en.wikipedia.org/wiki/Civilization_(video_game)">http://en.wikipedia.org/wiki/Civilization_(video_game)</a></div>',
+      ],
+      'https url guid' => [
+        'https://en.wikipedia.org/wiki/Duke_Nukem_3D',
+        '<div><a href="https://en.wikipedia.org/wiki/Duke_Nukem_3D">https://en.wikipedia.org/wiki/Duke_Nukem_3D</a></div>',
+      ],
     ];
   }
 

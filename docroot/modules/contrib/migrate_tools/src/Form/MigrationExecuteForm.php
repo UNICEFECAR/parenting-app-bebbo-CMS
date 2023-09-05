@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -9,6 +11,7 @@ use Drupal\migrate\MigrateMessage;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Drupal\migrate_tools\MigrateBatchExecutable;
+use Drupal\migrate_tools\MigrateTools;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,10 +21,8 @@ class MigrationExecuteForm extends FormBase {
 
   /**
    * Plugin manager for migration plugins.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
    */
-  protected $migrationPluginManager;
+  protected MigrationPluginManagerInterface $migrationPluginManager;
 
   /**
    * Constructs a new MigrationExecuteForm object.
@@ -39,7 +40,7 @@ class MigrationExecuteForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('plugin.manager.migration'),
       $container->get('current_route_match')
@@ -49,14 +50,14 @@ class MigrationExecuteForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
+  public function getFormId(): string {
     return 'migration_execute_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $form = $form ?: [];
 
     /** @var \Drupal\migrate_plus\Entity\MigrationInterface $migration */
@@ -85,7 +86,7 @@ class MigrationExecuteForm extends FormBase {
    * @return array
    *   The execution form updated with the operations.
    */
-  protected function buildFormOperations(array $form, FormStateInterface $form_state) {
+  protected function buildFormOperations(array $form, FormStateInterface $form_state): array {
     // Build the migration execution form.
     $options = [
       'import' => $this->t('Import'),
@@ -129,7 +130,7 @@ class MigrationExecuteForm extends FormBase {
    * @return array
    *   The execution form updated with the execution options.
    */
-  protected function buildFormOptions(array $form, FormStateInterface $form_state) {
+  protected function buildFormOptions(array $form, FormStateInterface $form_state): array {
     $form['options'] = [
       '#type' => 'details',
       '#title' => $this->t('Additional execution options'),
@@ -153,6 +154,21 @@ class MigrationExecuteForm extends FormBase {
       '#title' => $this->t('Limit to:'),
       '#size' => 10,
       '#description' => $this->t('Set a limit of how many items to process for each migration task.'),
+      '#min' => 1,
+    ];
+
+    $form['options']['idlist'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('ID List'),
+      '#maxlength' => 255,
+      '#size' => 60,
+      '#pattern' => '^[0-9]+(' . MigrateTools::DEFAULT_ID_LIST_DELIMITER . '[0-9]+)?(,?[0-9]+(' . MigrateTools::DEFAULT_ID_LIST_DELIMITER . '[0-9]+)?)*$',
+      '#description' => $this->t('Comma-separated list of IDs to process.'),
+      '#states' => [
+        'enabled' => [
+          ':input[name="operation"]' => [['value' => 'import'], 'or', ['value' => 'rollback']],
+        ],
+      ],
     ];
 
     return $form;
@@ -161,77 +177,89 @@ class MigrationExecuteForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-
-    $operation = $form_state->getValue('operation');
-
-    if ($form_state->getValue('limit')) {
-      $limit = $form_state->getValue('limit');
-    }
-    else {
-      $limit = 0;
-    }
-
-    if ($form_state->getValue('update')) {
-      $update = $form_state->getValue('update');
-    }
-    else {
-      $update = 0;
-    }
-    if ($form_state->getValue('force')) {
-      $force = $form_state->getValue('force');
-    }
-    else {
-      $force = 0;
-    }
-
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $migration = $this->getRouteMatch()->getParameter('migration');
     if ($migration) {
+      $migration_id = $migration->id();
       /** @var \Drupal\migrate\Plugin\MigrationInterface $migration_plugin */
-      $migration_plugin = $this->migrationPluginManager->createInstance($migration->id(), $migration->toArray());
+      $migration_plugin = $this->migrationPluginManager->createInstance($migration_id, $migration->toArray());
       $migrateMessage = new MigrateMessage();
 
-      switch ($operation) {
+      switch ($form_state->getValue('operation')) {
         case 'import':
-
-          $options = [
-            'limit' => $limit,
-            'update' => $update,
-            'force' => $force,
-          ];
-
-          $executable = new MigrateBatchExecutable($migration_plugin, $migrateMessage, $options);
+          $executable = new MigrateBatchExecutable($migration_plugin, $migrateMessage, $this->buildOptions($form_state));
           $executable->batchImport();
-
           break;
 
         case 'rollback':
-
-          $options = [
-            'limit' => $limit,
-            'update' => $update,
-            'force' => $force,
-          ];
-
-          $executable = new MigrateBatchExecutable($migration_plugin, $migrateMessage, $options);
-          $executable->rollback();
-
+          $executable = new MigrateBatchExecutable($migration_plugin, $migrateMessage, $this->buildOptions($form_state));
+          $status = $executable->rollback();
+          if ($status === MigrationInterface::RESULT_COMPLETED) {
+            $this->messenger()->addStatus($this->t('Rollback completed', ['@id' => $migration_id]));
+          }
+          else {
+            $this->messenger()->addError($this->t('Rollback of !name migration failed.', ['!name' => $migration_id]));
+          }
           break;
 
         case 'stop':
-
           $migration_plugin->interruptMigration(MigrationInterface::RESULT_STOPPED);
+          $status = $migration_plugin->getStatus();
+          switch ($status) {
+            case MigrationInterface::STATUS_IDLE:
+              $this->messenger()->addStatus($this->t('Migration @id is idle', ['@id' => $migration_id]));
+              break;
 
+            case MigrationInterface::STATUS_DISABLED:
+              $this->messenger()->addWarning($this->t('Migration @id is disabled', ['@id' => $migration_id]));
+              break;
+
+            case MigrationInterface::STATUS_STOPPING:
+              $this->messenger()->addWarning($this->t('Migration @id is already stopping', ['@id' => $migration_id]));
+              break;
+
+            default:
+              $migration->interruptMigration(MigrationInterface::RESULT_STOPPED);
+              $this->messenger()->addStatus($this->t('Migration @id requested to stop', ['@id' => $migration_id]));
+              break;
+          }
           break;
 
         case 'reset':
-
+          $status = $migration_plugin->getStatus();
+          if ($status === MigrationInterface::STATUS_IDLE) {
+            $this->messenger()->addWarning($this->t('Migration @id is already Idle', ['@id' => $migration_id]));
+          }
+          else {
+            $this->messenger()->addStatus($this->t('Migration @id reset to Idle', ['@id' => $migration_id]));
+          }
           $migration_plugin->setStatus(MigrationInterface::STATUS_IDLE);
-
           break;
-
       }
     }
+  }
+
+  /**
+   * Build migrate execute options from the submitted form values.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array
+   *   Options array for the migrate execution.
+   */
+  protected function buildOptions(FormStateInterface $form_state) {
+    $options = [
+      'limit' => $form_state->getValue('limit') ?: 0,
+      'update' => $form_state->getValue('update') ?: 0,
+      'force' => $form_state->getValue('force') ?: 0,
+    ];
+
+    if ($idlist = $form_state->getValue('idlist')) {
+      $options['idlist'] = $idlist;
+    }
+
+    return $options;
   }
 
 }

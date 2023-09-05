@@ -50,7 +50,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       );
     }
 
-     ## node id custom filter
+         ## node id custom filter
 
     $form['search_wrapper']['search']['node_id'] = array(
         '#type' => 'textfield',
@@ -90,6 +90,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       unset($form['search_wrapper']);
       return $form;
     }
+
 
     $form['search_wrapper']['search']['langcode'] = array(
       '#type' => 'language_select',
@@ -500,7 +501,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       $query->condition($langcode_table_alias . '.langcode', $property_conditions['target_language'], '<>');
 
       if ($property_conditions['target_status'] == 'untranslated_or_outdated') {
-        $or = new Condition('OR');
+        $or = \Drupal::database()->condition('OR');
         $or->isNull("$translation_table_alias.langcode");
         $or->condition("$translation_table_alias.content_translation_outdated", 1);
         $query->condition($or);
@@ -520,12 +521,12 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
     // Searching for the source label.
     if (!empty($label_key) && isset($property_conditions[$label_key])) {
       $search_tokens = explode(' ', $property_conditions[$label_key]);
-      $or = new Condition('OR');
+      $or = \Drupal::database()->condition('OR');
 
       foreach ($search_tokens as $search_token) {
         $search_token = trim($search_token);
         if (strlen($search_token) > 2) {
-          $or->condition($label_key, '%' . \Drupal::database()->escapeLike($search_token) . '%', 'LIKE');
+          $or->condition('data_table.' . $label_key, '%' . \Drupal::database()->escapeLike($search_token) . '%', 'LIKE');
         }
       }
 
@@ -676,8 +677,14 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
 
     $published_title = $this->t('Published');
     $published_field = $entity->getEntityType()->getKey('published');
-    if ($entity instanceof FieldableEntityInterface && $entity->hasField($published_field) && !$entity->get($published_field)->getFieldDefinition()->isTranslatable()) {
-      $published_title = $this->t('Published (all languages)');
+    if ($entity instanceof FieldableEntityInterface && $entity->hasField($published_field)) {
+      $published_field_definition = $entity->get($published_field)->getFieldDefinition();
+      $published_title = $published_field_definition->getConfig($entity->bundle())->getLabel();
+      if (!$published_field_definition->isTranslatable()) {
+        $published_title = $this->t('@published_title (all languages)', [
+          '@published_title' => $published_title,
+        ]);
+      }
     }
 
     $element['published'] = [
@@ -725,6 +732,10 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       if ($default->id() === $transition_to_state->id()) {
         $default_value = $default->id();
       }
+    }
+    // Get the state of the new config, if not set fallback to the current one.
+    if ($default_moderation_state = \Drupal::config('tmgmt_content.settings')->get('default_moderation_states.' . $workflow->id())) {
+      $default_value = $default_moderation_state;
     }
 
     // See \Drupal\content_moderation\Plugin\Field\FieldWidget\ModerationStateWidget::formElement()

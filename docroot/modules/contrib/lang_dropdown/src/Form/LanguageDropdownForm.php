@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Render\RendererInterface;
 
 /**
  * Language Switch Form.
@@ -62,6 +63,13 @@ class LanguageDropdownForm extends FormBase {
   protected $moduleHandler;
 
   /**
+   * The renderer service.
+   *
+   * @var Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -81,13 +89,16 @@ class LanguageDropdownForm extends FormBase {
    *   The current route match.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The Renderer
    */
-  public function __construct(LanguageManagerInterface $language_manager, RequestStack $request_stack, PathMatcherInterface $path_matcher, RouteMatchInterface $route_match, ModuleHandlerInterface $module_handler) {
+  public function __construct(LanguageManagerInterface $language_manager, RequestStack $request_stack, PathMatcherInterface $path_matcher, RouteMatchInterface $route_match, ModuleHandlerInterface $module_handler, RendererInterface $renderer) {
     $this->languageManager = $language_manager;
     $this->requestStack = $request_stack;
     $this->pathMatcher = $path_matcher;
     $this->routeMatch = $route_match;
     $this->moduleHandler = $module_handler;
+    $this->renderer = $renderer;
   }
 
   /**
@@ -99,19 +110,20 @@ class LanguageDropdownForm extends FormBase {
       $container->get('request_stack'),
       $container->get('path.matcher'),
       $container->get('current_route_match'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('renderer')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, array $languages = [], $type = '', array $settings = []) {
+  public function buildForm(array $form, FormStateInterface $form_state, array $languages = [], $type = Language::TYPE_URL, array $settings = []) {
     $this->languages = $languages;
     $this->type = $type;
     $this->settings = $settings;
 
-    $language_url = $this->languageManager->getCurrentLanguage(Language::TYPE_URL);
+    $language_url = $this->languageManager->getCurrentLanguage($this->type);
 
     $unique_id = Html::getId('lang_dropdown_form');
 
@@ -158,6 +170,12 @@ class LanguageDropdownForm extends FormBase {
         case LANGDROPDOWN_DISPLAY_LANGCODE:
           $options += [$lang_code => $lang_code];
           break;
+
+        case LANGDROPDOWN_DISPLAY_SELFTRANSLATED:
+          $native_language = $this->languageManager->getNativeLanguages()[$lang_code];
+          $native_language_translated = $this->t($native_language->getName(), [], ['langcode' => $lang_code]);
+          $options += [$lang_code => $native_language_translated];
+          break;
       }
 
       // Identify selected language.
@@ -193,7 +211,7 @@ class LanguageDropdownForm extends FormBase {
       if (isset($this->settings['widget']) && $this->moduleHandler->moduleExists('languageicons')) {
         $languageicons_config = $this->configFactory()->get('languageicons.settings');
         $languageicons_path = $languageicons_config->get('path');
-        $js_settings['languageicons'][$lang_code] = file_create_url(str_replace('*', $lang_code, $languageicons_path));
+        $js_settings['languageicons'][$lang_code] = \Drupal::service('file_url_generator')->generateAbsoluteString(str_replace('*', $lang_code, $languageicons_path));
       }
     }
 
@@ -210,7 +228,7 @@ class LanguageDropdownForm extends FormBase {
         '#language' => $language,
         '#title' => $language->getName(),
       ];
-      $selected_option_language_icon = \Drupal::service('renderer')->renderPlain($selected_option_language_icon);
+      $selected_option_language_icon = $this->renderer->renderPlain($selected_option_language_icon);
     }
 
     // Add required files and settings for JS widget.
@@ -298,10 +316,12 @@ class LanguageDropdownForm extends FormBase {
       $form['lang_dropdown_select'][$flag_position] = $selected_option_language_icon;
     }
 
+    $unique_form_id = Html::getUniqueId('lang_dropdown_form');
+
     $form['#attributes']['class'][] = 'lang_dropdown_form';
     $form['#attributes']['class'][] = 'clearfix';
     $form['#attributes']['class'][] = $this->type;
-    $form['#attributes']['id'] = 'lang_dropdown_form_' . $unique_id;
+    $form['#attributes']['id'] = 'lang_dropdown_form_' . $unique_form_id;
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Go'),
@@ -333,16 +353,14 @@ class LanguageDropdownForm extends FormBase {
       return;
     }
 
-    $route = $this->pathMatcher->isFrontPage() ? '<front>' : '<current>';
-    $url = Url::fromRoute($route);
-    $languages = $this->languageManager->getLanguageSwitchLinks($type, $url);
+    $languages = $this->languageManager->getLanguageSwitchLinks($type, Url::fromRouteMatch(\Drupal::routeMatch()));
 
     $language = $languages->links[$language_code];
 
     $newurl = (isset($language['url']) && $tohome == 0) ? $language['url'] : Url::fromRoute('<front>');
 
     if (!isset($language['query'])) {
-      $language['query'] = $this->requestStack->query->all();
+      $language['query'] = $this->requestStack->getCurrentRequest()->query->all();
     }
 
     $url = new Url($newurl->getRouteName(), $newurl->getRouteParameters(), $language);

@@ -5,6 +5,7 @@ namespace Drupal\feeds\Plugin\Derivative;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -13,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\feeds\Plugin\QueueWorker\FeedRefresh
  */
 class FeedQueueWorker extends DeriverBase implements ContainerDeriverInterface {
+  use StringTranslationTrait;
 
   /**
    * The entity storage.
@@ -45,7 +47,7 @@ class FeedQueueWorker extends DeriverBase implements ContainerDeriverInterface {
     $derivatives = [];
     foreach ($this->storage->loadMultiple() as $feed_type) {
       $derivatives[$feed_type->id()] = [
-        'title' => t('Feed refresh: @feed_type_label', [
+        'title' => $this->t('Feed refresh: @feed_type_label', [
           '@feed_type_label' => $feed_type->label(),
         ]),
       ] + $base_plugin_definition;

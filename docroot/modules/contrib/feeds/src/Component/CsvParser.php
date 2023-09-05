@@ -84,12 +84,7 @@ class CsvParser implements \Iterator {
     if (!is_file($filepath) || !is_readable($filepath)) {
       throw new \InvalidArgumentException('$filepath must exist and be readable.');
     }
-
-    $previous = ini_set('auto_detect_line_endings', '1');
-
     $handle = fopen($filepath, 'rb');
-
-    ini_set('auto_detect_line_endings', $previous);
 
     return new static($handle);
   }
@@ -104,11 +99,7 @@ class CsvParser implements \Iterator {
    *   A new CsvParser object.
    */
   public static function createFromString($string) {
-    $previous = ini_set('auto_detect_line_endings', '1');
-
     $handle = fopen('php://temp', 'w+b');
-
-    ini_set('auto_detect_line_endings', $previous);
 
     fwrite($handle, $string);
     fseek($handle, 0);
@@ -196,14 +187,24 @@ class CsvParser implements \Iterator {
 
   /**
    * Implements \Iterator::current().
+   *
+   * @todo return type should be "mixed", but that keyword is only available
+   * since PHP 8.0. Add that as soon as Drupal 9 is no longer supported. And
+   * then remove the "#[\ReturnTypeWillChange]" line.
    */
+  #[\ReturnTypeWillChange]
   public function current() {
     return $this->currentLine;
   }
 
   /**
    * Implements \Iterator::key().
+   *
+   * @todo return type should be "mixed", but that keyword is only available
+   * since PHP 8.0. Add that as soon as Drupal 9 is no longer supported. And
+   * then remove the "#[\ReturnTypeWillChange]" line.
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     return $this->linesRead - 1;
   }
@@ -211,7 +212,7 @@ class CsvParser implements \Iterator {
   /**
    * Implements \Iterator::next().
    */
-  public function next() {
+  public function next(): void {
     // Record the file position before reading the next line since we
     // preemptively read lines to avoid returning empty rows.
     $this->filePosition = ftell($this->handle);
@@ -235,7 +236,7 @@ class CsvParser implements \Iterator {
   /**
    * Implements \Iterator::rewind().
    */
-  public function rewind() {
+  public function rewind(): void {
     rewind($this->handle);
 
     if ($this->hasHeader && !$this->startByte) {
@@ -253,7 +254,7 @@ class CsvParser implements \Iterator {
   /**
    * Implements \Iterator::valid().
    */
-  public function valid() {
+  public function valid(): bool {
     return (bool) $this->currentLine;
   }
 

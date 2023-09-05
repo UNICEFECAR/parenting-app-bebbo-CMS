@@ -3,6 +3,7 @@
 namespace TravisCarden\Tests\BehatTableComparison;
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\TestCase;
 use TravisCarden\Tests\AssertionError;
 use TravisCarden\BehatTableComparison\TableEqualityAssertion;
 use TravisCarden\BehatTableComparison\UnequalTablesException;
@@ -10,7 +11,7 @@ use TravisCarden\BehatTableComparison\UnequalTablesException;
 /**
  * @covers \TravisCarden\BehatTableComparison\TableEqualityAssertion
  */
-class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
+class TableEqualityAssertionTest extends TestCase
 {
 
     const TABLE_REALISTIC_SORTED = [
@@ -43,7 +44,7 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
      */
     protected $arbitraryRight;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->arbitraryLeft = new TableNode([['left']]);
         $this->arbitraryRight = new TableNode([['right']]);
@@ -56,51 +57,31 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
     {
         $assertion = new TableEqualityAssertion($this->arbitraryLeft, $this->arbitraryRight);
 
-        $this->assertInstanceOf(TableEqualityAssertion::class, $assertion);
-        $this->assertSame($assertion->getExpected(), $this->arbitraryLeft);
-        $this->assertSame($assertion->getActual(), $this->arbitraryRight);
-    }
-
-    /**
-     * Tests setter methods with invalid arguments.
-     *
-     * @dataProvider providerTestSettersWithInvalidArguments
-     */
-    public function testSettersWithInvalidArguments($method, array $arguments, array $expected_exception)
-    {
-        $this->setExpectedException(...$expected_exception);
-        $assertion = new TableEqualityAssertion($this->arbitraryLeft, $this->arbitraryRight);
-        call_user_func_array([$assertion, $method], $arguments);
-    }
-
-    public function providerTestSettersWithInvalidArguments()
-    {
-        return [
-            ['setMissingRowsLabel', [false], [AssertionError::class, 'Missing rows label must be a string.']],
-            ['setUnexpectedRowsLabel', [false], [AssertionError::class, 'Unexpected rows label must be a string.']],
-        ];
+        self::assertInstanceOf(TableEqualityAssertion::class, $assertion);
+        self::assertSame($assertion->getExpected(), $this->arbitraryLeft);
+        self::assertSame($assertion->getActual(), $this->arbitraryRight);
     }
 
     public function testSettersPairs()
     {
         // Default values.
         $assertion = (new TableEqualityAssertion($this->arbitraryLeft, $this->arbitraryRight));
-        $this->assertTrue($assertion->isRowOrderRespected());
-        $this->assertEmpty($assertion->getExpectedHeader());
+        self::assertTrue($assertion->isRowOrderRespected());
+        self::assertEmpty($assertion->getExpectedHeader());
 
         // Set values.
         $assertion
             ->ignoreRowOrder()
             ->expectHeader([1, 2, 3]);
-        $this->assertFalse($assertion->isRowOrderRespected());
-        $this->assertEquals([1, 2, 3], $assertion->getExpectedHeader());
+        self::assertFalse($assertion->isRowOrderRespected());
+        self::assertEquals([1, 2, 3], $assertion->getExpectedHeader());
 
         // Unset values.
         $assertion
             ->respectRowOrder()
             ->expectNoHeader();
-        $this->assertTrue($assertion->isRowOrderRespected());
-        $this->assertEmpty($assertion->getExpectedHeader());
+        self::assertTrue($assertion->isRowOrderRespected());
+        self::assertEmpty($assertion->getExpectedHeader());
     }
 
     /**
@@ -116,7 +97,7 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
         $actual = (new TableEqualityAssertion($left, $right))
             ->assert();
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
     public function providerTestAssertionWithIdenticalTables()
@@ -135,10 +116,10 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
      * Tests assertion with unequal tables.
      *
      * @dataProvider providerTestAssertionWithUnequalTables
-     * @expectedException \TravisCarden\BehatTableComparison\UnequalTablesException
      */
     public function testAssertionWithUnequalTables($left, $right, $expected)
     {
+        $this->expectException(UnequalTablesException::class);
         $left = new TableNode($left);
         $right = new TableNode($right);
 
@@ -147,8 +128,8 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
                 ->ignoreRowOrder()
                 ->assert();
         } catch (UnequalTablesException $e) {
-            $expected = implode($expected, PHP_EOL);
-            $this->assertSame($expected, $e->getMessage());
+            $expected = implode(PHP_EOL, $expected);
+            self::assertSame($expected, $e->getMessage());
             throw $e;
         }
     }
@@ -218,10 +199,10 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
      * @see https://github.com/TravisCarden/behat-table-comparison/issues/1
      *
      * @dataProvider providerTestAssertionWithUnspecifiedInequalities
-     * @expectedException \TravisCarden\BehatTableComparison\UnequalTablesException
      */
     public function testAssertionWithUnspecifiedInequalities($left, $right)
     {
+        $this->expectException(UnequalTablesException::class);
         $left = new TableNode($left);
         $right = new TableNode($right);
 
@@ -269,10 +250,10 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
      * Tests assertion with custom label.
      *
      * @dataProvider providerTestAssertionWithCustomLabels
-     * @expectedException \TravisCarden\BehatTableComparison\UnequalTablesException
      */
     public function testAssertionWithCustomLabels($method, $tables, $label, $prefix)
     {
+        $this->expectException(UnequalTablesException::class);
         $assertion = (new TableEqualityAssertion(...$tables))->ignoreRowOrder();
         /** @var TableEqualityAssertion $assertion */
         $assertion = call_user_func_array([$assertion, $method], [$label]);
@@ -280,7 +261,7 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
         try {
             $assertion->assert();
         } catch (UnequalTablesException $e) {
-            $this->assertStringStartsWith("${prefix} ${label}", $e->getMessage());
+            self::assertStringStartsWith("${prefix} ${label}", $e->getMessage());
             throw $e;
         }
     }
@@ -317,16 +298,15 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
             ->expectHeader($header)
             ->assert();
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
     /**
      * Tests assertion with a table header mismatch.
-     *
-     * @expectedException \LogicException
      */
     public function testAssertionWithHeaderMismatch()
     {
+        $this->expectException(\LogicException::class);
         $rows = [['Label one', 'id1'], ['Label two', 'id2']];
         $left = $right = new TableNode($rows);
 
@@ -335,13 +315,13 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
                 ->expectHeader(['label', 'id'])
                 ->assert();
         } catch (\LogicException $e) {
-            $expected = implode([
+            $expected = implode(PHP_EOL, [
                 '--- Expected header',
                 '| label | id |',
                 '+++ Given',
                 '| Label one | id1 |',
-            ], PHP_EOL);
-            $this->assertSame($expected, $e->getMessage());
+            ]);
+            self::assertSame($expected, $e->getMessage());
             throw $e;
         }
     }
@@ -358,16 +338,15 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
             ->ignoreRowOrder()
             ->assert();
 
-        $this->assertTrue($actual);
+        self::assertTrue($actual);
     }
 
     /**
      * Tests assertion with complex differences.
-     *
-     * @expectedException \TravisCarden\BehatTableComparison\UnequalTablesException
      */
     public function testAssertionWithComplexDifferences()
     {
+        $this->expectException(UnequalTablesException::class);
         $left = new TableNode([
             [1, 'one'],
             [2, 'two'],
@@ -414,11 +393,12 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
                 '-| 8  | eight    |',
                 '+| 8  | changed  |',
                 ' | 9  | nine     |',
-                ' | 10 | ten      |',
+                '-| 10 | ten      |', // These two lines seem unintuitive, but
+                '+| 10 | ten      |', // they come straight from the differ.
                 '+| 13 | thirteen |',
                 '',
             ]);
-            $this->assertSame($expected, $e->getMessage());
+            self::assertSame($expected, $e->getMessage());
 
             throw $e;
         }
@@ -435,6 +415,6 @@ class TableEqualityAssertionTest extends \PHPUnit_Framework_TestCase
             '*** Given',
             $right->getTableAsString(),
         ]);
-        $this->assertSame($message, $e->getMessage());
+        self::assertSame($message, $e->getMessage());
     }
 }

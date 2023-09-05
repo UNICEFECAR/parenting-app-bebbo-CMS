@@ -1,12 +1,16 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\PubSubHubbub;
+
+use function header;
+use function headers_sent;
+use function is_int;
+use function str_replace;
+use function strlen;
+use function strtolower;
+use function ucwords;
 
 class HttpResponse
 {
@@ -52,11 +56,14 @@ class HttpResponse
      */
     public function sendHeaders()
     {
-        if ($this->headers || (200 != $this->statusCode)) {
-            $this->canSendHeaders(true);
-        } elseif (200 == $this->statusCode) {
+        if (200 === $this->statusCode) {
             return;
         }
+
+        if ($this->headers || (200 !== $this->statusCode)) {
+            $this->canSendHeaders(true);
+        }
+
         $httpCodeSent = false;
         foreach ($this->headers as $header) {
             if (! $httpCodeSent && $this->statusCode) {
@@ -88,7 +95,7 @@ class HttpResponse
         $value = (string) $value;
         if ($replace) {
             foreach ($this->headers as $key => $header) {
-                if ($name == $header['name']) {
+                if ($name === $header['name']) {
                     unset($this->headers[$key]);
                 }
             }
@@ -112,7 +119,7 @@ class HttpResponse
     {
         $name = $this->_normalizeHeader($name);
         foreach ($this->headers as $header) {
-            if ($header['name'] == $name) {
+            if ($header['name'] === $name) {
                 return $header['value'];
             }
         }
@@ -201,10 +208,9 @@ class HttpResponse
      * @param  string $name
      * @return string
      */
-    // @codingStandardsIgnoreStart
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _normalizeHeader($name)
     {
-        // @codingStandardsIgnoreEnd
         $filtered = str_replace(['-', '_'], ' ', (string) $name);
         $filtered = ucwords(strtolower($filtered));
         $filtered = str_replace(' ', '-', $filtered);

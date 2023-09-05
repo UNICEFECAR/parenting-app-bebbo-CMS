@@ -98,21 +98,24 @@ class LanguageAutocompleteWidget extends WidgetBase implements ContainerFactoryP
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    /** @var LanguageItem $item */
+    /** @var \Drupal\languagefield\Plugin\Field\FieldType\LanguageItem $item */
     $item = $items[$delta];
     $value = isset($item->value) ? $item->value : NULL;
 
     $item_definition = (is_object($item)) ? $item : new LanguageItem($items->getItemDefinition());
     $settable_languages = $item_definition->getSettableOptions();
     $possible_languages = $item_definition->getPossibleOptions();
-    $field_name = $this->fieldDefinition->id();
 
     $element['value'] = $element + [
       '#type' => 'textfield',
       '#default_value' => isset($possible_languages[$value]) ? $possible_languages[$value] : '',
       '#languagefield_options' => $settable_languages,
       '#autocomplete_route_name' => $this->getSetting('autocomplete_route_name'),
-      '#autocomplete_route_parameters' => ['field_name' => $field_name],
+      '#autocomplete_route_parameters' => [
+        'entity_type' => $this->fieldDefinition->get('entity_type'),
+        'bundle' => $this->fieldDefinition->get('bundle'),
+        'field_name' => $this->fieldDefinition->get('field_name'),
+      ],
       '#size' => $this->getSetting('size'),
       '#placeholder' => $this->getSetting('placeholder'),
       '#maxlength' => 255,

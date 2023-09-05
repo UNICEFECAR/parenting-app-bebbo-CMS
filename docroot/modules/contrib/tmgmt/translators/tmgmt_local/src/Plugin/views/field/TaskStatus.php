@@ -21,17 +21,17 @@ class TaskStatus extends NumericField {
     switch ($value) {
       case LocalTaskInterface::STATUS_PENDING:
         $label = t('Needs action');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/ready.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ready.svg';
         break;
 
       case LocalTaskInterface::STATUS_COMPLETED:
         $label = t('In review');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/hourglass.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/hourglass.svg';
         break;
 
       case LocalTaskInterface::STATUS_REJECTED:
         $label = t('Rejected');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/ex-red.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ex-red.svg';
         break;
 
       case LocalTaskInterface::STATUS_CLOSED:
@@ -41,13 +41,13 @@ class TaskStatus extends NumericField {
 
       default:
         $label = t('Unassigned');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/rejected.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/rejected.svg';
     }
     $element = [
       '#type' => 'inline_template',
       '#template' => '<img src="{{ icon }}" title="{{ label }}"><span></span></img>',
       '#context' => array(
-        'icon' => file_create_url($icon),
+        'icon' => \Drupal::service('file_url_generator')->generateAbsoluteString($icon),
         'label' => $label,
       ),
     ];

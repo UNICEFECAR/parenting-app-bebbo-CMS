@@ -12,11 +12,16 @@ use Drupal\Tests\BrowserTestBase;
 class CheckWebTest extends BrowserTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'security_review',
   ];
 
@@ -37,7 +42,7 @@ class CheckWebTest extends BrowserTestBase {
   /**
    * Sets up the testing environment, logs the user in, populates $check.
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Login.
@@ -69,7 +74,7 @@ class CheckWebTest extends BrowserTestBase {
       $skipped_by = $check->skippedBy();
 
       $this->assertTrue($is_skipped, $check->getTitle() . ' skipped.');
-      $this->assertEqual($this->user->id(), $skipped_by->id(), 'Skipped by ' . $skipped_by->label());
+      $this->assertEquals($this->user->id(), $skipped_by->id(), 'Skipped by ' . $skipped_by->label());
     }
   }
 

@@ -304,7 +304,7 @@ class SourcePluginUiBase extends PluginBase implements SourcePluginUiInterface {
 
       case 'outofdate':
         $label = t('Translation Outdated');
-        $icon = drupal_get_path('module', 'tmgmt') . '/icons/outdated.svg';
+        $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/outdated.svg';
         break;
 
       default:
@@ -329,12 +329,14 @@ class SourcePluginUiBase extends PluginBase implements SourcePluginUiInterface {
       $url->setOption('query', \Drupal::destination()->getAsArray());
 
       $item_icon = $job_item->getStateIcon();
-      $item_icon['#title'] = $this->t('Active job item: @state', ['@state' => $item_icon['#title']]);
-      $build['job_item'] = [
-        '#type' => 'link',
-        '#url' => $url,
-        '#title' => $item_icon,
-      ];
+      if ($item_icon) {
+        $item_icon['#title'] = $this->t('Active job item: @state', ['@state' => $item_icon['#title']]);
+        $build['job_item'] = [
+          '#type' => 'link',
+          '#url' => $url,
+          '#title' => $item_icon,
+        ];
+      }
     }
     return $build;
   }

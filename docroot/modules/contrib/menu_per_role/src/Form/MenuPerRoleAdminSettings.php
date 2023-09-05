@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Drupal\menu_per_role\Form;
 
@@ -13,40 +13,38 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Menu Per Role administration form.
- *
- * @package Drupal\menu_per_role\Form
  */
 class MenuPerRoleAdminSettings extends ConfigFormBase implements ContainerInjectionInterface {
 
   /**
    * Display both hide and show role checkbox lists.
    */
-  const MODE_DISPLAY_BOTH = 0;
+  public const MODE_DISPLAY_BOTH = 0;
 
   /**
    * Display only the hide from checkbox list.
    */
-  const MODE_DISPLAY_ONLY_HIDE = 1;
+  public const MODE_DISPLAY_ONLY_HIDE = 1;
 
   /**
    * Display only the show to checkbox list.
    */
-  const MODE_DISPLAY_ONLY_SHOW = 2;
+  public const MODE_DISPLAY_ONLY_SHOW = 2;
 
   /**
    * Always display fields on links to content.
    */
-  const MODE_DISPLAY_ON_CONTENT_ALWAYS = 0;
+  public const MODE_DISPLAY_ON_CONTENT_ALWAYS = 0;
 
   /**
    * Only display fields on menu items if there are no node_access providers.
    */
-  const MODE_DISPLAY_ON_CONTENT_NO_NODE_ACCESS = 1;
+  public const MODE_DISPLAY_ON_CONTENT_NO_NODE_ACCESS = 1;
 
   /**
    * Never display fields on links to content.
    */
-  const MODE_DISPLAY_ON_CONTENT_NEVER = 2;
+  public const MODE_DISPLAY_ON_CONTENT_NEVER = 2;
 
   /**
    * The entity type manager service.

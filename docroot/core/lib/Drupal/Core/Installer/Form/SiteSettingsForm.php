@@ -37,6 +37,8 @@ class SiteSettingsForm extends FormBase {
    *
    * @param string $site_path
    *   The site path.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
    */
   public function __construct($site_path, RendererInterface $renderer) {
     $this->sitePath = $site_path;
@@ -44,11 +46,11 @@ class SiteSettingsForm extends FormBase {
   }
 
   /**
-    * {@inheritdoc}
-    */
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('site.path'),
+      $container->getParameter('site.path'),
       $container->get('renderer')
     );
   }
@@ -217,7 +219,7 @@ class SiteSettingsForm extends FormBase {
   public static function getDatabaseErrorsTemplate(array $errors) {
     return [
       '#type' => 'inline_template',
-      '#template' => '{% trans %}Resolve all issues below to continue the installation. For help configuring your database server, see the <a href="https://www.drupal.org/docs/8/install">installation handbook</a>, or contact your hosting provider.{% endtrans %}{{ errors }}',
+      '#template' => '{% trans %}Resolve all issues below to continue the installation. For help configuring your database server, see the <a href="https://www.drupal.org/docs/installing-drupal">installation handbook</a>, or contact your hosting provider.{% endtrans %}{{ errors }}',
       '#context' => [
         'errors' => [
           '#theme' => 'item_list',
@@ -281,7 +283,7 @@ class SiteSettingsForm extends FormBase {
    *   The path to the generated config sync directory.
    */
   protected function createRandomConfigDirectory() {
-    $config_sync_directory = \Drupal::service('site.path') . '/files/config_' . Crypt::randomBytesBase64(55) . '/sync';
+    $config_sync_directory = $this->sitePath . '/files/config_' . Crypt::randomBytesBase64(55) . '/sync';
     // This should never fail, it is created here inside the public files
     // directory, which has already been verified to be writable itself.
     if (\Drupal::service('file_system')->prepareDirectory($config_sync_directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {

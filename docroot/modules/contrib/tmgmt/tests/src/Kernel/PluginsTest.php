@@ -14,7 +14,7 @@ class PluginsTest extends TMGMTKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
     \Drupal::service('router.builder')->rebuild();
   }
@@ -54,7 +54,7 @@ class PluginsTest extends TMGMTKernelTestBase {
     $this->assertTrue($submit_job->isActive());
     $messages = $submit_job->getMessages();
     $last_message = end($messages);
-    $this->assertEqual('Test submit.', $last_message->message->value);
+    $this->assertEquals('Test submit.', $last_message->message->value);
 
     // Translate a job.
     $translate_job = $this->createJobWithItems('translate');
@@ -67,15 +67,15 @@ class PluginsTest extends TMGMTKernelTestBase {
     $messages = $translate_job->getMessages();
     // array_values() results in numeric keys, which is necessary for list.
     list($debug, $translated, $needs_review) = array_values($messages);
-    $this->assertEqual('Test translator called.', $debug->message->value);
-    $this->assertEqual('debug', $debug->type->value);
-    $this->assertEqual('Test translation created.', $translated->message->value);
-    $this->assertEqual('status', $translated->type->value);
+    $this->assertEquals('Test translator called.', $debug->message->value);
+    $this->assertEquals('debug', $debug->type->value);
+    $this->assertEquals('Test translation created.', $translated->message->value);
+    $this->assertEquals('status', $translated->type->value);
 
     // The third message is specific to a job item and has different state
     // constants.
-    $this->assertEqual('The translation of <a href=":source_url">@source</a> to @language is finished and can now be <a href=":review_url">reviewed</a>.', $needs_review->message->value);
-    $this->assertEqual('status', $needs_review->type->value);
+    $this->assertEquals('The translation of <a href=":source_url">@source</a> to @language is finished and can now be <a href=":review_url">reviewed</a>.', $needs_review->message->value);
+    $this->assertEquals('status', $needs_review->type->value);
 
     $i = 1;
     foreach ($translate_job->getItems() as $item) {
@@ -88,7 +88,7 @@ class PluginsTest extends TMGMTKernelTestBase {
         $expected_text = 'de(de-ch): Stored data';
       }
       $item_data = $item->getData();
-      $this->assertEqual($expected_text, $item_data['dummy']['deep_nesting']['#translation']['#text']);
+      $this->assertEquals($expected_text, $item_data['dummy']['deep_nesting']['#translation']['#text']);
       $i++;
     }
 
@@ -118,8 +118,8 @@ class PluginsTest extends TMGMTKernelTestBase {
 
     $messages = $reject_job->getMessages();
     $last_message = end($messages);
-    $this->assertEqual('This is not supported.', $last_message->message->value);
-    $this->assertEqual('error', $last_message->getType());
+    $this->assertEquals('This is not supported.', $last_message->message->value);
+    $this->assertEquals('error', $last_message->getType());
 
     // A failing job.
     $failing_job = $this->createJobWithItems('fail');
@@ -129,8 +129,8 @@ class PluginsTest extends TMGMTKernelTestBase {
 
     $messages = $failing_job->getMessages();
     $last_message = end($messages);
-    $this->assertEqual('Service not reachable.', $last_message->message->value);
-    $this->assertEqual('error', $last_message->getType());
+    $this->assertEquals('Service not reachable.', $last_message->message->value);
+    $this->assertEquals('error', $last_message->getType());
   }
 
   /**
@@ -188,10 +188,10 @@ class PluginsTest extends TMGMTKernelTestBase {
     foreach ($tests as $test) {
       $escaped = $plugin->escapeText($test['item']);
       // Assert that the string was escaped as expected.
-      $this->assertEqual($escaped, $test['expected']);
+      $this->assertEquals($test['expected'], $escaped);
 
       // Assert that the string is the same as the original when unescaped.
-      $this->assertEqual($plugin->unescapeText($escaped), $test['item']['#text']);
+      $this->assertEquals($test['item']['#text'], $plugin->unescapeText($escaped));
     }
   }
 

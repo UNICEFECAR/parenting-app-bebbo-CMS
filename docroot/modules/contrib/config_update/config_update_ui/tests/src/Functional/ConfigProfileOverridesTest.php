@@ -23,7 +23,7 @@ class ConfigProfileOverridesTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'config',
     'config_update',
     'config_update_ui',
@@ -39,7 +39,7 @@ class ConfigProfileOverridesTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create user and log in.
@@ -62,7 +62,7 @@ class ConfigProfileOverridesTest extends BrowserTestBase {
   public function testConfigOverrides() {
 
     // The Standard install profile contains a system.theme.yml file that
-    // sets up bartik/seven as the default/admin theme. The default config
+    // sets up olivero/claro as the default/admin theme. The default config
     // from the System module has no admin theme and stark as the default
     // theme. So first, run the report on simple configuration and verify
     // that system.theme is not shown (it should not be missing, or added,
@@ -82,20 +82,20 @@ class ConfigProfileOverridesTest extends BrowserTestBase {
 
     // Look at the differences for system.theme and verify it's against
     // the standard profile version, not default version. The line for
-    // default should show bartik as the source; if it's against the system
-    // version, the word bartik would not be there.
+    // default should show olivero as the source; if it's against the system
+    // version, the word olivero would not be there.
     $this->drupalGet('admin/config/development/configuration/report/diff/system.simple/system.theme');
     $session = $this->assertSession();
-    $session->pageTextContains('bartik');
+    $session->pageTextContains('olivero');
 
     // Revert and verify that it reverted to the profile version, not the
     // system module version.
     $this->drupalGet('admin/config/development/configuration/report/revert/system.simple/system.theme');
-    $this->drupalPostForm(NULL, [], 'Revert');
+    $this->submitForm([], 'Revert');
     $this->drupalGet('admin/config/development/configuration/single/export/system.simple/system.theme');
     $session = $this->assertSession();
-    $session->pageTextContains('admin: seven');
-    $session->pageTextContains('default: bartik');
+    $session->pageTextContains('admin: claro');
+    $session->pageTextContains('default: olivero');
   }
 
 }

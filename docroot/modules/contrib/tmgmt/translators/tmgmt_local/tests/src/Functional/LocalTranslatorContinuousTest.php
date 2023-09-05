@@ -18,7 +18,7 @@ class LocalTranslatorContinuousTest extends LocalTranslatorTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_content');
+  protected static $modules = array('tmgmt_content');
 
   /**
    * Test continuous Jobs in TMGMT local.
@@ -32,11 +32,12 @@ class LocalTranslatorContinuousTest extends LocalTranslatorTestBase {
 
     $this->assignee = $this->drupalCreateUser($this->localTranslatorPermissions);
     $this->drupalLogin($this->assignee);
+    $this->drupalGet($this->assignee->toUrl('edit-form'));
     $edit = array(
       'tmgmt_translation_skills[0][language_from]' => 'en',
       'tmgmt_translation_skills[0][language_to]' => 'de',
     );
-    $this->drupalPostForm('user/' . $this->assignee->id() . '/edit', $edit, t('Save'));
+    $this->submitForm($edit, t('Save'));
     $this->loginAsAdmin($this->localManagerPermissions);
 
     // Test continuous integration.
@@ -76,7 +77,7 @@ class LocalTranslatorContinuousTest extends LocalTranslatorTestBase {
     $node->save();
 
     $continuous_job_items = $continuous_job->getItems();
-    $this->assertEqual(count($continuous_job_items), 1);
+    $this->assertCount(1, $continuous_job_items);
     $continuous_job_item = reset($continuous_job_items);
     $this->assertTrue($continuous_job_item->getState() == JobItemInterface::STATE_INACTIVE);
 
@@ -89,7 +90,7 @@ class LocalTranslatorContinuousTest extends LocalTranslatorTestBase {
     $edit = array(
       'tuid' => $this->assignee->id(),
     );
-    $this->drupalPostForm(NULL, $edit, t('Save task'));
+    $this->submitForm($edit, t('Save task'));
 
     $this->drupalLogin($this->assignee);
     $this->drupalGet('translate');
@@ -99,14 +100,14 @@ class LocalTranslatorContinuousTest extends LocalTranslatorTestBase {
     $edit = array(
       'title|0|value[translation]' => 'Text für Job Element mit Typ-Knoten und ID 1.',
     );
-    $this->drupalPostForm(NULL, $edit, t('Save as completed'));
+    $this->submitForm($edit, t('Save as completed'));
 
     $items = $continuous_job->getItems();
     $item = reset($items);
 
     // Check is set to need review.
     $data = $item->getData();
-    $this->assertEqual($data['title']['0']['value']['#translation']['#text'], 'Text für Job Element mit Typ-Knoten und ID 1.');
+    $this->assertEquals('Text für Job Element mit Typ-Knoten und ID 1.', $data['title']['0']['value']['#translation']['#text']);
     $this->assertTrue($continuous_job->getState() == Job::STATE_CONTINUOUS);
     $this->assertTrue($item->getState() == JobItemInterface::STATE_REVIEW);
   }

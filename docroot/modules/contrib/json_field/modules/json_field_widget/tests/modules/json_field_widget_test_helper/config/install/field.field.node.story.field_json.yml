@@ -1,0 +1,21 @@
+uuid: eb09a364-00ef-4be2-97ea-9a1b98b8a70e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_json
+    - node.type.story
+  module:
+    - json_field
+id: node.story.field_json
+field_name: field_json
+entity_type: node
+bundle: story
+label: JSON
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: json

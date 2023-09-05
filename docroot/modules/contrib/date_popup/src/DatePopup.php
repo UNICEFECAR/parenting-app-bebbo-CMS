@@ -22,7 +22,7 @@ class DatePopup extends Date {
     $this->applyDatePopupToForm($form);
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   protected function opBetween($field) {
@@ -31,6 +31,6 @@ class DatePopup extends Date {
     $end->add(new \DateInterval ('P1D'));
     $this->value['max'] = $end->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
     parent::opBetween($field);
-  } 
+  }
 
 }

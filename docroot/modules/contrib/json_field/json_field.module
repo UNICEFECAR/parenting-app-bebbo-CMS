@@ -16,7 +16,7 @@ function json_field_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.json_field':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Provides a JSON field, formatter and views integration.') . '</p>';
+      $output .= '<p>' . t('Provides a JSON field, widgets and a formatter, and Views integration.') . '</p>';
       return $output;
 
     default:
@@ -30,26 +30,4 @@ function json_field_theme() {
   $theme = [];
 
   return $theme;
-}
-
-/**
- * Implements hook_libraries_info().
- */
-function json_field_libraries_info() {
-  $libraries = [
-    'jsonview' => [
-      'name' => 'jsonview',
-      'vendor url' => 'https://github.com/yesmeck/jquery-jsonview/releases',
-      'download url' => 'https://github.com/yesmeck/jquery-jsonview/archive/v1.2.3.tar.gz',
-      'files' => [
-        'js' => [
-          'dist/jquery.jsonview.js' => [],
-        ],
-        'css' => [
-          'dist/jquery.jsonview.css' => [],
-        ],
-      ],
-    ],
-  ];
-  return $libraries;
 }

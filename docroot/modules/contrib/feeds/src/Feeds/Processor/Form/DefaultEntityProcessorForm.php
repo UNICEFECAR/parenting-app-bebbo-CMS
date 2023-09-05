@@ -3,17 +3,20 @@
 namespace Drupal\feeds\Feeds\Processor\Form;
 
 use Drupal\Component\Plugin\ConfigurableInterface;
+use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Config\Config;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\feeds\Plugin\Type\ExternalPluginFormBase;
 use Drupal\feeds\Plugin\Type\Processor\ProcessorInterface;
 use Drupal\user\EntityOwnerInterface;
-use Drupal\user\Entity\User;
+use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * The configuration form for the CSV parser.
+ * The configuration form for the entity processor.
  */
 class DefaultEntityProcessorForm extends ExternalPluginFormBase implements ContainerInjectionInterface {
 
@@ -25,13 +28,53 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
   protected $entityTypeManager;
 
   /**
+   * The action plugin manager.
+   *
+   * @var \Drupal\Component\Plugin\PluginManagerInterface
+   */
+  protected $actionManager;
+
+  /**
+   * The date formatter.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
+
+  /**
+   * The user storage.
+   *
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected $userStorage;
+
+  /**
+   * The user settings.
+   *
+   * @var \Drupal\Core\Config\Config
+   */
+  protected $userSettings;
+
+  /**
    * Constructs a DefaultEntityProcessorForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $action_manager
+   *   The action plugin manager.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
+   *   The date formatter.
+   * @param \Drupal\user\UserStorageInterface $user_storage
+   *   The user storage.
+   * @param \Drupal\Core\Config\Config $user_settings
+   *   The user settings.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, PluginManagerInterface $action_manager, DateFormatterInterface $date_formatter, UserStorageInterface $user_storage, Config $user_settings) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->actionManager = $action_manager;
+    $this->dateFormatter = $date_formatter;
+    $this->userStorage = $user_storage;
+    $this->userSettings = $user_settings;
   }
 
   /**
@@ -39,7 +82,11 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('plugin.manager.action'),
+      $container->get('date.formatter'),
+      $container->get('entity_type.manager')->getStorage('user'),
+      $container->get('config.factory')->get('user.settings'),
     );
   }
 
@@ -71,6 +118,16 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
         ]);
       }
     }
+    $form['insert_new'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Insert new @entities', $tokens),
+      '#description' => $this->t('New @entities will be determined using mappings that are a "unique target".', $tokens),
+      '#options' => [
+        ProcessorInterface::INSERT_NEW => $this->t('Insert new @entities', $tokens),
+        ProcessorInterface::SKIP_NEW => $this->t('Do not insert new @entities', $tokens),
+      ],
+      '#default_value' => $this->plugin->getConfiguration('insert_new'),
+    ];
 
     $form['update_existing'] = [
       '#type' => 'radios',
@@ -136,9 +193,9 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
       $form['owner_id'] = [
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Owner'),
-        '#description' => $this->t('Select the owner of the entities to be created. Leave blank for %anonymous.', ['%anonymous' => \Drupal::config('user.settings')->get('anonymous')]),
+        '#description' => $this->t('Select the owner of the entities to be created. Leave blank for %anonymous.', ['%anonymous' => $this->userSettings->get('anonymous')]),
         '#target_type' => 'user',
-        '#default_value' => User::load($this->plugin->getConfiguration('owner_id')),
+        '#default_value' => $this->userStorage->load($this->plugin->getConfiguration('owner_id')),
         '#states' => [
           'invisible' => [
             'input[name="processor_configuration[owner_feed_author]"]' => ['checked' => TRUE],
@@ -162,6 +219,16 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
         '#description' => $this->t('Check that the author has permission to create the @entity.', $tokens),
         '#default_value' => $this->plugin->getConfiguration('authorize'),
         '#parents' => ['processor_configuration', 'authorize'],
+      ];
+    }
+
+    if ($entity_type->entityClassImplements('\Drupal\Core\Entity\RevisionableInterface')) {
+      $form['advanced']['revision'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('New revision'),
+        '#description' => $this->t('Save as new revision.'),
+        '#default_value' => $this->plugin->getConfiguration('revision'),
+        '#parents' => ['processor_configuration', 'revision'],
       ];
     }
 
@@ -214,7 +281,7 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
       return $this->t('Never');
     }
 
-    return $this->t('after @time', ['@time' => \Drupal::service('date.formatter')->formatInterval($timestamp)]);
+    return $this->t('after @time', ['@time' => $this->dateFormatter->formatInterval($timestamp)]);
   }
 
   /**
@@ -226,7 +293,7 @@ class DefaultEntityProcessorForm extends ExternalPluginFormBase implements Conta
   protected function getUpdateNonExistentActions() {
     $options = [];
 
-    $action_definitions = \Drupal::service('plugin.manager.action')->getDefinitionsByType($this->plugin->entityType());
+    $action_definitions = $this->actionManager->getDefinitionsByType($this->plugin->entityType());
     foreach ($action_definitions as $id => $definition) {
       // Filter out configurable actions.
       $interfaces = class_implements($definition['class']);

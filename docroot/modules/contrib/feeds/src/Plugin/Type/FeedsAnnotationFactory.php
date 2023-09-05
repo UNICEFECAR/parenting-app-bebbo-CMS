@@ -7,7 +7,8 @@ use Drupal\Core\Plugin\Factory\ContainerFactory;
 /**
  * Plugin factory which uses the plugin definition to find arguments.
  *
- * @deprecated in Feeds 8.x-3.0-alpha6, will be removed before Feeds 8.x-3.0.
+ * @deprecated in feeds:8.x-3.0-alpha6, and is removed from feeds:8.x-3.0. Implement \Drupal\Core\Plugin\ContainerFactoryPluginInterface instead.
+ * @see https://www.drupal.org/project/feeds/issues/3136615
  */
 class FeedsAnnotationFactory extends ContainerFactory {
 
@@ -21,7 +22,7 @@ class FeedsAnnotationFactory extends ContainerFactory {
       return parent::createInstance($plugin_id, $configuration);
     }
 
-    @trigger_error('FeedsAnnotationFactory is deprecated in Feeds 8.x-3.0-alpha6 and will be removed before Feeds 8.x-3.0. Implement \Drupal\Core\Plugin\ContainerFactoryPluginInterface instead.', E_USER_DEPRECATED);
+    @trigger_error('FeedsAnnotationFactory is deprecated in feeds:8.x-3.0-alpha6 and will be removed in feeds:8.x-3.0. Implement \Drupal\Core\Plugin\ContainerFactoryPluginInterface instead. See https://www.drupal.org/project/feeds/issues/3136615', E_USER_DEPRECATED);
 
     // Find arguments from the annotation.
     $arguments = [$configuration, $plugin_id, $definition];

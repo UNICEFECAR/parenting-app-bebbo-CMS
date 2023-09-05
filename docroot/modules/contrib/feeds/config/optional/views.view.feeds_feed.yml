@@ -5,7 +5,6 @@ dependencies:
     - system.menu.admin
   module:
     - feeds
-    - system
     - user
 id: feeds_feed
 label: Feeds
@@ -14,7 +13,6 @@ description: ''
 tag: ''
 base_table: feeds_feed
 base_field: fid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -307,7 +305,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: true
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true

@@ -14,7 +14,7 @@ class PurgeLoggerAwareTraitTest extends UnitTestCase {
   /**
    * The mocked logger.
    *
-   * @var \PHPUnit_Framework_MockObject_MockObject|\Psr\Log\LoggerInterface
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Psr\Log\LoggerInterface
    */
   protected $logger;
 

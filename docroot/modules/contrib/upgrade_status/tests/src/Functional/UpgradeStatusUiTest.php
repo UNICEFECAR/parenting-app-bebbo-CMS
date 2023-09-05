@@ -15,7 +15,7 @@ class UpgradeStatusUiTest extends UpgradeStatusTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->drupalLogin($this->drupalCreateUser(['administer software updates']));
   }
@@ -51,51 +51,50 @@ class UpgradeStatusUiTest extends UpgradeStatusTestBase {
     $assert_session->buttonExists('Export selected as HTML');
 
     // Error and no-error test module results should show.
-    $this->assertSame('5 problems', strip_tags($page->find('css', 'tr.project-upgrade_status_test_error td.scan-result')->getHtml()));
-    $this->assertSame($this->getDrupalCoreMajorVersion() < 9 ? 'No problems found' : '1 problem', strip_tags($page->find('css', 'tr.project-upgrade_status_test_9_compatible td.scan-result')->getHtml()));
-    $this->assertSame('No problems found', strip_tags($page->find('css', 'tr.project-upgrade_status_test_10_compatible td.scan-result')->getHtml()));
+    $this->assertSame('7 problems', strip_tags($page->find('css', 'tr.project-upgrade_status_test_error td.scan-result')->getHtml()));
+    $this->assertSame($this->getDrupalCoreMajorVersion() < 10 ? 'No problems found' : '1 problem', strip_tags($page->find('css', 'tr.project-upgrade_status_test_10_compatible td.scan-result')->getHtml()));
+    $this->assertSame('No problems found', strip_tags($page->find('css', 'tr.project-upgrade_status_test_11_compatible td.scan-result')->getHtml()));
 
     // Parent module should show up without errors and submodule should not appear.
-    $this->assertSame($this->getDrupalCoreMajorVersion() < 9 ? 'No problems found' : '2 problems', strip_tags($page->find('css', 'tr.project-upgrade_status_test_submodules td.scan-result')->getHtml()));
+    $this->assertSame($this->getDrupalCoreMajorVersion() < 10 ? 'No problems found' : '2 problems', strip_tags($page->find('css', 'tr.project-upgrade_status_test_submodules td.scan-result')->getHtml()));
     $this->assertEmpty($page->find('css', 'tr.upgrade_status_test_submodules_a'));
 
     // Contrib test modules should show with results.
     $this->assertSame('5 problems', strip_tags($page->find('css', 'tr.project-upgrade_status_test_contrib_error td.scan-result')->getHtml()));
-    $this->assertSame($this->getDrupalCoreMajorVersion() < 9 ? 'No problems found' : '1 problem', strip_tags($page->find('css', 'tr.project-upgrade_status_test_contrib_9_compatible td.scan-result')->getHtml()));
+    $this->assertSame($this->getDrupalCoreMajorVersion() < 10 ? 'No problems found' : '1 problem', strip_tags($page->find('css', 'tr.project-upgrade_status_test_contrib_10_compatible td.scan-result')->getHtml()));
     // This contrib module has a different project name. Ensure the drupal.org link used that.
     $next_major = $this->getDrupalCoreMajorVersion() + 1;
-    $this->assertSession()->linkByHrefExists('https://drupal.org/project/issues/upgrade_status_test_contributed_9_compatible?text=Drupal+' . $next_major . '&status=All');
+    $this->assertSession()->linkByHrefExists('https://drupal.org/project/issues/upgrade_status_test_contributed_10_compatible?text=Drupal+' . $next_major . '&status=All');
 
-    // Click the first '5 problems' link. Should be the custom project.
-    $this->clickLink('5 problems', 1);
-    $this->assertText('Upgrade status test error ' . \Drupal::VERSION);
-    $this->assertText('2 errors found. 3 warnings found.');
-    $this->assertText('Syntax error, unexpected T_STRING on line 3');
+    // Check UI of results for the custom project.
+    $this->drupalGet('/admin/reports/upgrade-status/project/upgrade_status_test_error');
+    $this->assertSession()->pageTextContains('Upgrade status test error');
+    $this->assertSession()->pageTextContains('2 errors found. 5 warnings found.');
+    $this->assertSession()->pageTextContains('Syntax error, unexpected T_STRING on line 3');
 
     // Go forward to the export page and assert that still contains the results
     // as well as an export specific title.
     $this->clickLink('Export as HTML');
-    $this->assertText('Upgrade Status report');
-    $this->assertText('Upgrade status test error ' . \Drupal::VERSION);
-    $this->assertText('Custom projects');
-    $this->assertNoText('Contributed projects');
-    $this->assertText('2 errors found. 3 warnings found.');
-    $this->assertText('Syntax error, unexpected T_STRING on line 3');
+    $this->assertSession()->pageTextContains('Upgrade Status report');
+    $this->assertSession()->pageTextContains('Upgrade status test error');
+    $this->assertSession()->pageTextContains('Custom projects');
+    $this->assertSession()->pageTextNotContains('Contributed projects');
+    $this->assertSession()->pageTextContains('2 errors found. 5 warnings found.');
+    $this->assertSession()->pageTextContains('Syntax error, unexpected T_STRING on line 3');
 
-    // Go back to the listing page and click over to exporting in single ASCII.
-    $this->drupalGet(Url::fromRoute('upgrade_status.report'));
-    $this->clickLink('5 problems', 1);
+    // Go back to the results page and click over to exporting in single ASCII.
+    $this->drupalGet('/admin/reports/upgrade-status/project/upgrade_status_test_error');
     $this->clickLink('Export as text');
-    $this->assertText('Upgrade status test error ' . \Drupal::VERSION);
-    $this->assertText('CUSTOM PROJECTS');
-    $this->assertNoText('CONTRIBUTED PROJECTS');
-    $this->assertText('2 errors found. 3 warnings found.');
-    $this->assertText('Syntax error, unexpected T_STRING on line 3');
+    $this->assertSession()->pageTextContains('Upgrade status test error');
+    $this->assertSession()->pageTextContains('CUSTOM PROJECTS');
+    $this->assertSession()->pageTextNotContains('CONTRIBUTED PROJECTS');
+    $this->assertSession()->pageTextContains('2 errors found. 5 warnings found.');
+    $this->assertSession()->pageTextContains('Syntax error, unexpected T_STRING on line 3');
 
     // Run partial export of multiple projects.
     $edit = [
       'manual[data][list][upgrade_status_test_error]' => TRUE,
-      ($this->getDrupalCoreMajorVersion() < 9 ? 'relax' : 'manual') . '[data][list][upgrade_status_test_9_compatible]' => TRUE,
+      ($this->getDrupalCoreMajorVersion() < 10 ? 'relax' : 'manual') . '[data][list][upgrade_status_test_10_compatible]' => TRUE,
       'collaborate[data][list][upgrade_status_test_contrib_error]' => TRUE,
     ];
     $expected = [
@@ -103,16 +102,17 @@ class UpgradeStatusUiTest extends UpgradeStatusTestBase {
       'Export selected as text' => ['CONTRIBUTED PROJECTS', 'CUSTOM PROJECTS'],
     ];
     foreach ($expected as $button => $assert) {
-      $this->drupalPostForm('admin/reports/upgrade-status', $edit, $button);
-      $this->assertText($assert[0]);
-      $this->assertText($assert[1]);
-      $this->assertText('Upgrade status test contrib error ' . \Drupal::VERSION);
-      $this->assertText('Upgrade status test 9 compatible ' . \Drupal::VERSION);
-      $this->assertText('Upgrade status test error ' . \Drupal::VERSION);
-      $this->assertNoText('Upgrade status test root module');
-      $this->assertNoText('Upgrade status test contrib 9 compatbile');
-      $this->assertText('2 errors found. 3 warnings found.');
-      $this->assertText('Syntax error, unexpected T_STRING on line 3');
+      $this->drupalGet('admin/reports/upgrade-status');
+      $this->submitForm($edit, $button);
+      $this->assertSession()->pageTextContains($assert[0]);
+      $this->assertSession()->pageTextContains($assert[1]);
+      $this->assertSession()->pageTextContains('Upgrade status test contrib error');
+      $this->assertSession()->pageTextContains('Upgrade status test 10 compatible');
+      $this->assertSession()->pageTextContains('Upgrade status test error');
+      $this->assertSession()->pageTextNotContains('Upgrade status test root module');
+      $this->assertSession()->pageTextNotContains('Upgrade status test contrib 9 compatbile');
+      $this->assertSession()->pageTextContains('2 errors found. 5 warnings found.');
+      $this->assertSession()->pageTextContains('Syntax error, unexpected T_STRING on line 3');
     }
   }
 
@@ -125,7 +125,7 @@ class UpgradeStatusUiTest extends UpgradeStatusTestBase {
       $authenticated->grantPermission('upgrade status invalid permission test');
       $authenticated->save();
       $this->drupalGet(Url::fromRoute('upgrade_status.report'));
-      $this->assertSession()->pageTextContains('"upgrade status invalid permission test" of user role: "Authenticated user".');
+      $this->assertSession()->pageTextContains('Permissions of user role: "Authenticated user":upgrade status invalid permission test');
     }
   }
 

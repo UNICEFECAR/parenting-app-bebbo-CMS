@@ -36,7 +36,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/countable.count.php
    */
-  public function count() {
+  public function count(): int {
     return count($this->instances);
   }
 
@@ -45,6 +45,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/class.iterator.php
    */
+  #[\ReturnTypeWillChange]
   public function current() {
     return current($this->instances);
   }
@@ -134,6 +135,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/iterator.key.php
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     return key($this->instances);
   }
@@ -143,6 +145,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/iterator.next.php
    */
+  #[\ReturnTypeWillChange]
   public function next() {
     return next($this->instances);
   }
@@ -152,6 +155,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/iterator.rewind.php
    */
+  #[\ReturnTypeWillChange]
   public function rewind() {
     return reset($this->instances);
   }
@@ -188,7 +192,7 @@ class TxBuffer implements TxBufferInterface {
    *
    * @see http://php.net/manual/en/iterator.valid.php
    */
-  public function valid() {
+  public function valid(): bool {
     return is_null(key($this->instances)) ? FALSE : TRUE;
   }
 

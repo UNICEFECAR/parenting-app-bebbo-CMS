@@ -2,11 +2,11 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
+use Drupal\Core\Database\Connection;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\FeedClearHandler;
 use Drupal\feeds\State;
 use Drupal\feeds\StateInterface;
-use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -39,12 +39,18 @@ class FeedClearHandlerTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->dispatcher = new EventDispatcher();
     $this->context = [];
-    $this->handler = new FeedClearHandler($this->dispatcher);
+    $this->handler = $this->getMockBuilder(FeedClearHandler::class)
+      ->setConstructorArgs([
+        $this->dispatcher,
+        $this->createMock(Connection::class),
+      ])
+      ->setMethods(['batchSet'])
+      ->getMock();
     $this->handler->setStringTranslation($this->getStringTranslationStub());
 
     $state = new State();
@@ -93,7 +99,7 @@ class FeedClearHandlerTest extends FeedsUnitTestCase {
     $this->feed->expects($this->once())
       ->method('unlock');
 
-    $this->expectException(Exception::class);
+    $this->expectException(\Exception::class);
     $this->handler->clear($this->feed, $this->context);
   }
 

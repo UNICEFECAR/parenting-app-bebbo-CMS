@@ -1,18 +1,25 @@
-json_field.formatter:
-#  version: VERSION
+jquery.jsonview:
+  version: "v1.2.3"
+  remote: https://github.com/yesmeck/jquery-jsonview
+  license:
+    name: MIT
+    url: https://github.com/jquery/jquery-color/blob/2.1.2/MIT-LICENSE.txt
+    gpl-compatible: true
   js:
-    # Core.
-    assets/js/json_field.js: {}
-    # jquery-jsonview Library: https://github.com/yesmeck/jquery-jsonview/releases.
-    /libraries/jsonview/dist/jquery.jsonview.js: {}
+    /libraries/jquery-jsonview/dist/jquery.jsonview.js: {}
   css:
     component:
-      # Core.
+      /libraries/jquery-jsonview/dist/jquery.jsonview.css: {}
+
+json_field.formatter:
+  js:
+    assets/js/json_field.js: {}
+  css:
+    component:
       assets/css/json_field.css: {}
-      # jquery-jsonview Library: https://github.com/yesmeck/jquery-jsonview/releases.
-      /libraries/jsonview/dist/jquery.jsonview.css: {}
   dependencies:
+    - json_field/jquery.jsonview
     - core/jquery
-    - core/jquery.once
     - core/drupal
     - core/drupalSettings
+    - core/once

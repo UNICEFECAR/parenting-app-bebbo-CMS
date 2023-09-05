@@ -33,7 +33,7 @@ function toolbar_menu_clean_toolbar_alter(&$items) {
       $items['tray'] = $items['administration']['tray'];
     }
     
-    unset($items['administration']);
+    $items['administration']['#wrapper_attributes']['class'] = 'visually-hidden';
 
     // Attaches library to show child menu items,
     // since it was attached to 'administration' item before.

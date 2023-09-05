@@ -14,7 +14,7 @@ class CsvParserTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'field',
     'node',
     'feeds',
@@ -26,7 +26,7 @@ class CsvParserTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->setUpBodyField();
   }
@@ -90,7 +90,7 @@ class CsvParserTest extends FeedsKernelTestBase {
 
     // Check the values on the node.
     $node = Node::load(1);
-    $this->assertEquals(1, $node->feeds_item->guid);
+    $this->assertEquals(1, $node->get('feeds_item')->getItemByFeed($feed)->guid);
     $this->assertEquals('Window washer, Chimney sweeper', $node->title->value);
     $this->assertEquals('outside', $node->field_facade->value);
     $this->assertEquals('Having a meal', $node->field_apres_ski->value);
@@ -148,9 +148,87 @@ class CsvParserTest extends FeedsKernelTestBase {
 
     // Check the values on the node.
     $node = Node::load(1);
-    $this->assertEquals(1, $node->feeds_item->guid);
+    $this->assertEquals(1, $node->get('feeds_item')->getItemByFeed($feed)->guid);
     $this->assertSame('window washer, chimney sweeper', $node->title->value);
     $this->assertSame('Salmon', $node->field_a_la_carte->value);
+  }
+
+  /**
+   * Tests that Blank sources are ignored by the CSV parser.
+   */
+  public function testImportWithBlankSource() {
+    $this->setUpBodyField();
+    $this->createFieldWithStorage('field_alpha');
+
+    // Create a feed type using the XML parser.
+    $feed_type = $this->createFeedType([
+      'fetcher' => 'directory',
+      'fetcher_configuration' => [
+        'allowed_extensions' => 'csv',
+      ],
+      'parser' => 'csv',
+      'parser_configuration' => [],
+      'custom_sources' => [
+        'title' => [
+          'label' => 'Title',
+          'value' => 'title',
+          'machine_name' => 'title',
+          'type' => 'csv',
+        ],
+        'body' => [
+          'label' => 'Body',
+          'value' => 'body',
+          'machine_name' => 'body',
+          'type' => 'blank',
+        ],
+        'alpha' => [
+          'label' => 'Alpha',
+          'value' => 'alpha',
+          'machine_name' => 'alpha',
+          'type' => 'blank',
+        ],
+      ],
+      'mappings' => [
+        [
+          'target' => 'title',
+          'map' => ['value' => 'title'],
+          'unique' => ['value' => TRUE],
+          'settings' => [
+            'language' => NULL,
+          ],
+        ],
+        [
+          'target' => 'body',
+          'map' => ['value' => 'body'],
+          'settings' => [
+            'format' => 'plain_text',
+            'language' => NULL,
+          ],
+        ],
+        [
+          'target' => 'field_alpha',
+          'map' => ['value' => 'alpha'],
+          'settings' => ['format' => 'plain_text'],
+        ],
+      ],
+    ]);
+
+    // Create a feed and import.
+    $feed = $this->createFeed($feed_type->id(), [
+      'source' => $this->resourcesPath() . '/csv/content.csv',
+    ]);
+    $feed->import();
+
+    // Assert that two nodes are created.
+    $this->assertEquals(2, $feed->getItemCount());
+    $this->assertNodeCount(2);
+
+    // Assert that node has a title, but not a body because a custom source was
+    // mapped to that.
+    $node = Node::load(1);
+    $this->assertEquals('Lorem ipsum', $node->title->value);
+    $this->assertTrue($node->body->isEmpty());
+    $this->assertTrue($node->field_alpha->isEmpty());
   }
 
 }

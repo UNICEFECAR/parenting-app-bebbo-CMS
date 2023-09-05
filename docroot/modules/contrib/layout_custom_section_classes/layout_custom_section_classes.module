@@ -1,0 +1,431 @@
+<?php
+
+/**
+ * @file
+ * Hooks for Layout Custom Section Classes module.
+ */
+
+use CssLint\Linter;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\layout_custom_section_classes\Form\GlobalSettingsForm;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_custom_section_classes_preprocess_layout(&$variables) {
+  $globalConfig = \Drupal::config(GlobalSettingsForm::SETTINGS);
+
+  if ($globalConfig->get('allowed_section_attributes.class_list') && isset($variables['settings']['custom_class_choose'])) {
+    foreach ($variables['settings']['custom_class_choose'] as $className => $classValue) {
+      if (!empty($classValue)) {
+        $variables["attributes"]["class"][] = $className;
+      }
+    }
+  }
+
+  if ($globalConfig->get('allowed_section_attributes.class') && isset($variables['settings']['custom_classes']) && $variables['settings']['custom_classes'] !== '') {
+    $variables["attributes"]["class"][] = $variables['settings']['custom_classes'];
+  }
+
+  if ($globalConfig->get('allowed_section_attributes.id') && isset($variables['settings']['custom_id']) && $variables['settings']['custom_id'] !== '') {
+    $variables["attributes"]["id"] = $variables['settings']['custom_id'];
+  }
+
+  if ($globalConfig->get('allowed_section_attributes.style') && isset($variables['settings']['custom_styles']) && $variables['settings']['custom_styles'] !== '') {
+    $variables["attributes"]["style"] = $variables['settings']['custom_styles'];
+  }
+
+  if ($globalConfig->get('allowed_section_attributes.data') && isset($variables['settings']['custom_data_attributes']) && $variables['settings']['custom_data_attributes'] !== '') {
+    $dataAttributes = $variables['settings']['custom_data_attributes'];
+
+    $data_attributes = preg_split('/\R/', $dataAttributes);
+    foreach ($data_attributes as $data_attribute) {
+      $data_attribute = explode('|', $data_attribute);
+      // Values are optional for data-* attributes.
+      $variables['attributes'][$data_attribute[0]] = $data_attribute[1] ?? TRUE;
+    }
+
+  }
+
+  if (!empty($variables['region_attributes'])) {
+    // Looping through the region attributes because its presence means the
+    // region has content, and its absence means we can skip it.
+    foreach ($variables['region_attributes'] as $region => $attributes) {
+      if ($globalConfig->get('allowed_section_region_attributes.class_list') && isset($variables['settings']['regions'][$region]['region_class_choose'])) {
+        foreach ($variables['settings']['regions'][$region]['region_class_choose'] as $className => $classValue) {
+          if (!empty($classValue)) {
+            $attributes->addClass($className);
+          }
+        }
+      }
+
+      if ($globalConfig->get('allowed_section_region_attributes.id') && !empty($variables['settings']['regions'][$region]['region_id'])) {
+        $attributes->setAttribute('id', $variables['settings']['regions'][$region]['region_id']);
+      }
+
+      if ($globalConfig->get('allowed_section_region_attributes.class') && !empty($variables['settings']['regions'][$region]['region_classes'])) {
+        $attributes->addClass($variables['settings']['regions'][$region]['region_classes']);
+      }
+
+      if ($globalConfig->get('allowed_section_region_attributes.style') && !empty($variables['settings']['regions'][$region]['region_styles'])) {
+        $attributes->setAttribute('style', $variables['settings']['regions'][$region]['region_styles']);
+      }
+
+      if ($globalConfig->get('allowed_section_region_attributes.data') && !empty($variables['settings']['regions'][$region]['region_data'])) {
+        $dataAttributes = $variables['settings']['regions'][$region]['region_data'];
+
+        $data_attributes = preg_split('/\R/', $dataAttributes);
+        foreach ($data_attributes as $data_attribute) {
+          $data_attribute = explode('|', $data_attribute);
+          // Values are optional for data-* attributes.
+          $attributes->setAttribute($data_attribute[0], $data_attribute[1] ?? TRUE);
+        }
+
+      }
+
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_custom_section_classes_form_layout_builder_configure_section_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $formObject = $form_state->getFormObject();
+  $layout = $formObject->getLayout();
+  $config = $layout->getConfiguration();
+
+  $globalConfig = \Drupal::config(GlobalSettingsForm::SETTINGS);
+
+  $classList = [];
+  $classListString = $globalConfig->get('class_list');
+  foreach ($classListString as $classListItem) {
+    $data_attribute = explode('|', $classListItem);
+    $classList[$data_attribute[0]] = (!empty($data_attribute[1])) ?
+      $data_attribute[1] . ' (' . $data_attribute[0] . ')' :
+      $data_attribute[0];
+  }
+
+  if (\Drupal::currentUser()->hasPermission('administer layout builder section attributes')) {
+    $id = $config['custom_id'] ?? '';
+    $classes = $config['custom_classes'] ?? '';
+    $classListValue = $config['custom_class_choose'] ?? [];
+    $styles = $config['custom_styles'] ?? '';
+    $dataAttributes = $config['custom_data_attributes'] ?? '';
+
+    if ($globalConfig->get('allowed_section_attributes.id')) {
+      $form['layout_settings']['custom_id'] = [
+        '#type' => 'textfield',
+        '#title' => t('ID'),
+        '#description' => t('An HTML identifier unique to the page.'),
+        '#default_value' => $id ?? '',
+      ];
+    }
+
+    if ($globalConfig->get('allowed_section_attributes.class_list')) {
+      $form['layout_settings']['custom_class_choose'] = [
+        '#type' => 'checkboxes',
+        '#title' => t('Choose classes'),
+        '#description' => t('Check classes to apply them.'),
+        '#options' => $classList,
+        '#default_value' => $classListValue ?? [],
+      ];
+    }
+
+    if ($globalConfig->get('allowed_section_attributes.class')) {
+      $form['layout_settings']['custom_classes'] = [
+        '#type' => 'textfield',
+        '#title' => t('Custom Class(es)'),
+        '#description' => t('Classes to be applied. Multiple classes should be separated by a space.'),
+        '#default_value' => $classes ?? '',
+      ];
+    }
+
+    if ($globalConfig->get('allowed_section_attributes.style')) {
+      $form['layout_settings']['custom_styles'] = [
+        '#type' => 'textfield',
+        '#title' => t('Style'),
+        '#description' => t('Inline CSS styles. <em>In general, inline CSS styles should be avoided.</em>'),
+        '#default_value' => $styles ?? '',
+      ];
+    }
+
+    if ($globalConfig->get('allowed_section_attributes.data')) {
+      $form['layout_settings']['custom_data_attributes'] = [
+        '#type' => 'textarea',
+        '#title' => t('Data-* attributes'),
+        '#description' => t('Custom attributes, which are available to both CSS and JS.<br><br>Each attribute should be entered on its own line with a pipe (|) separating its name and its optional value:<br>data-test|example-value<br>data-attribute-with-no-value'),
+        '#default_value' => $dataAttributes ?? '',
+      ];
+    }
+  }
+
+  if (\Drupal::currentUser()->hasPermission('administer layout builder sections region attributes')) {
+    if ($globalConfig->get('allowed_section_region_attributes.id') ||
+      $globalConfig->get('allowed_section_region_attributes.class') ||
+      $globalConfig->get('allowed_section_region_attributes.class_list') ||
+      $globalConfig->get('allowed_section_region_attributes.style') ||
+      $globalConfig->get('allowed_section_region_attributes.data')
+    ) {
+      $form['layout_settings']['regions'] = [
+        '#type' => 'details',
+        '#title' => t('Region attributes'),
+        '#tree' => TRUE,
+      ];
+
+      foreach ($layout->getPluginDefinition()->getRegions() as $id => $region) {
+        $form['layout_settings']['regions'][$id] = [
+          '#type' => 'fieldset',
+          '#title' => $region['label'],
+        ];
+
+        if ($globalConfig->get('allowed_section_region_attributes.id')) {
+          $form['layout_settings']['regions'][$id]['region_id'] = [
+            '#type' => 'textfield',
+            '#title' => t('ID'),
+            '#description' => t('An HTML identifier unique to the page.'),
+            '#default_value' => $config['regions'][$id]['region_id'] ?? '',
+          ];
+        }
+
+        if ($globalConfig->get('allowed_section_region_attributes.class_list')) {
+          $form['layout_settings']['regions'][$id]['region_class_choose'] = [
+            '#type' => 'checkboxes',
+            '#title' => t('Choose classes'),
+            '#description' => t('Check classes to apply them.'),
+            '#options' => $classList,
+            '#default_value' => $config['regions'][$id]['region_class_choose'] ?? [],
+          ];
+        }
+
+        if ($globalConfig->get('allowed_section_region_attributes.class')) {
+          $form['layout_settings']['regions'][$id]['region_classes'] = [
+            '#type' => 'textfield',
+            '#title' => t('Class'),
+            '#description' => t('Classes to be applied. Multiple classes should be separated by a space.'),
+            '#default_value' => $config['regions'][$id]['region_classes'] ?? '',
+          ];
+        }
+
+        if ($globalConfig->get('allowed_section_region_attributes.style')) {
+          $form['layout_settings']['regions'][$id]['region_styles'] = [
+            '#type' => 'textfield',
+            '#title' => t('Style'),
+            '#description' => t('Inline CSS styles. <em>In general, inline CSS styles should be avoided.</em>'),
+            '#default_value' => $config['regions'][$id]['region_styles'] ?? '',
+          ];
+        }
+
+        if ($globalConfig->get('allowed_section_region_attributes.data')) {
+          $form['layout_settings']['regions'][$id]['region_data'] = [
+            '#type' => 'textarea',
+            '#title' => t('Data-* attributes'),
+            '#description' => t('Custom attributes, which are available to both CSS and JS.<br><br>Each attribute should be entered on its own line with a pipe (|) separating its name and its optional value:<br>data-test|example-value<br>data-attribute-with-no-value'),
+            '#default_value' => $config['regions'][$id]['region_data'] ?? '',
+          ];
+        }
+
+      }
+    }
+
+  }
+
+  // Our submit handler must execute before the default one, because the
+  // default handler stores the section & component data in the tempstore
+  // and we need to update those objects before that happens.
+  array_unshift($form['#validate'], '_layout_custom_section_classes_validate_form');
+  array_unshift($form['#submit'], '_layout_custom_section_classes_submit_form');
+}
+
+/**
+ * Helper function to validate CSS classes.
+ *
+ * @param string $value
+ *   The CSS class to be validated.
+ *
+ * @return bool
+ *   Whether or not the class is valid.
+ */
+function _layout_custom_section_classes_validate_css_class($value) {
+  if ($value == Html::cleanCssIdentifier($value)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Validation for custom fields in Layout Section settings.
+ */
+function _layout_custom_section_classes_validate_form(array &$form, FormStateInterface $form_state) {
+  $values = $form_state->getValues();
+
+  // Validate block attributes.
+  if (isset($values['layout_settings']['custom_id']) && !_layout_custom_section_classes_validate_css_class($values['layout_settings']['custom_id'])) {
+    $form_state->setError($form['layout_settings']['custom_id'], t('Element ID must be a valid CSS ID'));
+  }
+
+  if (isset($values['layout_settings']['custom_classes'])) {
+    $classes = explode(' ', $values['layout_settings']['custom_classes']);
+    foreach ($classes as $class) {
+      if (!_layout_custom_section_classes_validate_css_class($class)) {
+        $form_state->setError($form['layout_settings']['custom_classes'], t('Classes must be valid CSS classes'));
+        break;
+      }
+    }
+  }
+
+  if (isset($values['layout_settings']['custom_styles'])) {
+    $cssLinter = new Linter();
+    $style_validity = $cssLinter->lintString('.selector {' . $values['layout_settings']['custom_styles'] . '}');
+    if (!$style_validity) {
+      $form_state->setError($form['layout_settings']['custom_styles'], t('Inline styles must be valid CSS'));
+    }
+  }
+
+  if (isset($values['layout_settings']['custom_data_attributes'])) {
+    $data_attributes = preg_split('/\R/', $values['layout_settings']['custom_data_attributes']);
+    foreach ($data_attributes as $data_attribute) {
+      if (empty($data_attribute)) {
+        break;
+      }
+      $data_attribute = explode('|', $data_attribute);
+      if (substr($data_attribute[0], 0, 5) !== "data-") {
+        $form_state->setError($form['layout_settings']['custom_data_attributes'], t('Data attributes must being with "data-"'));
+      }
+    }
+  }
+
+  // Region attribute checks.
+  $regionsToCheck = $form_state->getValue(['layout_settings', 'regions']) ?? [];
+  foreach ($regionsToCheck as $region => $regionOptions) {
+    if (isset($regionOptions['region_id']) && !_layout_custom_section_classes_validate_css_class($regionOptions['region_id'])) {
+      $form_state->setError($form['layout_settings']['regions'][$region]['region_id'], t('Element ID must be a valid CSS ID'));
+    }
+
+    if (isset($regionOptions['region_classes'])) {
+      $classes = explode(' ', $regionOptions['region_classes']);
+      foreach ($classes as $class) {
+        if (!_layout_custom_section_classes_validate_css_class($class)) {
+          $form_state->setError($form['layout_settings']['regions'][$region]['region_classes'], t('Classes must be valid CSS classes'));
+          break;
+        }
+      }
+    }
+
+    if (isset($regionOptions['region_styles'])) {
+      $cssLinter = new Linter();
+      $style_validity = $cssLinter->lintString('.selector {' . $regionOptions['region_styles'] . '}');
+      if (!$style_validity) {
+        $form_state->setError($form['layout_settings']['regions'][$region]['region_styles'], t('Inline styles must be valid CSS'));
+      }
+    }
+
+    if (isset($regionOptions['region_data'])) {
+      $data_attributes = preg_split('/\R/', $regionOptions['region_data']);
+      foreach ($data_attributes as $data_attribute) {
+        if (empty($data_attribute)) {
+          break;
+        }
+        $data_attribute = explode('|', $data_attribute);
+        if (substr($data_attribute[0], 0, 5) !== "data-") {
+          $form_state->setError($form['layout_settings']['regions'][$region]['region_data'], t('Data attributes must being with "data-"'));
+        }
+      }
+    }
+
+  }
+}
+
+/**
+ * Submit logic for custom fields in Layout Section settings.
+ */
+function _layout_custom_section_classes_submit_form(array &$form, FormStateInterface $form_state) {
+  $formObject = $form_state->getFormObject();
+  $config = $formObject->getLayout()->getConfiguration();
+  if (!$config) {
+    $config = [];
+  }
+
+  $custom_id = $form_state->getValue(['layout_settings', 'custom_id']);
+  $config['custom_id'] = _layout_custom_section_classes_sanitize_class_string($custom_id);
+
+  $custom_classes = $form_state->getValue(['layout_settings', 'custom_classes']);
+  $config['custom_classes'] = _layout_custom_section_classes_sanitize_class_string($custom_classes);
+
+  $config['custom_class_choose'] =
+    $form_state->getValue(['layout_settings', 'custom_class_choose']);
+
+  $config['custom_styles'] =
+    $form_state->getValue(['layout_settings', 'custom_styles']);
+  if (isset($config['custom_styles'])) {
+    $config['custom_styles'] = Xss::filter($config['custom_styles']);
+  }
+
+  $config['custom_data_attributes'] =
+    $form_state->getValue(['layout_settings', 'custom_data_attributes']);
+  if (isset($config['custom_data_attributes'])) {
+    $config['custom_data_attributes'] = Xss::filter($config['custom_data_attributes']);
+  }
+
+  $regionsToCheck = $form_state->getValue(['layout_settings', 'regions']) ?? [];
+  foreach ($regionsToCheck as $region => $regionOptions) {
+    $config['regions'][$region]['region_id'] = _layout_custom_section_classes_sanitize_class_string($regionOptions['region_id']);
+    $config['regions'][$region]['region_class_choose'] = $regionOptions['region_class_choose'];
+    $config['regions'][$region]['region_classes'] = _layout_custom_section_classes_sanitize_class_string($regionOptions['region_classes']);
+
+    $config['regions'][$region]['region_styles'] = $regionOptions['region_styles'] ?? NULL;
+    if (isset($config['regions'][$region]['region_styles'])) {
+      $config['regions'][$region]['region_styles'] = Xss::filter($config['regions'][$region]['region_styles']);
+    }
+
+    $config['regions'][$region]['region_data'] = $regionOptions['region_data'];
+    if (isset($config['regions'][$region]['region_data'])) {
+      $config['regions'][$region]['region_data'] = Xss::filter($config['regions'][$region]['region_data']);
+    }
+  }
+
+  $formObject->getLayout()->setConfiguration($config);
+}
+
+/**
+ * Sanitize class to be valid.
+ */
+function _layout_custom_section_classes_sanitize_class_string($class = '') {
+  if (!isset($class)) {
+    return NULL;
+  }
+  return implode(' ', array_map(function ($class) {
+    return Html::getClass($class);
+  }, explode(' ', Xss::filter($class))));
+}
+
+/**
+ * Implements hook_help().
+ */
+function layout_custom_section_classes_help($route_name, RouteMatchInterface $route_match) {
+  // To avoid phpmd UnusedFormalParameter errors since there is a fix for that
+  // https://github.com/phpmd/phpmd/issues/24
+  unset($route_match);
+  switch ($route_name) {
+    // Main module help for the blizz_table_field module.
+    case 'help.page.layout_custom_section_classes':
+      $text = file_get_contents(dirname(__FILE__) . '/README.md');
+      if (!\Drupal::moduleHandler()->moduleExists('markdown')) {
+        return '<pre>' . $text . '</pre>';
+      }
+      else {
+        // Use the Markdown filter to render the README.
+        $filter_manager = \Drupal::service('plugin.manager.filter');
+        $settings = \Drupal::configFactory()->get('markdown.settings')->getRawData();
+        $config = ['settings' => $settings];
+        $filter = $filter_manager->createInstance('markdown', $config);
+        return $filter->process($text, 'en');
+      }
+
+    default:
+  }
+}

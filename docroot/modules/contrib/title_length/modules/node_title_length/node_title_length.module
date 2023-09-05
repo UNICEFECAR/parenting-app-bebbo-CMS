@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains node_title_length.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\node_title_length\NodeTitleLength;
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function node_title_length_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type): void {
+  if (!empty($fields['title']) && $entity_type->id() === 'node') {
+    $fields['title']->setSetting('max_length', NodeTitleLength::getLength());
+  }
+}

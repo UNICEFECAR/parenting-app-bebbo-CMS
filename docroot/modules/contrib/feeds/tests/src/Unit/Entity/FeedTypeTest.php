@@ -33,9 +33,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
    */
   protected function getFeedTypeMock($feed_type_id, array $stubs = []) {
     // Plugin manager.
-    $pluginManager = $this->getMockBuilder(FeedsPluginManager::class)
-      ->disableOriginalConstructor()
-      ->getMock();
+    $pluginManager = $this->createMock(FeedsPluginManager::class);
     $pluginManager->expects($this->any())
       ->method('getDefinitions')
       ->will($this->returnValue([]));
@@ -55,6 +53,8 @@ class FeedTypeTest extends FeedsUnitTestCase {
             'source1' => [
               'label' => 'Source 1',
               'value' => 'Source 1',
+              'machine_name' => 'source1',
+              'type' => 'blank',
             ],
           ],
         ],
@@ -64,8 +64,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
       ->getMock();
 
     // Parser.
-    $parser = $this->getMockBuilder(ParserInterface::class)
-      ->getMock();
+    $parser = $this->createMock(ParserInterface::class);
     $parser->expects($this->any())
       ->method('getMappingSources')
       ->will($this->returnValue([]));
@@ -84,7 +83,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->feedType = $this->getFeedTypeMock($this->randomMachineName());
@@ -133,6 +132,7 @@ class FeedTypeTest extends FeedsUnitTestCase {
     $this->assertSame($this->feedType, $this->feedType->addCustomSource('source2', [
       'label' => 'Source 2',
       'value' => 'Source 2',
+      'type' => 'blank',
     ]));
 
     // Assert that the source exists as one of the mapping sources.
@@ -140,10 +140,14 @@ class FeedTypeTest extends FeedsUnitTestCase {
       'source1' => [
         'label' => 'Source 1',
         'value' => 'Source 1',
+        'machine_name' => 'source1',
+        'type' => 'blank',
       ],
       'source2' => [
         'label' => 'Source 2',
         'value' => 'Source 2',
+        'type' => 'blank',
+        'machine_name' => 'source2',
       ],
     ];
     $this->assertSame($expected, $this->feedType->getMappingSources());
@@ -157,11 +161,72 @@ class FeedTypeTest extends FeedsUnitTestCase {
     $expected = [
       'label' => 'Source 1',
       'value' => 'Source 1',
+      'machine_name' => 'source1',
+      'type' => 'blank',
     ];
     $this->assertSame($expected, $this->feedType->getCustomSource('source1'));
 
     // Get a non-existing source.
     $this->assertSame(NULL, $this->feedType->getCustomSource('non_existing'));
+  }
+
+  /**
+   * @covers ::getCustomSources
+   */
+  public function testGetCustomSources() {
+    // Add a custom source.
+    $this->assertSame($this->feedType, $this->feedType->addCustomSource('source2', [
+      'label' => 'Source 2',
+      'value' => 'Source 2',
+      'type' => 'blank',
+    ]));
+
+    $expected = [
+      'source1' => [
+        'label' => 'Source 1',
+        'value' => 'Source 1',
+        'machine_name' => 'source1',
+        'type' => 'blank',
+      ],
+      'source2' => [
+        'label' => 'Source 2',
+        'value' => 'Source 2',
+        'type' => 'blank',
+        'machine_name' => 'source2',
+      ],
+    ];
+    $this->assertSame($expected, $this->feedType->getCustomSources());
+  }
+
+  /**
+   * @covers ::getCustomSources
+   */
+  public function testGetCustomSourcesWithType() {
+    // Add a custom source of a different type.
+    $this->assertSame($this->feedType, $this->feedType->addCustomSource('source2', [
+      'label' => 'Source 2',
+      'value' => 'Source 2',
+      'type' => 'foo',
+    ]));
+
+    $expected = [
+      'source1' => [
+        'label' => 'Source 1',
+        'value' => 'Source 1',
+        'machine_name' => 'source1',
+        'type' => 'blank',
+      ],
+    ];
+    $this->assertSame($expected, $this->feedType->getCustomSources(['blank']));
+    $expected = [
+      'source2' => [
+        'label' => 'Source 2',
+        'value' => 'Source 2',
+        'type' => 'foo',
+        'machine_name' => 'source2',
+      ],
+    ];
+    $this->assertSame($expected, $this->feedType->getCustomSources(['foo']));
   }
 
   /**

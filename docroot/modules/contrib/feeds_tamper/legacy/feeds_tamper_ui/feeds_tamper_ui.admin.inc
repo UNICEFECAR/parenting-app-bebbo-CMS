@@ -2,8 +2,9 @@
 
 /**
  * @file
- * Forms and their accompanying validation and submit functions for Feeds Tamper
- * UI.
+ * Forms and their accompanying validation.
+ *
+ * The submit functions for Feeds Tamper UI.
  */
 
 /**

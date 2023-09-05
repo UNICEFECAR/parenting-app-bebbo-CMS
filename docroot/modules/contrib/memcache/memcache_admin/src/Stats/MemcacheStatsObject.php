@@ -38,7 +38,7 @@ class MemcacheStatsObject implements MemcacheStatsInterface {
    * @inheritDoc
    */
   public function getExtension(): string {
-    return isset($this->stats['extension']) ?? self::NA;
+    return $this->stats['extension'] ?? self::NA;
   }
 
   /**
@@ -71,14 +71,14 @@ class MemcacheStatsObject implements MemcacheStatsInterface {
    * @inheritDoc
    */
   public function getCurrentConnections(): string {
-    return isset($this->stats['curr_connections']) ?? '0';
+    return $this->stats['curr_connections'] ?? '0';
   }
 
   /**
    * @inheritDoc
    */
   public function getTotalConnections(): string {
-    return isset($this->stats['total_connections']) ?? '0';
+    return $this->stats['total_connections'] ?? '0';
   }
 
   /**
@@ -122,8 +122,8 @@ class MemcacheStatsObject implements MemcacheStatsInterface {
     else {
       $get = $this->stats['cmd_get'];
       $set = $this->stats['cmd_set'];
-      $hits = isset($this->stats['get_hits']) ?? 0;
-      $misses = isset($this->stats['get_misses']) ?? 0;
+      $hits = $this->stats['get_hits'] ?? 0;
+      $misses = $this->stats['get_misses'] ?? 0;
     }
 
     if (($set + $get) == 0) {
@@ -156,10 +156,10 @@ class MemcacheStatsObject implements MemcacheStatsInterface {
    * @inheritDoc
    */
   public function getCounters(): string {
-    $incr_hits = isset($this->stats['incr_hits']) ?? 0;
-    $incr_misses = isset($this->stats['incr_misses']) ?? 0;
-    $decr_hits  = isset($this->stats['decr_hits']) ?? 0;
-    $decr_misses = isset($this->stats['decr_misses']) ?? 0;
+    $incr_hits = $this->stats['incr_hits'] ?? 0;
+    $incr_misses = $this->stats['incr_misses'] ?? 0;
+    $decr_hits  = $this->stats['decr_hits'] ?? 0;
+    $decr_misses = $this->stats['decr_misses'] ?? 0;
 
     return $this->t(
       '@incr increments, @decr decrements',
@@ -174,8 +174,8 @@ class MemcacheStatsObject implements MemcacheStatsInterface {
    * @inheritDoc
    */
   public function getTransferred(): string {
-    $read = isset($this->stats['bytes_read']) ?? 0;
-    $write = isset($this->stats['bytes_written']) ?? 0;
+    $read = $this->stats['bytes_read'] ?? 0;
+    $write = $this->stats['bytes_written'] ?? 0;
 
     if ($write == 0) {
       $written = 0;

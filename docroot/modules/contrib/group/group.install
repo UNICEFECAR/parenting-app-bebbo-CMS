@@ -9,6 +9,7 @@ use Drupal\Core\Config\ExtensionInstallStorage;
 use Drupal\Core\Config\InstallStorage;
 use Drupal\Core\Entity\EntityTypeListenerInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\group\Entity\GroupContent;
 use Drupal\group\Entity\Storage\GroupContentStorageSchema;
 
@@ -440,7 +441,6 @@ function group_update_8016() {
   // Empty update. See group_post_update_view_cache_contexts();
 }
 
-
 /**
  * Add storage schema to group content.
  */
@@ -520,5 +520,71 @@ function group_update_8021() {
 
     $base_field_override->set('default_value_callback', $class . '::getDefaultEntityOwner');
     $base_field_override->save(TRUE);
+  }
+}
+
+/**
+ * Add the status field to group entity type.
+ */
+function group_update_8022() {
+  $definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $definition_update_manager->getEntityType('group');
+
+  // Bail out early if a field named 'status' is already installed.
+  if ($definition_update_manager->getFieldStorageDefinition('status', 'group')) {
+    return t('The publishing status field has <strong>not</strong> been added to groups.');
+  }
+
+  // Add the 'published' entity key to the group entity type.
+  $entity_keys = $entity_type->getKeys();
+  $entity_keys['published'] = 'status';
+  $entity_type->set('entity_keys', $entity_keys);
+
+  $definition_update_manager->updateEntityType($entity_type);
+
+  // Add the status field.
+  $status = BaseFieldDefinition::create('boolean')
+    ->setLabel(t('Published'))
+    ->setDescription(t('A boolean indicating the published state.'))
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDefaultValue(TRUE)
+    ->setDisplayOptions('form', [
+      'type' => 'boolean_checkbox',
+      'settings' => [
+        'display_label' => TRUE,
+      ],
+      'weight' => 120,
+    ])
+    ->setDisplayConfigurable('form', TRUE);
+
+  $has_content_translation_status_field = \Drupal::moduleHandler()->moduleExists('content_translation') && $definition_update_manager->getFieldStorageDefinition('content_translation_status', 'group');
+  if ($has_content_translation_status_field) {
+    $status->setInitialValueFromField('content_translation_status', TRUE);
+  }
+  else {
+    $status->setInitialValue(TRUE);
+  }
+  $definition_update_manager->installFieldStorageDefinition('status', 'group', 'group', $status);
+
+  // Uninstall the 'content_translation_status' field if needed.
+  if ($has_content_translation_status_field) {
+    $content_translation_status = $definition_update_manager->getFieldStorageDefinition('content_translation_status', 'group');
+    $definition_update_manager->uninstallFieldStorageDefinition($content_translation_status);
+  }
+
+  return t('The published field has been added to groups.');
+}
+
+/**
+ * Add the 'new_revision' property to all group types.
+ */
+function group_update_8023() {
+  $config_factory = \Drupal::configFactory();
+
+  foreach ($config_factory->listAll('group.type.') as $group_type_config_name) {
+    $group_type = $config_factory->getEditable($group_type_config_name);
+    $group_type->set('new_revision', FALSE);
+    $group_type->save(TRUE);
   }
 }

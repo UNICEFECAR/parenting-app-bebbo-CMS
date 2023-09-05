@@ -1,0 +1,44 @@
+diff --git a/mobile_app_links/config/schema/mobile_app_links.settings.yml b/mobile_app_links/config/schema/mobile_app_links.settings.yml
+--- a/mobile_app_links/config/schema/mobile_app_links.settings.yml
++++ b/mobile_app_links/config/schema/mobile_app_links.settings.yml
+@@ -11,6 +11,27 @@
+     appclips:
+       type: string
+       label: 'App Clips'
++    appID_Test:
++      type: string
++      label: 'App ID - UAT'
++    paths_Test:
++      type: string
++      label: 'Paths - UAT'
++    kosovo_appID:
++      type: string
++      label: 'Kosovo App ID'
++    kosovo_paths:
++      type: string
++      label: 'Kosovo Paths'
++    kosovo_appclips:
++      type: string
++      label: 'Kosovo App Clips'
++    kosovo_appID_Test:
++      type: string
++      label: 'Kosovo App ID - UAT'
++    kosovo_paths_Test:
++      type: string
++      label: 'Kosovo Paths - UAT'
+ 
+ mobile_app_links.android_packages:
+   type: config_object
+@@ -28,6 +49,12 @@
+           sha256_cert_fingerprints:
+             type: string
+             label: 'SHA256 Certificate Fingerprints'
++          kosovo_package_name:
++            type: string
++            label: 'Kosovo Package Name'
++          kosovo_sha256_cert_fingerprints:
++            type: string
++            label: 'Kosovo SHA256 Certificate Fingerprints'
+ 
+ mobile_app_links.apple_dev_merchant_id_assoc:
+   type: config_object

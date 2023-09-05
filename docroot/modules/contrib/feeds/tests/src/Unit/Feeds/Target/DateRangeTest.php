@@ -3,6 +3,7 @@
 namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 
 use Drupal\feeds\Feeds\Target\DateRange;
+use Drupal\feeds\Plugin\Type\Target\TargetInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**
@@ -10,6 +11,13 @@ use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
  * @group feeds
  */
 class DateRangeTest extends FieldTargetWithContainerTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'daterange';
 
   /**
    * The mocked feed type entity.
@@ -28,7 +36,7 @@ class DateRangeTest extends FieldTargetWithContainerTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->feedType = $this->createMock('Drupal\feeds\FeedTypeInterface');
@@ -44,14 +52,21 @@ class DateRangeTest extends FieldTargetWithContainerTestBase {
   }
 
   /**
-   * @covers ::prepareValue
+   * {@inheritdoc}
    */
-  public function testPrepareValue() {
-    $configuration = [
+  protected function instantiatePlugin(array $configuration = []): TargetInterface {
+    $configuration += [
       'feed_type' => $this->feedType,
       'target_definition' => $this->targetDefinition,
     ];
-    $target = new DateRange($configuration, 'daterange', []);
+    return new DateRange($configuration, static::$pluginId, []);
+  }
+
+  /**
+   * @covers ::prepareValue
+   */
+  public function testPrepareValue() {
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = [

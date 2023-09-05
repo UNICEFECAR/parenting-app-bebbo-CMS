@@ -39,7 +39,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->permissionCalculator = $this->container->get('group_permission.chain_calculator');
     $this->roleSynchronizer = $this->container->get('group_role.synchronizer');
@@ -69,7 +69,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Anonymous permissions are returned per group type.');
     $this->assertSame([], $calculated_permissions->getCacheContexts(), 'Anonymous permissions have the right cache contexts.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Anonymous permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Anonymous permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Anonymous permissions have the right cache tags.');
 
     $group_role = $this->entityTypeManager->getStorage('group_role')->load('default-anonymous');
     $group_role->grantPermission('view group')->save();
@@ -80,7 +80,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Updated anonymous permissions are returned per group type.');
     $this->assertSame([], $calculated_permissions->getCacheContexts(), 'Updated anonymous permissions have the right cache contexts.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Updated anonymous permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Updated anonymous permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Updated anonymous permissions have the right cache tags.');
 
     $this->createGroupType(['id' => 'test']);
     $permissions['test'] = [];
@@ -92,7 +92,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Anonymous permissions are updated after introducing a new group type.');
     $this->assertSame([], $calculated_permissions->getCacheContexts(), 'Anonymous permissions have the right cache contexts after introducing a new group type.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Anonymous permissions have the right max cache age after introducing a new group type.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Anonymous permissions have the right cache tags after introducing a new group type.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Anonymous permissions have the right cache tags after introducing a new group type.');
   }
 
   /**
@@ -123,7 +123,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Outsider permissions are returned per group type.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Outsider permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Outsider permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Outsider permissions have the right cache tags.');
 
     $group_role = $this->entityTypeManager->getStorage('group_role')->load('other-outsider');
     $group_role->grantPermission('view group')->save();
@@ -133,7 +133,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Updated outsider permissions are returned per group type.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Updated outsider permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Updated outsider permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Updated outsider permissions have the right cache tags.');
 
     $group_role = $this->entityTypeManager->getStorage('group_role')->load($group_role_id);
     $group_role->grantPermission('edit group')->save();
@@ -143,7 +143,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Updated synchronized outsider permissions are returned per group type.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Updated synchronized outsider permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Updated synchronized outsider permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Updated synchronized outsider permissions have the right cache tags.');
 
     $this->createGroupType(['id' => 'test']);
     $permissions['test'] = [];
@@ -155,7 +155,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Outsider permissions are updated after introducing a new group type.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Outsider permissions have the right max cache age after introducing a new group type.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Outsider permissions have the right cache tags after introducing a new group type.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Outsider permissions have the right cache tags after introducing a new group type.');
   }
 
   /**
@@ -176,7 +176,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Member permissions are returned per group ID.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Member permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Member permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Member permissions have the right cache tags.');
 
     $group->addMember($account);
     $member = $group->getMember($account);
@@ -190,7 +190,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Member permissions are returned per group ID after joining a group.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Member permissions have the right max cache age after joining a group.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Member permissions have the right cache tags after joining a group.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Member permissions have the right cache tags after joining a group.');
 
     // @todo This displays a desperate need for addRole() and removeRole().
     $membership = $member->getGroupContent();
@@ -204,7 +204,7 @@ class ChainGroupPermissionCalculatorTest extends GroupKernelTestBase {
     $converted = $this->convertCalculatedPermissionsToArray($calculated_permissions);
     $this->assertEqualsCanonicalizing($permissions, $converted, 'Updated member permissions are returned per group ID.');
     $this->assertSame(-1, $calculated_permissions->getCacheMaxAge(), 'Updated member permissions have the right max cache age.');
-    $this->assertSame($cache_tags, $calculated_permissions->getCacheTags(), 'Updated member permissions have the right cache tags.');
+    $this->assertEqualsCanonicalizing($cache_tags, $calculated_permissions->getCacheTags(), 'Updated member permissions have the right cache tags.');
   }
 
   /**

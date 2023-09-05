@@ -67,7 +67,7 @@ class BlockedIp extends DestinationBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public function fields(MigrationInterface $migration = NULL) {
+  public function fields() {
     return [
       'ip' => $this->t('The blocked IP address.'),
     ];
@@ -78,6 +78,8 @@ class BlockedIp extends DestinationBase implements ContainerFactoryPluginInterfa
    */
   public function import(Row $row, array $old_destination_id_values = []) {
     $this->banManager->banIp($row->getDestinationProperty('ip'));
+
+    return ['ip' => $row->getDestinationProperty('ip')];
   }
 
 }

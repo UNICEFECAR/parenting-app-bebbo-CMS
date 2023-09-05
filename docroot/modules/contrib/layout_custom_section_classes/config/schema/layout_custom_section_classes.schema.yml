@@ -1,0 +1,48 @@
+layout_custom_section_classes.settings:
+  type: config_object
+  label: 'Layout Builder Section Attributes'
+  mapping:
+    allowed_section_attributes:
+      type: mapping
+      label: 'Allowed Section Attributes'
+      mapping:
+        id:
+          type: boolean
+          label: 'ID'
+        class:
+          type: boolean
+          label: 'Class(es)'
+        class_list:
+          type: boolean
+          label: 'Class list'
+        style:
+          type: boolean
+          label: 'Inline CSS styles'
+        data:
+          type: boolean
+          label: 'Data-* attributes'
+    allowed_section_region_attributes:
+      type: mapping
+      label: 'Allowed Region Attributes'
+      mapping:
+        id:
+          type: boolean
+          label: 'ID'
+        class_list:
+          type: boolean
+          label: 'Class list'
+        class:
+          type: boolean
+          label: 'Class(es)'
+        style:
+          type: boolean
+          label: 'Inline CSS styles'
+        data:
+          type: boolean
+          label: 'Data-* attributes'
+    class_list:
+      type: sequence
+      label: 'CSS classes to choose from'
+      sequence:
+        - type: string
+          label: 'Class'

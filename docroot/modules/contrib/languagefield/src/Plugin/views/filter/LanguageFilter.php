@@ -27,6 +27,7 @@ class LanguageFilter extends LanguageFilterBase {
       // $this->valueOptions = $this->listLanguages(LanguageInterface::STATE_ALL
       // | LanguageInterface::STATE_SITE_DEFAULT
       // | PluginBase::INCLUDE_NEGOTIATED, array_keys($this->value));
+      // .
       $field_storage = $this->getFieldStorageDefinition();
       $this->valueOptions = options_allowed_values($field_storage);
     }

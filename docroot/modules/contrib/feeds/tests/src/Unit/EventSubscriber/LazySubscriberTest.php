@@ -80,7 +80,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->dispatcher = new EventDispatcher();
@@ -152,18 +152,18 @@ class LazySubscriberTest extends FeedsUnitTestCase {
 
     // Fetch.
     $subscriber->onInitImport(new InitEvent($this->feed, 'fetch'), FeedsEvents::INIT_IMPORT, $this->dispatcher);
-    $fetch_event = $this->dispatcher->dispatch(FeedsEvents::FETCH, new FetchEvent($this->feed));
+    $fetch_event = $this->dispatcher->dispatch(new FetchEvent($this->feed), FeedsEvents::FETCH);
     $this->assertSame($fetcher_result, $fetch_event->getFetcherResult());
 
     // Parse.
     $subscriber->onInitImport(new InitEvent($this->feed, 'parse'), FeedsEvents::INIT_IMPORT, $this->dispatcher);
-    $parse_event = $this->dispatcher->dispatch(FeedsEvents::PARSE, new ParseEvent($this->feed, $fetcher_result));
+    $parse_event = $this->dispatcher->dispatch(new ParseEvent($this->feed, $fetcher_result), FeedsEvents::PARSE);
     $this->assertSame($parser_result, $parse_event->getParserResult());
 
     // Process.
     $subscriber->onInitImport(new InitEvent($this->feed, 'process'), FeedsEvents::INIT_IMPORT, $this->dispatcher);
     foreach ($parse_event->getParserResult() as $item) {
-      $this->dispatcher->dispatch(FeedsEvents::PROCESS, new ProcessEvent($this->feed, $item));
+      $this->dispatcher->dispatch(new ProcessEvent($this->feed, $item), FeedsEvents::PROCESS);
     }
 
     // Call again.
@@ -186,7 +186,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
     $subscriber = new LazySubscriber();
 
     $subscriber->onInitClear(new InitEvent($this->feed), FeedsEvents::INIT_CLEAR, $this->dispatcher);
-    $this->dispatcher->dispatch(FeedsEvents::CLEAR, new ClearEvent($this->feed));
+    $this->dispatcher->dispatch(new ClearEvent($this->feed), FeedsEvents::CLEAR);
 
     // Call again.
     $subscriber->onInitClear(new InitEvent($this->feed), FeedsEvents::INIT_CLEAR, $this->explodingDispatcher);
@@ -205,7 +205,7 @@ class LazySubscriberTest extends FeedsUnitTestCase {
 
     $subscriber = new LazySubscriber();
     $subscriber->onInitExpire(new InitEvent($this->feed), FeedsEvents::INIT_IMPORT, $this->dispatcher);
-    $this->dispatcher->dispatch(FeedsEvents::EXPIRE, new ExpireEvent($this->feed, 1234));
+    $this->dispatcher->dispatch(new ExpireEvent($this->feed, 1234), FeedsEvents::EXPIRE);
 
     // Call again.
     $subscriber->onInitExpire(new InitEvent($this->feed), FeedsEvents::INIT_IMPORT, $this->explodingDispatcher);

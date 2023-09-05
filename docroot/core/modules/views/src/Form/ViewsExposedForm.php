@@ -34,19 +34,15 @@ class ViewsExposedForm extends FormBase {
   protected $currentPathStack;
 
   /**
-   * Constructs a new ViewsExposedForm
+   * Constructs a new ViewsExposedForm.
    *
    * @param \Drupal\views\ExposedFormCache $exposed_form_cache
    *   The exposed form cache.
    * @param \Drupal\Core\Path\CurrentPathStack $current_path_stack
    *   The current path stack.
    */
-  public function __construct(ExposedFormCache $exposed_form_cache, CurrentPathStack $current_path_stack = NULL) {
+  public function __construct(ExposedFormCache $exposed_form_cache, CurrentPathStack $current_path_stack) {
     $this->exposedFormCache = $exposed_form_cache;
-    if ($current_path_stack === NULL) {
-      @trigger_error('The path.current service must be passed to ViewsExposedForm::__construct(), it is required before Drupal 9.0.0. See https://www.drupal.org/node/3066604', E_USER_DEPRECATED);
-      $current_path_stack = \Drupal::service('path.current');
-    }
     $this->currentPathStack = $current_path_stack;
   }
 
@@ -105,7 +101,7 @@ class ViewsExposedForm extends FormBase {
           // Grouped exposed filters have their own forms.
           // Instead of render the standard exposed form, a new Select or
           // Radio form field is rendered with the available groups.
-          // When an user chooses an option the selected value is split
+          // When a user chooses an option the selected value is split
           // into the operator and value that the item represents.
           if ($handler->isAGroup()) {
             $handler->groupForm($form, $form_state);
@@ -149,6 +145,9 @@ class ViewsExposedForm extends FormBase {
     $form['#action'] = $form_action;
     $form['#theme'] = $view->buildThemeFunctions('views_exposed_form');
     $form['#id'] = Html::cleanCssIdentifier('views_exposed_form-' . $view->storage->id() . '-' . $display['id']);
+    // Labels are built too late for inline form errors to work, resulting
+    // in duplicated messages.
+    $form['#disable_inline_form_errors'] = TRUE;
 
     /** @var \Drupal\views\Plugin\views\exposed_form\ExposedFormPluginInterface $exposed_form_plugin */
     $exposed_form_plugin = $view->display_handler->getPlugin('exposed_form');
@@ -212,7 +211,7 @@ class ViewsExposedForm extends FormBase {
       if (!empty($key) && !in_array($key, $exclude)) {
         if (is_array($value)) {
           // Handle checkboxes, we only want to include the checked options.
-          // @todo: revisit the need for this when
+          // @todo revisit the need for this when
           //   https://www.drupal.org/node/342316 is resolved.
           $checked = Checkboxes::getCheckedCheckboxes($value);
           foreach ($checked as $option_id) {

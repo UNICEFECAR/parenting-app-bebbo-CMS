@@ -25,8 +25,8 @@ class HelperTest extends TMGMTKernelTestBase {
     $job_en_sp = $this->createJob('en', 'es');
 
     // Add a job which has existing source-target combinations.
-    $this->assertEqual($job_en_fr->id(), tmgmt_job_match_item('en', 'fr')->id());
-    $this->assertEqual($job_en_sp->id(), tmgmt_job_match_item('en', 'es')->id());
+    $this->assertEquals($job_en_fr->id(), tmgmt_job_match_item('en', 'fr')->id());
+    $this->assertEquals($job_en_sp->id(), tmgmt_job_match_item('en', 'es')->id());
 
     // Add a job which has no existing source-target combination.
     $this->assertTrue(tmgmt_job_match_item('fr', 'es') instanceof Job);
@@ -41,38 +41,38 @@ class HelperTest extends TMGMTKernelTestBase {
     $no_label = array(
       '#text' => 'No label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($no_label), 'No label');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($no_label, 6), 'No la…');
+    $this->assertEquals('No label', \Drupal::service('tmgmt.data')->itemLabel($no_label));
+    $this->assertEquals('No la…', \Drupal::service('tmgmt.data')->itemLabel($no_label, 6));
     $label = array(
       '#parent_label' => array(),
       '#label' => 'A label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($label), 'A label');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($label, 6), 'A lab…');
+    $this->assertEquals('A label', \Drupal::service('tmgmt.data')->itemLabel($label));
+    $this->assertEquals('A lab…', \Drupal::service('tmgmt.data')->itemLabel($label, 6));
     $parent_label = array(
       '#parent_label' => array('Parent label', 'Sub label'),
       '#label' => 'A label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($parent_label), 'Parent label > Sub label');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($parent_label, 18), 'Parent… > Sub la…');
+    $this->assertEquals('Parent label > Sub label', \Drupal::service('tmgmt.data')->itemLabel($parent_label));
+    $this->assertEquals('Parent… > Sub la…', \Drupal::service('tmgmt.data')->itemLabel($parent_label, 18));
     $nested = array(
       '#parent_label' => array('Parent label', 'Sub label', 'Sub-sub label'),
       '#label' => 'A label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($nested), 'Parent label > Sub label > Sub-sub label');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($nested, 28), 'Parent… > Sub la… > Sub-su…');
+    $this->assertEquals('Parent label > Sub label > Sub-sub label', \Drupal::service('tmgmt.data')->itemLabel($nested));
+    $this->assertEquals('Parent… > Sub la… > Sub-su…', \Drupal::service('tmgmt.data')->itemLabel($nested, 28));
     $long_label = array(
       '#parent_label' => array('Loooooooooooong label', 'Short'),
       '#label' => 'A label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($long_label), 'Loooooooooooong label > Short');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($long_label, 30), 'Loooooooooooong label > Short');
+    $this->assertEquals('Loooooooooooong label > Short', \Drupal::service('tmgmt.data')->itemLabel($long_label));
+    $this->assertEquals('Loooooooooooong label > Short', \Drupal::service('tmgmt.data')->itemLabel($long_label, 30));
     $node_example = array(
       '#parent_label' => array('This is a very loooong title, so looong', 'Body', 'Delta #0', 'Body'),
       '#label' => 'A label',
     );
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($node_example), 'This is a very loooong title, so looong > Body > Delta #0 > Body');
-    $this->assertEqual(\Drupal::service('tmgmt.data')->itemLabel($node_example, 56), 'This is a very loooong title, … > Body > Delta #0 > Body');
+    $this->assertEquals('This is a very loooong title, so looong > Body > Delta #0 > Body', \Drupal::service('tmgmt.data')->itemLabel($node_example));
+    $this->assertEquals('This is a very loooong title, … > Body > Delta #0 > Body', \Drupal::service('tmgmt.data')->itemLabel($node_example, 56));
   }
 
   function testWordCount() {
@@ -110,7 +110,7 @@ class HelperTest extends TMGMTKernelTestBase {
       if ($config->get('word_count_exclude_tags') != $test_data['exclude_tags']) {
         $config->set('word_count_exclude_tags', $test_data['exclude_tags'])->save();
       }
-      $this->assertEqual($real_count = \Drupal::service('tmgmt.data')->wordCount($test_data['text']), $desirable_count = $test_data['count'], t('@test_id: Real count (=@real_count) should be equal to desirable (=@desirable_count)', array('@test_id' => $id, '@real_count' => $real_count, '@desirable_count' => $desirable_count)));
+      $this->assertEquals($test_data['count'], \Drupal::service('tmgmt.data')->wordCount($test_data['text']));
     }
   }
 }

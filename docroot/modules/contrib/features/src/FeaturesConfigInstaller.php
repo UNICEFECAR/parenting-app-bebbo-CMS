@@ -2,12 +2,13 @@
 
 namespace Drupal\features;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ConfigInstaller;
 use Drupal\Core\Config\ConfigInstallerInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Config\TypedConfigManagerInterface;
-use Drupal\Core\Config\ConfigManagerInterface;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -51,9 +52,11 @@ class FeaturesConfigInstaller extends ConfigInstaller {
    *   The event dispatcher.
    * @param string $install_profile
    *   The name of the currently active installation profile.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extension_path_resolver
+   *   The extension path resolver.
    */
-  public function __construct(ConfigInstallerInterface $config_installer, FeaturesManagerInterface $features_manager, ConfigFactoryInterface $config_factory, StorageInterface $active_storage, TypedConfigManagerInterface $typed_config, ConfigManagerInterface $config_manager, EventDispatcherInterface $event_dispatcher, $install_profile) {
-    parent::__construct($config_factory, $active_storage, $typed_config, $config_manager, $event_dispatcher, $install_profile);
+  public function __construct(ConfigInstallerInterface $config_installer, FeaturesManagerInterface $features_manager, ConfigFactoryInterface $config_factory, StorageInterface $active_storage, TypedConfigManagerInterface $typed_config, ConfigManagerInterface $config_manager, EventDispatcherInterface $event_dispatcher, $install_profile, ExtensionPathResolver $extension_path_resolver) {
+    parent::__construct($config_factory, $active_storage, $typed_config, $config_manager, $event_dispatcher, $install_profile, $extension_path_resolver);
     $this->configInstaller = $config_installer;
     $this->featuresManager = $features_manager;
   }

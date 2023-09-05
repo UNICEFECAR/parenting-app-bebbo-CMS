@@ -63,3 +63,78 @@ function shield_update_8003() {
     $config->set('shield_enable', TRUE)->save();
   }
 }
+
+/**
+ * Convert whitelist to allowlist.
+ */
+function shield_update_8004() {
+  $config = \Drupal::configFactory()->getEditable('shield.settings');
+  $config
+    ->set('allowlist', $config->get('whitelist'))
+    ->clear('whitelist')
+    ->save(TRUE);
+}
+
+/**
+ * Set the default value of new configs for existing sites.
+ */
+function shield_update_8005() {
+  $config = \Drupal::configFactory()->get('shield.settings');
+
+  $editable = \Drupal::configFactory()->getEditable('shield.settings');
+  if (is_null($config->get('domains'))) {
+    $editable->set('domains', '');
+  }
+  if (is_null($config->get('method'))) {
+    $editable->set('method', 0);
+  }
+  if (is_null($config->get('paths'))) {
+    $editable->set('paths', '');
+  }
+  if (is_null($config->get('unset_basic_auth_headers'))) {
+    $editable->set('unset_basic_auth_headers', TRUE);
+  }
+  $editable->save(TRUE);
+}
+
+/**
+ * Add the debug_header config.
+ */
+function shield_update_8006() {
+  $config = \Drupal::configFactory()->get('shield.settings');
+
+  if (is_null($config->get('debug_header'))) {
+    \Drupal::configFactory()->getEditable('shield.settings')
+      ->set('debug_header', FALSE)
+      ->save(TRUE);
+  }
+}
+
+/**
+ * Disable shield if the username is empty.
+ */
+function shield_update_8007() {
+  $config = \Drupal::configFactory()->get('shield.settings');
+
+  // If shield is enabled but the username is empty, disable shield.
+  if ($config->get('shield_enable')
+  && $config->get('credential_provider') === 'shield'
+  && empty($config->get('credentials.shield.user'))) {
+    \Drupal::configFactory()->getEditable('shield.settings')
+      ->set('shield_enable', FALSE)
+      ->save(TRUE);
+  }
+}
+
+/**
+ * Update 'paths' variable if null, and remove unused 'path' variable.
+ */
+function shield_update_8008() {
+    $editable = \Drupal::configFactory()->getEditable('shield.settings');
+    if (is_null($editable->get('paths'))) {
+      $editable->set('paths', '');
+    }
+    if ($editable->get('path') !== NULL) {
+      $editable->clear('path')->save(TRUE);
+    }
+}

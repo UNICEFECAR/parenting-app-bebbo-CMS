@@ -14,6 +14,8 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\Core\Url;
+use Drupal\entity_reference_revisions\EntityNeedsSaveInterface;
+use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
 use Drupal\tmgmt\JobItemInterface;
 use Drupal\tmgmt\SourcePluginBase;
 use Drupal\tmgmt\SourcePreviewInterface;
@@ -126,9 +128,11 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
   public function getLabel(JobItemInterface $job_item) {
     // Use the source language to a get label for the job item.
     $langcode = $job_item->getJob() ? $job_item->getJob()->getSourceLangcode() : NULL;
+    $label = FALSE;
     if ($entity = static::load($job_item->getItemType(), $job_item->getItemId(), $langcode)) {
-      return $entity->label() ?: $entity->id();
+      $label = $entity->label() ?: $entity->id();
     }
+    return is_bool($label) ? $label : (string) $label;
   }
 
   /**
@@ -183,10 +187,10 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
       $a_weight = NULL;
       $b_weight = NULL;
       // Get the weights.
-      if ($entity_form_display->getComponent($a) && !is_null($entity_form_display->getComponent($a)['weight'])) {
+      if ($entity_form_display->getComponent($a) && (isset($entity_form_display->getComponent($a)['weight']) && !is_null($entity_form_display->getComponent($a)['weight']))) {
         $a_weight = (int) $entity_form_display->getComponent($a)['weight'];
       }
-      if ($entity_form_display->getComponent($b) && !is_null($entity_form_display->getComponent($b)['weight'])) {
+      if ($entity_form_display->getComponent($b) && (isset($entity_form_display->getComponent($b)['weight']) && !is_null($entity_form_display->getComponent($b)['weight']))) {
         $b_weight = (int) $entity_form_display->getComponent($b)['weight'];
       }
 
@@ -451,7 +455,9 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
    * {@inheritdoc}
    */
   public function getSourceLangCode(JobItemInterface $job_item) {
-    $entity = $this->getEntity($job_item);
+    if (!$entity = $this->getEntity($job_item)) {
+      return FALSE;
+    }
     return $entity->getUntranslated()->language()->getId();
   }
 
@@ -514,7 +520,7 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
         continue;
       }
 
-      $field = clone $translation->get($field_name);
+      $field = $translation->get($field_name);
       $target_type = $field->getFieldDefinition()->getFieldStorageDefinition()->getSetting('target_type');
       $is_target_type_translatable = $manager->isEnabled($target_type);
       // In case the target type is not translatable, the referenced entity will
@@ -538,7 +544,18 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
             if ($is_target_type_translatable) {
               // If the field is an embeddable reference and the property is a
               // content entity, process it recursively.
-              $this->doSaveTranslations($target_entity, $field_item[$property], $target_langcode, $item);
+
+              // If the field is ERR and the target entity supports
+              // the needs saving interface, do not save it immediately to avoid
+              // creating two versions when content moderation is used but just
+              // ensure it will be saved.
+              $target_save = TRUE;
+              if ($field->getFieldDefinition()->getType() == 'entity_reference_revisions' && $target_entity instanceof EntityNeedsSaveInterface) {
+                $target_save = FALSE;
+                $target_entity->needsSave();
+              }
+
+              $this->doSaveTranslations($target_entity, $field_item[$property], $target_langcode, $item, $target_save);
             }
             else {
               $duplicate = $this->createTranslationDuplicate($target_entity, $target_langcode);
@@ -552,13 +569,29 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
       }
     }
 
-    if (isset($data['#moderation_state'][0]) && static::isModeratedEntity($translation)) {
-      // If the entity is moderated, set the moderation state for translation.
-      $translation->set('moderation_state', $data['#moderation_state'][0]);
+    if (static::isModeratedEntity($translation)) {
+      // Use the given moderation status if set. Otherwise, fallback to the
+      // configured one in TMGMT settings.
+      if (isset($data['#moderation_state'][0])) {
+        $moderation_state = $data['#moderation_state'][0];
+      }
+      else {
+        $moderation_info = \Drupal::service('content_moderation.moderation_information');
+        $workflow = $moderation_info->getWorkflowForEntity($entity);
+        $moderation_state = \Drupal::config('tmgmt_content.settings')->get('default_moderation_states.' . $workflow->id());
+      }
+      if ($moderation_state) {
+        $translation->set('moderation_state', $moderation_state);
+      }
     }
     // Otherwise, try to set a published status.
     elseif (isset($data['#published'][0]) && $translation instanceof EntityPublishedInterface) {
-      $translation->setPublished($data['#published'][0]);
+      if ($data['#published'][0]) {
+        $translation->setPublished();
+      }
+      else {
+        $translation->setUnpublished();
+      }
     }
 
     if ($entity->getEntityType()->isRevisionable()) {
@@ -570,17 +603,10 @@ class ContentEntitySource extends SourcePluginBase implements SourcePreviewInter
         $translation = $storage->createRevision($translation, $translation->isDefaultRevision());
 
         if ($entity instanceof RevisionLogInterface) {
-		  $uid = \Drupal::currentUser()->id();
           $translation->setRevisionLogMessage($this->t('Created by translation job <a href=":url">@label</a>.', [
             ':url' => $item->getJob()->toUrl()->toString(),
             '@label' => $item->label(),
           ]));
-		  $translation->setRevisionUserId($uid);
-          $translation->setRevisionCreationTime(REQUEST_TIME);
-          /* Update the Entity Author Details */
-          $translation->set('uid', $uid);
-          $translation->set('changed', time());
-          $translation->set('created', time());
         }
       }
     }

@@ -32,7 +32,7 @@ class FeedsItemUrlFormatterTest extends FeedsItemFormatterTestBase {
 
     // Setup the article with test url.
     $article = $this->createNodeWithFeedsItem($feed);
-    $article->feeds_item->url = $input;
+    $article->get('feeds_item')->getItemByFeed($feed)->url = $input;
 
     // Display the article and test we are getting correct output for url.
     $display = $this->container->get('entity_display.repository')
@@ -57,9 +57,18 @@ class FeedsItemUrlFormatterTest extends FeedsItemFormatterTestBase {
   public function providerUrls() {
     return [
       'empty url' => ['', NULL],
-      'http url' => ['http://en.wikipedia.org/wiki/Star_Control', '<div><a href="http://en.wikipedia.org/wiki/Star_Control">http://en.wikipedia.org/wiki/Star_Control</a></div>'],
-      'https url' => ['https://en.wikipedia.org/wiki/Star_Control_II', '<div><a href="https://en.wikipedia.org/wiki/Star_Control_II">https://en.wikipedia.org/wiki/Star_Control_II</a></div>'],
-      'non http or https html url' => ['<strong>SkyNet activated</strong>', NULL],
+      'http url' => [
+        'http://en.wikipedia.org/wiki/Star_Control',
+        '<div><a href="http://en.wikipedia.org/wiki/Star_Control">http://en.wikipedia.org/wiki/Star_Control</a></div>',
+      ],
+      'https url' => [
+        'https://en.wikipedia.org/wiki/Star_Control_II',
+        '<div><a href="https://en.wikipedia.org/wiki/Star_Control_II">https://en.wikipedia.org/wiki/Star_Control_II</a></div>',
+      ],
+      'non http or https html url' => [
+        '<strong>SkyNet activated</strong>',
+        NULL,
+      ],
     ];
   }
 
@@ -87,7 +96,7 @@ class FeedsItemUrlFormatterTest extends FeedsItemFormatterTestBase {
 
     // Create an article and set the 'url' property on the feeds_item field.
     $article = $this->createNodeWithFeedsItem($feed);
-    $article->feeds_item->url = $input;
+    $article->get('feeds_item')->getItemByFeed($feed)->url = $input;
 
     $display = $this->container->get('entity_display.repository')
       ->getViewDisplay($article->getEntityTypeId(), $article->bundle(), 'default');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools_test\Commands;
 
 use Drupal\migrate\MigrateMessage;
@@ -10,14 +12,9 @@ use Drush\Commands\DrushCommands;
 /**
  * Migrate Tools Test drush commands.
  */
-class MigrateToolsTestCommands extends DrushCommands {
+final class MigrateToolsTestCommands extends DrushCommands {
 
-  /**
-   * Migration plugin manager service.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManager
-   */
-  protected $migrationPluginManager;
+  protected MigrationPluginManager $migrationPluginManager;
 
   /**
    * MigrateToolsTestCommands constructor.
@@ -35,7 +32,7 @@ class MigrateToolsTestCommands extends DrushCommands {
    *
    * @command migrate:batch-import-fruit
    */
-  public function batchImportFruit() {
+  public function batchImportFruit(): void {
     $fruit_migration = $this->migrationPluginManager->createInstance('fruit_terms');
     $executable = new MigrateBatchExecutable($fruit_migration, new MigrateMessage());
     $executable->batchImport();

@@ -20,7 +20,7 @@ class EntityQueryAlterTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group_test_plugin', 'views'];
+  protected static $modules = ['group_test_plugin', 'views'];
 
   /**
    * The grouped entity storage to use in testing.
@@ -46,7 +46,7 @@ class EntityQueryAlterTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('group_test_plugin');
@@ -249,7 +249,7 @@ class EntityQueryAlterTest extends GroupKernelTestBase {
     $this->setCurrentUser($account);
     $this->assertQueryAccessResult([$entity_2->id()], 'Only the ungrouped test entity shows up.');
   }
-  
+
   /**
    * Tests that adding new group content clears caches.
    */
@@ -303,7 +303,7 @@ class EntityQueryAlterTest extends GroupKernelTestBase {
    *   The message for the assertion.
    */
   protected function assertQueryAccessResult($expected, $message) {
-    $ids = $this->storage->getQuery()->execute();
+    $ids = $this->storage->getQuery()->accessCheck()->execute();
     $this->assertEqualsCanonicalizing($expected, array_keys($ids), $message);
 
     $views_expected = [];

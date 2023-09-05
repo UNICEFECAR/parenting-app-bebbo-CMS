@@ -13,7 +13,7 @@ class BaseItemTest extends ItemTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->item = $this->getMockForAbstractClass(BaseItem::class);

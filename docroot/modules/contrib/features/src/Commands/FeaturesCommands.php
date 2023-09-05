@@ -487,7 +487,7 @@ class FeaturesCommands extends DrushCommands {
       else {
         $package = $manager->initPackage($module, NULL, '', 'module',
           $current_bundle);
-        list($full_name, $path) = $manager->getExportInfo($package,
+        [$full_name, $path] = $manager->getExportInfo($package,
           $current_bundle);
         $this->output()->writeln(dt('Will create a new extension @name in @directory',
           ['@name' => $full_name, '@directory' => $path]));
@@ -717,15 +717,13 @@ class FeaturesCommands extends DrushCommands {
     // Determine if revert should be forced.
     $force = $this->getOption($options, 'force');
 
-    // Determine if -y was supplied. If so, we can filter out needless output
-    // from this command.
-    $skip_confirmation = $options['yes'];
     $manager = $this->manager;
 
     // Parse list of arguments.
     $modules = [];
     foreach ($features as $featureString) {
-      list($module, $component) = explode(':', $featureString);
+      // Make sure there will actually be a component before exploding.
+      [$module, $component] = explode(':', "$featureString:");
 
       // We cannot use just a component name without its module.
       if (empty($module)) {
@@ -789,7 +787,7 @@ class FeaturesCommands extends DrushCommands {
       foreach ($components as $component) {
         $dt_args['@component'] = $component;
         $confirmation_message = 'Do you really want to import @module : @component?';
-        if ($skip_confirmation || $this->io()->confirm(dt($confirmation_message, $dt_args))) {
+        if ($this->io()->confirm(dt($confirmation_message, $dt_args))) {
           $configToCreate[$component] = '';
         }
       }
@@ -890,7 +888,7 @@ class FeaturesCommands extends DrushCommands {
       // Rewrite * to %. Let users use both as wildcard.
       $pattern = strtr($pattern, ['*' => '%']);
       $sources = [];
-      list($source_pattern, $component_pattern) = explode(':', $pattern, 2);
+      [$source_pattern, $component_pattern] = explode(':', $pattern, 2);
       // If source is empty, use a pattern.
       if ($source_pattern == '') {
         $source_pattern = '%';

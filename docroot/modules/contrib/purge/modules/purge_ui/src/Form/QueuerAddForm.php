@@ -76,13 +76,15 @@ class QueuerAddForm extends ConfigFormBase {
     ];
 
     // Update the buttons and bind callbacks.
-    $form['actions']['submit'] = [
-      '#access' => count($options),
-      '#type' => 'submit',
-      '#button_type' => 'primary',
-      '#value' => $this->t("Add"),
-      '#ajax' => ['callback' => '::addQueuer'],
-    ];
+    if (count($options)) {
+      $form['actions']['submit'] = [
+        '#type' => 'submit',
+        '#button_type' => 'primary',
+        '#value' => $this->t("Add"),
+        '#ajax' => ['callback' => '::addQueuer'],
+      ];
+    }
+
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('Cancel'),

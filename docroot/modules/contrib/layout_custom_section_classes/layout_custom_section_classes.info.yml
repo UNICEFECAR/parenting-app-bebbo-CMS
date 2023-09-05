@@ -1,0 +1,14 @@
+name: Layout Custom Section Classes
+type: module
+description: Allow you to add custom classes to layout builder sections.
+core_version_requirement: ^8.8 || ^9 || ^10
+package: Layout Builder
+dependencies:
+  - drupal:layout_builder
+
+configure: layout_custom_section_classes.settings
+
+# Information added by Drupal.org packaging script on 2022-09-08
+version: '1.0.4'
+project: 'layout_custom_section_classes'
+datestamp: 1662637489

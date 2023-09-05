@@ -3,11 +3,14 @@
 namespace Drupal\Tests\views_bulk_operations\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Drupal\node\Entity\NodeType;
-use Drupal\user\Entity\User;
-use Drupal\views\Views;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\node\Entity\NodeType;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
+use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionCompletedTrait;
+use Drupal\views_bulk_operations\Service\ViewsBulkOperationsViewDataInterface;
 use Drupal\views_bulk_operations\ViewsBulkOperationsBatch;
 
 /**
@@ -15,15 +18,16 @@ use Drupal\views_bulk_operations\ViewsBulkOperationsBatch;
  */
 abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
 
+  use ViewsBulkOperationsActionCompletedTrait {
+    message as traitMessage;
+  }
+
   use NodeCreationTrait {
     getNodeByTitle as drupalGetNodeByTitle;
     createNode as drupalCreateNode;
   }
 
-  // To be removed.
-  const TEST_NODES_COUNT = 10;
-
-  const VBO_DEFAULTS = [
+  protected const VBO_DEFAULTS = [
     'list' => [],
     'display_id' => 'default',
     'preconfiguration' => [],
@@ -38,30 +42,34 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
 
   /**
    * Test node types already created.
-   *
-   * @var array
    */
-  protected $testNodesTypes;
+  protected ?array $testNodesTypes;
 
 
   /**
    * Test nodes data including titles and languages.
-   *
-   * @var array
    */
-  protected $testNodesData;
+  protected ?array $testNodesData;
 
   /**
    * VBO views data service.
-   *
-   * @var \Drupal\views_bulk_operations\Service\ViewsBulkOperationsViewDataInterface
    */
-  protected $vboDataService;
+  protected ?ViewsBulkOperationsViewDataInterface $vboDataService;
+
+  /**
+   * Messages static for testing purposes.
+   *
+   * @var array
+   *
+   * @todo Move this to message() method static when PHP 7.4 is no longer
+   * supported.
+   */
+  private static $messages = [];
 
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'user',
     'node',
     'field',
@@ -79,14 +87,13 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installSchema('node', 'node_access');
     $this->installSchema('system', 'sequences');
-    $this->installSchema('system', 'key_value_expire');
 
     $user = User::create();
     $user->setPassword('password');
@@ -94,7 +101,7 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
     $user->setEmail('email');
     $user->setUsername('user_name');
     $user->save();
-    user_login_finalize($user);
+    \user_login_finalize($user);
 
     $this->installConfig([
       'system',
@@ -116,7 +123,7 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
    *
    * @see Drupal\Tests\views_bulk_operations\Kernel\ViewsBulkOperationsDataServiceTest::setUp()
    */
-  protected function createTestNodes(array $test_node_data) {
+  protected function createTestNodes(array $test_node_data): void {
     $this->testNodesData = [];
     foreach ($test_node_data as $type_name => $type_data) {
       $type = NodeType::create([
@@ -125,14 +132,13 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
       ]);
       $type->save();
 
-      $count_languages = isset($type_data['languages']) ? count($type_data['languages']) : 0;
+      $count_languages = isset($type_data['languages']) ? \count($type_data['languages']) : 0;
       if ($count_languages) {
         for ($i = 0; $i < $count_languages; $i++) {
           $language = ConfigurableLanguage::createFromLangcode($type_data['languages'][$i]);
           $language->save();
         }
         $this->container->get('content_translation.manager')->setEnabled('node', $type_name, TRUE);
-        // $this->container->get('entity_type.manager')->clearCachedDefinitions();
       }
 
       // Create some test nodes.
@@ -155,7 +161,7 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
         if ($count_languages) {
           // It doesn't really matter to which languages we translate
           // from the API point of view so some randomness should be fine.
-          $langcode = $type_data['languages'][rand(0, $count_languages - 1)];
+          $langcode = $type_data['languages'][\rand(0, $count_languages - 1)];
           $title = 'Translated title ' . $langcode . ' ' . $i;
           $translation = $node->addTranslation($langcode, [
             'title' => $title,
@@ -176,7 +182,7 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
    * @return \Drupal\views\ViewExecutable
    *   The view object.
    */
-  protected function initializeView(array $vbo_data) {
+  protected function initializeView(array $vbo_data): ViewExecutable {
     if (!$view = Views::getView($vbo_data['view_id'])) {
       throw new \Exception('Incorrect view ID provided.');
     }
@@ -200,9 +206,9 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
    * @return array
    *   List of results to process.
    */
-  protected function getResultsList(array $vbo_data, array $deltas) {
+  protected function getResultsList(array $vbo_data, array $deltas): array {
     // Merge in defaults.
-    $vbo_data += static::VBO_DEFAULTS;
+    $vbo_data += self::VBO_DEFAULTS;
 
     $view = $this->initializeView($vbo_data);
     if (!empty($vbo_data['arguments'])) {
@@ -241,11 +247,14 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
    *
    * @param array $vbo_data
    *   An array of data passed to VBO Processor service.
+   *
+   * @return mixed[]
+   *   Array of results.
    */
-  protected function executeAction(array $vbo_data) {
+  protected function executeAction(array $vbo_data): array {
 
     // Merge in defaults.
-    $vbo_data += static::VBO_DEFAULTS;
+    $vbo_data += self::VBO_DEFAULTS;
 
     $view = $this->initializeView($vbo_data);
     $view->get_total_rows = TRUE;
@@ -295,11 +304,30 @@ abstract class ViewsBulkOperationsKernelTestBase extends KernelTestBase {
     } while ($context['finished'] < 1);
 
     // Add information to the summary array.
+    self::finished(TRUE, $context['results'], []);
     $summary += [
-      'operations' => array_count_values($context['results']['operations']),
+      'operations' => $context['results']['operations'],
+      'finished_output' => self::message(),
     ];
 
     return $summary;
+  }
+
+  /**
+   * Override trait message() method so we can get the output.
+   *
+   * @return string|null
+   *   The message set previously or NULL.
+   */
+  public static function message($message = NULL, $type = 'status', $repeat = TRUE) {
+    if ($message === NULL) {
+      return self::$messages;
+    }
+    self::$messages[] = [
+      'message' => (string) $message,
+      'type' => $type,
+    ];
+    return NULL;
   }
 
 }

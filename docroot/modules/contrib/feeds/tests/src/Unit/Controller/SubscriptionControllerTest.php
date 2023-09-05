@@ -60,7 +60,7 @@ class SubscriptionControllerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     $this->request = new Request();
     $this->request->query->set('hub_mode', 'subscribe');
     $this->request->query->set('hub_challenge', '1234');

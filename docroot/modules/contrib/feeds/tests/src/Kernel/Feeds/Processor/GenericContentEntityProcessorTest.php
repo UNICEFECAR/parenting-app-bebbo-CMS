@@ -15,7 +15,7 @@ class GenericContentEntityProcessorTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'entity_test',
     'feeds',
     'field',
@@ -26,7 +26,7 @@ class GenericContentEntityProcessorTest extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['field', 'filter', 'node']);
   }

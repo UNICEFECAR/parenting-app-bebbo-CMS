@@ -16,7 +16,7 @@ use Drupal\tmgmt\JobInterface;
 function tmgmt_file_theme() {
   return array(
     'tmgmt_file_html_template' => array(
-      'path' => drupal_get_path('module', 'tmgmt_file') . '/templates',
+      'path' => \Drupal::service('extension.list.module')->getPath('tmgmt_file') . '/templates',
       'template' => 'tmgmt_file_html_template',
       'variables' => array('tjid' => NULL, 'source_language' => NULL, 'target_language' => NULL, 'items' => NULL),
     ),
@@ -100,6 +100,7 @@ function tmgmt_file_tmgmt_job_delete(JobInterface $job) {
 function tmgmt_file_file_download($uri) {
   // Get the file record based on the URI. If not in the database just return.
   $fids = \Drupal::entityQuery('file')
+    ->accessCheck(TRUE)
     ->condition('uri', $uri)
     ->execute();
   if ($fids) {

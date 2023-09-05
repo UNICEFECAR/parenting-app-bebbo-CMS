@@ -19,6 +19,7 @@ const LANGDROPDOWN_DDSLICK_WEB_URL = 'http://designwithpc.com/Plugins/ddSlick';
 const LANGDROPDOWN_DISPLAY_TRANSLATED = 0;
 const LANGDROPDOWN_DISPLAY_NATIVE = 1;
 const LANGDROPDOWN_DISPLAY_LANGCODE = 2;
+const LANGDROPDOWN_DISPLAY_SELFTRANSLATED = 3;
 
 // Widget styles.
 const LANGDROPDOWN_SIMPLE_SELECT = 0;
@@ -76,7 +77,7 @@ function lang_dropdown_help($route_name, RouteMatchInterface $route_match) {
  * Helper function to handle msdropdown skins data.
  */
 function _lang_dropdown_get_msdropdown_skins() {
-  $module_path = drupal_get_path('module', 'lang_dropdown');
+  $module_path = \Drupal::service('extension.list.module')->getPath('lang_dropdown');
   return [
     'ldsSkin' => [
       'text' => t('Default skin'),
@@ -151,7 +152,7 @@ function _lang_dropdown_get_msdropdown_skins() {
  * Helper function to handle ddSlick skins data.
  */
 function _lang_dropdown_get_ddslick_skins() {
-  $module_path = drupal_get_path('module', 'lang_dropdown');
+  $module_path = \Drupal::service('extension.list.module')->getPath('lang_dropdown');
   return [
     'ddsDefault' => [
       'text' => t('Default skin'),

@@ -3,7 +3,6 @@
 namespace Drupal\Tests\feeds\Functional\Update;
 
 use Drupal\feeds\Entity\FeedType;
-use Drupal\FunctionalTests\Update\UpdatePathTestBase;
 
 /**
  * Provides tests for updating deprecated action ID's in feed types.
@@ -17,19 +16,9 @@ class UpdateNonExistentActionUpdateTest extends UpdatePathTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stark';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = ['feeds', 'node'];
-
-  /**
-   * {@inheritdoc}
-   */
   protected function setDatabaseDumpFiles() {
     $this->databaseDumpFiles = [
-      DRUPAL_ROOT . '/core/modules/system/tests/fixtures/update/drupal-8.8.0.bare.standard.php.gz',
+      $this->getCoreFixturePath(8),
       __DIR__ . '/../../../fixtures/feeds-8.x-3.0-alpha6-feeds_installed.php',
       __DIR__ . '/../../../fixtures/feed_type.deprecated-action-ids.php',
     ];

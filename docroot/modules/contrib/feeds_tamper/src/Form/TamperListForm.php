@@ -172,7 +172,7 @@ class TamperListForm extends FormBase {
     ];
 
     foreach ($targets as $target_key => $columns) {
-      /* @var \Drupal\feeds\FieldTargetDefinition $target */
+      /** @var \Drupal\feeds\FieldTargetDefinition $target */
       $target = $this->targets[$target_key];
       $source_label = Html::escape($this->sources[$source]['label']);
       $label = Html::escape($target->getLabel()) . ': ';

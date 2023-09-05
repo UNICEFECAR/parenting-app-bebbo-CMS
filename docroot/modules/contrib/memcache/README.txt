@@ -12,6 +12,7 @@ the 7.x-1.x version of this module!
 - One of the two PECL memcache packages:
   - http://pecl.php.net/package/memcache (recommended)
   - http://pecl.php.net/package/memcached
+- Using the submodule, memcache_admin, requires Drupal 9.1 or later.
 
 For more detailed instructions on installing a memcached daemon or either of the
 memcache PECL extensions, please see the documentation online at
@@ -121,7 +122,7 @@ If using PECL memcached:
 Memcached options can be controlled in settings.php. Consistent distribution is
 the default in this case but could be set using:
 
-  $setting['memcache']['options'] = [
+  $settings['memcache']['options'] = [
     Memcached::OPT_DISTRIBUTION => Memcached::DISTRIBUTION_CONSISTENT,
   ];
 
@@ -256,7 +257,7 @@ if ($memcache_exists || $memcached_exists) {
 
 ## Debugging ##
 By default debugging is off. To enable it add the following code in settings.php.
-$setting['memcache']['debug'] = TRUE;
+$settings['memcache']['debug'] = TRUE;
 
 ## TROUBLESHOOTING ##
 

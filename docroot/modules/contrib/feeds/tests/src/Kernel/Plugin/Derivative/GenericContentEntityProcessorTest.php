@@ -19,7 +19,7 @@ class GenericContentEntityProcessorTest extends FeedsKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'feeds', 'entity_test'];
+  protected static $modules = ['node', 'feeds', 'entity_test'];
 
   /**
    * Tests if the generic content entity processor can be overridden.

@@ -21,11 +21,7 @@ class DatetimePopup extends Date {
     parent::buildExposedForm($form, $form_state);
     $this->applyDatePopupToForm($form);
   }
-  /**
-@@ -20,4 +22,15 @@ class DatetimePopup extends Date {
-     $this->applyDatePopupToForm($form);
-   }
- 
+
   /**
    * {@inheritdoc}
    */
@@ -36,6 +32,5 @@ class DatetimePopup extends Date {
     $this->value['max'] = $end->format(DateTimeItemInterface::DATE_STORAGE_FORMAT);
     parent::opBetween($field);
   }
-
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_tools\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
@@ -10,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Url;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
+use Drupal\migrate_plus\Entity\Migration;
 use Drupal\migrate_plus\Entity\MigrationGroup;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,26 +26,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHandlerInterface {
 
-  /**
-   * Default object for current_route_match service.
-   *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
-   */
-  protected $currentRouteMatch;
-
-  /**
-   * Plugin manager for migration plugins.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface
-   */
-  protected $migrationPluginManager;
-
-  /**
-   * The logger service.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
+  protected CurrentRouteMatch $currentRouteMatch;
+  protected MigrationPluginManagerInterface $migrationPluginManager;
+  protected LoggerInterface $logger;
 
   /**
    * Constructs a new EntityListBuilder object.
@@ -68,7 +54,7 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
   /**
    * {@inheritdoc}
    */
-  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
+  public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type): self {
     return new static(
       $entity_type,
       $container->get('entity_type.manager')->getStorage($entity_type->id()),
@@ -84,10 +70,11 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
    * @return array
    *   An array of entity IDs.
    */
-  protected function getEntityIds() {
+  protected function getEntityIds(): array {
     $migration_group = $this->currentRouteMatch->getParameter('migration_group');
 
     $query = $this->getStorage()->getQuery()
+      ->accessCheck(TRUE)
       ->sort($this->entityType->getKey('id'));
 
     $migration_groups = MigrationGroup::loadMultiple();
@@ -113,7 +100,8 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
    *
    * @see \Drupal\Core\Entity\EntityListController::render()
    */
-  public function buildHeader() {
+  public function buildHeader(): array {
+    $header = [];
     $header['label'] = $this->t('Migration');
     $header['machine_name'] = $this->t('Machine Name');
     $header['status'] = $this->t('Status');
@@ -129,19 +117,23 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
   /**
    * Builds a row for a migration plugin.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $migration_entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The migration plugin for which to build the row.
    *
-   * @return array|null
+   * @return array
    *   A render array of the table row for displaying the plugin information.
    *
    * @see \Drupal\Core\Entity\EntityListController::render()
    */
-  public function buildRow(EntityInterface $migration_entity) {
+  public function buildRow(EntityInterface $entity): array {
+    $row = [];
     try {
-      /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
-      $migration = $this->migrationPluginManager->createInstance($migration_entity->id());
-      $migration_group = $migration_entity->get('migration_group');
+      assert($entity instanceof Migration);
+      $migration = $this->migrationPluginManager->createInstance($entity->id());
+      if (!$migration) {
+        return $row;
+      }
+      $migration_group = $entity->get('migration_group');
       if (!$migration_group) {
         $migration_group = 'default';
       }
@@ -160,8 +152,11 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
       $row['status'] = $migration->getStatusLabel();
     }
     catch (\Exception $e) {
-      $this->logger->warning('Migration entity id %id is malformed: %orig', ['%id' => $migration_entity->id(), '%orig' => $e->getMessage()]);
-      return NULL;
+      $this->logger->warning('Migration entity id %id is malformed: %orig', [
+        '%id' => $entity->id(),
+        '%orig' => $e->getMessage(),
+      ]);
+      return $row;
     }
 
     try {
@@ -190,7 +185,7 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
       if ($last_imported) {
         /** @var \Drupal\Core\Datetime\DateFormatter $date_formatter */
         $date_formatter = \Drupal::service('date.formatter');
-        $row['last_imported'] = $date_formatter->format($last_imported / 1000,
+        $row['last_imported'] = $date_formatter->format((int) ($last_imported / 1000),
           'custom', 'Y-m-d H:i:s');
       }
       else {
@@ -223,7 +218,7 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
    * @param array $row
    *   The table row.
    */
-  protected function handleThrowable(array &$row) {
+  protected function handleThrowable(array &$row): void {
     $row['status'] = $this->t('No data found');
     $row['total'] = $this->t('N/A');
     $row['imported'] = $this->t('N/A');
@@ -241,7 +236,7 @@ class MigrationListBuilder extends ConfigEntityListBuilder implements EntityHand
    * @param string $migration_group
    *   The migration's parent group.
    */
-  protected function addGroupParameter(Url $url, $migration_group) {
+  protected function addGroupParameter(Url $url, $migration_group): void {
     if (!$migration_group) {
       $migration_group = 'default';
     }

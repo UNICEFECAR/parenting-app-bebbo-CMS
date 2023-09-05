@@ -4,7 +4,6 @@ namespace Drupal\feeds\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Url;
-use InvalidArgumentException;
 
 /**
  * Plugin implementation of the 'feeds_item_guid' formatter.
@@ -31,7 +30,7 @@ class FeedsItemGuidFormatter extends FeedsItemFormatterBase {
           $url = Url::fromUri($item->guid);
           $element[$delta] = $this->generateLink($url);
         }
-        catch (InvalidArgumentException $e) {
+        catch (\InvalidArgumentException $e) {
           // Value is not an url, render as plain text instead.
           $element[$delta] = ['#plain_text' => $item->guid];
         }

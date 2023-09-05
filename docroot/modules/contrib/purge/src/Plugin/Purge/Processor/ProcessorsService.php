@@ -40,7 +40,7 @@ class ProcessorsService extends ServiceBase implements ProcessorsServiceInterfac
    *
    * @ingroup countable
    */
-  public function count() {
+  public function count(): int {
     $this->initializePluginInstances();
     return count($this->instances);
   }

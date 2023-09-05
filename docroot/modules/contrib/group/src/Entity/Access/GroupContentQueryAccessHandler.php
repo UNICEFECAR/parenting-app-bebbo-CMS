@@ -55,6 +55,7 @@ class GroupContentQueryAccessHandler extends QueryAccessHandlerBase {
 
     $conditions->addCacheContexts(['user.group_permissions']);
     $calculated_permissions = $this->groupPermissionCalculator->calculatePermissions($account);
+    $group_permissions = $calculated_permissions->getItemsByScope(CGPII::SCOPE_GROUP);
 
     /** @var \Drupal\group\Entity\GroupContentTypeInterface[] $group_content_types */
     $group_content_types = $this->entityTypeManager->getStorage('group_content_type')->loadMultiple();
@@ -76,7 +77,15 @@ class GroupContentQueryAccessHandler extends QueryAccessHandlerBase {
       $any_permission = $handler->getPermission($operation, 'relation', 'any');
       $own_permission = $handler->getPermission($operation, 'relation', 'own');
 
-      foreach ($calculated_permissions->getItems() as $item) {
+      // For each iteration, we can check all group items because it's still
+      // faster than checking the DB for which Group ID belongs to which group
+      // content type. We will add in the group-type scope per group content type.
+      $applicable_permissions = array_merge(
+        $group_permissions,
+        [$calculated_permissions->getItem(CGPII::SCOPE_GROUP_TYPE, $group_content_type->getGroupTypeId())]
+      );
+
+      foreach ($applicable_permissions as $item) {
         $all_ids[$item->getScope()][] = $item->getIdentifier();
 
         // For groups, we need to get the group ID, but for group types, we need
@@ -143,14 +152,14 @@ class GroupContentQueryAccessHandler extends QueryAccessHandlerBase {
 
     // Add the memberships with access to the query (if any).
     if (!empty($allowed_any_ids[CGPII::SCOPE_GROUP])) {
-      $conditions->addCondition('gid', $allowed_any_ids[CGPII::SCOPE_GROUP]);
+      $conditions->addCondition('gid', array_unique($allowed_any_ids[CGPII::SCOPE_GROUP]));
     }
 
     // Add the owner memberships with access to the query (if any).
     if (!empty($allowed_own_ids[CGPII::SCOPE_GROUP])) {
       $sub_condition = new ConditionGroup();
       $sub_condition->addCondition('uid', $account->id());
-      $sub_condition->addCondition('gid', $allowed_own_ids[CGPII::SCOPE_GROUP]);
+      $sub_condition->addCondition('gid', array_unique($allowed_own_ids[CGPII::SCOPE_GROUP]));
 
       $conditions->addCacheContexts(['user']);
       $conditions->addCondition($sub_condition);

@@ -135,26 +135,54 @@ class ConfigUpdateController extends ControllerBase {
     $build['#title'] = $this->t('Config difference for @type @name', ['@type' => $config_type_label, '@name' => $config_name]);
     $build['#attached']['library'][] = 'system/diff';
 
+    $rows = $this->diffFormatter->format($diff);
     $build['diff'] = [
       '#type' => 'table',
       '#header' => [
         ['data' => $this->t('Source config'), 'colspan' => '2'],
         ['data' => $this->t('Site config'), 'colspan' => '2'],
       ],
-      '#rows' => $this->diffFormatter->format($diff),
+      '#rows' => $rows,
+      '#empty' => $this->t('There are no changes.'),
       '#attributes' => ['class' => ['diff']],
     ];
 
     $url = new Url('config_update_ui.report');
 
-    $build['back'] = [
+    $build['wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['form-actions'],
+      ],
+    ];
+    $links = [];
+    if (!empty($rows)) {
+      $links['revert'] = [
+        'url' => Url::fromRoute('config_update_ui.revert', ['config_type' => $config_type, 'config_name' => $config_name]),
+        'title' => $this->t('Revert to source'),
+      ];
+    }
+    $links['export'] = [
+      'url' => Url::fromRoute('config.export_single', ['config_type' => $config_type, 'config_name' => $config_name]),
+      'title' => $this->t('Export'),
+    ];
+    $links['delete'] = [
+      'url' => Url::fromRoute('config_update_ui.delete', ['config_type' => $config_type, 'config_name' => $config_name]),
+      'title' => $this->t('Delete'),
+    ];
+    $build['wrapper']['operations'] = [
+      '#type' => 'dropbutton',
+      '#links' => $links,
+    ];
+
+    $build['wrapper']['back'] = [
       '#type' => 'link',
       '#attributes' => [
         'class' => [
-          'dialog-cancel',
+          'button',
         ],
       ],
-      '#title' => $this->t("Back to 'Updates report' page."),
+      '#title' => $this->t("Back to 'Updates report' page"),
       '#url' => $url,
     ];
 
@@ -454,7 +482,7 @@ class ConfigUpdateController extends ControllerBase {
       '#caption' => $this->t('Changed configuration items'),
       '#empty' => $this->t('None: no active configuration items differ from their current provided versions.'),
     ] + $this->makeReportTable($different, 'active',
-      ['diff', 'export', 'revert']);
+      ['diff', 'export', 'revert', 'delete']);
 
     return $build;
   }
@@ -481,6 +509,11 @@ class ConfigUpdateController extends ControllerBase {
    */
   protected function makeReportTable(array $names, $storage, array $actions) {
     $build = [];
+
+    $ignored_items = $this->configFactory->get('config_update_ui.settings')->get('ignore');
+    if (is_array($ignored_items)) {
+      $names = array_diff($names, $ignored_items);
+    }
 
     $build['#type'] = 'table';
 
@@ -509,6 +542,8 @@ class ConfigUpdateController extends ControllerBase {
 
     $build['#rows'] = [];
 
+    sort($names);
+
     foreach ($names as $name) {
       $row = [];
       if ($storage == 'active') {
@@ -516,6 +551,12 @@ class ConfigUpdateController extends ControllerBase {
       }
       else {
         $config = $this->configRevert->getFromExtension('', $name);
+      }
+
+      if (empty($config)) {
+        // @todo Inject this dependency in the constructor.
+        \Drupal::logger('config_update_ui')->error('Malformed config file @config_name.', ['@config_name' => $name]);
+        continue;
       }
 
       // Figure out what type of config it is, and get the ID.

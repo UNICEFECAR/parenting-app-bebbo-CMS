@@ -1,0 +1,12 @@
+uuid: 30a03024-cbd8-4682-b7bd-e115dc169629
+langcode: en
+status: true
+dependencies: { }
+third_party_settings: { }
+name: Story
+type: story
+description: 'Content type for testing the JSON Field Widget module'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -10,6 +10,11 @@ namespace Drupal\toolbar_menu;
  */
 class ToolbarMenuMenuLinkTreeManipulators {
 
+  /**
+   * The toolbar_menu manager.
+   *
+   * @var \Drupal\toolbar_menu\ToolbarMenuManager
+   */
   protected $toolbarMenuManager;
 
   /**

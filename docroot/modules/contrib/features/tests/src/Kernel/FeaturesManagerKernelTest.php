@@ -15,7 +15,7 @@ class FeaturesManagerKernelTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['system', 'config', 'features'];
+  protected static $modules = ['system', 'config', 'features'];
 
   protected $strictConfigSchema = FALSE;
 
@@ -36,7 +36,7 @@ class FeaturesManagerKernelTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('features');

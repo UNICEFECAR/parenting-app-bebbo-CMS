@@ -78,19 +78,18 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
    */
   public static function settingsOptions($usage = 'formatter') {
     $options = [];
-    $t = \Drupal::translation();
 
     if (\Drupal::moduleHandler()->moduleExists('languageicons')) {
       if ($usage != 'widget') {
         $options += [
-          'icon' => $t->translate('Language icon'),
+          'icon' => t('Language icons'),
         ];
       }
     }
     $options += [
-      'iso' => $t->translate('ISO 639-code'),
-      'name' => $t->translate('Name'),
-      'name_native' => $t->translate('Native name'),
+      'iso' => t('ISO 639-code'),
+      'name' => t('Name'),
+      'name_native' => t('Display in native language'),
     ];
     return $options;
   }
@@ -166,7 +165,7 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
       '#title' => $this->t('Enabled languages'),
       '#description' => $this->t("Installed languages can be maintained on the
         <a href=':url_1'>Languages</a> page, when Language module is installed. Custom languages can
-        be maintained on the <a href=':url_2'>Custom Languages</a> page. (Options marked with '*' are
+        be maintained on the <a href=':url_2'>Custom languages</a> page. (Options marked with '*' are
         typically used as default value in a hidden widget.)", [
           ':url_1' => $url_1,
           ':url_2' => $url_2,
@@ -179,9 +178,17 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
         // self::LANGUAGEFIELD_LANGUAGES_ENABLED =>
         // $this->t('Enabled installed languages (not functioning yet)'),
         // The following are from Drupal\Core\Language\LanguageInterface.
-        LanguageInterface::STATE_CONFIGURABLE => $this->t('All installed (enabled) languages (from /admin/config/regional/language)'),
+        LanguageInterface::STATE_CONFIGURABLE => $this->t("All installed (enabled) languages (from <a href=':url_1'>Languages</a> page)",
+          [
+            ':url_1' => $url_1,
+            ':url_2' => $url_2,
+          ]),
         // const STATE_CONFIGURABLE = 1; -> 'en', 'de'
-        CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_CUSTOM => $this->t('All custom languages (from /admin/config/regional/custom_language)'),
+        CustomLanguageManager::LANGUAGEFIELD_LANGUAGES_CUSTOM => $this->t("All custom languages (from <a href=':url_2'>Custom languages</a> page)",
+          [
+            ':url_1' => $url_1,
+            ':url_2' => $url_2,
+          ]),
         LanguageInterface::STATE_LOCKED => $this->t('All locked languages'),
         // const STATE_LOCKED = 2; -> 'und', 'zxx'
         // const STATE_ALL = 3; -> 'en', 'de', 'und', 'zxx'
@@ -192,14 +199,14 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
         // The following are copied from
         // LanguageConfiguration::getDefaultOptions()
         LanguageInterface::LANGCODE_SITE_DEFAULT => $this->t("Site's default language (@language)", [
-          '@language' => \Drupal::languageManager()
+          '@language' => $this->t(\Drupal::languageManager()
             ->getDefaultLanguage()
-            ->getName(),
-        ]
-        ),
+            ->getName()
+          ),
+        ]),
         LanguageInterface::LANGCODE_NOT_SPECIFIED => $this->t('Language neutral'),
-        'current_interface' => $this->t('Current interface language'). '*',
-        'authors_default' => $this->t("Author's preferred language"). '*',
+        'current_interface' => $this->t('Current interface language') . '*',
+        'authors_default' => $this->t("Author's preferred language") . '*',
       ],
     ];
 
@@ -248,8 +255,7 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
    */
   public function getConstraints() {
     $constraints = [];
-    // @todo: when adding parent::getConstraints(), only English is allowed...
-    // $constraints = parent::getConstraints();
+    // @Usage When adding parent::getConstraints(), only English is allowed.
     $max_length = $this->getSetting('max_length');
     if ($max_length) {
       $constraint_manager = \Drupal::typedDataManager()
@@ -273,17 +279,20 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
   /**
    * {@inheritdoc}
    *
-   * @param $format
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   (optional) The user account for which to filter the possible options.
+   *   If omitted, all possible options are returned.
+   * @param string $format
    *   Extra parameter for formatting options.
    */
   public function getPossibleOptions(AccountInterface $account = NULL, $format = 'en') {
     // Caching as per https://www.drupal.org/node/2661204
-    static $possible_options;
-    if (isset($possible_options)) {
-      return $possible_options;
-    }
+    static $possible_options = [];
 
-    $possible_options = [];
+    $field_name = $this->getFieldDefinition()->getName();
+    if (isset($possible_options[$field_name])) {
+      return $possible_options[$field_name];
+    }
 
     // No need to cache this data. It is a hardcoded list.
     $languages = \Drupal::languageManager()->getStandardLanguageList();
@@ -311,12 +320,12 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
           break;
       }
 
-      $possible_options[$langcode] = $language_name;
+      $possible_options[$field_name][$langcode] = $language_name;
     }
 
-    asort($possible_options);
+    asort($possible_options[$field_name]);
 
-    return $possible_options;
+    return $possible_options[$field_name];
   }
 
   /**
@@ -339,16 +348,15 @@ class LanguageItem extends LanguageItemBase implements OptionsProviderInterface 
    * {@inheritdoc}
    */
   public function getSettableOptions(AccountInterface $account = NULL) {
-    // Returns 'all' or 'enabled' languages, according to field settings.
-    // This is a D8-port of D7 function _languagefield_options().
-
     // Caching as per https://www.drupal.org/node/2661204
     static $settable_options;
-    if (!isset($settable_options)) {
+
+    $field_name = $this->getFieldDefinition()->getName();
+    if (!isset($settable_options[$field_name])) {
       $settings = $this->getFieldDefinition()->getSettings();
-      $settable_options = CustomLanguageManager::allowed_values($settings);
+      $settable_options[$field_name] = CustomLanguageManager::allowedValues($settings);
     }
-    return $settable_options;
+    return $settable_options[$field_name];
   }
 
   /* ************************************

@@ -101,7 +101,7 @@ class LocalTranslator extends TranslatorPluginBase implements ContinuousTranslat
 
     if (!in_array(AccountInterface::AUTHENTICATED_ROLE, array_keys($roles))) {
       $query->join('users_roles', 'ur', 'ur.uid = u.uid AND ur.rid');
-      $or_conditions = (new Condition('OR'))->condition('ur.rid', array_keys($roles), 'IN')
+      $or_conditions = \Drupal::database()->condition('OR')->condition('ur.rid', array_keys($roles), 'IN')
         ->condition('u.uid', 1);
       $query->condition($or_conditions);
     }

@@ -21,7 +21,7 @@ class TmgmtContinuousJavascriptTest extends WebDriverTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  protected static $modules = array(
     'tmgmt',
     'tmgmt_test',
     'tmgmt_content',
@@ -38,7 +38,7 @@ class TmgmtContinuousJavascriptTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     // Login as admin to be able to set environment variables.
@@ -76,7 +76,8 @@ class TmgmtContinuousJavascriptTest extends WebDriverTestBase {
     $page = $this->getSession()->getPage();
     $assert_session = $this->assertSession();
 
-    $this->drupalPostForm('node/' . $node->id() . '/translations', $edit, t('Request translation'));
+    $this->drupalGet('node/' . $node->id() . '/translations');
+    $this->submitForm($edit, t('Request translation'));
     $assert_session->pageTextContains('2 jobs need to be checked out.');
     $assert_session->pageTextContains('Submit all 2 translation jobs with the same settings');
 
@@ -102,7 +103,7 @@ class TmgmtContinuousJavascriptTest extends WebDriverTestBase {
       'continuous_settings[content][node][enabled]' => TRUE,
     ];
 
-    $this->drupalPostForm(NULL, $edit_job, t('Save job'));
+    $this->submitForm($edit_job, t('Save job'));
     // Check we don't see not enabled article in content type list.
     $this->clickLink('Manage');
     $assert_session->pageTextContains(t('Enabled page'));

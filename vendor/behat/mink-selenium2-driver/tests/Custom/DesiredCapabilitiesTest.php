@@ -23,16 +23,14 @@ class DesiredCapabilitiesTest extends TestCase
 
         $driver = new Selenium2Driver('firefox', $caps);
         $this->assertNotEmpty($driver->getDesiredCapabilities(), 'desiredCapabilities empty');
-        $this->assertInternalType('array', $driver->getDesiredCapabilities());
+        $this->assertIsArray($driver->getDesiredCapabilities());
         $this->assertEquals($caps, $driver->getDesiredCapabilities());
     }
 
-    /**
-     * @expectedException           \Behat\Mink\Exception\DriverException
-     * @expectedExceptionMessage    Unable to set desiredCapabilities, the session has already started
-     */
     public function testSetDesiredCapabilities()
     {
+        $this->expectException('\Behat\Mink\Exception\DriverException');
+        $this->expectExceptionMessage('Unable to set desiredCapabilities, the session has already started');
         $caps = array(
             'browserName'       => 'firefox',
             'version'           => '30',

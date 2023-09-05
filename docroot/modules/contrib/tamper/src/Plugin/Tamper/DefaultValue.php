@@ -57,8 +57,11 @@ class DefaultValue extends TamperBase {
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
-    $this->setConfiguration([self::SETTING_DEFAULT_VALUE => $form_state->getValue(self::SETTING_DEFAULT_VALUE)]);
-    $this->setConfiguration([self::SETTING_ONLY_IF_EMPTY => $form_state->getValue(self::SETTING_ONLY_IF_EMPTY)]);
+
+    $this->setConfiguration([
+      self::SETTING_DEFAULT_VALUE => $form_state->getValue(self::SETTING_DEFAULT_VALUE),
+      self::SETTING_ONLY_IF_EMPTY => (bool) $form_state->getValue(self::SETTING_ONLY_IF_EMPTY),
+    ]);
   }
 
   /**

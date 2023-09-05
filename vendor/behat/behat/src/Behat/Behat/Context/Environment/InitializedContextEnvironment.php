@@ -13,8 +13,10 @@ namespace Behat\Behat\Context\Environment;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Environment\Handler\ContextEnvironmentHandler;
 use Behat\Behat\Context\Exception\ContextNotFoundException;
+use Behat\Behat\HelperContainer\Environment\ServiceContainerEnvironment;
 use Behat\Testwork\Call\Callee;
 use Behat\Testwork\Suite\Suite;
+use Psr\Container\ContainerInterface;
 
 /**
  * Context environment based on a list of instantiated context objects.
@@ -23,14 +25,19 @@ use Behat\Testwork\Suite\Suite;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class InitializedContextEnvironment implements ContextEnvironment
+final class InitializedContextEnvironment implements ContextEnvironment, ServiceContainerEnvironment
 {
     /**
      * @var string
      */
     private $suite;
     /**
-     * @var Context[]
+     * @var ContainerInterface
+     */
+    private $serviceContainer;
+    /**
+     * @var array<class-string<Context>, Context>
+     * @psalm-var class-string-map<T as Context, T>
      */
     private $contexts = array();
 
@@ -52,6 +59,14 @@ final class InitializedContextEnvironment implements ContextEnvironment
     public function registerContext(Context $context)
     {
         $this->contexts[get_class($context)] = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setServiceContainer(ContainerInterface $container = null)
+    {
+        $this->serviceContainer = $container;
     }
 
     /**
@@ -89,7 +104,7 @@ final class InitializedContextEnvironment implements ContextEnvironment
     /**
      * Returns list of registered context instances.
      *
-     * @return Context[]
+     * @return list<Context>
      */
     public function getContexts()
     {
@@ -99,9 +114,11 @@ final class InitializedContextEnvironment implements ContextEnvironment
     /**
      * Returns registered context by its class name.
      *
-     * @param string $class
+     * @template T of Context
      *
-     * @return Context
+     * @param class-string<T> $class
+     *
+     * @return T
      *
      * @throws ContextNotFoundException If context is not in the environment
      */
@@ -115,6 +132,14 @@ final class InitializedContextEnvironment implements ContextEnvironment
         }
 
         return $this->contexts[$class];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getServiceContainer()
+    {
+        return $this->serviceContainer;
     }
 
     /**

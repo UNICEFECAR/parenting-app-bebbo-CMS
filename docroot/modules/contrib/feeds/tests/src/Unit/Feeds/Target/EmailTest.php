@@ -11,6 +11,13 @@ use Drupal\feeds\Feeds\Target\Email;
 class EmailTest extends FieldTargetTestBase {
 
   /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'email';
+
+  /**
    * {@inheritdoc}
    */
   protected function getTargetClass() {
@@ -23,14 +30,7 @@ class EmailTest extends FieldTargetTestBase {
    * @covers ::prepareValue
    */
   public function testPrepareValue() {
-    $method = $this->getMethod('Drupal\feeds\Feeds\Target\Email', 'prepareTarget')->getClosure();
-
-    $configuration = [
-      'feed_type' => $this->createMock('Drupal\feeds\FeedTypeInterface'),
-      'target_definition' => $method($this->getMockFieldDefinition()),
-    ];
-    $target = new Email($configuration, 'email', []);
-
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $values = ['value' => 'string'];

@@ -41,6 +41,7 @@ trait IteratingServiceBaseTrait {
    *
    * @ingroup iterator
    */
+  #[\ReturnTypeWillChange]
   public function current() {
     $this->initializePluginInstances();
     if ($this->valid()) {
@@ -54,6 +55,7 @@ trait IteratingServiceBaseTrait {
    *
    * @ingroup iterator
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     $this->initializePluginInstances();
     return $this->position;
@@ -64,7 +66,7 @@ trait IteratingServiceBaseTrait {
    *
    * @ingroup iterator
    */
-  public function next() {
+  public function next(): void {
     $this->initializePluginInstances();
     ++$this->position;
   }
@@ -89,7 +91,7 @@ trait IteratingServiceBaseTrait {
    *
    * @ingroup iterator
    */
-  public function rewind() {
+  public function rewind(): void {
     $this->position = 0;
   }
 
@@ -98,7 +100,7 @@ trait IteratingServiceBaseTrait {
    *
    * @ingroup iterator
    */
-  public function valid() {
+  public function valid(): bool {
     $this->initializePluginInstances();
     return isset($this->instances[$this->position]);
   }

@@ -22,7 +22,7 @@ class ExpireTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a feed type.
@@ -72,7 +72,7 @@ class ExpireTest extends FeedsBrowserTestBase {
 
     // Assert that one node is removed.
     $feed = $this->reloadFeed($feed);
-    $this->assertText('Expired 1 items.');
+    $this->assertSession()->responseContains('Expired 1 items.');
     static::assertEquals(5, $feed->getItemCount());
     $this->assertNodeCount(5);
 

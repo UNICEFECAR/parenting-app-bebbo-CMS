@@ -31,7 +31,7 @@ class Email extends FieldTargetBase implements ConfigurableTargetInterface {
    * {@inheritdoc}
    */
   protected function prepareValue($delta, array &$values) {
-    $values['value'] = trim($values['value']);
+    $values['value'] = is_string($values['value']) ? trim($values['value']) : $values['value'];
     if (!filter_var($values['value'], FILTER_VALIDATE_EMAIL)) {
       $values['value'] = '';
     }

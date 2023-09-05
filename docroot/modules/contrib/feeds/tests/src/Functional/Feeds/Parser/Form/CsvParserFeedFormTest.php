@@ -21,11 +21,14 @@ class CsvParserFeedFormTest extends FeedsBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create a feed type.
-    $this->feedType = $this->createFeedTypeForCsv(['guid' => 'GUID', 'title' => 'Title'], [
+    $this->feedType = $this->createFeedTypeForCsv([
+      'guid' => 'GUID',
+      'title' => 'Title',
+    ], [
       'fetcher' => 'upload',
       'fetcher_configuration' => [
         'allowed_extensions' => 'csv',
@@ -52,7 +55,8 @@ class CsvParserFeedFormTest extends FeedsBrowserTestBase {
       'title[0][value]' => $this->randomMachineName(),
       'files[plugin_fetcher_source]' => \Drupal::service('file_system')->realpath($this->resourcesPath() . '/csv/nodes_comma.csv'),
     ];
-    $this->drupalPostForm('feed/add/' . $this->feedType->id(), $edit, t('Save and import'));
+    $this->drupalGet('feed/add/' . $this->feedType->id());
+    $this->submitForm($edit, t('Save and import'));
 
     // Load feed.
     $feed = Feed::load(1);
@@ -79,7 +83,8 @@ class CsvParserFeedFormTest extends FeedsBrowserTestBase {
       'files[plugin_fetcher_source]' => \Drupal::service('file_system')->realpath($this->resourcesPath() . '/csv/' . $csv_file),
       'plugin[parser][delimiter]' => $delimiter,
     ];
-    $this->drupalPostForm('feed/add/' . $this->feedType->id(), $edit, t('Save and import'));
+    $this->drupalGet('feed/add/' . $this->feedType->id());
+    $this->submitForm($edit, t('Save and import'));
 
     // Load feed.
     $feed = Feed::load(1);

@@ -5,13 +5,19 @@ namespace Drupal\Tests\feeds\Unit\Feeds\Target;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\feeds\Feeds\Target\Path;
-use Drupal\feeds\FeedTypeInterface;
 
 /**
  * @coversDefaultClass \Drupal\feeds\Feeds\Target\Path
  * @group feeds
  */
 class PathTest extends FieldTargetTestBase {
+
+  /**
+   * The ID of the plugin.
+   *
+   * @var string
+   */
+  protected static $pluginId = 'path';
 
   /**
    * {@inheritdoc}
@@ -53,14 +59,7 @@ class PathTest extends FieldTargetTestBase {
    * @dataProvider valuesProvider
    */
   public function testPrepareValue($expected, array $values) {
-    $method = $this->getMethod(Path::class, 'prepareTarget')->getClosure();
-
-    $configuration = [
-      'feed_type' => $this->createMock(FeedTypeInterface::class),
-      'target_definition' => $method($this->getMockFieldDefinition()),
-    ];
-    $target = new Path($configuration, 'path', []);
-
+    $target = $this->instantiatePlugin();
     $method = $this->getProtectedClosure($target, 'prepareValue');
 
     $method(0, $values);

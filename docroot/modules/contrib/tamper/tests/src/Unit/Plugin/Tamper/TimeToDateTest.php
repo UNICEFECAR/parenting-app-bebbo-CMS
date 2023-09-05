@@ -23,7 +23,12 @@ class TimeToDateTest extends TamperPluginTestBase {
    * Test timetodate.
    */
   public function test() {
-    $this->assertEquals("It's 7 o'clock Jim.", $this->plugin->tamper(mktime(7)));
+    $config = [
+      'date_format' => "\I\\t'\s g \o'\c\l\o\c\k \J\i\m\.",
+    ];
+    $plugin = new TimeToDate($config, 'timetodate', [], $this->getMockSourceDefinition());
+
+    $this->assertEquals("It's 7 o'clock Jim.", $plugin->tamper(mktime(7)));
   }
 
 }

@@ -64,7 +64,7 @@ class MappingFormTest extends FeedsJavascriptTestBase {
         ],
       ],
     ];
-    $edit = $this->mappingGetEditValues($mappings);
+    $edit = $this->mappingGetEditValues($mappings, 'custom__csv');
 
     foreach ($mappings as $i => $mapping) {
       // Add target.
@@ -77,13 +77,13 @@ class MappingFormTest extends FeedsJavascriptTestBase {
         if (is_array($source)) {
           // Custom source.
           $assert_session->fieldExists("mappings[$i][map][$key][select]");
-          $page->selectFieldOption("mappings[$i][map][$key][select]", '__new');
+          $page->selectFieldOption("mappings[$i][map][$key][select]", 'custom__csv');
         }
       }
     }
 
     // Set the form values, including machine name.
-    $this->mappingSetMappings($edit);
+    $this->mappingSetMappings($edit, 'custom__csv');
 
     // Now set target configuration.
     foreach ($mappings as $i => $mapping) {
@@ -140,7 +140,7 @@ class MappingFormTest extends FeedsJavascriptTestBase {
         ],
       ],
     ];
-    $edit = $this->mappingGetEditValues($mappings);
+    $edit = $this->mappingGetEditValues($mappings, 'custom__csv');
 
     // Go to the mapping form.
     $this->drupalGet('/admin/structure/feeds/manage/' . $feed_type->id() . '/mapping');
@@ -160,13 +160,13 @@ class MappingFormTest extends FeedsJavascriptTestBase {
         if (is_array($source)) {
           // Custom source.
           $assert_session->fieldExists("mappings[$i][map][$key][select]");
-          $page->selectFieldOption("mappings[$i][map][$key][select]", '__new');
+          $page->selectFieldOption("mappings[$i][map][$key][select]", 'custom__csv');
         }
       }
     }
 
     // Set the form values, including machine name.
-    $this->mappingSetMappings($edit);
+    $this->mappingSetMappings($edit, 'custom__csv');
 
     // Try to save the form.
     $this->submitForm($edit, 'Save');

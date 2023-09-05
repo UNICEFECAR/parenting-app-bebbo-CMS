@@ -214,6 +214,17 @@ interface FeedTypeInterface extends ConfigEntityInterface {
   public function getCustomSource($name);
 
   /**
+   * Gets all custom sources.
+   *
+   * @param array $types
+   *   (optional) The type of custom sources to get.
+   *
+   * @return array
+   *   A list of custom source definitions.
+   */
+  public function getCustomSources(array $types = []);
+
+  /**
    * Returns if a custom source already exists.
    *
    * @param string $name

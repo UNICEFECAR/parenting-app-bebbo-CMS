@@ -42,12 +42,12 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Create the event subscriber.
     $this->subscriber = $this->getMockBuilder(AfterParseBase::class)
-      ->setMethods(['alterItem'])
+      ->onlyMethods(['alterItem'])
       ->getMock();
 
     // Create a parser result.
@@ -56,7 +56,7 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
     // Create the event that returns the parser result.
     $this->event = $this->getMockBuilder(ParseEvent::class)
       ->disableOriginalConstructor()
-      ->setMethods(['getParserResult'])
+      ->onlyMethods(['getParserResult'])
       ->getMock();
     $this->event->expects($this->any())
       ->method('getParserResult')
@@ -136,7 +136,7 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
    */
   public function testApplies() {
     $subscriber = $this->getMockBuilder(AfterParseBase::class)
-      ->setMethods(['applies', 'alterItem'])
+      ->onlyMethods(['applies', 'alterItem'])
       ->getMock();
 
     // Create a few items.
@@ -177,7 +177,7 @@ class AfterParseBaseTest extends FeedsUnitTestCase {
     $dispatcher->addSubscriber($this->subscriber);
 
     // Dispatch the event.
-    $dispatcher->dispatch(FeedsEvents::PARSE, $this->event);
+    $dispatcher->dispatch($this->event, FeedsEvents::PARSE);
   }
 
 }

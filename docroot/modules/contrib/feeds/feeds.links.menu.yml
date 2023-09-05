@@ -11,3 +11,6 @@ entity.feeds_feed_type.add_form:
   route_name: entity.feeds_feed_type.add_form
   menu_name: admin
   parent: entity.feeds_feed_type.collection
+entity.feeds_feed_type.extra_links:
+  deriver: \Drupal\feeds\Plugin\Derivative\ExtraLinks
+  menu_name: admin

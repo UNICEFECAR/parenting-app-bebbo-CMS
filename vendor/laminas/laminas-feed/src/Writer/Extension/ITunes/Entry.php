@@ -1,10 +1,6 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Writer\Extension\ITunes;
 
@@ -12,6 +8,30 @@ use Laminas\Feed\Uri;
 use Laminas\Feed\Writer;
 use Laminas\Stdlib\StringUtils;
 use Laminas\Stdlib\StringWrapper\StringWrapperInterface;
+
+use function array_key_exists;
+use function count;
+use function ctype_alpha;
+use function ctype_digit;
+use function gettype;
+use function implode;
+use function in_array;
+use function is_bool;
+use function is_float;
+use function is_numeric;
+use function is_object;
+use function is_string;
+use function lcfirst;
+use function method_exists;
+use function preg_match;
+use function sprintf;
+use function strlen;
+use function substr;
+use function trigger_error;
+use function ucfirst;
+use function var_export;
+
+use const E_USER_DEPRECATED;
 
 class Entry
 {
@@ -67,8 +87,9 @@ class Entry
     /**
      * Set a block value of "yes" or "no". You may also set an empty string.
      *
-     * @param  string
+     * @param string $value
      * @throws Writer\Exception\InvalidArgumentException
+     * @return void
      */
     public function setItunesBlock($value)
     {
@@ -130,7 +151,8 @@ class Entry
     public function setItunesDuration($value)
     {
         $value = (string) $value;
-        if (! ctype_digit($value)
+        if (
+            ! ctype_digit($value)
             && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}$/', $value)
             && ! preg_match('/^\d+:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/', $value)
         ) {
@@ -145,18 +167,33 @@ class Entry
     /**
      * Set "explicit" flag
      *
+     * @see https://help.apple.com/itc/podcasts_connect/#/itcb54353390
+     *
      * @param  bool $value
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
     public function setItunesExplicit($value)
     {
-        if (! in_array($value, ['yes', 'no', 'clean'])) {
+        // "yes", "no" and "clean" are valid values for a previous version
+        if (! is_bool($value) && ! in_array($value, ['yes', 'no', 'clean'])) {
             throw new Writer\Exception\InvalidArgumentException(
-                'invalid parameter: "explicit" may only be one of "yes", "no" or "clean"'
+                'invalid parameter: "explicit" must be a boolean value'
             );
         }
-        $this->data['explicit'] = $value;
+
+        switch ($value) {
+            case 'yes':
+                $value = true;
+                break;
+
+            case 'no':
+            case 'clean':
+                $value = false;
+                break;
+        }
+
+        $this->data['explicit'] = $value ? 'true' : 'false';
         return $this;
     }
 
@@ -165,6 +202,8 @@ class Entry
      *
      * @deprecated since 2.10.0; itunes:keywords is no longer part of the
      *     iTunes podcast RSS specification.
+     *
+     * @param string[] $value
      * @return $this
      * @throws Writer\Exception\InvalidArgumentException
      */
@@ -173,7 +212,7 @@ class Entry
         trigger_error(
             'itunes:keywords has been deprecated in the iTunes podcast RSS specification,'
             . ' and should not be relied on.',
-            \E_USER_DEPRECATED
+            E_USER_DEPRECATED
         );
 
         if (count($value) > 12) {
@@ -286,7 +325,7 @@ class Entry
         if (! is_numeric($number) || is_float($number)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "number" may only be an integer; received %s',
-                is_object($number) ? get_class($number) : gettype($number)
+                is_object($number) ? $number::class : gettype($number)
             ));
         }
 
@@ -309,7 +348,7 @@ class Entry
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "episodeType" MUST be one of the strings [%s]; received %s',
                 implode(', ', $validTypes),
-                is_object($type) ? get_class($type) : var_export($type, true)
+                is_object($type) ? $type::class : var_export($type, true)
             ));
         }
 
@@ -330,7 +369,7 @@ class Entry
         if (! is_bool($status)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "isClosedCaptioned" MUST be a boolean; received %s',
-                is_object($status) ? get_class($status) : var_export($status, true)
+                is_object($status) ? $status::class : var_export($status, true)
             ));
         }
 
@@ -355,7 +394,7 @@ class Entry
         if (! is_numeric($number) || is_float($number)) {
             throw new Writer\Exception\InvalidArgumentException(sprintf(
                 'invalid parameter: "season" may only be an integer; received %s',
-                is_object($number) ? get_class($number) : gettype($number)
+                is_object($number) ? $number::class : gettype($number)
             ));
         }
 
@@ -374,14 +413,16 @@ class Entry
     public function __call($method, array $params)
     {
         $point = lcfirst(substr($method, 9));
-        if (! method_exists($this, 'setItunes' . ucfirst($point))
+        if (
+            ! method_exists($this, 'setItunes' . ucfirst($point))
             && ! method_exists($this, 'addItunes' . ucfirst($point))
         ) {
             throw new Writer\Exception\BadMethodCallException(
                 'invalid method: ' . $method
             );
         }
-        if (! array_key_exists($point, $this->data)
+        if (
+            ! array_key_exists($point, $this->data)
             || empty($this->data[$point])
         ) {
             return;

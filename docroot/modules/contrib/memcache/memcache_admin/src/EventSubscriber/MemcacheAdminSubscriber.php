@@ -2,11 +2,10 @@
 
 namespace Drupal\memcache_admin\EventSubscriber;
 
-use Drupal\Core\Render\Element\HtmlTag;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Drupal\Component\Render\HtmlEscapedText;
 use Drupal\Core\Render\HtmlResponse;
@@ -29,7 +28,7 @@ class MemcacheAdminSubscriber implements EventSubscriberInterface {
   /**
    * Display statistics on page.
    */
-  public function displayStatistics(FilterResponseEvent $event) {
+  public function displayStatistics(ResponseEvent $event) {
     $user = \Drupal::currentUser();
 
     if ($user->id() == 0) {
@@ -53,7 +52,7 @@ class MemcacheAdminSubscriber implements EventSubscriberInterface {
       if ($response instanceof HtmlResponse) {
 
         // This should only apply to page content.
-        if (stripos($response->headers->get('content-type'), 'text/html') !== FALSE) {
+        if (stripos((string) $response->headers->get('content-type'), 'text/html') !== FALSE) {
           $show_stats = \Drupal::config('memcache_admin.settings')->get('show_memcache_statistics');
           if ($show_stats && $user->hasPermission('access memcache statistics')) {
             $output = '';

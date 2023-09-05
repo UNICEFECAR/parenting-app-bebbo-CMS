@@ -200,7 +200,7 @@ class GroupRoleStorage extends ConfigEntityStorage implements GroupRoleStorageIn
     $query->condition('id', array_keys($definitions));
 
     // Create the group roles that do not exist yet.
-    foreach (array_diff_key($definitions, $query->execute()) as $definition) {
+    foreach (array_diff_key($definitions, $query->accessCheck(FALSE)->execute()) as $definition) {
       $this->save($this->create($definition));
     }
   }
@@ -211,7 +211,7 @@ class GroupRoleStorage extends ConfigEntityStorage implements GroupRoleStorageIn
   public function createSynchronized($group_type_ids = NULL, $role_ids = NULL) {
     // Load all possible group type IDs if none were provided.
     if (empty($group_type_ids)) {
-      $group_type_ids = $this->entityTypeManager->getStorage('group_type')->getQuery()->execute();
+      $group_type_ids = $this->entityTypeManager->getStorage('group_type')->getQuery()->accessCheck(FALSE)->execute();
     }
 
     // Return early if there are no group types to create roles for.
@@ -261,7 +261,7 @@ class GroupRoleStorage extends ConfigEntityStorage implements GroupRoleStorageIn
     $query->condition('id', array_keys($definitions));
 
     // Create the group roles that do not exist yet.
-    foreach (array_diff_key($definitions, $query->execute()) as $definition) {
+    foreach (array_diff_key($definitions, $query->accessCheck(FALSE)->execute()) as $definition) {
       $this->save($this->create($definition));
     }
   }

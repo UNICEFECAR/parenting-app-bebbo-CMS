@@ -462,6 +462,10 @@
   cursor: move;
 }
 
+.field--widget-media-library-widget .js-media-library-item:only-child .media-library-item__preview {
+  cursor: inherit;
+}
+
 .media-library-item__status {
   position: absolute;
   top: 40px;

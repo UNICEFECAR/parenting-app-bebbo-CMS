@@ -70,7 +70,9 @@ function toolbar_menu_toolbar() {
         'toolbar_menu_' . $element_id . '_links' => [
           '#type' => 'container',
           '#id' => $element->loadMenu()->id(),
-          '#pre_render' => [[ToolbarMenuPrerender::class, 'prerenderToolbarTray']],
+          '#pre_render' => [
+            [ToolbarMenuPrerender::class, 'prerenderToolbarTray'],
+          ],
           '#attributes' => [
             'class' => ['toolbar-menu-administration'],
           ],
@@ -104,6 +106,6 @@ function toolbar_menu_toolbar() {
  *   The pre-rendered tray element.
  */
 function toolbar_menu_prerender_toolbar_tray(array $element) {
-  @trigger_error('toolbar_menu_prerender_toolbar_tray() is deprecated in toolbar_menu:8.x-2.2 and is removed from toolbar_menu:8.x-3.0. Use \Drupal\toolbar_menu\ToolbarMenuPrerender::prerenderToolbarTray() instead. See https://www.drupal.org/project/toolbar_menu/issues/3072454', E_USER_DEPRECATED);
+  @trigger_error('toolbar_menu_prerender_toolbar_tray() is deprecated in toolbar_menu:8.x-2.2 and is removed from toolbar_menu:8.x-3.0. Use \Drupal\toolbar_menu\ToolbarMenuPrerender::prerenderToolbarTray() instead. See https://www.drupal.org/project/toolbar_menu/issues/3072454', E_USER_DEPRECATED); // phpcs:ignore
   return ToolbarMenuPrerender::prerenderToolbarTray($element);
 }

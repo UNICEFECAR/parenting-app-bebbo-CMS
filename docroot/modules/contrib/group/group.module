@@ -94,10 +94,11 @@ function group_theme_suggestions_group_content(array $variables) {
   /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
   $group_content = $variables['elements']['#group_content'];
   $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+  $sanitized_bundle = strtr($group_content->bundle(), '-', '_');
 
   $suggestions[] = 'group_content__' . $sanitized_view_mode;
-  $suggestions[] = 'group_content__' . $group_content->bundle();
-  $suggestions[] = 'group_content__' . $group_content->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'group_content__' . $sanitized_bundle;
+  $suggestions[] = 'group_content__' . $sanitized_bundle . '__' . $sanitized_view_mode;
   $suggestions[] = 'group_content__' . $group_content->id();
   $suggestions[] = 'group_content__' . $group_content->id() . '__' . $sanitized_view_mode;
 
@@ -579,7 +580,8 @@ function group_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
     }
 
-    foreach (Element::children($form['actions']) as $name) {
+    $actions = $form['actions'] ?? [];
+    foreach (Element::children($actions) as $name) {
       // Remove preview button as it redirects back to the wrong form.
       if ($name == 'preview') {
         unset($form['actions'][$name]);

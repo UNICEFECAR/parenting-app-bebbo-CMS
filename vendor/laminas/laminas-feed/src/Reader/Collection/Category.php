@@ -1,22 +1,21 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-feed for the canonical source repository
- * @copyright https://github.com/laminas/laminas-feed/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-feed/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Feed\Reader\Collection;
 
+use function array_unique;
+
+/** @template-extends AbstractCollection<int, array{term: string, scheme: string, label: string}> */
 class Category extends AbstractCollection
 {
     /**
+     * @inheritDoc
+     *
      * Return a simple array of the most relevant slice of
      * the collection values. For example, feed categories contain
      * the category name, domain/URI, and other data. This method would
      * merely return the most useful data - i.e. the category names.
-     *
-     * @return array
      */
     public function getValues()
     {

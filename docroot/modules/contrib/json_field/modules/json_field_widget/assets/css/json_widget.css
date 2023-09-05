@@ -1,0 +1,10 @@
+/**
+ * Overrides conflicting styling from seven.
+ */
+.jsoneditor tr {
+  border: 0;
+}
+
+.jsoneditor table {
+  margin: 0;
+}

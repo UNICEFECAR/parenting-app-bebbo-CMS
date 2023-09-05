@@ -11,7 +11,7 @@ use Drupal\tamper\TamperBase;
  *
  * @Tamper(
  *   id = "encode",
- *   label = @Translation("Encode/deecode"),
+ *   label = @Translation("Encode/Decode"),
  *   description = @Translation("Encode (or Decode) the field contents."),
  *   category = "Text",
  *   handle_multiples = TRUE

@@ -15,7 +15,7 @@ class TranslatorTest extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     // Login as admin to be able to set environment variables.
@@ -39,8 +39,8 @@ class TranslatorTest extends TMGMTTestBase {
     $translator = parent::createTranslator();
     // Does the translator exist in the listing?
     $this->drupalGet('admin/tmgmt/translators');
-    $this->assertText($translator->label());
-    $this->assertEqual(count($this->xpath('//tbody/tr')), 2);
+    $this->assertSession()->pageTextContains($translator->label());
+    $this->assertCount(2, $this->xpath('//tbody/tr'));
 
     // Create job, attach to the translator and activate.
     $job = $this->createJob();
@@ -49,14 +49,14 @@ class TranslatorTest extends TMGMTTestBase {
     $job->setState(Job::STATE_ACTIVE);
     $item = $job->addItem('test_source', 'test', 1);
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
-    $this->assertText(t('(Undefined)'));
+    $this->assertSession()->pageTextContains(t('(Undefined)'));
     $job->translator = $translator;
     $job->save();
 
     // Try to delete the translator, should fail because of active job.
     $delete_url = '/admin/tmgmt/translators/manage/' . $translator->id() . '/delete';
     $this->drupalGet($delete_url);
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
 
     // Create a continuous job.
     $continuous = $this->createJob('en', 'de', 1, ['label' => 'Continuous', 'job_type' => Job::TYPE_CONTINUOUS]);
@@ -69,10 +69,10 @@ class TranslatorTest extends TMGMTTestBase {
     /** @var \Drupal\tmgmt\JobInterface $job */
     $job = Job::load($job->id());
     $continuous = Job::load($continuous->id());
-    $this->assertEqual($job->getState(), Job::STATE_ABORTED);
+    $this->assertEquals(Job::STATE_ABORTED, $job->getState());
     $item = $job->getMostRecentItem('test_source', 'test', 1);
-    $this->assertEqual($item->getState(), JobItem::STATE_ABORTED);
-    $this->assertEqual($continuous->getState(), Job::STATE_ABORTED);
+    $this->assertEquals(JobItem::STATE_ABORTED, $item->getState());
+    $this->assertEquals(Job::STATE_ABORTED, $continuous->getState());
 
     // Delete a finished job.
     $translator = parent::createTranslator();
@@ -83,29 +83,30 @@ class TranslatorTest extends TMGMTTestBase {
     $job->set('label', $job->label());
     $job->save();
     $delete_url = '/admin/tmgmt/translators/manage/' . $translator->id() . '/delete';
-    $this->drupalPostForm($delete_url, array(), 'Delete');
-    $this->assertText(t('Add provider'));
+    $this->drupalGet($delete_url);
+    $this->submitForm([], 'Delete');
+    $this->assertSession()->pageTextContains(t('Add provider'));
     // Check if the list of translators has 1 row.
-    $this->assertEqual(count($this->xpath('//tbody/tr')), 1);
-    $this->assertText(t('@label has been deleted.', array('@label' => $translator->label())));
+    $this->assertCount(1, $this->xpath('//tbody/tr'));
+    $this->assertSession()->pageTextContains(t('@label has been deleted.', array('@label' => $translator->label())));
 
     // Check if the clone action works.
     $this->clickLink('Clone');
     $edit = array(
       'name' => $translator->id() . '_clone',
     );
-    $this->drupalPostForm(NULL, $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     // Check if the list of translators has 2 row.
-    $this->assertEqual(count($this->xpath('//tbody/tr')), 2);
-    $this->assertText('configuration has been created');
+    $this->assertCount(2, $this->xpath('//tbody/tr'));
+    $this->assertSession()->pageTextContains('configuration has been created');
     // Assert that the job works and there is a text saying that the translator
     // is missing.
     $this->drupalGet('admin/tmgmt/jobs/' . $job->id());
-    $this->assertText(t('The job has no provider assigned.'));
+    $this->assertSession()->pageTextContains(t('The job has no provider assigned.'));
 
     // Assert that also the job items are working.
     $this->drupalGet('admin/tmgmt/items/' . $item->id());
-    $this->assertText(t('(Missing)'));
+    $this->assertSession()->pageTextContains(t('(Missing)'));
 
     // Testing the translators form with no installed translator plugins.
     // Uninstall the test module (which provides a translator).
@@ -113,15 +114,16 @@ class TranslatorTest extends TMGMTTestBase {
 
     // Assert that job deletion works correctly.
     \Drupal::service('module_installer')->install(array('tmgmt_file'), FALSE);
-    $this->drupalPostForm('/admin/tmgmt/jobs/' . $job->id() . '/delete', [], t('Delete'));
-    $this->assertResponse(200);
-    $this->assertText(t('The translation job @value has been deleted.', array('@value' => $job->label())));
+    $this->drupalGet($job->toUrl('delete-form'));
+    $this->submitForm([], t('Delete'));
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains(t('The translation job @value has been deleted.', array('@value' => $job->label())));
     \Drupal::service('module_installer')->uninstall(array('tmgmt_file'), FALSE);
 
     // Get the overview.
     $this->drupalGet('admin/tmgmt/translators');
-    $this->assertNoText(t('Add provider'));
-    $this->assertText(t('There are no provider plugins available. Please install a provider plugin.'));
+    $this->assertSession()->pageTextNotContains(t('Add provider'));
+    $this->assertSession()->pageTextContains(t('There are no provider plugins available. Please install a provider plugin.'));
   }
 
   /**
@@ -129,15 +131,15 @@ class TranslatorTest extends TMGMTTestBase {
    */
   public function testRemoteLanguagesMappings() {
     $mappings = $this->default_translator->getRemoteLanguagesMappings();
-    $this->assertEqual($mappings, array(
+    $this->assertEquals(array(
       'en' => 'en-us',
       'de' => 'de-ch',
       'el' => 'el',
       'es' => 'es',
-    ));
+    ), $mappings);
 
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('en'), 'en-us');
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('de'), 'de-ch');
+    $this->assertEquals('en-us', $this->default_translator->mapToRemoteLanguage('en'));
+    $this->assertEquals('de-ch', $this->default_translator->mapToRemoteLanguage('de'));
 
     $remote_language_mappings = $this->default_translator->get('remote_languages_mappings');
     $remote_language_mappings['de'] = 'de-de';
@@ -145,15 +147,15 @@ class TranslatorTest extends TMGMTTestBase {
     $this->default_translator->set('remote_languages_mappings', $remote_language_mappings);
     $this->default_translator->save();
 
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('en'), 'en-uk');
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('de'), 'de-de');
+    $this->assertEquals('en-uk', $this->default_translator->mapToRemoteLanguage('en'));
+    $this->assertEquals('de-de', $this->default_translator->mapToRemoteLanguage('de'));
 
     // Test the fallback.
     $this->container->get('state')->set('tmgmt_test_translator_map_languages', FALSE);
     $this->container->get('plugin.manager.tmgmt.translator')->clearCachedDefinitions();
 
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('en'), 'en');
-    $this->assertEqual($this->default_translator->mapToRemoteLanguage('de'), 'de');
+    $this->assertEquals('en', $this->default_translator->mapToRemoteLanguage('en'));
+    $this->assertEquals('de', $this->default_translator->mapToRemoteLanguage('de'));
   }
 
 }

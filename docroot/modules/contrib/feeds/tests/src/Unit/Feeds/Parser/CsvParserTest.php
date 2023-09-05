@@ -48,7 +48,7 @@ class CsvParserTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->feedType = $this->createMock(FeedTypeInterface::class);

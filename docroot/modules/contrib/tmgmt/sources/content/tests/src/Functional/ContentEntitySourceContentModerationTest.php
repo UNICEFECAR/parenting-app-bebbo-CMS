@@ -3,12 +3,10 @@
 namespace Drupal\Tests\tmgmt_content\Functional;
 
 use Drupal\field\Entity\FieldConfig;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
 use Drupal\Tests\tmgmt\Functional\TmgmtEntityTestTrait;
 use Drupal\Tests\tmgmt\Functional\TMGMTTestBase;
-use Drupal\tmgmt\Entity\Translator;
 use Drupal\tmgmt_composite_test\Entity\EntityTestComposite;
 use Drupal\workflows\Entity\Workflow;
 
@@ -27,11 +25,10 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'tmgmt_content',
     'content_moderation',
     'field',
-    'entity_reference',
     'tmgmt_composite_test',
   ];
 
@@ -45,7 +42,7 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  function setUp() {
+  function setUp(): void {
     parent::setUp();
 
     $this->addLanguage('de');
@@ -119,36 +116,38 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
     ]);
 
     // Create a draft.
+    $this->drupalGet($node->toUrl('edit-form'));
     $edit = [
       'title[0][value]' => 'node title (draft)',
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm($node->toUrl('edit-form')->toString(), $edit, 'Save');
+    $this->submitForm($edit, 'Save');
 
     // Create a translation in German.
-    $this->drupalPostForm('/node/' . $node->id() . '/translations', ['languages[de]' => TRUE], 'Request translation');
-    $this->assertUniqueText('One job needs to be checked out.');
-    $this->drupalPostForm(NULL, ['target_language' => 'de'], 'Submit to provider');
-    $this->assertText('Test translation created.');
-    $this->assertText('This translation cannot be accepted as there is a pending revision in the default translation. You must publish node title (draft) first before saving this translation.');
+    $this->drupalGet('/node/' . $node->id() . '/translations');
+    $this->submitForm(['languages[de]' => TRUE], 'Request translation');
+    $this->assertSession()->pageTextContainsOnce('One job needs to be checked out.');
+    $this->submitForm(['target_language' => 'de'], 'Submit to provider');
+    $this->assertSession()->pageTextContains('Test translation created.');
+    $this->assertSession()->pageTextContains('This translation cannot be accepted as there is a pending revision in the default translation. You must publish node title (draft) first before saving this translation.');
     // Assert the translation can not be accepted if there is a composite entity
     // reference field.
     $this->clickLink('Review');
     $url = $this->getUrl();
-    $this->drupalPostForm(NULL, [], 'Validate');
-    $this->assertUniqueText('Validation completed successfully.');
-    $this->drupalPostForm(NULL, [], 'Save as completed');
-    $this->assertText('This translation cannot be accepted as there is a pending revision in the default translation. You must publish node title (draft) first before saving this translation.');
+    $this->submitForm([], 'Validate');
+    $this->assertSession()->pageTextContainsOnce('Validation completed successfully.');
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains('This translation cannot be accepted as there is a pending revision in the default translation. You must publish node title (draft) first before saving this translation.');
     // Publish the source draft first and accept the translation.
     $this->clickLink('node title (draft)');
-    $this->drupalPostForm(NULL, ['new_state' => 'published'], 'Apply');
-    $this->assertUniqueText('The moderation state has been updated.');
+    $this->submitForm(['new_state' => 'published'], 'Apply');
+    $this->assertSession()->pageTextContainsOnce('The moderation state has been updated.');
     $this->drupalGet($url);
-    $this->assertOptionSelected('edit-moderation-state-new-state', 'published');
-    $this->drupalPostForm(NULL, [], 'Save as completed');
-    $this->assertText('The translation for node title (draft) has been accepted as de(de-ch): node title (draft).');
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'published')->isSelected());
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains('The translation for node title (draft) has been accepted as de(de-ch): node title (draft).');
     $this->drupalGet($node->toUrl('edit-form')->toString());
-    $this->assertFieldByName('entity_test_composite[0][target_id]', 'composite name (' . $composite->id() . ')');
+    $this->assertSession()->fieldValueEquals('entity_test_composite[0][target_id]', 'composite name (' . $composite->id() . ')');
     $composite = EntityTestComposite::load($composite->id());
     $this->assertEquals('de(de-ch): composite name', $composite->getTranslation('de')->getName());
 
@@ -226,95 +225,98 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
     ]);
 
     // Create a draft of the published node.
+    $this->drupalGet($node->toUrl('edit-form'));
     $draft_title = '[Draft] ' . $title;
     $edit = [
       'title[0][value]' => $draft_title,
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save');
+    $this->submitForm($edit, 'Save');
 
     // Go to content overview and translate a draft.
     $this->drupalGet('admin/tmgmt/sources');
-    $this->assertLink($draft_title);
+    $this->assertSession()->linkExists($draft_title);
     $edit = [
       'items[' . $node->id() . ']' => $node->id(),
     ];
-    $this->drupalPostForm(NULL, $edit, 'Request translation');
-    $this->assertText('One job needs to be checked out.');
-    $this->assertText($draft_title . ' (English to ?, Unprocessed)');
+    $this->submitForm($edit, 'Request translation');
+    $this->assertSession()->pageTextContains('One job needs to be checked out.');
+    $this->assertSession()->pageTextContains($draft_title . ' (English to ?, Unprocessed)');
     $edit = [
       'target_language' => 'de',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Submit to provider');
-    $this->assertText(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $draft_title]));
+    $this->submitForm($edit, 'Submit to provider');
+    $this->assertSession()->pageTextContains(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $draft_title]));
 
     // Assert a draft label on the jobs overview page.
     $this->drupalGet('admin/tmgmt/jobs');
-    $this->assertText($draft_title);
+    $this->assertSession()->pageTextContains($draft_title);
     $this->clickLink('Manage');
-    $this->assertText($draft_title . ' (English to German, Active)');
+    $this->assertSession()->pageTextContains($draft_title . ' (English to German, Active)');
     $this->clickLink('Review');
-    $this->assertText('Job item ' . $draft_title);
+    $this->assertSession()->pageTextContains('Job item ' . $draft_title);
 
     // Assert there is no content moderation form element.
-    $this->assertNoFieldByName('moderation_state|0|value[source]');
+    $this->assertSession()->fieldNotExists('moderation_state|0|value[source]');
     // Assert custom content moderation form element.
-    $this->assertText('Current source state');
-    $this->assertText('Draft');
-    $this->assertOptionSelected('edit-moderation-state-new-state', 'draft');
+    $this->assertSession()->pageTextContains('Current source state');
+    $this->assertSession()->pageTextContains('Draft');
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'draft')->isSelected());
     // Change the moderation state of the translation to published.
     $translation_title = 'de(de-ch): [Published] ' . $title;
     $edit = [
       'title|0|value[translation]' => $translation_title,
       'moderation_state[new_state]' => 'published',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
-    $this->assertText(t('The translation for @title has been saved successfully.', ['@title' => $draft_title]));
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->pageTextContains(t('The translation for @title has been saved successfully.', ['@title' => $draft_title]));
     $this->clickLink('Review');
     // The published state is preselected now.
-    $this->assertOptionSelected('edit-moderation-state-new-state', 'published');
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'published')->isSelected());
     $review_url = $this->getUrl();
     // Assert the preview mode.
     $this->clickLink('Preview');
-    $this->assertText(t('Preview of @title for German', ['@title' => $draft_title]));
-    $this->assertText($translation_title);
+    $this->assertSession()->pageTextContains(t('Preview of @title for German', ['@title' => $draft_title]));
+    $this->assertSession()->pageTextContains($translation_title);
     // Save the translation as completed and assert the published translation.
-    $this->drupalPostForm($review_url, [], 'Save as completed');
-    $this->assertText('Validation completed successfully.');
-    $this->assertText(t('The translation for @title has been accepted as @translation_title.', ['@title' => $draft_title, '@translation_title' => $translation_title]));
+    $this->drupalGet($review_url);
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains('Validation completed successfully.');
+    $this->assertSession()->pageTextContains(t('The translation for @title has been accepted as @translation_title.', ['@title' => $draft_title, '@translation_title' => $translation_title]));
     $this->clickLink($translation_title);
-    $this->assertUrl('de/node/' . $node->id());
-    $this->assertText($translation_title);
+    $this->assertSession()->addressEquals('de/node/' . $node->id());
+    $this->assertSession()->pageTextContains($translation_title);
     $this->clickLink('Revisions');
-    $this->assertText("Created by translation job $draft_title.");
+    $this->assertSession()->pageTextContains("Created by translation job $draft_title.");
 
     // There is one translation revision.
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'de', 1);
 
     // Assert the source entity has not changed.
     $this->drupalGet('node/' . $node->id());
-    $this->assertText($title);
+    $this->assertSession()->pageTextContains($title);
     $this->drupalGet('node/' . $node->id() . '/latest');
-    $this->assertText($draft_title);
+    $this->assertSession()->pageTextContains($draft_title);
 
     // Translate the node to Spanish and save it as a draft.
+    $this->drupalGet('admin/tmgmt/sources');
     $edit = [
       'target_language' => 'es',
       'items[' . $node->id() . ']' => $node->id(),
     ];
-    $this->drupalPostForm('admin/tmgmt/sources', $edit, 'Request translation');
-    $this->drupalPostForm(NULL, [], 'Submit to provider');
-    $this->assertText(t('The translation of @title to Spanish is finished and can now be reviewed.', ['@title' => $draft_title]));
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains(t('The translation of @title to Spanish is finished and can now be reviewed.', ['@title' => $draft_title]));
     $this->clickLink('reviewed');
     // Spanish translation is saved as a draft.
-    $this->drupalPostForm(NULL, [], 'Save as completed');
-    $this->assertText(t('The translation for @title has been accepted.', ['@title' => $draft_title]));
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains(t('The translation for @title has been accepted.', ['@title' => $draft_title]));
     $this->drupalGet('es/node/' . $node->id());
     // The spanish translation is not published. English content is displayed.
-    $this->assertText($title);
-    $this->assertNoText('es: ' . $title);
+    $this->assertSession()->pageTextContains($title);
+    $this->assertSession()->pageTextNotContains('es: ' . $title);
     $this->clickLink('Latest version');
-    $this->assertText('es: ' . $draft_title);
+    $this->assertSession()->pageTextContains('es: ' . $draft_title);
 
     // There is one more revision in German created when Spanish translation was
     // saved.
@@ -322,28 +324,30 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'es', 1);
 
     // Create a new revision in the source language.
+    $this->drupalGet($node->toUrl('edit-form'));
     $second_draft_title = "$draft_title (2)";
     $edit = [
       'title[0][value]' => $second_draft_title,
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save (this translation)');
+    $this->submitForm($edit, 'Save (this translation)');
 
     // The update to the source language creates a new German revision.
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'de', 3);
 
     // Create a draft revision in italian using core translation.
+    $this->drupalGet('it/node/' . $node->id() . '/translations/add/en/it');
     $edit = [
       'title[0][value]' => "it: $second_draft_title",
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm('it/node/' . $node->id() . '/translations/add/en/it', $edit, 'Save (this translation)');
+    $this->submitForm($edit, 'Save (this translation)');
     // New German revision has been created when Italian translation was added.
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'de', 4);
 
     // Assert the source overview behavior.
     $this->drupalGet('admin/tmgmt/sources');
-    $this->assertEqual(count($this->xpath('//tbody/tr')), 1);
+    $this->assertCount(1, $this->xpath('//tbody/tr'));
     // English is original language and it is linked.
     $this->assertTextByXpath('//tbody/tr[1]/td[4]/@class', 'langstatus-en');
     $this->assertTextByXpath('//tbody/tr[1]/td[4]/a/img/@title', 'Original language');
@@ -361,63 +365,65 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
     $this->assertTextByXpath('//tbody/tr[1]/td[8]/a/img/@title', 'Translation up to date');
 
     // Assert the content overview filters.
+    $this->drupalGet('admin/tmgmt/sources/content/node');
     $edit = [
       'search[target_language]' => 'de',
       'search[target_status]' => 'untranslated',
     ];
-    $this->drupalPostForm('admin/tmgmt/sources/content/node', $edit, 'Search');
+    $this->submitForm($edit, 'Search');
     // The german translation was published.
-    $this->assertText('No source items matching given criteria have been found.');
-    $this->assertNoLink($second_draft_title);
+    $this->assertSession()->pageTextContains('No source items matching given criteria have been found.');
+    $this->assertSession()->linkNotExists($second_draft_title);
     // The italian translation was saved as a draft.
     $edit = [
       'search[target_language]' => 'it',
       'search[target_status]' => 'untranslated',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Search');
-    $this->assertText('No source items matching given criteria have been found.');
-    $this->assertNoLink($second_draft_title);
+    $this->submitForm($edit, 'Search');
+    $this->assertSession()->pageTextContains('No source items matching given criteria have been found.');
+    $this->assertSession()->linkNotExists($second_draft_title);
     // The french translation does not exist.
     $edit = [
       'search[target_language]' => 'fr',
       'search[target_status]' => 'untranslated',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Search');
-    $this->assertLink($second_draft_title);
+    $this->submitForm($edit, 'Search');
+    $this->assertSession()->linkExists($second_draft_title);
 
-      // Translate a new revision to German.
+    // Translate a new revision to German.
+    $this->drupalGet('admin/tmgmt/sources');
     $edit = [
       'target_language' => 'de',
       'items[' . $node->id() . ']' => $node->id(),
     ];
-    $this->drupalPostForm('admin/tmgmt/sources', $edit, 'Request translation');
-    $this->drupalPostForm(NULL, [], 'Submit to provider');
-    $this->assertText(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $second_draft_title]));
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $second_draft_title]));
     $this->clickLink('reviewed');
-    $this->assertOptionSelected('edit-moderation-state-new-state', 'draft');
-    $this->drupalPostForm(NULL, [], 'Save as completed');
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'draft')->isSelected());
+    $this->submitForm([], 'Save as completed');
 
     // Submitting another German translation creates a new revision.
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'de', 5);
 
     // German language still shows the latest published translation.
     $this->drupalGet('de/node/' . $node->id());
-    $this->assertText($translation_title);
+    $this->assertSession()->pageTextContains($translation_title);
     $this->drupalGet('de/node/' . $node->id() . '/latest');
-    $this->assertText('de(de-ch): [Draft] Moderated node (2)');
+    $this->assertSession()->pageTextContains('de(de-ch): [Draft] Moderated node (2)');
     $this->clickLink('Revisions');
-    $this->assertText('Created by translation job [Draft] Moderated node (2).');
-    $this->assertText('Created by translation job [Draft] Moderated node.');
+    $this->assertSession()->pageTextContains('Created by translation job [Draft] Moderated node (2).');
+    $this->assertSession()->pageTextContains('Created by translation job [Draft] Moderated node.');
     // Italian translation was not published yet.
     $this->drupalGet('it/node/' . $node->id());
-    $this->assertNoText('it: ' . $second_draft_title);
+    $this->assertSession()->pageTextNotContains('it: ' . $second_draft_title);
     $this->clickLink('Latest version');
-    $this->assertText('it: ' . $second_draft_title);
+    $this->assertSession()->pageTextContains('it: ' . $second_draft_title);
     // Spanish translation was not published either.
     $this->drupalGet('es/node/' . $node->id());
-    $this->assertNoText('es: ' . $draft_title);
+    $this->assertSession()->pageTextNotContains('es: ' . $draft_title);
     $this->clickLink('Latest version');
-    $this->assertText('es: ' . $draft_title);
+    $this->assertSession()->pageTextContains('es: ' . $draft_title);
 
     // Create a published node.
     $title = 'Published article';
@@ -429,53 +435,59 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
       'uid' => $this->translator_user->id(),
     ]);
     // Create a draft.
+    $this->drupalGet($node->toUrl('edit-form'));
     $draft_title = 'Draft article';
     $edit = [
       'title[0][value]' => $draft_title,
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     // Publish a translation in German.
+    $this->drupalGet('de/node/' . $node->id() . '/translations/add/en/de');
     $edit = [
       'title[0][value]' => "de: $draft_title",
       'moderation_state[0][state]' => 'published',
     ];
-    $this->drupalPostForm('de/node/' . $node->id() . '/translations/add/en/de', $edit, 'Save (this translation)');
+    $this->submitForm($edit, 'Save (this translation)');
 
     // Provide another translation in German using TMGMT.
+    $this->drupalGet('admin/tmgmt/sources');
     $edit = [
       'items[' . $node->id() . ']' => $node->id(),
       'target_language' => 'de',
     ];
-    $this->drupalPostForm('admin/tmgmt/sources', $edit, 'Request translation');
-    $this->drupalPostForm(NULL, [], 'Submit to provider');
-    $this->assertText("The translation of $draft_title to German is finished and can now be reviewed.");
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains("The translation of $draft_title to German is finished and can now be reviewed.");
     $this->clickLink('reviewed');
-    $this->assertOptionSelected('edit-moderation-state-new-state', 'draft');
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'draft')->isSelected());
     $edit = [
       'moderation_state[new_state]' => 'published',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save as completed');
-    $this->assertText("The translation for $draft_title has been accepted as de(de-ch): $draft_title.");
+    $this->submitForm($edit, 'Save as completed');
+    $this->assertSession()->pageTextContains("The translation for $draft_title has been accepted as de(de-ch): $draft_title.");
+
+    // Update the default moderation state.
+    \Drupal::configFactory()->getEditable('tmgmt_content.settings')->set('default_moderation_states', [$this->workflow->id() => 'published'])->save();
 
     // Provide translation in Spanish as well.
+    $this->drupalGet('admin/tmgmt/sources');
     $edit = [
       'items[' . $node->id() . ']' => $node->id(),
       'target_language' => 'es',
     ];
-    $this->drupalPostForm('admin/tmgmt/sources', $edit, 'Request translation');
-    $this->drupalPostForm(NULL, [], 'Submit to provider');
-    $this->assertText("The translation of $draft_title to Spanish is finished and can now be reviewed.");
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains("The translation of $draft_title to Spanish is finished and can now be reviewed.");
     $this->clickLink('reviewed');
-    $edit = [
-      'moderation_state[new_state]' => 'published',
-    ];
-    $this->drupalPostForm(NULL, $edit, 'Save as completed');
-    $this->assertText("The translation for $draft_title has been accepted as es: $draft_title.");
+    // Assert that the default moderation state is being set.
+    $this->assertTrue($this->assertSession()->optionExists('edit-moderation-state-new-state', 'published')->isSelected());
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains("The translation for $draft_title has been accepted as es: $draft_title.");
 
     // The latest revision contains all the translations.
     $node = Node::load($node->id());
-    $this->assertEqual(array_keys($node->getTranslationLanguages()), ['en', 'de', 'es']);
+    $this->assertEquals(['en', 'de', 'es'], array_keys($node->getTranslationLanguages()));
 
     // Create a node in German language.
     $node = $this->createNode([
@@ -486,15 +498,16 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
       'uid' => $this->translator_user->id(),
     ]);
     // Create a draft of the published node.
+    $this->drupalGet($node->toUrl('edit-form'));
     $edit = [
       'title[0][value]' => 'Draft node (de)',
       'moderation_state[0][state]' => 'draft',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save');
+    $this->submitForm($edit, 'Save');
     // Go to the overview and and assert there is a draft in german language.
     $this->drupalGet('admin/tmgmt/sources');
-    $this->assertText('Draft node (de)');
-    $this->assertNoText('Moderated node (de)');
+    $this->assertSession()->pageTextContains('Draft node (de)');
+    $this->assertSession()->pageTextNotContains('Moderated node (de)');
   }
 
   /**
@@ -502,12 +515,13 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
    */
   protected function assertNodeTranslationsRevisionsCount($id, $langcode, $expected) {
     $translation_revisions_count = \Drupal::entityQuery('node')
+      ->accessCheck(FALSE)
       ->condition('nid', $id)
       ->condition('langcode', $langcode)
       ->allRevisions()
       ->count()
       ->execute();
-    $this->assertEqual($expected, $translation_revisions_count);
+    $this->assertEquals($expected, $translation_revisions_count);
   }
 
   /**
@@ -533,74 +547,75 @@ class ContentEntitySourceContentModerationTest extends TMGMTTestBase {
 
     // Go to content overview and translate the unpublished node.
     $this->drupalGet('admin/tmgmt/sources');
-    $this->assertLink($title);
+    $this->assertSession()->linkExists($title);
     $edit = [
       'items[' . $node->id() . ']' => $node->id(),
     ];
-    $this->drupalPostForm(NULL, $edit, 'Request translation');
-    $this->assertText('One job needs to be checked out.');
-    $this->assertText($title . ' (English to ?, Unprocessed)');
+    $this->submitForm($edit, 'Request translation');
+    $this->assertSession()->pageTextContains('One job needs to be checked out.');
+    $this->assertSession()->pageTextContains($title . ' (English to ?, Unprocessed)');
     $edit = [
       'target_language' => 'de',
     ];
-    $this->drupalPostForm(NULL, $edit, 'Submit to provider');
-    $this->assertText(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $title]));
+    $this->submitForm($edit, 'Submit to provider');
+    $this->assertSession()->pageTextContains(t('The translation of @title to German is finished and can now be reviewed.', ['@title' => $title]));
 
     // Assert a draft label on the jobs overview page.
     $this->clickLink('reviewed');
-    $this->assertText('Job item ' . $title);
+    $this->assertSession()->pageTextContains('Job item ' . $title);
     // No moderation form element is displayed for non-moderated entities.
-    $this->assertNoText('Current source state');
-    $this->assertText('Translation publish status');
+    $this->assertSession()->pageTextNotContains('Current source state');
+    $this->assertSession()->pageTextContains('Translation publish status');
     // The source node is not published so translation inherits the state.
-    $this->assertNoFieldChecked('edit-status-published');
+    $this->assertSession()->checkboxNotChecked('edit-status-published');
     // Publish the translation.
     $translation_title = 'de(de-ch): [Published] ' . $title;
     $edit = [
       'title|0|value[translation]' => $translation_title,
       'status[published]' => TRUE,
     ];
-    $this->drupalPostForm(NULL, $edit, 'Save');
-    $this->assertText(t('The translation for @title has been saved successfully.', ['@title' => $title]));
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->pageTextContains(t('The translation for @title has been saved successfully.', ['@title' => $title]));
     $this->clickLink('Review');
     // The published field is preselected now.
-    $this->assertFieldChecked('edit-status-published');
+    $this->assertSession()->checkboxChecked('edit-status-published');
     // Save the translation as completed and assert the published translation.
-    $this->drupalPostForm(NULL, [], 'Save as completed');
-    $this->assertText('Validation completed successfully.');
-    $this->assertText(t('The translation for @title has been accepted as @translation_title.', ['@title' => $title, '@translation_title' => $translation_title]));
+    $this->submitForm([], 'Save as completed');
+    $this->assertSession()->pageTextContains('Validation completed successfully.');
+    $this->assertSession()->pageTextContains(t('The translation for @title has been accepted as @translation_title.', ['@title' => $title, '@translation_title' => $translation_title]));
     $this->clickLink($translation_title);
-    $this->assertUrl('de/node/' . $node->id());
-    $this->assertText($translation_title);
+    $this->assertSession()->addressEquals('de/node/' . $node->id());
+    $this->assertSession()->pageTextContains($translation_title);
     $this->clickLink('Revisions');
-    $this->assertText("Created by translation job $title.");
+    $this->assertSession()->pageTextContains("Created by translation job $title.");
 
     // There is one translation revision.
     $this->assertNodeTranslationsRevisionsCount($node->id(), 'de', 1);
 
     // Create an unpublished Spanish translation.
+    $this->drupalGet('admin/tmgmt/sources');
     $edit = [
       'target_language' => 'es',
       'items[' . $node->id() . ']' => $node->id(),
     ];
-    $this->drupalPostForm('admin/tmgmt/sources', $edit, 'Request translation');
-    $this->drupalPostForm(NULL, [], 'Submit to provider');
-    $this->assertText(t('The translation of @title to Spanish is finished and can now be reviewed.', ['@title' => $title]));
+    $this->submitForm($edit, 'Request translation');
+    $this->submitForm([], 'Submit to provider');
+    $this->assertSession()->pageTextContains(t('The translation of @title to Spanish is finished and can now be reviewed.', ['@title' => $title]));
     $this->clickLink('reviewed');
-    $this->drupalPostForm(NULL, [], 'Save as completed');
+    $this->submitForm([], 'Save as completed');
     // Spanish translation is unpublished.
-    $this->assertText(t('The translation for @title has been accepted as es: @title', ['@title' => $title]));
+    $this->assertSession()->pageTextContains(t('The translation for @title has been accepted as es: @title', ['@title' => $title]));
     $this->drupalLogout();
 
     // The spanish translation is not published.
     $this->drupalGet('es/node/' . $node->id());
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
     // The source is still unpublished.
     $this->drupalGet('node/' . $node->id());
-    $this->assertResponse(403);
+    $this->assertSession()->statusCodeEquals(403);
     // The german translation is published.
     $this->drupalGet('de/node/' . $node->id());
-    $this->assertResponse(200);
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**

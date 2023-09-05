@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for title length module.
+ */
+
+use Drupal\Core\Extension\ModuleUninstallValidatorException;
+use Drupal\taxonomy_term_title_length\TaxonomyTermTitleLength;
+use Drupal\title_length\EntityTitleLengthInterface;
+
+/**
+ * Implements hook_install().
+ */
+function taxonomy_term_title_length_install(): void {
+  Drupal::service('taxonomy_term_title_length.taxonomy_term')
+    ->changeLength(TaxonomyTermTitleLength::getLength());
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function taxonomy_term_title_length_uninstall(): void {
+  $titleLengthService = Drupal::service('taxonomy_term_title_length.taxonomy_term');
+  if ($titleLengthService->checkIfExistEntitiesWithLongTitles()) {
+    throw new ModuleUninstallValidatorException('Taxonomy terms or taxonomy term revisions exist with long titles. Module cannot be uninstalled.');
+  }
+  $titleLengthService->changeLength(EntityTitleLengthInterface::ORIGINAL_LENGTH);
+}

@@ -17,7 +17,7 @@ namespace Drupal\Tests\feeds\Unit\Element {
     /**
      * {@inheritdoc}
      */
-    public function setUp() {
+    public function setUp(): void {
       parent::setUp();
 
       // Set a stub for the string translation service.

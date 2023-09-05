@@ -5,8 +5,8 @@ namespace Drupal\allowed_languages;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\UserInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
@@ -46,36 +46,35 @@ class AllowedLanguagesManager implements AllowedLanguagesManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function currentUserEntity() {
-    return $this->userEntityFromProxy($this->currentUser);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function userEntityFromProxy(AccountProxyInterface $account) {
-    return $this->entityTypeManager
-      ->getStorage('user')
-      ->load($account->id());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function assignedLanguages(UserInterface $user = NULL) {
-    if ($user === NULL) {
-      $user = $this->currentUserEntity();
+  public function accountFromProxy(AccountInterface $account = NULL) {
+    if ($account === NULL) {
+      $account = $this->currentUser;
     }
+
+    if ($account instanceof AccountProxyInterface) {
+      $account = $this->entityTypeManager
+        ->getStorage('user')
+        ->load($account->id());
+    }
+
+    return $account;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function assignedLanguages(AccountInterface $account = NULL) {
+    $account = $this->accountFromProxy($account ?? $this->currentUser);
 
     $language_values = [];
 
     // Make sure the field exists before attempting to get languages.
-    if (!$user->hasField('allowed_languages')) {
+    if (!$account->hasField('allowed_languages')) {
       return $language_values;
     }
 
     // Get the id of each referenced language.
-    foreach ($user->get('allowed_languages')->getValue() as $item) {
+    foreach ($account->get('allowed_languages')->getValue() as $item) {
       $language_values[] = $item['target_id'];
     }
 
@@ -85,17 +84,15 @@ class AllowedLanguagesManager implements AllowedLanguagesManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function hasPermissionForLanguage(LanguageInterface $language, UserInterface $user = NULL) {
-    if ($user === NULL) {
-      $user = $this->currentUserEntity();
-    }
+  public function hasPermissionForLanguage(LanguageInterface $language, AccountInterface $account = NULL) {
+    $account = $this->accountFromProxy($this->currentUser);
 
     // Bypass the check if the user has permission to translate all languages.
-    if ($user->hasPermission('translate all languages')) {
+    if ($account->hasPermission('translate all languages')) {
       return TRUE;
     }
 
-    $allowed_languages = $this->assignedLanguages($user);
+    $allowed_languages = $this->assignedLanguages($account);
     return in_array($language->getId(), $allowed_languages);
   }
 

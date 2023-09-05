@@ -24,7 +24,7 @@ class EntityQueryAlterComplexTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['group_test_plugin', 'node', 'views'];
+  protected static $modules = ['group_test_plugin', 'node', 'views'];
 
   /**
    * The grouped storage to use in testing.
@@ -50,7 +50,7 @@ class EntityQueryAlterComplexTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installConfig('group_test_plugin');
@@ -519,7 +519,7 @@ class EntityQueryAlterComplexTest extends GroupKernelTestBase {
    *   The message for the assertion.
    */
   protected function assertQueryAccessResult($expected, $message) {
-    $ids = $this->storage->getQuery()->execute();
+    $ids = $this->storage->getQuery()->accessCheck()->execute();
     $this->assertEqualsCanonicalizing($expected, array_keys($ids), $message);
 
     $views_expected = [];

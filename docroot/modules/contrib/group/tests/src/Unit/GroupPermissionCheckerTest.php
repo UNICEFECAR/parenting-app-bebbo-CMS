@@ -36,7 +36,7 @@ class GroupPermissionCheckerTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void{
     parent::setUp();
     $this->permissionCalculator = $this->prophesize(ChainGroupPermissionCalculatorInterface::class);
     $this->permissionChecker = new GroupPermissionChecker($this->permissionCalculator->reveal());

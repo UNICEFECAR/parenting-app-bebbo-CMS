@@ -18,12 +18,12 @@ class ContentEntityMetatagTest extends ContentEntityTestBase {
    *
    * @var array
    */
-  public static $modules = ['token', 'metatag'];
+  protected static $modules = ['token', 'metatag'];
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $field_storage = FieldStorageConfig::create(array(
@@ -121,6 +121,23 @@ class ContentEntityMetatagTest extends ContentEntityTestBase {
     ];
     $this->assertEquals($expected_meta_tags, $translated_meta_tags);
 
+    // Test an entity without metatag data.
+    // Create an english test entity.
+    $values = [
+      'langcode' => 'en',
+      'user_id' => 1,
+      'name' => 'Test entity empty',
+    ];
+    $entity_test2 = EntityTestMul::create($values);
+    $entity_test2->save();
+
+    $job = tmgmt_job_create('en', 'de');
+    $job->translator = 'test_translator';
+    $job->save();
+    $job_item = tmgmt_job_item_create('content', $this->entityTypeId, $entity_test2->id(), array('tjid' => $job->id()));
+    $job_item->save();
+
+    $this->assertEquals([], $job_item->getData(['field_meta_tags']));
   }
 
 }

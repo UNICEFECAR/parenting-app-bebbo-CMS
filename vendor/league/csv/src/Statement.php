@@ -18,48 +18,41 @@ use CallbackFilterIterator;
 use Iterator;
 use LimitIterator;
 use function array_reduce;
-use function iterator_to_array;
 
 /**
  * Criteria to filter a {@link Reader} object.
  */
 class Statement
 {
-    /**
-     * Callables to filter the iterator.
-     *
-     * @var callable[]
-     */
-    protected $where = [];
+    /** @var array<callable> Callables to filter the iterator. */
+    protected array $where = [];
+    /** @var array<callable> Callables to sort the iterator. */
+    protected array $order_by = [];
+    /** iterator Offset. */
+    protected int $offset = 0;
+    /** iterator maximum length. */
+    protected int $limit = -1;
 
     /**
-     * Callables to sort the iterator.
-     *
-     * @var callable[]
+     * @throws Exception
      */
-    protected $order_by = [];
+    public static function create(callable $where = null, int $offset = 0, int $limit = -1): self
+    {
+        $stmt = new self();
+        if (null !== $where) {
+            $stmt = $stmt->where($where);
+        }
 
-    /**
-     * iterator Offset.
-     *
-     * @var int
-     */
-    protected $offset = 0;
-
-    /**
-     * iterator maximum length.
-     *
-     * @var int
-     */
-    protected $limit = -1;
+        return $stmt->offset($offset)->limit($limit);
+    }
 
     /**
      * Set the Iterator filter method.
      */
-    public function where(callable $callable): self
+    public function where(callable $where): self
     {
         $clone = clone $this;
-        $clone->where[] = $callable;
+        $clone->where[] = $where;
 
         return $clone;
     }
@@ -67,10 +60,10 @@ class Statement
     /**
      * Set an Iterator sorting callable function.
      */
-    public function orderBy(callable $callable): self
+    public function orderBy(callable $order_by): self
     {
         $clone = clone $this;
-        $clone->order_by[] = $callable;
+        $clone->order_by[] = $order_by;
 
         return $clone;
     }
@@ -83,7 +76,7 @@ class Statement
     public function offset(int $offset): self
     {
         if (0 > $offset) {
-            throw new InvalidArgument(sprintf('%s() expects the offset to be a positive integer or 0, %s given', __METHOD__, $offset));
+            throw InvalidArgument::dueToInvalidRecordOffset($offset, __METHOD__);
         }
 
         if ($offset === $this->offset) {
@@ -104,7 +97,7 @@ class Statement
     public function limit(int $limit): self
     {
         if (-1 > $limit) {
-            throw new InvalidArgument(sprintf('%s() expects the limit to be greater or equal to -1, %s given', __METHOD__, $limit));
+            throw InvalidArgument::dueToInvalidLimit($limit, __METHOD__);
         }
 
         if ($limit === $this->limit) {
@@ -120,15 +113,16 @@ class Statement
     /**
      * Execute the prepared Statement on the {@link Reader} object.
      *
-     * @param string[] $header an optional header to use instead of the CSV document header
+     * @param array<string> $header an optional header to use instead of the CSV document header
      */
-    public function process(Reader $csv, array $header = []): ResultSet
+    public function process(TabularDataReader $tabular_data, array $header = []): TabularDataReader
     {
         if ([] === $header) {
-            $header = $csv->getHeader();
+            $header = $tabular_data->getHeader();
         }
 
-        $iterator = array_reduce($this->where, [$this, 'filter'], $csv->getRecords($header));
+        $iterator = $tabular_data->getRecords($header);
+        $iterator = array_reduce($this->where, [$this, 'filter'], $iterator);
         $iterator = $this->buildOrderBy($iterator);
 
         return new ResultSet(new LimitIterator($iterator, $this->offset, $this->limit), $header);
@@ -161,9 +155,12 @@ class Statement
             return $cmp ?? 0;
         };
 
-        $iterator = new ArrayIterator(iterator_to_array($iterator));
-        $iterator->uasort($compare);
+        $it = new ArrayIterator();
+        foreach ($iterator as $offset => $value) {
+            $it[$offset] = $value;
+        }
+        $it->uasort($compare);
 
-        return $iterator;
+        return $it;
     }
 }

@@ -12,7 +12,7 @@ class GroupContentCrudHookTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Required to be able to delete accounts. See User::postDelete().

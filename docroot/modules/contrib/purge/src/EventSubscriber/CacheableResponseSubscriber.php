@@ -5,7 +5,7 @@ namespace Drupal\purge\EventSubscriber;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\purge\Plugin\Purge\TagsHeader\TagsHeadersServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -41,17 +41,18 @@ class CacheableResponseSubscriber implements EventSubscriberInterface {
   /**
    * Add cache tags headers on cacheable responses.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent  $event
    *   The event to process.
    */
-  public function onRespond(FilterResponseEvent $event) {
-    if (!$event->isMasterRequest()) {
+  public function onRespond(ResponseEvent $event) {
+    if (!$event->isMainRequest()) {
       return;
     }
 
     // Only set any headers when this is a cacheable response.
     $response = $event->getResponse();
-    if ($response instanceof CacheableResponseInterface) {
+    if ($response instanceof CacheableResponseInterface
+      && !$response->headers->hasCacheControlDirective('no-cache')) {
 
       // Iterate all tagsheader plugins and add a header for each plugin.
       $tags = $response->getCacheableMetadata()->getCacheTags();
@@ -61,8 +62,8 @@ class CacheableResponseSubscriber implements EventSubscriberInterface {
           // Retrieve the header name and perform a few simple sanity checks.
           $name = $header->getHeaderName();
           if ((!is_string($name)) || empty(trim($name))) {
-            $plugin_id = $header->getPluginId();
-            throw new \LogicException("Header plugin '$plugin_id' should return a non-empty string on ::getHeaderName()!");
+            $pluginId = $header->getPluginId();
+            throw new \LogicException("Header plugin '$pluginId' should return a non-empty string on ::getHeaderName()!");
           }
 
           $response->headers->set($name, $header->getValue($tags));

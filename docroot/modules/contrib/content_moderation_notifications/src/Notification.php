@@ -31,7 +31,7 @@ class Notification implements NotificationInterface {
   protected $entityTypeManager;
 
   /**
-   * The entity type manager.
+   * The mail manager service.
    *
    * @var \Drupal\Core\Mail\MailManagerInterface
    */
@@ -103,10 +103,7 @@ class Notification implements NotificationInterface {
       $data['langcode'] = $this->currentUser->getPreferredLangcode();
       $data['notification'] = $notification;
       // Setup the email subject and body content.
-      $data['params']['subject'] = $notification->getSubject();
-      $data['params']['message'] = check_markup($notification->getMessage(), $notification->getMessageFormat());
-
-      // Add the entity as context to aid in token replacement.
+      // Add the entity as context to aid in token and Twig replacement.
       if ($this->tokenEntityMapper) {
         $data['params']['context'] = [
           'entity' => $entity,
@@ -122,15 +119,39 @@ class Notification implements NotificationInterface {
         ];
       }
 
+      // Get Subject and process any Twig templating.
+      $subject = $notification->getSubject();
+      $template = [
+        '#type' => 'inline_template',
+        '#template' => $subject,
+        '#context' => $data['params']['context'],
+      ];
+      $subject = \Drupal::service('renderer')->renderPlain($template);
+      // Remove any newlines from Subject.
+      $subject = trim(str_replace("\n", ' ', $subject));
+      $data['params']['subject'] = $subject;
+
+      // Get Message, process any Twig templating, and apply input filter.
+      $message = $notification->getMessage();
+      $template = [
+        '#type' => 'inline_template',
+        '#template' => $message,
+        '#context' => $data['params']['context'],
+      ];
+      $message = \Drupal::service('renderer')->renderPlain($template);
+      $data['params']['message'] = check_markup($message, $notification->getMessageFormat());
+
       // Figure out who the email should be going to.
       $data['to'] = [];
 
-      // Authors.
+      // Get Author.
       if ($notification->author and ($entity instanceof EntityOwnerInterface)) {
-        $data['to'][] = $entity->getOwner()->getEmail();
+        if ($entity->getOwner()->isActive()) {
+          $data['to'][] = $entity->getOwner()->getEmail();
+        }
       }
 
-      // Roles.
+      // Get Roles.
       foreach ($notification->getRoleIds() as $role) {
         /** @var \Drupal\Core\Entity\EntityStorageInterface $user_storage */
         $user_storage = $this->entityTypeManager->getStorage('user');
@@ -147,12 +168,23 @@ class Notification implements NotificationInterface {
           $role_users = $user_storage->loadByProperties(['roles' => $role]);
         }
         foreach ($role_users as $role_user) {
-          $data['to'][] = $role_user->getEmail();
+          if ($role_user->isActive()) {
+            $data['to'][] = $role_user->getEmail();
+          }
         }
       }
 
       // Adhoc emails.
-      $adhoc_emails = array_map('trim', explode(',', preg_replace("/((\r?\n)|(\r\n?))/", ',', $notification->getEmails())));
+      $adhoc_emails = $notification->getEmails();
+      $template = [
+        '#type' => 'inline_template',
+        '#template' => $adhoc_emails,
+        '#context' => $data['params']['context'],
+      ];
+      $adhoc_emails = \Drupal::service('renderer')->renderPlain($template);
+
+      // Split Adhoc emails on commas and newlines.
+      $adhoc_emails = array_map('trim', explode(',', preg_replace("/((\r?\n)|(\r\n?))/", ',', $adhoc_emails)));
       foreach ($adhoc_emails as $email) {
         $data['to'][] = $email;
       }

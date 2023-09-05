@@ -2,13 +2,13 @@
 
 namespace Drupal\Tests\feeds\Unit;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\feeds\Event\FeedsEvents;
 use Drupal\feeds\FeedExpireHandler;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\State;
-use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -41,14 +41,17 @@ class FeedExpireHandlerTest extends FeedsUnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->dispatcher = new EventDispatcher();
     $this->feed = $this->createMock(FeedInterface::class);
     $this->handler = $this->getMockBuilder(FeedExpireHandler::class)
-      ->setMethods(['getExpiredIds'])
-      ->setConstructorArgs([$this->dispatcher])
+      ->setMethods(['getExpiredIds', 'batchSet'])
+      ->setConstructorArgs([
+        $this->dispatcher,
+        $this->createMock(Connection::class),
+      ])
       ->getMock();
     $this->handler->setStringTranslation($this->createMock(TranslationInterface::class));
     $this->handler->setMessenger($this->createMock(MessengerInterface::class));
@@ -89,14 +92,14 @@ class FeedExpireHandlerTest extends FeedsUnitTestCase {
    */
   public function testExpireItemWithException() {
     $this->dispatcher->addListener(FeedsEvents::EXPIRE, function ($event) {
-      throw new Exception();
+      throw new \Exception();
     });
 
     $this->feed
       ->expects($this->once())
       ->method('clearStates');
 
-    $this->expectException(Exception::class);
+    $this->expectException(\Exception::class);
     $this->handler->expireItem($this->feed, 1);
   }
 

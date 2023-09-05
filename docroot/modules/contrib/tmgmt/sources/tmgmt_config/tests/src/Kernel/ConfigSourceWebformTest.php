@@ -18,12 +18,12 @@ class ConfigSourceWebformTest extends TMGMTKernelTestBase {
    *
    * @var array
    */
-  public static $modules = array('tmgmt_config', 'language', 'config_translation', 'locale', 'options', 'webform');
+  protected static $modules = array('tmgmt_config', 'language', 'config_translation', 'locale', 'options', 'webform');
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Add the languages.

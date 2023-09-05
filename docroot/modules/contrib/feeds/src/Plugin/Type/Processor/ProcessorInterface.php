@@ -13,6 +13,20 @@ use Drupal\feeds\StateInterface;
 interface ProcessorInterface extends FeedsPluginInterface {
 
   /**
+   * Skip new items from feed.
+   *
+   * @var int
+   */
+  const SKIP_NEW = 0;
+
+  /**
+   * Create new items from Feed.
+   *
+   * @var int
+   */
+  const INSERT_NEW = 1;
+
+  /**
    * Skip items that exist already.
    *
    * @var int

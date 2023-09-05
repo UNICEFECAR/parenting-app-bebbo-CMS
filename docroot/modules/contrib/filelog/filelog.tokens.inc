@@ -89,65 +89,37 @@ function filelog_tokens($type, array $tokens, array $data, array $options, Bubbl
   $message = $data['log'];
 
   foreach ($tokens as $name => $original) {
-    switch ($name) {
-      // Alias "type" is deprecated and may be removed in future versions.
-      case 'type':
-      case 'channel':
-        $replacements[$original] = $message->getChannel();
-        break;
-
-      case 'level':
-        $replacements[$original] = $message->getLevel();
-        break;
-
-      case 'message':
-        $replacements[$original] = $message->getText();
-        break;
-
-      case 'location':
-        $replacements[$original] = $message->getLocation();
-        break;
-
-      case 'ip':
-        $replacements[$original] = $message->getIp();
-        break;
-
-      // Accept both the correct and the RFC spelling here.
-      case 'referrer':
-      case 'referer':
-        $replacements[$original] = $message->getReferrer();
-        break;
-
-      case 'created':
-        $replacements[$original] = $date_service->format(
-          $message->getTimestamp()
-        );
-        break;
-
-      case 'user':
-        $replacements[$original] = $message->getUser()->label();
-        break;
-    }
+    $replacements[$original] = match ($name) {
+      'type', 'channel'     => $message->getChannel(),
+      'level'               => $message->getLevel(),
+      'message'             => $message->getText(),
+      'location'            => $message->getLocation(),
+      'ip'                  => $message->getIp(),
+      'referrer', 'referer' => $message->getReferrer(),
+      'created'             => $date_service->format($message->getTimestamp()),
+      'user'                => $message->getUser()->label(),
+      default               => NULL,
+    };
   }
 
   if ($user_tokens = $token_service->findWithPrefix($tokens, 'user')) {
-    $replacements += $token_service->generate(
+    $replacements = $token_service->generate(
       'user',
       $user_tokens,
       ['user' => $message->getUser()],
       $options,
       $metadata
-    );
+    ) + $replacements;
   }
 
   if ($created_tokens = $token_service->findWithPrefix($tokens, 'created')) {
-    $replacements += $token_service->generate(
+    $replacements = $token_service->generate(
       'date',
       $created_tokens,
       ['date' => $message->getTimestamp()],
       $options,
       $metadata
-    );
+    ) + $replacements;
   }
 
   if ($variable_tokens = $token_service->findWithPrefix($tokens, 'variable')) {

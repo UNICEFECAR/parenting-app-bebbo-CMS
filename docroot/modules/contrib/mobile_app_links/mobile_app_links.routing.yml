@@ -48,7 +48,6 @@ mobile_app_links.well_known_assetlinks:
     # Android app asset links should be accessible by everyone.
     _access: 'TRUE'
 
-
 mobile_app_links.assetlinks:
   path: '/assetlinks.json'
   defaults:

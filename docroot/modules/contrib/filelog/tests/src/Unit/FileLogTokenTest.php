@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeRepositoryInterface;
 use Drupal\Core\Logger\LogMessageParser;
+use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Utility\Token;
@@ -31,28 +32,28 @@ class FileLogTokenTest extends UnitTestCase {
    *
    * @var \Drupal\Core\Logger\LogMessageParserInterface
    */
-  protected $logMessageParser;
+  protected LogMessageParserInterface $logMessageParser;
 
   /**
    * A mock of the token service.
    *
    * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * A mock of the date.formatter service.
    *
    * @var \Drupal\Core\Datetime\DateFormatterInterface
    */
-  protected $dateFormatter;
+  protected DateFormatterInterface $dateFormatter;
 
   /**
    * A mock of the user entity storage.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
    */
-  protected $userStorage;
+  protected EntityStorageInterface $userStorage;
 
   /**
    * {@inheritdoc}
@@ -113,7 +114,7 @@ class FileLogTokenTest extends UnitTestCase {
    *
    * @dataProvider providerMessages
    */
-  public function testTokens($level, string $message, array $context): void {
+  public function testTokens(mixed $level, string $message, array $context): void {
     $variables = $this->logMessageParser->parseMessagePlaceholders(
       $message,
       $context

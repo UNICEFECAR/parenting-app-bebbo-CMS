@@ -26,7 +26,7 @@ function filelog_help($route_name): ?string {
 /**
  * Implements hook_cron().
  */
-function filelog_cron() {
+function filelog_cron(): void {
   Drupal::service('filelog.rotator')->run();
 }
 
@@ -48,7 +48,7 @@ function filelog_theme(): array {
 /**
  * Implements hook_form_FORM_ID_alter() for system_logging_settings().
  */
-function filelog_form_system_logging_settings_alter(array &$form) {
+function filelog_form_system_logging_settings_alter(array &$form): void {
   $config = Drupal::configFactory()->getEditable('filelog.settings');
 
   $form['filelog_enabled'] = [
@@ -67,7 +67,7 @@ function filelog_form_system_logging_settings_alter(array &$form) {
   ];
 
   $location = $config->get('location');
-  if (strpos($location, 'public://') === 0) {
+  if (str_starts_with($location, 'public://')) {
     $location = substr($location, strlen('public://'));
   }
 
@@ -237,7 +237,7 @@ function filelog_form_system_logging_settings_alter(array &$form) {
  * @see filelog_form_system_logging_settings_alter()
  */
 function filelog_logging_settings_validate(array $form,
-                                           FormStateInterface $formState) {
+                                           FormStateInterface $formState): void {
   /** @var \Drupal\Core\File\FileSystemInterface $fileSystem */
   $fileSystem = Drupal::service('file_system');
   $streamWrapperManager = Drupal::service('stream_wrapper_manager');
@@ -277,7 +277,7 @@ function filelog_logging_settings_validate(array $form,
  * @see filelog_form_system_logging_settings_alter()
  */
 function filelog_logging_settings_submit(array $form,
-                                         FormStateInterface $formState) {
+                                         FormStateInterface $formState): void {
   $config = Drupal::configFactory()->getEditable('filelog.settings');
   $config->set('enabled', $formState->getValue('filelog_enabled'));
   $channels = trim($formState->getValue(['filelog', 'channels']));

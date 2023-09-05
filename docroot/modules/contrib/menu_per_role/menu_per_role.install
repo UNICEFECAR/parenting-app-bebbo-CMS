@@ -12,7 +12,7 @@ use Drupal\user\Entity\Role;
 /**
  * Permission to bypass menu_per_role access to roles having old permission.
  */
-function menu_per_role_update_8101() {
+function menu_per_role_update_8101() : void {
   $config = \Drupal::config('menu_per_role.settings');
   $admin_see_all = !is_null($config->get('admin_see_all')) ? $config->get('admin_see_all') : FALSE;
 
@@ -31,7 +31,7 @@ function menu_per_role_update_8101() {
 /**
  * Removes old config since it is replaced by permission.
  */
-function menu_per_role_update_8102() {
+function menu_per_role_update_8102() : void {
   \Drupal::configFactory()->getEditable('menu_per_role.settings')
     ->clear('uid1_see_all')
     ->clear('admin_see_all')
@@ -41,7 +41,7 @@ function menu_per_role_update_8102() {
 /**
  * Have distinct permissions for front and admin access bypass.
  */
-function menu_per_role_update_8103() {
+function menu_per_role_update_8103() : void {
   /** @var \Drupal\user\Entity\Role[] $roles */
   $roles = Role::loadMultiple();
   foreach ($roles as $role) {
@@ -57,7 +57,7 @@ function menu_per_role_update_8103() {
 /**
  * Init new settings for admin to bypass access.
  */
-function menu_per_role_update_8104() {
+function menu_per_role_update_8104() : void {
   $config = \Drupal::configFactory()->getEditable('menu_per_role.settings');
   $config->set('admin_bypass_access_front', FALSE);
   $config->set('admin_bypass_access_admin', TRUE);

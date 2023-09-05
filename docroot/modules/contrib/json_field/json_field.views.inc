@@ -10,7 +10,8 @@ use Drupal\field\FieldStorageConfigInterface;
 /**
  * Implements hook_field_views_data().
  *
- * Views integration for json fields. Adds a data field to the default field data.
+ * Views integration for JSON fields. Adds a data field to the default
+ * field data.
  *
  * @see field_views_field_default_views_data()
  */

@@ -7,7 +7,7 @@ services:
     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
   features_assigner:
     class: Drupal\features\FeaturesAssigner
-    arguments: ['@features.manager', '@plugin.manager.features_assignment_method', '@entity_type.manager', '@config.factory', '@config.storage', '%install_profile%']
+    arguments: ['@features.manager', '@plugin.manager.features_assignment_method', '@entity_type.manager', '@config.factory', '@config.storage', '%install_profile%', '@request_stack']
     calls:
       - [initFeaturesManager]
   features_generator:
@@ -17,7 +17,7 @@ services:
       - [initFeaturesManager]
   features.manager:
     class: Drupal\features\FeaturesManager
-    arguments: ['@app.root', '@entity_type.manager', '@config.factory', '@config.storage', '@config.manager', '@module_handler', '@features.config_update', '@extension.list.module']
+    arguments: ['%app.root%', '@entity_type.manager', '@config.factory', '@config.storage', '@config.manager', '@module_handler', '@features.config_update', '@extension.list.module', '@extension.path.resolver']
 
   features.config_update:
     class: Drupal\config_update\ConfigReverter
@@ -25,16 +25,25 @@ services:
 
   features.extension_storage:
     class: Drupal\features\FeaturesInstallStorage
-    arguments: ['@config.storage']
+    arguments: ['@config.storage', '@extension.path.resolver']
 
   features.extension_optional_storage:
     class: Drupal\features\FeaturesInstallStorage
-    arguments: ['@config.storage', 'config/optional']
+    arguments: ['@config.storage', '@extension.path.resolver', 'config/optional']
 
   features.config.installer:
     class: Drupal\features\FeaturesConfigInstaller
     decorates: config.installer
-    arguments: ['@features.config.installer.inner', '@features.manager', '@config.factory', '@config.storage', '@config.typed', '@config.manager', '@event_dispatcher', '%install_profile%']
+    arguments:
+      - '@features.config.installer.inner'
+      - '@features.manager'
+      - '@config.factory'
+      - '@config.storage'
+      - '@config.typed'
+      - '@config.manager'
+      - '@event_dispatcher'
+      - '%install_profile%'
+      - '@extension.path.resolver'
     decoration_priority: 9
 
   logger.channel.features:

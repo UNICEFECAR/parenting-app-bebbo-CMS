@@ -5,11 +5,53 @@
  * Install/update/uninstall hooks.
  */
 
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function feeds_install() {
+  $messenger = \Drupal::messenger();
+  $messenger->addStatus(t('To configure feeds, start by adding a <a href=":feed_type_add_url">feed type</a>. For more information <a target="feeds-guide" href=":guide_url">read the guide</a>.', [
+    ':feed_type_add_url' => Url::fromUri('internal:/admin/structure/feeds/add')->toString(),
+    ':guide_url' => 'https://www.drupal.org/docs/8/modules/feeds/creating-and-editing-import-feeds',
+  ]));
+}
+
 /**
  * Implements hook_uninstall().
  */
 function feeds_uninstall() {
-  // @todo remove keyvalue store and queue things.
+  $database = \Drupal::database();
+
+  // Delete Feeds states.
+  if ($database->schema()->tableExists('key_value')) {
+    $collections = $database->select('key_value')
+      ->fields('key_value', ['collection'])
+      ->condition('collection', 'feeds_feed.%', 'LIKE')
+      ->groupBy('collection')
+      ->execute();
+
+    foreach ($collections as $collection_record) {
+      \Drupal::keyValue($collection_record->collection)->deleteAll();
+    }
+  }
+
+  // Delete all Feeds queues.
+  if ($database->schema()->tableExists('queue')) {
+    $queues = $database->select('queue')
+      ->fields('queue', ['name'])
+      ->condition('name', 'feeds_feed_refresh:%', 'LIKE')
+      ->groupBy('name')
+      ->execute();
+
+    foreach ($queues as $queue_record) {
+      $queue = \Drupal::queue($queue_record->name);
+      if ($queue) {
+        $queue->deleteQueue();
+      }
+    }
+  }
 }
 
 /**
@@ -32,6 +74,7 @@ function feeds_schema() {
         'not null' => TRUE,
       ],
     ],
+    'primary key' => ['feed_id', 'entity_id'],
   ];
 
   return $schema;
@@ -50,8 +93,7 @@ function feeds_update_8001() {
  * Installs new table 'feeds_clean_list'.
  */
 function feeds_update_8002() {
-  $database = \Drupal::database();
-  $schema = $database->schema();
+  $schema = \Drupal::database()->schema();
   if (!$schema->tableExists('feeds_clean_list')) {
     // Add feeds_clean_list table.
     $schema->createTable('feeds_clean_list', [
@@ -72,4 +114,39 @@ function feeds_update_8002() {
       ],
     ]);
   }
+}
+
+/**
+ * Adds a primary key to {feeds_clean_list} table.
+ */
+function feeds_update_8003() {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('feeds_clean_list')) {
+    $schema->dropPrimaryKey('feeds_clean_list');
+    $schema->addPrimaryKey('feeds_clean_list', ['feed_id', 'entity_id']);
+  }
+}
+
+/**
+ * Flush all caches to make plugin type "FeedsCustomSource" available.
+ */
+function feeds_update_8004() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Set the default lock timeout for Feeds imports.
+ */
+function feeds_update_8005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('feeds.settings');
+  $config->set('lock_timeout', 43200);
+  $config->save(TRUE);
+}
+
+/**
+ * Flush all caches to make the service "feeds.lock" available.
+ */
+function feeds_update_8006() {
+  drupal_flush_all_caches();
 }

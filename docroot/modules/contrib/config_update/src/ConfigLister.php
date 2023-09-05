@@ -198,7 +198,8 @@ class ConfigLister implements ConfigListInterface {
    *   List of config items provided by this extension.
    */
   protected function listProvidedItems($type, $name, $do_optional = FALSE) {
-    $pathname = drupal_get_filename($type, $name);
+    // @todo Inject this dependency in the constructor.
+    $pathname = \Drupal::service("extension.list.$type")->getPathname($name);
     $component = new Extension(\Drupal::root(), $type, $pathname);
     if ($do_optional) {
       $names = $this->extensionOptionalConfigStorage->getComponentNames([$component]);

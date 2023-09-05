@@ -81,13 +81,15 @@ class PurgerAddForm extends ConfigFormBase {
     ];
 
     // Update the buttons and bind callbacks.
-    $form['actions']['submit'] = [
-      '#access' => (bool) count($plugins),
-      '#type' => 'submit',
-      '#button_type' => 'primary',
-      '#value' => $this->t("Add"),
-      '#ajax' => ['callback' => '::addPurger'],
-    ];
+    if (count($plugins)) {
+      $form['actions']['submit'] = [
+        '#type' => 'submit',
+        '#button_type' => 'primary',
+        '#value' => $this->t("Add"),
+        '#ajax' => ['callback' => '::addPurger'],
+      ];
+    }
+
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('Cancel'),

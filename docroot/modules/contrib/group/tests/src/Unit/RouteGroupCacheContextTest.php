@@ -36,7 +36,7 @@ class RouteGroupCacheContextTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->currentRouteMatch = $this->prophesize(RouteMatchInterface::class);
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);

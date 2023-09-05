@@ -37,6 +37,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
    * @return DOMNode
    *   Current DOMNode object.
    */
+  #[\ReturnTypeWillChange]
   public function current() {
     return $this->nodeList->item($this->position);
   }
@@ -47,6 +48,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
    * @return RecursiveDOMIterator
    *   Iterator with children elements.
    */
+  #[\ReturnTypeWillChange]
   public function getChildren() {
     return new self($this->current());
   }
@@ -57,6 +59,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
    * @return bool
    *   Has children.
    */
+  #[\ReturnTypeWillChange]
   public function hasChildren() {
     return $this->current()->hasChildNodes();
   }
@@ -67,6 +70,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
    * @return int
    *   Current position
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     return $this->position;
   }
@@ -74,6 +78,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
   /**
    * Moves the current position to the next element.
    */
+  #[\ReturnTypeWillChange]
   public function next() {
     $this->position++;
   }
@@ -81,6 +86,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
   /**
    * Rewind the Iterator to the first element.
    */
+  #[\ReturnTypeWillChange]
   public function rewind() {
     $this->position = 0;
   }
@@ -91,6 +97,7 @@ class RecursiveDOMIterator implements \RecursiveIterator {
    * @return bool
    *   Is valid.
    */
+  #[\ReturnTypeWillChange]
   public function valid() {
     return $this->position < $this->nodeList->length;
   }

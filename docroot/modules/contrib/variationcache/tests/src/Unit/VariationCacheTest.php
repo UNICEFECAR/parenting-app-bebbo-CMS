@@ -6,11 +6,11 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Cache\Context\ContextCacheKeys;
 use Drupal\Core\Cache\MemoryBackend;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Tests\UnitTestCase;
 use Drupal\variationcache\Cache\CacheRedirect;
 use Drupal\variationcache\Cache\VariationCache;
 use Prophecy\Argument;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @coversDefaultClass \Drupal\variationcache\Cache\VariationCache
@@ -120,7 +120,7 @@ class VariationCacheTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->requestStack = $this->prophesize(RequestStack::class);
     $this->memoryBackend = new MemoryBackend();
@@ -138,15 +138,19 @@ class VariationCacheTest extends UnitTestCase {
             case 'house.type':
               $keys[] = "ht.$housing_type";
               break;
+
             case 'garden.type':
               $keys[] = "gt.$garden_type";
               break;
+
             case 'house.orientation':
               $keys[] = "ho.$house_orientation";
               break;
+
             case 'solar.type':
               $keys[] = "st.$solar_type";
               break;
+
             default:
               $keys[] = $context_id;
           }
@@ -230,7 +234,7 @@ class VariationCacheTest extends UnitTestCase {
     ];
 
     foreach ($possible_outcomes as $cache_context_values => $data) {
-      list($this->housingType, $this->gardenType, $this->houseOrientation) = explode('|', $cache_context_values . '||');
+      [$this->housingType, $this->gardenType, $this->houseOrientation] = explode('|', $cache_context_values . '||');
 
       $cacheability = $this->housingTypeCacheability;
       if (!empty($this->houseOrientation)) {
@@ -244,17 +248,17 @@ class VariationCacheTest extends UnitTestCase {
       $this->setVariationCacheItem($data, $cacheability, $this->housingTypeCacheability);
       $this->assertVariationCacheItem($data, $cacheability, $this->housingTypeCacheability);
 
-      $cache_id = "$this->cacheIdBase:ht.$this->housingType";
+      $cache_id_parts = ["ht.$this->housingType"];
       if (!empty($this->gardenType)) {
-        $this->assertCacheBackendItem($cache_id, new CacheRedirect($this->gardenTypeCacheability));
-        $cache_id .= ":gt.$this->gardenType";
+        $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), new CacheRedirect($this->gardenTypeCacheability));
+        $cache_id_parts[] = "gt.$this->gardenType";
       }
       if (!empty($this->houseOrientation)) {
-        $this->assertCacheBackendItem($cache_id, new CacheRedirect($this->houseOrientationCacheability));
-        $cache_id .= ":ho.$this->houseOrientation";
+        $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), new CacheRedirect($this->houseOrientationCacheability));
+        $cache_id_parts[] = "ho.$this->houseOrientation";
       }
 
-      $this->assertCacheBackendItem($cache_id, $data, $cacheability);
+      $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), $data, $cacheability);
     }
   }
 
@@ -273,7 +277,7 @@ class VariationCacheTest extends UnitTestCase {
     // process, the first ::get() for the more specific item will fail as we
     // have effectively destroyed the path to said item. Setting an item of the
     // same specificity will restore the path for all items of said specificity.
-    $cache_id = "$this->cacheIdBase:ht.house";
+    $cache_id_parts = ['ht.house'];
     $possible_outcomes = [
       'house|garden|east' => 'You have a nice house with an east-facing garden!',
       'house|garden|south' => 'You have a nice house with a south-facing garden!',
@@ -282,23 +286,23 @@ class VariationCacheTest extends UnitTestCase {
     ];
 
     foreach ($possible_outcomes as $cache_context_values => $data) {
-      list($this->housingType, $this->gardenType, $this->houseOrientation) = explode('|', $cache_context_values . '||');
+      [$this->housingType, $this->gardenType, $this->houseOrientation] = explode('|', $cache_context_values . '||');
       $this->setVariationCacheItem($data, $this->houseOrientationCacheability, $this->housingTypeCacheability);
     }
 
     // Verify that the overly specific redirect is stored at the first possible
     // redirect location, i.e.: The base cache ID.
-    $this->assertCacheBackendItem($cache_id, new CacheRedirect($this->houseOrientationCacheability));
+    $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), new CacheRedirect($this->houseOrientationCacheability));
 
     // Store a simpler variation and verify that the first cache redirect is now
     // the one redirecting to the simplest known outcome.
-    list($this->housingType, $this->gardenType, $this->houseOrientation) = ['house', 'no-garden', NULL];
+    [$this->housingType, $this->gardenType, $this->houseOrientation] = ['house', 'no-garden', NULL];
     $this->setVariationCacheItem('You have a nice house', $this->gardenTypeCacheability, $this->housingTypeCacheability);
-    $this->assertCacheBackendItem($cache_id, new CacheRedirect($this->gardenTypeCacheability));
+    $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), new CacheRedirect($this->gardenTypeCacheability));
 
     // Verify that the previously set outcomes are all inaccessible now.
     foreach ($possible_outcomes as $cache_context_values => $data) {
-      list($this->housingType, $this->gardenType, $this->houseOrientation) = explode('|', $cache_context_values . '||');
+      [$this->housingType, $this->gardenType, $this->houseOrientation] = explode('|', $cache_context_values . '||');
       $this->assertVariationCacheMiss($this->housingTypeCacheability);
     }
 
@@ -307,13 +311,14 @@ class VariationCacheTest extends UnitTestCase {
 
     // Verify that the previously set outcomes are all accessible again.
     foreach ($possible_outcomes as $cache_context_values => $data) {
-      list($this->housingType, $this->gardenType, $this->houseOrientation) = explode('|', $cache_context_values . '||');
+      [$this->housingType, $this->gardenType, $this->houseOrientation] = explode('|', $cache_context_values . '||');
       $this->assertVariationCacheItem($data, $this->houseOrientationCacheability, $this->housingTypeCacheability);
     }
 
     // Verify that the more specific cache redirect is now stored one step after
     // the less specific one.
-    $this->assertCacheBackendItem("$cache_id:gt.garden", new CacheRedirect($this->houseOrientationCacheability));
+    $cache_id_parts[] = 'gt.garden';
+    $this->assertCacheBackendItem($this->getSortedCacheId($cache_id_parts), new CacheRedirect($this->houseOrientationCacheability));
   }
 
   /**
@@ -333,7 +338,6 @@ class VariationCacheTest extends UnitTestCase {
     // For the sake of this test, we'll vary by housing and orientation, but:
     // - Only vary by garden type for south-facing houses.
     // - Only vary by solar panel type for north-facing houses.
-    $cache_id = "$this->cacheIdBase:ht.house";
     $this->housingType = 'house';
     $this->gardenType = 'garden';
     $this->solarType = 'solar';
@@ -353,6 +357,11 @@ class VariationCacheTest extends UnitTestCase {
     $common_cacheability = (new CacheableMetadata())
       ->setCacheContexts(['house.type', 'house.orientation']);
 
+    // Calculate the cache IDs once beforehand for readability.
+    $cache_id = $this->getSortedCacheId(['ht.house']);
+    $cache_id_north = $this->getSortedCacheId(['ht.house', 'ho.north']);
+    $cache_id_south = $this->getSortedCacheId(['ht.house', 'ho.south']);
+
     // Set the first scenario.
     $this->houseOrientation = 'south';
     $this->setVariationCacheItem('You have a south-facing house with a garden!', $south_cacheability, $initial_cacheability);
@@ -367,7 +376,7 @@ class VariationCacheTest extends UnitTestCase {
     $this->houseOrientation = 'north';
     $this->setVariationCacheItem('You have a north-facing house with solar panels!', $north_cacheability, $initial_cacheability);
     $this->assertCacheBackendItem($cache_id, new CacheRedirect($common_cacheability));
-    $this->assertCacheBackendItem("$cache_id:ho.north", new CacheRedirect($north_cacheability));
+    $this->assertCacheBackendItem($cache_id_north, new CacheRedirect($north_cacheability));
 
     // Verify that the initially set scenario is inaccessible now.
     $this->houseOrientation = 'south';
@@ -376,12 +385,12 @@ class VariationCacheTest extends UnitTestCase {
     // Reset the initial scenario and verify that its redirects are accessible.
     $this->setVariationCacheItem('You have a south-facing house with a garden!', $south_cacheability, $initial_cacheability);
     $this->assertCacheBackendItem($cache_id, new CacheRedirect($common_cacheability));
-    $this->assertCacheBackendItem("$cache_id:ho.south", new CacheRedirect($south_cacheability));
+    $this->assertCacheBackendItem($cache_id_south, new CacheRedirect($south_cacheability));
 
     // Double-check that the split scenario redirects are left untouched.
     $this->houseOrientation = 'north';
     $this->assertCacheBackendItem($cache_id, new CacheRedirect($common_cacheability));
-    $this->assertCacheBackendItem("$cache_id:ho.north", new CacheRedirect($north_cacheability));
+    $this->assertCacheBackendItem($cache_id_north, new CacheRedirect($north_cacheability));
   }
 
   /**
@@ -395,7 +404,8 @@ class VariationCacheTest extends UnitTestCase {
     // cache using context A and then tries to store something using context B,
     // something is wrong. There should always be at least one shared context at
     // the top level or else the cache cannot do its job.
-    $this->setExpectedException(\LogicException::class, "The complete set of cache contexts for a variation cache item must contain all of the initial cache contexts.");
+    $this->expectException(\LogicException::class);
+    $this->expectExceptionMessage("The complete set of cache contexts for a variation cache item must contain all of the initial cache contexts.");
 
     $this->housingType = 'house';
     $house_cacheability = (new CacheableMetadata())
@@ -407,6 +417,25 @@ class VariationCacheTest extends UnitTestCase {
 
     $this->setVariationCacheItem('You have a nice garden!', $garden_cacheability, $garden_cacheability);
     $this->setVariationCacheItem('You have a nice house!', $house_cacheability, $garden_cacheability);
+  }
+
+  /**
+   * Creates the sorted cache ID from cache ID parts.
+   *
+   * Core changed how the cache context manager folds cache contexts so that the
+   * returned keys are now always sorted alphabetically. This makes testing an
+   * underlying cache quite annoying.
+   *
+   * @param string[] $cache_id_parts
+   *  The parts to add to the base cache ID, will be sorted.
+   *
+   * @return string
+   *   The correct cache ID.
+   */
+  protected function getSortedCacheId($cache_id_parts) {
+    sort($cache_id_parts);
+    array_unshift($cache_id_parts, $this->cacheIdBase);
+    return implode(':', $cache_id_parts);
   }
 
   /**
@@ -461,7 +490,7 @@ class VariationCacheTest extends UnitTestCase {
    *   (optional) The cacheability that should have been used. Does not apply
    *   when checking for cache redirects.
    */
-  protected function assertCacheBackendItem($cid, $data, CacheableMetadata $cacheability = NULL) {
+  protected function assertCacheBackendItem(string $cid, $data, CacheableMetadata $cacheability = NULL) {
     $cache_backend_item = $this->memoryBackend->get($cid);
     $this->assertNotFalse($cache_backend_item, 'The data was stored and retrieved successfully.');
     $this->assertEquals($data, $cache_backend_item->data, 'Cache item contains the right data.');

@@ -5,56 +5,53 @@
  * Theme file stub for tmgmt.
  */
 
-use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Template\Attribute;
 
 /**
- * Render one single data item as a table row.
+ * Implememnts template_preprocess_HOOK().
  */
-function tmgmt_local_translation_form_element($variables) {
-  // Theme table which contains source, translation and action state button.
+function template_preprocess_tmgmt_local_translation_form_element(array &$variables) {
   $element = $variables['element'];
-
   $parts = explode('|', $element['#parents'][0]);
-  $header_title = ucfirst(str_replace('_', ' ', $parts[0]));
+  $header_title = Unicode::ucfirst(str_replace('_', ' ', $parts[0]));
 
-  // Container for ajax messages.
-  $result = '<div id="tmgmt-status-messages-' . strtolower($element['#parent_label'][0]) . '"></div>';
-
-  $table = [
+  $variables['ajax_container'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'id' => 'tmgmt-status-messages-' . mb_strtolower($element['#parent_label'][0]),
+    ],
+  ];
+  $variables['form_element'] = [
     '#type' => 'table',
-    '#attributes' => array(
+    '#attributes' => [
       'id' => $element['#ajaxid'],
-      'class' => array($element['#zebra']),
-    ),
+      'class' => [$element['#zebra']],
+    ],
     '#header' => [
       [
         'data' => $header_title,
         'colspan' => 4,
       ]
     ],
-    '#rows' => array(
-      array(
-        'data' => array(
+    '#rows' => [
+      [
+        'data' => [
           \Drupal::service('renderer')->render($element['status']),
           \Drupal::service('renderer')->render($element['source']),
           \Drupal::service('renderer')->render($element['translation']),
           \Drupal::service('renderer')->render($element['actions']),
-        ),
-      ),
-    ),
+        ],
+      ],
+    ],
   ];
-  $result .= \Drupal::service('renderer')->render($table);
-
-  return $result;
 }
 
 /**
- * Renders a data item status as an HTML/CSS icon.
+ * Implements template_preprocess_HOOK().
  */
-function theme_tmgmt_local_translation_form_element_status($variables) {
-  $classes = array();
-  $classes[] = 'tmgmt-ui-icon';
-  $classes[] = 'tmgmt-ui-icon-32'; // Icon size 32px square.
+function template_preprocess_tmgmt_local_translation_form_element_status(array &$variables) {
+  $classes = ['tmgmt-ui-icon', 'tmgmt-ui-icon-32'];
   switch ($variables['status']['#value']) {
     case TMGMT_DATA_ITEM_STATE_COMPLETED:
       $title = t('Accepted');
@@ -62,13 +59,17 @@ function theme_tmgmt_local_translation_form_element_status($variables) {
       break;
     case TMGMT_DATA_ITEM_STATE_TRANSLATED:
       $title = t('Translated');
-      $icon = drupal_get_path('module', 'tmgmt') . '/icons/gray-check.svg';
+      $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/gray-check.svg';
       break;
     case TMGMT_DATA_ITEM_STATE_UNTRANSLATED:
     default:
       $title = t('Untranslated');
-      $icon = drupal_get_path('module', 'tmgmt') . '/icons/ready.svg';
+      $icon = \Drupal::service('extension.list.module')->getPath('tmgmt') . '/icons/ready.svg';
       break;
   }
-  return new FormattableMarkup('<div class="@c"><img src="@s" alt="@t"/><span></span></div>', array("@c" => implode(' ', $classes), "@s" => file_create_url($icon), "@t" => $title));
+  $variables['wrapper_attributes'] = new Attribute([
+    'class' => $classes,
+  ]);
+  $variables['icon_url'] =  \Drupal::service('file_url_generator')->generateString($icon);
+  $variables['title'] = $title;
 }

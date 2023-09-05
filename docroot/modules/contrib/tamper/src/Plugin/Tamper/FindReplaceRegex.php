@@ -30,7 +30,7 @@ class FindReplaceRegex extends TamperBase {
     $config = parent::defaultConfiguration();
     $config[self::SETTING_FIND] = '';
     $config[self::SETTING_REPLACE] = '';
-    $config[self::SETTING_LIMIT] = '';
+    $config[self::SETTING_LIMIT] = NULL;
     return $config;
   }
 
@@ -90,8 +90,8 @@ class FindReplaceRegex extends TamperBase {
    * {@inheritdoc}
    */
   public function tamper($data, TamperableItemInterface $item = NULL) {
-    if (!is_string($data)) {
-      throw new TamperException('Input should be a string.');
+    if (!is_string($data) && !is_numeric($data)) {
+      throw new TamperException('Input should be a string or numeric.');
     }
     $find = $this->getSetting(self::SETTING_FIND);
     $replace = $this->getSetting(self::SETTING_REPLACE);

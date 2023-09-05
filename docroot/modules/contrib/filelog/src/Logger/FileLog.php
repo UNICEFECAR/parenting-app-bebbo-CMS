@@ -4,6 +4,7 @@ namespace Drupal\filelog\Logger;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Logger\LogMessageParserInterface;
@@ -33,35 +34,35 @@ class FileLog implements LoggerInterface {
    *
    * @var \Drupal\Core\Config\Config
    */
-  protected $config;
+  protected Config $config;
 
   /**
    * The state system, for updating the filelog.rotation timestamp.
    *
    * @var \Drupal\Core\State\StateInterface
    */
-  protected $state;
+  protected StateInterface $state;
 
   /**
    * The token system, for formatting the log messages.
    *
    * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * The log message parser, for formatting the log messages.
    *
    * @var \Drupal\Core\Logger\LogMessageParserInterface
    */
-  protected $parser;
+  protected LogMessageParserInterface $parser;
 
   /**
    * The time system.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
    */
-  protected $time;
+  protected TimeInterface $time;
 
   /**
    * The currently opened log file.
@@ -82,7 +83,7 @@ class FileLog implements LoggerInterface {
    *
    * @var \Drupal\filelog\LogFileManagerInterface
    */
-  protected $fileManager;
+  protected LogFileManagerInterface $fileManager;
 
   /**
    * FileLog constructor.
@@ -184,7 +185,7 @@ class FileLog implements LoggerInterface {
    * @return bool
    *   TRUE if the message should be logged, FALSE otherwise.
    */
-  protected function shouldLog($level, string $message, array $context = []): bool {
+  protected function shouldLog(mixed $level, string $message, array $context = []): bool {
     // Ignore any messages below the configured severity.
     // (Severity decreases with level.)
     $should_log = $this->config->get('enabled') && $level <= $this->config->get('level');
@@ -209,7 +210,7 @@ class FileLog implements LoggerInterface {
    * @return string
    *   The formatted message.
    */
-  protected function render($level, string $message, array $context = []): string {
+  protected function render(mixed $level, string $message, array $context = []): string {
     // Populate the message placeholders.
     $variables = $this->parser->parseMessagePlaceholders($message, $context);
     // Pass in bubbleable metadata that are just discarded later to prevent a

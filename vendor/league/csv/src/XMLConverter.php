@@ -17,79 +17,57 @@ use DOMAttr;
 use DOMDocument;
 use DOMElement;
 use DOMException;
-use Traversable;
-use TypeError;
-use function gettype;
-use function is_iterable;
-use function sprintf;
 
 /**
- * Converts tabular data into a DOMDOcument object.
+ * Converts tabular data into a DOMDocument object.
  */
 class XMLConverter
 {
     /**
      * XML Root name.
-     *
-     * @var string
      */
-    protected $root_name = 'csv';
+    protected string $root_name = 'csv';
 
     /**
      * XML Node name.
-     *
-     * @var string
      */
-    protected $record_name = 'row';
+    protected string $record_name = 'row';
 
     /**
      * XML Item name.
-     *
-     * @var string
      */
-    protected $field_name = 'cell';
+    protected string $field_name = 'cell';
 
     /**
      * XML column attribute name.
-     *
-     * @var string
      */
-    protected $column_attr = '';
+    protected string $column_attr = '';
 
     /**
      * XML offset attribute name.
-     *
-     * @var string
      */
-    protected $offset_attr = '';
+    protected string $offset_attr = '';
+
+    public static function create(): self
+    {
+        return new self();
+    }
 
     /**
-     * Conversion method list.
+     * DEPRECATION WARNING! This method will be removed in the next major point release.
      *
-     * @var array
+     * @deprecated since version 9.7.0
+     * @see XMLConverter::create()
      */
-    protected $encoder = [
-        'field' => [
-            true => 'fieldToElementWithAttribute',
-            false => 'fieldToElement',
-        ],
-        'record' => [
-            true => 'recordToElementWithAttribute',
-            false => 'recordToElement',
-        ],
-    ];
+    public function __construct()
+    {
+    }
 
     /**
      * Convert a Record collection into a DOMDocument.
-     *
-     * @param array|Traversable $records the CSV records collection
      */
-    public function convert($records): DOMDocument
+    public function convert(iterable $records): DOMDocument
     {
-        if (!is_iterable($records)) {
-            throw new TypeError(sprintf('%s() expects argument passed to be iterable, %s given', __METHOD__, gettype($records)));
-        }
-
         $doc = new DOMDocument('1.0');
         $node = $this->import($records, $doc);
         $doc->appendChild($node);
@@ -101,20 +79,12 @@ class XMLConverter
      * Create a new DOMElement related to the given DOMDocument.
      *
      * **DOES NOT** attach to the DOMDocument
-     *
-     * @param array|Traversable $records
      */
-    public function import($records, DOMDocument $doc): DOMElement
+    public function import(iterable $records, DOMDocument $doc): DOMElement
     {
-        if (!is_iterable($records)) {
-            throw new TypeError(sprintf('%s() expects argument passed to be iterable, %s given', __METHOD__, gettype($records)));
-        }
-
-        $field_encoder = $this->encoder['field']['' !== $this->column_attr];
-        $record_encoder = $this->encoder['record']['' !== $this->offset_attr];
         $root = $doc->createElement($this->root_name);
         foreach ($records as $offset => $record) {
-            $node = $this->$record_encoder($doc, $record, $field_encoder, $offset);
+            $node = $this->recordToElement($doc, $record, $offset);
             $root->appendChild($node);
         }
 
@@ -125,27 +95,16 @@ class XMLConverter
      * Convert a CSV record into a DOMElement and
      * adds its offset as DOMElement attribute.
      */
-    protected function recordToElementWithAttribute(
-        DOMDocument $doc,
-        array $record,
-        string $field_encoder,
-        int $offset
-    ): DOMElement {
-        $node = $this->recordToElement($doc, $record, $field_encoder);
-        $node->setAttribute($this->offset_attr, (string) $offset);
-
-        return $node;
-    }
-
-    /**
-     * Convert a CSV record into a DOMElement.
-     */
-    protected function recordToElement(DOMDocument $doc, array $record, string $field_encoder): DOMElement
+    protected function recordToElement(DOMDocument $doc, array $record, int $offset): DOMElement
     {
         $node = $doc->createElement($this->record_name);
         foreach ($record as $node_name => $value) {
-            $item = $this->$field_encoder($doc, (string) $value, $node_name);
+            $item = $this->fieldToElement($doc, (string) $value, $node_name);
             $node->appendChild($item);
+        }
+
+        if ('' !== $this->offset_attr) {
+            $node->setAttribute($this->offset_attr, (string) $offset);
         }
 
         return $node;
@@ -159,23 +118,14 @@ class XMLConverter
      *
      * @param int|string $node_name
      */
-    protected function fieldToElementWithAttribute(DOMDocument $doc, string $value, $node_name): DOMElement
-    {
-        $item = $this->fieldToElement($doc, $value);
-        $item->setAttribute($this->column_attr, (string) $node_name);
-
-        return $item;
-    }
-
-    /**
-     * Convert Cell to Item.
-     *
-     * @param string $value Record item value
-     */
-    protected function fieldToElement(DOMDocument $doc, string $value): DOMElement
+    protected function fieldToElement(DOMDocument $doc, string $value, $node_name): DOMElement
     {
         $item = $doc->createElement($this->field_name);
         $item->appendChild($doc->createTextNode($value));
+
+        if ('' !== $this->column_attr) {
+            $item->setAttribute($this->column_attr, (string) $node_name);
+        }
 
         return $item;
     }

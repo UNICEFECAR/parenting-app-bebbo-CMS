@@ -2,13 +2,14 @@
 
 namespace Drupal\config_update;
 
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Event context class for configuration revert/import events.
  *
  * This class is passed in as the event when the
  * \Drupal\config_update\ConfigRevertInterface::IMPORT,
+ * \Drupal\config_update\ConfigDeleteInterface::PRE_DELETE,
  * \Drupal\config_update\ConfigDeleteInterface::DELETE, and
  * \Drupal\config_update\ConfigRevertInterface::REVERT events are triggered.
  */

@@ -16,7 +16,7 @@ class EntityQueryAlterCacheabilityTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['node'];
+  protected static $modules = ['node'];
 
   /**
    * The grouped entity storage to use in testing.
@@ -35,7 +35,7 @@ class EntityQueryAlterCacheabilityTest extends GroupKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->installSchema('node', ['node_access']);
@@ -59,12 +59,9 @@ class EntityQueryAlterCacheabilityTest extends GroupKernelTestBase {
 
     $render_context = new RenderContext();
     $renderer->executeInRenderContext($render_context, static function () use ($storage) {
-      $storage->getQuery()->execute();
+      $storage->getQuery()->accessCheck()->execute();
     });
-    // @todo Swap out the lines below once Entity API 1.2 is out.
-    // @see: https://www.drupal.org/project/entity/issues/3161304
-    //$this->assertTrue($render_context->isEmpty(), 'Empty cacheability was not bubbled.');
-    $this->assertEquals(new BubbleableMetadata(), $render_context[0], 'Empty cacheability was not bubbled.');
+    $this->assertTrue($render_context->isEmpty(), 'Empty cacheability was not bubbled.');
 
     // Install the test module so we have an access plugin for nodes.
     $this->enableModules(['group_test_plugin']);
@@ -84,11 +81,11 @@ class EntityQueryAlterCacheabilityTest extends GroupKernelTestBase {
 
     $render_context = new RenderContext();
     $renderer->executeInRenderContext($render_context, static function () use ($storage) {
-      $storage->getQuery()->execute();
+      $storage->getQuery()->accessCheck()->execute();
     });
     $this->assertFalse($render_context->isEmpty(), 'Cacheability was bubbled');
     $this->assertCount(1, $render_context);
-    $this->assertEquals(['group_content_list:plugin:node_as_content:article', 'group_content_list:plugin:node_as_content:page'], $render_context[0]->getCacheTags());
+    $this->assertEqualsCanonicalizing(['group_content_list:plugin:node_as_content:article', 'group_content_list:plugin:node_as_content:page'], $render_context[0]->getCacheTags());
   }
 
   /**

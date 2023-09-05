@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_tools\Functional;
 
 use Drupal\Core\StreamWrapper\PublicStream;
@@ -12,7 +14,7 @@ use Drush\TestTraits\DrushTestTrait;
  *
  * @group migrate_tools
  */
-class DrushCommandsGeneratorTest extends BrowserTestBase {
+final class DrushCommandsGeneratorTest extends BrowserTestBase {
   use DrushTestTrait;
 
   /**
@@ -20,7 +22,7 @@ class DrushCommandsGeneratorTest extends BrowserTestBase {
    *
    * @var string
    */
-  protected $sourceData;
+  private string $sourceData;
 
   /**
    * {@inheritdoc}
@@ -74,23 +76,38 @@ EOD;
     $this->assertStringNotContainsString('5/5', $this->getErrorOutput());
     $vocabulary = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('genre');
     $this->assertEquals('Genre', $vocabulary->label());
-    $this->assertEquals(4, \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->getQuery()->count()->execute());
+    $this->assertEquals(4, \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->getQuery()->accessCheck(TRUE)->count()->execute());
 
     // Remove one vocab and replace with another.
     $this->sourceData = str_replace('genre,Genre,Genre description,1,0', 'fruit,Fruit,Fruit description,1,0', $this->sourceData);
     file_put_contents('public://test.csv', $this->sourceData);
 
     // Execute sync migration.
-    $this->drush('mim', ['csv_source_test'], ['sync' => NULL]);
+    $this->drush('mim', ['csv_source_test'], ['sync' => NULL, 'update' => NULL]);
     $this->assertStringContainsString('1/4', $this->getErrorOutput());
     $this->assertStringContainsString('25% [notice] Rolled back 1 item - done with \'csv_source_test\'', $this->getErrorOutput());
     $this->assertStringContainsString('4/4', $this->getErrorOutput());
     $this->assertStringContainsString('5/5', $this->getErrorOutput());
     $this->assertStringContainsString('100% [notice] Processed 4 items (1 created, 3 updated, 0 failed, 0 ignored) - done with \'csv_source_test\'', $this->getErrorOutput());
-    $this->assertEquals(4, \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->getQuery()->count()->execute());
     // Flush cache so recently deleted vocabulary actually goes away.
     drupal_flush_all_caches();
+    $this->assertEquals(4, \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->getQuery()->accessCheck(TRUE)->count()->execute());
     $this->assertEmpty(\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('genre'));
+
+    // Remove one vocab and replace with another (reverse previous change).
+    $this->sourceData = str_replace('fruit,Fruit,Fruit description,1,0', 'genre,Genre,Genre description,1,0', $this->sourceData);
+    file_put_contents('public://test.csv', $this->sourceData);
+
+    // Execute sync migration without update enforced.
+    $this->drush('mim', ['csv_source_test'], ['sync' => NULL]);
+    $this->assertStringContainsString('1/4', $this->getErrorOutput());
+    $this->assertStringContainsString('25% [notice] Rolled back 1 item - done with \'csv_source_test\'', $this->getErrorOutput());
+    $this->assertStringNotContainsString('3 updated', $this->getErrorOutput());
+    $this->assertStringContainsString('[notice] Processed 1 item (1 created, 0 updated, 0 failed, 0 ignored) - done with \'csv_source_test\'', $this->getErrorOutput());
+    // Flush cache so recently deleted vocabulary actually goes away.
+    drupal_flush_all_caches();
+    $this->assertEquals(4, \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->getQuery()->accessCheck()->count()->execute());
+    $this->assertEmpty(\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('fruit'));
 
     /** @var \Drupal\migrate\Plugin\MigrateIdMapInterface $id_map */
     $id_map = $this->container->get('plugin.manager.migration')->createInstance('csv_source_test')->getIdMap();

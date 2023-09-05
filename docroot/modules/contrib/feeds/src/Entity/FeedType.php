@@ -375,6 +375,7 @@ class FeedType extends ConfigEntityBundleBase implements FeedTypeInterface, Enti
    */
   public function addCustomSource($name, array $source) {
     $this->custom_sources[$name] = $source;
+    $this->custom_sources[$name]['machine_name'] = $name;
     return $this;
   }
 
@@ -391,6 +392,28 @@ class FeedType extends ConfigEntityBundleBase implements FeedTypeInterface, Enti
   /**
    * {@inheritdoc}
    */
+  public function getCustomSources(array $types = []) {
+    if (empty($types)) {
+      return $this->custom_sources;
+    }
+
+    $return = [];
+    foreach ($this->custom_sources as $key => $source) {
+      if (!isset($source['type'])) {
+        // No type specified. Just return this one.
+        $return[$key] = $source;
+      }
+      elseif (in_array($source['type'], $types)) {
+        $return[$key] = $source;
+      }
+    }
+
+    return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function customSourceExists($name) {
     return isset($this->custom_sources[$name]);
   }
@@ -400,6 +423,16 @@ class FeedType extends ConfigEntityBundleBase implements FeedTypeInterface, Enti
    */
   public function removeCustomSource($name) {
     unset($this->custom_sources[$name]);
+
+    // If the custom source is currently mapped, remove it from there as well.
+    foreach ($this->mappings as $delta => $mapping) {
+      foreach ($mapping['map'] as $key => $value) {
+        if ($value == $name) {
+          $this->mappings[$delta]['map'][$key] = '';
+        }
+      }
+    }
+
     return $this;
   }
 
@@ -669,7 +702,7 @@ class FeedType extends ConfigEntityBundleBase implements FeedTypeInterface, Enti
    * {@inheritdoc}
    */
   public function onDependencyRemoval(array $dependencies) {
-    $changed = FALSE;
+    $changed = parent::onDependencyRemoval($dependencies);
 
     // Don't intervene if the feeds module is removed.
     if (isset($dependencies['module']) && in_array('feeds', $dependencies['module'])) {

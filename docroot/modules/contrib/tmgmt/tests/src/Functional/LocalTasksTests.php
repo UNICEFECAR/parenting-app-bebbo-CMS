@@ -9,7 +9,7 @@ namespace Drupal\Tests\tmgmt\Functional;
  */
 class LocalTasksTests extends TMGMTTestBase {
 
-  public static $modules = array(
+  protected static $modules = array(
     'dblog',
     'node',
     'views',
@@ -21,7 +21,7 @@ class LocalTasksTests extends TMGMTTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     // Login as administrator to view Cart,Jobs and Sources.
     $this->loginAsAdmin(array('access administration pages'));
@@ -57,13 +57,13 @@ class LocalTasksTests extends TMGMTTestBase {
     $this->clickLink(t('Sources'));
 
     // Assert the availability of the enabled content.
-    $this->assertOptionSelected('edit-source', 'content:node');
-    $this->assertOption('edit-source', 'content:node');
-    $this->assertOption('edit-source', 'content:user');
-    $this->assertOption('edit-source', 'config:block');
-    $this->assertOption('edit-source', 'config:node_type');
-    $this->assertOption('edit-source', 'config:tmgmt_translator');
-    $this->assertNoOption('edit-source', 'config:base_field_override');
+    $this->assertTrue($this->assertSession()->optionExists('edit-source', 'content:node')->isSelected());
+    $this->assertSession()->optionExists('edit-source', 'content:node');
+    $this->assertSession()->optionExists('edit-source', 'content:user');
+    $this->assertSession()->optionExists('edit-source', 'config:block');
+    $this->assertSession()->optionExists('edit-source', 'config:node_type');
+    $this->assertSession()->optionExists('edit-source', 'config:tmgmt_translator');
+    $this->assertSession()->optionNotExists('edit-source', 'config:base_field_override');
   }
 
   /**
@@ -75,7 +75,7 @@ class LocalTasksTests extends TMGMTTestBase {
     $this->drupalGet('admin');
     $this->clickLink(t('Translation'));
     $this->clickLink(t('Sources'));
-    $this->assertText(t('No sources enabled.'));
+    $this->assertSession()->pageTextContains(t('No sources enabled.'));
   }
 
 }

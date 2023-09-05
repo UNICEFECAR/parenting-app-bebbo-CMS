@@ -15,20 +15,20 @@
         }
     ],
     "require": {
-        "php": "^5.6 || ^7.0",
-        "drupal/core": "^8.7.0",
+        "php": "^7.3 || ^8.0",
+        "drupal/core": "^9.0",
         "drupal/drupal-extension": "^3.4 || ^4.0",
-        "traviscarden/behat-table-comparison": "^0.2.1"
+        "traviscarden/behat-table-comparison": "^0.3"
     },
     "suggest": {
-        "nickwilde1990/drupal-spec-tool-commands": "^1.0@RC"
+        "nickwilde1990/drupal-spec-tool-commands": "Provides Composer commands to automate populate/update Gherkin files as defined with this tool"
     },
     "config": {
         "sort-packages": true
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "v3.x-dev"
+            "dev-develop": "5.x-dev"
         }
     },
     "autoload": {

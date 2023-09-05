@@ -41,12 +41,14 @@ class Path extends FieldTargetBase {
       $values['pathauto'] = 0;
     }
 
-    $values['alias'] = trim($values['alias']);
+    if (isset($values['alias']) && is_string($values['alias'])) {
+      $values['alias'] = trim($values['alias']);
 
-    // Check if the alias is conform the regex.
-    if (strlen($values['alias']) && !preg_match('/^\//i', $values['alias'])) {
-      // Correct the alias by adding a slash.
-      $values['alias'] = '/' . $values['alias'];
+      // Check if the alias is conform the regex.
+      if (strlen($values['alias']) && !preg_match('/^\//i', $values['alias'])) {
+        // Correct the alias by adding a slash.
+        $values['alias'] = '/' . $values['alias'];
+      }
     }
   }
 

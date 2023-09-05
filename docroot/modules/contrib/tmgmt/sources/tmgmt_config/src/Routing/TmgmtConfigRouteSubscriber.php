@@ -27,7 +27,7 @@ class TmgmtConfigRouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents(): array {
     $events = parent::getSubscribedEvents();
     // \Drupal\config_translation\Routing\RouteSubscriber is -110,
     // make sure we are later.

@@ -5,9 +5,10 @@ namespace Drupal\features;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ExtensionInstallStorage;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class responsible for performing package assignment.
@@ -79,6 +80,13 @@ class FeaturesAssigner implements FeaturesAssignerInterface {
   protected $installProfile;
 
   /**
+   * The current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  protected $request;
+
+  /**
    * Constructs a new FeaturesAssigner object.
    *
    * @param \Drupal\features\FeaturesManagerInterface $features_manager
@@ -94,13 +102,14 @@ class FeaturesAssigner implements FeaturesAssignerInterface {
    * @param string $install_profile
    *   The name of the currently active installation profile.
    */
-  public function __construct(FeaturesManagerInterface $features_manager, PluginManagerInterface $assigner_manager, EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, StorageInterface $config_storage, $install_profile) {
+  public function __construct(FeaturesManagerInterface $features_manager, PluginManagerInterface $assigner_manager, EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, StorageInterface $config_storage, $install_profile, RequestStack $request_stack) {
     $this->featuresManager = $features_manager;
     $this->assignerManager = $assigner_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
     $this->configStorage = $config_storage;
     $this->installProfile = $install_profile;
+    $this->request = $request_stack->getCurrentRequest();
     $this->bundles = $this->getBundleList();
     $this->currentBundle = $this->getBundle(FeaturesBundleInterface::DEFAULT_BUNDLE);
     // Ensure bundle information is fresh.
@@ -259,8 +268,8 @@ class FeaturesAssigner implements FeaturesAssignerInterface {
    */
   public function setCurrent(FeaturesBundleInterface $bundle) {
     $this->currentBundle = $bundle;
-    $session = \Drupal::request()->getSession();
-    if (isset($session)) {
+    if ($this->request->hasSession()) {
+      $session = $this->request->getSession();
       $session->set('features_current_bundle', $bundle->getMachineName());
     }
     return $bundle;
@@ -429,8 +438,8 @@ class FeaturesAssigner implements FeaturesAssignerInterface {
    */
   public function loadBundle($machine_name = NULL) {
     if (!isset($machine_name)) {
-      $session = \Drupal::request()->getSession();
-      if (isset($session)) {
+      if ($this->request->hasSession()) {
+        $session = $this->request->getSession();
         $machine_name = isset($session) ? $session->get('features_current_bundle', FeaturesBundleInterface::DEFAULT_BUNDLE) : FeaturesBundleInterface::DEFAULT_BUNDLE;
       }
     }

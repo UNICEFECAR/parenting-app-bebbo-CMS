@@ -22,7 +22,7 @@ class BrokenCacheUpdateTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->ensureUpdatesToRun();
   }
@@ -32,12 +32,6 @@ class BrokenCacheUpdateTest extends BrowserTestBase {
    */
   public function testUpdate() {
     $connection = Database::getConnection();
-    // Ensure \Drupal\Core\Update\UpdateKernel::fixSerializedExtensionObjects()
-    // does not clear the cache.
-    $connection->delete('key_value')
-      ->condition('collection', 'state')
-      ->condition('name', 'system.theme.data')
-      ->execute();
 
     // Create broken element info caches entries.
     $insert = $connection->upsert('cache_discovery');
@@ -52,7 +46,7 @@ class BrokenCacheUpdateTest extends BrowserTestBase {
       'checksum' => 0,
     ];
     $insert->fields($fields);
-    $fields['cid'] = 'element_info_build:seven';
+    $fields['cid'] = 'element_info_build:claro';
     $fields['tags'] = 'element_info_build';
     $insert->values(array_values($fields));
     $fields['cid'] = 'element_info_build:stark';
@@ -62,7 +56,7 @@ class BrokenCacheUpdateTest extends BrowserTestBase {
     $this->runUpdates();
     // Caches should have been cleared at this point.
     $count = (int) $connection->select('cache_discovery')
-      ->condition('cid', ['element_info', 'element_info_build:seven', 'element_info_build:stark'], 'IN')
+      ->condition('cid', ['element_info', 'element_info_build:claro', 'element_info_build:stark'], 'IN')
       ->countQuery()
       ->execute()
       ->fetchField();

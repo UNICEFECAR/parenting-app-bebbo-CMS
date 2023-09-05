@@ -2,16 +2,18 @@
 
 namespace Drupal\feeds\Feeds\Parser;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\FeedInterface;
 use Drupal\feeds\Feeds\Item\SyndicationItem;
 use Drupal\feeds\Plugin\Type\Parser\ParserInterface;
-use Drupal\feeds\Plugin\Type\PluginBase;
 use Drupal\feeds\Result\FetcherResultInterface;
 use Drupal\feeds\Result\ParserResult;
 use Drupal\feeds\StateInterface;
-use Zend\Feed\Reader\Exception\ExceptionInterface;
-use Zend\Feed\Reader\Reader;
+use Laminas\Feed\Reader\Exception\ExceptionInterface;
+use Laminas\Feed\Reader\ExtensionManagerInterface;
+use Laminas\Feed\Reader\Reader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines an RSS and Atom feed parser.
@@ -22,15 +24,58 @@ use Zend\Feed\Reader\Reader;
  *   description = @Translation("Default parser for RSS, Atom and RDF feeds.")
  * )
  */
-class SyndicationParser extends PluginBase implements ParserInterface {
+class SyndicationParser extends ParserBase implements ParserInterface, ContainerFactoryPluginInterface {
+
+  /**
+   * The feed bridge reader service.
+   *
+   * @var \Laminas\Feed\Reader\ExtensionManagerInterface
+   */
+  protected $feedBridgeReader;
+
+  /**
+   * Constructs a syndicationparser object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Laminas\Feed\Reader\ExtensionManagerInterface $feed_bridge_reader
+   *   The feed bridge reader service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ExtensionManagerInterface $feed_bridge_reader) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->feedBridgeReader = $feed_bridge_reader;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('feeds.bridge.reader')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function parse(FeedInterface $feed, FetcherResultInterface $fetcher_result, StateInterface $state) {
+    if (!class_exists('Laminas\Feed\Reader\Reader')) {
+      throw new \RuntimeException($this->t('The library "@library" is not installed. You can install it with Composer or by using the Ludwig module.', [
+        '@library' => 'laminas/laminas-feed',
+      ]));
+    }
+
     $result = new ParserResult();
-    Reader::setExtensionManager(\Drupal::service('feed.bridge.reader'));
+    Reader::setExtensionManager($this->feedBridgeReader);
     Reader::registerExtension('GeoRSS');
+    Reader::registerExtension('MediaRSS');
 
     $raw = $fetcher_result->getRaw();
     if (!strlen(trim($raw))) {
@@ -45,6 +90,7 @@ class SyndicationParser extends PluginBase implements ParserInterface {
       throw new \RuntimeException($this->t('The feed from %site seems to be broken because of error "%error".', $args));
     }
 
+    /** @var \Laminas\Feed\Reader\Entry\EntryInterface $entry */
     foreach ($channel as $delta => $entry) {
       $item = new SyndicationItem();
       // Move the values to an array as expected by processors.
@@ -79,6 +125,15 @@ class SyndicationParser extends PluginBase implements ParserInterface {
       }
       if ($date = $entry->getDateModified()) {
         $item->set('updated', $date->getTimestamp());
+      }
+
+      if ($media_content = $entry->getMediaContent()) {
+        $item->set('mediarss_content', $media_content['url']);
+        $item->set('mediarss_description', $media_content['description']);
+      }
+
+      if ($media_thumbnail = $entry->getMediaThumbnail()) {
+        $item->set('mediarss_thumbnail', $media_thumbnail['url']);
       }
 
       if ($point = $entry->getGeoPoint()) {
@@ -148,7 +203,7 @@ class SyndicationParser extends PluginBase implements ParserInterface {
       ],
       'author_email' => [
         'label' => $this->t('Author email'),
-        'description' => $this->t("Name of the feed item's email address."),
+        'description' => $this->t("Mail address of the feed item's author."),
       ],
       'timestamp' => [
         'label' => $this->t('Published date'),
@@ -177,6 +232,18 @@ class SyndicationParser extends PluginBase implements ParserInterface {
           'targets' => ['field_tags'],
           'types' => ['field_item:taxonomy_term_reference' => []],
         ],
+      ],
+      'mediarss_content' => [
+        'label' => $this->t('Media content'),
+        'description' => $this->t('Available if the feed supports the Media RSS specification. Can contain audio, video or other media.'),
+      ],
+      'mediarss_description' => [
+        'label' => $this->t('Media description'),
+        'description' => $this->t('Available if the feed supports the Media RSS specification. Text that describes the media object.'),
+      ],
+      'mediarss_thumbnail' => [
+        'label' => $this->t('Media thumbnail'),
+        'description' => $this->t('Available if the feed supports the Media RSS specification. An image that is representative for the media object.'),
       ],
       'georss_lat' => [
         'label' => $this->t('Item latitude'),

@@ -3,7 +3,7 @@
 namespace Drupal\Tests\purge_processor_test\Functional;
 
 use Drupal\purge_processor_test\Form\ProcessorConfigForm;
-use Drupal\Tests\purge_ui\Functional\Form\Config\ProcessorConfigFormTestBase;
+use Drupal\Tests\purge_ui\FunctionalJavascript\Form\Config\ProcessorConfigFormTestBase;
 
 /**
  * Tests \Drupal\purge_processor_test\Form\ProcessorConfigForm.
@@ -15,7 +15,7 @@ class ProcessorConfigFormTest extends ProcessorConfigFormTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['purge_processor_test'];
+  protected static $modules = ['purge_processor_test'];
 
   /**
    * {@inheritdoc}
@@ -63,10 +63,11 @@ class ProcessorConfigFormTest extends ProcessorConfigFormTestBase {
    */
   public function testSaveConfigurationSubmit(): void {
     $this->drupalLogin($this->adminUser);
+    $this->drupalGet($this->getPath());
     $edit = [
       'textfield' => "The moose in the noose ate the goose who was loose.",
     ];
-    $this->drupalPostForm($this->getPath(), $edit, 'Save configuration');
+    $this->submitForm($edit, 'Save configuration');
   }
 
 }

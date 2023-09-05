@@ -112,7 +112,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup countable
    */
-  public function count() {
+  public function count(): int {
     $this->initializeStatistics();
     return count($this->instances);
   }
@@ -221,6 +221,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup iterator
    */
+  #[\ReturnTypeWillChange]
   public function current() {
     $this->initializeStatistics();
     if ($this->valid()) {
@@ -234,6 +235,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup iterator
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     $this->initializeStatistics();
     return $this->position;
@@ -244,7 +246,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup iterator
    */
-  public function next() {
+  public function next(): void {
     $this->initializeStatistics();
     ++$this->position;
   }
@@ -254,7 +256,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup iterator
    */
-  public function rewind() {
+  public function rewind(): void {
     $this->position = 0;
   }
 
@@ -263,7 +265,7 @@ class StatsTracker implements StatsTrackerInterface {
    *
    * @ingroup iterator
    */
-  public function valid() {
+  public function valid(): bool {
     $this->initializeStatistics();
     return isset($this->instances[$this->position]);
   }

@@ -3,11 +3,13 @@
 namespace Drupal\Tests\feeds\Kernel\Feeds\Target;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityRepositoryInterface;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\feeds\EntityFinderInterface;
 use Drupal\feeds\Exception\EmptyFeedException;
 use Drupal\feeds\Exception\TargetValidationException;
 use Drupal\feeds\FeedTypeInterface;
@@ -17,12 +19,14 @@ use Drupal\user\Entity\Role;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Base class for file field tests.
  */
 abstract class FileTestBase extends FeedsKernelTestBase {
 
+  use ProphecyTrait;
   use FeedsMockingTrait;
 
   /**
@@ -63,7 +67,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->setUpFileFields();
 
@@ -72,7 +76,8 @@ abstract class FileTestBase extends FeedsKernelTestBase {
     $this->token = $this->prophesize(Token::class);
     $this->entityFieldManager = $this->prophesize(EntityFieldManagerInterface::class);
     $this->entityFieldManager->getFieldStorageDefinitions('file')->willReturn([]);
-    $this->entityRepository = $this->prophesize(EntityRepositoryInterface::class);
+    $this->entityFinder = $this->prophesize(EntityFinderInterface::class);
+    $this->entityFinder->findEntities(Argument::cetera())->willReturn([]);
     $this->fileSystem = $this->prophesize(FileSystemInterface::class);
 
     // Made-up entity type that we are referencing to.
@@ -86,7 +91,7 @@ abstract class FileTestBase extends FeedsKernelTestBase {
     ];
 
     $this->targetPlugin = $this->getMockBuilder($this->getTargetPluginClass())
-      ->setMethods(['findEntity', 'getDestinationDirectory'])
+      ->setMethods(['getDestinationDirectory'])
       ->setConstructorArgs([
         $configuration,
         'file',
@@ -95,14 +100,13 @@ abstract class FileTestBase extends FeedsKernelTestBase {
         $this->client->reveal(),
         $this->token->reveal(),
         $this->entityFieldManager->reveal(),
-        $this->entityRepository->reveal(),
+        $this->entityFinder->reveal(),
         $this->fileSystem->reveal(),
+        $this->container->get('file.repository'),
+        $this->container->get('config.factory')->get('system.file'),
       ])
       ->getMock();
 
-    $this->targetPlugin->expects($this->any())
-      ->method('findEntity')
-      ->will($this->returnValue(FALSE));
     $this->targetPlugin->expects($this->any())
       ->method('getDestinationDirectory')
       ->will($this->returnValue('public:/'));
@@ -173,10 +177,13 @@ abstract class FileTestBase extends FeedsKernelTestBase {
 
     // Set expected exception if there is one expected.
     if ($expected_exception) {
-      $expected_exception_message = strtr($expected_exception_message, [
-        '[url]' => $this->resourcesUrl(),
-      ]);
-      $this->expectException($expected_exception, $expected_exception_message);
+      $this->expectException($expected_exception);
+      if ($expected_exception_message) {
+        $expected_exception_message = strtr($expected_exception_message, [
+          '[url]' => $this->resourcesUrl(),
+        ]);
+        $this->expectExceptionMessage($expected_exception_message);
+      }
     }
 
     // Call prepareValue().
@@ -200,8 +207,8 @@ abstract class FileTestBase extends FeedsKernelTestBase {
           'target_id' => '',
         ],
         'expected_exception' => EmptyFeedException::class,
+        'expected_exception_message' => 'The given file url is empty.',
       ],
-
       // Importing a file url that exists.
       'file-success' => [
         'expected' => [
@@ -211,7 +218,6 @@ abstract class FileTestBase extends FeedsKernelTestBase {
           'target_id' => '[url]/assets/attersee.jpeg',
         ],
       ],
-
       // Importing a file with uppercase extension.
       'file-uppercase' => [
         'expected' => [
@@ -242,8 +248,45 @@ abstract class FileTestBase extends FeedsKernelTestBase {
         'expected_exception_message' => 'The file, <em class="placeholder">[url]/file.foo</em>, failed to save because the extension, <em class="placeholder">foo</em>, is invalid.',
       ],
     ];
-
     return $return;
+  }
+
+  /**
+   * Saves a file to the specified destination and creates a database entry.
+   *
+   * @param string $data
+   *   A string containing the contents of the file.
+   * @param string|null $destination
+   *   (optional) A string containing the destination URI. This must be a stream
+   *   wrapper URI. If no value or NULL is provided, a randomized name will be
+   *   generated and the file will be saved using Drupal's default files scheme,
+   *   usually "public://".
+   * @param int $replace
+   *   (optional) The replace behavior when the destination file already exists.
+   *   Possible values include:
+   *   - FileSystemInterface::EXISTS_REPLACE: Replace the existing file. If a
+   *     managed file with the destination name exists, then its database entry
+   *     will be updated. If no database entry is found, then a new one will be
+   *     created.
+   *   - FileSystemInterface::EXISTS_RENAME: (default) Append
+   *     _{incrementing number} until the filename is unique.
+   *   - FileSystemInterface::EXISTS_ERROR: Do nothing and return FALSE.
+   *
+   * @return \Drupal\file\FileInterface|false
+   *   A file entity, or FALSE on error.
+   */
+  protected function writeData($data, $destination = NULL, $replace = FileSystemInterface::EXISTS_RENAME) {
+    if (empty($destination)) {
+      $destination = \Drupal::config('system.file')->get('default_scheme') . '://';
+    }
+    /** @var \Drupal\file\FileRepositoryInterface $fileRepository */
+    $fileRepository = \Drupal::service('file.repository');
+    try {
+      return $fileRepository->writeData($data, $destination, $replace);
+    }
+    catch (FileException | EntityStorageException $e) {
+      return FALSE;
+    }
   }
 
 }
