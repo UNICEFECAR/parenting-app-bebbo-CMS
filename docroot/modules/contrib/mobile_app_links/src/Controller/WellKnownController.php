@@ -34,7 +34,7 @@ class WellKnownController extends ControllerBase {
     $android_packages = $config->get('android_packages');
     if (!empty($android_packages)) {
       foreach ($android_packages as $android_package) {
-           $target = ['namespace'=>'android_app','package_name'=>$package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
+           $target = ['namespace'=>'android_app','package_name'=>$android_packages,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
            $relation = ['delegate_permission/common.handle_all_urls'];
            $item[] = [
              'relation'=>$relation,
