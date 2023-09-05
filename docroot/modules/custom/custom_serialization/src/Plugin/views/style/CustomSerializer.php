@@ -414,7 +414,7 @@ class CustomSerializer extends Serializer {
            * @var object
            */
           $file = File::load($mid);
-          $url = $file->url();
+          $url = $file->createFileUrl();
         }
 
         $media_data = [
