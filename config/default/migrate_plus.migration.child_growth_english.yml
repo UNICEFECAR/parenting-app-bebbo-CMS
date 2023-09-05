@@ -27,7 +27,6 @@ process:
   nid: ID
   title: Title
   body/value: Body
-
 destination:
   plugin: 'entity:node'
   default_bundle: child_growth

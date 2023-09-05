@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: uEePITI9tV6WqzmsTb7MfPCi5yPWXSxAN1xeLcYFQbM
 session:
   parameter: language
 url:
@@ -32,6 +34,8 @@ url:
     ro: ro
     ro-ro: ro-ro
     md-ro: md-ro
+    ar: ar
+    sk: sk
   domains:
     en: ''
     sr: ''
@@ -61,6 +65,6 @@ url:
     ro: ''
     ro-ro: ''
     md-ro: ''
+    ar: ''
+    sk: ''
 selected_langcode: site_default
-_core:
-  default_config_hash: uEePITI9tV6WqzmsTb7MfPCi5yPWXSxAN1xeLcYFQbM

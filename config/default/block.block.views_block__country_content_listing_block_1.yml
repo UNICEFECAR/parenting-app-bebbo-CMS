@@ -19,24 +19,24 @@ plugin: 'views_block:country_content_listing-block_1'
 settings:
   id: 'views_block:country_content_listing-block_1'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
   views_label: ''
   items_per_page: none
 visibility:
   request_path:
     id: request_path
-    pages: /dashboard
     negate: false
     context_mapping: {  }
+    pages: /dashboard
   user_role:
     id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
     roles:
       global_admin: global_admin
       reviewer: reviewer
       editor: editor
       sme: sme
       se: se
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'

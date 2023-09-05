@@ -1,0 +1,17 @@
+label: Медіа
+display:
+  default:
+    display_options:
+      title: Медіа
+      fields:
+        uid:
+          label: Автор
+      filters:
+        langcode:
+          expose:
+            label: Мова
+  media_page_list:
+    display_title: Медіа
+    display_options:
+      menu:
+        title: Медіа

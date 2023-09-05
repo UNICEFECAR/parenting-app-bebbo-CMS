@@ -18,19 +18,19 @@ plugin: page_title_block
 settings:
   id: page_title_block
   label: 'Page title'
-  provider: core
   label_display: '0'
+  provider: core
 visibility:
   request_path:
     id: request_path
-    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
     negate: true
     context_mapping: {  }
+    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
   user_role:
     id: user_role
-    roles:
-      anonymous: anonymous
-      authenticated: authenticated
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated

@@ -21,45 +21,45 @@ content:
   field_country_flag:
     type: media_library_widget
     weight: 2
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    region: content
   field_country_national_partner:
     type: media_library_widget
     weight: 4
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    region: content
   field_country_sponsor_logo:
     type: media_library_widget
     weight: 3
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    region: content
   field_language:
+    type: options_select
     weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_make_available_for_mobile:
+    type: boolean_checkbox
     weight: 7
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_master_language:
+    type: languagefield_select
     weight: 6
+    region: content
     settings:
       format:
         name: name
     third_party_settings: {  }
-    type: languagefield_select
-    region: content
   label:
     type: string_textfield
     weight: 0

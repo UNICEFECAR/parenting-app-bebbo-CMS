@@ -1,7 +1,30 @@
 uuid: 29faaa14-c2c4-4cd9-882c-12905cfe3190
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - rest.resource.custom_rest_resource
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
+    - taxonomy.vocabulary.chatbot_subcategory
+    - taxonomy.vocabulary.child_age
+    - taxonomy.vocabulary.child_gender
+    - taxonomy.vocabulary.growth_introductory
+    - taxonomy.vocabulary.growth_period
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.parent_gender
+    - taxonomy.vocabulary.relationship_to_parent
+    - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.type_of_support
+  module:
+    - media
+    - pb_custom_form
+    - rest
+    - search
+    - system
+    - taxonomy
 _core:
   default_config_hash: pq_mEIu_B4widZN7Ap81iCJSjShFFdcL0jEiCi8VrDk
 id: anonymous
@@ -9,16 +32,11 @@ label: 'Anonymous user'
 weight: -10
 is_admin: false
 permissions:
-  - 'access all views'
-  - 'access comments'
   - 'access content'
-  - 'access site-wide contact form'
   - 'manage mobile javascript'
   - 'restful get custom_rest_resource'
   - 'search content'
-  - 'use text format restricted_html'
   - 'view media'
-  - 'view terms in growth_period'
   - 'view vocabulary activity_category'
   - 'view vocabulary category'
   - 'view vocabulary chatbot_category'
@@ -31,6 +49,5 @@ permissions:
   - 'view vocabulary keywords'
   - 'view vocabulary parent_gender'
   - 'view vocabulary relationship_to_parent'
-  - 'view vocabulary seasons'
   - 'view vocabulary standard_deviation'
   - 'view vocabulary type_of_support'

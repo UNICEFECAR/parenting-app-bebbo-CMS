@@ -5,6 +5,7 @@ dependencies: {  }
 id: country
 label: Country
 description: ''
+new_revision: false
 creator_membership: false
 creator_wizard: false
 creator_roles:

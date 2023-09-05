@@ -20,22 +20,22 @@ bundle: faq
 mode: teaser
 content:
   body:
-    label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 101
     region: content
   content_moderation_control:
-    weight: -20
     settings: {  }
     third_party_settings: {  }
+    weight: -20
     region: content
   links:
-    weight: 100
     settings: {  }
     third_party_settings: {  }
+    weight: 100
     region: content
 hidden:
   field_answer_part_2: true
@@ -43,4 +43,5 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_pinned_article: true
+  field_pre_populated: true
   langcode: true

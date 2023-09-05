@@ -17,14 +17,14 @@ plugin: 'system_menu_block:quick-links'
 settings:
   id: 'system_menu_block:quick-links'
   label: 'Quick Links'
-  provider: system
   label_display: visible
+  provider: system
   level: 1
   depth: 0
   expand_all_items: false
 visibility:
   request_path:
     id: request_path
-    pages: /dashboard
     negate: false
     context_mapping: {  }
+    pages: /dashboard

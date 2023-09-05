@@ -8,7 +8,7 @@ dependencies:
     - image.style.content_1200xh_
     - media.type.image
   module:
-    - image
+    - svg_image
 _core:
   default_config_hash: B1a2aBHmUulUZN6HrxITEH1tSResuVjXMBEv1lUBtOo
 id: media.image.default
@@ -17,12 +17,18 @@ bundle: image
 mode: default
 content:
   field_media_image:
+    type: image
     label: visually_hidden
     settings:
-      image_style: content_1200xh_
       image_link: ''
+      image_style: content_1200xh_
+      svg_attributes:
+        width: null
+        height: null
+      svg_render_as_image: true
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
-    type: image
     weight: 1
     region: content
 hidden:

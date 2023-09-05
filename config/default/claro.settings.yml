@@ -1,14 +1,14 @@
-third_party_settings:
-  shortcut:
-    module_link: true
+favicon:
+  mimetype: image/png
+  path: 'public://bebbo_favicon_0.png'
+  use_default: false
 features:
-  node_user_picture: true
   comment_user_picture: true
   comment_user_verification: true
   favicon: true
+  node_user_picture: true
 logo:
   use_default: true
-favicon:
-  use_default: false
-  path: 'public://bebbo_favicon_0.png'
-  mimetype: image/png
+third_party_settings:
+  shortcut:
+    module_link: true

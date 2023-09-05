@@ -2,8 +2,11 @@ uuid: 8b1c7a81-7fac-45ef-8a40-6dbd669a462c
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.full
+    - core.entity_view_mode.media.media_library
+    - core.entity_view_mode.media.token
   module:
-    - ckeditor_media_embed
     - editor
     - media
 _core:
@@ -42,7 +45,7 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <h1> <pre> <drupal-media data-entity-type data-entity-uuid data-view-mode data-align data-caption alt title><br>'
+      allowed_html: '<br> <p> <h1> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <cite> <dl> <dt> <dd> <img src alt data-entity-type data-entity-uuid data-align data-caption> <a hreflang href> <blockquote cite> <ul type> <ol type start> <drupal-media title data-entity-type data-entity-uuid alt data-view-mode data-caption data-align> <strong> <em> <code class="language-*"> <pre> <s> <sub> <sup> <li> <hr> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption>'
       filter_html_help: true
       filter_html_nofollow: false
   media_embed:
@@ -52,17 +55,15 @@ filters:
     weight: -44
     settings:
       default_view_mode: default
+      allowed_view_modes:
+        default: default
+        full: full
+        media_library: media_library
+        token: token
       allowed_media_types:
         image: image
         remote_video: remote_video
         video: video
-      allowed_view_modes: {  }
-  filter_ckeditor_media_embed:
-    id: filter_ckeditor_media_embed
-    provider: ckeditor_media_embed
-    status: false
-    weight: -42
-    settings: {  }
   filter_autop:
     id: filter_autop
     provider: filter

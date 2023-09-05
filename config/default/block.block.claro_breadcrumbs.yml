@@ -18,18 +18,18 @@ plugin: system_breadcrumb_block
 settings:
   id: system_breadcrumb_block
   label: Breadcrumbs
-  provider: system
   label_display: '0'
+  provider: system
 visibility:
   request_path:
     id: request_path
-    pages: "/share\r\n/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja-privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n"
     negate: true
     context_mapping: {  }
+    pages: "/share\r\n/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja-privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n"
   user_role:
     id: user_role
-    roles:
-      anonymous: anonymous
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
