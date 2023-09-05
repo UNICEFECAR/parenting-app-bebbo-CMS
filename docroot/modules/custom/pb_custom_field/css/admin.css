@@ -850,8 +850,9 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       justify-content: center;
   }
   .menu .menu-item a:hover {
-    color: inherit;
-    }
+   color: inherit;
+  }
+
 }
 @media screen and (min-width: 768px) and (max-width: 950px) {
   .pb-main-homepage .menu li a {

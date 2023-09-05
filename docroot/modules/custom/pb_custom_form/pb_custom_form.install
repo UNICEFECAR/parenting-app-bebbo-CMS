@@ -1,11 +1,11 @@
 <?php
 
-use Drupal\Core\Database\Database;
-
 /**
  * @file
  * Force update check api schema.
  */
+
+use Drupal\Core\Database\Database;
 
 /**
  * Implements hook_schema().

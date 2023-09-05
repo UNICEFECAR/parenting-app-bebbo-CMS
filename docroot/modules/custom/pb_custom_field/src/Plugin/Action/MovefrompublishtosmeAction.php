@@ -89,7 +89,7 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
 
       $node_lang_archive->setNewRevision(TRUE);
       $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
-      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+      $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
       $node_lang_archive->setRevisionTranslationAffected(NULL);
       $node_lang_archive->save();
@@ -118,7 +118,7 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
 
         $node_lang_archive->setNewRevision(TRUE);
         $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
-        $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
         $node_lang_archive->setRevisionTranslationAffected(NULL);
         $node_lang_archive->save();

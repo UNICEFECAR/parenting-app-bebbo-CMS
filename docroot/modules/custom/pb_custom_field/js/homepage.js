@@ -19,7 +19,6 @@ jQuery(document).ready(function() {
 jQuery('.field--name-field-make-available-for-mobile').nextAll('p').remove();     
 
 }
-  
 });
 
 
@@ -49,6 +48,7 @@ jQuery(document).ready(function() {
   });
 });
 
+
 jQuery(document).ready(function() {
   var clickTimer = null;
   var clickDelay = 10; // Milliseconds delay for double-click emulation
@@ -76,3 +76,6 @@ jQuery(document).ready(function() {
     }
   });
 });
+
+
+  
