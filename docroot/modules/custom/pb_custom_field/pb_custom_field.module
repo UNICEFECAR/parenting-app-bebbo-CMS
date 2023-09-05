@@ -1279,7 +1279,7 @@ function pb_custom_field_preprocess_html(&$variables) {
 	    $source_value = $media_entity->getSource()->getSourceFieldValue($media_entity);
 		if ($source_value){
 		  $file_entity = File::load($source_value);
-		  $url = $file_entity->url();
+		  $url = $file_entity->createFileUrl();
 		  $icon = [
 		    '#tag' => 'link',
 			'#attributes' => [
