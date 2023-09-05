@@ -795,7 +795,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+// require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 /**
  * IMPORTANT.
  *
@@ -835,3 +835,6 @@ if(file_exists($apikeys)){
 }
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username');
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password');
+$settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
+$settings["config_sync_directory"] = '../config/default';
+$settings['file_private_path'] = '/mnt/files/parentbuddy2.prod/sites/default/files-private';
