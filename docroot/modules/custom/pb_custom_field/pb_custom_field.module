@@ -499,10 +499,14 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       $authorized_roles = ['se', 'sme', 'editor'];
       /* check the country admin check */
       if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
-        $node = $form_state->getFormObject()->getEntity();
-        $ntype = $node->getType();
-        $ntype = str_replace("_", "-", $ntype);
-        $chk_type = "node-" . $ntype . "-edit-form";
+        $form_object = $form_state->getFormObject();
+        $chk_type = '';
+        if (($form_object  instanceof \Drupal\Core\Entity\EntityFormInterface)) {
+          $node = $form_object->getEntity();
+          $ntype = $node->getType();
+          $ntype = str_replace("_", "-", $ntype);
+          $chk_type = "node-" . $ntype . "-edit-form";
+        }
         if ($form['#id'] == $chk_type) {
           $user = \Drupal::currentUser();
           $uid = $user->id();
@@ -537,7 +541,10 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       /* Check the user roles */
       if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
         /* get the content type details */
-        $node = $form_state->getFormObject()->getEntity();
+        $form_object = $form_state->getFormObject();
+        if (($form_object  instanceof \Drupal\Core\Entity\EntityFormInterface)) {
+          $node = $form_object->getEntity();
+        }
         /* $node->getType();
         $content_type_arr = ['article'];
          */
