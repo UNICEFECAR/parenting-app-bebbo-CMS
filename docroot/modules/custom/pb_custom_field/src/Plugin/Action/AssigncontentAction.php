@@ -237,10 +237,12 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
     if ($total_selected == $this->processItem) {
       if (!empty($message)) {
-        drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');
+        \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');
+        \Drupal::messenger()->addError($error_message);
       }
     }
     return $this->t("Total content selected");

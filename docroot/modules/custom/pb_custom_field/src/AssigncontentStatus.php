@@ -61,11 +61,13 @@ class AssigncontentStatus {
 	
     if ($success_msg > 0) {
       $Succ_message = "Content assigned to country (" . $success_msg . ") <br/>";
-      drupal_set_message(t($Succ_message), 'status');
+      // drupal_set_message(t($Succ_message), 'status');
+      \Drupal::messenger()->addStatus($Succ_message);
     }
     if ($same_status_error > 0) {
       $msg = "Content already exists in country (" . $same_status_error . ")<br/>";
-      drupal_set_message(t($msg), 'error');
+      // drupal_set_message(t($msg), 'error');
+      \Drupal::messenger()->addError($msg);
     }
     $context['message'] = $message;
 	$context['results'] = $results;
@@ -86,7 +88,8 @@ class AssigncontentStatus {
     }
     else {
       $message = t('Finished with an error.');
-	  drupal_set_message($message);
+	  // drupal_set_message($message);
+    \Drupal::messenger()->addMessage($message);
     }
   }
 
