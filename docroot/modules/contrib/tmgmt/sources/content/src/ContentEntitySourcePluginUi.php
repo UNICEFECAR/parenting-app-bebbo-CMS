@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\tmgmt\JobItemInterface;
 use Drupal\tmgmt\SourcePluginUiBase;
 use Drupal\tmgmt_content\Plugin\tmgmt\Source\ContentEntitySource;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Content entity source plugin UI.
@@ -139,6 +140,43 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
           ':input[name="search[target_language]"]' => array('value' => ''),
         ),
       ),
+    );
+
+    $form['search_wrapper']['search']['mandatory_content'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Mandatory Content	'),
+      '#options' => array(''=> 'Any',1=> 'Yes', 0 => 'No'),
+      '#default_value' => isset($_GET['mandatory_content']) ? $_GET['mandatory_content'] : NULL,
+      '#empty_option' => $this->t('- Any -'),
+    );
+  
+    $form['search_wrapper']['search']['pre_populated'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Pre Populated	'),
+      '#options' => array(''=> 'Any',1=> 'Yes', 0 => 'No'),
+      '#default_value' => isset($_GET['pre_populated']) ? $_GET['pre_populated'] : NULL,
+      '#empty_option' => $this->t('- Any -'),
+    );
+  
+    $content_category_options = [];    
+    $query_cat = \Drupal::entityQuery('taxonomy_term')
+                ->condition('vid', 'category')
+                ->execute();
+    if($query_cat) {
+      foreach ($query_cat as $key => $val) {
+        $category_option = Term::load($val)->get('name')->value;
+        if (!empty($category_option)) {
+          $content_category_options[$val] = $category_option;
+        }
+      }
+    }
+  
+    $form['search_wrapper']['search']['field_content_category'] = array(
+      '#type' => 'select',
+      '#title' => $this->t('Category'),
+      '#options' => $content_category_options,
+      '#default_value' => isset($_GET['field_content_category']) ? $_GET['field_content_category'] : NULL,
+      '#empty_option' => $this->t('- Any -'),
     );
 
     return $form;
@@ -487,6 +525,21 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
 
     if(isset($_GET['country']) && !empty($_GET['country'])){
       $query->innerJoin('group_content_field_data', 'g', "g.type LIKE '%country-group_node%' AND g.gid = ".$_GET['country']." AND g. entity_id = e." . $id_key);
+    }
+
+    if(isset($_GET['mandatory_content']) && !empty($_GET['mandatory_content'])){
+      $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
+      $query->condition('mc.field_mandatory_content_value' , $_GET['mandatory_content'], '=');
+    }
+
+    if(isset($_GET['pre_populated']) && !empty($_GET['pre_populated'])){
+      $query->leftjoin('node__field_pre_populated', 'pp', "pp.entity_id = e." . $id_key);
+      $query->condition('pp.field_pre_populated_value' , $_GET['pre_populated'], '=');
+    }
+
+    if(isset($_GET['field_content_category']) && !empty($_GET['field_content_category'])){
+      $query->leftjoin('node__field_content_category', 'cc', "cc.entity_id = e." . $id_key);
+      $query->condition('cc.field_content_category_target_id' , $_GET['field_content_category'], '=');
     }
 
     // Searching for sources with missing translation.
