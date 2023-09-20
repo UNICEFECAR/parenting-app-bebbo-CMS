@@ -1,0 +1,51 @@
+tmgmt.translator.settings.deepl_free:
+  type: tmgmt_deepl_settings
+
+tmgmt.translator.settings.deepl_pro:
+  type: tmgmt_deepl_settings
+
+tmgmt_deepl_settings:
+  type: mapping
+  mapping:
+    auto_accept:
+      type: boolean
+      label: Automatically accept
+    url:
+      type: string
+      label: Translation API endpoint url.
+    url_usage:
+      type: string
+      label: Usage API endpoint url.
+    auth_key:
+      type: string
+      label: Auth key
+    tag_handling:
+      type: string
+      label: Sets which kind of tags should be handled.
+    non_splitting_tags:
+      type: string
+      label: Comma-separated list of XML tags which never split sentences
+    splitting_tags:
+      type: string
+      label: Comma-separated list of XML tags which always cause splits.
+    ignore_tags:
+      type: string
+      label: Comma-separated list of XML tags whose content is never translated
+    split_sentences:
+      type: string
+      label: Sets whether the translation engine should first split the input into sentences.
+    preserve_formatting:
+      type: integer
+      label: Sets whether the translation engine should preserve some aspects of the formatting, even if it would usually correct some aspects.
+    formality:
+      type: string
+      label: Sets whether the translated text should lean towards formal or informal language.
+    outline_detection:
+      type: integer
+      label: Sets automatic outline detection.
+    test_url:
+      type: string
+      label: Translation API endpoint url used for testing.
+    test_url_usage:
+      type: string
+      label: Usage API endpoint url used for testing.

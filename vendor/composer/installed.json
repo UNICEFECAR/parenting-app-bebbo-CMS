@@ -6006,6 +6006,114 @@
             "install-path": "../../docroot/modules/contrib/tmgmt"
         },
         {
+            "name": "drupal/tmgmt_deepl",
+            "version": "2.1.11",
+            "version_normalized": "2.1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/tmgmt_deepl.git",
+                "reference": "2.1.11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/tmgmt_deepl-2.1.11.zip",
+                "reference": "2.1.11",
+                "shasum": "84fc18a924b98381a0153c9a1899908841d00d75"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10",
+                "drupal/tmgmt": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.11",
+                    "datestamp": "1685471515",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "SteffenR",
+                    "homepage": "https://www.drupal.org/user/244597"
+                }
+            ],
+            "description": "TMGMT Translator DeepL",
+            "homepage": "https://www.drupal.org/project/tmgmt_deepl",
+            "support": {
+                "source": "https://git.drupalcode.org/project/tmgmt_deepl"
+            },
+            "install-path": "../../docroot/modules/contrib/tmgmt_deepl"
+        },
+        {
+            "name": "drupal/tmgmt_google",
+            "version": "1.1.0",
+            "version_normalized": "1.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/tmgmt_google.git",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/tmgmt_google-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "56e7cd6a42d9f8d5d04b540173bdf81d903e3e33"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10",
+                "drupal/tmgmt": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1680730832",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "installation-source": "dist",
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "blueminds",
+                    "homepage": "https://www.drupal.org/user/128652"
+                },
+                {
+                    "name": "corvus_ch",
+                    "homepage": "https://www.drupal.org/user/1865206"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                }
+            ],
+            "description": "TMGMT implementation of Google Translate Service.",
+            "homepage": "https://www.drupal.org/project/tmgmt_google",
+            "support": {
+                "source": "https://git.drupalcode.org/project/tmgmt_google"
+            },
+            "install-path": "../../docroot/modules/contrib/tmgmt_google"
+        },
+        {
             "name": "drupal/tmgmt_memsource",
             "version": "1.17.0",
             "version_normalized": "1.17.0.0",

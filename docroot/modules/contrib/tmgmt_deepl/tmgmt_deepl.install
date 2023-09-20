@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the tmgmt_deepl module.
+ */
+
+/**
+ * Update schema definitions of tmgmt_deepl module.
+ */
+function tmgmt_deepl_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  // Find all available tmgmt translators.
+  foreach ($config_factory->listAll('tmgmt.translator.') as $tmgmt_translator_config_name) {
+    $tmgmt_translator_config = $config_factory->getEditable($tmgmt_translator_config_name);
+    // Check for plugin deepl_pro and resave it's configuration.
+    if ($tmgmt_translator_config->get('plugin') == 'deepl_pro') {
+      $tmgmt_translator_config->save();
+    }
+  }
+}
+
+/**
+ * Re-run fixed tmgmt_deepl_update_8001.
+ */
+function tmgmt_deepl_update_8002() {
+  tmgmt_deepl_update_8001();
+}
+
+/**
+ * Update existing deepl_pro translator settings and set url/ url_usage.
+ */
+function tmgmt_deepl_update_8003() {
+  $config_factory = \Drupal::configFactory();
+  // Find all available tmgmt translators.
+  foreach ($config_factory->listAll('tmgmt.translator.') as $tmgmt_translator_config_name) {
+    $tmgmt_translator_config = $config_factory->getEditable($tmgmt_translator_config_name);
+    // Check for plugin deepl_pro and resave it's configuration with
+    // new translator/ usage url.
+    if ($tmgmt_translator_config->get('plugin') == 'deepl_pro') {
+      $settings = $tmgmt_translator_config->get('settings');
+      // Add translate url.
+      $settings['url'] = 'https://api.deepl.com/v2/translate';
+      // Add usage url.
+      $settings['url_usage'] = 'https://api.deepl.com/v2/usage';
+      // Set new settings.
+      $tmgmt_translator_config->set('settings', $settings);
+      // Resave settings.
+      $tmgmt_translator_config->save(TRUE);
+    }
+  }
+}

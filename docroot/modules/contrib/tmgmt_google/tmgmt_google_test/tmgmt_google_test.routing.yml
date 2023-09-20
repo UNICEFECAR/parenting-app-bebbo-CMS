@@ -1,0 +1,12 @@
+tmgmt_google_test.languages:
+  path: '/tmgmt_google_test/languages'
+  defaults:
+    _controller: '\Drupal\tmgmt_google_test\Controller\GoogleTranslatorTestController::availableLanguages'
+  requirements:
+    _access: 'TRUE'
+tmgmt_google_test.translate:
+  path: '/tmgmt_google_test'
+  defaults:
+     _controller: '\Drupal\tmgmt_google_test\Controller\GoogleTranslatorTestController::translate'
+  requirements:
+    _access: 'TRUE'

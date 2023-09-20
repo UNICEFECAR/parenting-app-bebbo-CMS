@@ -1,0 +1,27 @@
+tmgmt_deepl_test.pro.translate:
+  path: '/tmgmt_deepl_test/pro/translate'
+  defaults:
+     _controller: '\Drupal\tmgmt_deepl_test\Controller\DeeplProTranslatorTestController::translate'
+  requirements:
+    _access: 'TRUE'
+
+tmgmt_deepl_test.pro.usage:
+  path: '/tmgmt_deepl_test/pro/usage'
+  defaults:
+    _controller: '\Drupal\tmgmt_deepl_test\Controller\DeeplProTranslatorTestController::getUsageData'
+  requirements:
+    _access: 'TRUE'
+
+tmgmt_deepl_test.free.translate:
+  path: '/tmgmt_deepl_test/free/translate'
+  defaults:
+    _controller: '\Drupal\tmgmt_deepl_test\Controller\DeeplFreeTranslatorTestController::translate'
+  requirements:
+    _access: 'TRUE'
+
+tmgmt_deepl_test.free.usage:
+  path: '/tmgmt_deepl_test/free/usage'
+  defaults:
+    _controller: '\Drupal\tmgmt_deepl_test\Controller\DeeplFreeTranslatorTestController::getUsageData'
+  requirements:
+    _access: 'TRUE'

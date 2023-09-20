@@ -1,0 +1,12 @@
+name: 'Google Translate Service Testing Mocker'
+description: 'Provides mok service to test Google Translator.'
+package: 'Testing'
+dependencies:
+ - tmgmt_google
+type: module
+hidden: TRUE
+
+# Information added by Drupal.org packaging script on 2023-04-05
+version: '8.x-1.1'
+project: 'tmgmt_google'
+datestamp: 1680730836

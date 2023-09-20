@@ -54,6 +54,8 @@
         "drupal/tamper": "^1.0@alpha",
         "drupal/title_length": "^2.0@RC",
         "drupal/tmgmt": "^1.15",
+        "drupal/tmgmt_deepl": "^2.1",
+        "drupal/tmgmt_google": "^1.1",
         "drupal/tmgmt_memsource": "^1.13",
         "drupal/toolbar_menu": "^3.0",
         "drupal/toolbar_menu_clean": "^1.3",

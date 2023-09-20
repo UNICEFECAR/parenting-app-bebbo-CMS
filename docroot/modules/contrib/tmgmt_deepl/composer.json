@@ -1,0 +1,10 @@
+{
+  "name": "drupal/tmgmt_deepl",
+  "description": "TMGMT Translator DeepL",
+  "type": "drupal-module",
+  "license": "GPL-2.0+",
+  "require": {
+    "drupal/core": "^9 || ^10",
+    "drupal/tmgmt": "^1.0"
+  }
+}
