@@ -34,7 +34,7 @@ class AssigncontentStatus {
     $same_status_error = 0;
     foreach ($n_language as $key => $langs) {
       $current_language = $langs[0];
-      $node = node_load($key);
+      $node = Node::load($key);
       if (!$node->hasTranslation($langoption)) {
         $node_lang = $node->getTranslation($current_language);
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());

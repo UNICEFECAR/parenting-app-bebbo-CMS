@@ -12,6 +12,7 @@ use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Symfony\Component\HttpFoundation;
+use Drupal\node\Entity\Node;
 
 /*
 use Drupal\group\Entity;
@@ -191,7 +192,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
     if (!empty($langoption) && !empty($countryoption)) {
       $current_language = $entity->get('langcode')->value;
       $nid = $entity->get('nid')->getString();
-      $node = node_load($nid);
+      $node = Node::load($nid);
       $uid = \Drupal::currentUser()->id();
       $uname = \Drupal::currentUser()->getDisplayName();
       if (!$node->hasTranslation($langoption)) {

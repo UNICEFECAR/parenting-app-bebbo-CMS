@@ -76,7 +76,7 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
-    $archive_node = node_load($nid);
+    $archive_node = Node::load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
     $node_lang_archive = $archive_node->getTranslation($current_language);
