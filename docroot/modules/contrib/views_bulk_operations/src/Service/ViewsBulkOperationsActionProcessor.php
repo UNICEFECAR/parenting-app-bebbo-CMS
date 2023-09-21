@@ -14,6 +14,7 @@ use Drupal\views\Views;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionInterface;
 use Drupal\views_bulk_operations\ViewsBulkOperationsBatch;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Access\AccessResultInterface;
 
 /**
  * Defines VBO action processor.
@@ -445,7 +446,7 @@ class ViewsBulkOperationsActionProcessor implements ViewsBulkOperationsActionPro
     // Check access.
     foreach ($this->queue as $delta => $entity) {
       $accessResult = $this->action->access($entity, $this->currentUser, TRUE);
-      if ($accessResult->isAllowed() === FALSE) {
+      if ($accessResult instanceof AccessResultInterface && $accessResult->isAllowed() === FALSE) {
         $result = [
           'message' => (string) $this->t('Access denied'),
           'type' => 'warning',

@@ -6751,6 +6751,9 @@
                     "services": {
                         "drush.services.yml": "^10 || ^11"
                     }
+                },
+                "patches_applied": {
+                    "Call to a member function isAllowed": "https://www.drupal.org/files/issues/2022-11-23/3323324-3.patch"
                 }
             },
             "installation-source": "dist",
