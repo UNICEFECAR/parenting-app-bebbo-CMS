@@ -5,5 +5,7 @@ display:
         options:
           exposed_sorts_label: 'Sort by'
       fields:
+        created:
+          label: Направљено
         name:
           label: Name

@@ -31,6 +31,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Krijuar
         title:
           label: Title
         target_language:
@@ -46,6 +48,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Krijuar
         title:
           label: Title
         target_language:
@@ -76,6 +80,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Krijuar
         title:
           label: Title
         target_language:

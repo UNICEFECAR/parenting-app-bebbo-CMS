@@ -1,0 +1,13 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        name:
+          label: User
+        link:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset

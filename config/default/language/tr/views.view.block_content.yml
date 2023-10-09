@@ -1,0 +1,49 @@
+label: 'Özel blok kütüphanesi'
+description: 'Özel blokları bulun ve yönetin.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: 'Özel blok kütüphanesi'
+      fields:
+        info:
+          label: 'Blok açıklaması'
+          separator: ', '
+        type:
+          label: 'Blok tipi'
+          separator: ', '
+        changed:
+          label: Güncellendi
+        operations:
+          label: İşlemler
+      pager:
+        options:
+          tags:
+            next: 'Sonraki ›'
+            previous: '‹ Önceki'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Kullanılabilir özel blok yok.'
+      filters:
+        info:
+          expose:
+            label: 'Blok açıklaması'
+        type:
+          expose:
+            label: 'Blok tipi'
+  page_1:
+    display_title: Sayfa
+    display_options:
+      menu:
+        title: 'Özel blok kütüphanesi'

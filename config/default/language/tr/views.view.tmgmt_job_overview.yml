@@ -1,0 +1,59 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+          tags:
+            previous: '‹ önceki'
+            next: 'sonraki ›'
+            first: '« ilk'
+            last: 'son »'
+      fields:
+        state:
+          label: Eyalet
+          separator: ', '
+        label:
+          label: Etiket
+        source_language_1:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        translator:
+          label: Sağlayıcı
+        tags_count:
+          label: Etiketler
+        changed:
+          label: Değişti
+        operations:
+          label: İşlemler
+      filters:
+        state:
+          expose:
+            label: Eyalet
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        translator:
+          expose:
+            label: Sağlayıcı
+  page_1:
+    display_title: Sayfa
+    display_options:
+      menu:
+        title: İşler
+      tab_options:
+        title: İşler

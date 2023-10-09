@@ -6,12 +6,14 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_licensed_content
     - field.field.node.page.field_mandatory_content
+    - field.field.node.page.field_meta_tags
     - field.field.node.page.field_pre_populated
     - field.field.node.page.layout_builder__layout
     - node.type.page
     - workflows.workflow.group_workflow
   module:
     - content_moderation
+    - metatag
     - path
     - text
 _core:
@@ -40,6 +42,21 @@ content:
   field_mandatory_content:
     type: boolean_checkbox
     weight: 11
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 12
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
+    third_party_settings: {  }
+  field_pre_populated:
+    type: boolean_checkbox
+    weight: 13
     region: content
     settings:
       display_label: true
@@ -110,5 +127,4 @@ content:
 hidden:
   feeds_item: true
   field_licensed_content: true
-  field_pre_populated: true
   layout_builder__layout: true
