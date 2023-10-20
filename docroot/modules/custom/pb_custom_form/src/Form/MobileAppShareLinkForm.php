@@ -2,8 +2,8 @@
 
 namespace Drupal\pb_custom_form\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * {@inheritdoc}
@@ -39,9 +39,9 @@ class MobileAppShareLinkForm extends ConfigFormBase {
       '#description' => $this->t('Provide only the content that needs to be embedded with in the script tag here. Donot include script tag.'),
       '#default_value' => $config->get('mobile_app_share_link'),
     ];
-	/* Kosovo share page - Javascript */
-	
-	$form['kosovo_mobile_app_share_link'] = [
+    /* Kosovo share page - Javascript */
+
+    $form['kosovo_mobile_app_share_link'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Kosovo - Mobile APP Javascript'),
       '#description' => $this->t('Provide only the content that needs to be embedded with in the script tag here. Donot include script tag.'),
@@ -58,7 +58,7 @@ class MobileAppShareLinkForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
     $this->config('pb_custom_form.mobile_app_share_link_form')
       ->set('mobile_app_share_link', $form_state->getValue('mobile_app_share_link'))
-	  ->set('kosovo_mobile_app_share_link', $form_state->getValue('kosovo_mobile_app_share_link'))
+      ->set('kosovo_mobile_app_share_link', $form_state->getValue('kosovo_mobile_app_share_link'))
       ->save();
   }
 

@@ -6,6 +6,7 @@ dependencies:
     - media.type.image
     - media.type.remote_video
     - media.type.video
+    - node.type.vaccinations
   module:
     - actions_permissions
     - allowed_languages
@@ -30,6 +31,7 @@ permissions:
   - 'bypass group access'
   - 'create content translations'
   - 'create media'
+  - 'create vaccinations content'
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'

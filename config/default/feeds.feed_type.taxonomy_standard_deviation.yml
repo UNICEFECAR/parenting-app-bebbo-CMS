@@ -18,8 +18,8 @@ dependencies:
     - taxonomy.vocabulary.standard_deviation
   module:
     - taxonomy
-id: taxonomy_standard_deviation
 label: 'Taxonomy - Standard Deviation'
+id: taxonomy_standard_deviation
 description: 'Taxonomy - Standard Deviation'
 help: ''
 import_period: -1
@@ -34,72 +34,74 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: en
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: standard_deviation
-  owner_id: 0
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   growth_type:
-    label: Growth_type
     value: Growth_type
+    label: Growth_type
     machine_name: growth_type
   length_or_day:
-    label: Length_or_day
     value: Length_or_day
+    label: Length_or_day
     machine_name: length_or_day
   child_gender:
-    label: Child_gender
     value: Child_gender
+    label: Child_gender
     machine_name: child_gender
   sd4neg:
-    label: SD4neg
     value: SD4neg
+    label: SD4neg
     machine_name: sd4neg
   sd3neg:
-    label: SD3neg
     value: SD3neg
+    label: SD3neg
     machine_name: sd3neg
   sd2neg:
-    label: SD2neg
     value: SD2neg
+    label: SD2neg
     machine_name: sd2neg
   sd1neg:
-    label: SD1neg
     value: SD1neg
+    label: SD1neg
     machine_name: sd1neg
   sd0:
-    label: SD0
     value: SD0
+    label: SD0
     machine_name: sd0
   sd1:
-    label: SD1
     value: SD1
+    label: SD1
     machine_name: sd1
   sd2:
-    label: SD2
     value: SD2
+    label: SD2
     machine_name: sd2
   sd3:
-    label: SD3
     value: SD3
+    label: SD3
     machine_name: sd3
   sd4:
-    label: SD4
     value: SD4
+    label: SD4
     machine_name: sd4
   language_code:
-    label: Language_code
     value: Language_code
+    label: Language_code
     machine_name: language_code
   weight:
-    label: Weight
     value: Weight
+    label: Weight
     machine_name: weight
 mappings:
   -
@@ -115,9 +117,9 @@ mappings:
     target: name
     map:
       value: length_or_day
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_child_gender
     map:
@@ -131,65 +133,65 @@ mappings:
     target: field_sd4neg
     map:
       value: sd4neg
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd3neg
     map:
       value: sd3neg
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd2neg
     map:
       value: sd2neg
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd1neg
     map:
       value: sd1neg
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd0
     map:
       value: sd0
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd1
     map:
       value: sd1
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd2
     map:
       value: sd2
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd3
     map:
       value: sd3
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: field_sd4
     map:
       value: sd4
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: langcode
     map:
@@ -200,5 +202,5 @@ mappings:
     target: weight
     map:
       value: weight
-    unique: {  }
     settings: {  }
+    unique: {  }

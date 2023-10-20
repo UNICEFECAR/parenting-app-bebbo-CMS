@@ -2,5 +2,7 @@ display:
   default:
     display_options:
       fields:
+        created:
+          label: Створено
         name:
           label: 'Назва (ім''я)'

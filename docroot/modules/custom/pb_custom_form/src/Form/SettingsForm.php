@@ -2,8 +2,8 @@
 
 namespace Drupal\pb_custom_form\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * {@inheritdoc}

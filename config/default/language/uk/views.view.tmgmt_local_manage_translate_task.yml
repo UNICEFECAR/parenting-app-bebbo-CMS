@@ -10,24 +10,37 @@ display:
         title:
           label: Заголовок
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
   closed:
     display_options:
       fields:
+        created:
+          label: Створено
         title:
           label: Заголовок
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
   completed:
     display_options:
       fields:
+        created:
+          label: Створено
         title:
           label: Заголовок
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
@@ -37,15 +50,23 @@ display:
         title:
           label: Заголовок
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
   rejected:
     display_options:
       fields:
+        created:
+          label: Створено
         title:
           label: Заголовок
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок

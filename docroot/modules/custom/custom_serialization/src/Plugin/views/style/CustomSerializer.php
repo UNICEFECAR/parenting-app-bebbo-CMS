@@ -4,11 +4,11 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
-use Drupal\rest\Plugin\views\style\Serializer;
-use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
+use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
  * The style plugin for serialized output formats.
@@ -52,7 +52,7 @@ class CustomSerializer extends Serializer {
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
-        "related_article","old_calendar",
+        "related_article", "old_calendar",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -197,7 +197,7 @@ class CustomSerializer extends Serializer {
               /* If the field have comma. */
               if (!empty($values) && strpos($values, ',') !== FALSE) {
                 /* remove keywords from taxonomy res */
-                if($values != "keywords,Keywords") {
+                if ($values != "keywords,Keywords") {
                   $formatted_data = explode(',', $values);
                   $vocabulary_name = $formatted_data[1];
                   $vocabulary_machine_name = $formatted_data[0];

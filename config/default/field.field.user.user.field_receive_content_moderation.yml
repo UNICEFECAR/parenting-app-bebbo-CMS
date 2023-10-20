@@ -1,0 +1,28 @@
+uuid: 069cd20a-4cc4-4be1-b4c4-543d331fccda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_receive_content_moderation
+  module:
+    - tmgmt_content
+    - user
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: user.user.field_receive_content_moderation
+field_name: field_receive_content_moderation
+entity_type: user
+bundle: user
+label: 'Receive content moderation notifications'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

@@ -36,6 +36,7 @@ url:
     md-ro: md-ro
     ar: ar
     sk: sk
+    tr: tr
   domains:
     en: ''
     sr: ''
@@ -67,4 +68,5 @@ url:
     md-ro: ''
     ar: ''
     sk: ''
+    tr: ''
 selected_langcode: site_default

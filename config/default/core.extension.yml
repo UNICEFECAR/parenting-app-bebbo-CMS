@@ -26,6 +26,7 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
+  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -100,8 +101,10 @@ module:
   tmgmt: 0
   tmgmt_config: 0
   tmgmt_content: 0
+  tmgmt_deepl: 0
   tmgmt_demo: 0
   tmgmt_file: 0
+  tmgmt_google: 0
   tmgmt_language_combination: 0
   tmgmt_local: 0
   tmgmt_locale: 0

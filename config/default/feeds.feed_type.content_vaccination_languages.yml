@@ -7,8 +7,8 @@ dependencies:
     - node.type.vaccinations
   module:
     - node
-id: content_vaccination_languages
 label: 'Content - Vaccination - Languages'
+id: content_vaccination_languages
 description: 'Content - Vaccination - Languages'
 help: ''
 import_period: -1
@@ -23,33 +23,35 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:node'
 processor_configuration:
+  values:
+    type: vaccinations
   langcode: xk-sq
+  insert_new: 1
   update_existing: 1
   update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
   expire: -1
   owner_feed_author: false
   owner_id: 0
-  authorize: true
-  skip_hash_check: false
-  values:
-    type: vaccinations
 custom_sources:
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
   pinned_article:
-    label: Pinned_article
     value: Pinned_article
+    label: Pinned_article
     machine_name: pinned_article
 mappings:
   -
     target: nid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: field_pinned_article
     map:

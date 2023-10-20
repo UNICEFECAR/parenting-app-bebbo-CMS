@@ -15,13 +15,13 @@ third_party_settings:
   feeds_tamper:
     tampers:
       f8dde7f2-06ab-4ea9-89b8-b7dd2c693127:
+        uuid: f8dde7f2-06ab-4ea9-89b8-b7dd2c693127
         plugin: html_entity_decode
         source: name
         weight: 0
         label: 'HTML entity decode'
-        uuid: f8dde7f2-06ab-4ea9-89b8-b7dd2c693127
-id: media_remote_video
 label: 'Media - Remote Video'
+id: media_remote_video
 description: 'Media - Remote Video'
 help: ''
 import_period: -1
@@ -36,55 +36,60 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:media'
 processor_configuration:
+  values:
+    bundle: remote_video
   langcode: en
+  insert_new: 1
   update_existing: 1
   update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
   expire: -1
   owner_feed_author: true
   owner_id: 0
-  authorize: true
-  skip_hash_check: false
-  values:
-    bundle: remote_video
 custom_sources:
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
+    type: csv
   name:
-    label: Name
     value: Name
+    label: Name
     machine_name: name
+    type: csv
   video_embed_url:
-    label: Video_embed_url
     value: Video_embed_url
+    label: Video_embed_url
     machine_name: video_embed_url
+    type: csv
 mappings:
   -
     target: mid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: name
-    unique: {  }
     settings:
       language: null
+    unique: {  }
   -
     target: field_video_embed_url
     map:
       value: video_embed_url
-    unique: {  }
     settings:
       language: null
+    unique: {  }
   -
     target: field_media_oembed_video
     map:
       value: video_embed_url
-    unique: {  }
     settings:
       language: null
+    unique: {  }

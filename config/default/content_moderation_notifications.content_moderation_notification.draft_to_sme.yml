@@ -13,6 +13,6 @@ site_mail: false
 emails: ''
 subject: 'Content changed from Draft to SME Review'
 body:
-  value: "<p><span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Content ID [node_id]&nbsp;changed from Draft to SME Review</span></span></span></span></span></span></p>\r\n\r\n<p>Please review at:</p>\r\n\r\n<p>[link]</p>\r\n\r\n<p>Request you to please do necessary action.</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+  value: '<p>Content ID [node_id]&nbsp;changed from Draft to SME Review</p><p>Please review at:</p><p>[link]</p><p>Request you to please do necessary action. Test&nbsp; [user:mail]</p><p>&nbsp;</p>'
   format: full_html
 label: 'Draft to SME Review'

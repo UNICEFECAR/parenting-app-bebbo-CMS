@@ -42,6 +42,9 @@ display:
         state:
           group_info:
             label: State
+        source_language:
+          expose:
+            label: 'Исходный язык'
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

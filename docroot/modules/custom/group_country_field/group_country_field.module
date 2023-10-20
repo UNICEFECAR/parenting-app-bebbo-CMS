@@ -5,9 +5,9 @@
  * It contains group field module.
  */
 
-use Drupal\views\ViewExecutable;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements form alter.
@@ -24,9 +24,9 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
         $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];
       }
     }
-    elseif(!empty($roles_permissions['editor'])) {
-      $new_default_state = ["review_after_translation" => "Review_after_translation","draft" => "Draft"];
-      $form['moderation_state']['new_state']['#options'] =  $new_default_state;
+    elseif (!empty($roles_permissions['editor'])) {
+      $new_default_state = ["review_after_translation" => "Review_after_translation", "draft" => "Draft"];
+      $form['moderation_state']['new_state']['#options'] = $new_default_state;
     }
     else {
       $form['moderation_state']['new_state']['#options'] = $new_default_state;

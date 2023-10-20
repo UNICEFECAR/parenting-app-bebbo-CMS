@@ -7,8 +7,8 @@ dependencies:
     - taxonomy.vocabulary.growth_period
   module:
     - taxonomy
-id: taxonomy_growth_period_serbia_se
 label: 'Taxonomy - Growth Period - Language'
+id: taxonomy_growth_period_serbia_se
 description: 'Growth Period - Language'
 help: ''
 import_period: -1
@@ -23,57 +23,66 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sk
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: growth_period
-  owner_id: 0
+  langcode: sk
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
   vaccination_opens:
-    label: Vaccination_opens
     value: Vaccination_opens
+    label: Vaccination_opens
     machine_name: vaccination_opens
+    type: csv
   weight:
-    label: Weight
     value: Weight
+    label: Weight
     machine_name: weight
+    type: csv
   language_code:
-    label: Language_code
     value: Language_code
+    label: Language_code
     machine_name: language_code
+    type: csv
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
+    type: csv
   title:
-    label: Title
     value: Title
+    label: Title
     machine_name: title
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name
-    unique: {  }
     settings:
       language: sk
+    unique: {  }

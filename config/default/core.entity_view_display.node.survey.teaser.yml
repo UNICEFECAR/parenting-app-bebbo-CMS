@@ -6,6 +6,8 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.survey.body
     - field.field.node.survey.field_licensed_content
+    - field.field.node.survey.field_mandatory_content
+    - field.field.node.survey.field_pre_populated
     - field.field.node.survey.field_survey_link
     - field.field.node.survey.field_type
     - node.type.survey
@@ -37,6 +39,8 @@ content:
     region: content
 hidden:
   field_licensed_content: true
+  field_mandatory_content: true
+  field_pre_populated: true
   field_survey_link: true
   field_type: true
   langcode: true
