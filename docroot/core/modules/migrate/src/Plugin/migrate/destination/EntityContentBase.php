@@ -133,10 +133,6 @@ class EntityContentBase extends Entity implements HighestIdInterface, MigrateVal
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $storage, $bundles);
     $this->entityFieldManager = $entity_field_manager;
     $this->fieldTypeManager = $field_type_manager;
-    if ($account_switcher === NULL) {
-      @trigger_error('Calling ' . __NAMESPACE__ . '\EntityContentBase::__construct() without the $account_switcher argument is deprecated in drupal:9.3.0 and will be required in drupal:10.0.0. See https://www.drupal.org/node/3142975', E_USER_DEPRECATED);
-      $account_switcher = \Drupal::service('account_switcher');
-    }
     $this->accountSwitcher = $account_switcher;
   }
 
@@ -342,10 +338,9 @@ class EntityContentBase extends Entity implements HighestIdInterface, MigrateVal
       $row->setDestinationProperty($bundle_key, reset($this->bundles));
     }
 
-    $bundle = $row->getDestinationProperty($bundle_key) ?? $this->storage->getEntityTypeId();
     // Populate any required fields not already populated.
     $fields = $this->entityFieldManager
-      ->getFieldDefinitions($this->storage->getEntityTypeId(), $bundle);
+      ->getFieldDefinitions($this->storage->getEntityTypeId(), $row->getDestinationProperty($bundle_key));
     foreach ($fields as $field_name => $field_definition) {
       if ($field_definition->isRequired() && is_null($row->getDestinationProperty($field_name))) {
         // Use the configured default value for this specific field, if any.

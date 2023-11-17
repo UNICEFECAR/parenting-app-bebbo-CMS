@@ -116,7 +116,6 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface {
       }
       $graph = (new Graph($graph))->searchAndSort();
 
-      $this->tree = [];
       foreach (array_keys($tree) as $workspace_id) {
         $this->tree[$workspace_id] = [
           'depth' => count($graph[$workspace_id]['paths']),

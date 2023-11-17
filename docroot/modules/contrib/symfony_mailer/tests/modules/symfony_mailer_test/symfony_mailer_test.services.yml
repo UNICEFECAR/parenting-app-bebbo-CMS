@@ -1,0 +1,6 @@
+services:
+  symfony_mailer.test:
+    class: Drupal\symfony_mailer_test\MailerTestService
+    arguments: ['@state']
+    tags:
+      - { name: needs_destruction }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -67,28 +69,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPluginInterface {
 
-  /**
-   * The migration to be executed.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationInterface
-   */
-  protected $migration;
-
-  /**
-   * The process plugin manager.
-   *
-   * @var \Drupal\migrate\Plugin\MigratePluginManagerInterface
-   */
-  protected $processPluginManager;
+  protected MigrationInterface $migration;
+  protected MigratePluginManagerInterface $processPluginManager;
 
   /**
    * Parameters passed to transform method, except the first, value.
    *
    * This helps to pass values to another process plugin.
-   *
-   * @var array
    */
-  protected $transformParameters;
+  protected array $transformParameters = [];
 
   /**
    * {@inheritdoc}
@@ -118,7 +107,7 @@ class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPlugin
       );
     }
     // Add missing values if possible.
-    $default_replace = isset($this->configuration['replace']) ? $this->configuration['replace'] : NULL;
+    $default_replace = $this->configuration['replace'] ?? NULL;
     foreach ($this->configuration['migrations'] as $migration_name => $configuration_item) {
       if (!empty($configuration_item['replace'])) {
         continue;
@@ -136,7 +125,7 @@ class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL): self {
     return new static(
       $configuration,
       $plugin_id,
@@ -149,7 +138,7 @@ class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property): \DOMDocument {
     $this->init($value, $destination_property);
     $this->transformParameters = [
       'migrate_executable' => $migrate_executable,
@@ -188,7 +177,7 @@ class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  protected function doReplace(\DOMElement $html_node, $search, $replace, $subject) {
+  protected function doReplace(\DOMElement $html_node, $search, $replace, $subject): void {
     $new_subject = preg_replace($search, $replace, $subject);
     $this->postReplace($html_node, $new_subject);
   }
@@ -204,7 +193,7 @@ class DomMigrationLookup extends DomStrReplace implements ContainerFactoryPlugin
    * @return string|null
    *   The found mapped ID, or NULL if not found on the provided migration.
    */
-  protected function migrationLookup($id, $migration_name) {
+  protected function migrationLookup($id, $migration_name): ?string {
     $mapped_id = NULL;
     $parameters = [
       $id,

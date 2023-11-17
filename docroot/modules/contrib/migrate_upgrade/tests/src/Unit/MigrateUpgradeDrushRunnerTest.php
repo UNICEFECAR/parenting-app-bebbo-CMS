@@ -31,7 +31,7 @@ class MigrateUpgradeDrushRunnerTest extends MigrateTestCase {
     $loggerProphet = $this->prophesize(LoggerInterface::class);
     $runner = new TestMigrateUpgradeDrushRunner($loggerProphet->reveal());
     $results = $runner->substituteIds($source);
-    $this->assertArrayEquals($expected, $results);
+    $this->assertSame($expected, $results);
   }
 
   /**

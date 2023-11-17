@@ -1,25 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drush\Sql;
 
 use PDO;
 
 class SqlMysql extends SqlBase
 {
+    protected string $version;
 
-    public $queryExtra = '-A';
+    public string $queryExtra = '-A';
 
-    public function command()
+    /**
+     * A factory method which creates a mysql or mariadb instance as needed.
+     */
+    public static function make(array $dbSpec, array $options)
+    {
+        // First get a MySQL instance
+        $instance = new static($dbSpec, $options);
+        $sql = 'SELECT VERSION();"';
+        $instance->alwaysQuery($sql);
+        $out = trim($instance->getProcess()->getOutput());
+        if (str_contains($out, 'MariaDB')) {
+            // Replace with a MariaDB driver.
+            $instance = new SqlMariaDB($dbSpec, $options);
+        }
+        $instance->setVersion($out);
+        return $instance;
+    }
+
+    public function command(): string
     {
         return 'mysql';
     }
 
-    public function creds($hide_password = true)
+    public function dumpProgram(): string
+    {
+        return 'mysqldump';
+    }
+
+    /**
+     * The server version.
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
+    public function setVersion(string $version): void
+    {
+        $this->version = $version;
+    }
+
+    public function creds($hide_password = true): string
     {
         $dbSpec = $this->getDbSpec();
         if ($hide_password) {
             // Default to unix socket if configured.
-            $unixSocket = !empty($dbSpec['unix_socket']) ? 'socket="' . $dbSpec['unix_socket'] . '"' : '';
+            $unixSocket = empty($dbSpec['unix_socket']) ? '' : 'socket="' . $dbSpec['unix_socket'] . '"';
 
             // EMPTY password is not the same as NO password, and is valid.
             $contents = <<<EOT
@@ -84,12 +123,12 @@ EOT;
         return $this->paramsToOptions($parameters);
     }
 
-    public function silent()
+    public function silent(): string
     {
         return '--silent';
     }
 
-    public function createdbSql($dbname, $quoted = false)
+    public function createdbSql($dbname, $quoted = false): string
     {
         $dbSpec = $this->getDbSpec();
         if ($quoted) {
@@ -120,13 +159,13 @@ EOT;
     /**
      * @inheritdoc
      */
-    public function dbExists()
+    public function dbExists(): bool
     {
         // Suppress output. We only care about return value.
         return $this->alwaysQuery("SELECT 1;");
     }
 
-    public function listTables()
+    public function listTables(): array
     {
         $tables = [];
         $this->alwaysQuery('SHOW TABLES;');
@@ -136,7 +175,7 @@ EOT;
         return $tables;
     }
 
-    public function listTablesQuoted()
+    public function listTablesQuoted(): array
     {
         $tables = $this->listTables();
         foreach ($tables as &$table) {
@@ -145,7 +184,7 @@ EOT;
         return $tables;
     }
 
-    public function dumpCmd($table_selection)
+    public function dumpCmd($table_selection): string
     {
         $dbSpec = $this->getDbSpec();
         $parens = false;
@@ -159,7 +198,7 @@ EOT;
         // The ordered-dump option is only supported by MySQL for now.
         $ordered_dump = $this->getOption('ordered-dump');
 
-        $exec = 'mysqldump ';
+        $exec = $this->dumpProgram() . ' ';
         // mysqldump wants 'databasename' instead of 'database=databasename' for no good reason.
         $only_db_name = str_replace('--database=', ' ', $this->creds());
         $exec .= $only_db_name;
@@ -186,7 +225,7 @@ EOT;
                 $ignores[] = '--ignore-table=' . $dbSpec['database'] . '.' . $table;
                 $parens = true;
             }
-            $exec .= ' '. implode(' ', $ignores);
+            $exec .= ' ' . implode(' ', $ignores);
 
             // Run mysqldump again and append output if we need some structure only tables.
             if (!empty($structure_tables)) {

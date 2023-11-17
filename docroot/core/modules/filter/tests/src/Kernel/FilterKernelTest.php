@@ -879,7 +879,6 @@ class FilterKernelTest extends KernelTestBase {
    *   comments.
    * - Empty HTML tags (BR, IMG).
    * - Mix of absolute and partial URLs, and email addresses in one content.
-   * - Input that exceeds PCRE backtracking limit.
    */
   public function testUrlFilterContent() {
     // Get FilterUrl object.
@@ -895,24 +894,6 @@ class FilterKernelTest extends KernelTestBase {
     $expected = file_get_contents($path . '/filter.url-output.txt');
     $result = _filter_url($input, $filter);
     $this->assertSame($expected, $result, 'Complex HTML document was correctly processed.');
-
-    $pcre_backtrack_limit = ini_get('pcre.backtrack_limit');
-    // Setting this limit to the smallest possible value should cause PCRE
-    // errors and break the various preg_* functions used by _filter_url().
-    ini_set('pcre.backtrack_limit', 1);
-
-    // If PCRE errors occur, _filter_url() should return the exact same text.
-    // Case of a small and simple HTML document.
-    $input = $expected = '<p>www.test.com</p>';
-    $result = _filter_url($input, $filter);
-    $this->assertSame($expected, $result, 'Simple HTML document was left intact when PCRE errors occurred.');
-    // Case of a complex HTML document.
-    $input = $expected = file_get_contents($path . '/filter.url-input.txt');
-    $result = _filter_url($input, $filter);
-    $this->assertSame($expected, $result, 'Complex HTML document was left intact when PCRE errors occurred.');
-
-    // Setting limit back to default.
-    ini_set('pcre.backtrack_limit', $pcre_backtrack_limit);
   }
 
   /**
@@ -1112,7 +1093,7 @@ body {color:red}
    * Asserts that a text transformed to lowercase with HTML entities decoded does contains a given string.
    *
    * Otherwise fails the test with a given message, similar to all the
-   * SimpleTest assert* functions.
+   * PHPUnit assert* functions.
    *
    * Note that this does not remove nulls, new lines and other characters that
    * could be used to obscure a tag or an attribute name.
@@ -1123,12 +1104,10 @@ body {color:red}
    *   Lowercase, plain text to look for.
    * @param string $message
    *   (optional) Message to display if failed. Defaults to an empty string.
-   * @param string $group
-   *   (optional) The group this message belongs to. Defaults to 'Other'.
    *
    * @internal
    */
-  public function assertNormalized(string $haystack, string $needle, string $message = '', string $group = 'Other'): void {
+  public function assertNormalized(string $haystack, string $needle, string $message = ''): void {
     $this->assertStringContainsString($needle, strtolower(Html::decodeEntities($haystack)), $message);
   }
 
@@ -1136,7 +1115,7 @@ body {color:red}
    * Asserts that text transformed to lowercase with HTML entities decoded does not contain a given string.
    *
    * Otherwise fails the test with a given message, similar to all the
-   * SimpleTest assert* functions.
+   * PHPUnit assert* functions.
    *
    * Note that this does not remove nulls, new lines, and other character that
    * could be used to obscure a tag or an attribute name.
@@ -1147,12 +1126,10 @@ body {color:red}
    *   Lowercase, plain text to look for.
    * @param string $message
    *   (optional) Message to display if failed. Defaults to an empty string.
-   * @param string $group
-   *   (optional) The group this message belongs to. Defaults to 'Other'.
    *
    * @internal
    */
-  public function assertNoNormalized(string $haystack, string $needle, string $message = '', string $group = 'Other'): void {
+  public function assertNoNormalized(string $haystack, string $needle, string $message = ''): void {
     $this->assertStringNotContainsString($needle, strtolower(Html::decodeEntities($haystack)), $message);
   }
 

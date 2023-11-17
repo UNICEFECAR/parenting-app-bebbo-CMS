@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\migrate_plus\Plugin\migrate\process\Transpose;
@@ -11,7 +13,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\Transpose
  */
-class TransposeTest extends MigrateProcessTestCase {
+final class TransposeTest extends MigrateProcessTestCase {
 
   /**
    * {@inheritdoc}

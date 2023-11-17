@@ -1,0 +1,47 @@
+h1 {
+  text-align: center;
+  color: #0e69be;
+}
+
+.commerce-order-body {
+  min-width: 450px;
+  margin: 5px auto 0 auto;
+  padding: 10px 30px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.commerce-order-number {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: left;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.view-commerce-order-item-table {
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.view-commerce-order-item-table tr td {
+  padding: 2px 5px;
+}
+
+td.views-field-total-price__number {
+  text-align: right;
+}
+
+div.field__label {
+  padding-top: 5px;
+  font-weight: bold;
+}
+
+div.order-total-line__total {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 24px;
+}

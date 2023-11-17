@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -11,7 +13,7 @@ use Drupal\migrate_plus\Entity\MigrationGroup;
  *
  * @group migrate_plus
  */
-class MigrationGroupTest extends KernelTestBase {
+final class MigrationGroupTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}

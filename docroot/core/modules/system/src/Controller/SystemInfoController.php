@@ -59,7 +59,7 @@ class SystemInfoController implements ContainerInjectionInterface {
   public function php() {
     if (function_exists('phpinfo')) {
       ob_start();
-      phpinfo(~ (INFO_VARIABLES | INFO_ENVIRONMENT));
+      phpinfo();
       $output = ob_get_clean();
     }
     else {

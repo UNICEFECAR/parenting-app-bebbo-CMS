@@ -47,7 +47,7 @@ class FieldUrlTest extends ViewsKernelTestBase {
 
     $this->assertEquals('John', $view->field['name']->advancedRender($view->result[0]));
 
-    // Make the URL a link.
+    // Make the url a link.
     $view->destroy();
     $view->setDisplay();
 

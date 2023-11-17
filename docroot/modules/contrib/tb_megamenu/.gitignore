@@ -1,0 +1,11 @@
+.idea
+.DS_Store
+node_modules
+*.js.map
+*.css.map
+dist/admin.js
+dist/base.js
+dist/colors.js
+dist/styles.js
+dist/js/plugin.js
+patches/*

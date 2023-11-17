@@ -1,0 +1,35 @@
+services:
+  symfony_mailer:
+    class: Drupal\symfony_mailer\Mailer
+    arguments: ['@event_dispatcher', '@renderer', '@language.default', '@language_manager', '@logger.factory', '@current_user', '@theme.manager', '@theme.initialization', '@account_switcher', '@symfony_mailer.transport_factory_manager']
+  email_factory:
+    class: Drupal\symfony_mailer\EmailFactory
+    arguments: ['@plugin.manager.email_builder', '@plugin.manager.email_adjuster']
+  plugin.manager.email_builder:
+    class: Drupal\symfony_mailer\Processor\EmailBuilderManager
+    arguments: ['@entity_type.manager']
+    parent: default_plugin_manager
+  plugin.manager.email_adjuster:
+    class: Drupal\symfony_mailer\Processor\EmailAdjusterManager
+    parent: default_plugin_manager
+  plugin.manager.mailer_transport:
+    class: Drupal\symfony_mailer\TransportManager
+    parent: default_plugin_manager
+  symfony_mailer.helper:
+    class: Drupal\symfony_mailer\MailerHelper
+    arguments: ['@entity_type.manager', '@plugin.manager.email_adjuster', '@plugin.manager.email_builder', '@config.factory', '@token']
+  symfony_mailer.legacy_helper:
+    class: Drupal\symfony_mailer\LegacyMailerHelper
+    arguments: ['@symfony_mailer.helper']
+  symfony_mailer.override_manager:
+    class: Drupal\symfony_mailer\Processor\OverrideManager
+    arguments: ['@plugin.manager.email_builder', '@config.manager', '@config.storage']
+  symfony_mailer.transport_factory_manager:
+    class: Drupal\symfony_mailer\TransportFactoryManager
+    tags:
+      - { name: service_collector, tag: mailer.transport_factory, call: addFactory }
+  symfony_mailer.config_override:
+    class: Drupal\symfony_mailer\Processor\MailerConfigOverride
+    arguments: ['@module_handler']
+    tags:
+      - {name: config.factory.override}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus;
 
 use Drupal\Core\Plugin\PluginBase;
@@ -18,7 +20,7 @@ abstract class DataFetcherPluginBase extends PluginBase implements DataFetcherPl
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static($configuration, $plugin_id, $plugin_definition);
   }
 

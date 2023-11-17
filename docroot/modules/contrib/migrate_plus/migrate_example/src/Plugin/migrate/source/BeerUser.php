@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_example\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
@@ -12,12 +15,12 @@ use Drupal\migrate\Row;
  *   id = "beer_user"
  * )
  */
-class BeerUser extends SqlBase {
+final class BeerUser extends SqlBase {
 
   /**
    * {@inheritdoc}
    */
-  public function query() {
+  public function query(): SelectInterface {
     $fields = [
       'aid',
       'status',
@@ -36,8 +39,8 @@ class BeerUser extends SqlBase {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    $fields = [
+  public function fields(): array {
+    return [
       'aid' => $this->t('Account ID'),
       'status' => $this->t('Blocked/Allowed'),
       'registered' => $this->t('Registered date'),
@@ -48,14 +51,12 @@ class BeerUser extends SqlBase {
       'sex' => $this->t('Gender'),
       'beers' => $this->t('Favorite beers, pipe-separated'),
     ];
-
-    return $fields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     return [
       'aid' => [
         'type' => 'integer',
@@ -67,7 +68,7 @@ class BeerUser extends SqlBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
+  public function prepareRow(Row $row): bool {
     // A prepareRow() is the most common place to perform custom run-time
     // processing that isn't handled by an existing process plugin. It is called
     // when the raw data has been pulled from the source, and provides the

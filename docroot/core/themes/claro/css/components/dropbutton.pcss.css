@@ -7,8 +7,6 @@
  *    contrast mode Firefox.
  */
 
-@import "../base/variables.pcss.css";
-
 :root {
   /**
   * Dropbutton
@@ -72,15 +70,6 @@
 .js .dropbutton {
   min-width: 6rem; /* Help mitigate long dropbutton text from obscuring other dropbuttons. */
   height: var(--dropbutton-toggle-size);
-}
-
-.js .dropbutton-widget {
-  border-radius: var(--button-border-radius-size);
-  background-color: var(--button-bg-color);
-}
-
-.js .dropbutton-action {
-  border-inline-end: var(--dropbutton-border-size) solid white;
 }
 
 /* Variants. */
@@ -195,7 +184,7 @@
 }
 
 /* High contrast. */
-@media (-ms-high-contrast: active), (forced-colors: active) {
+@media (forced-colors: active) {
   /* Default. */
   .dropbutton__toggle::before {
     width: 0.5625rem;
@@ -365,17 +354,6 @@
   font-weight: normal;
   line-height: var(--dropbutton-line-height);
   -webkit-font-smoothing: antialiased;
-}
-
-/**
- * Set the inherited button border color to transparent for high contrast
- * mode.
- */
-@media screen and (-ms-high-contrast: active) {
-  .dropbutton__item:first-of-type ~ .dropbutton__item > a,
-  .dropbutton__item:first-of-type ~ .dropbutton__item > .button {
-    border-color: transparent !important;
-  }
 }
 
 .dropbutton__item:first-of-type ~ .dropbutton__item > a:not(:focus),

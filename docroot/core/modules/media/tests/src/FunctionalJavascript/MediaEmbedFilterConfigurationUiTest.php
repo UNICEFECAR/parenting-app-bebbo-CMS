@@ -144,7 +144,8 @@ class MediaEmbedFilterConfigurationUiTest extends MediaJavascriptTestBase {
   }
 
   /**
-   * Data provider for testing validation when adding and editing media embeds.
+   * Data provider for testValidationWhenAdding() and
+   * testValidationWhenEditing().
    */
   public function providerTestValidations() {
     return [

@@ -9,7 +9,8 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Core\Language\LanguageInterface;
 
 /**
- * Tests the validation of translation strings and search results.
+ * Adds a new locale and translates its name. Checks the validation of
+ * translation strings and search results.
  *
  * @group locale
  */
@@ -244,7 +245,8 @@ class LocaleTranslationUiTest extends BrowserTestBase {
   }
 
   /**
-   * Tests the rebuilding of JavaScript translation files on deletion.
+   * Adds a language and checks that the JavaScript translation files are
+   * properly created and rebuilt on deletion.
    */
   public function testJavaScriptTranslation() {
     $user = $this->drupalCreateUser([

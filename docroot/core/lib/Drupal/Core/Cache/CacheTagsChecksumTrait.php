@@ -48,7 +48,7 @@ trait CacheTagsChecksumTrait {
   }
 
   /**
-   * Implements \Drupal\Core\Cache\CacheTagsInvalidatorInterface::invalidateTags()
+   * Implements \Drupal\Core\Cache\CacheTagsChecksumInterface::invalidateTags()
    */
   public function invalidateTags(array $tags) {
     // Only invalidate tags once per request unless they are written again.

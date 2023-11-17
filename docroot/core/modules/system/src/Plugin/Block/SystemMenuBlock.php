@@ -85,7 +85,7 @@ class SystemMenuBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#title' => $this->t('Menu levels'),
       // Open if not set to defaults.
       '#open' => $defaults['level'] !== $config['level'] || $defaults['depth'] !== $config['depth'],
-      '#process' => [[self::class, 'processMenuLevelParents']],
+      '#process' => [[get_class(), 'processMenuLevelParents']],
     ];
 
     $options = range(0, $this->menuTree->maxDepth());

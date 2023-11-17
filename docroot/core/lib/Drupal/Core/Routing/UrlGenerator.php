@@ -104,7 +104,7 @@ class UrlGenerator implements UrlGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getContext() {
+  public function getContext(): SymfonyRequestContext {
     return $this->context;
   }
 
@@ -163,7 +163,7 @@ class UrlGenerator implements UrlGeneratorInterface {
    *   The route name or other identifying string from ::getRouteDebugMessage().
    *
    * @return string
-   *   The URL path, without any base path, without the query string, not URL
+   *   The url path, without any base path, without the query string, not URL
    *   encoded.
    *
    * @throws \Symfony\Component\Routing\Exception\MissingMandatoryParametersException
@@ -178,7 +178,7 @@ class UrlGenerator implements UrlGeneratorInterface {
 
     // all params must be given
     if ($diff = array_diff_key($variables, $mergedParams)) {
-      throw new MissingMandatoryParametersException(sprintf('Some mandatory parameters are missing ("%s") to generate a URL for route "%s".', implode('", "', array_keys($diff)), $name));
+      throw new MissingMandatoryParametersException($name, array_keys($diff));
     }
 
     $url = '';
@@ -270,15 +270,16 @@ class UrlGenerator implements UrlGeneratorInterface {
     $route = $this->getRoute($name);
     $generated_url = $collect_bubbleable_metadata ? new GeneratedUrl() : NULL;
 
+    $fragment = '';
+    if (isset($options['fragment'])) {
+      if (($fragment = trim($options['fragment'])) != '') {
+        $fragment = '#' . $fragment;
+      }
+    }
+
     // Generate a relative URL having no path, just query string and fragment.
     if ($route->getOption('_no_path')) {
       $query = $options['query'] ? '?' . UrlHelper::buildQuery($options['query']) : '';
-      $fragment = '';
-      if (isset($options['fragment'])) {
-        if (($fragment = trim($options['fragment'])) != '') {
-          $fragment = '#' . $fragment;
-        }
-      }
       $url = $query . $fragment;
       return $collect_bubbleable_metadata ? $generated_url->setGeneratedUrl($url) : $url;
     }
@@ -327,13 +328,6 @@ class UrlGenerator implements UrlGeneratorInterface {
     }
 
     $query = $options['query'] ? '?' . UrlHelper::buildQuery($options['query']) : '';
-
-    $fragment = '';
-    if (isset($options['fragment'])) {
-      if (($fragment = trim($options['fragment'])) != '') {
-        $fragment = '#' . $fragment;
-      }
-    }
 
     // The base_url might be rewritten from the language rewrite in domain mode.
     if (isset($options['base_url'])) {

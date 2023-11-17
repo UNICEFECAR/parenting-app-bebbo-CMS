@@ -4,7 +4,6 @@ namespace Drupal\views_ui;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Timer;
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -18,7 +17,7 @@ use Drupal\views\Plugin\views\query\Sql;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewEntityInterface;
 use Drupal\Core\Routing\RouteObjectInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -141,7 +140,7 @@ class ViewUI implements ViewEntityInterface {
   /**
    * The entity type.
    */
-  protected $entityType;
+  protected string $entityType;
 
   /**
    * Constructs a View UI object.
@@ -277,10 +276,9 @@ class ViewUI implements ViewEntityInterface {
   }
 
   /**
-   * Provides a standard set of Apply/Cancel/OK buttons for the forms.
-   *
-   * This will also provide a hidden op operator because the forms plugin
-   * doesn't seem to properly provide which button was clicked.
+   * Provide a standard set of Apply/Cancel/OK buttons for the forms. Also provide
+   * a hidden op operator because the forms plugin doesn't seem to properly
+   * provide which button was clicked.
    *
    * TODO: Is the hidden op operator still here somewhere, or is that part of the
    * docblock outdated?
@@ -382,9 +380,8 @@ class ViewUI implements ViewEntityInterface {
   }
 
   /**
-   * Adds another form to the stack.
-   *
-   * Clicking 'apply' will go to this form rather than closing the ajax popup.
+   * Add another form to the stack; clicking 'apply' will go to this form
+   * rather than closing the ajax popup.
    */
   public function addFormToStack($key, $display_id, $type, $id = NULL, $top = FALSE, $rebuild_keys = FALSE) {
     // Reset the cache of IDs. Drupal rather aggressively prevents ID
@@ -583,7 +580,7 @@ class ViewUI implements ViewEntityInterface {
       $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, \Drupal::service('router.route_provider')->getRouteByName('entity.view.preview_form'));
       $request->attributes->set('view', $this->storage);
       $request->attributes->set('display_id', $display_id);
-      $raw_parameters = new ParameterBag();
+      $raw_parameters = new InputBag();
       $raw_parameters->set('view', $this->id());
       $raw_parameters->set('display_id', $display_id);
       $request->attributes->set('_raw_variables', $raw_parameters);
@@ -700,7 +697,6 @@ class ViewUI implements ViewEntityInterface {
               [
                 'data' => [
                   '#markup' => $executable->getTitle(),
-                  '#allowed_tags' => Xss::getHtmlTagList(),
                 ],
               ],
             ];

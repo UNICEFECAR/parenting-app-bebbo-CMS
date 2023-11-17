@@ -68,7 +68,7 @@ class StatementPrefetch implements \Iterator, StatementInterface {
   protected $columnNames = NULL;
 
   /**
-   * The number of rows matched by the last query.
+   * The number of rows affected by the last query.
    *
    * @var int
    */
@@ -139,7 +139,7 @@ class StatementPrefetch implements \Iterator, StatementInterface {
    * @param array $driver_options
    *   Driver-specific options.
    * @param bool $row_count_enabled
-   *   (optional) Enables counting the rows matched. Defaults to FALSE.
+   *   (optional) Enables counting the rows affected. Defaults to FALSE.
    */
   public function __construct(\PDO $pdo_connection, Connection $connection, $query, array $driver_options = [], bool $row_count_enabled = FALSE) {
     $this->pdoConnection = $pdo_connection;
@@ -147,36 +147,6 @@ class StatementPrefetch implements \Iterator, StatementInterface {
     $this->queryString = $query;
     $this->driverOptions = $driver_options;
     $this->rowCountEnabled = $row_count_enabled;
-  }
-
-  /**
-   * Implements the magic __get() method.
-   *
-   * @todo Remove the method before Drupal 10.
-   * @see https://www.drupal.org/i/3210310
-   */
-  public function __get($name) {
-    if ($name === 'dbh') {
-      @trigger_error(__CLASS__ . '::$dbh should not be accessed in drupal:9.3.0 and will error in drupal:10.0.0. Use $this->connection instead. See https://www.drupal.org/node/3186368', E_USER_DEPRECATED);
-      return $this->connection;
-    }
-    if ($name === 'allowRowCount') {
-      @trigger_error(__CLASS__ . '::$allowRowCount should not be accessed in drupal:9.3.0 and will error in drupal:10.0.0. Use $this->rowCountEnabled instead. See https://www.drupal.org/node/3186368', E_USER_DEPRECATED);
-      return $this->rowCountEnabled;
-    }
-  }
-
-  /**
-   * Implements the magic __set() method.
-   *
-   * @todo Remove the method before Drupal 10.
-   * @see https://www.drupal.org/i/3210310
-   */
-  public function __set($name, $value) {
-    if ($name === 'allowRowCount') {
-      @trigger_error(__CLASS__ . '::$allowRowCount should not be written in drupal:9.3.0 and will error in drupal:10.0.0. Enable row counting by passing the appropriate argument to the constructor instead. See https://www.drupal.org/node/3186368', E_USER_DEPRECATED);
-      $this->rowCountEnabled = $value;
-    }
   }
 
   /**

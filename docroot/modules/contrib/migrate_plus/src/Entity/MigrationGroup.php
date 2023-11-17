@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Entity;
 
 use Drupal\Core\Cache\Cache;
@@ -35,22 +37,18 @@ class MigrationGroup extends ConfigEntityBase implements MigrationGroupInterface
 
   /**
    * The migration group ID (machine name).
-   *
-   * @var string
    */
-  protected $id;
+  protected ?string $id;
 
   /**
    * The human-readable label for the migration group.
-   *
-   * @var string
    */
-  protected $label;
+  protected ?string $label;
 
   /**
    * {@inheritdoc}
    */
-  public function delete() {
+  public function delete(): void {
     // Delete all migrations contained in this group.
     $query = \Drupal::entityQuery('migration')
       // Access check false because if the user has access to deleting
@@ -77,7 +75,7 @@ class MigrationGroup extends ConfigEntityBase implements MigrationGroupInterface
   /**
    * {@inheritdoc}
    */
-  public function calculateDependencies() {
+  public function calculateDependencies(): array {
     parent::calculateDependencies();
     // Make sure we save any explicit module dependencies.
     if ($provider = $this->get('module')) {
@@ -86,10 +84,10 @@ class MigrationGroup extends ConfigEntityBase implements MigrationGroupInterface
     return $this->dependencies;
   }
 
-   /**
+  /**
    * {@inheritdoc}
    */
-  protected function invalidateTagsOnSave($update) {
+  protected function invalidateTagsOnSave($update): void {
     parent::invalidateTagsOnSave($update);
     Cache::invalidateTags(['migration_plugins']);
   }

@@ -190,7 +190,6 @@ class MoveBlockForm extends FormBase {
     if (!isset($components[$uuid])) {
       $components[$uuid] = $sections[$delta]->getComponent($uuid);
     }
-    $state_weight_delta = round(count($components) / 2);
     foreach ($components as $component_uuid => $component) {
       /** @var \Drupal\Core\Block\BlockPluginInterface $plugin */
       $plugin = $component->getPlugin();
@@ -223,7 +222,6 @@ class MoveBlockForm extends FormBase {
           '#attributes' => [
             'class' => ['table-sort-weight'],
           ],
-          '#delta' => $state_weight_delta,
         ],
       ];
     }

@@ -29,5 +29,9 @@
     "prefer-stable": true,
     "config": {
         "preferred-install": "dist"
+    },
+    "require": {
+        "php": ">=7.4",
+        "drupal/core": ">=9.1"
     }
 }

@@ -372,7 +372,7 @@ class ShortcutLinksTest extends ShortcutTestBase {
     $this->drupalLogin($this->drupalCreateUser([
       'access toolbar', 'access shortcuts', 'administer site configuration',
     ]));
-    $this->clickLink('Shortcuts', 0, 'Shortcut link found on page.');
+    $this->clickLink('Shortcuts');
     $this->assertSession()->linkExists('Cron', 0, 'Cron shortcut link found on page.');
 
     $this->verifyAccessShortcutsPermissionForEditPages();
@@ -403,7 +403,8 @@ class ShortcutLinksTest extends ShortcutTestBase {
   }
 
   /**
-   * Tests the 'access shortcuts' permission for shortcut set administration.
+   * Tests that the 'access shortcuts' permission is required for shortcut set
+   * administration page access.
    */
   private function verifyAccessShortcutsPermissionForEditPages() {
     // Create a user with customize links and switch sets permissions  but
@@ -426,7 +427,8 @@ class ShortcutLinksTest extends ShortcutTestBase {
   }
 
   /**
-   * Tests the 'access shortcuts' permission with the shortcut block.
+   * Tests that the 'access shortcuts' permission is required to access the
+   * shortcut block.
    */
   public function testShortcutBlockAccess() {
     // Creates a block instance and place in a region through api.

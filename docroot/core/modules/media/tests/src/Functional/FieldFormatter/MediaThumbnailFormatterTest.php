@@ -105,7 +105,6 @@ class MediaThumbnailFormatterTest extends MediaFunctionalTestBase {
 
     // Validate image being loaded with the content on the link.
     $this->assertSession()->responseContains('<a href="' . $node->toUrl()->toString());
-    $this->assertSession()->responseContains('loading="eager"');
   }
 
   /**
@@ -123,7 +122,6 @@ class MediaThumbnailFormatterTest extends MediaFunctionalTestBase {
         'settings' => [
           'image_link' => $type,
           'image_style' => '',
-          'image_loading' => ['attribute' => 'eager'],
         ],
       ])
       ->save();

@@ -1,0 +1,5 @@
+entity.tb_megamenu.add_form:
+  route_name: 'entity.tb_megamenu.add_form'
+  title: 'Add a Mega Menu'
+  appears_on:
+    - entity.tb_megamenu.collection

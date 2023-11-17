@@ -155,7 +155,7 @@ class TermKernelTest extends KernelTestBase {
     // Create a unsaved term.
     $term = $entity_manager->getStorage('taxonomy_term')->create([
       'vid' => $vocabulary->id(),
-      'name' => 'Foo',
+      'name' => 'Inator',
     ]);
 
     // Confirm we can get the view of unsaved term.

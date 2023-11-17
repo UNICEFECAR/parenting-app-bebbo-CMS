@@ -361,23 +361,6 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
   public function entityClassImplements($interface);
 
   /**
-   * Indicates if the entity type is a subclass of the given class or interface.
-   *
-   * @param string $class
-   *   The class or interface to check.
-   *
-   * @return bool
-   *   TRUE if the entity type is a subclass of the class or interface.
-   *
-   * @deprecated in drupal:8.3.0 and is removed from drupal:10.0.0.
-   *   Use Drupal\Core\Entity\EntityTypeInterface::entityClassImplements()
-   *   instead.
-   *
-   * @see https://www.drupal.org/node/2842808
-   */
-  public function isSubclassOf($class);
-
-  /**
    * Sets the handlers for a given type.
    *
    * @param string $handler_type
@@ -419,9 +402,11 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    * should be used for them. Where possible, link relationships should use
    * established IANA relationships rather than custom relationships.
    *
-   * Entities which can be viewed should define "canonical", which is the
-   * pattern for URIs to that entity including REST. Entities that will be
-   * user-editable via an HTML page should define an "edit-form" relationship.
+   * Every entity type should, at minimum, define "canonical", which is the
+   * pattern for URIs to that entity. Even if the entity will have no HTML page
+   * exposed to users it should still have a canonical URI in order to be
+   * compatible with web services. Entities that will be user-editable via an
+   * HTML page must also define an "edit-form" relationship.
    *
    * By default, the following placeholders are supported:
    * - [entityType]: The entity type itself will also be a valid token for the
@@ -684,14 +669,6 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
   /**
    * Gets the machine name of the entity type group.
    *
-   * The entity type group is an annotation property of the entity type.
-   *
-   * Drupal core defines two entity type groups:
-   *  - content: Entities which form the information on a site. Content entities
-   *    are typically customized with fields.
-   *  - config: Entities which define structural elements of a site, which are
-   *    managed as part of the site's configuration.
-   *
    * @return string
    */
   public function getGroup();
@@ -701,8 +678,6 @@ interface EntityTypeInterface extends PluginDefinitionInterface {
    *
    * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
    *   The group label.
-   *
-   * @see self::getGroup()
    */
   public function getGroupLabel();
 

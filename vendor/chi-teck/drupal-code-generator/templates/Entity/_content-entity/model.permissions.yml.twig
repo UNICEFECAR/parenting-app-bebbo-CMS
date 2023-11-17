@@ -1,0 +1,16 @@
+{{ admin_permission }}:
+  title: '{{ admin_permission|capitalize }}'
+{% if bundle %}
+  description: 'Maintain the types of {{ entity_type_id_short|replace({'_': ' '}) }} entity.'
+{% endif %}
+  restrict access: true
+{% if access_controller %}
+delete {{ entity_type_label|lower }}:
+  title: 'Delete {{ entity_type_label|lower }}'
+create {{ entity_type_label|lower }}:
+  title: 'Create {{ entity_type_label|lower }}'
+view {{ entity_type_label|lower }}:
+  title: 'View {{ entity_type_label|lower }}'
+edit {{ entity_type_label|lower }}:
+  title: 'Edit {{ entity_type_label|lower }}'
+{% endif %}

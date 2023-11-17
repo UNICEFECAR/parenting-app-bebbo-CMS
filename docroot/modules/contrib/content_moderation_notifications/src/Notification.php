@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\token\TokenEntityMapperInterface;
+use Drupal\user\Entity\User;
 use Drupal\user\EntityOwnerInterface;
 use Drupal\user\RoleInterface;
 
@@ -169,7 +170,10 @@ class Notification implements NotificationInterface {
         }
         foreach ($role_users as $role_user) {
           if ($role_user->isActive()) {
-            $data['to'][] = $role_user->getEmail();
+            // Check for access to view the entity.
+            if ($entity->access('view', $role_user)) {
+              $data['to'][] = $role_user->getEmail();
+            }
           }
         }
       }
@@ -185,8 +189,18 @@ class Notification implements NotificationInterface {
 
       // Split Adhoc emails on commas and newlines.
       $adhoc_emails = array_map('trim', explode(',', preg_replace("/((\r?\n)|(\r\n?))/", ',', $adhoc_emails)));
+      $anonymous_access = $entity->access('view', User::getAnonymousUser());
       foreach ($adhoc_emails as $email) {
-        $data['to'][] = $email;
+        // Attempt to find a user matching this email.
+        $email_accounts = $this->entityTypeManager->getStorage('user')->loadByProperties(['status' => 1, 'mail' => $email]);
+        $email_account = reset($email_accounts);
+        if ($email_account && $entity->access('view', $email_account)) {
+          $data['to'][] = $email;
+        }
+        elseif ($anonymous_access) {
+          // Send adhoc emails if anonymous users can view the entity.
+          $data['to'][] = $email;
+        }
       }
 
       // Let other modules to alter the email data.

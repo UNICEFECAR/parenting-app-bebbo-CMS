@@ -29,7 +29,8 @@ interface InitializerInterface extends Initializer\InitializerInterface
     /**
      * Initialize
      *
+     * @param mixed $instance
      * @return mixed
      */
-    public function initialize(mixed $instance, ServiceLocatorInterface $serviceLocator);
+    public function initialize($instance, ServiceLocatorInterface $serviceLocator);
 }

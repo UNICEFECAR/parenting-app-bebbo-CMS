@@ -315,14 +315,8 @@ class DateFormatter implements DateFormatterInterface {
   /**
    * Loads the given format pattern for the given langcode.
    *
-   * @param string $type
-   *   The machine name of the date format type which is one of:
-   *   - One of the built-in date format types: 'short', 'medium',
-   *     'long', 'html_datetime', 'html_date', 'html_time',
-   *     'html_yearless_date', 'html_week', 'html_month', 'html_year'.
-   *   - The name of a date format type defined by a date format config entity.
-   *   - The machine name of an administrator-defined date format type.
-   *   - 'custom' for a custom date format type.
+   * @param string $format
+   *   The machine name of the date format.
    * @param string $langcode
    *   The langcode of the language to use.
    *
@@ -330,14 +324,14 @@ class DateFormatter implements DateFormatterInterface {
    *   The configuration entity for the date format in the given language for
    *   non-custom formats, NULL otherwise.
    */
-  protected function dateFormat($type, $langcode) {
-    if (!isset($this->dateFormats[$type][$langcode])) {
+  protected function dateFormat($format, $langcode) {
+    if (!isset($this->dateFormats[$format][$langcode])) {
       $original_language = $this->languageManager->getConfigOverrideLanguage();
       $this->languageManager->setConfigOverrideLanguage(new Language(['id' => $langcode]));
-      $this->dateFormats[$type][$langcode] = $this->dateFormatStorage->load($type);
+      $this->dateFormats[$format][$langcode] = $this->dateFormatStorage->load($format);
       $this->languageManager->setConfigOverrideLanguage($original_language);
     }
-    return $this->dateFormats[$type][$langcode];
+    return $this->dateFormats[$format][$langcode];
   }
 
   /**

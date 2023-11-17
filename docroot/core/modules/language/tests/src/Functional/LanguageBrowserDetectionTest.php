@@ -20,7 +20,8 @@ class LanguageBrowserDetectionTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests mappings between browser language codes and Drupal language codes.
+   * Tests for adding, editing and deleting mappings between browser language
+   * codes and Drupal language codes.
    */
   public function testUIBrowserLanguageMappings() {
     // User to manage languages.

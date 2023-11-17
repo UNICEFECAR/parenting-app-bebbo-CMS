@@ -103,7 +103,8 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
   }
 
   /**
-   * Tests the autocomplete input element and entity auto-creation.
+   * Tests that the autocomplete input element appears and the creation of a new
+   * entity.
    */
   public function testAutoCreate() {
     $this->drupalGet('node/add/' . $this->referencingType);
@@ -153,8 +154,6 @@ class EntityReferenceAutoCreateTest extends BrowserTestBase {
   }
 
   /**
-   * Tests multiple target bundles.
-   *
    * Tests if an entity reference field having multiple target bundles is
    * storing the auto-created entity in the right destination.
    */

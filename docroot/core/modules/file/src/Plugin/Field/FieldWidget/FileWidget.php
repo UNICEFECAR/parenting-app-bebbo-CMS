@@ -32,7 +32,7 @@ class FileWidget extends WidgetBase {
   /**
    * The element info manager.
    */
-  protected $elementInfo;
+  protected ElementInfoManagerInterface $elementInfo;
 
   /**
    * {@inheritdoc}
@@ -339,7 +339,8 @@ class FileWidget extends WidgetBase {
   }
 
   /**
-   * Validates the number of uploaded files.
+   * Form element validation callback for upload element on file widget. Checks
+   * if user has uploaded more files than allowed.
    *
    * This validator is used only when cardinality not set to 1 or unlimited.
    */

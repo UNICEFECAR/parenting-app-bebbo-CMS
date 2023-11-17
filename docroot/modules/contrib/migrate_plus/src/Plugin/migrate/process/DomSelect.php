@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
-use Drupal\migrate_plus\Plugin\migrate\process\DomProcessBase;
 
 /**
  * Select strings from a DOMDocument object.
@@ -39,7 +40,7 @@ class DomSelect extends DomProcessBase {
   /**
    * {@inheritdoc}
    */
-  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property): array {
     $this->init($value, $destination_property);
     $values = [];
     foreach ($this->xpath->query($this->configuration['selector']) as $node) {

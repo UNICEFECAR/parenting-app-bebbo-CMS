@@ -978,10 +978,9 @@ class RendererPlaceholdersTest extends RendererTestBase {
   }
 
   /**
-   * Tests the creation of an element with a child and a sub-child.
-   *
-   * Each element has the same #lazy_builder callback, but with different
-   * contexts. They don't modify markup, only attach additional drupalSettings.
+   * Create an element with a child and subchild. Each element has the same
+   * #lazy_builder callback, but with different contexts. They don't modify
+   * markup, only attach additional drupalSettings.
    *
    * @covers ::render
    * @covers ::doRender
@@ -1025,7 +1024,7 @@ HTML;
     $this->assertSame($element['#attached']['drupalSettings'], $expected_js_settings, '#attached is modified; both the original JavaScript setting and the ones added by each placeholder #lazy_builder callback exist.');
 
     // GET request: validate cached data.
-    $cached_element = $this->memoryCache->get('simpletest:renderer:children_placeholders')->data;
+    $cached_element = $this->memoryCache->get('test:renderer:children_placeholders')->data;
     $expected_element = [
       '#attached' => [
         'drupalSettings' => [
@@ -1096,7 +1095,7 @@ HTML;
     $test_element = [
       '#type' => 'details',
       '#cache' => [
-        'keys' => ['simpletest', 'renderer', 'children_placeholders'],
+        'keys' => ['test', 'renderer', 'children_placeholders'],
       ],
       '#title' => 'Parent',
       '#attached' => [

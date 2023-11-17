@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\Component\Utility\Html;
@@ -12,7 +14,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\DomSelect
  */
-class DomSelectTest extends MigrateProcessTestCase {
+final class DomSelectTest extends MigrateProcessTestCase {
 
   /**
    * @covers ::transform

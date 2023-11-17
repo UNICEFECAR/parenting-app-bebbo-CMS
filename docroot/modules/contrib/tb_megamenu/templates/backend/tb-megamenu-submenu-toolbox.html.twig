@@ -1,0 +1,38 @@
+<div id="tbm-admin-mm-toolsub" class="admin-toolbox">
+  <h3>{{ 'Submenu Configuration'|t }} (<a href="#" class="back-megamenu-toolbox">{{ 'MegaMenu Toolbox'|t }}</a>)</h3>
+  <p>{{ 'Configue all level 2+ items.'|t }}</p>
+  <div class="tbm-tools-container">
+    <div>
+      <label aria-label="{{ 'Add row'|t }} - {{ 'Add a new row to the selected submenu.'|t }}" class="hasTip"> {{ 'Add row'|t }} </label>
+      <fieldset class="btn-group">
+        <a href="" class="btn toolsub-addrow toolbox-action" data-action="addRow">&plus;</a>
+      </fieldset>
+    </div>
+    <div>
+      <label class="hasTip" aria-label="{{ 'Hide on mobile'|t }} - {{ 'Hide this submenu below the mobile breakpoint.'|t }}">{{ 'Hide on mobile'|t }}</label>
+      <fieldset class="radio btn-group toolsub-hidewhencollapse">
+        <input type="radio" id="togglesubHideWhenCollapse0" class="toolbox-toggle" data-action="hideWhenCollapse" name="togglesubHideWhenCollapse" value="0" checked="checked"/>
+        <label for="togglesubHideWhenCollapse0" title="{{ 'Keep showing this submenu when the menu is collapsed on mobile.'|t }}">{{ 'No'|t }}</label>
+        <input type="radio" id="togglesubHideWhenCollapse1" class="toolbox-toggle" data-action="hideWhenCollapse" name="togglesubHideWhenCollapse" value="1"/>
+        <label for="togglesubHideWhenCollapse1" title="{{ 'Hide this submenu when the menu is collapsed on mobile.'|t }}">{{ 'Yes'|t }}</label>
+      </fieldset>
+    </div>                    
+    <div>
+      <label aria-label="{{ 'Submenu width (px)'|t }} - {{ 'Set the submenu width in pixels. This field must be a integer.'|t }}" class="hasTip">{{ 'Submenu width (px)'|t }}</label>
+      <input type="text" class="toolsub-width toolbox-input input-small" name="toolsub-width" data-name="width" value="" />
+    </div>
+    <div>
+      <label aria-label="{{ 'Alignment'|t }} - {{ 'Align this submenu.'|t }}" class="hasTip">{{ 'Alignment'|t }}</label>
+      <fieldset class="toolsub-alignment btn-group">
+        <a class="btn toolsub-align-left toolbox-action" href="#" data-action="alignment" data-align="left" title="{{ 'Left'|t }}">{{ 'Left'|t }}</a>
+        <a class="btn toolsub-align-right toolbox-action" href="#" data-action="alignment" data-align="right" title="{{ 'Right'|t }}">{{ 'Right'|t }}</a>
+        <a class="btn toolsub-align-center toolbox-action" href="#" data-action="alignment" data-align="center" title="{{ 'Center'|t }}">{{ 'Center'|t }}</a>
+        <a class="btn toolsub-align-justify toolbox-action" href="#" data-action="alignment" data-align="justify" title="{{ 'Justify'|t }}">{{ 'Justify'|t }}</a>
+      </fieldset>
+    </div>          
+    <div>
+      <label aria-label="{{ 'CSS class'|t }} - {{ 'Attach a custom CSS class to this submenu.'|t }}" class="hasTip">{{ 'CSS class'|t }}</label>
+      <input type="text" class="toolsub-exclass toolbox-input input-medium" name="toolsub-exclass" data-name="class" value="" />
+    </div>
+  </div>
+</div>

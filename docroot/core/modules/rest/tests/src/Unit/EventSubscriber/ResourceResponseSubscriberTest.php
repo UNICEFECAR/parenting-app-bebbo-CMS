@@ -42,7 +42,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     $event = new ResponseEvent(
       $this->prophesize(HttpKernelInterface::class)->reveal(),
       $request,
-      HttpKernelInterface::MASTER_REQUEST,
+      HttpKernelInterface::MAIN_REQUEST,
       $handler_response
     );
     $resource_response_subscriber->onResponse($event);
@@ -136,7 +136,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], $route_requirements));
 
       // The RequestHandler must return a ResourceResponseInterface object.
-      $handler_response = new ResourceResponse(['REST' => 'Drupal']);
+      $handler_response = new ResourceResponse($method !== 'DELETE' ? ['REST' => 'Drupal'] : NULL);
       $this->assertInstanceOf(ResourceResponseInterface::class, $handler_response);
       $this->assertInstanceOf(CacheableResponseInterface::class, $handler_response);
 
@@ -146,7 +146,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       $event = new ResponseEvent(
         $this->prophesize(HttpKernelInterface::class)->reveal(),
         $request,
-        HttpKernelInterface::MASTER_REQUEST,
+        HttpKernelInterface::MAIN_REQUEST,
         $handler_response
       );
       $resource_response_subscriber->onResponse($event);
@@ -186,7 +186,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       $route_match = new RouteMatch('test', new Route('/rest/test', ['_rest_resource_config' => $this->randomMachineName()], $route_requirements));
 
       // The RequestHandler must return a ResourceResponseInterface object.
-      $handler_response = new ModifiedResourceResponse(['REST' => 'Drupal']);
+      $handler_response = new ModifiedResourceResponse($method !== 'DELETE' ? ['REST' => 'Drupal'] : NULL);
       $this->assertInstanceOf(ResourceResponseInterface::class, $handler_response);
       $this->assertNotInstanceOf(CacheableResponseInterface::class, $handler_response);
 
@@ -196,7 +196,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
       $event = new ResponseEvent(
         $this->prophesize(HttpKernelInterface::class)->reveal(),
         $request,
-        HttpKernelInterface::MASTER_REQUEST,
+        HttpKernelInterface::MAIN_REQUEST,
         $handler_response
       );
       $resource_response_subscriber->onResponse($event);
@@ -344,7 +344,7 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
     ];
 
     $unsafe_method_bodyless_test_cases = [
-      'unsafe methods without request bodies (DELETE): client requested no format, response should have the first acceptable format' => [
+      'unsafe methods without response bodies (DELETE): client requested no format, response should have no format' => [
         ['DELETE'],
         ['xml', 'json'],
         ['xml', 'json'],
@@ -352,10 +352,10 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         ['Content-Type' => 'application/json'],
         NULL,
         'xml',
-        'text/xml',
-        $xml_encoded,
+        NULL,
+        '',
       ],
-      'unsafe methods without request bodies (DELETE): client requested format (XML), response should have xml format' => [
+      'unsafe methods without response bodies (DELETE): client requested format (XML), response should have no format' => [
         ['DELETE'],
         ['xml', 'json'],
         ['xml', 'json'],
@@ -363,10 +363,10 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         ['Content-Type' => 'application/json'],
         NULL,
         'xml',
-        'text/xml',
-        $xml_encoded,
+        NULL,
+        '',
       ],
-      'unsafe methods without request bodies (DELETE): client requested format (JSON), response should have json format' => [
+      'unsafe methods without response bodies (DELETE): client requested format (JSON), response should have no format' => [
         ['DELETE'],
         ['xml', 'json'],
         ['xml', 'json'],
@@ -374,8 +374,8 @@ class ResourceResponseSubscriberTest extends UnitTestCase {
         ['Content-Type' => 'application/json'],
         NULL,
         'json',
-        'application/json',
-        $json_encoded,
+        NULL,
+        '',
       ],
     ];
 

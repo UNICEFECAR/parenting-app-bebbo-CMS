@@ -19,7 +19,9 @@ use Psr\Container\ContainerInterface;
  */
 final class InvokableFactory implements FactoryInterface
 {
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         return null === $options ? new $requestedName() : new $requestedName($options);

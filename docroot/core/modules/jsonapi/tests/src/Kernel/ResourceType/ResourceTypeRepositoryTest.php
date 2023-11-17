@@ -114,7 +114,8 @@ class ResourceTypeRepositoryTest extends JsonapiKernelTestBase {
   }
 
   /**
-   * Ensures that a naming conflict in mapping causes an exception to be thrown.
+   * Ensures that a naming conflict in the mapping causes an exception to be
+   * thrown.
    *
    * @covers ::getFields
    * @dataProvider getFieldsProvider

@@ -4,11 +4,13 @@ namespace Drupal\Tests\system\Functional\System;
 
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
+use Drupal\node\Entity\Node;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
- * Tests the theme administration user interface.
+ * Tests the theme interface functionality by enabling and switching themes, and
+ * using an administration theme.
  *
  * @group system
  */
@@ -42,7 +44,7 @@ class ThemeTest extends BrowserTestBase {
    *
    * @var \Drupal\node\Entity\Node
    */
-  protected $node;
+  protected Node $node;
 
   /**
    * {@inheritdoc}

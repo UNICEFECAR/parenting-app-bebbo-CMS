@@ -1,0 +1,76 @@
+<div id="tbm-admin" class="hidden tbm-admin tbm">
+  <div class="admin-inline-toolbox clearfix">
+    <div class="tbm-admin-mm-row">
+      <div id="tbm-admin-mm-tb">
+        <div id="toolbox-loading" class="toolbox-loading">&nbsp;</div>
+        <div id="toolbox-message" class="toolbox-message">&nbsp;</div>
+        <div id="tbm-admin-mm-intro" class="admin-toolbox">
+          <h3>{{ 'MegaMenu Toolbox'|t }}</h3>
+          <p>{{ 'This toolbox includes global menu settings. Click on a menu item, submenu or column for additional configuration options.'|t }}</p>
+          <div class="tbm-tools-container">
+            <div>
+              <label aria-label="{{ 'Mobile breakpint'|t }} - {{ 'Specify a mobile breakpoint in pixels.'|t }}" class="hasTip">{{ 'Mobile breakpoint'|t }}</label>
+              <input type="text" class="input-medium tbm-breakpoint toolbox-input" name="tbm-breakpoint" data-name="breakpoint" value="{{ block_config['breakpoint'] }}" />
+            </div>
+            <div>
+              <label aria-label="{{ 'Hide mobile menu'|t }} - {{ 'When set to \'yes\', the mobile menu will always be hidden. When set to \'no\', the mobile menu will be displayed.'|t }}" class="hasTip">{{ 'Hide mobile menu'|t }}</label>
+              <fieldset class="radio btn-group toolitem-hide-mobile-menu" data-hide-mobile-menu="{{ block_config['hide-mobile-menu'] }}">
+                <input type="radio" {{ block_config['hide-mobile-menu'] ? '' : 'checked="checked"' }} value="0" name="tbm-hide-mobile-menu" data-action="toggleHideMobileMenu" class="toolbox-toggle" id="toggleHideMobileMenu0">
+                <label for="toggleHideMobileMenu0" class="btn {{ block_config['hide-mobile-menu'] ? '' : 'active btn-danger' }}" title="{{ 'Hide mobile menu on small screens.'|t }}">{{ 'No'|t }}</label>
+                <input type="radio" {{ block_config['hide-mobile-menu'] ? 'checked="checked"' : '' }} value="1" name="tbm-hide-mobile-menu" data-action="toggleHideMobileMenu" class="toolbox-toggle" id="toggleHideMobileMenu1">
+                <label for="toggleHideMobileMenu1" class="btn {{ block_config['hide-mobile-menu'] ? 'active btn-success' : '' }}" title="{{ 'Show mobile menu on small screens.'|t }}">{{ 'Yes'|t }}</label>
+              </fieldset>
+            </div>
+            <div id="tbm-animation-wrapper">
+              <label aria-label="{{ 'Animation'|t }} - {{ 'Select an animation style for this menu.'|t }}" class="hasTip">{{ 'Animation'|t }}</label>
+              <select name="tbm-animation">
+                {% for value, title in animation_options %}
+                  <option value='{{ value }}' {{ block_config['animation'] == value ? 'selected' : '' }}>{{ title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="tbm-delay-wrapper" style="display: {{ block_config['animation'] == 'none' ? 'none' : 'inline-block' }};">
+              <label aria-label="{{ 'Animation delay (ms)'|t }} - {{ 'Specify a delay for the animation - this field must be an integer.'|t }}" class="hasTip">{{ 'Animation delay (ms)'|t }}</label>
+              <input class="input-medium toolitem-delay toolbox-input" name="tbm-delay" type="text" value="{{ block_config['delay'] }}" data-name="delay"></input>
+            </div>
+            <div id="tbm-duration-wrapper" style="display: {{ block_config['animation'] == 'none' ? 'none' : 'inline-block' }};">
+              <label aria-label="{{ 'Animation duration (ms)'|t }} - {{ 'Specify a duration for the animation - this field must be an integer.'|t }}" class="hasTip">{{ 'Animation duration (ms)'|t }}</label>
+              <input class="input-medium toolitem-duration toolbox-input" name="tbm-duration" type="text" value="{{ block_config['duration'] }}" data-name="duration"></input>
+            </div>
+            <div>
+              <label class="hasTip" aria-label="{{ 'Submenu arrow'|t }} - {{ 'Show or hide a clickable arrow next to top-level menu items that have a submenu. Clicking on the arrow reveals the submenu. Otherwise, hovering over a top-level menu item reveals the submenu.'|t }}">{{ 'Submenu arrow'|t }}</label>
+              <fieldset class="radio btn-group toolitem-auto-arrow" data-auto-arrow="{{ block_config['auto-arrow'] }}">
+                <input type="radio" {{ block_config['auto-arrow'] ? '' : 'checked="checked"' }} value="0" name="tbm-auto-arrow" data-action="toggleAutoArrow" class="toolbox-toggle" id="toggleAutoArrow0">
+                <label for="toggleAutoArrow0" class="btn {{ block_config['auto-arrow'] ? '' : 'active btn-danger' }}" title="{{ 'Hide the arrow next to items that have a submenu.'|t }}">{{ 'No'|t }}</label>
+                <input type="radio" {{ block_config['auto-arrow'] ? 'checked="checked"' : '' }} value="1" name="tbm-auto-arrow" data-action="toggleAutoArrow" class="toolbox-toggle" id="toggleAutoArrow1">
+                <label for="toggleAutoArrow1" class="btn {{ block_config['auto-arrow'] ? 'active btn-success' : '' }}" title="{{ 'Show the arrow next to items that have a submenu.'|t }}">{{ 'Yes'|t }}</label>
+              </fieldset>        
+            </div>
+            <div>
+              <label class="hasTip" aria-label="{{ 'Show submenu on mobile'|t }} - {{ 'When set to \'yes\', submenus will always be visible on mobile. When set to \'no\', the user will have to click to reveal submenus on mobile.'|t }}">{{ 'Show submenu on mobile'|t }}</label>
+              <fieldset class="radio btn-group toolitem-always-show-submenu" data-always-show-submenu="{{ block_config['always-show-submenu'] }}">
+                <input type="radio" {{ block_config['always-show-submenu'] ? '' : 'checked="checked"' }} value="0" name="tbm-always-show-submenu" data-action="toggleAlwayShowSubmenu" class="toolbox-toggle" id="toggleAlwayShowSubmenu0">
+                <label for="toggleAlwayShowSubmenu0" class="btn {{ block_config['always-show-submenu'] ? '' : 'active btn-danger' }}" title="{{ 'Collapse submenus when browsing on small screens.'|t }}">{{ 'No'|t }}</label>
+                <input type="radio" {{ block_config['always-show-submenu'] ? 'checked="checked"' : '' }} value="1" name="tbm-always-show-submenu" data-action="toggleAlwayShowSubmenu" class="toolbox-toggle" id="toggleAlwayShowSubmenu1">
+                <label for="toggleAlwayShowSubmenu1" class="btn {{ block_config['always-show-submenu'] ? 'active btn-success' : '' }}" title="{{ 'Show submenus when browsing on small screens.'|t }}">{{ 'Yes'|t }}</label>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+        {{ item_toolbox }}
+        {{ submenu_toolbox }}
+        {{ column_toolbox }}
+      </div>
+      <div class="toolbox-actions-group">
+        <button class="btn btn-success toolbox-action toolbox-saveConfig" data-action="saveConfig">{{ 'Save'|t }}</button>
+        <button class="btn btn-danger toolbox-action toolbox-resetConfig" data-action="resetConfig">{{ 'Reset'|t }}</button>
+      </div>
+      <div class="toolbox-links-groups">
+        <a href="{{ edit_links }}" target="_blank">{{ 'Edit links'|t }}</a>
+      </div>
+    </div>
+  </div>
+  <div id="tbm-admin-mm-container" class="clearfix">
+    {{ menu_content }}
+  </div> 
+</div>

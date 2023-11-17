@@ -1,0 +1,47 @@
+{
+    "name": "drupal/tb_megamenu",
+    "description": "Provides complex, multi-column mega menu solutions for Drupal.",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "homepage": "https://www.drupal.org/project/tb_megamenu",
+    "authors": [
+        {
+            "name": "Wade Stewart (themodularlab)",
+            "homepage": "https://www.drupal.org/u/themodularlab",
+            "role": "Owner"
+        },
+        {
+            "name": "Michael Girgis (knaffles)",
+            "homepage": "https://www.drupal.org/u/knaffles",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Andrew Olson (andrewozone)",
+            "homepage": "https://www.drupal.org/u/andrewozone",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Justin Todd (quondam)",
+            "homepage": "https://www.drupal.org/u/quondam",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Irene Dobbs (irene_dobbs)",
+            "homepage": "https://www.drupal.org/u/irene_dobbs",
+            "role": "Co-Maintainer"
+        },
+        {
+            "name": "Henry Odiete (henry.odiete)",
+            "homepage": "https://www.drupal.org/u/henry.odiete",
+            "role": "Co-Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/tb_megamenu",
+        "source": "https://git.drupalcode.org/project/tb_megamenu"
+    },
+    "require": {
+        "drupal/core": "^8 || ^9 || ^10"
+    }
+}

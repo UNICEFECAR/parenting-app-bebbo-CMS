@@ -1,0 +1,232 @@
+<?php
+
+/**
+ * @file
+ * TB Mega Menu module file.
+ */
+
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Serialization\Json;
+use Drupal\tb_megamenu\Entity\MegaMenuConfig;
+
+/**
+ * Module Includes.
+ */
+require_once __DIR__ . '/includes/tb_megamenu.theme.inc';
+
+/**
+ * Implements hook_help().
+ */
+function tb_megamenu_help($route_name, RouteMatchInterface $route_match): string {
+  $output = '';
+  if ($route_name == 'help.page.tb_megamenu') {
+    $output .= '<h3>' . t('About') . '</h3>';
+    $output .= '<p>' . t('TB Mega Menu allows you to create a mega menu with an innovative back-end user interface and synchronized with Drupal core menu.') . '</p>';
+    $output .= '<h3>' . t('Uses') . '</h3>';
+    $output .= '<p>' . t('TB Mega Menu is developed following Drupal standards and best practices, and includes the following features:') . '</p>';
+    $output .= '<ul>';
+    $output .= '<li>' . t('Synchronized with Drupal core menu, auto updated if there is any change with Drupal core menu') . '</li>';
+    $output .= '<li>' . t('Responsive ready') . '</li>';
+    $output .= '<li>' . t('Friendly user interface - what you see is what you get') . '</li>';
+    $output .= '<li>' . t('Add custom styles for each element of your mega menu') . '</li>';
+    $output .= '<li>' . t('Multiple built-in CSS3 animated effects') . '</li>';
+    $output .= '<li>' . t('Work independently with themes') . '</li>';
+    $output .= '</ul>';
+  }
+
+  return $output;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tb_megamenu_theme($existing, $type, $theme, $path): array {
+  $items['tb_megamenu'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'content' => NULL,
+      'section' => 'frontend',
+      'block_theme' => \Drupal::config('system.theme')->get('default'),
+    ],
+  ];
+  $items['tb_megamenu_nav'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'level' => NULL,
+      'items' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_item'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'item' => NULL,
+      'level' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'submenu' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_submenu'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'parent' => NULL,
+      'level' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_row'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'row' => NULL,
+      'parent' => NULL,
+      'level' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_column'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'col' => NULL,
+      'parent' => NULL,
+      'level' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_block'] = [
+    'variables' => [
+      'block_id' => NULL,
+      'section' => 'frontend',
+      'showblocktitle' => 1,
+    ],
+  ];
+  $items['tb_megamenu_subnav'] = [
+    'variables' => [
+      'menu_name' => NULL,
+      'col' => NULL,
+      'level' => NULL,
+      'items' => NULL,
+      'menu_config' => NULL,
+      'block_config' => NULL,
+      'trail' => NULL,
+      'section' => 'frontend',
+    ],
+  ];
+  $items['tb_megamenu_admin_settings'] = [
+    'render element' => 'form',
+  ];
+  $items['tb_megamenu_backend'] = [
+    'variables' => [
+      'blocks' => NULL,
+      'menu_name' => NULL,
+      'block_theme' => \Drupal::config('system.theme')->get('default'),
+      'menu_content' => NULL,
+    ],
+    'path' => $path . '/templates/backend',
+  ];
+  $items['tb_megamenu_item_toolbox'] = [
+    'variables' => [
+      'fontawesome' => NULL,
+    ],
+    'path' => $path . '/templates/backend',
+  ];
+  $items['tb_megamenu_submenu_toolbox'] = [
+    'variables' => [],
+    'path' => $path . '/templates/backend',
+  ];
+  $items['tb_megamenu_column_toolbox'] = [
+    'variables' => ['blocks_options' => []],
+    'path' => $path . '/templates/backend',
+  ];
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function tb_megamenu_form_menu_edit_form_alter(&$form, &$form_state, $form_id): void {
+  $form['actions']['submit']['#submit'][] = 'tb_megamenu_update_megamenus';
+}
+
+/**
+ * Sync configuration with tb_megamenu when item in menu is updated.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function tb_megamenu_update_megamenus(&$form, FormStateInterface $form_state): void {
+  $menu_name = $form_state->getValue('id');
+  if ($menu_name) {
+    $theme = \Drupal::config('system.theme')->get('default');
+    $menu_builder = \Drupal::service('tb_megamenu.menu_builder');
+    if ($menu_config = $menu_builder->getMenuConfig($menu_name, $theme)) {
+      $menu_tree_parameters = (new MenuTreeParameters)->onlyEnabledLinks();
+      $menu_items = \Drupal::menuTree()->load($menu_name, $menu_tree_parameters);
+      $block_config = $menu_builder->getBlockConfig($menu_name, $theme);
+      $menu_builder->syncConfigAll($menu_items, $menu_config, 'backend');
+      $menu_builder->syncOrderMenus($menu_config);
+
+      $config = MegaMenuConfig::loadMenu($menu_name, $theme);
+      if ($config === NULL) {
+        \Drupal::messenger()->addStatus(t("Cannot create a new config object in save!"));
+        return;
+      }
+
+      if (isset($config->block_config)) {
+        $config->block_config = Json::encode($block_config);
+      }
+      if (isset($config->menu_config)) {
+        $config->menu_config = Json::encode($menu_config);
+      }
+      $config->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ */
+function tb_megamenu_block_view_tb_megamenu_menu_block_alter(array &$build, BlockPluginInterface $block): void {
+  /** @var \Drupal\tb_megamenu\TBMegaMenuBlockPluginInterface $block */
+  $build['#contextual_links']['tb_megamenu_block']['route_parameters'] = [
+    'tb_megamenu' => "{$build['#derivative_plugin_id']}__{$block->getThemeName()}",
+  ];
+  $build['#contextual_links']['menu']['route_parameters'] = [
+    'menu' => $build['#derivative_plugin_id'],
+  ];
+}
+
+/**
+ * Recursively remove menu items without access rights.
+ *
+ * @param array $menu_items
+ *   Menu section to check.
+ */
+function tb_megamenu_check_access(array &$menu_items): void {
+  foreach ($menu_items as $route => &$item) {
+    if ($item->access instanceof AccessResultInterface && !$item->access->isAllowed()) {
+      unset($menu_items[$route]);
+      continue;
+    }
+    if ($item->hasChildren) {
+      tb_megamenu_check_access($item->subtree);
+    }
+  }
+}

@@ -153,7 +153,8 @@ class ScanDirectoryTest extends FileTestBase {
   }
 
   /**
-   * Tests the min_depth option of scanDirectory().
+   * Check that the min_depth options lets us ignore files in the starting
+   * directory.
    *
    * @covers ::scanDirectory
    */

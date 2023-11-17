@@ -31,7 +31,8 @@ class UserCreateTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests user creation and display from the administration interface.
+   * Create a user through the administration interface and ensure that it
+   * displays in the user list.
    */
   public function testUserAdd() {
     $user = $this->drupalCreateUser(['administer users']);

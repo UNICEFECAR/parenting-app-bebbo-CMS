@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Event;
 
 /**
@@ -25,7 +27,7 @@ final class MigrateEvents {
    *
    * @var string
    */
-  const PREPARE_ROW = 'migrate_plus.prepare_row';
+  public const PREPARE_ROW = 'migrate_plus.prepare_row';
 
   /**
    * Name of the event fired when a source item is missing.
@@ -38,6 +40,6 @@ final class MigrateEvents {
    *
    * @see \Drupal\migrate\Event\MigrateRowDeleteEvent
    */
-  const MISSING_SOURCE_ITEM = 'migrate_plus.missing_source_item';
+  public const MISSING_SOURCE_ITEM = 'migrate_plus.missing_source_item';
 
 }

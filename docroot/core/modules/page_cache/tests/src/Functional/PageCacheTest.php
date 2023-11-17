@@ -117,9 +117,8 @@ class PageCacheTest extends BrowserTestBase {
   }
 
   /**
-   * Tests support for different cache items with different request formats.
-   *
-   * The request formats are specified via a query parameter.
+   * Tests support for different cache items with different request formats
+   * specified via a query parameter.
    */
   public function testQueryParameterFormatRequests() {
     $config = $this->config('system.performance');

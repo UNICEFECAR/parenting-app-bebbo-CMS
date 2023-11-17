@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\process;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -13,7 +15,7 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\EntityLookup
  * @group migrate_plus
  */
-class EntityLookupTest extends KernelTestBase {
+final class EntityLookupTest extends KernelTestBase {
 
   use UserCreationTrait;
   use NodeCreationTrait;

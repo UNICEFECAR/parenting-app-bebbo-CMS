@@ -87,22 +87,15 @@ namespace Drupal\Tests\ckeditor_media_embed\Unit {
      */
     // @codingStandardsIgnoreLine
     public function testGetCKEditorVersion() {
-      $library_discovery = $this->getMockBuilder('Drupal\Core\Asset\LibraryDiscovery')
-        ->disableOriginalConstructor()
-        ->setMethods(['getLibraryByName'])
-        ->getMock();
+      $library_discovery = $this->createMock('Drupal\Core\Asset\LibraryDiscovery');
 
-      $config_empty = $this->getMockBuilder('\Drupal\Core\Config\ImmutableConfig')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_empty = $this->createMock('\Drupal\Core\Config\ImmutableConfig');
       $config_empty->expects($this->exactly(2))
         ->method('get')
         ->with('ckeditor_version')
         ->willReturn('');
 
-      $config_factory = $this->getMockBuilder('\Drupal\Core\Config\ConfigFactory')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_factory = $this->createMock('\Drupal\Core\Config\ConfigFactory');
       $config_factory->expects($this->exactly(2))
         ->method('get')
         ->with('ckeditor_media_embed.settings')
@@ -126,17 +119,13 @@ namespace Drupal\Tests\ckeditor_media_embed\Unit {
       $this->assertSame('x.x.x', AssetManager::getCKEditorVersion($library_discovery, $config_factory, $test_library_path, $test_extension), 'The version that should be retrieved is x.x.x');
 
       // Test with a config file that has ckeditor_version set.
-      $config_set = $this->getMockBuilder('\Drupal\Core\Config\ImmutableConfig')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_set = $this->createMock('\Drupal\Core\Config\ImmutableConfig');
       $config_set->expects($this->once())
         ->method('get')
         ->with('ckeditor_version')
         ->willReturn('4.5.0');
 
-      $config_factory = $this->getMockBuilder('\Drupal\Core\Config\ConfigFactory')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_factory = $this->createMock('\Drupal\Core\Config\ConfigFactory');
       $config_factory->expects($this->once())
         ->method('get')
         ->with('ckeditor_media_embed.settings')
@@ -149,17 +138,13 @@ namespace Drupal\Tests\ckeditor_media_embed\Unit {
      * Tests \Drupal\ckeditor_media_embed\AssetManager::getPluginsInstalledVersion()(<version>).
      */
     public function testGetPluginsInstalledVersion() {
-      $config_set = $this->getMockBuilder('\Drupal\Core\Config\ImmutableConfig')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_set = $this->createMock('\Drupal\Core\Config\ImmutableConfig');
       $config_set->expects($this->once())
         ->method('get')
         ->with('plugins_version_installed')
         ->willReturn('4.5.0');
 
-      $config_factory = $this->getMockBuilder('\Drupal\Core\Config\ConfigFactory')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_factory = $this->createMock('\Drupal\Core\Config\ConfigFactory');
       $config_factory->expects($this->once())
         ->method('get')
         ->with('ckeditor_media_embed.settings')
@@ -177,21 +162,14 @@ namespace Drupal\Tests\ckeditor_media_embed\Unit {
       $test_extension = 'test.core';
 
       // Retrieve the version from the CKEditor plugins.
-      $library_discovery = $this->getMockBuilder('Drupal\Core\Asset\LibraryDiscovery')
-        ->disableOriginalConstructor()
-        ->setMethods(['getLibraryByName'])
-        ->getMock();
-      $config_set = $this->getMockBuilder('\Drupal\Core\Config\ImmutableConfig')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $library_discovery = $this->createMock('Drupal\Core\Asset\LibraryDiscovery');
+      $config_set = $this->createMock('\Drupal\Core\Config\ImmutableConfig');
       $config_set->expects($this->once())
         ->method('get')
         ->with('plugins_version_installed')
         ->willReturn('x.x.x');
 
-      $config_factory = $this->getMockBuilder('\Drupal\Core\Config\ConfigFactory')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_factory = $this->createMock('\Drupal\Core\Config\ConfigFactory');
       $config_factory->expects($this->once())
         ->method('get')
         ->with('ckeditor_media_embed.settings')
@@ -205,16 +183,12 @@ namespace Drupal\Tests\ckeditor_media_embed\Unit {
       ['ckeditor_version', '4.5.0'],
       ];
 
-      $config_set = $this->getMockBuilder('\Drupal\Core\Config\ImmutableConfig')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_set = $this->createMock('\Drupal\Core\Config\ImmutableConfig');
       $config_set->expects($this->exactly(2))
         ->method('get')
         ->will($this->returnValueMap($value_map));
 
-      $config_factory = $this->getMockBuilder('\Drupal\Core\Config\ConfigFactory')
-        ->disableOriginalConstructor()
-        ->getMock();
+      $config_factory = $this->createMock('\Drupal\Core\Config\ConfigFactory');
       $config_factory->expects($this->exactly(2))
         ->method('get')
         ->with('ckeditor_media_embed.settings')

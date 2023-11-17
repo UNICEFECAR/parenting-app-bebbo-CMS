@@ -25,11 +25,8 @@ class SessionTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests session writing and regeneration.
-   *
-   * @covers \Drupal\Core\Session\WriteSafeSessionHandler::setSessionWritable
-   * @covers \Drupal\Core\Session\WriteSafeSessionHandler::isSessionWritable
-   * @covers \Drupal\Core\Session\SessionManager::regenerate
+   * Tests for \Drupal\Core\Session\WriteSafeSessionHandler::setSessionWritable()
+   * ::isSessionWritable and \Drupal\Core\Session\SessionManager::regenerate().
    */
   public function testSessionSaveRegenerate() {
     $session_handler = $this->container->get('session_handler.write_safe');
@@ -88,7 +85,7 @@ class SessionTest extends BrowserTestBase {
   public function testDataPersistence() {
     $user = $this->drupalCreateUser([]);
     // Enable sessions.
-    $this->sessionReset($user->id());
+    $this->sessionReset();
 
     $this->drupalLogin($user);
 
@@ -154,7 +151,7 @@ class SessionTest extends BrowserTestBase {
 
     // Login, the data should persist.
     $this->drupalLogin($user);
-    $this->sessionReset($user->id());
+    $this->sessionReset();
     // Verify that the session persists for an authenticated user after
     // logging out and then back in.
     $this->drupalGet('session-test/get');
@@ -162,7 +159,7 @@ class SessionTest extends BrowserTestBase {
 
     // Change session and create another user.
     $user2 = $this->drupalCreateUser([]);
-    $this->sessionReset($user2->id());
+    $this->sessionReset();
     $this->drupalLogin($user2);
   }
 
@@ -372,7 +369,7 @@ class SessionTest extends BrowserTestBase {
   }
 
   /**
-   * Assert whether the SimpleTest browser sent a session cookie.
+   * Assert whether the test browser sent a session cookie.
    *
    * @internal
    */

@@ -48,7 +48,6 @@ namespace Drupal\Tests\migrate_upgrade\Kernel {
       ]);
       self::$modules = array_diff(self::$modules, ['block_place']);
       parent::setUp();
-      $this->installSchema('system', ['key_value', 'key_value_expire']);
       $this->installConfig(self::$modules);
       $this->installEntitySchema('migration_group');
       $this->installEntitySchema('migration');

@@ -128,13 +128,12 @@ class Combine extends StringFilter {
   }
 
   /**
-   * {@inheritdoc}
+   * By default things like opEqual uses add_where, that doesn't support
+   * complex expressions, so override opEqual (and all operators below).
    */
   public function opEqual($expression) {
-    // By default, things like opEqual uses add_where, that doesn't support
-    // complex expressions, so override opEqual (and all operators below).
     $placeholder = $this->placeholder();
-    $operator = $this->getConditionOperator($this->operator());
+    $operator = $this->getConditionOperator('LIKE');
     $this->query->addWhereExpression($this->options['group'], "$expression $operator $placeholder", [$placeholder => $this->value]);
   }
 

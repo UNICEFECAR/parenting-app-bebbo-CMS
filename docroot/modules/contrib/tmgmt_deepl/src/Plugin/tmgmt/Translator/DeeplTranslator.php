@@ -4,6 +4,7 @@ namespace Drupal\tmgmt_deepl\Plugin\tmgmt\Translator;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Queue\QueueInterface;
 use Drupal\tmgmt\ContinuousTranslatorInterface;
 use Drupal\tmgmt\Data;
 use Drupal\tmgmt\Entity\Job;
@@ -58,12 +59,28 @@ abstract class DeeplTranslator extends TranslatorPluginBase implements Container
   protected Data $tmgmtData;
 
   /**
+   * The queue object.
+   *
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected QueueInterface $queue;
+
+  /**
+   * If the process is being run via cron or not.
+   *
+   * @var bool|null
+   */
+  protected ?bool $isCron;
+
+  /**
    * Constructs a DeeplProTranslator object.
    *
    * @param \GuzzleHttp\ClientInterface $client
    *   The Guzzle HTTP client.
    * @param \Drupal\tmgmt\Data $tmgmt_data
    *   The Guzzle HTTP client.
+   * @param \Drupal\Core\Queue\QueueInterface $queue
+   *   The queue object.
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
@@ -71,10 +88,12 @@ abstract class DeeplTranslator extends TranslatorPluginBase implements Container
    * @param array $plugin_definition
    *   The plugin implementation definition.
    */
-  public function __construct(ClientInterface $client, Data $tmgmt_data, array $configuration, string $plugin_id, array $plugin_definition) {
+  public function __construct(ClientInterface $client, Data $tmgmt_data, QueueInterface $queue, array $configuration, string $plugin_id, array $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->client = $client;
     $this->tmgmtData = $tmgmt_data;
+    $this->queue = $queue;
+    $this->isCron = NULL;
   }
 
   /**
@@ -85,6 +104,7 @@ abstract class DeeplTranslator extends TranslatorPluginBase implements Container
     return new static(
       $container->get('http_client'),
       $container->get('tmgmt.data'),
+      $container->get('queue')->get('deepl_translate_worker', TRUE),
       $configuration,
       $plugin_id,
       $plugin_definition
@@ -390,31 +410,43 @@ abstract class DeeplTranslator extends TranslatorPluginBase implements Container
           $keys_sequence[] = $key;
         }
 
-        $operations = [];
-        $batch = [
-          'title' => 'Translating job items',
-          'finished' => [DeeplTranslator::class, 'batchFinished'],
-        ];
-
-        // Split $q into chunks of self::qChunkSize.
-        foreach (array_chunk($q, $this->qChunkSize) as $_q) {
-          // Build operations array.
-          $arg_array = [$job, $_q, $translation, $keys_sequence];
-          $operations[] = [
-            '\Drupal\tmgmt_deepl\Plugin\tmgmt\Translator\DeeplTranslator::batchRequestTranslation',
-            $arg_array,
-          ];
+        // Use the Queue Worker if running via tmgmt_cron.
+        if ($this->isCron()) {
+          $this->queue->createItem([
+            'job' => $job,
+            'job_item' => $job_item,
+            'q' => $q,
+            'translation' => $translation,
+            'keys_sequence' => $keys_sequence,
+          ]);
         }
+        else {
+          $operations = [];
+          $batch = [
+            'title' => 'Translating job items',
+            'finished' => [DeeplTranslator::class, 'batchFinished'],
+          ];
 
-        // Add beforeBatchFinished operation.
-        $arg2_array = [$job_item];
-        $operations[] = [
-          '\Drupal\tmgmt_deepl\Plugin\tmgmt\Translator\DeeplTranslator::beforeBatchFinished',
-          $arg2_array,
-        ];
-        // Set batch operations.
-        $batch['operations'] = $operations;
-        batch_set($batch);
+          // Split $q into chunks of self::qChunkSize.
+          foreach (array_chunk($q, $this->qChunkSize) as $_q) {
+            // Build operations array.
+            $arg_array = [$job, $_q, $translation, $keys_sequence];
+            $operations[] = [
+              '\Drupal\tmgmt_deepl\Plugin\tmgmt\Translator\DeeplTranslator::batchRequestTranslation',
+              $arg_array,
+            ];
+          }
+
+          // Add beforeBatchFinished operation.
+          $arg2_array = [$job_item];
+          $operations[] = [
+            '\Drupal\tmgmt_deepl\Plugin\tmgmt\Translator\DeeplTranslator::beforeBatchFinished',
+            $arg2_array,
+          ];
+          // Set batch operations.
+          $batch['operations'] = $operations;
+          batch_set($batch);
+        }
       }
     }
   }
@@ -540,4 +572,25 @@ abstract class DeeplTranslator extends TranslatorPluginBase implements Container
     return $return;
   }
 
+  /**
+   * Determine whether the process is being run via TMGMT cron.
+   *
+   * @param  int $backtrace_limit
+   *   The amount of items to limit in the backtrace.
+   *
+   * @return bool
+   */
+  protected function isCron(int $backtrace_limit = 3): bool {
+    if (!is_null($this->isCron)) {
+      return $this->isCron;
+    }
+    $this->isCron = FALSE;
+    foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, $backtrace_limit) as $item) {
+      if ($item['function'] === 'tmgmt_cron') {
+        $this->isCron = TRUE;
+        break;
+      }
+    }
+    return $this->isCron;
+  }
 }

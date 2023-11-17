@@ -153,14 +153,7 @@ class MigrateUpgradeDrushRunner {
     else {
       $db_url = $this->options['legacy-db-url'];
       $db_prefix = $this->options['legacy-db-prefix'];
-      // Maintain some simple BC with Drush 8. Only call Drush 9+ if it exists.
-      // Otherwise fallback to the legacy Drush 8 method.
-      if (method_exists(SqlBase::class, 'dbSpecFromDBUrl')) {
-        $db_spec = SqlBase::dbSpecFromDbUrl($db_url);
-      }
-      else {
-        $db_spec = drush_convert_db_from_db_url($db_url);
-      }
+      $db_spec = SqlBase::dbSpecFromDbUrl($db_url);
       $db_spec['prefix'] = $db_prefix;
       $connection = $this->getConnection($db_spec);
       $this->version = $this->getLegacyDrupalVersion($connection);
@@ -171,6 +164,9 @@ class MigrateUpgradeDrushRunner {
     $migrations = $this->getMigrations($this->databaseStateKey, $this->version);
     $this->migrationList = [];
     foreach ($migrations as $migration) {
+      if (strpos($migration->id(), $this->options['migration-prefix']) === 0) {
+        continue;
+      }
       $this->applyFilePath($migration);
       $this->prefixFileMigration($migration);
       $this->migrationList[$migration->id()] = $migration;
@@ -226,7 +222,7 @@ class MigrateUpgradeDrushRunner {
         [get_class(), 'onIdMapMessage']);
     }
     foreach ($this->migrationList as $migration_id => $migration) {
-      $this->logger->log('ok', dt('Upgrading @migration', ['@migration' => $migration_id]));
+      $this->logger->log('notice', dt('Upgrading @migration', ['@migration' => $migration_id]));
       $executable = new MigrateExecutable($migration, static::$messages);
       // drush_op() provides --simulate support.
       drush_op([$executable, 'import']);
@@ -438,7 +434,7 @@ class MigrateUpgradeDrushRunner {
     $this->migrationList = array_reverse($migrations);
 
     foreach ($migrations as $migration) {
-      $this->logger->log('ok', dt('Rolling back @migration', ['@migration' => $migration->id()]));
+      $this->logger->log('notice', dt('Rolling back @migration', ['@migration' => $migration->id()]));
       $executable = new MigrateExecutable($migration, static::$messages);
       // drush_op() provides --simulate support.
       drush_op([$executable, 'rollback']);

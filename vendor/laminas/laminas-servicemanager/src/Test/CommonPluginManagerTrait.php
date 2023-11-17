@@ -8,7 +8,6 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use ReflectionClass;
 use ReflectionProperty;
-use stdClass;
 
 use function method_exists;
 
@@ -25,6 +24,7 @@ trait CommonPluginManagerTrait
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
+        $reflection->setAccessible(true);
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
     }
 
@@ -36,9 +36,11 @@ trait CommonPluginManagerTrait
 
         foreach ($reflection->getProperties() as $prop) {
             if ($prop->getName() === 'shareByDefault') {
+                $prop->setAccessible(true);
                 $shareByDefault = $prop->getValue($manager);
             }
             if ($prop->getName() === 'sharedByDefault') {
+                $prop->setAccessible(true);
                 $sharedByDefault = $prop->getValue($manager);
             }
         }
@@ -59,7 +61,7 @@ trait CommonPluginManagerTrait
     public function testLoadingInvalidElementRaisesException()
     {
         $manager = $this->getPluginManager();
-        $manager->setInvokableClass('test', stdClass::class);
+        $manager->setInvokableClass('test', static::class);
         $this->expectException($this->getServiceNotFoundException());
         $manager->get('test');
     }
@@ -77,11 +79,12 @@ trait CommonPluginManagerTrait
     /**
      * @return array
      */
-    public static function aliasProvider(): array
+    public function aliasProvider()
     {
-        $manager    = self::getPluginManager();
+        $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'aliases');
-        $data       = [];
+        $reflection->setAccessible(true);
+        $data = [];
         foreach ($reflection->getValue($manager) as $alias => $expected) {
             $data[] = [$alias, $expected];
         }
@@ -102,7 +105,7 @@ trait CommonPluginManagerTrait
      *
      * @return AbstractPluginManager
      */
-    abstract protected static function getPluginManager();
+    abstract protected function getPluginManager();
 
     /**
      * Returns the FQCN of the exception thrown under v2 by `validatePlugin()`

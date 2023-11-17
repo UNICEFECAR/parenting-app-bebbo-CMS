@@ -4,6 +4,7 @@ namespace Drupal\views;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\HandlerBase;
+use Drupal\views\Plugin\views\ViewsHandlerInterface;
 
 /**
  * This many to one helper object is used on both arguments and filters.
@@ -19,6 +20,20 @@ use Drupal\views\Plugin\views\HandlerBase;
  *            queries.
  */
 class ManyToOneHelper {
+
+  /**
+   * Should the field use formula or alias.
+   *
+   * @see \Drupal\views\Plugin\views\argument\StringArgument::query()
+   *
+   * @var bool
+   */
+  public bool $formula = FALSE;
+
+  /**
+   * The handler.
+   */
+  public ViewsHandlerInterface $handler;
 
   public function __construct($handler) {
     $this->handler = $handler;
@@ -113,10 +128,8 @@ class ManyToOneHelper {
   }
 
   /**
-   * Provides the proper join for summary queries.
-   *
-   * This is important in part because it will cooperate with other arguments if
-   * possible.
+   * Provide the proper join for summary queries. This is important in part because
+   * it will cooperate with other arguments if possible.
    */
   public function summaryJoin() {
     $field = $this->handler->relationship . '_' . $this->handler->table . '.' . $this->handler->field;
@@ -142,7 +155,7 @@ class ManyToOneHelper {
               'field' => $this->handler->realField,
               'operator' => '!=',
               'value' => $value,
-              'numeric' => !empty($this->definition['numeric']),
+              'numeric' => !empty($this->handler->definition['numeric']),
             ],
           ];
         }

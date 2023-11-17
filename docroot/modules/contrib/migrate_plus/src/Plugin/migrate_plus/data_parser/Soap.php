@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_parser;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -19,31 +21,23 @@ class Soap extends DataParserPluginBase implements ContainerFactoryPluginInterfa
 
   /**
    * Iterator over the SOAP data.
-   *
-   * @var \Iterator
    */
-  protected $iterator;
+  protected ?\ArrayIterator $iterator = NULL;
 
   /**
    * Method to call on the SOAP service.
-   *
-   * @var string
    */
-  protected $function;
+  protected string $function;
 
   /**
    * Parameters to pass to the SOAP service function.
-   *
-   * @var array
    */
-  protected $parameters;
+  protected array $parameters;
 
   /**
    * Form of the function response - 'xml', 'object', or 'array'.
-   *
-   * @var string
    */
-  protected $responseType;
+  protected string $responseType;
 
   /**
    * {@inheritdoc}
@@ -69,7 +63,7 @@ class Soap extends DataParserPluginBase implements ContainerFactoryPluginInterfa
    * @throws \Drupal\migrate\MigrateException
    *   If we can't resolve the SOAP function or its response property.
    */
-  protected function openSourceUrl($url) {
+  protected function openSourceUrl($url): bool {
     // Will throw SoapFault if there's an error in a SOAP call.
     $client = new \SoapClient($url);
     // Determine the response property name.
@@ -120,7 +114,7 @@ class Soap extends DataParserPluginBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  protected function fetchNextRow() {
+  protected function fetchNextRow(): void {
     $current = $this->iterator->current();
     if ($current) {
       foreach ($this->fieldSelectors() as $field_name => $selector) {

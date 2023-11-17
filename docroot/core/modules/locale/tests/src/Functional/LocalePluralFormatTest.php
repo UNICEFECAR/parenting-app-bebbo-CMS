@@ -48,7 +48,8 @@ class LocalePluralFormatTest extends BrowserTestBase {
   }
 
   /**
-   * Tests locale_get_plural() and \Drupal::translation()->formatPlural().
+   * Tests locale_get_plural() and \Drupal::translation()->formatPlural()
+   * functionality.
    */
   public function testGetPluralFormat() {
     // Import some .po files with formulas to set up the environment.

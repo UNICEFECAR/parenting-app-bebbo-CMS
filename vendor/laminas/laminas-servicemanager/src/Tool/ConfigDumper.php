@@ -8,7 +8,6 @@ use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
-use ReflectionNamedType;
 use ReflectionParameter;
 use Traversable;
 
@@ -39,11 +38,15 @@ class ConfigDumper
 return %s;
 EOC;
 
-    public function __construct(private ?ContainerInterface $container = null)
+    private ?ContainerInterface $container;
+
+    public function __construct(?ContainerInterface $container = null)
     {
+        $this->container = $container;
     }
 
     /**
+     * @param array $config
      * @param string $className
      * @param bool $ignoreUnresolved
      * @return array
@@ -80,7 +83,7 @@ EOC;
 
         foreach ($constructorArguments as $constructorArgument) {
             $type         = $constructorArgument->getType();
-            $argumentType = $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
+            $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
             if ($argumentType === null) {
                 if ($ignoreUnresolved) {
@@ -123,6 +126,7 @@ EOC;
     }
 
     /**
+     * @param array $config
      * @param string $className
      * @return array
      */
@@ -133,6 +137,7 @@ EOC;
     }
 
     /**
+     * @param array $config
      * @return array
      * @throws InvalidArgumentException If ConfigAbstractFactory configuration
      *     value is not an array.
@@ -158,6 +163,7 @@ EOC;
     }
 
     /**
+     * @param array $config
      * @param string $className
      * @return array
      */
@@ -178,6 +184,7 @@ EOC;
     }
 
     /**
+     * @param array $config
      * @return string
      */
     public function dumpConfigFile(array $config)
@@ -237,10 +244,11 @@ EOC;
     }
 
     /**
+     * @param mixed $value
      * @param int $indentLevel
      * @return string
      */
-    private function createConfigValue(mixed $value, $indentLevel)
+    private function createConfigValue($value, $indentLevel)
     {
         if (is_array($value) || $value instanceof Traversable) {
             return $this->prepareConfig($value, $indentLevel + 1);

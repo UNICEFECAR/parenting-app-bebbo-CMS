@@ -227,7 +227,7 @@ abstract class LinkBase extends FieldPluginBase {
   /**
    * Returns the default label for this link.
    *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   * @return string
    *   The default link label.
    */
   protected function getDefaultLabel() {

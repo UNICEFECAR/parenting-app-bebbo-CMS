@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_example\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 
 /**
@@ -11,12 +14,12 @@ use Drupal\migrate\Plugin\migrate\source\SqlBase;
  *   id = "beer_comment"
  * )
  */
-class BeerComment extends SqlBase {
+final class BeerComment extends SqlBase {
 
   /**
    * {@inheritdoc}
    */
-  public function query() {
+  public function query(): SelectInterface {
     $fields = [
       'cid',
       'cid_parent',
@@ -27,17 +30,16 @@ class BeerComment extends SqlBase {
       'bid',
       'subject',
     ];
-    $query = $this->select('migrate_example_beer_comment', 'mec')
+    return $this->select('migrate_example_beer_comment', 'mec')
       ->fields('mec', $fields)
       ->orderBy('cid_parent', 'ASC');
-    return $query;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    $fields = [
+  public function fields(): array {
+    return [
       'cid' => $this->t('Comment ID'),
       'cid_parent' => $this->t('Parent comment ID in case of comment replies'),
       'name' => $this->t('Comment name (if anon)'),
@@ -46,14 +48,12 @@ class BeerComment extends SqlBase {
       'bid' => $this->t('Beer ID that is being commented upon'),
       'subject' => $this->t('Comment subject'),
     ];
-
-    return $fields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     return [
       'cid' => [
         'type' => 'integer',

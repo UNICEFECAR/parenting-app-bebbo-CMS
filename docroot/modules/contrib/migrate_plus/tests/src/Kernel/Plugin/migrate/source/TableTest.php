@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\source;
 
 use Drupal\migrate\Exception\RequirementsException;
@@ -12,7 +14,7 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
  *
  * @group migrate_plus
  */
-class TableTest extends MigrateDrupal7TestBase {
+final class TableTest extends MigrateDrupal7TestBase {
 
   /**
    * {@inheritdoc}
@@ -28,10 +30,8 @@ class TableTest extends MigrateDrupal7TestBase {
 
   /**
    * Definition of a test migration.
-   *
-   * @var array
    */
-  protected $migrationDefinition;
+  protected ?array $migrationDefinition;
 
   /**
    * {@inheritdoc}
@@ -72,7 +72,7 @@ class TableTest extends MigrateDrupal7TestBase {
    *
    * @dataProvider badConfigurationProvider
    */
-  public function testTableBadConfiguration($configuration, $message): void {
+  public function testTableBadConfiguration($configuration, string $message): void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
     $configuration['plugin'] = 'table';
@@ -84,10 +84,9 @@ class TableTest extends MigrateDrupal7TestBase {
   /**
    * Data provider with invalid plugin configurations.
    *
-   * @return array
    *   Plugin configurations and messages.
    */
-  public function badConfigurationProvider() {
+  public function badConfigurationProvider(): array {
     return [
       'Missing table_name' => [
         [],

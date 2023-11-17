@@ -40,7 +40,7 @@ class ViewsForm implements FormInterface, ContainerInjectionInterface {
   protected $requestStack;
 
   /**
-   * The URL generator to generate the form action.
+   * The url generator to generate the form action.
    *
    * @var \Drupal\Core\Routing\UrlGeneratorInterface
    */

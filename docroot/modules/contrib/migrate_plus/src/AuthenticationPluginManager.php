@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus;
 
+use Drupal\migrate_plus\Annotation\Authentication;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -28,7 +31,7 @@ class AuthenticationPluginManager extends DefaultPluginManager {
    *   The module handler to invoke the alter hook with.
    */
   public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
-    parent::__construct('Plugin/migrate_plus/authentication', $namespaces, $module_handler, 'Drupal\migrate_plus\AuthenticationPluginInterface', 'Drupal\migrate_plus\Annotation\Authentication');
+    parent::__construct('Plugin/migrate_plus/authentication', $namespaces, $module_handler, AuthenticationPluginInterface::class, Authentication::class);
 
     $this->alterInfo('authentication_info');
     $this->setCacheBackend($cache_backend, 'migrate_plus_plugins_authentication');

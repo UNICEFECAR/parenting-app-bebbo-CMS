@@ -69,24 +69,6 @@ class QueryParameterTest extends UnitTestCase {
       'blub',
     ];
 
-    $data[] = [
-      ['query_param' => 'test[tier1][tier2][tier3]'],
-      new Request(['test' => ['tier1' => ['tier2' => ['tier3' => 'foo']]]]),
-      'foo',
-    ];
-
-    $data[] = [
-      ['query_param' => 'test[tier1][tier2]'],
-      new Request(['test' => ['tier1' => ['tier2' => ['foo', 'bar']]]]),
-      'foo,bar',
-    ];
-
-    $data[] = [
-      ['query_param' => 'test[tier1][tier2]'],
-      new Request(['test' => 'foo']),
-      NULL,
-    ];
-
     return $data;
   }
 

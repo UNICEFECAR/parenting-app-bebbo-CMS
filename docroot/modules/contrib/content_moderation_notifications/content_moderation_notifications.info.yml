@@ -11,7 +11,7 @@ dependencies:
 test_dependencies:
   - drupal:token
 
-# Information added by Drupal.org packaging script on 2022-11-08
-version: '8.x-3.5'
+# Information added by Drupal.org packaging script on 2023-09-26
+version: '8.x-3.6'
 project: 'content_moderation_notifications'
-datestamp: 1667948471
+datestamp: 1695747979

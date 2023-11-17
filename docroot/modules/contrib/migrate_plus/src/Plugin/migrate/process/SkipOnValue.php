@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\MigrateSkipRowException;
@@ -93,7 +94,7 @@ class SkipOnValue extends ProcessPluginBase {
    *   Thrown if the source property evaluates to a configured value and the
    *   row should be skipped, records with STATUS_IGNORED status in the map.
    */
-  public function row($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function row($value, MigrateExecutableInterface $migrate_executable, Row $row, string $destination_property) {
     $message = !empty($this->configuration['message']) ? $this->configuration['message'] : '';
 
     if (is_array($this->configuration['value'])) {
@@ -116,8 +117,9 @@ class SkipOnValue extends ProcessPluginBase {
   }
 
   /**
-   * Stops processing the current property when input value evaluates to a
-   * configured value.
+   * Stops processing the current property.
+   *
+   * Stop when input value evaluates to a configured value.
    *
    * @param mixed $value
    *   The input value.
@@ -136,7 +138,7 @@ class SkipOnValue extends ProcessPluginBase {
    *   Thrown if the source property evaluates to a configured value and rest
    *   of the process should be skipped.
    */
-  public function process($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function process($value, MigrateExecutableInterface $migrate_executable, Row $row, string $destination_property) {
     if (is_array($this->configuration['value'])) {
       $value_in_array = FALSE;
       $not_equals = isset($this->configuration['not_equals']);
@@ -166,10 +168,9 @@ class SkipOnValue extends ProcessPluginBase {
    * @param bool $equal
    *   Compare as equal or not equal.
    *
-   * @return bool
    *   True if the compare successfully, FALSE otherwise.
    */
-  protected function compareValue($value, $skipValue, $equal = TRUE) {
+  protected function compareValue($value, $skipValue, bool $equal = TRUE): bool {
     if ($equal) {
       return (string) $value == (string) $skipValue;
     }

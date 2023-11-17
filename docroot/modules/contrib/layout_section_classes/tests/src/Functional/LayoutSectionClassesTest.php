@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\layout_section_classes\Functional;
 
+use Drupal\Core\Form\FormState;
+use Drupal\layout_builder\LayoutEntityHelperTrait;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_section_classes_test\NewTestClassyLayout;
@@ -15,6 +17,8 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class LayoutSectionClassesTest extends LayoutBuilderCompatibilityTestBase {
 
+  use LayoutEntityHelperTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -27,7 +31,7 @@ class LayoutSectionClassesTest extends LayoutBuilderCompatibilityTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installLayoutBuilder();
     $this->enableOverrides();
@@ -54,6 +58,12 @@ class LayoutSectionClassesTest extends LayoutBuilderCompatibilityTestBase {
     $this->assertCount(1, $crawler->filter('.some-region-classes.a-region-class'));
     // Assert attributes work as expected.
     $this->assertCount(1, $crawler->filter('.background--wave-dark.background--primary-light[data-some-attribute="foo"]'));
+
+    // Check if the default value is an array.
+    $plugin = \Drupal::service('plugin.manager.core.layout')->createInstance('test_layout');
+    $form = $plugin->buildConfigurationForm([], new FormState(), $sections->get(0));
+    $this->assertNotEmpty($form);
+    $this->assertIsArray($form['classes']['style']['#default_value']);
   }
 
   /**

@@ -2,7 +2,12 @@
 
 namespace Drupal\Tests\language\Functional;
 
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationBrowser;
+use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationSelected;
+use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationSession;
+use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationUrl;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -46,15 +51,24 @@ class LanguageNegotiationSessionTest extends BrowserTestBase {
    * Tests language negotiation via query/session parameters.
    */
   public function testSessionLanguageNegotiationMethod() {
-    // Enable Session and Selected language for interface language detection.
     $this->drupalGet('admin/config/regional/language/detection');
-    $edit = [
-      'language_interface[enabled][language-session]' => 1,
-      'language_interface[enabled][language-selected]' => 1,
-      'language_interface[weight][language-session]' => -6,
-      'language_interface[weight][language-selected]' => 12,
-    ];
-    $this->submitForm($edit, 'Save settings');
+
+    // Enable Session and Selected language for interface language detection.
+    $config = $this->config('language.types');
+    $config->set('configurable', [LanguageInterface::TYPE_INTERFACE]);
+    $config->set('negotiation.language_interface.enabled', [
+      LanguageNegotiationSession::METHOD_ID => -6,
+      LanguageNegotiationSelected::METHOD_ID => 12,
+    ]);
+    $config->set('negotiation.language_interface.method_weights', [
+      'language-user-admin' => -10,
+      LanguageNegotiationUrl::METHOD_ID => -8,
+      LanguageNegotiationSession::METHOD_ID => -6,
+      'language-user' => -4,
+      LanguageNegotiationBrowser::METHOD_ID => -2,
+      LanguageNegotiationSelected::METHOD_ID => 12,
+    ]);
+    $config->save();
 
     // Set language via query parameter.
     $this->drupalGet('user/' . $this->adminUser->id(), ['query' => ['language' => 'fr']]);

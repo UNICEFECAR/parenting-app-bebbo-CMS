@@ -36,10 +36,23 @@ security_review.check.*:
       # This way type-strict per-check settings storage can be created.
       type: security_review.check_settings.[%parent.id]
 
-# Setting storage for the Trusted Hosts check.
-security_review.check_settings.security_review-trusted_hosts:
-  type: mapping
+security_review.check_settings.security_review-field:
+  type: config_entity
   mapping:
-    method:
-      type: string
-      label: 'Trusted hosts identification method'
+    known_risky_fields:
+      type: sequence
+      label: 'Hashes'
+
+security_review.check_settings.security_review-views_access:
+  type: config_entity
+  mapping:
+    ignore_default:
+      type: boolean
+      label: 'Ignore default'
+
+security_review.check_settings.security_review-username_same_as_password:
+  type: config_entity
+  mapping:
+    number_of_users:
+      type: integer
+      label: 'Number of users to load'

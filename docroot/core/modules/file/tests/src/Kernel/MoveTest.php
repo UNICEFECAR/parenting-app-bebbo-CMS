@@ -209,7 +209,6 @@ class MoveTest extends FileManagedUnitTestBase {
    */
   public function testInvalidStreamWrapper() {
     $this->expectException(InvalidStreamWrapperException::class);
-    $this->expectExceptionMessage('Invalid stream wrapper: foo://');
     $source = $this->createFile();
     $this->fileRepository->move($source, 'foo://');
   }

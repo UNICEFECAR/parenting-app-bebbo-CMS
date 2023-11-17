@@ -89,7 +89,8 @@ class SessionTestController extends ControllerBase {
   }
 
   /**
-   * Turns off session saving and then tries to save a value anyway.
+   * Turns off session saving and then tries to save a value
+   * anyway.
    *
    * @param string $test_value
    *   A session value.

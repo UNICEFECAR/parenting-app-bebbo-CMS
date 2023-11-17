@@ -1,0 +1,18 @@
+{
+  "name": "drupal/symfony_mailer",
+  "description": "Symfony Mailer",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "html2text/html2text": "^4.0.1",
+    "symfony/mailer": "^5.3 || ^6.0",
+    "tijsverkoyen/css-to-inline-styles": "^2.2"
+  },
+  "extra": {
+    "drush": {
+      "services": {
+        "drush.services.yml": "^11"
+      }
+    }
+  }
+}

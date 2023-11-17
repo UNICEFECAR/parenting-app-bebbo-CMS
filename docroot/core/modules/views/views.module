@@ -12,11 +12,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\views\Plugin\Derivative\ViewsLocalTask;
-use Drupal\views\ViewEntityInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
-use Drupal\views\ViewsConfigUpdater;
 
 /**
  * Implements hook_help().
@@ -198,18 +196,12 @@ function views_theme($existing, $type, $theme, $path) {
         }
       }
 
-      // If there is no theme function for the given theme definition, it must
-      // be a template file. By default this file is located in the /templates
+      // By default any templates for a module are located in the /templates
       // directory of the module's folder. If a module wants to define its own
       // location it has to set register_theme of the plugin to FALSE and
       // implement hook_theme() by itself.
-      if (!function_exists('theme_' . $def['theme'])) {
-        $hooks[$def['theme']]['path'] .= '/templates';
-        $hooks[$def['theme']]['template'] = Html::cleanCssIdentifier($def['theme']);
-      }
-      else {
-        $hooks[$def['theme']]['function'] = 'theme_' . $def['theme'];
-      }
+      $hooks[$def['theme']]['path'] .= '/templates';
+      $hooks[$def['theme']]['template'] = Html::cleanCssIdentifier($def['theme']);
     }
   }
 
@@ -225,7 +217,8 @@ function views_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Allows view-based node templates if called from a view.
+ * A theme preprocess function to automatically allow view-based node
+ * templates if called from a view.
  *
  * The 'modules/node.views.inc' file is a better place for this, but
  * we haven't got a chance to load that file before Drupal builds the
@@ -261,7 +254,8 @@ function views_theme_suggestions_node_alter(array &$suggestions, array $variable
 }
 
 /**
- * Allows view-based comment templates if called from a view.
+ * A theme preprocess function to automatically allow view-based node
+ * templates if called from a view.
  */
 function views_preprocess_comment(&$variables) {
   // The view data is added to the comment in
@@ -289,11 +283,7 @@ function views_theme_suggestions_comment_alter(array &$suggestions, array $varia
  */
 function views_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   if (!empty($variables['element']['#type']) && $variables['element']['#type'] == 'more_link' && !empty($variables['element']['#view']) && $variables['element']['#view'] instanceof ViewExecutable) {
-    $suggestions = array_merge(
-      $suggestions,
-      // Theme suggestions use the reverse order compared to #theme hooks.
-      array_reverse($variables['element']['#view']->buildThemeFunctions('container__more_link'))
-    );
+    $suggestions = array_merge($suggestions, $variables['element']['#view']->buildThemeFunctions('container__more_link'));
   }
 }
 
@@ -824,13 +814,4 @@ function views_view_delete(EntityInterface $entity) {
       break;
     }
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */
-function views_view_presave(ViewEntityInterface $view) {
-  /** @var \Drupal\views\ViewsConfigUpdater $config_updater */
-  $config_updater = \Drupal::classResolver(ViewsConfigUpdater::class);
-  $config_updater->updateAll($view);
 }

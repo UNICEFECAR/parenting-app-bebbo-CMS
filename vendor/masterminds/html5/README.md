@@ -189,7 +189,7 @@ issues known issues that are not presently on the roadmap:
 - Scripts: This parser does not contain a JavaScript or a CSS
   interpreter. While one may be supplied, not all features will be
   supported.
-- Reentrance: The current parser is not re-entrant. (Thus you can't pause
+- Rentrance: The current parser is not re-entrant. (Thus you can't pause
   the parser to modify the HTML string mid-parse.)
 - Validation: The current tree builder is **not** a validating parser.
   While it will correct some HTML, it does not check that the HTML

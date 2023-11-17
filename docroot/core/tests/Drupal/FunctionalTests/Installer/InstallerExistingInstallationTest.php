@@ -15,7 +15,8 @@ class InstallerExistingInstallationTest extends InstallerTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Tests that Drupal fails to install when there is an existing installation.
+   * Verifies that Drupal can't be reinstalled while an existing installation is
+   * available.
    */
   public function testInstaller() {
     // Verify that Drupal can't be immediately reinstalled.

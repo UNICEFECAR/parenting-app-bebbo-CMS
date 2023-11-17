@@ -19,11 +19,13 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 use function array_intersect;
 use function array_key_exists;
 use function array_keys;
 use function class_exists;
+use function get_class;
 use function gettype;
 use function in_array;
 use function is_callable;
@@ -53,49 +55,16 @@ use const E_USER_DEPRECATED;
  *
  * @see ConfigInterface
  *
- * @psalm-type AbstractFactoriesConfiguration = array<
- *      array-key,
- *      (class-string<Factory\AbstractFactoryInterface>|Factory\AbstractFactoryInterface)
- * >
- * @psalm-type DelegatorsConfiguration = array<
- *      string,
- *      array<
- *          array-key,
- *          (class-string<Factory\DelegatorFactoryInterface>|Factory\DelegatorFactoryInterface)
- *          |callable(ContainerInterface,string,callable():object,array<mixed>|null):object
- *      >
- * >
- * @psalm-type FactoriesConfiguration = array<
- *      string,
- *      (class-string<Factory\FactoryInterface>|Factory\FactoryInterface)
- *      |callable(ContainerInterface,?string,?array<mixed>|null):object
- * >
- * @psalm-type InitializersConfiguration = array<
- *      array-key,
- *      (class-string<Initializer\InitializerInterface>|Initializer\InitializerInterface)
- *      |callable(ContainerInterface,object):void
- * >
- * @psalm-type LazyServicesConfiguration = array{
- *      class_map?:array<string,class-string>,
- *      proxies_namespace?:non-empty-string,
- *      proxies_target_dir?:non-empty-string,
- *      write_proxy_files?:bool
- * }
- * @psalm-type ServiceManagerConfiguration = array{
- *     abstract_factories?: AbstractFactoriesConfiguration,
- *     aliases?: array<string,string>,
- *     delegators?: DelegatorsConfiguration,
- *     factories?: FactoriesConfiguration,
- *     initializers?: InitializersConfiguration,
- *     invokables?: array<string,string>,
- *     lazy_services?: LazyServicesConfiguration,
- *     services?: array<string,object|array>,
- *     shared?:array<string,bool>,
- *     shared_by_default?:bool,
- *     ...
- * }
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type AbstractFactoriesConfigurationType from ConfigInterface
+ * @psalm-import-type DelegatorsConfigurationType from ConfigInterface
+ * @psalm-import-type FactoriesConfigurationType from ConfigInterface
+ * @psalm-import-type InitializersConfigurationType from ConfigInterface
+ * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
+ * @psalm-type ServiceManagerConfiguration = array{shared_by_default?:bool}&ServiceManagerConfigurationType
+ * phpcs:disable WebimpressCodingStandard.PHP.CorrectClassNameCase.Invalid
  */
-class ServiceManager implements ServiceLocatorInterface
+class ServiceManager extends AbstractContainerImplementation implements ServiceLocatorInterface
 {
     /** @var Factory\AbstractFactoryInterface[] */
     protected $abstractFactories = [];
@@ -121,7 +90,7 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * @var string[][]|Factory\DelegatorFactoryInterface[][]
-     * @psalm-var DelegatorsConfiguration
+     * @psalm-var DelegatorsConfigurationType
      */
     protected $delegators = [];
 
@@ -129,19 +98,19 @@ class ServiceManager implements ServiceLocatorInterface
      * A list of factories (either as string name or callable)
      *
      * @var string[]|callable[]
-     * @psalm-var FactoriesConfiguration
+     * @psalm-var FactoriesConfigurationType
      */
     protected $factories = [];
 
     /**
      * @var Initializer\InitializerInterface[]|callable[]
-     * @psalm-var InitializersConfiguration
+     * @psalm-var InitializersConfigurationType
      */
     protected $initializers = [];
 
     /**
      * @var array
-     * @psalm-var LazyServicesConfiguration
+     * @psalm-var LazyServicesConfigurationType
      */
     protected $lazyServices = [];
 
@@ -191,6 +160,7 @@ class ServiceManager implements ServiceLocatorInterface
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details
      * on what $config accepts.
      *
+     * @param array $config
      * @psalm-param ServiceManagerConfiguration $config
      */
     public function __construct(array $config = [])
@@ -218,8 +188,26 @@ class ServiceManager implements ServiceLocatorInterface
         return $this->creationContext;
     }
 
-    /** {@inheritDoc} */
-    public function get($name)
+    /**
+     * @internal
+     *
+     * @psalm-param string|class-string $name
+     */
+    protected function hasService(string $name): bool
+    {
+        // Check static services and factories first to speedup the most common requests.
+        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
+    }
+
+    /**
+     * @internal
+     *
+     * @psalm-param string|class-string $name
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @return mixed
+     */
+    protected function getService(string $name)
     {
         // We start by checking if we have cached the requested service;
         // this is the fastest method.
@@ -277,24 +265,14 @@ class ServiceManager implements ServiceLocatorInterface
         return $object;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public function build($name, ?array $options = null)
     {
         // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
         return $this->doCreate($name, $options);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param string|class-string $name
-     * @return bool
-     */
-    public function has($name)
-    {
-        // Check static services and factories first to speedup the most common requests.
-        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
     }
 
     /**
@@ -318,6 +296,7 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
+     * @param  array $config
      * @psalm-param ServiceManagerConfiguration $config
      * @return self
      * @throws ContainerModificationsNotAllowedException If the allow
@@ -534,7 +513,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Instantiate initializers for to avoid checks during service construction.
      *
-     * @psalm-param InitializersConfiguration $initializers
+     * @psalm-param InitializersConfigurationType $initializers
      */
     private function resolveInitializers(array $initializers): void
     {
@@ -711,8 +690,8 @@ class ServiceManager implements ServiceLocatorInterface
      * It works with strings and class instances.
      * It's not possible to de-duple anonymous functions
      *
-     * @psalm-param DelegatorsConfiguration $config
-     * @psalm-return DelegatorsConfiguration
+     * @psalm-param DelegatorsConfigurationType $config
+     * @psalm-return DelegatorsConfigurationType
      */
     private function mergeDelegators(array $config): array
     {
@@ -767,7 +746,7 @@ class ServiceManager implements ServiceLocatorInterface
      * a given service name we do not have a service instance
      * in the cache OR override is explicitly allowed.
      *
-     * @psalm-param ServiceManagerConfiguration $config
+     * @psalm-param ServiceManagerConfigurationType $config
      * @throws ContainerModificationsNotAllowedException If any
      *     service key is invalid.
      */
@@ -1003,7 +982,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
         throw new ServiceNotCreatedException(sprintf(
             'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
-            is_object($delegatorFactory) ? $delegatorFactory::class : gettype($delegatorFactory),
+            is_object($delegatorFactory) ? get_class($delegatorFactory) : gettype($delegatorFactory),
             DelegatorFactoryInterface::class
         ));
     }

@@ -3,7 +3,8 @@
 namespace Drupal\Tests\comment\Functional;
 
 /**
- * Tests that appropriate and accessible markup is created for comment titles.
+ * Tests to ensure that appropriate and accessible markup is created for comment
+ * titles.
  *
  * @group comment
  */
@@ -92,7 +93,7 @@ class CommentTitleTest extends CommentTestBase {
     // Tests that the comment's title link is the permalink of the comment.
     $comment_permalink = $this->cssSelect('.permalink');
     $comment_permalink = $comment_permalink[0]->getAttribute('href');
-    // Tests that the comment's title link contains the URL fragment.
+    // Tests that the comment's title link contains the url fragment.
     $this->assertStringContainsString('#comment-' . $comment1->id(), $comment_permalink, "The comment's title link contains the url fragment.");
     $this->assertEquals($comment1->permalink()->toString(), $comment_permalink, "The comment's title has the correct link.");
   }

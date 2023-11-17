@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_parser;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -17,10 +19,8 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
 
   /**
    * Iterator over the JSON data.
-   *
-   * @var \Iterator
    */
-  protected $iterator;
+  protected ?\ArrayIterator $iterator = NULL;
 
   /**
    * Retrieves the JSON data and returns it as an array.
@@ -28,22 +28,19 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
    * @param string $url
    *   URL of a JSON feed.
    *
-   * @return array
-   *   The selected data to be iterated.
-   *
    * @throws \GuzzleHttp\Exception\RequestException
    */
-  protected function getSourceData($url) {
+  protected function getSourceData(string $url): array {
     $response = $this->getDataFetcherPlugin()->getResponseContent($url);
 
     // Convert objects to associative arrays.
-    $source_data = json_decode($response, TRUE);
+    $source_data = json_decode($response, TRUE, 512, JSON_THROW_ON_ERROR);
 
     // If json_decode() has returned NULL, it might be that the data isn't
     // valid utf8 - see http://php.net/manual/en/function.json-decode.php#86997.
     if (is_null($source_data)) {
       $utf8response = utf8_encode($response);
-      $source_data = json_decode($utf8response, TRUE);
+      $source_data = json_decode($utf8response, TRUE, 512, JSON_THROW_ON_ERROR);
     }
 
     // Backwards-compatibility for depth selection.
@@ -52,9 +49,9 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
     }
 
     // Otherwise, we're using xpath-like selectors.
-    $selectors = explode('/', trim($this->itemSelector, '/'));
+    $selectors = explode('/', trim((string) $this->itemSelector, '/'));
     foreach ($selectors as $selector) {
-      if (!empty($selector) || $selector === '0') {
+      if (is_array($source_data) && array_key_exists($selector, $source_data)) {
         $source_data = $source_data[$selector];
       }
     }
@@ -67,10 +64,9 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
    * @param array $raw_data
    *   Raw data from the JSON feed.
    *
-   * @return array
    *   Selected items at the requested depth of the JSON feed.
    */
-  protected function selectByDepth(array $raw_data) {
+  protected function selectByDepth(array $raw_data): array {
     // Return the results in a recursive iterator that can traverse
     // multidimensional arrays.
     $iterator = new \RecursiveIteratorIterator(
@@ -95,7 +91,7 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  protected function openSourceUrl($url) {
+  protected function openSourceUrl(string $url): bool {
     // (Re)open the provided URL.
     $source_data = $this->getSourceData($url);
     $this->iterator = new \ArrayIterator($source_data);
@@ -105,12 +101,12 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  protected function fetchNextRow() {
+  protected function fetchNextRow(): void {
     $current = $this->iterator->current();
     if ($current) {
       foreach ($this->fieldSelectors() as $field_name => $selector) {
         $field_data = $current;
-        $field_selectors = explode('/', trim($selector, '/'));
+        $field_selectors = explode('/', trim((string) $selector, '/'));
         foreach ($field_selectors as $field_selector) {
           if (is_array($field_data) && array_key_exists($field_selector, $field_data)) {
             $field_data = $field_data[$field_selector];

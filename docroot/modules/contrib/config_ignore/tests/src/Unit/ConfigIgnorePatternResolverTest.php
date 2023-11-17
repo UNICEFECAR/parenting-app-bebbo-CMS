@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\config_ignore\Unit;
 
-use Drupal\config_ignore\EventSubscriber\ConfigIgnoreEventSubscriber;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
-use Drupal\Core\Config\StorageInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -17,49 +13,6 @@ use Drupal\Tests\UnitTestCase;
  * @group config_ignore
  */
 class ConfigIgnorePatternResolverTest extends UnitTestCase {
-
-  /**
-   * Tests the config ignore pattern resolver with an invalid patterns.
-   *
-   * @param string $pattern
-   *   The pattern to be tested.
-   * @param string $expected_exception_message
-   *   The expected exception message.
-   *
-   * @throws \ReflectionException
-   *   If the class does not exist.
-   *
-   * @covers ::getIgnoredConfigs
-   * @dataProvider dataProviderTestInvalidPattern
-   */
-  public function testInvalidPattern($pattern, $expected_exception_message) {
-    $this->expectException(\LogicException::class);
-    $this->expectExceptionMessage($expected_exception_message);
-    $this->getIgnoredConfigs([$pattern], ['foo.bar']);
-  }
-
-  /**
-   * Provides testing cases for ::testInvalidPattern().
-   *
-   * @return array
-   *   A list of arrays. Each array has two items:
-   *   - The config ignore pattern.
-   *   - The expected exception message.
-   *
-   * @see self::testInvalidPattern()
-   */
-  public function dataProviderTestInvalidPattern() {
-    return [
-      'tilda & asterisk' => [
-        '~foo.bar.*',
-        "A config ignore pattern entry cannot contain both, '~' and '*'.",
-      ],
-      'asterisk in key' => [
-        'foo.bar:key.*',
-        "The key part of the config ignore pattern cannot contain the wildcard character '*'.",
-      ],
-    ];
-  }
 
   /**
    * Tests the config ignore pattern resolver.
@@ -81,6 +34,8 @@ class ConfigIgnorePatternResolverTest extends UnitTestCase {
         'foo.bar.*',
         // Excluding foo.bar.suffix4.
         '~foo.bar.suffix4',
+        // Excluding with a wildcard.
+        '~foo.bar.suffix-*',
         // Prefix wildcard ignore pattern.
         '*.foo.bar',
         // Excluding prefix2.foo.bar.
@@ -91,8 +46,10 @@ class ConfigIgnorePatternResolverTest extends UnitTestCase {
         '~foo.middle1.bar',
         // Ignore pattern with key.
         'foo.baz.qux:path.to.key',
-        // A 2nd key of the same config is appended.
-        'foo.baz.qux:a.second.key',
+        // A 2nd key of the same config is appended and sorted.
+        'foo.baz.qux:a.second.*.key',
+        // A 3rd key of the same config is appended and sorted.
+        '~foo.baz.qux:not.a.*.key',
         // Ignore pattern with key when the same config has been already added.
         'foo.bar:some.key',
         // Ignore pattern with key that will be overwritten later with the same
@@ -108,6 +65,7 @@ class ConfigIgnorePatternResolverTest extends UnitTestCase {
         'foo.bar.suffix2',
         'foo.bar.suffix3',
         'foo.bar.suffix4',
+        'foo.bar.suffix-other',
         'prefix1.foo.bar',
         'prefix2.foo.bar',
         'prefix3.foo.bar',
@@ -120,19 +78,20 @@ class ConfigIgnorePatternResolverTest extends UnitTestCase {
     );
 
     $this->assertSame([
-      'foo.bar' => NULL,
-      'foo.bar.suffix1' => NULL,
-      'foo.bar.suffix2' => NULL,
-      'foo.bar.suffix3' => NULL,
-      'prefix1.foo.bar' => NULL,
-      'prefix3.foo.bar' => NULL,
-      'foo.middle2.bar' => NULL,
-      'foo.middle3.bar' => NULL,
+      'foo.bar' => TRUE,
+      'foo.bar.suffix1' => TRUE,
+      'foo.bar.suffix2' => TRUE,
+      'foo.bar.suffix3' => TRUE,
+      'prefix1.foo.bar' => TRUE,
+      'prefix3.foo.bar' => TRUE,
+      'foo.middle2.bar' => TRUE,
+      'foo.middle3.bar' => TRUE,
       'foo.baz.qux' => [
-        ['path', 'to', 'key'],
-        ['a', 'second', 'key'],
+        '~not.a.*.key',
+        'a.second.*.key',
+        'path.to.key',
       ],
-      'baz.qux' => NULL,
+      'baz.qux' => TRUE,
     ], $ignoredConfigs);
   }
 
@@ -157,28 +116,13 @@ class ConfigIgnorePatternResolverTest extends UnitTestCase {
    * @see \Drupal\config_ignore\EventSubscriber\ConfigIgnoreEventSubscriber::getIgnoredConfigs()
    */
   protected function getIgnoredConfigs(array $ignore_config_patterns, array $all_configs) {
-    $configIgnoreSettings = $this->prophesize(ImmutableConfig::class);
-    $configIgnoreSettings->get('ignored_config_entities')->willReturn($ignore_config_patterns);
+    $config = new ConfigIgnoreConfig('simple', $ignore_config_patterns);
+    $returned = [];
+    foreach ($all_configs as $name) {
+      $returned[$name] = $config->isIgnored('', $name, 'import', 'update');
+    }
 
-    $configFactory = $this->prophesize(ConfigFactoryInterface::class);
-    $configFactory->get('config_ignore.settings')->willReturn($configIgnoreSettings->reveal());
-
-    $transformation_storage = $this->prophesize(StorageInterface::class);
-    $transformation_storage->listAll()->willReturn($all_configs);
-
-    $subscriber = new ConfigIgnoreEventSubscriber(
-      $configFactory->reveal(),
-      $this->prophesize(ModuleHandlerInterface::class)->reveal(),
-      $this->prophesize(StorageInterface::class)->reveal(),
-      $this->prophesize(StorageInterface::class)->reveal()
-    );
-
-    // Make ConfigIgnoreEventSubscriber::getIgnoredConfigs() accessible.
-    $class = new \ReflectionClass($subscriber);
-    $getIgnoredConfigsMethod = $class->getMethod('getIgnoredConfigs');
-    $getIgnoredConfigsMethod->setAccessible(TRUE);
-
-    return $getIgnoredConfigsMethod->invokeArgs($subscriber, [$transformation_storage->reveal()]);
+    return array_filter($returned);
   }
 
 }

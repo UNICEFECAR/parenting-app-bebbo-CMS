@@ -57,19 +57,16 @@ class TitleResolver implements TitleResolverInterface {
       $arguments = $this->argumentResolver->getArguments($request, $callable);
       $route_title = call_user_func_array($callable, $arguments);
     }
-    elseif ($route->hasDefault('_title') && strlen($route->getDefault('_title')) > 0) {
-      $title = $route->getDefault('_title');
+    elseif ($title = $route->getDefault('_title')) {
       $options = [];
-      if ($route->hasDefault('_title_context')) {
-        $options['context'] = $route->getDefault('_title_context');
+      if ($context = $route->getDefault('_title_context')) {
+        $options['context'] = $context;
       }
       $args = [];
       if (($raw_parameters = $request->attributes->get('_raw_variables'))) {
         foreach ($raw_parameters->all() as $key => $value) {
-          if (is_scalar($value)) {
-            $args['@' . $key] = $value;
-            $args['%' . $key] = $value;
-          }
+          $args['@' . $key] = $value ?? '';
+          $args['%' . $key] = $value ?? '';
         }
       }
       if ($title_arguments = $route->getDefault('_title_arguments')) {

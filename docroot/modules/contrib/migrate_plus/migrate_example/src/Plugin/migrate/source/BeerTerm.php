@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_example\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 
 /**
@@ -20,12 +23,12 @@ use Drupal\migrate\Plugin\migrate\source\SqlBase;
  *   id = "beer_term"
  * )
  */
-class BeerTerm extends SqlBase {
+final class BeerTerm extends SqlBase {
 
   /**
    * {@inheritdoc}
    */
-  public function query() {
+  public function query(): SelectInterface {
     // The most important part of a SQL source plugin is the SQL query to
     // retrieve the data to be imported. Note that the query is not executed
     // here - the migration process will control execution of the query. Also
@@ -42,12 +45,12 @@ class BeerTerm extends SqlBase {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
+  public function fields(): array {
     // This method simply documents the available source fields provided by the
     // source plugin, for use by front-end tools. It returns an array keyed by
     // field/column name, with the value being a translated string explaining
     // to humans what the field represents.
-    $fields = [
+    return [
       'style' => $this->t('Beer style'),
       'details' => $this->t('Style details'),
       'style_parent' => $this->t('Parent style'),
@@ -56,14 +59,12 @@ class BeerTerm extends SqlBase {
       'region' => $this->t('Region the style is associated with'),
       'hoppiness' => $this->t('Hoppiness of the style'),
     ];
-
-    return $fields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     // This method indicates what field(s) from the source row uniquely identify
     // that source row, and what their types are. This is critical information
     // for managing the migration. The keys of the returned array are the field

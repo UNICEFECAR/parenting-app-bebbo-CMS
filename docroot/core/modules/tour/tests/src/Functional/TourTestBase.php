@@ -11,7 +11,8 @@ use Drupal\Tests\BrowserTestBase;
 abstract class TourTestBase extends BrowserTestBase {
 
   /**
-   * Asserts the presence of page elements for tour tips.
+   * Assert function to determine if tips rendered to the page
+   * have a corresponding page element.
    *
    * @code
    * // Basic example.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -17,7 +19,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\DomMigrationLookup
  */
-class DomMigrationLookupTest extends MigrateProcessTestCase {
+final class DomMigrationLookupTest extends MigrateProcessTestCase {
 
   /**
    * Example configuration for the dom_migration_lookup process plugin.
@@ -46,14 +48,14 @@ class DomMigrationLookupTest extends MigrateProcessTestCase {
    *
    * @var \Drupal\migrate\Plugin\MigrationInterface
    */
-  protected $migration;
+  protected object $migration;
 
   /**
    * Mock a process plugin manager.
    *
    * @var \Drupal\migrate\Plugin\MigratePluginManagerInterface
    */
-  protected $processPluginManager;
+  protected object $processPluginManager;
 
   /**
    * {@inheritdoc}
@@ -107,7 +109,7 @@ class DomMigrationLookupTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerTestConfigValidation
    */
-  public function testConfigValidation(array $config_overrides, $message): void {
+  public function testConfigValidation(array $config_overrides, string $message): void {
     $configuration = $config_overrides + $this->exampleConfiguration;
     $value = '<p>A simple paragraph.</p>';
     $this->expectException(InvalidPluginDefinitionException::class);

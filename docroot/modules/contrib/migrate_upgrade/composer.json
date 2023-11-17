@@ -20,21 +20,14 @@
         "slack": "#migrate",
         "source": "https://git.drupalcode.org/project/migrate_upgrade"
     },
-    "require": {
-        "php": ">7.1",
-        "drupal/migrate_plus": "^4 || ^5",
-        "drush/drush": "^8 || ^9 || ^10"
-    },
-    "require-dev": {
-        "drupal/migrate_plus": "^5",
-        "drush/drush": "^10"
-    },
     "minimum-stability": "dev",
-    "extra": {
-        "drush": {
-            "services": {
-                "drush.services.yml": "^9 || ^10"
-            }
-        }
+    "prefer-stable": false,
+    "config": {
+        "preferred-install": "dist"
+    },
+    "require": {
+        "php": ">7.3",
+        "drupal/migrate_plus": ">=5",
+        "drush/drush": ">=9"
     }
 }

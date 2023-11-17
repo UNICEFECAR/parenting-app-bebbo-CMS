@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel;
 
+use Drupal\Core\Database\Connection;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\Tests\migrate\Kernel\MigrateTestBase;
 
@@ -12,14 +15,12 @@ use Drupal\Tests\migrate\Kernel\MigrateTestBase;
  */
 class MigrateTableIncrementTest extends MigrateTestBase {
 
-  const TABLE_NAME = 'migrate_test_destination_table';
+  public const TABLE_NAME = 'migrate_test_destination_table';
 
   /**
    * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
    */
-  protected $connection;
+  protected ?Connection $connection = NULL;
 
   /**
    * {@inheritdoc}

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel;
 
+use Drupal\Core\Database\Connection;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\Plugin\MigrateIdMapInterface;
 use Drupal\migrate\Row;
@@ -14,15 +17,13 @@ use Drupal\Tests\migrate\Kernel\MigrateTestBase;
  */
 class MigrateTableTest extends MigrateTestBase {
 
-  const SOURCE_TABLE_NAME = 'migrate_test_source_table';
-  const DEST_TABLE_NAME = 'migrate_test_destination_table';
+  public const SOURCE_TABLE_NAME = 'migrate_test_source_table';
+  public const DEST_TABLE_NAME = 'migrate_test_destination_table';
 
   /**
    * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
    */
-  protected $connection;
+  protected ?Connection $connection = NULL;
 
   /**
    * The batch size to configure (a size of 1 disables batching).

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -63,19 +65,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactory
-   */
-  protected $configFactory;
+  protected ConfigFactory $configFactory;
 
   /**
-   * Array of styles from the WYSIWYG editor.
-   *
-   * @var array
+   * Styles from the WYSIWYG editor.
    */
-  protected $styles = [];
+  protected array $styles = [];
 
   /**
    * {@inheritdoc}
@@ -91,7 +86,7 @@ class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInt
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL): self {
     return new static(
       $configuration,
       $plugin_id,
@@ -103,7 +98,7 @@ class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInt
   /**
    * {@inheritdoc}
    */
-  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property): \DOMDocument {
     $this->init($value, $destination_property);
 
     foreach ($this->configuration['rules'] as $rule) {
@@ -126,7 +121,7 @@ class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInt
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  protected function setStyles($format) {
+  protected function setStyles($format): void {
     if (empty($format) || !is_string($format)) {
       $message = 'The "format" option must be a non-empty string.';
       throw new InvalidPluginDefinitionException($this->getPluginId(), $message);
@@ -146,7 +141,7 @@ class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInt
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  protected function validateRules() {
+  protected function validateRules(): void {
     if (!array_key_exists('rules', $this->configuration) || !is_array($this->configuration['rules'])) {
       $message = 'The "rules" option must be an array.';
       throw new InvalidPluginDefinitionException($this->getPluginId(), $message);
@@ -173,7 +168,7 @@ class DomApplyStyles extends DomProcessBase implements ContainerFactoryPluginInt
    * @param string[] $rule
    *   An array with keys 'xpath', 'style', and (optional) 'depth'.
    */
-  protected function apply(array $rule) {
+  protected function apply(array $rule): void {
     // An entry in $this->styles has the format element(\.class)*: for example,
     // 'p' or 'a.button' or 'div.col-xs-6.col-md-4'.
     // @see setStyles()

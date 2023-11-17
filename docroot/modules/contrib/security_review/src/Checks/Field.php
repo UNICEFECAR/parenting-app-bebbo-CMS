@@ -87,7 +87,8 @@ class Field extends Check {
           // We only check entities that are stored in database.
           if (is_a($entity->getStorageClass(), SqlContentEntityStorage::class, TRUE)) {
             if ($field_storage_definition instanceof FieldStorageConfig) {
-              $table = $entity_type_id . '__' . $field_name;
+              $table_mapping = $entity_type_manager->getStorage($entity_type_id)->getTableMapping();
+              $table = $table_mapping->getDedicatedDataTableName($field_storage_definition);
             }
             else {
               $translatable = $entity->isTranslatable();
@@ -103,17 +104,14 @@ class Field extends Check {
           }
           foreach (array_keys($field_storage_definition->getSchema()['columns']) as $column) {
             $column_name = $field_name . $separator . $column;
-            foreach ($tags as $vulnerability => $tag) {
-              $query = $this->database()->query("SELECT `$id`, `$column_name` FROM {$table} t");
-              $record = $query->fetchAssoc();;
-              // foreach ($query->fetchAssoc() as $id_value => $column_value) {
-              while ($record = $query->fetchAssoc()) {
+            $query = $this->database()->select($table, 't')
+              ->fields('t', [$id, $column_name])
+              ->execute();
+            while ($record = $query->fetchAssoc()) {
+              foreach ($tags as $vulnerability => $tag) {
                 $column_value = $record[$column_name];
                 $id_value = $record[$id];
-                if ($id_value === 150003) {
-                  $test = 0;
-                }
-                if (strpos((string) $column_value, '<' . $tag) !== FALSE) {
+                if (str_contains((string) $column_value, '<' . $tag)) {
                   // Only alert on values that are not known to be safe.
                   $hash = hash('sha256', implode(
                     [
@@ -135,8 +133,8 @@ class Field extends Check {
                   }
                 }
               }
-              unset($query);
             }
+            unset($query);
           }
         }
       }

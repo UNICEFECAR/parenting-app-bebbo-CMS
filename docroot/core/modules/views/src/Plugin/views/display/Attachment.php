@@ -274,11 +274,11 @@ class Attachment extends DisplayPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Attachment displays only use exposed widgets if
+   * they are set to inherit the exposed filter settings
+   * of their parent display.
    */
   public function usesExposed() {
-    // Attachment displays only use exposed widgets if they are set to inherit
-    // the exposed filter settings of their parent display.
     if (!empty($this->options['inherit_exposed_filters']) && parent::usesExposed()) {
       return TRUE;
     }
@@ -286,12 +286,11 @@ class Attachment extends DisplayPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * If an attachment is set to inherit the exposed filter
+   * settings from its parent display, then don't render and
+   * display a second set of exposed filter widgets.
    */
   public function displaysExposed() {
-    // If an attachment is set to inherit the exposed filter settings from its
-    // parent display, then don't render and display a second set of exposed
-    // filter widgets.
     return $this->options['inherit_exposed_filters'] ? FALSE : TRUE;
   }
 

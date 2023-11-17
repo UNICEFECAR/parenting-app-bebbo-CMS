@@ -82,7 +82,8 @@ class PagerTest extends BrowserTestBase {
   }
 
   /**
-   * Tests pager query parameters and cache context.
+   * Tests proper functioning of the query parameters and the pager cache
+   * context.
    */
   public function testPagerQueryParametersAndCacheContext() {
     // First page.

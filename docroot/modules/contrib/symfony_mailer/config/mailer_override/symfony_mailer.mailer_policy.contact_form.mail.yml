@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - contact
+id: contact_form.mail
+configuration:
+  email_body:
+    content:
+      value: |-
+        <p class="contact-email-intro"><a href="{{ sender_url }}">{{ sender_name }}</a> sent a message using the contact form <a href="{{ form_url }}">{{ form }}</a>.</p>
+        <hr>
+        {{ body }}
+      format: email_html
+  email_to:
+    addresses:
+      -
+        value: '<site>'
+        display: ''

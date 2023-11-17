@@ -37,7 +37,6 @@ class FailedLogins extends Check {
     $result = CheckResult::SUCCESS;
     $findings = [];
     $last_result = $this->lastResult();
-    $visible = FALSE;
 
     // Prepare the query.
     $query = $this->database()->select('watchdog', 'w');
@@ -83,10 +82,9 @@ class FailedLogins extends Check {
 
     if (!empty($findings)) {
       $result = CheckResult::FAIL;
-      $visible = TRUE;
     }
 
-    return $this->createResult($result, $findings, $visible);
+    return $this->createResult($result, $findings);
   }
 
   /**
@@ -145,8 +143,14 @@ class FailedLogins extends Check {
    */
   public function getMessage($result_const) {
     switch ($result_const) {
+      case CheckResult::SUCCESS:
+        return $this->t('No failed login attempts from same IP.');
+
       case CheckResult::FAIL:
         return $this->t('Failed login attempts from the same IP. These may be a brute-force attack to gain access to your site.');
+
+      case CheckResult::INFO:
+        return $this->t('Failed login attempts - Dblog module not installed.');
 
       default:
         return $this->t('Unexpected result.');

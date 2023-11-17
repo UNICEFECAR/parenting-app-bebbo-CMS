@@ -1,0 +1,12 @@
+name: Drupal Symfony Mailer Override
+type: module
+description: 'Overrides email building for key core and contrib modules, improving features and integration with Symfony Mailer.'
+core_version_requirement: ^9.4 || ^10
+package: Mail
+lifecycle: deprecated
+lifecycle_link: 'https://www.drupal.org/project/symfony_mailer/issues/3355626'
+
+# Information added by Drupal.org packaging script on 2023-10-23
+version: '1.4.0'
+project: 'symfony_mailer'
+datestamp: 1698076486

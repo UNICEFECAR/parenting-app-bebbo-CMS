@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
-use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\Plugin\migrate\process\StrReplace;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 
@@ -12,12 +13,13 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\StrReplace
  */
-class StrReplaceTest extends MigrateProcessTestCase {
+final class StrReplaceTest extends MigrateProcessTestCase {
 
   /**
    * Test for a simple str_replace string.
    */
   public function testStrReplace(): void {
+    $configuration = [];
     $value = 'vero eos et accusam et justo vero';
     $configuration['search'] = 'et';
     $configuration['replace'] = 'that';
@@ -31,6 +33,7 @@ class StrReplaceTest extends MigrateProcessTestCase {
    * Test for case insensitive searches.
    */
   public function testStrIreplace(): void {
+    $configuration = [];
     $value = 'VERO eos et accusam et justo vero';
     $configuration['search'] = 'vero';
     $configuration['replace'] = 'that';
@@ -45,6 +48,7 @@ class StrReplaceTest extends MigrateProcessTestCase {
    * Test for regular expressions.
    */
   public function testPregReplace(): void {
+    $configuration = [];
     $value = 'vero eos et 123 accusam et justo 123 duo';
     $configuration['search'] = '/[0-9]{3}/';
     $configuration['replace'] = 'the';
@@ -58,6 +62,7 @@ class StrReplaceTest extends MigrateProcessTestCase {
    * Test for InvalidArgumentException for "search" configuration.
    */
   public function testSearchInvalidArgumentException(): void {
+    $configuration = [];
     $configuration['replace'] = 'that';
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('The "search" must be set.');
@@ -68,6 +73,7 @@ class StrReplaceTest extends MigrateProcessTestCase {
    * Test for InvalidArgumentException for "replace" configuration.
    */
   public function testReplaceInvalidArgumentException(): void {
+    $configuration = [];
     $configuration['search'] = 'et';
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('The "replace" must be set.');
@@ -78,6 +84,7 @@ class StrReplaceTest extends MigrateProcessTestCase {
    * Test for multiple.
    */
   public function testIsMultiple(): void {
+    $configuration = [];
     $value = [
       'vero eos et accusam et justo vero',
       'et eos vero accusam vero justo et',

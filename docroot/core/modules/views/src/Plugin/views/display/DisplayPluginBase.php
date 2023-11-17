@@ -123,6 +123,16 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayPluginInte
   public $display;
 
   /**
+   * Keeps track whether the display uses exposed filters.
+   */
+  public bool $has_exposed;
+
+  /**
+   * The default display.
+   */
+  public DisplayPluginInterface $default_display;
+
+  /**
    * Constructs a new DisplayPluginBase object.
    *
    * Because DisplayPluginBase::initDisplay() takes the display configuration by
@@ -1677,7 +1687,7 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayPluginInte
         if (empty($style)) {
           $form['#title'] .= $this->t('Row style options');
         }
-        $plugin = $this->getPlugin(empty($style) ? 'row' : 'style', $name);
+        $plugin = $this->getPlugin(empty($style) ? 'row' : 'style');
         if ($plugin) {
           $form[$section] = [
             '#tree' => TRUE,
@@ -2231,7 +2241,7 @@ abstract class DisplayPluginBase extends PluginBase implements DisplayPluginInte
     $element['#feed_icons'] = !empty($view->feedIcons) ? $view->feedIcons : [];
 
     if ($view->display_handler->renderPager()) {
-      $exposed_input = $view->getExposedInput();
+      $exposed_input = $view->exposed_raw_input ?? NULL;
       $element['#pager'] = $view->renderPager($exposed_input);
     }
 

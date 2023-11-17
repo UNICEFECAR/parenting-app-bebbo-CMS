@@ -78,8 +78,6 @@ class BlockedIp extends DestinationBase implements ContainerFactoryPluginInterfa
    */
   public function import(Row $row, array $old_destination_id_values = []) {
     $this->banManager->banIp($row->getDestinationProperty('ip'));
-
-    return ['ip' => $row->getDestinationProperty('ip')];
   }
 
 }

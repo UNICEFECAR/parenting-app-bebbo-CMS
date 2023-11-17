@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_fetcher;
 
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\DataFetcherPluginBase;
 
@@ -18,14 +22,14 @@ class File extends DataFetcherPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function setRequestHeaders(array $headers) {
+  public function setRequestHeaders(array $headers): void {
     // Does nothing.
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getRequestHeaders() {
+  public function getRequestHeaders(): array {
     // Does nothing.
     return [];
   }
@@ -33,20 +37,19 @@ class File extends DataFetcherPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getResponse($url) {
+  public function getResponse($url): ResponseInterface {
     $response = @file_get_contents($url);
     if ($response === FALSE) {
       throw new MigrateException('file parser plugin: could not retrieve data from ' . $url);
     }
-    return $response;
+    return new Response(200, [], $response);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getResponseContent($url) {
-    $response = $this->getResponse($url);
-    return $response;
+  public function getResponseContent(string $url): string {
+    return (string) $this->getResponse($url)->getBody();
   }
 
 }

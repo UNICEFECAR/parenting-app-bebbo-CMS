@@ -6,11 +6,11 @@ Feature: Search
   Scenario: Searching for a page that does exist
     Given I am on "/wiki/Main_Page"
     When I fill in "search" with "Behavior Driven Development"
-    And I press "searchButton"
+    And I press "Search"
     Then I should see "agile software development"
 
   Scenario: Searching for a page that does NOT exist
     Given I am on "/wiki/Main_Page"
     When I fill in "search" with "Glory Driven Development"
-    And I press "searchButton"
+    And I press "Search"
     Then I should see "Search results"

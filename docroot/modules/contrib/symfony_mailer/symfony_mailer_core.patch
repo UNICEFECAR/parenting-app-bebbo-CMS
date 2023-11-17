@@ -1,0 +1,175 @@
+diff --git a/core/modules/contact/src/MailHandler.php b/core/modules/contact/src/MailHandler.php
+index 42d60a5f3e..44677d6ffc 100644
+--- a/core/modules/contact/src/MailHandler.php
++++ b/core/modules/contact/src/MailHandler.php
+@@ -10,6 +10,9 @@
+ use Drupal\Core\StringTranslation\TranslationInterface;
+ use Psr\Log\LoggerInterface;
+ 
++use Drupal\Core\Url;
++use Drupal\symfony_mailer\Email;
++
+ /**
+  * Provides a class for handling assembly and dispatch of contact mail messages.
+  */
+@@ -111,11 +114,11 @@ public function sendMailMessages(MessageInterface $message, AccountInterface $se
+ 
+     // Send email to the recipient(s).
+     $key_prefix = $message->isPersonal() ? 'user' : 'page';
+-    $this->mailManager->mail('contact', $key_prefix . '_mail', $to, $recipient_langcode, $params, $sender_cloned->getEmail());
++    $this->sendMail($key_prefix . '_mail', $to, $recipient_langcode, $params, $sender_cloned->getEmail());
+ 
+     // If requested, send a copy to the user, using the current language.
+     if ($message->copySender()) {
+-      $this->mailManager->mail('contact', $key_prefix . '_copy', $sender_cloned->getEmail(), $current_langcode, $params, $sender_cloned->getEmail());
++      $this->sendMail($key_prefix . '_copy', $sender_cloned->getEmail(), $current_langcode, $params, $sender_cloned->getEmail());
+     }
+ 
+     // If configured, send an auto-reply, using the current language.
+@@ -128,7 +131,7 @@ public function sendMailMessages(MessageInterface $message, AccountInterface $se
+         ]);
+       }
+       else {
+-        $this->mailManager->mail('contact', 'page_autoreply', $sender_cloned->getEmail(), $current_langcode, $params);
++        $this->sendMail('page_autoreply', $sender_cloned->getEmail(), $current_langcode, $params);
+       }
+     }
+ 
+@@ -148,4 +151,70 @@ public function sendMailMessages(MessageInterface $message, AccountInterface $se
+     }
+   }
+ 
++  /**
++   * Sends a single mail.
++   */
++  protected function sendMail($key, $to, $langcode, $params, $reply = NULL) {
++    $message = (new Email("contact.$key"))->to($to);
++    if ($reply) {
++      $message->addReplyTo($reply);
++    }
++    $contact_message = $params['contact_message'];
++    /** @var \Drupal\user\UserInterface $sender */
++    $sender = $params['sender'];
++    $language = \Drupal::languageManager()->getLanguage($langcode);
++
++    $variables = [
++      '@site-name' => \Drupal::config('system.site')->get('name'),
++      '@subject' => $contact_message->getSubject(),
++      '@form' => !empty($params['contact_form']) ? $params['contact_form']->label() : NULL,
++      '@form-url' => Url::fromRoute('<current>', [], ['absolute' => TRUE, 'language' => $language])->toString(),
++      '@sender-name' => $sender->getDisplayName(),
++    ];
++    if ($sender->isAuthenticated()) {
++      $variables['@sender-url'] = $sender->toUrl('canonical', ['absolute' => TRUE, 'language' => $language])->toString();
++    }
++    else {
++      $variables['@sender-url'] = $params['sender']->getEmail();
++    }
++
++    $message->data($variables);
++    $options = ['langcode' => $language->getId()];
++
++    switch ($key) {
++      case 'page_mail':
++      case 'page_copy':
++        $message->subject($this->t('[@form] @subject', $variables, $options));
++        $message->appendParagraph($this->t("@sender-name (@sender-url) sent a message using the contact form at @form-url.", $variables, $options));
++        $build = \Drupal::entityTypeManager()
++          ->getViewBuilder('contact_message')
++          ->view($contact_message, 'mail');
++        $message->appendContent($build);
++        break;
++
++      case 'page_autoreply':
++        $message->subject($this->t('[@form] @subject', $variables, $options));
++        $message->content($params['contact_form']->getReply());
++        break;
++
++      case 'user_mail':
++      case 'user_copy':
++        $variables += [
++          '@recipient-name' => $params['recipient']->getDisplayName(),
++          '@recipient-edit-url' => $params['recipient']->toUrl('edit-form', ['absolute' => TRUE, 'language' => $language])->toString(),
++        ];
++        $message->subject($this->t('[@site-name] @subject', $variables, $options));
++        $message->appendParagraph($this->t('Hello @recipient-name,', $variables, $options));
++        $message->appendParagraph($this->t("@sender-name (@sender-url) has sent you a message via your contact form at @site-name.", $variables, $options));
++        $message->appendParagraph($this->t("If you don't want to receive such emails, you can change your settings at @recipient-edit-url.", $variables, $options));
++        $build = \Drupal::entityTypeManager()
++          ->getViewBuilder('contact_message')
++          ->view($contact_message, 'mail');
++        $message->appendContent($build);
++        break;
++    }
++
++    \Drupal::service('symfony_mailer')->send($message);
++  }
++
+ }
+diff --git a/core/modules/user/user.module b/core/modules/user/user.module
+index f21829bfec..efbdca88cd 100644
+--- a/core/modules/user/user.module
++++ b/core/modules/user/user.module
+@@ -26,6 +26,8 @@
+ use Drupal\user\RoleInterface;
+ use Drupal\user\UserInterface;
+ 
++use Drupal\symfony_mailer\Email;
++
+ /**
+  * Implements hook_help().
+  */
+@@ -1051,7 +1053,6 @@ function _user_mail_notify($op, AccountInterface $account, $langcode = NULL) {
+   }
+ 
+   if (\Drupal::config('user.settings')->get('notify.' . $op)) {
+-    $params['account'] = $account;
+     $langcode = $langcode ? $langcode : $account->getPreferredLangcode();
+     // Get the custom site notification email to use as the from email address
+     // if it has been set.
+@@ -1064,14 +1065,42 @@ function _user_mail_notify($op, AccountInterface $account, $langcode = NULL) {
+     if (empty($site_mail)) {
+       $site_mail = ini_get('sendmail_from');
+     }
+-    $mail = \Drupal::service('plugin.manager.mail')->mail('user', $op, $account->getEmail(), $langcode, $params, $site_mail);
++
++    $mailer = \Drupal::service('symfony_mailer');
++    $mail_config = \Drupal::config('user.mail');
++    $subject = $mail_config->get("$op.subject");
++    $content = [
++      '#type' => 'processed_text',
++      '#text' => $mail_config->get("$op.body"),
++      '#format' => $mail_config->get('text_format'),
++    ];
++    $data = ['user' => $account];
++    $token_options = ['langcode' => $langcode, 'callback' => 'user_mail_tokens', 'clear' => TRUE];
++
++    $message = (new Email("user.$op"))
++      ->addTo($account->getEmail())
++      ->subject($subject)
++      ->content($content)
++      ->addReplyTo($site_mail)
++      ->data($data)
++      ->enableTokenReplace($token_options);
++    $result = $mailer->send($message);
++
+     if ($op == 'register_pending_approval') {
+       // If a user registered requiring admin approval, notify the admin, too.
+       // We use the site default language for this.
+-      \Drupal::service('plugin.manager.mail')->mail('user', 'register_pending_approval_admin', $site_mail, \Drupal::languageManager()->getDefaultLanguage()->getId(), $params);
++      $token_options['langcode'] = \Drupal::languageManager()->getDefaultLanguage()->getId();
++      $message = (new Email("user.$op"))
++        ->addTo($site_mail)
++        ->subject($subject)
++        ->content($content)
++        ->addReplyTo($site_mail)
++        ->data($data)
++        ->enableTokenReplace($token_options);
++      $mailer->send($message);
+     }
+   }
+-  return empty($mail) ? NULL : $mail['result'];
++  return $result;
+ }
+ 
+ /**

@@ -122,7 +122,6 @@ user.role.*:
     permissions:
       type: sequence
       label: 'Permissions'
-      orderby: value
       sequence:
         type: string
         label: 'Permission'

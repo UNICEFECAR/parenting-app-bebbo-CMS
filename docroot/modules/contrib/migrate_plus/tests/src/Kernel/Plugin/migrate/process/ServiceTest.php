@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\process;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\MigrateExecutableInterface;
+use Drupal\migrate\Plugin\MigratePluginManagerInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -12,7 +15,7 @@ use Drupal\migrate\Row;
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\Service
  * @group migrate_plus
  */
-class ServiceTest extends KernelTestBase {
+final class ServiceTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -25,10 +28,8 @@ class ServiceTest extends KernelTestBase {
 
   /**
    * The process plugin manager.
-   *
-   * @var \Drupal\migrate\Plugin\MigratePluginManagerInterface
    */
-  protected $pluginManager;
+  protected ?MigratePluginManagerInterface $pluginManager = NULL;
 
   /**
    * {@inheritdoc}
@@ -79,7 +80,7 @@ class ServiceTest extends KernelTestBase {
    *
    * @dataProvider providerConfig
    */
-  public function testInvalidConfig(array $configuration, $message): void {
+  public function testInvalidConfig(array $configuration, string $message): void {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage($message);
     $this->pluginManager->createInstance('service', $configuration);
@@ -88,7 +89,7 @@ class ServiceTest extends KernelTestBase {
   /**
    * Data provider for testInvalidConfig.
    */
-  public function providerConfig() {
+  public function providerConfig(): array {
     return [
       'missing service name' => [
         'configuration' => [],

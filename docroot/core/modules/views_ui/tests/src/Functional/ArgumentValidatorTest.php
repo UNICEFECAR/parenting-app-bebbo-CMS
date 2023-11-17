@@ -45,7 +45,8 @@ class ArgumentValidatorTest extends UITestBase {
   }
 
   /**
-   * Saves the test_argument view with changes made to the argument handler.
+   * Saves the test_argument view with changes made to the argument handler
+   * both with and without specify_validation turned on.
    *
    * @param bool $specify_validation
    *   The form validation.

@@ -246,7 +246,8 @@ abstract class StylePluginBase extends PluginBase {
   }
 
   /**
-   * Determines if the style plugin is rendered even if the view is empty.
+   * Should the output of the style plugin be rendered even if it's an empty
+   * view.
    */
   public function evenEmpty() {
     return !empty($this->definition['even empty']);
@@ -378,25 +379,6 @@ abstract class StylePluginBase extends PluginBase {
   }
 
   /**
-   * Provide a form in the views wizard if this style is selected.
-   *
-   * @param array $form
-   *   An associative array containing the structure of the form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current state of the form.
-   * @param string $type
-   *   The display type, either block or page.
-   *
-   * @deprecated in drupal:9.2.0 and is removed from drupal:10.0.0. No direct
-   *   replacement is provided.
-   *
-   * @see https://www.drupal.org/node/3186502
-   */
-  public function wizardForm(&$form, FormStateInterface $form_state, $type) {
-    @trigger_error(__METHOD__ . '() is deprecated in drupal:9.2.0 and is removed from drupal:10.0.0. No direct replacement is provided. See https://www.drupal.org/node/3186502', E_USER_DEPRECATED);
-  }
-
-  /**
    * Alter the options of a display before they are added to the view.
    *
    * @param array $form
@@ -415,8 +397,6 @@ abstract class StylePluginBase extends PluginBase {
   }
 
   /**
-   * Determines if the style handler should interfere with sorts.
-   *
    * Called by the view builder to see if this style handler wants to
    * interfere with the sorts. If so it should build; if it returns
    * any non-TRUE value, normal sorting will NOT be added to the query.
@@ -426,8 +406,6 @@ abstract class StylePluginBase extends PluginBase {
   }
 
   /**
-   * Allows the view builder to build a second set of sorts.
-   *
    * Called by the view builder to let the style build a second set of
    * sorts that will come after any other sorts in the view.
    */

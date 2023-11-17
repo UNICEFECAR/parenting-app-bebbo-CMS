@@ -195,7 +195,8 @@ interface MigrationInterface extends PluginInspectionInterface, DerivativeInspec
   public function clearInterruptionResult();
 
   /**
-   * Sets the migration status as interrupted with a given result code.
+   * Signal that the migration should be interrupted with the specified result
+   * code.
    *
    * @param int $result
    *   One of the MigrationInterface::RESULT_* constants.
@@ -203,7 +204,8 @@ interface MigrationInterface extends PluginInspectionInterface, DerivativeInspec
   public function interruptMigration($result);
 
   /**
-   * Gets the normalized process plugin configuration.
+   * Get the normalized process pipeline configuration describing the process
+   * plugins.
    *
    * The process configuration is always normalized. All shorthand processing
    * will be expanded into their full representations.

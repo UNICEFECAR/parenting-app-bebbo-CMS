@@ -32,7 +32,12 @@ class MigrateUpgradeCommandsTest extends MigrateUpgradeTestBase {
       'migrate_plus',
       'migrate_upgrade',
     ]);
-    self::$modules = array_diff(self::$modules, ['block_place']);
+    self::$modules = array_diff(self::$modules, [
+      'block_place',
+      'simpletest',
+      'migrate_drupal_multilingual',
+      'entity_reference',
+    ]);
     parent::setUp();
   }
 
@@ -45,7 +50,8 @@ class MigrateUpgradeCommandsTest extends MigrateUpgradeTestBase {
    * @dataProvider majorDrupalVersionsDataProvider
    */
   public function testDrupalConfigureUpgrade($drupal_version): void {
-    $this->loadFixture(drupal_get_path('module', 'migrate_drupal') . "/tests/fixtures/drupal{$drupal_version}.php");
+    $migrate_drupal_path = \Drupal::service('extension.list.module')->getPath('migrate_drupal');
+    $this->loadFixture($migrate_drupal_path . "/tests/fixtures/drupal{$drupal_version}.php");
     $prefix = 'upgrade_legacy_';
     $this->executeMigrateUpgrade([
       'configure-only' => NULL,
@@ -102,6 +108,10 @@ class MigrateUpgradeCommandsTest extends MigrateUpgradeTestBase {
     $options['legacy-db-url'] = $this->convertDbSpecUrl($connection_options);
     if (!empty($connection_options['prefix']['default'])) {
       $options['legacy-db-prefix'] = $connection_options['prefix']['default'];
+    }
+    // This changed in 9.3 with https://www.drupal.org/node/3106531.
+    elseif (array_key_exists('prefix', $connection_options)) {
+      $options['legacy-db-prefix'] = $connection_options['prefix'];
     }
     $this->drush('migrate:upgrade', [], $options);
   }

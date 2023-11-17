@@ -1,0 +1,14 @@
+test:
+  css:
+    theme:
+      css/test.email.css: {}
+
+contact:
+  css:
+    theme:
+      css/contact.email.css: {}
+
+commerce_order:
+  css:
+    theme:
+      css/commerce_order.email.css: {}

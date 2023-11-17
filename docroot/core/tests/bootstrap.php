@@ -8,7 +8,7 @@
  */
 
 use Drupal\Component\Assertion\Handle;
-use Drupal\TestTools\PhpUnitCompatibility\PhpUnit8\ClassWriter;
+use Drupal\TestTools\PhpUnitCompatibility\ClassWriter;
 
 /**
  * Finds all valid extension directories recursively within a given directory.
@@ -180,41 +180,9 @@ date_default_timezone_set('Australia/Sydney');
 // if they weren't on already.
 Handle::register();
 
-// Drupal 9 uses PHP syntax that's deprecated in PHP 8.2. Therefore, for
-// PHP 8.2, the error handler registered in
-// \Drupal\Tests\Listeners\DeprecationListenerTrait::registerErrorHandler()
-// ignores E_DEPRECATED errors. However, that error handler is not used
-// during:
-// - The execution of data providers.
-// - The child process of tests that are executed in a separate (isolated)
-//   process, such as kernel tests.
-//
-// To silence E_DEPRECATED errors during the above, re-register the error
-// handler that has already been set by symfony/phpunit-bridge/bootstrap.php,
-// but constrain it to not get called for E_DEPRECATED errors. It is still
-// useful for E_USER_DEPRECATED and other error types.
-if (PHP_VERSION_ID >= 80200) {
-  // Get the current error handler without changing it.
-  $error_handler = set_error_handler(NULL);
-  restore_error_handler();
-
-  if ($error_handler) {
-    // Replace the current error handler with the same one, but filter out
-    // E_DEPRECATED errors.
-    restore_error_handler();
-    set_error_handler($error_handler, E_ALL & ~E_DEPRECATED);
-
-    // The above results in PHP's built-in error handler getting called for
-    // E_DEPRECATED errors. Silence those errors too. Note that
-    // \PHPUnit\TextUI\TestRunner::handleConfiguration() can get called twice
-    // (once before running data providers, then again before running tests),
-    // whereas tests/bootstrap.php is included via include_once(), so the 2nd
-    // handleConfiguration() call can reset error_reporting to the value in
-    // phpunit.xml. However, that's okay, because for those cases, the error
-    // handler registered in
-    // \Drupal\Tests\Listeners\DeprecationListenerTrait::registerErrorHandler()
-    // is in use, and it ignores E_DEPRECATED errors for PHP 8.2 regardless of
-    // the error_reporting value.
-    error_reporting(error_reporting() & ~E_DEPRECATED);
-  }
+// Ensure ignored deprecation patterns listed in .deprecation-ignore.txt are
+// considered in testing.
+if (getenv('SYMFONY_DEPRECATIONS_HELPER') === FALSE) {
+  $deprecation_ignore_filename = realpath(__DIR__ . "/../.deprecation-ignore.txt");
+  putenv("SYMFONY_DEPRECATIONS_HELPER=ignoreFile=$deprecation_ignore_filename");
 }

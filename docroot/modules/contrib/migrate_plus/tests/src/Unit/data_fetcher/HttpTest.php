@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\data_fetcher;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Drupal\migrate_plus\AuthenticationPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\DataFetcherPluginBase;
 use Drupal\migrate_plus\Plugin\migrate_plus\authentication\Basic;
@@ -22,14 +26,12 @@ use GuzzleHttp\Psr7\Response;
  *
  * @group migrate_plus
  */
-class HttpTest extends MigrateTestCase {
+final class HttpTest extends MigrateTestCase {
 
   /**
    * Minimal migration configuration data.
-   *
-   * @var array
    */
-  private $specificMigrationConfig = [
+  private array $specificMigrationConfig = [
     'source' => 'url',
     'urls' => ['http://example.org/http_fetcher_test'],
     'data_fetcher_plugin' => 'http',
@@ -50,27 +52,21 @@ class HttpTest extends MigrateTestCase {
 
   /**
    * The data fetcher plugin ID being tested.
-   *
-   * @var string
    */
-  private $dataFetcherPluginId = 'http';
+  private string $dataFetcherPluginId = 'http';
 
   /**
    * The data fetcher plugin definition.
-   *
-   * @var array
    */
-  private $pluginDefinition = [
+  private array $pluginDefinition = [
     'id' => 'http',
     'title' => 'HTTP',
   ];
 
   /**
    * Test data to validate an HTTP response against.
-   *
-   * @var string
    */
-  private $testData = '
+  private string $testData = '
     {
       "id": 1,
       "name": "Joe Bloggs"
@@ -79,19 +75,15 @@ class HttpTest extends MigrateTestCase {
 
   /**
    * Mocked up Basic authentication plugin.
-   *
-   * @var \PHPUnit_Framework_MockObject_MockObject
    */
-  private $basicAuthenticator = NULL;
+  private ?MockObject $basicAuthenticator = NULL;
 
   /**
    * Set up test environment.
    */
   public function setUp(): void {
     // Mock up a Basic authentication plugin that will be used in requests.
-    $basic_authenticator = $this->getMockBuilder(Basic::class)
-      ->disableOriginalConstructor()
-      ->getMock();
+    $basic_authenticator = $this->createMock(Basic::class);
 
     $basic_authenticator->method('getAuthenticationOptions')
       ->will($this->returnValue([
@@ -117,10 +109,10 @@ class HttpTest extends MigrateTestCase {
     // http://docs.guzzlephp.org/en/latest/psr7.html
     $stream = $plugin->getResponseContent($migration_config['urls'][0]);
 
-    $body = json_decode((string) $stream, TRUE);
+    $body = json_decode((string) $stream, TRUE, 512, JSON_THROW_ON_ERROR);
 
     // Compare what we got back from the parser to what we expected to get.
-    $expected = json_decode($this->testData, TRUE);
+    $expected = json_decode($this->testData, TRUE, 512, JSON_THROW_ON_ERROR);
     $this->assertSame($expected, $body);
   }
 
@@ -136,9 +128,9 @@ class HttpTest extends MigrateTestCase {
 
     $stream = $plugin->getResponseContent($migration_config['urls'][0]);
 
-    $body = json_decode((string) $stream, TRUE);
+    $body = json_decode((string) $stream, TRUE, 512, JSON_THROW_ON_ERROR);
 
-    $expected = json_decode($this->testData, TRUE);
+    $expected = json_decode($this->testData, TRUE, 512, JSON_THROW_ON_ERROR);
     $this->assertSame($expected, $body);
   }
 
@@ -175,7 +167,7 @@ class HttpTest extends MigrateTestCase {
 /**
  * Test class to mock an HTTP request.
  */
-class TestHttp extends Http {
+final class TestHttp extends Http {
 
   /**
    * Mocked authenticator plugin.
@@ -193,7 +185,7 @@ class TestHttp extends Http {
    * @param object $authenticator
    *   Mocked authenticator plugin.
    */
-  public function mockHttpClient(array $responses, object $authenticator = NULL) {
+  public function mockHttpClient(array $responses, object $authenticator = NULL): void {
     // Set mocked authentication plugin to be used for the request auth plugin.
     $this->authenticator = $authenticator;
 
@@ -230,10 +222,9 @@ class TestHttp extends Http {
    *
    * So we can mock the authentication plugin.
    *
-   * @return \PHPUnit_Framework_MockObject_MockObject
    *   A mocked authentication plugin.
    */
-  public function getAuthenticationPlugin() {
+  public function getAuthenticationPlugin(): AuthenticationPluginInterface {
     if (!isset($this->authenticationPlugin)) {
       $this->authenticationPlugin = $this->authenticator;
     }

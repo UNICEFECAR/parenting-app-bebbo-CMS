@@ -12,7 +12,8 @@
 /**
  * Implements hook_schema().
  */
-function migrate_example_advanced_setup_schema() {
+function migrate_example_advanced_setup_schema(): array {
+  $schema = [];
   $schema['migrate_example_advanced_account'] = migrate_example_advanced_schema_account();
   $schema['migrate_example_advanced_account_updates'] = migrate_example_advanced_schema_account_updates();
   $schema['migrate_example_advanced_categories'] = migrate_example_advanced_schema_categories();
@@ -36,7 +37,7 @@ function migrate_example_advanced_setup_schema() {
 /**
  * Implements hook_install().
  */
-function migrate_example_advanced_setup_install() {
+function migrate_example_advanced_setup_install(): void {
   // Populate our tables.
   migrate_example_advanced_data_account();
   migrate_example_advanced_data_account_updates();
@@ -61,7 +62,7 @@ function migrate_example_advanced_setup_install() {
  * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_wine() {
+function migrate_example_advanced_schema_wine(): array {
   return [
     'description' => 'Wines of the world',
     'fields' => [
@@ -135,7 +136,7 @@ function migrate_example_advanced_schema_wine() {
  * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_updates() {
+function migrate_example_advanced_schema_updates(): array {
   return [
     'description' => 'Updated wine ratings',
     'fields' => [
@@ -162,7 +163,7 @@ function migrate_example_advanced_schema_updates() {
  * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_producer() {
+function migrate_example_advanced_schema_producer(): array {
   return [
     'description' => 'Wine producers of the world',
     'fields' => [
@@ -203,10 +204,9 @@ function migrate_example_advanced_schema_producer() {
 /**
  * The hook_schema definition for categories.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_categories() {
+function migrate_example_advanced_schema_categories(): array {
   return [
     'description' => 'Categories',
     'fields' => [
@@ -252,10 +252,9 @@ function migrate_example_advanced_schema_categories() {
 /**
  * The hook_schema definition for vintages.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_vintages() {
+function migrate_example_advanced_schema_vintages(): array {
   return [
     'description' => 'Wine vintages',
     'fields' => [
@@ -278,10 +277,9 @@ function migrate_example_advanced_schema_vintages() {
 /**
  * The hook_schema definition for variety updates.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_variety_updates() {
+function migrate_example_advanced_schema_variety_updates(): array {
   return [
     'description' => 'Variety updates',
     'fields' => [
@@ -304,10 +302,9 @@ function migrate_example_advanced_schema_variety_updates() {
 /**
  * The hook_schema definition for category wine.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_category_wine() {
+function migrate_example_advanced_schema_category_wine(): array {
   return [
     'description' => 'Wine category assignments',
     'fields' => [
@@ -330,10 +327,9 @@ function migrate_example_advanced_schema_category_wine() {
 /**
  * The hook_schema definition for category producer.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_category_producer() {
+function migrate_example_advanced_schema_category_producer(): array {
   return [
     'description' => 'Producer category assignments',
     'fields' => [
@@ -356,10 +352,9 @@ function migrate_example_advanced_schema_category_producer() {
 /**
  * The hook_schema definition for comment.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_comment() {
+function migrate_example_advanced_schema_comment(): array {
   return [
     'description' => 'Wine comments',
     'fields' => [
@@ -443,10 +438,9 @@ function migrate_example_advanced_schema_comment() {
 /**
  * The hook_schema definition for comment updates.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_comment_updates() {
+function migrate_example_advanced_schema_comment_updates(): array {
   return [
     'description' => 'Wine comment updates',
     'fields' => [
@@ -470,10 +464,9 @@ function migrate_example_advanced_schema_comment_updates() {
 /**
  * The hook_schema definition for account.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_account() {
+function migrate_example_advanced_schema_account(): array {
   return [
     'description' => 'Wine accounts.',
     'fields' => [
@@ -561,10 +554,9 @@ function migrate_example_advanced_schema_account() {
 /**
  * The hook_schema definition for account updates.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_account_updates() {
+function migrate_example_advanced_schema_account_updates(): array {
   return [
     'description' => 'Wine account updates',
     'fields' => [
@@ -587,10 +579,9 @@ function migrate_example_advanced_schema_account_updates() {
 /**
  * The hook_schema definition for blobs.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_blobs() {
+function migrate_example_advanced_schema_blobs(): array {
   return [
     'description' => 'Wine blobs to be migrated to file entities',
     'fields' => [
@@ -613,10 +604,9 @@ function migrate_example_advanced_schema_blobs() {
 /**
  * The hook_schema definition for files.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_files() {
+function migrate_example_advanced_schema_files(): array {
   return [
     'description' => 'Wine and account files',
     'fields' => [
@@ -658,10 +648,9 @@ function migrate_example_advanced_schema_files() {
 /**
  * The hook_schema definition for table source.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_table_source() {
+function migrate_example_advanced_schema_table_source(): array {
   return [
     'description' => 'Source data to go into a custom Drupal table',
     'fields' => [
@@ -691,10 +680,9 @@ function migrate_example_advanced_schema_table_source() {
 /**
  * The hook_schema definition for table destination.
  *
- * @return array
  *   The schema definition.
  */
-function migrate_example_advanced_schema_table_dest() {
+function migrate_example_advanced_schema_table_dest(): array {
   return [
     'description' => 'Custom Drupal table to receive source data directly',
     'fields' => [

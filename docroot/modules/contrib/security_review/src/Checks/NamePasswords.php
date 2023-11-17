@@ -5,6 +5,7 @@ namespace Drupal\security_review\Checks;
 use Drupal\Component\Utility\Html;
 use Drupal\security_review\Check;
 use Drupal\security_review\CheckResult;
+use Drupal\security_review\CheckSettings\NamePasswordsSettings;
 use Drupal\user\Entity\User;
 
 /**
@@ -13,6 +14,14 @@ use Drupal\user\Entity\User;
  * @package Drupal\security_review\Checks
  */
 class NamePasswords extends Check {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct() {
+    parent::__construct();
+    $this->settings = new NamePasswordsSettings($this, $this->config);
+  }
 
   /**
    * {@inheritdoc}
@@ -40,15 +49,20 @@ class NamePasswords extends Check {
       ->accessCheck()
       ->condition('uid', 0, '<>')
       ->execute();
-    $users = User::loadMultiple($user_ids);
 
-    /** @var \Drupal\user\UserAuth $user_auth */
-    $user_auth = \Drupal::service('user.auth');
+    $chunk_size = $this->settings->get('number_of_users', 100);
+    $user_chunks = array_chunk($user_ids, $chunk_size);
+    foreach ($user_chunks as $chunk) {
+      $users = User::loadMultiple($chunk);
 
-    /** @var \Drupal\user\Entity\User $user */
-    foreach ($users as $user) {
-      if ($user_auth->authenticate($user->getDisplayName(), $user->getDisplayName())) {
-        $findings[] = $user->getDisplayName();
+      /** @var \Drupal\user\UserAuth $user_auth */
+      $user_auth = \Drupal::service('user.auth');
+
+      /** @var \Drupal\user\Entity\User $user */
+      foreach ($users as $user) {
+        if ($user_auth->authenticate($user->getDisplayName(), $user->getDisplayName())) {
+          $findings[] = $user->getDisplayName();
+        }
       }
     }
 

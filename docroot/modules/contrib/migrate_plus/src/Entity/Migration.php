@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Entity;
 
 use Drupal\Core\Cache\Cache;
@@ -41,22 +43,18 @@ class Migration extends ConfigEntityBase implements MigrationInterface {
 
   /**
    * The migration ID (machine name).
-   *
-   * @var string
    */
-  protected $id;
+  protected ?string $id;
 
   /**
    * The human-readable label for the migration.
-   *
-   * @var string
    */
-  protected $label;
+  protected ?string $label;
 
   /**
    * {@inheritdoc}
    */
-  protected function invalidateTagsOnSave($update) {
+  protected function invalidateTagsOnSave($update): void {
     parent::invalidateTagsOnSave($update);
     Cache::invalidateTags(['migration_plugins']);
   }
@@ -64,7 +62,7 @@ class Migration extends ConfigEntityBase implements MigrationInterface {
   /**
    * {@inheritdoc}
    */
-  protected static function invalidateTagsOnDelete(EntityTypeInterface $entity_type, array $entities) {
+  protected static function invalidateTagsOnDelete(EntityTypeInterface $entity_type, array $entities): void {
     parent::invalidateTagsOnDelete($entity_type, $entities);
     Cache::invalidateTags(['migration_plugins']);
   }
@@ -81,10 +79,11 @@ class Migration extends ConfigEntityBase implements MigrationInterface {
    * @param string $new_plugin_id
    *   ID to use for the new configuration entity.
    *
-   * @return \Drupal\migrate_plus\Entity\MigrationInterface
    *   A Migration configuration entity (not saved to persistent storage).
    */
-  public static function createEntityFromPlugin($plugin_id, $new_plugin_id) {
+  public static function createEntityFromPlugin($plugin_id, $new_plugin_id): self {
+    $entity_array = [];
+    $migration_details = [];
     /** @var \Drupal\migrate\Plugin\MigrationPluginManagerInterface $plugin_manager */
     $plugin_manager = \Drupal::service('plugin.manager.migration');
     /** @var \Drupal\migrate\Plugin\Migration $migration_plugin */

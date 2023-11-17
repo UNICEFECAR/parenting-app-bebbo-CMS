@@ -57,9 +57,8 @@ class EntityContentBaseTest extends MigrateDrupal6TestBase {
   }
 
   /**
-   * Tests overwriting all mapped properties in the destination entity.
-   *
-   * This is the default behavior.
+   * Tests overwriting all mapped properties in the destination entity (default
+   * behavior).
    */
   public function testOverwriteAllMappedProperties() {
     $this->executeMigration('d6_user');
@@ -71,9 +70,8 @@ class EntityContentBaseTest extends MigrateDrupal6TestBase {
   }
 
   /**
-   * Tests overwriting selected properties in the destination entity.
-   *
-   * The selected properties are specified in the destination configuration.
+   * Tests overwriting selected properties in the destination entity, specified
+   * in the destination configuration.
    */
   public function testOverwriteProperties() {
     // Execute the migration in migrate_overwrite_test, which documents how

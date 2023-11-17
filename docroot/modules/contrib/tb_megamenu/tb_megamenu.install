@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Install and Update code for tb_megamenu.
+ */
+
+use Drupal\tb_megamenu\Entity\MegaMenuConfig;
+use Drupal\Core\Utility\UpdateException;
+
+/**
+ * Migrate any settings from the DB table to configuration objects.
+ */
+function tb_megamenu_update_8001(&$sandbox) {
+  // Migrate any settings from the DB table to configuration objects.
+  $database = \Drupal::database();
+
+  $count = 0;
+
+  // Check if table exists.
+  if ($database->schema()->tableExists('tb_megamenus')) {
+    $query = $database->select('tb_megamenus', 't');
+    $query->fields('t', ['menu_name', 'theme', 'block_config', 'menu_config']);
+    $results = $query->execute();
+    foreach ($results as $row) {
+      $menu = $row->menu_name;
+      $theme = $row->theme;
+      $config = MegaMenuConfig::loadMenu($menu, $theme);
+      if ($config == NULL) {
+        $values = [
+          'id' => "{$menu}__{$theme}",
+        ];
+        $config = MegaMenuConfig::create($values);
+      }
+
+      if (isset($config->menu)) {
+        $config->menu = $menu;
+      }
+      if (isset($config->theme)) {
+        $config->theme = $theme;
+      }
+      if (isset($config->block_config)) {
+        $config->block_config = $row->block_config;
+      }
+      if (isset($config->menu_config)) {
+        $config->menu_config = $row->menu_config;
+      }
+
+      try {
+        $config->save();
+      }
+      catch (Exception $e) {
+        throw new UpdateException('Failed to save configuration object for @menu / @theme', [
+          '@menu' => $menu,
+          '@theme' => $theme,
+        ]);
+      }
+      $count++;
+    }
+    $database->schema()->dropTable('tb_megamenus');
+  }
+  if ($count) {
+    return t('Converted @count TB Mega Menu database settings to configuration entities.', ['@count' => $count]);
+  }
+  return t('No existing MegaMenu configurations to convert.');
+}

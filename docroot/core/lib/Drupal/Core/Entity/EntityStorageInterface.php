@@ -105,7 +105,7 @@ interface EntityStorageInterface {
   public function deleteRevision($revision_id);
 
   /**
-   * Load entities by their property values without any access checks.
+   * Load entities by their property values.
    *
    * @param array $values
    *   An associative array where the keys are the property names and the

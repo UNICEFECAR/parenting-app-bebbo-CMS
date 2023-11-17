@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
@@ -84,89 +89,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The field manager.
-   *
-   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
-   */
-  protected $entityFieldManager;
-
-  /**
-   * The migration.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationInterface
-   */
-  protected $migration;
-
-  /**
-   * The selection plugin.
-   *
-   * @var \Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface
-   */
-  protected $selectionPluginManager;
-
-  /**
-   * The destination type.
-   *
-   * @var string
-   */
-  protected $destinationEntityType;
-
-  /**
-   * The destination bundle.
-   *
-   * @var string|bool
-   */
-  protected $destinationBundleKey;
-
-  /**
-   * The lookup value's key.
-   *
-   * @var string
-   */
-  protected $lookupValueKey;
-
-  /**
-   * The lookup bundle's key.
-   *
-   * @var string
-   */
-  protected $lookupBundleKey;
-
-  /**
-   * The lookup bundle.
-   *
-   * @var string
-   */
-  protected $lookupBundle;
-
-  /**
-   * The lookup entity type.
-   *
-   * @var string
-   */
-  protected $lookupEntityType;
-
-  /**
-   * The destination property or field.
-   *
-   * @var string
-   */
-  protected $destinationProperty;
-
-  /**
-   * The access check flag.
-   *
-   * @var string
-   */
-  protected $accessCheck = TRUE;
+  protected ?EntityTypeManagerInterface $entityTypeManager;
+  protected EntityFieldManagerInterface $entityFieldManager;
+  protected MigrationInterface $migration;
+  protected SelectionPluginManagerInterface $selectionPluginManager;
+  protected ?string $destinationEntityType;
+  protected ?string $destinationBundleKey = NULL;
+  protected ?string $lookupValueKey = NULL;
+  protected ?string $lookupBundleKey = NULL;
+  protected $lookupBundle = NULL;
+  protected ?string $lookupEntityType = NULL;
+  protected ?string $destinationProperty;
+  protected bool $accessCheck = TRUE;
 
   /**
    * {@inheritdoc}
@@ -190,7 +124,7 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     // If the source data is an empty array, return the same.
     if (gettype($value) === 'array' && count($value) === 0) {
       return [];
@@ -198,11 +132,11 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
 
     // In case of subfields ('field_reference/target_id'), extract the field
     // name only.
-    $parts = explode('/', $destinationProperty);
-    $destinationProperty = reset($parts);
-    $this->determineLookupProperties($destinationProperty);
+    $parts = explode('/', $destination_property);
+    $destination_property = reset($parts);
+    $this->determineLookupProperties($destination_property);
 
-    $this->destinationProperty = isset($this->configuration['destination_field']) ? $this->configuration['destination_field'] : NULL;
+    $this->destinationProperty = $this->configuration['destination_field'] ?? NULL;
 
     return $this->query($value);
   }
@@ -214,9 +148,9 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
    *   The destination property currently worked on. This is only used together
    *   with the $row above.
    */
-  protected function determineLookupProperties($destinationProperty) {
+  protected function determineLookupProperties(string $destinationProperty): void {
     if (isset($this->configuration['access_check'])) {
-      $this->accessCheck = $this->configuration['access_check'];
+      $this->accessCheck = (bool) $this->configuration['access_check'];
     }
     if (!empty($this->configuration['value_key'])) {
       $this->lookupValueKey = $this->configuration['value_key'];
@@ -338,7 +272,7 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
     }
 
     if ($multiple && !empty($this->destinationProperty)) {
-      array_walk($results, function (&$value) {
+      array_walk($results, function (&$value): void {
         $value = [$this->destinationProperty => $value];
       });
     }

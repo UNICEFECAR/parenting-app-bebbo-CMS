@@ -1,0 +1,20 @@
+/**
+ * @file
+ * CSS used in emails provided by TestEmailBuilder
+ */
+
+h4 {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: center;
+  color: white;
+  background-color: #0678be;
+}
+
+h4 > a {
+  color: white;
+}
+
+.text-small {
+  font-size: smaller;
+}

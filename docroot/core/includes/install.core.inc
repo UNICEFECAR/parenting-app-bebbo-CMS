@@ -338,9 +338,7 @@ function install_begin_request($class_loader, &$install_state) {
   // since the error/exception handlers depend on them.
   require_once __DIR__ . '/../modules/system/system.install';
   require_once __DIR__ . '/common.inc';
-  require_once __DIR__ . '/file.inc';
   require_once __DIR__ . '/install.inc';
-  require_once __DIR__ . '/schema.inc';
   require_once __DIR__ . '/form.inc';
   require_once __DIR__ . '/batch.inc';
 
@@ -388,7 +386,7 @@ function install_begin_request($class_loader, &$install_state) {
   $install_state['database_verified'] = install_verify_database_settings($site_path);
   // A valid settings.php has database settings and a hash_salt value. Other
   // settings will be checked by system_requirements().
-  $install_state['settings_verified'] = $install_state['config_verified'] && $install_state['database_verified'] && (bool) Settings::get('hash_salt', FALSE);
+  $install_state['settings_verified'] = $install_state['database_verified'] && (bool) Settings::get('hash_salt', FALSE);
 
   if ($install_state['settings_verified']) {
     try {
@@ -1210,8 +1208,8 @@ function install_database_errors($database, $settings_file) {
     // Run tasks associated with the database type. Any errors are caught in the
     // calling function.
     Database::addConnectionInfo('default', 'default', $database);
-
-    $errors = db_installer_object($driver, $database['namespace'] ?? NULL)->runTasks();
+    $installer_class = $database['namespace'] . "\\Install\\Tasks";
+    $errors = (new $installer_class())->runTasks();
   }
   return $errors;
 }
@@ -1841,7 +1839,7 @@ function install_finish_translations(&$install_state) {
   }
 
   // Creates configuration translations.
-  $batches[] = locale_config_batch_update_components([], array_keys($languages), [], TRUE);
+  $batches[] = locale_config_batch_update_components([], array_keys($languages));
   return $batches;
 }
 
@@ -2353,8 +2351,7 @@ function install_config_import_batch() {
     \Drupal::service('module_installer'),
     \Drupal::service('theme_handler'),
     \Drupal::service('string_translation'),
-    \Drupal::service('extension.list.module'),
-    \Drupal::service('extension.list.theme')
+    \Drupal::service('extension.list.module')
   );
 
   try {
@@ -2426,8 +2423,7 @@ function install_config_revert_install_changes() {
       \Drupal::service('module_installer'),
       \Drupal::service('theme_handler'),
       \Drupal::service('string_translation'),
-      \Drupal::service('extension.list.module'),
-      \Drupal::service('extension.list.theme')
+      \Drupal::service('extension.list.module')
     );
     try {
       $config_importer->import();

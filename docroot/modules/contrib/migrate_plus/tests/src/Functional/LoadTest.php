@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Functional;
 
 use Drupal\Core\Url;
@@ -10,7 +12,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group migrate_plus
  */
-class LoadTest extends BrowserTestBase {
+final class LoadTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}

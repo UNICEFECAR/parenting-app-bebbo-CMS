@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\process;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
@@ -10,6 +12,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\MigrateExecutable;
 use Drupal\migrate\MigrateMessageInterface;
+use Drupal\migrate\Plugin\MigrationPluginManager;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -21,7 +24,7 @@ use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\EntityGenerate
  * @group migrate_plus
  */
-class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterface {
+final class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterface {
 
   use EntityReferenceTestTrait;
 
@@ -40,33 +43,10 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
     'filter',
   ];
 
-  /**
-   * The bundle used in this test.
-   *
-   * @var string
-   */
-  protected $bundle = 'page';
-
-  /**
-   * The name of the field used in this test.
-   *
-   * @var string
-   */
-  protected $fieldName = 'field_entity_reference';
-
-  /**
-   * The vocabulary id.
-   *
-   * @var string
-   */
-  protected $vocabulary = 'fruit';
-
-  /**
-   * The migration plugin manager.
-   *
-   * @var \Drupal\migrate\Plugin\MigrationPluginManager
-   */
-  protected $migrationPluginManager;
+  protected ?string $bundle = 'page';
+  protected ?string $fieldName = 'field_entity_reference';
+  protected ?string $vocabulary = 'fruit';
+  protected ?MigrationPluginManager $migrationPluginManager;
 
   /**
    * {@inheritdoc}
@@ -151,7 +131,7 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
     $migration = $this->migrationPluginManager->createStubMigration($definition);
     $reflector = new \ReflectionObject($migration->getDestinationPlugin());
     $attribute = $reflector->getProperty('storage');
-    $attribute->setAccessible(true);
+    $attribute->setAccessible(TRUE);
     /** @var \Drupal\Core\Entity\EntityStorageBase $storage */
     $storage = $attribute->getValue($migration->getDestinationPlugin());
     $migrationExecutable = (new MigrateExecutable($migration, $this));
@@ -224,7 +204,7 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
   /**
    * Test lookup without a reference field.
    */
-  public function testNonReferenceField() {
+  public function testNonReferenceField(): void {
     $values = [
       'name' => 'Apples',
       'vid' => $this->vocabulary,
@@ -317,7 +297,7 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
   /**
    * Provides multiple migration definitions for "transform" test.
    */
-  public function transformDataProvider() {
+  public function transformDataProvider(): array {
     return [
       'no arguments' => [
         'definition' => [
@@ -965,7 +945,7 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
   /**
    * {@inheritdoc}
    */
-  public function display($message, $type = 'status') {
+  public function display($message, $type = 'status'): void {
     $this->assertTrue($type == 'status', $message);
   }
 

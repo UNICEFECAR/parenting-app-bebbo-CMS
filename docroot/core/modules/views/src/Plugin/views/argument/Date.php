@@ -102,7 +102,8 @@ class Date extends Formula implements ContainerFactoryPluginInterface {
   }
 
   /**
-   * Gets the date default argument, formatted appropriately for this argument.
+   * Set the empty argument value to the current date,
+   * formatted appropriately for this argument.
    */
   public function getDefaultArgument($raw = FALSE) {
     if (!$raw && $this->options['default_argument_type'] == 'date') {
@@ -122,7 +123,7 @@ class Date extends Formula implements ContainerFactoryPluginInterface {
       }
     }
 
-    return parent::getDefaultArgument($raw);
+    return parent::getDefaultArgument();
   }
 
   /**

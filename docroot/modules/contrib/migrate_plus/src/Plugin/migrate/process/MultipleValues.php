@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
@@ -51,7 +53,7 @@ class MultipleValues extends ProcessPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function multiple() {
+  public function multiple(): bool {
     return TRUE;
   }
 

@@ -37,7 +37,6 @@ class QueryErrors extends Check {
     $result = CheckResult::SUCCESS;
     $findings = [];
     $last_result = $this->lastResult();
-    $visible = FALSE;
 
     // Prepare the query.
     $query = $this->database()->select('watchdog', 'w');
@@ -73,8 +72,8 @@ class QueryErrors extends Check {
       $ip = $row->hostname;
 
       // Search for query errors.
-      $message_contains_sql = strpos($message, 'SQL') !== FALSE;
-      $message_contains_select = strpos($message, 'SELECT') !== FALSE;
+      $message_contains_sql = str_contains($message, 'SQL');
+      $message_contains_select = str_contains($message, 'SELECT');
       if ($message_contains_sql && $message_contains_select) {
         $entry_for_ip = &$entries[$ip];
 
@@ -96,10 +95,9 @@ class QueryErrors extends Check {
 
     if (!empty($findings)) {
       $result = CheckResult::FAIL;
-      $visible = TRUE;
     }
 
-    return $this->createResult($result, $findings, $visible);
+    return $this->createResult($result, $findings);
   }
 
   /**
@@ -158,8 +156,14 @@ class QueryErrors extends Check {
    */
   public function getMessage($result_const) {
     switch ($result_const) {
+      case CheckResult::SUCCESS:
+        return $this->t('No query errors from same IP found.');
+
       case CheckResult::FAIL:
         return $this->t('Query errors from the same IP. These may be a SQL injection attack or an attempt at information disclosure.');
+
+      case CheckResult::INFO:
+        return $this->t('Query errors - Dblog module not installed.');
 
       default:
         return $this->t('Unexpected result.');

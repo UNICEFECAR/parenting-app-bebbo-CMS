@@ -143,7 +143,7 @@ class TrackChangesTest extends MigrateTestBase {
       ->execute();
 
     // Execute migration again.
-    $this->executeMigration($this->migration);
+    $this->executeMigration('track_changes_test');
 
     // Check that the all the hashes except for 'Item 2'and 'Item 4' have
     // changed.

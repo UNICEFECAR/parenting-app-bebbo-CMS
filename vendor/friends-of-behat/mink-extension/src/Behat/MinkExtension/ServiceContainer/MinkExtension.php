@@ -19,6 +19,7 @@ use Behat\MinkExtension\ServiceContainer\Driver\GoutteFactory;
 use Behat\MinkExtension\ServiceContainer\Driver\SahiFactory;
 use Behat\MinkExtension\ServiceContainer\Driver\SauceLabsFactory;
 use Behat\MinkExtension\ServiceContainer\Driver\Selenium2Factory;
+use Behat\MinkExtension\ServiceContainer\Driver\Selenium4Factory;
 use Behat\MinkExtension\ServiceContainer\Driver\SeleniumFactory;
 use Behat\MinkExtension\ServiceContainer\Driver\ZombieFactory;
 use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
@@ -56,6 +57,7 @@ class MinkExtension implements ExtensionInterface
         $this->registerDriverFactory(new SahiFactory());
         $this->registerDriverFactory(new SeleniumFactory());
         $this->registerDriverFactory(new Selenium2Factory());
+        $this->registerDriverFactory(new Selenium4Factory());
         $this->registerDriverFactory(new SauceLabsFactory());
         $this->registerDriverFactory(new BrowserStackFactory());
         $this->registerDriverFactory(new ZombieFactory());

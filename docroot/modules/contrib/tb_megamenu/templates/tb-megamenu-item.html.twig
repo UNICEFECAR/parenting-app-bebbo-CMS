@@ -1,0 +1,34 @@
+{% set linkAttributes = link['attributes'] %}
+{% if ( link['url'] is defined and link['url'] is not empty ) %}
+  {% set tag = "a" %}
+{% else  %}
+  {% set tag = 'span' %}
+  {% if submenu is empty %}
+    {% set linkAttributes = linkAttributes.addClass('tbm-no-submenu') %}
+  {% endif %}
+{% endif %}
+<li {{ attributes }} >
+  {% if section == 'frontend' %}
+    <div class="tbm-link-container">
+  {% endif %}
+    {% if tag == 'a' %}
+      <{{ tag }} href="{{ link['url'] }}" {{ link['attributes'] }}>
+    {% else %}
+      <{{ tag }}{{ link['attributes'] }}>
+    {% endif %}
+      {% if fontawesome and item_config['xicon'] %}
+        <span class="{{ item_config['xicon'] }}"></span>
+      {% endif %}
+      {{ link.title_translate }}
+      {% if item_config['caption'] %}
+        <span class="tbm-caption">{{ item_config['caption'] }}</span>
+      {% endif %}
+    </{{ tag }}>
+  {% if section == 'frontend' %}
+      {% if submenu and not group%}
+        <button class="tbm-submenu-toggle{% if block_config['auto-arrow'] %} always-show{% endif %}"><span class="visually-hidden">{{ 'Toggle submenu'|t }}</span></button>
+      {% endif %}
+    </div>
+  {% endif %}
+  {{ submenu }}
+</li>

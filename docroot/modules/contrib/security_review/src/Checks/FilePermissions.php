@@ -67,6 +67,7 @@ class FilePermissions extends Check {
       if ($file_create = @fopen($file, 'w')) {
         $create_status = fwrite($file_create, date('Ymdhis') . ' - ' . $append_message . "\n");
         fclose($file_create);
+        unlink($file);
       }
 
       // Try to append to our IGNOREME file.

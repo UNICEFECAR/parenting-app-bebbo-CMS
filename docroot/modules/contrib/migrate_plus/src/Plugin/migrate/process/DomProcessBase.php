@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateSkipRowException;
@@ -14,19 +16,8 @@ use Drupal\migrate\ProcessPluginBase;
  */
 abstract class DomProcessBase extends ProcessPluginBase {
 
-  /**
-   * Document to use.
-   *
-   * @var \DOMDocument
-   */
-  protected $document;
-
-  /**
-   * Xpath query object.
-   *
-   * @var \DOMXPath
-   */
-  protected $xpath;
+  protected ?\DOMDocument $document = NULL;
+  protected ?\DOMXPath $xpath = NULL;
 
   /**
    * Initialize the class properties.
@@ -40,7 +31,7 @@ abstract class DomProcessBase extends ProcessPluginBase {
    * @throws \Drupal\migrate\MigrateSkipRowException
    *   If $value is not a \DOMDocument object.
    */
-  protected function init($value, $destination_property) {
+  protected function init($value, string $destination_property) {
     if (!($value instanceof \DOMDocument)) {
       $message = sprintf(
         'The %s plugin in the %s process pipeline requires a \DOMDocument object. You can use the dom plugin to convert a string to \DOMDocument.',

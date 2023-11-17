@@ -9,7 +9,8 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\Entity\User;
 
 /**
- * Provides a base class for testing file uploads and hook invocations.
+ * Base class for file unit tests that use the file_test module to test uploads and
+ * hooks.
  */
 abstract class FileManagedUnitTestBase extends KernelTestBase {
 
@@ -23,7 +24,7 @@ abstract class FileManagedUnitTestBase extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // Clear out any hook calls.
     file_test_reset();
@@ -42,7 +43,8 @@ abstract class FileManagedUnitTestBase extends KernelTestBase {
   }
 
   /**
-   * Asserts that the specified file hooks were called only once.
+   * Assert that all of the specified hook_file_* hooks were called once, other
+   * values result in failure.
    *
    * @param array $expected
    *   Array with string containing with the hook name, e.g. 'load', 'save',
@@ -145,7 +147,8 @@ abstract class FileManagedUnitTestBase extends KernelTestBase {
   }
 
   /**
-   * Creates and saves a file, asserting that it was saved.
+   * Create a file and save it to the files table and assert that it occurs
+   * correctly.
    *
    * @param string $filepath
    *   Optional string specifying the file path. If none is provided then a

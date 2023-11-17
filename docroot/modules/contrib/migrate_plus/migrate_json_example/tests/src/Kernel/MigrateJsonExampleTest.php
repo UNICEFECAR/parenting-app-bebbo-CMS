@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_json_example\Kernel;
 
 use Drupal\node\Entity\NodeType;
@@ -10,7 +12,7 @@ use Drupal\Tests\migrate_drupal\Kernel\MigrateDrupalTestBase;
  *
  * @group migrate_plus
  */
-class MigrateJsonExampleTest extends MigrateDrupalTestBase {
+final class MigrateJsonExampleTest extends MigrateDrupalTestBase {
 
   /**
    * {@inheritdoc}
@@ -42,7 +44,7 @@ class MigrateJsonExampleTest extends MigrateDrupalTestBase {
   /**
    * Tests the results of "migrate_json_example" migrations.
    */
-  public function testMigrations() {
+  public function testMigrations(): void {
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $this->assertCount(0, $node_storage->loadMultiple());
     // Execute "product" migration from 'migrate_json_example' module.

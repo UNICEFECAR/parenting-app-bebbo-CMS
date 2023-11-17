@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\authentication;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -29,7 +31,7 @@ class OAuth2 extends AuthenticationPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
-  public function getAuthenticationOptions() {
+  public function getAuthenticationOptions(): array {
     $handlerStack = HandlerStack::create();
     $client = new Client([
       'handler' => $handlerStack,

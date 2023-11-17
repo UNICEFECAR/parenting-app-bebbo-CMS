@@ -53,10 +53,10 @@ class VendorDirectory extends Check {
    */
   public function help() {
     $paragraphs = [];
-    $paragraphs[] = $this->t('A properly configured cron job executes, initiates, or manages a variety of tasks.');
+    $paragraphs[] = $this->t('Verify the vendor directory is located outside the webroot directory.');
     return [
       '#theme' => 'check_help',
-      '#title' => $this->t('Vendir directory is outside webroot.'),
+      '#title' => $this->t('Vendor directory is outside webroot.'),
       '#paragraphs' => $paragraphs,
     ];
   }

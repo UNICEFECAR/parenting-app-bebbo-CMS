@@ -207,7 +207,7 @@ trait FunctionalTestSetupTrait {
     // Rebuild the kernel and bring it back to a fully bootstrapped state.
     $this->container = $this->kernel->rebuildContainer();
 
-    // Make sure the URL generator has a request object, otherwise calls to
+    // Make sure the url generator has a request object, otherwise calls to
     // $this->drupalGet() will fail.
     $this->prepareRequestForGenerator();
   }
@@ -236,12 +236,12 @@ trait FunctionalTestSetupTrait {
    *
    * This is used to manipulate how the generator generates paths during tests.
    * It also ensures that calls to $this->drupalGet() will work when running
-   * from run-tests.sh because the URL generator no longer looks at the global
+   * from run-tests.sh because the url generator no longer looks at the global
    * variables that are set there but relies on getting this information from a
    * request object.
    *
    * @param bool $clean_urls
-   *   Whether to mock the request using clean URLs.
+   *   Whether to mock the request using clean urls.
    * @param array $override_server_vars
    *   An array of server variables to override.
    *
@@ -277,9 +277,9 @@ trait FunctionalTestSetupTrait {
     $this->container->get('request_stack')->push($request);
 
     // The request context is normally set by the router_listener from within
-    // its KernelEvents::REQUEST listener. In the simpletest parent site this
-    // event is not fired, therefore it is necessary to updated the request
-    // context manually here.
+    // its KernelEvents::REQUEST listener. In the parent site this event is not
+    // fired, therefore it is necessary to update the request context manually
+    // here.
     $this->container->get('router.request_context')->fromRequest($request);
 
     return $request;
@@ -503,7 +503,7 @@ trait FunctionalTestSetupTrait {
   }
 
   /**
-   * Returns the parameters that will be used when Simpletest installs Drupal.
+   * Returns the parameters that will be used when the test installs Drupal.
    *
    * @see install_drupal()
    * @see install_state_defaults()

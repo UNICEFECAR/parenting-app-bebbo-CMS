@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\data_fetcher;
 
+use org\bovigo\vfs\vfsStreamDirectory;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\Plugin\migrate_plus\data_fetcher\File;
 use Drupal\Tests\migrate\Unit\MigrateTestCase;
@@ -17,21 +20,19 @@ use org\bovigo\vfs\vfsStream;
  *
  * @group migrate_plus
  */
-class FileTest extends MigrateTestCase {
+final class FileTest extends MigrateTestCase {
 
   /**
    * Directory where test data will be created.
    *
    * @var string
    */
-  const BASE_DIRECTORY = 'migration_data';
+  public const BASE_DIRECTORY = 'migration_data';
 
   /**
    * Minimal migration configuration data.
-   *
-   * @var array
    */
-  private $specificMigrationConfig = [
+  private array $specificMigrationConfig = [
     'source' => 'url',
     'data_fetcher_plugin' => 'file',
     'data_parser_plugin' => 'json',
@@ -46,27 +47,21 @@ class FileTest extends MigrateTestCase {
 
   /**
    * The data fetcher plugin ID being tested.
-   *
-   * @var string
    */
-  private $dataFetcherPluginId = 'file';
+  private string $dataFetcherPluginId = 'file';
 
   /**
    * The data fetcher plugin definition.
-   *
-   * @var array
    */
-  private $pluginDefinition = [
+  private array $pluginDefinition = [
     'id' => 'file',
     'title' => 'File',
   ];
 
   /**
    * Test data to populate a file with.
-   *
-   * @var string
    */
-  private $testData = '[
+  private string $testData = '[
     {
       "id": 1,
       "name": "Joe Bloggs"
@@ -75,10 +70,8 @@ class FileTest extends MigrateTestCase {
 
   /**
    * Define virtual dir where we'll be creating files in/fetching files from.
-   *
-   * @var \org\bovigo\vfs\vfsStreamDirectory
    */
-  private $baseDir;
+  private vfsStreamDirectory $baseDir;
 
   /**
    * Set up test environment.
@@ -92,7 +85,10 @@ class FileTest extends MigrateTestCase {
    */
   public function testFetchFile(): void {
     $file_name = 'file.json';
-    $file_path = vfsStream::url(implode(DIRECTORY_SEPARATOR, [self::BASE_DIRECTORY, $file_name]));
+    $file_path = vfsStream::url(implode(DIRECTORY_SEPARATOR, [
+      self::BASE_DIRECTORY,
+      $file_name,
+    ]));
     $migration_config = $this->specificMigrationConfig + [
       'urls' => [$file_path],
     ];
@@ -109,8 +105,8 @@ class FileTest extends MigrateTestCase {
 
     vfsStream::create($tree, $this->baseDir);
 
-    $expected = json_decode($this->testData, TRUE);
-    $retrieved = json_decode($plugin->getResponseContent($file_path), TRUE);
+    $expected = json_decode($this->testData, TRUE, 512, JSON_THROW_ON_ERROR);
+    $retrieved = json_decode($plugin->getResponseContent($file_path), TRUE, 512, JSON_THROW_ON_ERROR);
 
     $this->assertEquals($expected, $retrieved);
   }
@@ -126,7 +122,10 @@ class FileTest extends MigrateTestCase {
     for ($i = 0; $i < $number_of_files; $i++) {
       $file_name = 'file_' . $i . '.json';
       $file_names[] = $file_name;
-      $file_paths[] = vfsStream::url(implode(DIRECTORY_SEPARATOR, [self::BASE_DIRECTORY, $file_name]));
+      $file_paths[] = vfsStream::url(implode(DIRECTORY_SEPARATOR, [
+        self::BASE_DIRECTORY,
+        $file_name,
+      ]));
     }
 
     $migration_config = $this->specificMigrationConfig + [
@@ -149,8 +148,8 @@ class FileTest extends MigrateTestCase {
 
       vfsStream::create($tree, $this->baseDir);
 
-      $expected = json_decode($this->testData);
-      $retrieved = json_decode($plugin->getResponseContent($file_path));
+      $expected = json_decode($this->testData, NULL, 512, JSON_THROW_ON_ERROR);
+      $retrieved = json_decode($plugin->getResponseContent($file_path), NULL, 512, JSON_THROW_ON_ERROR);
 
       $this->assertEquals($expected, $retrieved);
     }
@@ -161,7 +160,10 @@ class FileTest extends MigrateTestCase {
    */
   public function testFetchUnreadableFile(): void {
     $file_name = 'file.json';
-    $file_path = vfsStream::url(implode(DIRECTORY_SEPARATOR, [self::BASE_DIRECTORY, $file_name]));
+    $file_path = vfsStream::url(implode(DIRECTORY_SEPARATOR, [
+      self::BASE_DIRECTORY,
+      $file_name,
+    ]));
     $migration_config = $this->specificMigrationConfig + [
       'urls' => [$file_path],
     ];

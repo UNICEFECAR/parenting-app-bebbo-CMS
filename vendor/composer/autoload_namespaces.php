@@ -7,8 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
-    'Stack' => array($vendorDir . '/stack/builder/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Drupal\\Tests\\Driver' => array($vendorDir . '/drupal/drupal-driver/tests'),
     'Drupal\\MinkExtension' => array($vendorDir . '/drupal/drupal-extension/src'),
@@ -16,7 +14,6 @@ return array(
     'Drupal\\DrupalExtension' => array($vendorDir . '/drupal/drupal-extension/src'),
     'Drupal\\Drupal' => array($vendorDir . '/drupal/drupal-extension/src'),
     'Drupal\\Driver' => array($vendorDir . '/drupal/drupal-driver/src'),
-    'Dflydev\\DotAccessData' => array($vendorDir . '/dflydev/dot-access-data/src'),
     'Console' => array($vendorDir . '/pear/console_getopt'),
     'Behat\\MinkExtension' => array($vendorDir . '/friends-of-behat/mink-extension/src'),
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),

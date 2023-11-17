@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel;
 
 /**
@@ -7,7 +9,7 @@ namespace Drupal\Tests\migrate_plus\Kernel;
  *
  * @group migrate
  */
-class MigrateTableBatchTest extends MigrateTableTest {
+final class MigrateTableBatchTest extends MigrateTableTest {
 
   /**
    * The batch size to configure (a size of 1 disables batching).

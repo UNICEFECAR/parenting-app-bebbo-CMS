@@ -62,7 +62,8 @@ abstract class CachePluginBase extends PluginBase {
   }
 
   /**
-   * Returns a string to display as the clickable title for the access control.
+   * Return a string to display as the clickable title for the
+   * access control.
    */
   public function summaryTitle() {
     return $this->t('Unknown');

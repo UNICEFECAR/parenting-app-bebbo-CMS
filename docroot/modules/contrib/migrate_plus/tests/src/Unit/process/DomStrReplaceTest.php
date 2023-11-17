@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -14,7 +16,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\DomStrReplace
  */
-class DomStrReplaceTest extends MigrateProcessTestCase {
+final class DomStrReplaceTest extends MigrateProcessTestCase {
 
   /**
    * Example configuration for the dom_str_replace process plugin.
@@ -36,7 +38,7 @@ class DomStrReplaceTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerTestConfigEmpty
    */
-  public function testConfigValidation(array $config_overrides, $message): void {
+  public function testConfigValidation(array $config_overrides, string $message): void {
     $configuration = $config_overrides + $this->exampleConfiguration;
     $value = '<p>A simple paragraph.</p>';
     $this->expectException(InvalidPluginDefinitionException::class);

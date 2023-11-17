@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_fetcher;
 
+use GuzzleHttp\Client;
+use Drupal\migrate_plus\AuthenticationPluginInterface;
+use Psr\Http\Message\ResponseInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\DataFetcherPluginBase;
@@ -32,24 +37,18 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
 
   /**
    * The HTTP client.
-   *
-   * @var \GuzzleHttp\Client
    */
-  protected $httpClient;
+  protected ?Client $httpClient;
 
   /**
    * The request headers.
-   *
-   * @var array
    */
-  protected $headers = [];
+  protected array $headers = [];
 
   /**
    * The data retrieval client.
-   *
-   * @var \Drupal\migrate_plus\AuthenticationPluginInterface
    */
-  protected $authenticationPlugin;
+  protected AuthenticationPluginInterface $authenticationPlugin;
 
   /**
    * {@inheritdoc}
@@ -66,10 +65,9 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
   /**
    * Returns the initialized authentication plugin.
    *
-   * @return \Drupal\migrate_plus\AuthenticationPluginInterface
    *   The authentication plugin.
    */
-  public function getAuthenticationPlugin() {
+  public function getAuthenticationPlugin(): AuthenticationPluginInterface {
     if (!isset($this->authenticationPlugin)) {
       $this->authenticationPlugin = \Drupal::service('plugin.manager.migrate_plus.authentication')->createInstance($this->configuration['authentication']['plugin'], $this->configuration['authentication']);
     }
@@ -79,21 +77,21 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function setRequestHeaders(array $headers) {
+  public function setRequestHeaders(array $headers): void {
     $this->headers = $headers;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getRequestHeaders() {
+  public function getRequestHeaders(): array {
     return !empty($this->headers) ? $this->headers : [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getResponse($url) {
+  public function getResponse($url): ResponseInterface {
     try {
       $options = ['headers' => $this->getRequestHeaders()];
       if (!empty($this->configuration['authentication'])) {
@@ -116,9 +114,8 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
   /**
    * {@inheritdoc}
    */
-  public function getResponseContent($url) {
-    $response = $this->getResponse($url);
-    return $response->getBody();
+  public function getResponseContent(string $url): string {
+    return (string) $this->getResponse($url)->getBody();
   }
 
 }

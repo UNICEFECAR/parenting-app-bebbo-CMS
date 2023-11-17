@@ -15,7 +15,7 @@ use Drupal\Core\Routing\RouteMatch;
 use Drupal\Core\Url;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Core\Routing\RouteObjectInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -118,7 +118,7 @@ class UrlTest extends UnitTestCase {
   }
 
   /**
-   * Tests creating a URL from a request.
+   * Tests creating a Url from a request.
    */
   public function testUrlFromRequest() {
     $this->router->expects($this->exactly(3))
@@ -130,13 +130,13 @@ class UrlTest extends UnitTestCase {
       )
       ->willReturnOnConsecutiveCalls([
         RouteObjectInterface::ROUTE_NAME => 'view.frontpage.page_1',
-        '_raw_variables' => new ParameterBag(),
+        '_raw_variables' => new InputBag(),
       ], [
         RouteObjectInterface::ROUTE_NAME => 'node_view',
-        '_raw_variables' => new ParameterBag(['node' => '1']),
+        '_raw_variables' => new InputBag(['node' => '1']),
       ], [
         RouteObjectInterface::ROUTE_NAME => 'node_edit',
-        '_raw_variables' => new ParameterBag(['node' => '2']),
+        '_raw_variables' => new InputBag(['node' => '2']),
       ]);
 
     $urls = [];
@@ -255,7 +255,7 @@ class UrlTest extends UnitTestCase {
    */
   public function testCreateFromRequest() {
     $attributes = [
-      '_raw_variables' => new ParameterBag([
+      '_raw_variables' => new InputBag([
         'color' => 'chartreuse',
       ]),
       RouteObjectInterface::ROUTE_NAME => 'the_route_name',
@@ -358,7 +358,7 @@ class UrlTest extends UnitTestCase {
     $map[] = ['node_edit', ['node' => '2'], '/node/2/edit'];
 
     foreach ($urls as $url) {
-      // Clone the URL so that there is no leak of internal state into the
+      // Clone the url so that there is no leak of internal state into the
       // other ones.
       $url = clone $url;
       $url_generator = $this->createMock('Drupal\Core\Routing\UrlGeneratorInterface');

@@ -1,0 +1,19 @@
+tb_megamenu.menu_config.*:
+  type: config_entity
+  label: 'TB MegaMenu config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    menu:
+      type: string
+      label: 'Menu Name'
+    theme:
+      type: string
+      label: 'Theme Name'
+    block_config:
+      type: string
+      label: 'Block Configuration'
+    menu_config:
+      type: string
+      label: 'Menu Configuration'

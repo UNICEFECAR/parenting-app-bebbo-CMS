@@ -17,8 +17,8 @@
 }
 
 .security-review-run-and-review__entry.skipped {
-  color: #333333 !important;
-  background-color: #dddddd !important;
+  color: #333 !important;
+  background-color: #ddd !important;
 }
 
 .security-review-run-and-review__entry.success {

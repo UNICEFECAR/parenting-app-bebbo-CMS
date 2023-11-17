@@ -114,7 +114,8 @@ class ManyToOne extends InOperator {
   }
 
   /**
-   * {@inheritdoc}
+   * Override ensureMyTable so we can control how this joins in.
+   * The operator actually has influence over joining.
    */
   public function ensureMyTable() {
     // Defer to helper if the operator specifies it.
@@ -132,7 +133,7 @@ class ManyToOne extends InOperator {
     }
     // Form API returns unchecked options in the form of option_id => 0. This
     // breaks the generated query for "is all of" filters so we remove them.
-    $this->value = array_filter($this->value, 'static::arrayFilterZero');
+    $this->value = array_filter($this->value, [static::class, 'arrayFilterZero']);
     $this->helper->addFilter();
   }
 

@@ -1,0 +1,4 @@
+administer mailer:
+  title: 'Administer Symfony Mailer'
+  description: 'Manage Mailer settings.'
+  restrict access: true

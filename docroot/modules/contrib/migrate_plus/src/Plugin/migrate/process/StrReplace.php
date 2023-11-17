@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
@@ -91,10 +92,8 @@ class StrReplace extends ProcessPluginBase {
 
   /**
    * Flag indicating whether there are multiple values.
-   *
-   * @var bool
    */
-  protected $multiple;
+  protected ?bool $multiple = NULL;
 
   /**
    * {@inheritdoc}
@@ -132,7 +131,7 @@ class StrReplace extends ProcessPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function multiple() {
+  public function multiple(): bool {
     return $this->multiple;
   }
 

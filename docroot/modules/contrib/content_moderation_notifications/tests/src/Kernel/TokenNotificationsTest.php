@@ -70,7 +70,8 @@ class TokenNotificationsTest extends NotificationsTest {
     $entity = $this->createNode(['type' => 'article']);
 
     $this->assertMail('to', 'admin@example.com');
-    $this->assertBccRecipients('foo@example.com,bar@example.com');
+    // The foo@example.com user does not have permission to see this.
+    $this->assertBccRecipients('bar@example.com');
     $this->assertMail('id', 'content_moderation_notifications_content_moderation_notification');
     $this->assertMail('subject', PlainTextOutput::renderFromHtml($notification->getSubject()));
     $this->assertCount(1, $this->getMails());
@@ -121,6 +122,9 @@ class TokenNotificationsTest extends NotificationsTest {
       'subject' => '{{ entity.bundle|title }} with ID {{ entity.id }} Needs review',
     ]);
 
+    // Create admin user with adhoc email address so mail is sent.
+    $this->createUser([], NULL, TRUE, ['mail' => 'adhoc1@example.com']);
+
     $entity = $this->createNode(
       [
         'type' => 'article',
@@ -129,7 +133,8 @@ class TokenNotificationsTest extends NotificationsTest {
     );
 
     $this->assertMail('to', 'admin@example.com');
-    $this->assertBccRecipients('foo@example.com,bar@example.com,adhoc1@example.com');
+    // The foo@example.com user will not have access to this entity.
+    $this->assertBccRecipients('bar@example.com,adhoc1@example.com');
     $this->assertMail('id', 'content_moderation_notifications_content_moderation_notification');
     $this->assertMail('subject', 'Article with ID ' . $entity->id() . ' Needs review');
     $this->assertCount(1, $this->getMails());

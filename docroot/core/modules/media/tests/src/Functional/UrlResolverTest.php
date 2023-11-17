@@ -58,7 +58,8 @@ class UrlResolverTest extends MediaFunctionalTestBase {
   }
 
   /**
-   * Tests resource URL resolution with a matched provider endpoint.
+   * Tests resource URL resolution when the asset URL can be matched to a
+   * provider endpoint.
    *
    * @covers ::getProviderByUrl
    * @covers ::getResourceUrl
@@ -117,7 +118,8 @@ class UrlResolverTest extends MediaFunctionalTestBase {
   }
 
   /**
-   * Tests URL resolution when the URL is discovered by scanning the asset.
+   * Tests URL resolution when the resource URL must be actively discovered by
+   * scanning the asset.
    *
    * @param string $url
    *   The asset URL to resolve.

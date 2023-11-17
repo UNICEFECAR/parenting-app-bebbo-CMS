@@ -150,7 +150,8 @@ class ElementsTableSelectTest extends BrowserTestBase {
   }
 
   /**
-   * Tests error handling for invalid tableselect values with checkboxes.
+   * Tests the whether the option checker gives an error on invalid
+   * tableselect values for checkboxes.
    */
   public function testMultipleTrueOptionchecker() {
 
@@ -173,7 +174,8 @@ class ElementsTableSelectTest extends BrowserTestBase {
   }
 
   /**
-   * Tests error handling for invalid tableselect values with radio buttons.
+   * Tests the whether the option checker gives an error on invalid
+   * tableselect values for radios.
    */
   public function testMultipleFalseOptionchecker() {
 

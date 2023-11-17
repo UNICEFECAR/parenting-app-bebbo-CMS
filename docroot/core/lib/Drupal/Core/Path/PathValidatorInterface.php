@@ -3,7 +3,7 @@
 namespace Drupal\Core\Path;
 
 /**
- * Provides an interface for URL path validators.
+ * Provides an interface for url path validators.
  */
 interface PathValidatorInterface {
 
@@ -14,7 +14,7 @@ interface PathValidatorInterface {
    *   The path to check.
    *
    * @return \Drupal\Core\Url|false
-   *   The \Drupal\Core\Url object, or FALSE if the path is not valid.
+   *   The url object, or FALSE if the path is not valid.
    */
   public function getUrlIfValid($path);
 
@@ -28,7 +28,7 @@ interface PathValidatorInterface {
    *   The path to check.
    *
    * @return \Drupal\Core\Url|false
-   *   The \Drupal\Core\Url object, or FALSE if the path is not valid.
+   *   The url object, or FALSE if the path is not valid.
    */
   public function getUrlIfValidWithoutAccessCheck($path);
 

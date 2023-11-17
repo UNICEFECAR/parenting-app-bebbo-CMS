@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_parser;
+
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Common functionality for XML data parsers.
@@ -13,7 +17,7 @@ trait XmlTrait {
    * @param \SimpleXMLElement $xml
    *   The element to apply namespace registrations to.
    */
-  protected function registerNamespaces(\SimpleXMLElement $xml) {
+  protected function registerNamespaces(\SimpleXMLElement $xml): void {
     if (isset($this->configuration['namespaces']) && is_array($this->configuration['namespaces'])) {
       foreach ($this->configuration['namespaces'] as $prefix => $ns) {
         $xml->registerXPathNamespace($prefix, $ns);
@@ -30,7 +34,7 @@ trait XmlTrait {
    * @return string
    *   Error message
    */
-  public static function parseLibXmlError(\LibXMLError $error) {
+  public static function parseLibXmlError(\LibXMLError $error): TranslatableMarkup {
     $error_code_name = 'Unknown Error';
     switch ($error->level) {
       case LIBXML_ERR_WARNING:
@@ -51,7 +55,7 @@ trait XmlTrait {
       [
         '@libxmlerrorcodename' => $error_code_name,
         '@libxmlerrorcode' => $error->code,
-        '@libxmlerrormessage' => trim($error->message),
+        '@libxmlerrormessage' => trim((string) $error->message),
         '@libxmlerrorline' => $error->line,
         '@libxmlerrorcolumn' => $error->column,
         '@libxmlerrorfile' => $error->file,

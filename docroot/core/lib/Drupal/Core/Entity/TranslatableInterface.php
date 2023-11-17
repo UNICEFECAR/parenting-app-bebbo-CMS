@@ -6,8 +6,6 @@ use Drupal\Core\TypedData\TranslatableInterface as TranslatableDataInterface;
 
 /**
  * Provides methods for an entity to support translation.
- *
- * @ingroup entity_type_characteristics
  */
 interface TranslatableInterface extends TranslatableDataInterface, EntityInterface {
 

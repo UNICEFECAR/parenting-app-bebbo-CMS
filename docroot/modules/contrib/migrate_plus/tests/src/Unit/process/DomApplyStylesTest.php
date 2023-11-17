@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -16,7 +18,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\DomApplyStyles
  */
-class DomApplyStylesTest extends MigrateProcessTestCase {
+final class DomApplyStylesTest extends MigrateProcessTestCase {
 
   /**
    * Example configuration for the dom_apply_styles process plugin.
@@ -40,10 +42,8 @@ class DomApplyStylesTest extends MigrateProcessTestCase {
 
   /**
    * Mock a config factory object.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory = NULL;
+  protected ?object $configFactory = NULL;
 
   /**
    * {@inheritdoc}
@@ -70,7 +70,7 @@ class DomApplyStylesTest extends MigrateProcessTestCase {
    *
    * @dataProvider providerTestConfig
    */
-  public function testValidateRules(array $config_overrides, $message): void {
+  public function testValidateRules(array $config_overrides, string $message): void {
     $configuration = $config_overrides + $this->exampleConfiguration;
     $value = '<p>A simple paragraph.</p>';
     $this->expectException(InvalidPluginDefinitionException::class);

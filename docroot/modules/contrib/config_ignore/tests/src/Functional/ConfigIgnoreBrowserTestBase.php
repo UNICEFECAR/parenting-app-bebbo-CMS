@@ -3,13 +3,11 @@
 namespace Drupal\Tests\config_ignore\Functional;
 
 use Drupal\Core\Config\ConfigImporter;
-use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageComparer;
-use Drupal\Core\Site\Settings;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Class ConfigIgnoreBrowserTestBase.
+ * Base class for browser tests.
  *
  * @package Drupal\Tests\config_ignore
  */

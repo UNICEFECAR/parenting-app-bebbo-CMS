@@ -18,8 +18,8 @@ BDFL
 
 Product managers
 - Dries Buytaert 'dries' https://www.drupal.org/u/dries
+- Angela Byron 'webchick' https://www.drupal.org/u/webchick
 - Gábor Hojtsy 'Gábor Hojtsy' https://www.drupal.org/u/gábor-hojtsy
-- Lauri Eskola 'lauriii' https://www.drupal.org/u/lauriii
 - Roy Scholten 'yoroy' https://www.drupal.org/u/yoroy
 
 Framework managers
@@ -31,20 +31,19 @@ Framework managers
   - Lee Rowlands 'larowlan' https://www.drupal.org/u/larowlan
 
   Frontend
-  - Ben Mullins 'bnjmnm' https://www.drupal.org/u/bnjmnm
-  - (provisional) Théodore Biadala 'nod_' https://www.drupal.org/u/nod_
+  - Lauri Eskola 'lauriii' https://www.drupal.org/u/lauriii
   - (provisional) Cristina Chumillas 'ckrina' https://www.drupal.org/u/ckrina
-  - (provisional) Sally Young 'justafish' https://www.drupal.org/u/justafish
+  - (provisional) Ben Mullins 'bnjmnm' https://www.drupal.org/u/bnjmnm
 
 Release managers
 - Nathaniel Catchpole 'catch' https://www.drupal.org/u/catch
 - Jess Myrbo 'xjm' https://www.drupal.org/u/xjm
-- Victoria Spagnolo 'quietone' https://www.drupal.org/u/quietone
 - (provisional) Dave Long 'longwave' https://www.drupal.org/u/longwave
+- (provisional) Victoria Spagnolo 'quietone' https://www.drupal.org/u/quietone
 
 Core JavaScript packages
- - Théodore Biadala 'nod_' https://www.drupal.org/u/nod_
- - Sally Young 'justafish' https://www.drupal.org/u/justafish
+ - (provisional) Théodore Biadala 'nod_' https://www.drupal.org/u/nod_
+ - (provisional) Sally Young 'justafish' https://www.drupal.org/u/justafish
 
 Committer team facilitators
 - Pamela Barone 'pameeela' https://www.drupal.org/u/pameeela
@@ -58,9 +57,6 @@ information on their responsibilities, and to find out how to become a subsystem
 maintainer. Current subsystem maintainers:
 
 Actions
-- ?
-
-Aggregator
 - ?
 
 Ajax
@@ -79,11 +75,8 @@ Automated Cron
 Ban
 - ?
 
-Bartik
-- Emma Maria Karayiannis 'emma.maria' https://www.drupal.org/u/emma.maria
-
 Base system
-- See "Framework managers" above.
+- ?
 
 Basic Auth
 - Juampy Novillo Requena 'juampy' https://www.drupal.org/u/juampy
@@ -116,11 +109,6 @@ Breakpoint
 Cache
 - Nathaniel Catchpole 'catch' https://www.drupal.org/u/catch
 
-CKEditor
-- Henrik Danielsson 'TwoD' https://www.drupal.org/u/TwoD
-- Wim Leers 'Wim Leers' https://www.drupal.org/u/wim-leers
-- Marek 'mlewand' Lewandowski https://www.drupal.org/u/mlewand
-
 CKEditor 5
 - Lauri Eskola 'lauriii' https://www.drupal.org/u/lauriii
 - Wim Leers 'Wim Leers' https://www.drupal.org/u/wim-leers
@@ -132,18 +120,13 @@ Claro
 - Lauri Eskola 'lauriii' https://www.drupal.org/u/lauriii
 - Ben Mullins 'bnjmnm' https://www.drupal.org/u/bnjmnm
 
-Classy
-- David Hernandez 'davidhernandez' https://www.drupal.org/u/davidhernandez
-
-Color
-- ?
-
 Comment
 - Lee Rowlands 'larowlan' https://www.drupal.org/u/larowlan
 - Andrey Postnikov 'andypost' https://www.drupal.org/u/andypost
 
 Configuration API
 - Alex Pott 'alexpott' https://www.drupal.org/u/alexpott
+- Matthew Tift 'mtift' https://www.drupal.org/u/mtift
 
 Configuration Entity API
 - Alex Pott 'alexpott' https://www.drupal.org/u/alexpott
@@ -154,6 +137,7 @@ Configuration UI
 
 Configuration Translation
 - Gábor Hojtsy 'Gábor Hojtsy' https://www.drupal.org/u/gábor-hojtsy
+- Tobias Zimmermann 'tstoeckler' https://www.drupal.org/u/tstoeckler
 - Vijayachandran Mani 'vijaycs85' https://www.drupal.org/u/vijaycs85
 
 Contact
@@ -215,6 +199,7 @@ Entity API
 - Nathaniel Catchpole 'catch' https://www.drupal.org/u/catch
 - Hristo Chonov 'hchonov' https://www.drupal.org/u/hchonov
 - Sascha Grossenbacher 'Berdir' https://www.drupal.org/u/berdir
+- Tobias Zimmermann 'tstoeckler' https://www.drupal.org/u/tstoeckler
 
 Extension API
 - ?
@@ -241,9 +226,6 @@ Form API
 
 History
 - Andrey Postnikov 'andypost' https://www.drupal.org/u/andypost
-
-Hypertext Application Language (HAL)
-- ?
 
 Help
 - ?
@@ -335,7 +317,6 @@ Olivero
 - Putra Bonaccorsi 'proeung' https://www.drupal.org/u/proeung
 - Jen Witkowski 'jwitkowski79' https://www.drupal.org/u/jwitkowski79
 - Konstantin Shupenko 'kostyashupenko' https://www.drupal.org/u/kostyashupenko
-- Andy Blum 'andy-blum' https://www.drupal.org/u/andy-blum
 
 Options
 - ?
@@ -361,9 +342,6 @@ Queue
 Quick Edit
 - Wim Leers 'Wim Leers' https://www.drupal.org/u/wim-leers
 - Théodore Biadala 'nod_' https://www.drupal.org/u/nod_
-
-RDF
-- ?
 
 Render API
 - Alex Bronstein 'effulgentsia' https://www.drupal.org/u/effulgentsia
@@ -392,14 +370,9 @@ Serialization
 Settings Tray
 - Ted Bowman 'tedbow' https://www.drupal.org/u/tedbow
 
-Seven
-- ?
-
 Shortcut
+- Tobias Zimmermann 'tstoeckler' https://www.drupal.org/u/tstoeckler
 - Jibran Ijaz 'jibran' https://www.drupal.org/u/jibran
-
-Stable
-- ?
 
 Stark
 - John Albin Wilkins 'JohnAlbin' https://www.drupal.org/u/johnalbin
@@ -418,7 +391,7 @@ Taxonomy
 - Nathaniel Catchpole 'catch' https://www.drupal.org/u/catch
 
 Telephone
-- Stephen Mustgrave 'smustgrave' https://www.drupal.org/u/smustgrave
+- ?
 
 Testing framework
 - Alex Pott 'alexpott' https://www.drupal.org/u/alexpott
@@ -427,7 +400,7 @@ Testing framework
 - Alberto M. 'mondrake' https://www.drupal.org/u/mondrake
 
 Text Field
-- Stephen Mustgrave 'smustgrave' https://www.drupal.org/u/smustgrave
+- ?
 
 Theme API
 - Alex Bronstein 'effulgentsia' https://www.drupal.org/u/effulgentsia

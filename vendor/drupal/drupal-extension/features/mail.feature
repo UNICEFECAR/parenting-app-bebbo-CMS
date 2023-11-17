@@ -1,4 +1,4 @@
-@api @d8
+@api
 Feature: MailContext
   In order to prove the Mail context is working properly
   As a developer
@@ -73,7 +73,7 @@ Feature: MailContext
       | subject | test link                               |
       | body    | A link to Google: http://www.Google.com |
     And I follow the link to "google" from the mail with the subject "test link"
-    Then I should see "Search"
+    Then the response should contain "Search"
 
   Scenario: We try to be order insensitive
     When Drupal sends an email:

@@ -11,8 +11,6 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
  * @see \Drupal\Core\Queue\QueueWorkerManager
  * @see \Drupal\Core\Annotation\QueueWorker
  * @see plugin_api
- *
- * @ingroup queue
  */
 interface QueueWorkerInterface extends PluginInspectionInterface {
 

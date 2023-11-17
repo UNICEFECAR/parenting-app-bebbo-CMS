@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - simplenews
+id: simplenews.subscribe
+configuration:
+  email_subject:
+    value: 'Confirmation for [site:name]'
+  email_body:
+    content:
+      value: |-
+        <p>We have received a request to subscribe [simplenews-subscriber:mail] at <a href="[site:url]">[site:name]</a>.
+        Please use this link to <a href="[simplenews-subscriber:combined-url]">confirm your subscribtion</a>.</p>
+      format: email_html

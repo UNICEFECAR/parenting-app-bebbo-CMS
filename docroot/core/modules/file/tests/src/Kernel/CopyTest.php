@@ -185,7 +185,6 @@ class CopyTest extends FileManagedUnitTestBase {
    */
   public function testInvalidStreamWrapper() {
     $this->expectException(InvalidStreamWrapperException::class);
-    $this->expectExceptionMessage('Invalid stream wrapper: foo://');
     $source = $this->createFile();
     $this->fileRepository->copy($source, 'foo://');
   }

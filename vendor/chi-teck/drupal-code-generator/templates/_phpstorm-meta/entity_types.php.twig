@@ -1,0 +1,62 @@
+<?php declare(strict_types = 1);
+
+namespace PHPSTORM_META {
+
+  // Entity types.
+  expectedReturnValues(
+    \Drupal\Core\Entity\EntityInterface::getEntityTypeId(),
+{% for entity_type_id in entity_types %}
+    '{{ entity_type_id }}',
+{% endfor %}
+  );
+
+  // Storages.
+  override(
+    \Drupal\Core\Entity\EntityTypeManagerInterface::getStorage(0),
+    map([
+{% for entity_type_id, class in handlers.storages %}
+      '{{ entity_type_id }}' => '{{ class }}',
+{% endfor %}
+    ])
+  );
+
+  // View builders.
+  override(
+    \Drupal\Core\Entity\EntityTypeManagerInterface::getViewBuilder(0),
+    map([
+{% for entity_type_id, class in handlers.view_builders %}
+      '{{ entity_type_id }}' => '{{ class }}',
+{% endfor %}
+    ])
+  );
+
+  // List builders.
+  override(
+    \Drupal\Core\Entity\EntityTypeManagerInterface::getListBuilder(0),
+    map([
+{% for entity_type_id, class in handlers.list_builders %}
+      '{{ entity_type_id }}' => '{{ class }}',
+{% endfor %}
+    ])
+  );
+
+  // Access control handlers.
+  override(
+    \Drupal\Core\Entity\EntityTypeManagerInterface::getAccessControlHandler(0),
+    map([
+{% for entity_type_id, class in handlers.access_controls %}
+     '{{ entity_type_id }}' => '{{ class }}',
+{% endfor %}
+    ])
+  );
+
+  // Class methods.
+{% for class in handlers.classes %}
+{# Using map() to work around PhpStorm bug. #}
+{# @see https://intellij-support.jetbrains.com/hc/en-us/community/posts/360001516519 #}
+  override({{ class }}::loadMultiple(), map(['' => '{{ class }}[]']));
+  override({{ class }}::load(), map(['' => '{{ class }}']));
+  override({{ class }}::create(), map(['' => '{{ class }}']));
+
+{% endfor %}
+}

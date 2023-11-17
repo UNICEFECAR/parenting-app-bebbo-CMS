@@ -20,7 +20,7 @@ class ClassyLayout extends LayoutDefault implements PluginFormInterface {
     $build['#attributes']['class'] = $build['#attributes']['class'] ?? [];
     $definitions = $this->getPluginDefinition()->get('classes');
     foreach ($classes as $key => $class_set) {
-      $definition = $definitions[$key];
+      $definition = $definitions[$key] ?? NULL;
       if (is_string($class_set) && $class_set) {
         $build['#attributes']['class'][] = $class_set;
       }
@@ -66,7 +66,11 @@ class ClassyLayout extends LayoutDefault implements PluginFormInterface {
       if (empty($class_definition['options']) || !is_array($class_definition['options'])) {
         throw new \Exception('The "options" key is required for layout class definitions.');
       }
-      $definition_default = $class_definition['default'] ?? NULL;
+      if ($class_definition['multiple'])  {
+        $definition_default = $class_definition['default'] ?? [];
+      } else {
+        $definition_default = NULL;
+      }
       $form['classes'][$key] = [
         '#title' => $class_definition['label'] ?? $this->t('Classes'),
         '#type' => 'select',

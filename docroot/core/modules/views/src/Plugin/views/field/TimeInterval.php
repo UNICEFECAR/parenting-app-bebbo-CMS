@@ -82,10 +82,7 @@ class TimeInterval extends FieldPluginBase {
    */
   public function render(ResultRow $values) {
     $value = $values->{$this->field_alias};
-    if ($value != NULL) {
-      return $this->dateFormatter->formatInterval((int) $value, $this->options['granularity'] ?? 2);
-    }
-    return '';
+    return $this->dateFormatter->formatInterval((int) $value, $this->options['granularity'] ?? 2);
   }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
@@ -12,7 +14,7 @@ use Drupal\Tests\migrate\Kernel\MigrateTestBase;
  *
  * @group migrate_plus
  */
-class MigrationConfigEntityTest extends MigrateTestBase {
+final class MigrationConfigEntityTest extends MigrateTestBase {
 
   /**
    * {@inheritdoc}

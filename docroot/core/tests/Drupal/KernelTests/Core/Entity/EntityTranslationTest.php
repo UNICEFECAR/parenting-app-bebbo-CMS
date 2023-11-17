@@ -827,7 +827,8 @@ class EntityTranslationTest extends EntityLanguageTestBase {
   }
 
   /**
-   * Tests that translation statuses are correct after removing translations.
+   * Tests if entity translation statuses are correct after removing two
+   * translation.
    */
   public function testDeleteEntityTranslation() {
     $entity_type = 'entity_test_mul';

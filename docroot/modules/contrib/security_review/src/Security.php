@@ -271,8 +271,6 @@ class Security {
       'select',
       'style',
       'svg',
-      'table',
-      'td',
       'textarea',
       'title',
       'video',

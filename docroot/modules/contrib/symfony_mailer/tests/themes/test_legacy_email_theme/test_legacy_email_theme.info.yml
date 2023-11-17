@@ -1,0 +1,10 @@
+name: 'Theme for testing legacy template rendering'
+type: theme
+description: 'Test theme which provides an alternative template for legacy test email.'
+base theme: stark
+core_version_requirement: ^9.4 || ^10
+
+# Information added by Drupal.org packaging script on 2023-10-23
+version: '1.4.0'
+project: 'symfony_mailer'
+datestamp: 1698076486

@@ -13,8 +13,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\BrowserTestBase;
 
-// cspell:ignore viewsviewfiles
-
 /**
  * Translate settings and entities to various languages.
  *
@@ -648,7 +646,8 @@ class ConfigTranslationUiTest extends BrowserTestBase {
   }
 
   /**
-   * Tests plural source elements in configuration translation forms.
+   * Tests the number of source elements for plural strings in config
+   * translation forms.
    */
   public function testPluralConfigStringsSourceElements() {
     $this->drupalLogin($this->adminUser);
@@ -1162,25 +1161,6 @@ class ConfigTranslationUiTest extends BrowserTestBase {
     $this->drupalGet('admin/config/system/site-information');
     $this->submitForm($edit, 'Save configuration');
     $this->assertSession()->pageTextContains('The configuration options have been saved.');
-  }
-
-  /**
-   * Get server-rendered contextual links for the given contextual link ids.
-   *
-   * @param array $ids
-   *   An array of contextual link ids.
-   * @param string $current_path
-   *   The Drupal path for the page for which the contextual links are rendered.
-   *
-   * @return string
-   *   The response body.
-   */
-  protected function renderContextualLinks($ids, $current_path) {
-    $post = [];
-    for ($i = 0; $i < count($ids); $i++) {
-      $post['ids[' . $i . ']'] = $ids[$i];
-    }
-    return $this->drupalPostWithFormat('contextual/render', 'json', $post, ['query' => ['destination' => $current_path]]);
   }
 
   /**

@@ -34,7 +34,6 @@ class PrivateFiles extends Check {
     $file_directory_path = PrivateStream::basePath();
     $visible = TRUE;
 
-    /** @var \Symfony\Component\Filesystem\Filesystem A Symfony Filesystem */
     $filesystem = new Filesystem();
 
     if (empty($file_directory_path)) {

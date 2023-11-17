@@ -8,7 +8,7 @@
 /**
  * Converts 8.0.x core migration entities to 8.1.x migrate_plus entities.
  */
-function migrate_plus_update_8100() {
+function migrate_plus_update_8100(): void {
   // We cannot use the configration entity system directly, because the entity
   // type migrate.migration.* no longer exists - we must directly manipulate
   // the config table.

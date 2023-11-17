@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Symfony Mailer Legacy Email test module.
+ */
+
+use Drupal\symfony_mailer_legacy_test\Form\LegacyTestEmailForm;
+
+/**
+ * Implements hook_mail().
+ */
+function symfony_mailer_legacy_test_mail($key, &$message, $params) {
+  if ($key == 'legacy_test') {
+    $message['subject'] = 'Legacy email sent via hook_mail().';
+    $message['body'][] = 'This email is sent via hook_mail().';
+    $message['body'][] = symfony_mailer_legacy_test_add_template_to_body();
+    $message['headers']['Cc'] = LegacyTestEmailForm::ADDRESS_CC;
+    $message['headers']['bcc'] = LegacyTestEmailForm::ADDRESS_BCC;
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function symfony_mailer_legacy_test_mail_alter(&$message) {
+  if ($message['id'] == 'symfony_mailer_legacy_test_legacy_test') {
+    $message['body'][] = 'This email was altered via hook_mail_alter().';
+  }
+}
+
+/**
+ * Adds a rendered (Twig) template file to the body of the test email message.
+ *
+ * This mimics the logic implemented in Drupal Commerce, when sending the
+ * "commerce order receipt" mail.
+ */
+function symfony_mailer_legacy_test_add_template_to_body() {
+  /** @var \Drupal\Core\Theme\ThemeManagerInterface $theme_manager */
+  $theme_manager = \Drupal::service('theme.manager');
+  /** @var \Drupal\Core\Render\RendererInterface $renderer */
+  $renderer = \Drupal::service('renderer');
+  $current_theme = $theme_manager->getActiveTheme()->getName();
+  $template = [
+    '#theme' => 'legacy_test_email',
+    '#current_theme' => $current_theme,
+  ];
+  return $renderer->render($template);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function symfony_mailer_legacy_test_theme() {
+  return [
+    'legacy_test_email' => [
+      'variables' => ['current_theme' => NULL],
+    ],
+  ];
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_example\Kernel;
 
 use Drupal\node\Entity\NodeType;
@@ -10,7 +12,7 @@ use Drupal\Tests\migrate_drupal\Kernel\MigrateDrupalTestBase;
  *
  * @group migrate_plus
  */
-class MigrateExampleTest extends MigrateDrupalTestBase {
+final class MigrateExampleTest extends MigrateDrupalTestBase {
 
   /**
    * {@inheritdoc}
@@ -57,7 +59,7 @@ class MigrateExampleTest extends MigrateDrupalTestBase {
   /**
    * Tests the results of "Beer" example migration.
    */
-  public function testBeerMigration() {
+  public function testBeerMigration(): void {
     $users = \Drupal::entityTypeManager()->getStorage('user')->loadMultiple();
     $this->assertCount(4, $users);
 

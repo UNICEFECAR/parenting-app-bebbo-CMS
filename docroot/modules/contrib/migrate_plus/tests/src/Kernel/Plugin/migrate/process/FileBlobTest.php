@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate\process;
 
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate\MigrateExecutableInterface;
+use Drupal\migrate\Plugin\MigratePluginManagerInterface;
 use Drupal\migrate\Row;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
@@ -14,7 +17,7 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\FileBlob
  * @group migrate_plus
  */
-class FileBlobTest extends KernelTestBase {
+final class FileBlobTest extends KernelTestBase {
 
   use UserCreationTrait;
 
@@ -29,31 +32,23 @@ class FileBlobTest extends KernelTestBase {
 
   /**
    * The process plugin manager.
-   *
-   * @var \Drupal\migrate\Plugin\MigratePluginManagerInterface
    */
-  protected $pluginManager;
+  protected ?MigratePluginManagerInterface $pluginManager;
 
   /**
    * The blob representation of a cat image.
-   *
-   * @var string
    */
-  protected $blob;
+  protected ?string $blob;
 
   /**
    * The sha1sum of the blob.
-   *
-   * @var string
    */
-  protected $sha1sum;
+  protected ?string $sha1sum;
 
   /**
    * The filesystem interface.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
    */
-  protected $filesystem;
+  protected ?FileSystemInterface $filesystem = NULL;
 
   /**
    * {@inheritdoc}

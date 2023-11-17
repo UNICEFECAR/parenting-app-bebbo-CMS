@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
 class ContainerForm extends ForumForm {
 
   /**
-   * Reusable URL stub to use in watchdog messages.
+   * Reusable url stub to use in watchdog messages.
    *
    * @var string
    */

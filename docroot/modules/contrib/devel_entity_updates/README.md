@@ -24,7 +24,8 @@ no longer supported. Just run the `drush entup` command as before.
 Do not use this to fix the `Mismatched entity and/or field definitions` error:
 again this is not meant to fix production sites.
 
-If you encounter that error you should identify which module defines the problematic
-entity type or field type and open a bug report or support request in its queue.
+If you encounter that error you should identify which module defines the
+problematic entity type or field type and open a bug report or support request
+in its queue.
 
-This version is compatible with Drupal 9 and Drush 9.6+
+This version is compatible with Drupal 9+ and Drush 11+

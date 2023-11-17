@@ -14,19 +14,26 @@ use Psr\Container\ContainerInterface;
 use function sprintf;
 
 /**
- * Delegator factory responsible for instantiating lazy loading value holder proxies of
+ * Delegator factory responsible of instantiating lazy loading value holder proxies of
  * given services at runtime
  *
  * @link https://github.com/Ocramius/ProxyManager/blob/master/docs/lazy-loading-value-holder.md
  */
 final class LazyServiceFactory implements DelegatorFactoryInterface
 {
+    private LazyLoadingValueHolderFactory $proxyFactory;
+
+    /** @var array<string, class-string> map of service names to class names */
+    private array $servicesMap;
+
     /**
      * @param array<string, class-string> $servicesMap A map of service names to
      *     class names of their respective classes
      */
-    public function __construct(private LazyLoadingValueHolderFactory $proxyFactory, private array $servicesMap)
+    public function __construct(LazyLoadingValueHolderFactory $proxyFactory, array $servicesMap)
     {
+        $this->proxyFactory = $proxyFactory;
+        $this->servicesMap  = $servicesMap;
     }
 
     /**
@@ -38,7 +45,7 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)
     {
         if (isset($this->servicesMap[$name])) {
-            $initializer = static function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback): bool {
+            $initializer = function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback) {
                 $proxy->setProxyInitializer(null);
                 $wrappedInstance = $callback();
 

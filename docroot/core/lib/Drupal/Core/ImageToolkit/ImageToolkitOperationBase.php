@@ -86,7 +86,8 @@ abstract class ImageToolkitOperationBase extends PluginBase implements ImageTool
   abstract protected function arguments();
 
   /**
-   * Checks for required arguments and adds optional argument defaults.
+   * Checks if required arguments are passed in and adds defaults for non passed
+   * in optional arguments.
    *
    * Image toolkit operation implementers should not normally need to override
    * this method as they should place their own validation in validateArguments.

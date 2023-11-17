@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Kernel\Plugin\migrate_plus\data_fetcher;
 
 use Drupal\KernelTests\KernelTestBase;
@@ -11,7 +13,7 @@ use Drupal\migrate_plus\Plugin\migrate_plus\data_fetcher\Http;
  * @group migrate_plus
  * @package Drupal\Tests\migrate_plus\Unit\migrate_plus\data_fetcher
  */
-class HttpTest extends KernelTestBase {
+final class HttpTest extends KernelTestBase {
 
   /**
    * Test http headers option.

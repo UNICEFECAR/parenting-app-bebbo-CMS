@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus;
 
 use Drupal\Core\Plugin\PluginBase;
@@ -20,19 +22,17 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    *
    * @var string[]
    */
-  protected $urls;
+  protected ?array $urls;
 
   /**
    * Index of the currently-open url.
-   *
-   * @var int
    */
-  protected $activeUrl;
+  protected ?int $activeUrl = NULL;
 
   /**
    * String indicating how to select an item's data from the source.
    *
-   * @var string
+   * @var string|int
    */
   protected $itemSelector;
 
@@ -45,17 +45,13 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
 
   /**
    * Value of the ID for the current item when iterating.
-   *
-   * @var string
    */
-  protected $currentId = NULL;
+  protected ?array $currentId = NULL;
 
   /**
    * The data retrieval client.
-   *
-   * @var \Drupal\migrate_plus\DataFetcherPluginInterface
    */
-  protected $dataFetcher;
+  protected DataFetcherPluginInterface $dataFetcher;
 
   /**
    * {@inheritdoc}
@@ -69,17 +65,14 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     return new static($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
    * Returns the initialized data fetcher plugin.
-   *
-   * @return \Drupal\migrate_plus\DataFetcherPluginInterface
-   *   The data fetcher plugin.
    */
-  public function getDataFetcherPlugin() {
+  public function getDataFetcherPlugin(): DataFetcherPluginInterface {
     if (!isset($this->dataFetcher)) {
       $this->dataFetcher = \Drupal::service('plugin.manager.migrate_plus.data_fetcher')->createInstance($this->configuration['data_fetcher_plugin'], $this->configuration);
     }
@@ -96,7 +89,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
   }
 
   /**
-   * Implementation of Iterator::next().
+   * {@inheritdoc}
    */
   #[\ReturnTypeWillChange]
   public function next() {
@@ -131,26 +124,18 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    *
    * @param string $url
    *   URL to open.
-   *
-   * @return bool
-   *   TRUE if the URL was successfully opened, FALSE otherwise.
    */
-  abstract protected function openSourceUrl($url);
+  abstract protected function openSourceUrl(string $url): bool;
 
   /**
    * Retrieves the next row of data. populating currentItem.
-   *
-   * Retrieves from the open source URL.
    */
-  abstract protected function fetchNextRow();
+  abstract protected function fetchNextRow(): void;
 
   /**
    * Advances the data parser to the next source url.
-   *
-   * @return bool
-   *   TRUE if a valid source URL was opened
    */
-  protected function nextSource() {
+  protected function nextSource(): bool {
     if (empty($this->urls)) {
       return FALSE;
     }
@@ -214,11 +199,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    */
   #[\ReturnTypeWillChange]
   public function count() {
-    $count = 0;
-    foreach ($this as $item) {
-      $count++;
-    }
-    return $count;
+    return iterator_count($this);
   }
 
   /**
@@ -227,7 +208,7 @@ abstract class DataParserPluginBase extends PluginBase implements DataParserPlug
    * @return string[]
    *   Array of selectors, keyed by field name.
    */
-  protected function fieldSelectors() {
+  protected function fieldSelectors(): array {
     $fields = [];
     foreach ($this->configuration['fields'] as $field_info) {
       if (isset($field_info['selector'])) {

@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerInterface;
 
 use function class_exists;
+use function get_class;
 use function gettype;
 use function is_object;
 use function method_exists;
@@ -74,7 +75,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
                 '%s expects a ConfigInterface or ContainerInterface instance as the first argument; received %s',
                 self::class,
                 is_object($configInstanceOrParentLocator)
-                    ? $configInstanceOrParentLocator::class
+                    ? get_class($configInstanceOrParentLocator)
                     : gettype($configInstanceOrParentLocator)
             ));
         }
@@ -146,7 +147,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * @param class-string<InstanceType>|string $name Service name of plugin to retrieve.
      * @param null|array<mixed> $options Options to use when creating the instance.
      * @return mixed
-     * @psalm-return ($name is class-string<InstanceType> ? InstanceType : mixed)
+     * @psalm-return ($name is class-string ? InstanceType : mixed)
      * @throws Exception\ServiceNotFoundException If the manager does not have
      *     a service definition for the instance, and the service is not
      *     auto-invokable.
@@ -173,11 +174,10 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
-     * {@inheritDoc}
-     *
+     * @param mixed $instance
      * @psalm-assert InstanceType $instance
      */
-    public function validate(mixed $instance)
+    public function validate($instance)
     {
         if (method_exists($this, 'validatePlugin')) {
             trigger_error(sprintf(
@@ -196,7 +196,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
             'Plugin manager "%s" expected an instance of type "%s", but "%s" was received',
             self::class,
             $this->instanceOf,
-            is_object($instance) ? $instance::class : gettype($instance)
+            is_object($instance) ? get_class($instance) : gettype($instance)
         ));
     }
 

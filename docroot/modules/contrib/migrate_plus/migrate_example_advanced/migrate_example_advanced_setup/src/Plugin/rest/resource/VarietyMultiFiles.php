@@ -21,13 +21,12 @@ class VarietyMultiFiles extends ResourceBase {
   /**
    * Responds to GET requests.
    *
-   * @param string $type
+   * @param string|null $type
    *   'red', 'white', or NULL to return all varieties.
    *
-   * @return \Drupal\rest\ResourceResponse
    *   The response containing the requested variety data.
    */
-  public function get($type = NULL) {
+  public function get(?string $type = NULL): ResourceResponse {
     $data = [];
     if (strtolower($type) != 'white') {
       $data['variety'][] = [
@@ -72,14 +71,13 @@ class VarietyMultiFiles extends ResourceBase {
       ];
     }
 
-    $response = new ResourceResponse($data, 200);
-    return $response;
+    return new ResourceResponse($data, 200);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function permissions() {
+  public function permissions(): array {
     // Remove permissions so the resource is available to all.
     return [];
   }

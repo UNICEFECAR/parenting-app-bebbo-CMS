@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="symfony_mailer">
+  <description>Default PHP CodeSniffer configuration for Drupal Symfony Mailer.</description>
+  <file>.</file>
+
+  <rule ref="Drupal">
+    <!-- The following rules are intentionally disabled. -->
+    <exclude name="Drupal.Arrays.Array.LongLineDeclaration"/>
+  </rule>
+
+  <rule ref="DrupalPractice"/>
+
+</ruleset>

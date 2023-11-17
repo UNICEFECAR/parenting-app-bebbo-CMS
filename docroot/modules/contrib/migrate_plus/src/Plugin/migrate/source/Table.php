@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Exception\RequirementsException;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
@@ -78,28 +81,28 @@ class Table extends SqlBase {
    *
    * @var string
    */
-  const TABLE_ALIAS = 't';
+  public const TABLE_ALIAS = 't';
 
   /**
    * The name of the destination table.
    *
    * @var string
    */
-  protected $tableName;
+  protected string $tableName;
 
   /**
    * IDMap compatible array of id fields.
    *
    * @var array
    */
-  protected $idFields;
+  protected array $idFields;
 
   /**
    * Array of fields present on the destination table.
    *
    * @var array
    */
-  protected $fields;
+  protected array $fields;
 
   /**
    * {@inheritdoc}
@@ -124,34 +127,34 @@ class Table extends SqlBase {
       $field['alias'] = static::TABLE_ALIAS;
     }
     $this->idFields = $configuration['id_fields'];
-    $this->fields = isset($configuration['fields']) ? $configuration['fields'] : [];
+    $this->fields = $configuration['fields'] ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function query() {
+  public function query(): SelectInterface {
     return $this->select($this->tableName, static::TABLE_ALIAS)->fields(static::TABLE_ALIAS, $this->fields);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function fields() {
+  public function fields(): array {
     return $this->fields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     return $this->idFields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function checkRequirements() {
+  public function checkRequirements(): void {
     if (!$this->getDatabase()->schema()->tableExists($this->tableName)) {
       throw new RequirementsException("Source database table '{$this->tableName}' does not exist", ['source_table' => $this->tableName]);
     }

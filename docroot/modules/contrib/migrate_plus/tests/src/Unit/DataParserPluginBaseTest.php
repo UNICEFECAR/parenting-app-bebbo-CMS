@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit;
 
 use Drupal\migrate_plus\DataParserPluginBase;
@@ -10,7 +12,7 @@ use Drupal\Tests\migrate\Unit\MigrateTestCase;
  *
  * @group migrate_plus
  */
-class DataParserPluginBaseTest extends MigrateTestCase {
+final class DataParserPluginBaseTest extends MigrateTestCase {
 
   /**
    * @covers ::nextSource
@@ -74,7 +76,7 @@ class DataParserPluginBaseTest extends MigrateTestCase {
 
     return $this->getMockBuilder(DataParserPluginBaseMock::class)
       ->setConstructorArgs([$configuration, $plugin_id, $plugin_definition])
-      ->setMethods(['openSourceUrl'])
+      ->onlyMethods(['openSourceUrl'])
       ->getMockForAbstractClass();
   }
 
@@ -92,7 +94,7 @@ abstract class DataParserPluginBaseMock extends DataParserPluginBase {
    *
    * phpcs:disable Generic.CodeAnalysis.UselessOverridingMethod.Found
    */
-  public function nextSource() {
+  public function nextSource(): bool {
     return parent::nextSource();
   }
 

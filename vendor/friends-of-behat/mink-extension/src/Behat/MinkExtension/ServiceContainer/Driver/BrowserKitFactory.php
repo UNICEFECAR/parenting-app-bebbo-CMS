@@ -39,6 +39,15 @@ class BrowserKitFactory implements DriverFactory
      */
     public function configure(ArrayNodeDefinition $builder)
     {
+        $builder
+            ->children()
+                ->arrayNode('http_client_parameters')
+                    ->useAttributeAsKey('key')
+                    ->prototype('variable')->end()
+                ->info('Set parameters on HttpClient (see https://symfony.com/doc/current/reference/configuration/framework.html#http-client)')
+                ->end()
+            ->end()
+        ;
     }
 
     /**
@@ -56,8 +65,15 @@ class BrowserKitFactory implements DriverFactory
             throw new \RuntimeException(sprintf('Class %s not found, did you install symfony/browser-kit 4.4+?', HttpBrowser::class));
         }
 
+        $parameters[] = $config['http_client_parameters'] ?? [];
+
+        $httpClientDefinition = new Definition(null, $parameters);
+        $httpClientDefinition->setFactory(HttpClient::class.'::create');
+
         return new Definition(BrowserKitDriver::class, [
-            new Definition(HttpBrowser::class),
+            new Definition(HttpBrowser::class, [
+                $httpClientDefinition,
+            ]),
             '%mink.base_url%',
         ]);
     }

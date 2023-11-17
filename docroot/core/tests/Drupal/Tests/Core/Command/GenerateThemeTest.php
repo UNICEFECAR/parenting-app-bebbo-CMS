@@ -27,7 +27,7 @@ class GenerateThemeTest extends QuickStartTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     if (version_compare(\SQLite3::version()['versionString'], Tasks::SQLITE_MINIMUM_VERSION) < 0) {
       $this->markTestSkipped();
     }
@@ -45,7 +45,7 @@ class GenerateThemeTest extends QuickStartTestBase {
    * @return \Symfony\Component\Process\Process
    *   The PHP process
    */
-  private function generateThemeFromStarterkit($env = NULL) : Process {
+  private function generateThemeFromStarterkit() : Process {
     $install_command = [
       $this->php,
       'core/scripts/drupal',
@@ -54,7 +54,7 @@ class GenerateThemeTest extends QuickStartTestBase {
       '--name="Test custom starterkit theme"',
       '--description="Custom theme generated from a starterkit theme"',
     ];
-    $process = new Process($install_command, NULL, $env);
+    $process = new Process($install_command, NULL);
     $process->setTimeout(60);
     return $process;
   }
@@ -262,23 +262,20 @@ exit 127
 SH;
     file_put_contents($unavailableGitPath . '/git', $bash);
     chmod($unavailableGitPath . '/git', 0755);
+    $oldPath = getenv('PATH');
+    putenv('PATH=' . $unavailableGitPath . ':' . getenv('PATH'));
     // Confirm that 'git' is no longer available.
-    $env = [
-      'PATH' => $unavailableGitPath . ':' . getenv('PATH'),
-      'COLUMNS' => 80,
-    ];
-    $process = new Process([
-      'git',
-      '--help',
-    ], NULL, $env);
-    $process->run();
-    $this->assertEquals(127, $process->getExitCode(), 'Fake git used by process.');
+    $output = [];
+    exec('git --help', $output, $status);
+    $this->assertEquals(127, $status);
 
-    $process = $this->generateThemeFromStarterkit($env);
+    $process = $this->generateThemeFromStarterkit();
     $result = $process->run();
     $this->assertEquals("[ERROR] The source theme starterkit_theme has a development version number     \n         (7.x-dev). Determining a specific commit is not possible because git is\n         not installed. Either install git or use a tagged release to generate a\n         theme.", trim($process->getOutput()), $process->getErrorOutput());
     $this->assertSame(1, $result);
     $this->assertFileDoesNotExist($this->getWorkspaceDirectory() . "/themes/test_custom_theme");
+
+    putenv('PATH=' . $oldPath . ':' . getenv('PATH'));
   }
 
   /**

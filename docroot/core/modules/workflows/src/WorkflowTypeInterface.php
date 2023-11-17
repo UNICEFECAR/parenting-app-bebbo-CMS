@@ -244,7 +244,7 @@ interface WorkflowTypeInterface extends PluginWithFormsInterface, DerivativeInsp
   public function getTransitions(array $transition_ids = NULL);
 
   /**
-   * Gets the transitions for a state for the provided direction.
+   * Gets the transition IDs for a state for the provided direction.
    *
    * @param $state_id
    *   The state to get transitions for.
@@ -253,9 +253,8 @@ interface WorkflowTypeInterface extends PluginWithFormsInterface, DerivativeInsp
    *   TransitionInterface::DIRECTION_FROM. Possible values are:
    *   TransitionInterface::DIRECTION_FROM or TransitionInterface::DIRECTION_TO.
    *
-   * @return \Drupal\workflows\TransitionInterface[]
-   *   An array of the transition objects for the state in the given direction,
-   *   keyed by transition ID.
+   * @return array
+   *   The transition IDs for a state for the provided direction.
    *
    * @see \Drupal\workflows\TransitionInterface::DIRECTION_FROM
    * @see \Drupal\workflows\TransitionInterface::DIRECTION_TO

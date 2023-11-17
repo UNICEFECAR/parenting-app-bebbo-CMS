@@ -108,7 +108,7 @@ class ToolbarController extends ControllerBase implements TrustedCallbackInterfa
     $tree = $menu_tree->transform($tree, $manipulators);
     $subtrees = [];
     // Calculated the combined cacheability of all subtrees.
-    $cacheability = CacheableMetadata::createFromRenderArray($data);
+    $cacheability = new CacheableMetadata();
     foreach ($tree as $element) {
       /** @var \Drupal\Core\Menu\MenuLinkInterface $link */
       $link = $element->link;

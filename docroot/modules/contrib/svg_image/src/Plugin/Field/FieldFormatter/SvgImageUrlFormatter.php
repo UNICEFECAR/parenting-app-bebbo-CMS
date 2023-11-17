@@ -3,8 +3,13 @@
 namespace Drupal\svg_image\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\image\Plugin\Field\FieldFormatter\ImageUrlFormatter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'image_url' formatter.
@@ -22,6 +27,27 @@ use Drupal\image\Plugin\Field\FieldFormatter\ImageUrlFormatter;
 class SvgImageUrlFormatter extends ImageUrlFormatter {
 
   /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition) {
+    $instance = parent::create($container, $configuration, $pluginId, $pluginDefinition);
+
+    // Do not override the parent constructor to set extra class properties. The
+    // constructor parameter order is different in different Drupal core
+    // releases, even in minor releases in the same Drupal core version.
+    $instance->fileUrlGenerator = $container->get('file_url_generator');
+
+    return $instance;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
@@ -33,24 +59,28 @@ class SvgImageUrlFormatter extends ImageUrlFormatter {
       return $elements;
     }
 
-    /** @var \Drupal\image\ImageStyleInterface $image_style */
-    $image_style = $this->imageStyleStorage->load($this->getSetting('image_style'));
+    /** @var \Drupal\image\ImageStyleInterface $imageStyle */
+    $imageStyle = $this->imageStyleStorage->load($this->getSetting('image_style'));
     /** @var \Drupal\file\FileInterface[] $images */
     foreach ($images as $delta => $image) {
-      $image_uri = $image->getFileUri();
+      $imageUri = $image->getFileUri();
       $isSvg = svg_image_is_file_svg($image);
-      $url = ($image_style && !$isSvg) ? $image_style->buildUrl($image_uri) : file_create_url($image_uri);
-      $url = file_url_transform_relative($url);
+      $url = ($imageStyle && !$isSvg)
+        ? $imageStyle->buildUrl($imageUri)
+        : $this->fileUrlGenerator->generateAbsoluteString($imageUri);
+
+      $url = $this->fileUrlGenerator->transformRelative($url);
 
       // Add cacheability metadata from the image and image style.
       $cacheability = CacheableMetadata::createFromObject($image);
-      if ($image_style) {
-        $cacheability->addCacheableDependency(CacheableMetadata::createFromObject($image_style));
+      if ($imageStyle) {
+        $cacheability->addCacheableDependency(CacheableMetadata::createFromObject($imageStyle));
       }
 
-      $elements[$delta] = ['#markup' => $url];
+      $elements[$delta] = ['#markup' => Markup::create($url)];
       $cacheability->applyTo($elements[$delta]);
     }
+
     return $elements;
   }
 

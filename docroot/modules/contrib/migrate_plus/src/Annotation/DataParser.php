@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Annotation;
 
 use Drupal\Component\Annotation\Plugin;
@@ -23,15 +25,11 @@ class DataParser extends Plugin {
    *
    * @var string
    */
-  public $id;
+  public string $id;
 
   /**
    * The title of the plugin.
-   *
-   * @var \Drupal\Core\Annotation\Translation
-   *
-   * @ingroup plugin_translatable
    */
-  public $title;
+  public string $title;
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
@@ -42,10 +44,10 @@ abstract class SourcePluginExtension extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
+  public function fields(): array {
     $fields = [];
     foreach ($this->fields as $field_info) {
-      $fields[$field_info['name']] = isset($field_info['label']) ? $field_info['label'] : $field_info['name'];
+      $fields[$field_info['name']] = $field_info['label'] ?? $field_info['name'];
     }
     return $fields;
   }
@@ -53,7 +55,7 @@ abstract class SourcePluginExtension extends SourcePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     return $this->ids;
   }
 

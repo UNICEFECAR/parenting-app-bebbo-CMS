@@ -41,7 +41,7 @@ abstract class MediaResourceTestBase extends EntityResourceTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     \Drupal::configFactory()
@@ -328,12 +328,8 @@ abstract class MediaResourceTestBase extends EntityResourceTestBase {
   }
 
   /**
-   * Tests the 'file_upload' REST resource plugin.
-   *
-   * This test duplicates some of the 'file_upload' REST resource plugin test
-   * coverage.
-   *
-   * @see \Drupal\Tests\rest\Functional\FileUploadResourceTestBase
+   * This duplicates some of the 'file_upload' REST resource plugin test
+   * coverage, to be able to test it on a concrete use case.
    */
   protected function uploadFile() {
     // Enable the 'file_upload' REST resource for the current format + auth.

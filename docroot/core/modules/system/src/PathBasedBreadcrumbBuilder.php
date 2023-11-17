@@ -26,9 +26,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 
 /**
- * Defines a class to build path-based breadcrumbs.
- *
- * @see \Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface
+ * Class to define the menu_link breadcrumb builder.
  */
 class PathBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   use StringTranslationTrait;
@@ -41,7 +39,7 @@ class PathBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   protected $context;
 
   /**
-   * The access check service.
+   * The menu link access service.
    *
    * @var \Drupal\Core\Access\AccessManagerInterface
    */
@@ -102,7 +100,7 @@ class PathBasedBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * @param \Drupal\Core\Routing\RequestContext $context
    *   The router request context.
    * @param \Drupal\Core\Access\AccessManagerInterface $access_manager
-   *   The access check service.
+   *   The menu link access service.
    * @param \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router
    *   The dynamic router service.
    * @param \Drupal\Core\PathProcessor\InboundPathProcessorInterface $path_processor

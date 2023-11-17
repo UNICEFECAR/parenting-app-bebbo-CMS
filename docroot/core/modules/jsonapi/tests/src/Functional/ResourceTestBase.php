@@ -216,7 +216,7 @@ abstract class ResourceTestBase extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->serializer = $this->container->get('jsonapi.serializer');
@@ -607,14 +607,21 @@ abstract class ResourceTestBase extends BrowserTestBase {
   /**
    * Sets up the necessary authorization.
    *
+   * In case of a test verifying publicly accessible REST resources: grant
+   * permissions to the anonymous user role.
+   *
+   * In case of a test verifying behavior when using a particular authentication
+   * provider: create a user with a particular set of permissions.
+   *
    * Because of the $method parameter, it's possible to first set up
-   * authorization for only GET, then add POST, et cetera. This then also
+   * authentication for only GET, then add POST, et cetera. This then also
    * allows for verifying a 403 in case of missing authorization.
    *
    * @param string $method
-   *   The HTTP method for which to set up authorization.
+   *   The HTTP method for which to set up authentication.
    *
-   * @see ::grantPermissionsToTestedRole()
+   * @see ::grantPermissionsToAnonymousRole()
+   * @see ::grantPermissionsToAuthenticatedRole()
    */
   abstract protected function setUpAuthorization($method);
 
@@ -2370,7 +2377,7 @@ abstract class ResourceTestBase extends BrowserTestBase {
     $doc_multi_value_tests['data']['attributes']['field_rest_test_multivalue'] = $this->entity->get('field_rest_test_multivalue')->getValue();
     $doc_remove_item = $doc_multi_value_tests;
     unset($doc_remove_item['data']['attributes']['field_rest_test_multivalue'][0]);
-    $request_options[RequestOptions::BODY] = Json::encode($doc_remove_item, 'api_json');
+    $request_options[RequestOptions::BODY] = Json::encode($doc_remove_item);
     $response = $this->request('PATCH', $url, $request_options);
     $this->assertResourceResponse(200, FALSE, $response);
     $updated_entity = $this->entityLoadUnchanged($this->entity->id());

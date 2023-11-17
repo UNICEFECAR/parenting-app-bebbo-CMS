@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus;
 
 /**
@@ -20,6 +22,6 @@ interface AuthenticationPluginInterface {
    *
    * @link http://docs.guzzlephp.org/en/latest/request-options.html
    */
-  public function getAuthenticationOptions();
+  public function getAuthenticationOptions(): array;
 
 }

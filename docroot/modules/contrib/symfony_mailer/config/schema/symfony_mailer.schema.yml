@@ -1,0 +1,225 @@
+# Schema for the configuration files of the Symfony Mailer module.
+
+symfony_mailer.settings:
+  type: config_object
+  label: 'Symfony Mailer settings'
+  mapping:
+    default_transport:
+      type: string
+      label: Default transport ID
+    override:
+      type: sequence
+      label: 'Override settings'
+      sequence:
+        type: integer
+        label: 'State'
+
+symfony_mailer.mailer_transport.*:
+  type: config_entity
+  label: 'Transport'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    plugin:
+      type: string
+      label: 'Plugin'
+    configuration:
+      type: symfony_mailer.transport_plugin.[%parent.plugin]
+
+symfony_mailer.transport_plugin.dsn:
+  type: mapping
+  label: 'DSN transport'
+  mapping:
+    dsn:
+      type: string
+      label: 'DSN'
+
+symfony_mailer.transport_plugin.native:
+  type: mapping
+  label: 'Native transport'
+
+symfony_mailer.transport_plugin.null:
+  type: mapping
+  label: 'Null transport'
+
+symfony_mailer.transport_plugin.sendmail:
+  type: mapping
+  label: 'Sendmail transport'
+  mapping:
+    query:
+      type: mapping
+      label: 'URL query parameters'
+      mapping:
+        command:
+          type: string
+          label: 'Sendmail command'
+
+
+symfony_mailer.transport_plugin.smtp:
+  type: mapping
+  label: 'SMTP transport'
+  mapping:
+    user:
+      type: string
+      label: 'User name'
+    pass:
+      type: string
+      label: 'Password'
+    host:
+      type: string
+      label: 'Host name'
+    port:
+      type: integer
+      label: 'Port'
+    query:
+      type: mapping
+      label: 'URL query parameters'
+      mapping:
+        verify_peer:
+          type: boolean
+          label: 'Verify peer'
+        local_domain:
+          type: string
+          label: 'HELO command domain name'
+        restart_threshold:
+          type: integer
+          label: 'Restart threshold'
+        restart_threshold_sleep:
+          type: integer
+          label: 'Restart threshold sleep'
+        ping_threshold:
+          type: integer
+          label: 'Ping threshold'
+
+symfony_mailer.mailer_policy.*:
+  type: config_entity
+  label: 'Policy'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    configuration:
+      type: sequence
+      label: 'Configuration'
+      sequence:
+        type: symfony_mailer.email_adjuster_plugin.[%key]
+
+symfony_mailer.address_adjuster_base:
+  type: mapping
+  label: 'SMTP transport'
+  mapping:
+    addresses:
+      type: sequence
+      label: 'Addresses'
+      sequence:
+        type: mapping
+        mapping:
+          value:
+            type: email
+            label: 'E-mail address'
+          display:
+            type: label
+            label: 'Display name'
+
+symfony_mailer.email_adjuster_plugin.email_bcc:
+  label: 'Bcc header'
+  type: symfony_mailer.address_adjuster_base
+
+symfony_mailer.email_adjuster_plugin.email_body:
+  type: mapping
+  label: 'Body'
+  mapping:
+    content:
+      type: text_format
+      label: 'Email body formatted text'
+
+symfony_mailer.email_adjuster_plugin.email_cc:
+  type: symfony_mailer.address_adjuster_base
+  label: 'Cc header'
+
+symfony_mailer.email_adjuster_plugin.email_from:
+  type: symfony_mailer.address_adjuster_base
+  label: 'From header'
+
+symfony_mailer.email_adjuster_plugin.email_plain:
+  type: mapping
+  label: 'Plain text alternative'
+  mapping:
+    value:
+      type: text
+      label: 'Email body'
+
+symfony_mailer.email_adjuster_plugin.email_priority:
+  type: mapping
+  label: 'Priority'
+  mapping:
+    value:
+      type: integer
+      label: 'Email subject'
+
+symfony_mailer.email_adjuster_plugin.email_reply_to:
+  type: symfony_mailer.address_adjuster_base
+  label: 'Reply-to header'
+
+symfony_mailer.email_adjuster_plugin.email_skip_sending:
+  type: mapping
+  label: 'Skip sending'
+  mapping:
+    message:
+      type: label
+      label: 'Skip message'
+
+symfony_mailer.email_adjuster_plugin.email_subject:
+  type: mapping
+  label: 'Subject'
+  mapping:
+    value:
+      type: label
+      label: 'Email subject'
+
+symfony_mailer.email_adjuster_plugin.email_theme:
+  type: mapping
+  label: 'Theme'
+  mapping:
+    theme:
+      type: label
+      label: 'Email theme'
+
+symfony_mailer.email_adjuster_plugin.email_to:
+  type: symfony_mailer.address_adjuster_base
+  label: 'To header'
+
+symfony_mailer.email_adjuster_plugin.email_transport:
+  type: mapping
+  label: 'Mailer transport'
+  mapping:
+    value:
+      type: label
+      label: 'Email body'
+
+symfony_mailer.email_adjuster_plugin.mailer_inline_css:
+  type: mapping
+  label: 'Inline CSS'
+
+symfony_mailer.email_adjuster_plugin.mailer_plain_only:
+  type: mapping
+  label: 'Plain text only'
+
+symfony_mailer.email_adjuster_plugin.mailer_url_to_absolute:
+  type: mapping
+  label: 'URL to absolute'
+
+symfony_mailer.email_adjuster_plugin.mailer_wrap_and_convert:
+  type: mapping
+  label: 'Wrap and convert'
+  mapping:
+    plain:
+      type: boolean
+      label: 'Plain text'
+    swiftmailer:
+      type: boolean
+      label: 'Emulate swiftmailer'

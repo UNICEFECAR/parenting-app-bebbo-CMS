@@ -23,9 +23,6 @@ interface AccessResultInterface {
   /**
    * Checks whether this access result indicates access is explicitly allowed.
    *
-   * Call this method to check whether someone has access, to convert an access
-   * result object to boolean.
-   *
    * @return bool
    *   When TRUE then isForbidden() and isNeutral() are FALSE.
    */
@@ -34,13 +31,8 @@ interface AccessResultInterface {
   /**
    * Checks whether this access result indicates access is explicitly forbidden.
    *
-   * Call this when optimizing an access checker (for hook_entity_access() or a
-   * route requirement): if this is TRUE, the final result will be forbidden and
-   * no further checking is necessary.
-   *
-   * Do not use this method to decide whether someone has access, to convert an
-   * access result to boolean: just because this returns FALSE, the end result
-   * might be neutral which is not allowed. Always use isAllowed() for this.
+   * This is a kill switch — both orIf() and andIf() will result in
+   * isForbidden() if either results are isForbidden().
    *
    * @return bool
    *   When TRUE then isAllowed() and isNeutral() are FALSE.
@@ -52,8 +44,6 @@ interface AccessResultInterface {
    *
    * @return bool
    *   When TRUE then isAllowed() and isForbidden() are FALSE.
-   *
-   * @internal
    */
   public function isNeutral();
 

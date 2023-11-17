@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\Tests\migrate_plus\Unit\process;
 
 use Drupal\Component\Utility\Html;
@@ -13,7 +15,7 @@ use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
  * @group migrate
  * @coversDefaultClass \Drupal\migrate_plus\Plugin\migrate\process\Dom
  */
-class DomTest extends MigrateProcessTestCase {
+final class DomTest extends MigrateProcessTestCase {
 
   /**
    * @covers ::__construct
@@ -31,6 +33,7 @@ class DomTest extends MigrateProcessTestCase {
    * @covers ::__construct
    */
   public function testConfigMethodInvalid(): void {
+    $configuration = [];
     $configuration['method'] = 'invalid';
     $value = '<p>A simple paragraph.</p>';
     $this->expectException(\InvalidArgumentException::class);
@@ -54,6 +57,7 @@ class DomTest extends MigrateProcessTestCase {
    * @covers ::import
    */
   public function testImportNonRoot(): void {
+    $configuration = [];
     $configuration['method'] = 'import';
     $value = '<p>A simple paragraph.</p>';
     $document = (new Dom($configuration, 'dom', []))
@@ -89,6 +93,7 @@ class DomTest extends MigrateProcessTestCase {
    * @covers ::import
    */
   public function testImportNonRootInvalidInput(): void {
+    $configuration = [];
     $configuration['method'] = 'import';
     $value = [1, 1];
     $this->expectException(MigrateException::class);
@@ -101,6 +106,7 @@ class DomTest extends MigrateProcessTestCase {
    * @covers ::export
    */
   public function testExportNonRoot(): void {
+    $configuration = [];
     $configuration['method'] = 'export';
     $partial = '<p>A simple paragraph.</p>';
     $document = Html::load($partial);
@@ -113,6 +119,7 @@ class DomTest extends MigrateProcessTestCase {
    * @covers ::export
    */
   public function testExportNonRootInvalidInput(): void {
+    $configuration = [];
     $configuration['method'] = 'export';
     $this->expectException(MigrateException::class);
     $this->expectExceptionMessage('Cannot export a "string".');

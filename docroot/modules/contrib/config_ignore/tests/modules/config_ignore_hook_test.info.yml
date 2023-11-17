@@ -6,7 +6,7 @@ hidden: true
 dependencies:
   - config_ignore
 
-# Information added by Drupal.org packaging script on 2023-02-10
-version: '8.x-3.0-beta2'
+# Information added by Drupal.org packaging script on 2023-11-06
+version: '8.x-3.1'
 project: 'config_ignore'
-datestamp: 1676045572
+datestamp: 1699302170

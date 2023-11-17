@@ -1,0 +1,56 @@
+<div id="tbm-admin-mm-toolitem" class="admin-toolbox">
+  <h3>{{ 'Item Configuration'|t }} (<a href="#" class="back-megamenu-toolbox">{{ 'MegaMenu Toolbox'|t }}</a>)</h3>
+  <p>{{ 'Configure each link within a menu.'|t }}</p>
+  <div class="tbm-tools-container">
+    <div id="toogle-submenu-wrapper">
+      <label class="hasTip" aria-label="{{ 'Enable or disable a submenu for this menu item.'|t }}">{{ 'Show submenu'|t }}</label>
+      <fieldset class="radio btn-group toolitem-sub">
+        <input type="radio" id="toggleSub0" class="toolbox-toggle" data-action="toggleSub" name="toggleSub" value="0" />
+        <label for="toggleSub0" title="{{ 'Disable submenu'|t }}">{{ 'No'|t }}</label>
+        <input type="radio" id="toggleSub1" class="toolbox-toggle" data-action="toggleSub" name="toggleSub" value="1" checked="checked"/>
+        <label for="toggleSub1" title="{{ 'Enable submenu'|t }}">{{ 'Yes'|t }}</label>
+        </fieldset>
+    </div>
+    <div id="toogle-group-wrapper">
+      <label class="hasTip" aria-label="{{ 'Submenu as flyout'|t }} - {{ 'When set to \'yes\', the item\'s submenu will appear when the user hovers over the menu item. When set to \'no\', the submenu links will always be visible below the menu item.'|t }}">{{ 'Submenu as flyout'|t }}</label>
+      <fieldset class="radio btn-group toolitem-group">
+        <input type="radio" id="toggleGroup0" class="toolbox-toggle" data-action="toggleGroup" name="toggleGroup" value="0"/>
+        <label for="toggleGroup0" title="{{ 'Submenu items show only when the user hovers or clicks on this item.'|t }}">{{ 'Yes'|t }}</label>
+        <input type="radio" id="toggleGroup1" class="toolbox-toggle" data-action="toggleGroup" name="toggleGroup" value="1" checked="checked"/>
+        <label for="toggleGroup1" title="{{ 'Submenu items are always visible under this item.'|t }} ">{{ 'No'|t }}</label>
+      </fieldset>
+    </div>
+    <div id="toogle-break-column-wrapper">
+      <label class="hasTip" aria-label="{{ 'Break column'|t }} - {{ 'Move the item to the left or right column, or create a new column if one does not exist on the chosen side.'|t }}">{{ 'Break column'|t }}</label>
+      <fieldset class="btn-group">
+        <a href="" class="btn toolitem-moveleft toolbox-action" data-action="moveItemsLeft" title="{{ 'Move the menu item to the left column.'|t }}">&larr;</a>
+        <a href="" class="btn toolitem-moveright toolbox-action" data-action="moveItemsRight" title="{{ 'Move the menu item to the right column.'|t }}">&rarr;</a>
+      </fieldset>      
+    </div>
+    <div>
+      <label class="hasTip" aria-label="{{ 'CSS class'|t }} - {{ 'Attach a custom CSS class to this menu item.'|t }}">{{ 'CSS class'|t }}</label>
+      <input type="text" class="input-medium toolitem-exclass toolbox-input" name="toolitem-exclass" data-name="class" value="" />
+    </div>
+    {% if fontawesome %}
+      <div>
+        <label class="hasTip" aria-label="{{ 'Icon'|t }} - {{ 'Add a Font Awesome icon for this menu item, such as \'fa fa-search\'.'|t }}">
+          {{ 'Icon'|t }}
+        </label>
+        <input type="text" class="input-medium toolitem-xicon toolbox-input" name="toolitem-xicon" data-name="xicon" value="" />
+      </div>
+    {% else %}
+      <div>
+        <label class="hasTip label--disabled" aria-label="{{ 'Icon'|t }} - {{ 'You must enable the Font Awesome module in order to add icons.'|t }}">
+          {{ 'Icon'|t }}
+        </label>
+        <input disabled type="text" class="input-medium toolitem-xicon toolbox-input" name="toolitem-xicon" data-name="xicon" value="" />
+      </div>
+    {% endif %}
+    <div>
+      <label class="hasTip" aria-label="{{ 'Item caption'|t }} - {{ 'Add a caption to this menu item. Captions appear just below the menu item text.'|t }}">
+        {{ 'Item caption'|t }}
+      </label>
+      <input type="text" class="input-large toolitem-caption toolbox-input" name="toolitem-caption" data-name="caption" value="" />
+    </div>
+  </div>
+</div>

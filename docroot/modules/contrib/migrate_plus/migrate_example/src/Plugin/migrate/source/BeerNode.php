@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_example\Plugin\migrate\source;
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
@@ -12,12 +15,12 @@ use Drupal\migrate\Row;
  *   id = "beer_node"
  * )
  */
-class BeerNode extends SqlBase {
+final class BeerNode extends SqlBase {
 
   /**
    * {@inheritdoc}
    */
-  public function query() {
+  public function query(): SelectInterface {
     // An important point to note is that your query *must* return a single row
     // for each item to be imported. Here we might be tempted to add a join to
     // migrate_example_beer_topic_node in our query, to pull in the
@@ -39,16 +42,15 @@ class BeerNode extends SqlBase {
       'image_title',
       'image_description',
     ];
-    $query = $this->select('migrate_example_beer_node', 'b')
+    return $this->select('migrate_example_beer_node', 'b')
       ->fields('b', $fields);
-    return $query;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    $fields = [
+  public function fields(): array {
+    return [
       'bid' => $this->t('Beer ID'),
       'name' => $this->t('Name of beer'),
       'body' => $this->t('Full description of the beer'),
@@ -64,14 +66,12 @@ class BeerNode extends SqlBase {
       // are available for mapping after prepareRow() is called.
       'terms' => $this->t('Applicable styles'),
     ];
-
-    return $fields;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getIds() {
+  public function getIds(): array {
     return [
       'bid' => [
         'type' => 'integer',
@@ -83,7 +83,7 @@ class BeerNode extends SqlBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
+  public function prepareRow(Row $row): bool {
     // As explained above, we need to pull the style relationships into our
     // source row here, as an array of 'style' values (the unique ID for
     // the beer_term migration).

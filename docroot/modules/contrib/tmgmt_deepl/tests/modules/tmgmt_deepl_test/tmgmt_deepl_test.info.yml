@@ -6,7 +6,7 @@ package: Testing
 dependencies:
  - tmgmt_deepl:tmgmt_deepl
 
-# Information added by Drupal.org packaging script on 2023-05-30
-version: '2.1.11'
+# Information added by Drupal.org packaging script on 2023-11-08
+version: '2.1.12'
 project: 'tmgmt_deepl'
-datestamp: 1685471517
+datestamp: 1699431419

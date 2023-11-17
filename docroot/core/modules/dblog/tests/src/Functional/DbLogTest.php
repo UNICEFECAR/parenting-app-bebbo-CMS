@@ -14,7 +14,8 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\system\Functional\Menu\AssertBreadcrumbTrait;
 
 /**
- * Verifies log entries and user access based on permissions.
+ * Generate events and verify dblog entries; verify user access to log reports
+ * based on permissions.
  *
  * @group dblog
  */
@@ -407,7 +408,8 @@ class DbLogTest extends BrowserTestBase {
   }
 
   /**
-   * Tests link escaping in the operation row of a database log detail page.
+   * Tests the escaping of links in the operation row of a database log detail
+   * page.
    */
   private function verifyLinkEscaping() {
     $link = Link::fromTextAndUrl('View', Url::fromRoute('entity.node.canonical', ['node' => 1]))->toString();
@@ -823,7 +825,7 @@ class DbLogTest extends BrowserTestBase {
    * @param string $log_message
    *   The database log message to check.
    * @param string $message
-   *   The message to pass to simpletest.
+   *   A message to display if the assertion fails.
    *
    * @internal
    */

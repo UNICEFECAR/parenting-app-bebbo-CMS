@@ -127,6 +127,11 @@ class EntityField extends FieldPluginBase implements CacheableDependencyInterfac
   protected $entityFieldRenderer;
 
   /**
+   * The fields that we are actually grouping on.
+   */
+  public array $group_fields;
+
+  /**
    * Constructs a \Drupal\field\Plugin\views\field\Field object.
    *
    * @param array $configuration
@@ -749,7 +754,7 @@ class EntityField extends FieldPluginBase implements CacheableDependencyInterfac
         $offset = 0;
       }
       else {
-        $delta_limit = (int) $this->options['delta_limit'];
+        $delta_limit = $this->options['delta_limit'];
         $offset = intval($this->options['delta_offset']);
 
         // We should only get here in this case if there is an offset, and in

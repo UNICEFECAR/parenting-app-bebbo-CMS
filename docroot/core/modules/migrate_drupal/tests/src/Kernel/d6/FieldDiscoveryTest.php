@@ -65,7 +65,7 @@ class FieldDiscoveryTest extends MigrateDrupal6TestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->installConfig(['node']);
     $this->executeMigration('d6_node_type');
@@ -89,7 +89,6 @@ class FieldDiscoveryTest extends MigrateDrupal6TestBase {
       'field_company',
       'field_company_2',
       'field_company_3',
-      'field_company_4',
       'field_sync',
       'field_multivalue',
       'field_test_text_single_checkbox',

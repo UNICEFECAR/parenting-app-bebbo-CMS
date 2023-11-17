@@ -1,6 +1,7 @@
 # Drupal Spec Tool
 
-[![Packagist](https://img.shields.io/packagist/v/acquia/drupal-spec-tool.svg)](https://packagist.org/packages/acquia/drupal-spec-tool) [![Build Status](https://app.travis-ci.com/acquia/drupal-spec-tool.svg?branch=develop)](https://app.travis-ci.com/acquia/drupal-spec-tool)
+[![Packagist](https://img.shields.io/packagist/v/acquia/drupal-spec-tool.svg)](https://packagist.org/packages/acquia/drupal-spec-tool)
+[![Tests](https://github.com/acquia/drupal-spec-tool/actions/workflows/orca.yml/badge.svg)](https://github.com/acquia/drupal-spec-tool/actions/workflows/orca.yml)
 
 This project provides a tool for specifying Drupal architecture details and generating automated tests for them. It consists of 1) [a Google Sheet](#google-sheet) for capturing specification and generating tests from it and 2) the Behat contexts that automate the generated tests ([examples](../features)).
 
@@ -8,7 +9,7 @@ This project provides a tool for specifying Drupal architecture details and gene
 
 ### Google sheet
 
-Copy [the current Google sheet](https://docs.google.com/spreadsheets/d/1pVQNyE5Rqhdnzk-6dHN5nnH_FsGfjub2_bzQF5MewSs/edit?usp=sharing) to your Google Drive:
+Copy [the current Google sheet](https://docs.google.com/spreadsheets/d/1TU_vnglPzM1kiQXOI5jefHB-CpS7ojUGsETLSeOnz_o/edit?usp=sharing) to your Google Drive:
 
 ![Google Sheet Screenshot](images/screenshot.png)
 
@@ -38,7 +39,7 @@ Assuming you already have [Behat installed](http://behat.org/en/latest/quick_sta
             - Acquia\DrupalSpecTool\Context\WorkflowContext
     ```
 
-1. Copy [the default feature files](../features) (representing the out-of-the-box configuration of Lightning) to your features directory. For example, given a [BLT](https://github.com/acquia/blt)-based project:
+1. Copy [the default feature files](../features) (representing the out-of-the-box configuration of Lightning) to your features directory. For example, given a [BLT](https://github.com/acquia/blt-behat)-based project:
 
     ```bash
     mkdir -p tests/behat/features/drupal-spec-tool
@@ -93,9 +94,12 @@ You can supplement or override out-of-the-box behavior by extending and replacin
    +        - AcmeCorp\CustomContentModelContext
    ```
 
-## Automation
+## Supporting tools
 
-Automate test updates with [`nickwilde1990/drupal-spec-tool-commands`](https://packagist.org/packages/nickwilde1990/drupal-spec-tool-commands).
+The community has provided tools to build on the Drupal Spec Tool:
+
+- [Drupal Spec Tool Commands](https://packagist.org/packages/nickwilde1990/drupal-spec-tool-commands) - Provides commands to automatically update the Google Sheet to match an existing Drupal site. This is helpful for adding the Drupal Spec Tool on a pre-existing project.
+- [Drupal Entity Generator (DEG)](https://drupal-entity-generator.readthedocs.io/) - Automatically generates Drupal configuration based on the Google Sheet, i.e., goes "the other way" and updates your Drupal site to match your specification.
 
 ## Known issues
 

@@ -3,11 +3,10 @@
 namespace Drupal\Core\Test;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
-use Drupal\Component\DependencyInjection\ReverseContainer;
 use Drupal\Core\DrupalKernel;
 
 /**
- * Kernel to mock requests to test simpletest.
+ * Kernel that is only used by mock front controllers.
  */
 class TestKernel extends DrupalKernel {
 
@@ -39,7 +38,6 @@ class TestKernel extends DrupalKernel {
     // inside those objects.
     $kernel->container = $container;
     $container->set('kernel', $kernel);
-    $container->set(ReverseContainer::class, new ReverseContainer($container));
     \Drupal::setContainer($container);
     return $container;
   }

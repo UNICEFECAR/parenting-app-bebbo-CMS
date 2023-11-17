@@ -1,0 +1,10 @@
+services:
+  tb_megamenu.menu_builder:
+    class: Drupal\tb_megamenu\TBMegaMenuBuilder
+    arguments: [
+      '@logger.factory',
+      '@menu.link_tree',
+      '@entity_type.manager',
+      '@path.matcher',
+      '@menu.tree_storage'
+    ]

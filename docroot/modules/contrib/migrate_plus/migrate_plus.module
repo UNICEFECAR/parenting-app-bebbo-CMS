@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * @file
  * Provides enhancements for implementing and managing migrations.
@@ -16,7 +18,7 @@ use Drupal\migrate_plus\Event\MigratePrepareRowEvent;
 /**
  * Implements hook_migration_plugins_alter().
  */
-function migrate_plus_migration_plugins_alter(array &$migrations) {
+function migrate_plus_migration_plugins_alter(array &$migrations): void {
   foreach (array_keys($migrations) as $id) {
     // Add the default class where empty.
     if (empty($migrations[$id]['class'])) {
@@ -82,6 +84,6 @@ function migrate_plus_migration_plugins_alter(array &$migrations) {
 /**
  * Implements hook_migrate_prepare_row().
  */
-function migrate_plus_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
+function migrate_plus_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration): void {
   \Drupal::service('event_dispatcher')->dispatch(new MigratePrepareRowEvent($row, $source, $migration), MigrateEvents::PREPARE_ROW);
 }

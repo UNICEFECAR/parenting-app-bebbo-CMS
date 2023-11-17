@@ -266,7 +266,7 @@ class UrlConversionTest extends UnitTestCase {
    *
    * @return array
    *   Array of arrays with the following elements:
-   *   - An invalid URL string.
+   *   - An invalid Url string.
    *   - Drupal root string.
    *   - The expected exception message.
    */

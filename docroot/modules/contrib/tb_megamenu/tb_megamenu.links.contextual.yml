@@ -1,0 +1,4 @@
+tb_megamenu.block.contextual_links:
+  title: 'Configure TB Megamenu'
+  route_name: entity.tb_megamenu.edit_form
+  group: tb_megamenu_block

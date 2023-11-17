@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - core.entity_view_mode.commerce_order.email
+  module:
+    - commerce_order
+    - entity_reference_revisions
+id: commerce_order.default.email
+targetEntityType: commerce_order
+bundle: default
+mode: email
+content:
+  billing_profile:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  order_items:
+    type: commerce_order_item_table
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  total_price:
+    type: commerce_order_total_summary
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  balance: true
+  changed: true
+  completed: true
+  ip_address: true
+  mail: true
+  order_number: true
+  placed: true
+  state: true
+  store_id: true
+  total_paid: true
+  uid: true

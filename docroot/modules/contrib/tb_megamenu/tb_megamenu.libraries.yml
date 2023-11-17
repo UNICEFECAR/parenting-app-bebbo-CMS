@@ -1,0 +1,27 @@
+form.configure-megamenu:
+  version: 1.x
+  css:
+    theme:
+      dist/admin.css: {}
+  js:
+    js/toolbox.js: { scope: footer }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
+base:
+  version: 1.x
+  css:
+    theme:
+      dist/base.css: {}
+  js:
+    dist/js/frontend.js: { scope: footer }
+  dependencies:
+    - core/drupal
+
+styles:
+  version: 1.x
+  css:
+    theme:
+      dist/styles.css: {}

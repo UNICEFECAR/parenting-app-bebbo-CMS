@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the config_ignore module.
  */
 
+use Drupal\config_ignore\ConfigIgnoreConfig;
+
 /**
  * Enable the config_filter module.
  */
@@ -29,3 +31,14 @@ function config_ignore_update_8301() {
   \Drupal::cache('discovery')->delete('config_filter_plugins');
 }
 
+/**
+ * Set the new mode of config ignore to simple.
+ */
+function config_ignore_update_8302() {
+  $config = \Drupal::configFactory()->getEditable('config_ignore.settings');
+  $object = new ConfigIgnoreConfig('simple', $config->get('ignored_config_entities'));
+  // Save the config with the mode set and the settings sorted.
+  $config->set('mode', 'simple');
+  $config->set('ignored_config_entities', $object->getFormated('simple'));
+  $config->save();
+}

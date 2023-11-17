@@ -2,9 +2,9 @@
 
 namespace Drupal\Core\DependencyInjection;
 
-use Drupal\Component\DependencyInjection\ReverseContainer;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Provides dependency injection friendly methods for serialization.
@@ -34,12 +34,8 @@ trait DependencySerializationTrait {
     $vars = get_object_vars($this);
     try {
       $container = \Drupal::getContainer();
-      $reverse_container = $container->has(ReverseContainer::class) ? $container->get(ReverseContainer::class) : new ReverseContainer($container);
+      $mapping = \Drupal::service('kernel')->getServiceIdMapping();
       foreach ($vars as $key => $value) {
-        if (!is_object($value) || $value instanceof TranslatableMarkup) {
-          // Ignore properties that cannot be services.
-          continue;
-        }
         if ($value instanceof EntityStorageInterface) {
           // If a class member is an entity storage, only store the entity type
           // ID the storage is for, so it can be used to get a fresh object on
@@ -51,17 +47,33 @@ trait DependencySerializationTrait {
           $this->_entityStorages[$key] = $value->getEntityTypeId();
           unset($vars[$key]);
         }
-        elseif ($service_id = $reverse_container->getId($value)) {
-          // If a class member was instantiated by the dependency injection
-          // container, only store its ID so it can be used to get a fresh object
-          // on unserialization.
-          $this->_serviceIds[$key] = $service_id;
-          unset($vars[$key]);
+        elseif (is_object($value)) {
+          $service_id = FALSE;
+          // Special case the container.
+          if ($value instanceof SymfonyContainerInterface) {
+            $service_id = 'service_container';
+          }
+          else {
+            $id = $container->generateServiceIdHash($value);
+            if (isset($mapping[$id])) {
+              $service_id = $mapping[$id];
+            }
+          }
+          if ($service_id) {
+            // If a class member was instantiated by the dependency injection
+            // container, only store its ID so it can be used to get a fresh object
+            // on unserialization.
+            $this->_serviceIds[$key] = $service_id;
+            unset($vars[$key]);
+          }
         }
       }
     }
     catch (ContainerNotInitializedException $e) {
       // No container, no problem.
+    }
+    catch (ServiceNotFoundException $e) {
+      // No kernel, very strange, but still no problem.
     }
 
     return array_keys($vars);

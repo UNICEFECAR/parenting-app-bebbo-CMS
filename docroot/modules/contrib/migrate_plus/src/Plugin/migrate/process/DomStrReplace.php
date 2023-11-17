@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
@@ -84,7 +86,7 @@ class DomStrReplace extends DomProcessBase {
         'attribute' => [
           'attribute_options' => NULL,
         ],
-        'element' => []
+        'element' => [],
       ],
       'search' => NULL,
       'replace' => NULL,
@@ -196,10 +198,11 @@ class DomStrReplace extends DomProcessBase {
    * @return string
    *   The string to use a subject on search.
    */
-  protected function getSubject(\DOMElement $node) {
+  protected function getSubject(\DOMElement $node): string {
     switch ($this->configuration['mode']) {
       case 'attribute':
         return $node->getAttribute($this->configuration['attribute_options']['name']);
+
       case 'element':
         return $node->nodeName;
     }
@@ -211,7 +214,7 @@ class DomStrReplace extends DomProcessBase {
    * @return string
    *   The value to be searched.
    */
-  protected function getSearch() {
+  protected function getSearch(): string {
     switch ($this->configuration['mode']) {
       case 'attribute':
       case 'element':
@@ -225,7 +228,7 @@ class DomStrReplace extends DomProcessBase {
    * @return string
    *   The value to use for replacement.
    */
-  protected function getReplace() {
+  protected function getReplace(): string {
     switch ($this->configuration['mode']) {
       case 'attribute':
       case 'element':
@@ -245,7 +248,7 @@ class DomStrReplace extends DomProcessBase {
    * @param string $subject
    *   The string on which to perform the substitution.
    */
-  protected function doReplace(\DOMElement $html_node, $search, $replace, $subject) {
+  protected function doReplace(\DOMElement $html_node, string $search, string $replace, string $subject): void {
     if ($this->configuration['regex']) {
       $function = 'preg_replace';
     }
@@ -267,11 +270,12 @@ class DomStrReplace extends DomProcessBase {
    * @param string $new_subject
    *   The new value to use.
    */
-  protected function postReplace(\DOMElement $html_node, $new_subject) {
+  protected function postReplace(\DOMElement $html_node, string $new_subject): void {
     switch ($this->configuration['mode']) {
       case 'attribute':
         $html_node->setAttribute($this->configuration['attribute_options']['name'], $new_subject);
         break;
+
       case 'element':
         $new_node = $this->document->createElement($new_subject);
         foreach ($html_node->childNodes as $child) {

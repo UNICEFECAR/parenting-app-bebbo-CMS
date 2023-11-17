@@ -63,6 +63,9 @@ class ConfigWithTranslationTest extends BrowserTestBase {
       'user.role.authenticated:weight',
       'user.role.authenticated:is_admin',
     ])->save();
+
+    // Export the config ignore settings.
+    $this->drush('config:export', [], ['yes' => NULL]);
   }
 
   /**
@@ -86,9 +89,7 @@ class ConfigWithTranslationTest extends BrowserTestBase {
     $diff = (array) $this->getOutputFromJSON();
 
     // Check that only config_ignore.settings and user.settings are shown.
-    $this->assertCount(3, $diff);
-    $this->assertArrayHasKey('config_ignore.settings', $diff);
-    $this->assertSame(['name' => 'config_ignore.settings', 'state' => 'Different'], $diff['config_ignore.settings']);
+    $this->assertCount(2, $diff);
     $this->assertArrayHasKey('user.settings', $diff);
     $this->assertSame(['name' => 'user.settings', 'state' => 'Different'], $diff['user.settings']);
     $this->assertArrayHasKey('user.role.authenticated', $diff);
@@ -145,17 +146,6 @@ class ConfigWithTranslationTest extends BrowserTestBase {
    * Tests config import.
    */
   public function testConfigImport() {
-    // Add the config_ignore.settings changes in the sync store. Remember that
-    // the ignore patterns were added only in the active store, in ::setUp(),
-    // but were never exported in sync. Otherwise the values will be reverted,
-    // later, in the first config import.
-    // @see self::setUp()
-    $this->setConfigSyncValue('config_ignore.settings', 'ignored_config_entities', [
-      'user.role.anonymous',
-      'user.role.authenticated:weight',
-      'user.role.authenticated:is_admin',
-    ]);
-
     // Change configurations in the sync store.
     $this->setConfigSyncValue('user.settings', 'anonymous', 'Visitor');
     $this->setConfigSyncValue('user.role.anonymous', 'label', 'Visitor');

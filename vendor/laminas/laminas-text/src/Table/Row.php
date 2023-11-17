@@ -1,16 +1,14 @@
 <?php
 
+/**
+ * @see       https://github.com/laminas/laminas-text for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-text/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-text/blob/master/LICENSE.md New BSD License
+ */
+
 namespace Laminas\Text\Table;
 
-use Laminas\Text\Table\Column;
 use Laminas\Text\Table\Decorator\DecoratorInterface as Decorator;
-
-use function array_slice;
-use function array_sum;
-use function count;
-use function explode;
-use function max;
-use function str_repeat;
 
 /**
  * Row class for Laminas\Text\Table
@@ -27,27 +25,25 @@ class Row
     /**
      * Temporary stored column widths
      *
-     * @var array|null
+     * @var array
      */
-    protected $columnWidths;
+    protected $columnWidths = null;
 
     /**
      * Create a new column and append it to the row
      *
-     * @param string                                                                      $content
-     * @param array{align?: string|null, colSpan?: int|null, encoding?: string|null}|null $options
+     * @param  string $content
+     * @param  array  $options
      * @return Row
      */
-    public function createColumn($content, ?array $options = null)
+    public function createColumn($content, array $options = null)
     {
         $align    = null;
         $colSpan  = null;
         $encoding = null;
 
         if ($options !== null) {
-            $align    = $options['align'] ?? null;
-            $colSpan  = $options['colSpan'] ?? null;
-            $encoding = $options['encoding'] ?? null;
+            extract($options, EXTR_IF_EXISTS);
         }
 
         $column = new Column($content, $align, $colSpan, $encoding);
@@ -60,7 +56,7 @@ class Row
     /**
      * Append a column to the row
      *
-     * @param  Column $column The column to append to the row
+     * @param  \Laminas\Text\Table\Column $column The column to append to the row
      * @return Row
      */
     public function appendColumn(Column $column)
@@ -100,7 +96,7 @@ class Row
     /**
      * Get the widths of all columns, which were rendered last
      *
-     * @throws Exception\UnexpectedValueException When no columns were rendered yet.
+     * @throws Exception\UnexpectedValueException When no columns were rendered yet
      * @return int
      */
     public function getColumnWidths()
@@ -120,7 +116,7 @@ class Row
      * @param  array                               $columnWidths Width of all columns
      * @param  Decorator $decorator    Decorator for the row borders
      * @param  int                             $padding      Padding for the columns
-     * @throws Exception\OverflowException When there are too many columns.
+     * @throws Exception\OverflowException When there are too many columns
      * @return string
      */
     public function render(array $columnWidths, Decorator $decorator, $padding = 0)
@@ -148,7 +144,7 @@ class Row
             }
 
             // Calculate the column width
-            $columnWidth = $colSpan - 1 + array_sum(array_slice($columnWidths, $colNum, $colSpan));
+            $columnWidth = ($colSpan - 1 + array_sum(array_slice($columnWidths, $colNum, $colSpan)));
 
             // Render the column and split it's lines into an array
             $result = explode("\n", $column->render($columnWidth, $padding));
@@ -167,7 +163,7 @@ class Row
         // If the row doesnt contain enough columns to fill the entire row, fill
         // it with an empty column
         if ($colNum < count($columnWidths)) {
-            $remainingWidth    = (count($columnWidths) - $colNum - 1) +
+            $remainingWidth = (count($columnWidths) - $colNum - 1) +
                                array_sum(array_slice($columnWidths, $colNum));
             $renderedColumns[] = [str_repeat(' ', $remainingWidth)];
 

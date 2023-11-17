@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Component\Utility\Html;
@@ -80,17 +82,13 @@ class Dom extends ProcessPluginBase {
 
   /**
    * If parsing warnings should be logged as migrate messages.
-   *
-   * @var bool
    */
-  protected $logMessages = TRUE;
+  protected bool $logMessages = TRUE;
 
   /**
    * The HTML contains only the piece inside the body element.
-   *
-   * @var bool
    */
-  protected $nonRoot = TRUE;
+  protected bool $nonRoot = TRUE;
 
   /**
    * {@inheritdoc}
@@ -115,11 +113,10 @@ class Dom extends ProcessPluginBase {
   /**
    * Supply default values of all optional parameters.
    *
-   * @return array
    *   An array with keys the optional parameters and values the corresponding
    *   defaults.
    */
-  protected function defaultValues() {
+  protected function defaultValues(): array {
     return [
       'non_root' => TRUE,
       'log_messages' => TRUE,
@@ -147,19 +144,18 @@ class Dom extends ProcessPluginBase {
    *   The destination property currently worked on. This is only used together
    *   with the $row above.
    *
-   * @return \DOMDocument
    *   The document object based on the provided string.
    *
    * @throws \Drupal\migrate\MigrateException
    *   When the received $value is not a string.
    */
-  public function import($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function import($value, MigrateExecutableInterface $migrate_executable, Row $row, string $destination_property): \DOMDocument {
     if (!is_string($value)) {
       throw new MigrateException('Cannot import a non-string value.');
     }
 
     if ($this->logMessages) {
-      set_error_handler(static function ($errno, $errstr) use ($migrate_executable) {
+      set_error_handler(static function ($errno, $errstr) use ($migrate_executable): void {
         $migrate_executable->saveMessage($errstr, MigrationInterface::MESSAGE_WARNING);
       });
     }
@@ -218,7 +214,7 @@ class Dom extends ProcessPluginBase {
    * @throws \Drupal\migrate\MigrateException
    *   When the received $value is not a \DOMDocument.
    */
-  public function export($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function export($value, MigrateExecutableInterface $migrate_executable, Row $row, string $destination_property) {
     if (!$value instanceof \DOMDocument) {
       $value_description = (gettype($value) == 'object') ? get_class($value) : gettype($value);
       throw new MigrateException(sprintf('Cannot export a "%s".', $value_description));
@@ -237,7 +233,7 @@ class Dom extends ProcessPluginBase {
    *   A subset of a full html string. For instance the contents of the body
    *   element.
    */
-  protected function getNonRootHtml($partial) {
+  protected function getNonRootHtml(string $partial): string {
     $replacements = [
       "\n" => '',
       '!encoding' => strtolower($this->configuration['encoding']),
