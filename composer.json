@@ -19,6 +19,7 @@
         "drupal/config_split": "^1.0.0",
         "drupal/config_update": "^2.0@alpha",
         "drupal/content_moderation_notifications": "^3.3",
+        "drupal/contextual_range_filter": "^1.0",
         "drupal/core-composer-scaffold": "10.0.0",
         "drupal/core-project-message": "10.0.0",
         "drupal/core-recommended": "10.0.0",
