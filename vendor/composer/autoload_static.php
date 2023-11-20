@@ -146,6 +146,7 @@ class ComposerStaticInitaaba668b6c2e79ba46e1ae3fc09102bb
         array (
             'Example\\' => 8,
             'Egulias\\EmailValidator\\' => 23,
+            'EasyRdf\\' => 8,
         ),
         'D' => 
         array (
@@ -503,6 +504,10 @@ class ComposerStaticInitaaba668b6c2e79ba46e1ae3fc09102bb
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
+        ),
+        'EasyRdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/easyrdf/easyrdf/lib',
         ),
         'Drush\\' => 
         array (

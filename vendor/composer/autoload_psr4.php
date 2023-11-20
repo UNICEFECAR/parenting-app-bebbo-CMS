@@ -83,6 +83,7 @@ return array(
     'Grasmash\\Expander\\' => array($vendorDir . '/grasmash/expander/src'),
     'Example\\' => array($baseDir . '/blt/src'),
     'Egulias\\EmailValidator\\' => array($vendorDir . '/egulias/email-validator/src'),
+    'EasyRdf\\' => array($vendorDir . '/easyrdf/easyrdf/lib'),
     'Drush\\' => array($vendorDir . '/drush/drush/src'),
     'Drupal\\mobile_app_links\\' => array($baseDir . '/docroot/modules/contrib/mobile_app_links/src'),
     'Drupal\\Tests\\PHPUnit\\' => array($baseDir . '/tests/phpunit/src'),
