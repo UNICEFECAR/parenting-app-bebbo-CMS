@@ -33,6 +33,8 @@ class SettingsTest extends UnitTestCase {
    * @covers ::__construct
    */
   protected function setUp(): void {
+    parent::setUp();
+
     $this->config = [
       'one' => '1',
       'two' => '2',
@@ -144,7 +146,6 @@ class SettingsTest extends UnitTestCase {
 
     $class = new \ReflectionClass(Settings::class);
     $instance_property = $class->getProperty("instance");
-    $instance_property->setAccessible(TRUE);
     $instance_property->setValue(NULL);
 
     $this->expectException(\BadMethodCallException::class);
@@ -198,7 +199,6 @@ class SettingsTest extends UnitTestCase {
 
     $class = new \ReflectionClass(Settings::class);
     $instance_property = $class->getProperty('deprecatedSettings');
-    $instance_property->setAccessible(TRUE);
     $deprecated_settings = $instance_property->getValue();
     $deprecated_settings['deprecated_legacy'] = $deprecated_setting;
     $instance_property->setValue($deprecated_settings);

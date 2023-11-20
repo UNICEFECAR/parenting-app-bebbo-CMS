@@ -26,9 +26,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class MockResponse implements ResponseInterface, StreamableInterface
 {
     use CommonResponseTrait;
-    use TransportResponseTrait {
-        doDestruct as public __destruct;
-    }
+    use TransportResponseTrait;
 
     private string|iterable $body;
     private array $requestOptions = [];
@@ -110,6 +108,11 @@ class MockResponse implements ResponseInterface, StreamableInterface
         $onProgress($this->offset, $dlSize, $this->info);
     }
 
+    public function __destruct()
+    {
+        $this->doDestruct();
+    }
+
     protected function close(): void
     {
         $this->inflate = null;
@@ -125,9 +128,7 @@ class MockResponse implements ResponseInterface, StreamableInterface
         $response->requestOptions = $options;
         $response->id = ++self::$idSequence;
         $response->shouldBuffer = $options['buffer'] ?? true;
-        $response->initializer = static function (self $response) {
-            return \is_array($response->body[0] ?? null);
-        };
+        $response->initializer = static fn (self $response) => \is_array($response->body[0] ?? null);
 
         $response->info['redirect_count'] = 0;
         $response->info['redirect_url'] = null;
@@ -190,11 +191,6 @@ class MockResponse implements ResponseInterface, StreamableInterface
                     $chunk[1]->getHeaders(false);
                     self::readResponse($response, $chunk[0], $chunk[1], $offset);
                     $multi->handlesActivity[$id][] = new FirstChunk();
-                    $buffer = $response->requestOptions['buffer'] ?? null;
-
-                    if ($buffer instanceof \Closure && $response->content = $buffer($response->headers) ?: null) {
-                        $response->content = \is_resource($response->content) ? $response->content : fopen('php://temp', 'w+');
-                    }
                 } catch (\Throwable $e) {
                     $multi->handlesActivity[$id][] = null;
                     $multi->handlesActivity[$id][] = $e;

@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  * When you make another call to the validator, while the validation is in
  * progress, the violations will be isolated from each other:
  *
- *     public function validate(mixed $value, Constraint $constraint)
+ *     public function validate(mixed $value, Constraint $constraint): void
  *     {
  *         $validator = $this->context->getValidator();
  *
@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  * However, if you want to add the violations to the current context, use the
  * {@link ValidatorInterface::inContext()} method:
  *
- *     public function validate(mixed $value, Constraint $constraint)
+ *     public function validate(mixed $value, Constraint $constraint): void
  *     {
  *         $validator = $this->context->getValidator();
  *
@@ -66,6 +66,8 @@ interface ExecutionContextInterface
      *
      * @param string|\Stringable $message The error message as a string or a stringable object
      * @param array              $params  The parameters substituted in the error message
+     *
+     * @return void
      */
     public function addViolation(string $message, array $params = []);
 
@@ -91,7 +93,7 @@ interface ExecutionContextInterface
      *
      * Useful if you want to validate additional constraints:
      *
-     *     public function validate(mixed $value, Constraint $constraint)
+     *     public function validate(mixed $value, Constraint $constraint): void
      *     {
      *         $validator = $this->context->getValidator();
      *
@@ -121,6 +123,8 @@ interface ExecutionContextInterface
      *
      * @param object|null $object       The currently validated object
      * @param string      $propertyPath The property path to the current value
+     *
+     * @return void
      */
     public function setNode(mixed $value, ?object $object, MetadataInterface $metadata = null, string $propertyPath);
 
@@ -128,11 +132,15 @@ interface ExecutionContextInterface
      * Warning: Should not be called by user code, to be used by the validator engine only.
      *
      * @param string|null $group The validated group
+     *
+     * @return void
      */
     public function setGroup(?string $group);
 
     /**
      * Warning: Should not be called by user code, to be used by the validator engine only.
+     *
+     * @return void
      */
     public function setConstraint(Constraint $constraint);
 
@@ -142,6 +150,8 @@ interface ExecutionContextInterface
      * @param string $cacheKey  The hash of the object
      * @param string $groupHash The group's name or hash, if it is group
      *                          sequence
+     *
+     * @return void
      */
     public function markGroupAsValidated(string $cacheKey, string $groupHash);
 
@@ -151,7 +161,6 @@ interface ExecutionContextInterface
      * @param string $cacheKey  The hash of the object
      * @param string $groupHash The group's name or hash, if it is group
      *                          sequence
-     *
      */
     public function isGroupValidated(string $cacheKey, string $groupHash): bool;
 
@@ -160,6 +169,8 @@ interface ExecutionContextInterface
      *
      * @param string $cacheKey       The hash of the object
      * @param string $constraintHash The hash of the constraint
+     *
+     * @return void
      */
     public function markConstraintAsValidated(string $cacheKey, string $constraintHash);
 
@@ -168,7 +179,6 @@ interface ExecutionContextInterface
      *
      * @param string $cacheKey       The hash of the object
      * @param string $constraintHash The hash of the constraint
-     *
      */
     public function isConstraintValidated(string $cacheKey, string $constraintHash): bool;
 
@@ -179,13 +189,12 @@ interface ExecutionContextInterface
      *
      * @see ObjectInitializerInterface
      */
-    public function markObjectAsInitialized(string $cacheKey);
+    public function markObjectAsInitialized(string $cacheKey): void;
 
     /**
      * Warning: Should not be called by user code, to be used by the validator engine only.
      *
      * @param string $cacheKey The hash of the object
-     *
      *
      * @see ObjectInitializerInterface
      */

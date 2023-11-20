@@ -111,15 +111,6 @@ abstract class WidgetBase extends PluginSettingsBase implements WidgetInterface,
       $elements = $this->formMultipleElements($items, $form, $form_state);
     }
 
-    // Allow modules to alter the field multi-value widget form element.
-    // This hook can also be used for single-value fields.
-    $context = [
-      'form' => $form,
-      'widget' => $this,
-      'items' => $items,
-      'default' => $this->isDefaultValueWidget($form_state),
-    ];
-
     // Populate the 'array_parents' information in $form_state->get('field')
     // after the form is built, so that we catch changes in the form structure
     // performed in alter() hooks.
@@ -427,7 +418,7 @@ abstract class WidgetBase extends PluginSettingsBase implements WidgetInterface,
       $element_path = implode('][', $element['#parents']);
       if ($reported_errors = $form_state->getErrors()) {
         foreach (array_keys($reported_errors) as $error_path) {
-          if (strpos($error_path, $element_path) === 0) {
+          if (str_starts_with($error_path, $element_path)) {
             return;
           }
         }

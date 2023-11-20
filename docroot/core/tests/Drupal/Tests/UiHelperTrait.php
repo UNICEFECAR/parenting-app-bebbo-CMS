@@ -208,7 +208,7 @@ trait UiHelperTrait {
    * @param string|\Drupal\Core\Url $path
    *   Drupal path or URL to load into Mink controlled browser.
    * @param array $options
-   *   (optional) Options to be forwarded to the url generator.
+   *   (optional) Options to be forwarded to the URL generator.
    * @param string[] $headers
    *   An array containing additional HTTP request headers, the array keys are
    *   the header names and the array values the header values. This is useful
@@ -264,7 +264,7 @@ trait UiHelperTrait {
    * Builds an absolute URL from a system path or a URL object.
    *
    * @param string|\Drupal\Core\Url $path
-   *   A system path or a URL.
+   *   A system path or a URL object.
    * @param array $options
    *   Options to be passed to Url::fromUri().
    *
@@ -272,6 +272,8 @@ trait UiHelperTrait {
    *   An absolute URL string.
    */
   protected function buildUrl($path, array $options = []) {
+    global $base_path;
+
     if ($path instanceof Url) {
       $url_options = $path->getOptions();
       $options = $url_options + $options;
@@ -281,6 +283,12 @@ trait UiHelperTrait {
     // The URL generator service is not necessarily available yet; e.g., in
     // interactive installer tests.
     elseif (\Drupal::hasService('url_generator')) {
+      // Strip $base_path, if existent.
+      $length = strlen($base_path);
+      if (substr($path, 0, $length) === $base_path) {
+        $path = substr($path, $length);
+      }
+
       $force_internal = isset($options['external']) && $options['external'] == FALSE;
       if (!$force_internal && UrlHelper::isExternal($path)) {
         return Url::fromUri($path, $options)->toString();

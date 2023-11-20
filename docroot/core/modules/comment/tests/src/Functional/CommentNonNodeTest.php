@@ -462,7 +462,7 @@ class CommentNonNodeTest extends BrowserTestBase {
     $this->assertSession()->checkboxChecked('edit-field-foobar-0-status-2');
     $this->assertSession()->fieldNotExists('edit-field-foobar-0-status-0');
 
-    // @todo Check proper url and form https://www.drupal.org/node/2458323
+    // @todo Check proper URL and form https://www.drupal.org/node/2458323
     $this->drupalGet('comment/reply/entity_test/comment/' . $new_entity->id());
     $this->assertSession()->fieldNotExists('subject[0][value]');
     $this->assertSession()->fieldNotExists('comment_body[0][value]');
@@ -521,6 +521,34 @@ class CommentNonNodeTest extends BrowserTestBase {
     $this->assertSession()->optionNotExists('edit-new-storage-type', 'comment');
     // Ensure a core field type shown.
     $this->assertSession()->optionExists('edit-new-storage-type', 'boolean');
+  }
+
+  /**
+   * Ensures that comment settings are not required.
+   */
+  public function testCommentSettingsNotRequired() {
+    $limited_user = $this->drupalCreateUser([
+      'administer entity_test fields',
+    ]);
+    $this->drupalLogin($limited_user);
+    $this->drupalGet('entity_test/structure/entity_test/fields/entity_test.entity_test.comment');
+
+    // Change the comments to be displayed as hidden by default.
+    $edit = [
+      'default_value_input[comment][0][status]' => CommentItemInterface::HIDDEN,
+      'settings[anonymous]' => CommentInterface::ANONYMOUS_MAY_CONTACT,
+    ];
+    $this->submitForm($edit, 'Save settings');
+
+    // Ensure that the comment settings field is not required and can be saved
+    // with the default value.
+    $this->drupalLogin($this->adminUser);
+    $this->drupalGet('/entity_test/add');
+    $edit = [
+      "name[0][value]" => 'Comment test',
+    ];
+    $this->submitForm($edit, 'Save');
+    $this->assertSession()->pageTextContains('entity_test 2 has been created.');
   }
 
 }

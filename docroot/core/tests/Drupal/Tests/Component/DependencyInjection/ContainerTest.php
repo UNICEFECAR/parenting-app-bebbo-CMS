@@ -10,6 +10,7 @@ namespace Drupal\Tests\Component\DependencyInjection;
 use Drupal\Component\Utility\Crypt;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
@@ -24,7 +25,7 @@ use Prophecy\Argument;
  * @group DependencyInjection
  */
 class ContainerTest extends TestCase {
-
+  use ExpectDeprecationTrait;
   use ProphecyTrait;
 
   /**
@@ -88,8 +89,7 @@ class ContainerTest extends TestCase {
   }
 
   /**
-   * Tests that Container::getParameter() works properly for non-existing
-   * parameters.
+   * Tests that Container::getParameter() works for non-existing parameters.
    *
    * @covers ::getParameter
    * @covers ::getParameterAlternatives
@@ -688,8 +688,12 @@ class ContainerTest extends TestCase {
   /**
    * @covers \Drupal\Component\DependencyInjection\ServiceIdHashTrait::getServiceIdMappings
    * @covers \Drupal\Component\DependencyInjection\ServiceIdHashTrait::generateServiceIdHash
+   *
+   * @group legacy
    */
   public function testGetServiceIdMappings() {
+    $this->expectDeprecation("Drupal\Component\DependencyInjection\ServiceIdHashTrait::generateServiceIdHash() is deprecated in drupal:9.5.1 and is removed from drupal:11.0.0. Use the 'Drupal\Component\DependencyInjection\ReverseContainer' service instead. See https://www.drupal.org/node/3327942");
+    $this->expectDeprecation("Drupal\Component\DependencyInjection\ServiceIdHashTrait::getServiceIdMappings() is deprecated in drupal:9.5.1 and is removed from drupal:11.0.0. Use the 'Drupal\Component\DependencyInjection\ReverseContainer' service instead. See https://www.drupal.org/node/3327942");
     $this->assertEquals([], $this->container->getServiceIdMappings());
     $s1 = $this->container->get('other.service');
     $s2 = $this->container->get('late.service');

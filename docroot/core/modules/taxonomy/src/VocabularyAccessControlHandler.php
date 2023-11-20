@@ -20,10 +20,14 @@ class VocabularyAccessControlHandler extends EntityAccessControlHandler {
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     switch ($operation) {
       case 'access taxonomy overview':
+      case 'view':
         return AccessResult::allowedIfHasPermissions($account, ['access taxonomy overview', 'administer taxonomy'], 'OR');
 
-      case 'view':
-        return AccessResult::allowedIfHasPermissions($account, ['access taxonomy overview', 'administer taxonomy', 'view vocabulary ' . $entity->id()], 'OR');
+      case 'reset all weights':
+        return AccessResult::allowedIfHasPermissions($account, [
+          'administer taxonomy',
+          'edit terms in ' . $entity->id(),
+        ], 'OR');
 
       default:
         return parent::checkAccess($entity, $operation, $account);

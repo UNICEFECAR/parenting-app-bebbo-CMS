@@ -128,8 +128,10 @@ class ManyToOneHelper {
   }
 
   /**
-   * Provide the proper join for summary queries. This is important in part because
-   * it will cooperate with other arguments if possible.
+   * Provides the proper join for summary queries.
+   *
+   * This is important in part because it will cooperate with other arguments if
+   * possible.
    */
   public function summaryJoin() {
     $field = $this->handler->relationship . '_' . $this->handler->table . '.' . $this->handler->field;
@@ -325,18 +327,18 @@ class ManyToOneHelper {
           $placeholder .= '[]';
 
           if ($operator == 'IS NULL') {
-            $this->handler->query->addWhereExpression(0, "$field $operator");
+            $this->handler->query->addWhereExpression($options['group'], "$field $operator");
           }
           else {
-            $this->handler->query->addWhereExpression(0, "$field $operator($placeholder)", [$placeholder => $value]);
+            $this->handler->query->addWhereExpression($options['group'], "$field $operator($placeholder)", [$placeholder => $value]);
           }
         }
         else {
           if ($operator == 'IS NULL') {
-            $this->handler->query->addWhereExpression(0, "$field $operator");
+            $this->handler->query->addWhereExpression($options['group'], "$field $operator");
           }
           else {
-            $this->handler->query->addWhereExpression(0, "$field $operator $placeholder", [$placeholder => $value]);
+            $this->handler->query->addWhereExpression($options['group'], "$field $operator $placeholder", [$placeholder => $value]);
           }
         }
       }

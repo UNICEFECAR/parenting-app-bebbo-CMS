@@ -13,8 +13,8 @@
 name: Claro
 type: theme
 base theme: false
-description: 'A clean, accessible, and powerful Drupal administration theme.'
-alt text: 'Screenshot of Claro, Drupal administration theme.'
+description: A clean, accessible, and powerful Drupal administration theme.
+alt text: Screenshot of Claro, Drupal administration theme.
 package: Core
 version: VERSION
 libraries:
@@ -47,12 +47,7 @@ libraries-override:
       component:
         misc/vertical-tabs.css: false
 
-  core/drupal.autocomplete:
-    css:
-      theme:
-        assets/vendor/jquery.ui/themes/base/theme.css: false
-
-  core/drupal.tabbingmanager:
+  core/internal.jquery_ui:
     css:
       theme:
         assets/vendor/jquery.ui/themes/base/theme.css: false
@@ -61,8 +56,6 @@ libraries-override:
     css:
       component:
         assets/vendor/jquery.ui/themes/base/dialog.css: false
-      theme:
-        assets/vendor/jquery.ui/themes/base/theme.css: false
 
   user/drupal.user:
     css:
@@ -109,7 +102,6 @@ libraries-extend:
     - claro/details-focus
   core/drupal.dialog:
     - claro/claro.drupal.dialog
-    - claro/claro.jquery.ui
   core/drupal.dropbutton:
     - claro/dropbutton
   core/drupal.checkbox:
@@ -119,9 +111,11 @@ libraries-extend:
   core/drupal.progress:
     - claro/progress
   core/drupal.tabbingmanager:
-    - claro/claro.jquery.ui
+    - claro/tabbingmanager
   core/drupal.tabledrag:
     - claro/claro.tabledrag
+  core/drupal.tableselect:
+    - claro/tableselect
   core/drupal.vertical-tabs:
     - claro/vertical-tabs
   file/drupal.file:
@@ -134,7 +128,6 @@ libraries-extend:
     - claro/system.admin
   core/drupal.autocomplete:
     - claro/autocomplete
-    - claro/claro.jquery.ui
   tour/tour-styling:
     - claro/tour-styling
   shortcut/drupal.shortcut:
@@ -155,14 +148,14 @@ libraries-extend:
     - claro/media_library.theme
 
 regions:
-  header: 'Header'
-  pre_content: 'Pre-content'
+  header: Header
+  pre_content: Pre-content
   breadcrumb: Breadcrumb
   highlighted: Highlighted
   help: Help
   content: Content
-  page_top: 'Page top'
-  page_bottom: 'Page bottom'
-  sidebar_first: 'First sidebar'
+  page_top: Page top
+  page_bottom: Page bottom
+  sidebar_first: First sidebar
 regions_hidden:
   - sidebar_first

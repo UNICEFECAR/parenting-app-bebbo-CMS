@@ -7,7 +7,6 @@ use Drupal\Core\Config\Entity\ConfigDependencyManager;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityTypeInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Serialization\Yaml;
@@ -120,10 +119,13 @@ class ConfigManager implements ConfigManagerInterface {
    * {@inheritdoc}
    */
   public function getEntityTypeIdByName($name) {
-    $entities = array_filter($this->entityTypeManager->getDefinitions(), function (EntityTypeInterface $entity_type) use ($name) {
-      return ($entity_type instanceof ConfigEntityTypeInterface && $config_prefix = $entity_type->getConfigPrefix()) && strpos($name, $config_prefix . '.') === 0;
-    });
-    return key($entities);
+    foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
+      if (($entity_type instanceof ConfigEntityTypeInterface && $config_prefix = $entity_type->getConfigPrefix()) && str_starts_with($name, $config_prefix . '.')) {
+        return $entity_type_id;
+      }
+    }
+
+    return NULL;
   }
 
   /**
@@ -262,7 +264,7 @@ class ConfigManager implements ConfigManagerInterface {
     foreach ($names as $name) {
       $dependencies[] = $dependency_manager->getDependentEntities($type, $name);
     }
-    return array_merge([], ...$dependencies);
+    return array_merge(...$dependencies);
   }
 
   /**
@@ -290,9 +292,9 @@ class ConfigManager implements ConfigManagerInterface {
       $storage = $this->entityTypeManager->getStorage($entity_type_id);
       // Remove the keys since there are potential ID clashes from different
       // configuration entity types.
-      $entities_to_return = array_merge($entities_to_return, array_values($storage->loadMultiple($entities_to_load)));
+      $entities_to_return[] = array_values($storage->loadMultiple($entities_to_load));
     }
-    return $entities_to_return;
+    return array_merge(...$entities_to_return);
   }
 
   /**
@@ -485,13 +487,14 @@ class ConfigManager implements ConfigManagerInterface {
     $missing_dependencies = [];
     foreach ($this->activeStorage->readMultiple($this->activeStorage->listAll()) as $config_data) {
       if (isset($config_data['dependencies']['content'])) {
-        $content_dependencies = array_merge($content_dependencies, $config_data['dependencies']['content']);
+        $content_dependencies[] = $config_data['dependencies']['content'];
       }
       if (isset($config_data['dependencies']['enforced']['content'])) {
-        $content_dependencies = array_merge($content_dependencies, $config_data['dependencies']['enforced']['content']);
+        $content_dependencies[] = $config_data['dependencies']['enforced']['content'];
       }
     }
-    foreach (array_unique($content_dependencies) as $content_dependency) {
+    $unique_content_dependencies = array_unique(array_merge(...$content_dependencies));
+    foreach ($unique_content_dependencies as $content_dependency) {
       // Format of the dependency is entity_type:bundle:uuid.
       [$entity_type, $bundle, $uuid] = explode(':', $content_dependency, 3);
       if (!$this->entityRepository->loadEntityByUuid($entity_type, $uuid)) {

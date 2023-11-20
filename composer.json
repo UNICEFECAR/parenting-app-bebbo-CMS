@@ -21,9 +21,9 @@
         "drupal/config_update": "^2.0@alpha",
         "drupal/content_moderation_notifications": "^3.3",
         "drupal/contextual_range_filter": "^1.0",
-        "drupal/core-composer-scaffold": "10.0.0",
-        "drupal/core-project-message": "10.0.0",
-        "drupal/core-recommended": "10.0.0",
+        "drupal/core-composer-scaffold": "10.1.5",
+        "drupal/core-project-message": "10.1.5",
+        "drupal/core-recommended": "10.1.5",
         "drupal/date_popup": "^1.1",
         "drupal/devel_entity_updates": "^4.1",
         "drupal/entity": "^1.2",
@@ -156,7 +156,6 @@
         },
         "patches": {
             "drupal/core": {
-                "Vocabulary name not shown in View for Anonymous Users": "https://www.drupal.org/files/issues/2021-04-21/taxonomy_vocabulary_view_permission-3114365.patch",
                 "Updated By sortable issue": "https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch"
             },
             "drupal/video_embed_field": {

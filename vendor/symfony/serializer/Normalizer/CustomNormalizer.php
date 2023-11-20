@@ -16,11 +16,21 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * @final since Symfony 6.3
  */
 class CustomNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
 {
     use ObjectToPopulateTrait;
     use SerializerAwareTrait;
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            NormalizableInterface::class => __CLASS__ === static::class || $this->hasCacheableSupportsMethod(),
+            DenormalizableInterface::class => __CLASS__ === static::class || $this->hasCacheableSupportsMethod(),
+        ];
+    }
 
     public function normalize(mixed $object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
@@ -60,8 +70,13 @@ class CustomNormalizer implements NormalizerInterface, DenormalizerInterface, Se
         return is_subclass_of($type, DenormalizableInterface::class);
     }
 
+    /**
+     * @deprecated since Symfony 6.3, use "getSupportedTypes()" instead
+     */
     public function hasCacheableSupportsMethod(): bool
     {
+        trigger_deprecation('symfony/serializer', '6.3', 'The "%s()" method is deprecated, implement "%s::getSupportedTypes()" instead.', __METHOD__, get_debug_type($this));
+
         return __CLASS__ === static::class;
     }
 }

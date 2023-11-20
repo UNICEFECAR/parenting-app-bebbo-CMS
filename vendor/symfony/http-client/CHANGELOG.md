@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+6.3
+---
+
+ * Add option `crypto_method` to set the minimum TLS version and make it default to v1.2
+ * Add `UriTemplateHttpClient` to use URI templates as specified in the RFC 6570
+ * Add `ServerSentEvent::getArrayData()` to get the Server-Sent Event's data decoded as an array when it's a JSON payload
+ * Allow array of urls as `base_uri` option value in `RetryableHttpClient` to retry on a new url each time
+ * Add `JsonMockResponse`, a `MockResponse` shortcut that automatically encodes the passed body to JSON and sets the content type to `application/json` by default
+ * Support file uploads by nesting resource streams in option "body"
+
 6.2
 ---
 

@@ -14,6 +14,7 @@ use Drupal\views\Entity\View;
  * Tests exposed forms functionality.
  *
  * @group views
+ * @group #slow
  */
 class ExposedFormTest extends ViewTestBase {
 
@@ -24,7 +25,7 @@ class ExposedFormTest extends ViewTestBase {
    *
    * @var array
    */
-  public static $testViews = ['test_exposed_form_buttons', 'test_exposed_block', 'test_exposed_form_sort_items_per_page', 'test_exposed_form_pager'];
+  public static $testViews = ['test_exposed_form_buttons', 'test_exposed_block', 'test_exposed_form_sort_items_per_page', 'test_exposed_form_pager', 'test_remember_selected'];
 
   /**
    * Modules to enable.
@@ -234,7 +235,7 @@ class ExposedFormTest extends ViewTestBase {
     $block->getPlugin()->setConfigurationValue('views_label', '<strong>Custom</strong> title<script>alert("hacked!");</script>');
     $block->save();
 
-    // Test that the custom block label is found.
+    // Test that the content block label is found.
     $this->drupalGet('test_exposed_block');
     $this->assertSession()->responseContains('<strong>Custom</strong> titlealert("hacked!");');
 
@@ -508,6 +509,19 @@ class ExposedFormTest extends ViewTestBase {
         $this->assertSession()->pageTextNotContains($node->label());
       }
     }
+  }
+
+  /**
+   * Tests the "Remember the last selection" functionality.
+   */
+  public function testRememberSelected() {
+    $this->drupalGet('test_remember_selected');
+    $this->getSession()->getPage()->fillField('type', 'page');
+    $this->getSession()->getPage()->pressButton('Apply');
+
+    // Reload the page and ensure the filter is selected.
+    $this->drupalGet('test_remember_selected');
+    $this->assertTrue($this->assertSession()->optionExists('type', 'page')->isSelected());
   }
 
 }

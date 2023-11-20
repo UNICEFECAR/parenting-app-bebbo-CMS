@@ -33,10 +33,17 @@ use Symfony\Component\Serializer\Annotation\Ignore;
  *
  * @author Nils Adermann <naderman@naderman.de>
  * @author Kévin Dunglas <dunglas@gmail.com>
+ *
+ * @final since Symfony 6.3
  */
 class GetSetMethodNormalizer extends AbstractObjectNormalizer
 {
     private static $setterAccessibleCache = [];
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['object' => __CLASS__ === static::class || $this->hasCacheableSupportsMethod()];
+    }
 
     /**
      * @param array $context
@@ -54,8 +61,13 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
         return parent::supportsDenormalization($data, $type, $format) && $this->supports($type);
     }
 
+    /**
+     * @deprecated since Symfony 6.3, use "getSupportedTypes()" instead
+     */
     public function hasCacheableSupportsMethod(): bool
     {
+        trigger_deprecation('symfony/serializer', '6.3', 'The "%s()" method is deprecated, implement "%s::getSupportedTypes()" instead.', __METHOD__, get_debug_type($this));
+
         return __CLASS__ === static::class;
     }
 
@@ -131,6 +143,9 @@ class GetSetMethodNormalizer extends AbstractObjectNormalizer
         return null;
     }
 
+    /**
+     * @return void
+     */
     protected function setAttributeValue(object $object, string $attribute, mixed $value, string $format = null, array $context = [])
     {
         $setter = 'set'.ucfirst($attribute);

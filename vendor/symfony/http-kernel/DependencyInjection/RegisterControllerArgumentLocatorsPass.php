@@ -12,6 +12,7 @@
 namespace Symfony\Component\HttpKernel\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -33,6 +34,9 @@ use Symfony\Component\VarExporter\ProxyHelper;
  */
 class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
 {
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('argument_resolver.service') && !$container->hasDefinition('argument_resolver.not_tagged_controller')) {
@@ -143,7 +147,7 @@ class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
                         $args[$p->name] = $bindingValue;
 
                         continue;
-                    } elseif (!$autowire || (!($autowireAttributes ??= $p->getAttributes(Autowire::class)) && (!$type || '\\' !== $target[0]))) {
+                    } elseif (!$autowire || (!($autowireAttributes ??= $p->getAttributes(Autowire::class, \ReflectionAttribute::IS_INSTANCEOF)) && (!$type || '\\' !== $target[0]))) {
                         continue;
                     } elseif (is_subclass_of($type, \UnitEnum::class)) {
                         // do not attempt to register enum typed arguments if not already present in bindings
@@ -157,7 +161,12 @@ class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
                     }
 
                     if ($autowireAttributes) {
-                        $value = $autowireAttributes[0]->newInstance()->value;
+                        $attribute = $autowireAttributes[0]->newInstance();
+                        $value = $parameterBag->resolveValue($attribute->value);
+
+                        if ($attribute instanceof AutowireCallable) {
+                            $value = $attribute->buildDefinition($value, $type, $p);
+                        }
 
                         if ($value instanceof Reference) {
                             $args[$p->name] = $type ? new TypedReference($value, $type, $invalidBehavior, $p->name) : new Reference($value, $invalidBehavior);

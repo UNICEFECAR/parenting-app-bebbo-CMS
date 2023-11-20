@@ -72,7 +72,7 @@ class DefinitionErrorExceptionPass extends AbstractRecursivePass
             return $value;
         }
 
-        if (!$value instanceof Definition || !$value->hasErrors()) {
+        if (!$value instanceof Definition || !$value->hasErrors() || $value->hasTag('container.error')) {
             return parent::processValue($value, $isRoot);
         }
 

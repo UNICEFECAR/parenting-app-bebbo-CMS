@@ -100,6 +100,9 @@ trait CommonResponseTrait
         return $content;
     }
 
+    /**
+     * @return resource
+     */
     public function toStream(bool $throw = true)
     {
         if ($throw) {
@@ -153,7 +156,7 @@ trait CommonResponseTrait
         $response->initializer = null;
     }
 
-    private function checkStatusCode()
+    private function checkStatusCode(): void
     {
         $code = $this->getInfo('http_code');
 

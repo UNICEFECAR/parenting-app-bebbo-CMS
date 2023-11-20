@@ -15,6 +15,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Doctrine\DBAL\Tools\DsnParser;
+use Relay\Relay;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 
 /**
@@ -35,6 +36,7 @@ class SessionHandlerFactory
 
         switch (true) {
             case $connection instanceof \Redis:
+            case $connection instanceof Relay:
             case $connection instanceof \RedisArray:
             case $connection instanceof \RedisCluster:
             case $connection instanceof \Predis\ClientInterface:
@@ -57,7 +59,7 @@ class SessionHandlerFactory
             case str_starts_with($connection, 'rediss:'):
             case str_starts_with($connection, 'memcached:'):
                 if (!class_exists(AbstractAdapter::class)) {
-                    throw new \InvalidArgumentException(sprintf('Unsupported DSN "%s". Try running "composer require symfony/cache".', $connection));
+                    throw new \InvalidArgumentException('Unsupported Redis or Memcached DSN. Try running "composer require symfony/cache".');
                 }
                 $handlerClass = str_starts_with($connection, 'memcached:') ? MemcachedSessionHandler::class : RedisSessionHandler::class;
                 $connection = AbstractAdapter::createConnection($connection, ['lazy' => true]);
@@ -66,7 +68,7 @@ class SessionHandlerFactory
 
             case str_starts_with($connection, 'pdo_oci://'):
                 if (!class_exists(DriverManager::class)) {
-                    throw new \InvalidArgumentException(sprintf('Unsupported DSN "%s". Try running "composer require doctrine/dbal".', $connection));
+                    throw new \InvalidArgumentException('Unsupported PDO OCI DSN. Try running "composer require doctrine/dbal".');
                 }
                 $connection[3] = '-';
                 $params = class_exists(DsnParser::class) ? (new DsnParser())->parse($connection) : ['url' => $connection];

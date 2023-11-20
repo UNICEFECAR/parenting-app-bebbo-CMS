@@ -77,7 +77,7 @@ class ModulesListFormWebTest extends BrowserTestBase {
     // Enable a module that defines permissions.
     $edit = ['modules[action][enable]' => 'action'];
     $this->submitForm($edit, 'Install');
-    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Actions has been enabled.');
+    $this->assertSession()->elementTextContains('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]", 'Module Actions UI has been enabled.');
     $this->assertSession()->elementExists('xpath', "//div[@role='contentinfo' and h2[text()='Status message']]//a[contains(@href, '/admin/people/permissions/module/action')]");
 
     // Enable a module that has dependencies and both define permissions.
@@ -119,6 +119,34 @@ BROKEN;
     // Check that the module filter text box is available.
     $this->assertSession()->elementExists('xpath', '//input[@name="text"]');
     $this->assertSession()->pageTextNotContains('Modules could not be listed due to an error');
+  }
+
+  /**
+   * Tests the module form with a module with an empty description in info.yml.
+   */
+  public function testModulesListFormWithEmptyDescriptionInfoFile() {
+    $path = \Drupal::getContainer()
+      ->getParameter('site.path') . "/modules/missing_description";
+    mkdir($path, 0777, TRUE);
+    $file_path = "$path/missing_description.info.yml";
+
+    $yml = <<<BROKEN
+name: Module with empty description
+type: module
+core_version_requirement: '*'
+description:
+BROKEN;
+
+    file_put_contents($file_path, $yml);
+
+    $this->drupalGet('admin/modules');
+    $this->assertSession()->statusCodeEquals(200);
+
+    $this->assertSession()
+      ->pageTextContains("Module with empty description");
+
+    // Check that the module filter text box is available.
+    $this->assertSession()->elementExists('xpath', '//input[@name="text"]');
   }
 
   /**

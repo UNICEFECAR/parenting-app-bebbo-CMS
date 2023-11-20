@@ -599,8 +599,6 @@ function _file_save_upload_from_form(array $element, FormStateInterface $form_st
  *   there was an error. Function returns NULL if no file was uploaded.
  *
  * @see _file_save_upload_from_form()
- *
- * @todo: move this logic to a service in https://www.drupal.org/node/2244513.
  */
 function file_save_upload($form_field_name, $validators = [], $destination = FALSE, $delta = NULL, $replace = FileSystemInterface::EXISTS_RENAME) {
   static $upload_cache;
@@ -915,7 +913,7 @@ function file_managed_file_submit($form, FormStateInterface $form_state) {
     if ($element['#multiple']) {
       $remove_fids = [];
       foreach (Element::children($element) as $name) {
-        if (strpos($name, 'file_') === 0 && $element[$name]['selected']['#value']) {
+        if (str_starts_with($name, 'file_') && $element[$name]['selected']['#value']) {
           $remove_fids[] = (int) substr($name, 5);
         }
       }
@@ -1073,7 +1071,7 @@ function template_preprocess_file_link(&$variables) {
   // Set file classes to the options array.
   $variables['attributes'] = new Attribute($variables['attributes']);
   $variables['attributes']->addClass($classes);
-  $variables['file_size'] = format_size($file->getSize() ?? 0);
+  $variables['file_size'] = $file->getSize() !== NULL ? format_size($file->getSize()) : '';
 
   $variables['link'] = Link::fromTextAndUrl($link_text, $url->mergeOptions($options))->toRenderable();
 }
@@ -1096,7 +1094,7 @@ function file_icon_class($mime_type) {
 
   // Use generic icons for each category that provides such icons.
   foreach (['audio', 'image', 'text', 'video'] as $category) {
-    if (strpos($mime_type, $category) === 0) {
+    if (str_starts_with($mime_type, $category)) {
       return $category;
     }
   }
@@ -1204,6 +1202,7 @@ function file_icon_map($mime_type) {
     case 'application/x-php':
     case 'application/x-ruby':
     case 'application/x-shellscript':
+    case 'text/javascript':
     case 'text/vnd.wap.wmlscript':
     case 'text/x-emacs-lisp':
     case 'text/x-haskell':

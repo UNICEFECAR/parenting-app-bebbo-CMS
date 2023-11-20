@@ -13,6 +13,7 @@ use Drupal\views\Views;
  * Tests aggregate functionality of views, for example count.
  *
  * @group views
+ * @group #slow
  */
 class QueryGroupByTest extends ViewsKernelTestBase {
 
@@ -230,7 +231,7 @@ class QueryGroupByTest extends ViewsKernelTestBase {
     $view->displayHandlers->get('default')->options['fields']['name']['group_type'] = 'min';
     unset($view->displayHandlers->get('default')->options['fields']['id']['group_type']);
     $this->executeView($view);
-    $this->assertStringContainsString('GROUP BY entity_test.id', (string) $view->build_info['query'], 'GROUP BY field includes the base table name when grouping on the base field.');
+    $this->assertMatchesRegularExpression('/GROUP BY .*[^\w\s]entity_test[^\w\s]\.[^\w\s]id[^\w\s]/', (string) $view->build_info['query'], 'GROUP BY field includes the base table name when grouping on the base field.');
   }
 
   /**

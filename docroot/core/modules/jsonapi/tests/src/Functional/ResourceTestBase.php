@@ -221,6 +221,8 @@ abstract class ResourceTestBase extends BrowserTestBase {
 
     $this->serializer = $this->container->get('jsonapi.serializer');
 
+    $this->config('system.logging')->set('error_level', ERROR_REPORTING_HIDE)->save();
+
     // Ensure the anonymous user role has no permissions at all.
     $user_role = Role::load(RoleInterface::ANONYMOUS_ID);
     foreach ($user_role->getPermissions() as $permission) {
@@ -607,21 +609,14 @@ abstract class ResourceTestBase extends BrowserTestBase {
   /**
    * Sets up the necessary authorization.
    *
-   * In case of a test verifying publicly accessible REST resources: grant
-   * permissions to the anonymous user role.
-   *
-   * In case of a test verifying behavior when using a particular authentication
-   * provider: create a user with a particular set of permissions.
-   *
    * Because of the $method parameter, it's possible to first set up
-   * authentication for only GET, then add POST, et cetera. This then also
+   * authorization for only GET, then add POST, et cetera. This then also
    * allows for verifying a 403 in case of missing authorization.
    *
    * @param string $method
-   *   The HTTP method for which to set up authentication.
+   *   The HTTP method for which to set up authorization.
    *
-   * @see ::grantPermissionsToAnonymousRole()
-   * @see ::grantPermissionsToAuthenticatedRole()
+   * @see ::grantPermissionsToTestedRole()
    */
   abstract protected function setUpAuthorization($method);
 
@@ -732,7 +727,14 @@ abstract class ResourceTestBase extends BrowserTestBase {
     // Expected cache tags: X-Drupal-Cache-Tags header.
     $this->assertSame($expected_cache_tags !== FALSE, $response->hasHeader('X-Drupal-Cache-Tags'));
     if (is_array($expected_cache_tags)) {
-      $this->assertEqualsCanonicalizing($expected_cache_tags, explode(' ', $response->getHeader('X-Drupal-Cache-Tags')[0]));
+      $actual_cache_tags = explode(' ', $response->getHeader('X-Drupal-Cache-Tags')[0]);
+
+      $tag = 'config:system.logging';
+      if (!in_array($tag, $expected_cache_tags) && in_array($tag, $actual_cache_tags)) {
+        $expected_cache_tags[] = $tag;
+      }
+
+      $this->assertEqualsCanonicalizing($expected_cache_tags, $actual_cache_tags);
     }
 
     // Expected cache contexts: X-Drupal-Cache-Contexts header.
@@ -988,16 +990,18 @@ abstract class ResourceTestBase extends BrowserTestBase {
     // @see \Drupal\jsonapi\EventSubscriber\ResourceResponseSubscriber::flattenResponse()
     $cache_items = $this->container->get('database')
       ->select('cache_dynamic_page_cache', 'cdp')
-      ->fields('cdp', ['cid', 'data'])
+      ->fields('cdp', ['data'])
       ->condition('cid', '%[route]=jsonapi.%', 'LIKE')
       ->execute()
-      ->fetchAllAssoc('cid');
-    $this->assertGreaterThanOrEqual(2, count($cache_items));
-    $found_cache_redirect = FALSE;
+      ->fetchAll();
+    $this->assertLessThanOrEqual(4, count($cache_items));
     $found_cached_200_response = FALSE;
     $other_cached_responses_are_4xx = TRUE;
-    foreach ($cache_items as $cid => $cache_item) {
+    foreach ($cache_items as $cache_item) {
       $cached_data = unserialize($cache_item->data);
+
+      // We might be finding cache redirects when querying like this, so ensure
+      // we only inspect the actual cached response to see if it got flattened.
       if (!isset($cached_data['#cache_redirect'])) {
         $cached_response = $cached_data['#response'];
         if ($cached_response->getStatusCode() === 200) {
@@ -1009,11 +1013,7 @@ abstract class ResourceTestBase extends BrowserTestBase {
         $this->assertNotInstanceOf(ResourceResponse::class, $cached_response);
         $this->assertInstanceOf(CacheableResponseInterface::class, $cached_response);
       }
-      else {
-        $found_cache_redirect = TRUE;
-      }
     }
-    $this->assertTrue($found_cache_redirect);
     $this->assertSame($dynamic_cache !== 'UNCACHEABLE' || isset($dynamic_cache_label_only) && $dynamic_cache_label_only !== 'UNCACHEABLE', $found_cached_200_response);
     $this->assertTrue($other_cached_responses_are_4xx);
 
@@ -1041,7 +1041,7 @@ abstract class ResourceTestBase extends BrowserTestBase {
     ];
     $header_cleaner = function ($headers) use ($ignored_headers) {
       foreach ($headers as $header => $value) {
-        if (strpos($header, 'X-Drupal-Assertion-') === 0 || in_array($header, $ignored_headers)) {
+        if (str_starts_with($header, 'X-Drupal-Assertion-') || in_array($header, $ignored_headers)) {
           unset($headers[$header]);
         }
       }
@@ -2658,7 +2658,7 @@ abstract class ResourceTestBase extends BrowserTestBase {
       $expected_cacheability->setCacheTags($this->getExpectedCacheTags($field_set));
       $expected_cacheability->setCacheContexts($this->getExpectedCacheContexts($field_set));
       // This tests sparse field sets on included entities.
-      if (strpos($type, 'nested') === 0) {
+      if (str_starts_with($type, 'nested')) {
         $this->grantPermissionsToTestedRole(['access user profiles']);
         $query['fields[user--user]'] = implode(',', $field_set);
         $query['include'] = 'uid';

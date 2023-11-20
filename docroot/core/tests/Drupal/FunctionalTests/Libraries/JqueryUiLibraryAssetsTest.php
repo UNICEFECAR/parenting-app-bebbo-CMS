@@ -56,6 +56,7 @@ class JqueryUiLibraryAssetsTest extends BrowserTestBase {
 
     // All the core libraries that use jQuery UI assets.
     $libraries_to_check = [
+      'internal.jquery_ui',
       'drupal.autocomplete',
       'drupal.dialog',
     ];
@@ -70,7 +71,7 @@ class JqueryUiLibraryAssetsTest extends BrowserTestBase {
       foreach (['js', 'css'] as $type) {
         foreach ($library[$type] as $asset) {
           $file = $asset['data'];
-          if (strpos($file, 'jquery.ui') === FALSE) {
+          if (!str_contains($file, 'jquery.ui')) {
             continue;
           }
           $weight = $asset['weight'];
@@ -175,7 +176,7 @@ class JqueryUiLibraryAssetsTest extends BrowserTestBase {
         foreach ($library[$type] as $asset) {
           $file = $asset['data'];
 
-          if (strpos($file, 'jquery.ui') !== FALSE) {
+          if (str_contains($file, 'jquery.ui')) {
             // If this is the first time a given file is checked, add the weight
             // value to an array.
             if (!isset($asset_weights[$file])) {
@@ -220,7 +221,7 @@ class JqueryUiLibraryAssetsTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     // A pipe character in $libraries is delimiting multiple library names.
-    $libraries = strpos($library, '|') !== FALSE ? explode('|', $library) : [$library];
+    $libraries = str_contains($library, '|') ? explode('|', $library) : [$library];
     $files_to_check = [];
 
     // Populate an array with the filenames of every jQuery UI asset in the
@@ -230,7 +231,7 @@ class JqueryUiLibraryAssetsTest extends BrowserTestBase {
       foreach (['css', 'js'] as $type) {
         $assets = $this->coreLibrariesWithJqueryUiAssets[$library_name][$type];
         foreach ($assets as $asset) {
-          if (strpos($asset['data'], 'jquery.ui') !== FALSE) {
+          if (str_contains($asset['data'], 'jquery.ui')) {
             $files_to_check[$asset['data']] = TRUE;
           }
         }

@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'CURLStringFile' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Drupal' => $baseDir . '/docroot/core/lib/Drupal.php',
@@ -32,6 +33,7 @@ return array(
     'Drupal\\Core\\Site\\Settings' => $baseDir . '/docroot/core/lib/Drupal/Core/Site/Settings.php',
     'Normalizer' => $vendorDir . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
     'PEAR_Exception' => $vendorDir . '/pear/pear_exception/PEAR/Exception.php',
+    'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
     'ReturnTypeWillChange' => $vendorDir . '/symfony/polyfill-php81/Resources/stubs/ReturnTypeWillChange.php',
     'SebastianBergmann\\Diff\\Chunk' => $vendorDir . '/sebastian/diff/src/Chunk.php',
     'SebastianBergmann\\Diff\\ConfigurationException' => $vendorDir . '/sebastian/diff/src/Exception/ConfigurationException.php',
@@ -49,4 +51,7 @@ return array(
     'SebastianBergmann\\Diff\\Output\\UnifiedDiffOutputBuilder' => $vendorDir . '/sebastian/diff/src/Output/UnifiedDiffOutputBuilder.php',
     'SebastianBergmann\\Diff\\Parser' => $vendorDir . '/sebastian/diff/src/Parser.php',
     'SebastianBergmann\\Diff\\TimeEfficientLongestCommonSubsequenceCalculator' => $vendorDir . '/sebastian/diff/src/TimeEfficientLongestCommonSubsequenceCalculator.php',
+    'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+    'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+    'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
 );
