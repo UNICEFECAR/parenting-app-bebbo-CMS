@@ -156,7 +156,8 @@
         },
         "patches": {
             "drupal/core": {
-                "Updated By sortable issue": "https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch"
+                "Updated By sortable issue": "https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch",
+                "TypeError: implode(): Argument must be of type array":"https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch"
             },
             "drupal/video_embed_field": {
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"

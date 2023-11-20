@@ -89,7 +89,7 @@ class UpdateSettingsForm extends ConfigFormBase implements ContainerInjectionInt
       '#type' => 'textarea',
       '#title' => $this->t('Email addresses to notify when updates are available'),
       '#rows' => 4,
-      '#default_value' => implode("\n", $notification_emails),
+      '#default_value' => isset($notification_emails) ? implode("\n", $notification_emails) : NULL,
       '#description' => $this->t('Whenever your site checks for available updates and finds new releases, it can notify a list of users via email. Put each address on a separate line. If blank, no emails will be sent.'),
     ];
 
