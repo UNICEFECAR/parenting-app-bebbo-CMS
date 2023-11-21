@@ -191,6 +191,9 @@
             },
             "drupal/views_bulk_operations": {
                 "Call to a member function isAllowed": "https://www.drupal.org/files/issues/2022-11-23/3323324-3.patch"
+            },
+            "drupal/contextual_range_filter": {
+                "Drupal 10 compatible module contextual filter":"patches/upgrade_compatible/compatible_contextual_range_filter.patch"
             }
         }
     },

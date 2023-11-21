@@ -2964,6 +2964,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Drupal 10 compatible module contextual filter ": "patches/upgrade_compatible/compatible_contextual_range_filter.patch"
                 }
             },
             "installation-source": "dist",
