@@ -62,7 +62,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
 
 
     ## country filter
-    $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
+    $gids = \Drupal::entityQuery('group')->accessCheck(TRUE)->condition('type','country')->execute();
     $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
     $options = ['' => 'All'];
 
