@@ -159,7 +159,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
     );
   
     $content_category_options = [];    
-    $query_cat = \Drupal::entityQuery('taxonomy_term')
+    $query_cat = \Drupal::entityQuery('taxonomy_term')->accessCheck(TRUE)
                 ->condition('vid', 'category')
                 ->execute();
     if($query_cat) {
