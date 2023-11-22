@@ -138,6 +138,7 @@ class Query extends QueryBase implements QueryInterface {
     }
 
     if (is_null($this->accessCheck)) {
+      debug_print_backtrace();
       throw new QueryException('Entity queries must explicitly set whether the query should be access checked or not. See Drupal\Core\Entity\Query\QueryInterface::accessCheck().');
     }
     if ($this->accessCheck) {
