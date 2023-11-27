@@ -247,7 +247,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $groups = Group::loadMultiple();
     /* Check the user roles */
     if (count(array_intersect($roles, $authorized_roles)) != 0) {
-      $gids = \Drupal::entityQuery('group')->condition('type', 'country')->execute();
+      $gids = \Drupal::entityQuery('group')->accessCheck()->condition('type', 'country')->execute();
       $groups = Group::loadMultiple($gids);
     }
     $options = ['' => 'All'];
