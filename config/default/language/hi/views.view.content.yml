@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        status:
+          label: अवस्था
+      filters:
+        status:
+          expose:
+            label: अवस्था

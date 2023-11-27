@@ -7,6 +7,8 @@ display:
       fields:
         title:
           label: Title
+        type:
+          label: Tип
         name:
           label: Author
         operations:
@@ -15,3 +17,6 @@ display:
         title:
           expose:
             label: Title
+        type:
+          expose:
+            label: Tип

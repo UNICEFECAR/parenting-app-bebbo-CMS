@@ -1,0 +1,11 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: प्रकार
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: प्रकार

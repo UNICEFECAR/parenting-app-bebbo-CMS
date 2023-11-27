@@ -1,0 +1,11 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Тип

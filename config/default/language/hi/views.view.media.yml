@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        bundle:
+          label: प्रकार
+        status:
+          label: अवस्था
+      filters:
+        bundle:
+          expose:
+            label: प्रकार

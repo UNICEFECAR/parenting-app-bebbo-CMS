@@ -8,3 +8,7 @@ display:
       exposed_form:
         options:
           reset_button_label: Reset
+  page_1:
+    display_options:
+      menu:
+        title: Blloqet

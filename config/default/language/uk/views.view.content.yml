@@ -8,6 +8,8 @@ display:
           label: 'Тип матеріалів'
         name:
           label: Автор
+        status:
+          label: Стан
       filters:
         title:
           expose:
@@ -15,6 +17,9 @@ display:
         type:
           expose:
             label: 'Тип матеріалів'
+        status:
+          expose:
+            label: Стан
         langcode:
           expose:
             label: Мова

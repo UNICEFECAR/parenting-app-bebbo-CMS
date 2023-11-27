@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+      filters:
+        type:
+          expose:
+            label: Тип

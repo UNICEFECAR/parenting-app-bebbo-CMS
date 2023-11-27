@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        item_type:
+          label: Тип

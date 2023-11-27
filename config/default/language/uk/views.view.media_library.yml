@@ -5,7 +5,7 @@ display:
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"
         langcode:
           expose:
             label: Мова
@@ -14,15 +14,15 @@ display:
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"
   widget_table:
     display_options:
       fields:
         name:
-          label: 'Назва (ім''я)'
+          label: "Назва (ім'я)"
         uid:
           label: Автор
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"

@@ -9,6 +9,8 @@ display:
           label: State
         label:
           label: Label
+        type:
+          label: Tип
         operations:
           label: Operations
       filters:

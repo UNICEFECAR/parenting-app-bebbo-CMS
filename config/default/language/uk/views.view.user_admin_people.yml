@@ -2,5 +2,11 @@ display:
   default:
     display_options:
       fields:
+        status:
+          label: Стан
         roles_target_id:
           label: Ролі
+      filters:
+        status:
+          group_info:
+            label: Стан

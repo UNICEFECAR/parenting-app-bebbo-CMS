@@ -37,3 +37,6 @@ display:
             label: 'نوع الصندوق'
   page_1:
     display_title: الصفحة
+    display_options:
+      menu:
+        title: الصناديق

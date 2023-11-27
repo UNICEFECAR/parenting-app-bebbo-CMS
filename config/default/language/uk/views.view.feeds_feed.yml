@@ -4,9 +4,14 @@ display:
       fields:
         title:
           label: Заголовок
+        type:
+          label: Тип
         name:
           label: Автор
       filters:
         title:
           expose:
             label: Заголовок
+        type:
+          expose:
+            label: Тип
