@@ -1,5 +1,0 @@
-tb_megamenu.admin:
-  title: 'TB Mega Menu'
-  description: 'List of megamenu items'
-  parent: system.admin_structure
-  route_name: entity.tb_megamenu.collection
