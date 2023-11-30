@@ -116,8 +116,7 @@ class EntityOperations implements ContainerInjectionInterface {
       // This entity is default if it is new, the default revision, or the
       // default revision is not published.
       $update_default_revision = $entity->isNew()
-        || (!$entity->isNew() && isset($entity->original))
-        ||  $current_state->isDefaultRevisionState()
+        || $current_state->isDefaultRevisionState()
         || !$this->moderationInfo->isDefaultRevisionPublished($entity);
 
       // Fire per-entity-type logic for handling the save process.
