@@ -35,7 +35,7 @@ class ModeratedContentLocalTaskTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp(): void {
+  public function setUp(): void {
     parent::setUp();
 
     $this->drupalPlaceBlock('local_tasks_block');

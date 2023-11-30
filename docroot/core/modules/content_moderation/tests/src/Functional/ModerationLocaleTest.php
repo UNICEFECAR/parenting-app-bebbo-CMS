@@ -462,7 +462,7 @@ class ModerationLocaleTest extends ModerationStateTestBase {
    *   A node object if a new one is being created, NULL otherwise.
    */
   protected function submitNodeForm($title, $moderation_state, $default_translation = FALSE, $langcode = 'en') {
-    $is_new = str_contains($this->getSession()->getCurrentUrl(), '/node/add/');
+    $is_new = strpos($this->getSession()->getCurrentUrl(), '/node/add/') !== FALSE;
     $edit = [
       'title[0][value]' => $title,
       'moderation_state[0][state]' => $moderation_state,

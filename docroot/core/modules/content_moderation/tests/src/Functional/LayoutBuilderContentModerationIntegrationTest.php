@@ -153,7 +153,7 @@ class LayoutBuilderContentModerationIntegrationTest extends BrowserTestBase {
   }
 
   /**
-   * Test placing inline blocks that belong to a moderated content block bundle.
+   * Test placing inline blocks that belong to a moderated custom block bundle.
    */
   public function testModeratedInlineBlockBundles() {
     $page = $this->getSession()->getPage();
@@ -166,7 +166,7 @@ class LayoutBuilderContentModerationIntegrationTest extends BrowserTestBase {
     ]);
     $this->drupalGet("node/{$node->id()}/layout");
     $page->clickLink('Add block');
-    $this->clickLink('Create content block');
+    $this->clickLink('Create custom block');
 
     $assert_session->fieldNotExists('settings[block_form][moderation_state][0][state]');
     $this->submitForm([

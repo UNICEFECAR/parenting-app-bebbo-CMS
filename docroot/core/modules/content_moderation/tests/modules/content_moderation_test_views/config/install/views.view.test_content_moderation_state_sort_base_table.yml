@@ -198,7 +198,6 @@ display:
           order: ASC
           expose:
             label: 'Moderation state'
-            field_identifier: moderation_state
           exposed: true
       arguments: {  }
       filters: {  }

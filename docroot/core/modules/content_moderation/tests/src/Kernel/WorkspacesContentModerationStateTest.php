@@ -10,14 +10,13 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\Tests\workspaces\Kernel\WorkspaceTestTrait;
 use Drupal\workflows\Entity\Workflow;
 use Drupal\workflows\WorkflowInterface;
-use Drupal\workspaces\WorkspacePublishException;
+use Drupal\workspaces\WorkspaceAccessException;
 
 /**
  * Tests that Workspaces and Content Moderation work together properly.
  *
  * @group content_moderation
  * @group workspaces
- * @group #slow
  */
 class WorkspacesContentModerationStateTest extends ContentModerationStateTest {
 
@@ -119,7 +118,7 @@ class WorkspacesContentModerationStateTest extends ContentModerationStateTest {
       $this->workspaces['stage']->publish();
       $this->fail('The expected exception was not thrown.');
     }
-    catch (WorkspacePublishException $e) {
+    catch (WorkspaceAccessException $e) {
       $this->assertEquals('The Stage workspace can not be published because it contains 3 items in an unpublished moderation state.', $e->getMessage());
     }
 
@@ -131,7 +130,7 @@ class WorkspacesContentModerationStateTest extends ContentModerationStateTest {
       $this->workspaces['stage']->publish();
       $this->fail('The expected exception was not thrown.');
     }
-    catch (WorkspacePublishException $e) {
+    catch (WorkspaceAccessException $e) {
       $this->assertEquals('The Stage workspace can not be published because it contains 2 items in an unpublished moderation state.', $e->getMessage());
     }
 
@@ -143,7 +142,7 @@ class WorkspacesContentModerationStateTest extends ContentModerationStateTest {
       $this->workspaces['stage']->publish();
       $this->fail('The expected exception was not thrown.');
     }
-    catch (WorkspacePublishException $e) {
+    catch (WorkspaceAccessException $e) {
       $this->assertEquals('The Stage workspace can not be published because it contains 1 item in an unpublished moderation state.', $e->getMessage());
     }
 

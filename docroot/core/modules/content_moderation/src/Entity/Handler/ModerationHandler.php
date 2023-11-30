@@ -46,7 +46,7 @@ class ModerationHandler implements ModerationHandlerInterface, EntityHandlerInte
     // revisions which are not part of editorial updates triggered by normal
     // content changes.
     if (!$entity->isSyncing()) {
-      $entity->setNewRevision(TRUE);
+      // $entity->setNewRevision(TRUE);
       $entity->isDefaultRevision($default_revision);
     }
 
