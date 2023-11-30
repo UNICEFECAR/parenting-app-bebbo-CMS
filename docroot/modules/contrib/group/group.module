@@ -387,7 +387,7 @@ function group_entity_field_access($operation, FieldDefinitionInterface $field_d
   if ($field_definition->getName() == 'status' && $items->getEntity()->getEntityTypeId() == 'user') {
     $entity = $items->getEntity();
     if (!$entity->isAnonymous()) {
-      $group_content_entities = \Drupal::entityTypeManager()->getStorage('group_content')->loadByProperties(['entity_id' => $entity->id()]);
+      $group_content_entities = \Drupal::entityTypeManager()->getStorage('group_content')->loadByProperties(['entity_id' => $entity->id() ?? 0]);
       foreach ($group_content_entities as $group_content) {
         // Allow if can edit any.
         $allowed = $group_content->getGroup()->hasPermission('update any group_membership entity', $account);

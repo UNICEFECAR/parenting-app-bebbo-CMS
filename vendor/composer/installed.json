@@ -3874,7 +3874,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Allow group admins to create user account and add to group": "https://www.drupal.org/files/issues/2020-08-30/group-manage-users-2949408-43.patch"
+                    "Allow group admins to create user account and add to group": "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch"
                 }
             },
             "installation-source": "dist",

@@ -3,7 +3,7 @@
         'name' => 'acquia/blt-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '45dcd59d04f04bd72ce9c47caf6224338c27fc52',
+        'reference' => '4c6384579b70e9e22f63548dd870743ae304734d',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'acquia/blt-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '45dcd59d04f04bd72ce9c47caf6224338c27fc52',
+            'reference' => '4c6384579b70e9e22f63548dd870743ae304734d',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

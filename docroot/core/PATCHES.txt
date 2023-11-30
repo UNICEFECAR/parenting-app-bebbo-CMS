@@ -5,3 +5,7 @@ Updated By sortable issue
 Source: https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch
 
 
+TypeError: implode(): Argument must be of type array
+Source: https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch
+
+
