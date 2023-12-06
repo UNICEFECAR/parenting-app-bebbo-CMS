@@ -211,7 +211,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       }
       elseif ($path_args[0] == "user" && $path_args[2] == "edit") {
         $user_id = $path_args[1];
-        $user = user_load($user_id);
+        $user = User::load($user_id);
         /* get the group details based on logged in user id */
         $grp_membership_service = \Drupal::service('group.membership_loader');
         $grps = $grp_membership_service->loadByUser($user);
@@ -524,10 +524,10 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
               $clanguage[] = $mlangval['value'];
             }
             if (in_array($form_language, $clanguage)) {
-              $form['actions']['submit']['#disabled'] = TRUE;
-              $form['actions']['submit']['#access'] = FALSE;
-              // drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
-              \Drupal::messenger()->addError('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
+              // $form['actions']['submit']['#disabled'] = TRUE;
+              // $form['actions']['submit']['#access'] = FALSE;
+              // // drupal_set_message(t('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.'), 'error');
+              // \Drupal::messenger()->addError('This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
             }
             $form['#validate'][] = 'user_access_validation_chk';
             $form['actions']['delete']['#access'] = FALSE;
@@ -758,6 +758,21 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
 	$filters['langcode']['value'] = $langarry;
 	$view->display_handler->overrideOption('filters', $filters);
   }
+
+  //tmgmt_translation_all_job_items
+  // if ($view->id() == 'tmgmt_translation_all_job_items' && $display_id == 'page_1') {
+  //   $current_user = \Drupal::currentUser();
+  //   $roles = $current_user->getRoles();
+  //   if (!in_array('administrator', $roles)) {
+  //     $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+  //     if(!empty($user_lang)) {
+  //       $exposed_input = $view->getExposedInput();
+       
+  //       // $exposed_input['title'] = strtolower($exposed_input['title']);
+  //       // $view->setExposedInput($exposed_input);
+  //     }
+  //   }
+  // }
 
 }
 
@@ -1026,6 +1041,32 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
+ 
+  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+    if (!in_array('administrator', $roles)) {
+      $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+      if(!empty($user_lang)) {
+        $query->setGroupOperator('AND');
+        $query->addWhere(1,'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
+      }
+    }
+  }
+
+  if ($view->id() == 'tmgmt_job_overview' && $view->current_display == 'page_1') {
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+    if (!in_array('administrator', $roles)) {
+      $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+      if(!empty($user_lang)) {
+        $query->setGroupOperator('AND');
+        $query->addWhere(1,'tmgmt_job.target_language', $user_lang, 'IN');
+      }
+    }
+  }
+ 
+
   date_default_timezone_set('Asia/Kolkata');
   if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
   if(isset($query->where['2'])){
@@ -1095,9 +1136,10 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
           $query->addField('', 'tmgmt_job_item.item_id', '', ['function' => 'groupby']);
           $query->addGroupBy('tmgmt_job_item.item_id');
       }
-
+     
       if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
         $current_user = \Drupal::currentUser();
+      
         $roles = $current_user->getRoles();
         if (in_array('editor', $roles)) {
           $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
@@ -1357,9 +1399,10 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
           }
           elseif ($user_role == "global_admin") {
             $form['account']['roles']['#access'] = TRUE;
+        
             foreach ($roles as $role) {
-              if ($role->id() == "authenticated" || $role->id() == "administrator") {
-                unset($form['account']['roles']['#options'][$role->id()]);
+              if ($role->id() == "authenticated" || $role->id() == "administrator" ) {
+               unset($form['account']['roles']['#options'][$role->id()]);
               }
               if ($role->id() != "global_admin") {
                 unset($form['account']['roles']['#options'][$role->id()]);
