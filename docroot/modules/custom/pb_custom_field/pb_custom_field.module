@@ -240,6 +240,27 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       }
     }
   }
+
+  //target language filter will be have allowed lang.
+  if($form['#id'] == "views-exposed-form-tmgmt-translation-all-job-items-page-1" || $form['#id'] == "views-exposed-form-tmgmt-job-overview-page-1") {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    $uid = $user->id();
+    $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+    if (!in_array('administrator', $user_roles)) {
+      $alexist_options = $form['target_language']['#options'];
+      $language_options = [];
+      $language_options['All'] = "- Any -";
+      foreach ($alexist_options as $key => $value) {
+        if (in_array($key, $user_lang)) {
+          $language_options[$key] = $value;
+        }
+      }
+      $form['target_language']['#options'] = $language_options;
+    }
+  }
+
+
   /* Listing page - Language dropdown filter */
   if ($form['#id'] == "views-exposed-form-content-listing-page-1" || $form['#id'] == "views-exposed-form-country-content-listing-page-5") {
     $roles = \Drupal::currentUser()->getRoles();
@@ -758,22 +779,6 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
 	$filters['langcode']['value'] = $langarry;
 	$view->display_handler->overrideOption('filters', $filters);
   }
-
-  //tmgmt_translation_all_job_items
-  // if ($view->id() == 'tmgmt_translation_all_job_items' && $display_id == 'page_1') {
-  //   $current_user = \Drupal::currentUser();
-  //   $roles = $current_user->getRoles();
-  //   if (!in_array('administrator', $roles)) {
-  //     $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
-  //     if(!empty($user_lang)) {
-  //       $exposed_input = $view->getExposedInput();
-       
-  //       // $exposed_input['title'] = strtolower($exposed_input['title']);
-  //       // $view->setExposedInput($exposed_input);
-  //     }
-  //   }
-  // }
-
 }
 
 /**
