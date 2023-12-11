@@ -1047,7 +1047,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
     }
   }
  
-  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
+  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1' || $view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
     if (!in_array('administrator', $roles)) {
@@ -1059,7 +1059,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
     }
   }
 
-  if ($view->id() == 'tmgmt_job_overview' && $view->current_display == 'page_1') {
+  if ($view->id() == 'tmgmt_job_overview' && $view->current_display == 'page_1' || $view->id() == 'tmgmt_job_overview' && $view->current_display == 'block_1') {
     $current_user = \Drupal::currentUser();
     $roles = $current_user->getRoles();
     if (!in_array('administrator', $roles)) {
