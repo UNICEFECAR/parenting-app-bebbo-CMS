@@ -52,7 +52,7 @@ class CustomSerializer extends Serializer {
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
-        "related_article",
+        "related_article","old_calendar",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -163,12 +163,27 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $body_summary;
               }
             }
+
+            //dblog after embedded images
+            \Drupal::logger('custom_serialization')->notice('This is after embedded images with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             /* Custom image & video formattter.To check media image field exist  */
+            
+            //dblog before media formatter
+            \Drupal::logger('custom_serialization')->notice('This is before media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
             if (in_array($key, $media_fields)) {
               $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
               $rendered_data[$key] = $media_formatted_data;
             }
+
+            //dblog after media formatter
+            \Drupal::logger('custom_serialization')->notice('This is after media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             /* Custom array formatter.To check mulitple field.  */
+
+            //dblog before array formatter
+            \Drupal::logger('custom_serialization')->notice('This is before array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
+
             if (in_array($key, $array_of_multiple_values)) {
               $array_formatted_data = $this->customArrayFormatter($values);
               /* Convert array to array of int. */
@@ -181,6 +196,9 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $array_formatted_data;
               }
             }
+
+            //dblog after array formatter
+            \Drupal::logger('custom_serialization')->notice('This is after array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
 
             /* Convert string to int. */
             if (in_array($key, $string_to_int)) {

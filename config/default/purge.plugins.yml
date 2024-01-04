@@ -1,9 +1,9 @@
 purgers:
   -
-    order_index: 2
     instance_id: d35096bddb
     plugin_id: acquia_purge
+    order_index: 2
   -
-    order_index: 3
     instance_id: c831dd8d95
     plugin_id: acquia_platform_cdn
+    order_index: 3

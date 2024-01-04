@@ -1,0 +1,86 @@
+display:
+  default:
+    display_options:
+      filters:
+        status:
+          expose:
+            label: Стан
+  closed:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  completed:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  eligible:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  my_tasks:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  pending:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        status:
+          expose:
+            label: Стан
+      tab_options:
+        title: Перекласти

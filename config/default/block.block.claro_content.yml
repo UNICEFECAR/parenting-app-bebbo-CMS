@@ -11,12 +11,12 @@ _core:
 id: claro_content
 theme: claro
 region: content
-weight: -11
+weight: -12
 provider: null
 plugin: system_main_block
 settings:
   id: system_main_block
   label: 'Main page content'
-  provider: system
   label_display: '0'
+  provider: system
 visibility: {  }

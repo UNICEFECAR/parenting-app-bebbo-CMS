@@ -6,8 +6,8 @@ dependencies:
     - taxonomy.vocabulary.standard_deviation_category
   module:
     - taxonomy
-id: taxonomy_standard_deviation_cate
 label: 'Taxonomy - Standard Deviation Category - Language'
+id: taxonomy_standard_deviation_cate
 description: 'Taxonomy - Standard Deviation Category - - Language'
 help: ''
 import_period: -1
@@ -22,45 +22,51 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sk
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: standard_deviation_category
-  owner_id: 0
+  langcode: uz-uz
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
   weight:
-    label: Weight
     value: Weight
+    label: Weight
     machine_name: weight
+    type: csv
   language_code:
-    label: Language_code
     value: Language_code
+    label: Language_code
     machine_name: language_code
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: term_id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name
-    unique: {  }
     settings:
-      language: sk
+      language: uz-uz
+    unique: {  }

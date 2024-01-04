@@ -1,0 +1,13 @@
+uuid: 51fefabe-7f63-44d2-a126-c7e42bf98429
+langcode: en
+status: true
+dependencies: {  }
+id: homepage4
+label: Homepage4
+classes: homepageblock4
+type: component
+group: default
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }
+weight: 0

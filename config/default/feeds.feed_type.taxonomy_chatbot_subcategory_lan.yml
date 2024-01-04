@@ -6,8 +6,8 @@ dependencies:
     - taxonomy.vocabulary.chatbot_subcategory
   module:
     - taxonomy
-id: taxonomy_chatbot_subcategory_lan
 label: 'Taxonomy - Chatbot Subcategory - Language'
+id: taxonomy_chatbot_subcategory_lan
 description: 'Taxonomy - Chatbot Subcategory - Language'
 help: ''
 import_period: -1
@@ -22,37 +22,41 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sk
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: chatbot_subcategory
-  owner_id: 0
+  langcode: al-sq
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: term_id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name
-    unique: {  }
     settings:
-      language: sk
+      language: al-sq
+    unique: {  }

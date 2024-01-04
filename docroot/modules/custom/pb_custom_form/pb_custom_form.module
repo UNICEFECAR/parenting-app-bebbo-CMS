@@ -31,7 +31,7 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
 function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {  
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'group_country_edit_form') {
-    ##Make readonly if offload country is enabled this is.
+    ##Make readonly if offload country is enabled
     $user = \Drupal::currentUser();
     $roles = $user->getRoles();    
     $global_user = ['global_admin'];
@@ -218,6 +218,11 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
   }
 }
 
+
+function pb_custom_form_cron() {
+  \Drupal::logger('pb_custom_form')->notice('Cron ran');
+}
+
 /**
  * Ultimate cron will call this function, from "ultimate_cron.job.article_api_cron.yml" config file
  * Depedency module = ultimate_cron
@@ -230,7 +235,7 @@ function article_api_cache_cron_job() {
       case 'dev':
         $domain_name = 'dev.bebbo.app';
         break;
-      case 'test':
+      case 'uat':
         $domain_name = 'staging.bebbo.app';
         break;
       case 'prod':
@@ -241,7 +246,7 @@ function article_api_cache_cron_job() {
   else {
     $domain_name = 'dev.bebbo.app';
   }
-  \Drupal::logger('ultimate_cron_article_api')->notice('domain -'.$domain_name);
+
   //get access token
   $access_url = 'https://accounts.acquia.com/api/auth/oauth/token';
   $ac = curl_init($access_url);
@@ -262,7 +267,7 @@ function article_api_cache_cron_job() {
     $result = json_decode($response_value, true);
     if(isset($result['access_token'])) {
       $token_value = $result['access_token'];
-      $cache_url = 'https://cloud.acquia.com/api/environments/324528-08c5238f-9d4c-43ce-be88-b3d8e51c7750/domains/'.$domain_name.'/actions/clear-caches';
+      $cache_url = 'https://cloud.acquia.com/api/environments/324529-08c5238f-9d4c-43ce-be88-b3d8e51c7750/domains/'.$domain_name.'/actions/clear-caches';
       $cc = curl_init($cache_url);
       curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($cc, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -315,3 +320,8 @@ function article_api_cache_cron_job() {
     curl_close($c);
   }
 }
+
+function pb_custom_form_page_attachments_alter(&$page) {
+  $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
+}
+

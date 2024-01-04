@@ -22,9 +22,14 @@ display:
         filename:
           label: Name
           separator: ', '
+        filemime:
+          label: MIME-тип
         status:
           label: Status
       filters:
+        filemime:
+          expose:
+            label: MIME-тип
         status:
           expose:
             label: Status
@@ -39,6 +44,9 @@ display:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
+      fields:
+        type:
+          label: 'Тип сущности'
       arguments:
         fid:
           exception:

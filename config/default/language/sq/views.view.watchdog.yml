@@ -1,0 +1,27 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      fields:
+        severity:
+          label: Rendësia
+        type:
+          label: Lloji
+        timestamp:
+          label: Data
+        message:
+          label: Mesazhi
+        name:
+          label: User
+        link:
+          label: Operations
+      filters:
+        type:
+          expose:
+            label: Lloji
+        severity:
+          expose:
+            label: Rendësia

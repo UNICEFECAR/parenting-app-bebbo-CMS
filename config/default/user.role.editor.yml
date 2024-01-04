@@ -1,7 +1,38 @@
 uuid: 81a0900a-8fd4-4dc4-b09f-ed1014b9f229
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.full_html
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.activities
+    - node.type.article
+    - node.type.child_development
+    - node.type.child_growth
+    - node.type.daily_homescreen_messages
+    - node.type.faq
+    - node.type.health_check_ups
+    - node.type.milestone
+    - node.type.page
+    - node.type.survey
+    - node.type.vaccinations
+    - node.type.video_article
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+    - workflows.workflow.group_workflow
+  module:
+    - actions_permissions
+    - allowed_languages
+    - content_moderation
+    - content_translation
+    - filter
+    - group
+    - media
+    - node
+    - system
+    - tmgmt
+    - toolbar_menu
 id: editor
 label: Editor
 weight: -5
@@ -9,14 +40,12 @@ is_admin: null
 permissions:
   - 'accept translation jobs'
   - 'access content'
-  - 'access devel information'
   - 'access group overview'
   - 'access media overview'
   - 'bypass group access'
   - 'create activities content'
   - 'create article content'
   - 'create content translations'
-  - 'create document media'
   - 'create faq content'
   - 'create image media'
   - 'create media'
@@ -28,7 +57,6 @@ permissions:
   - 'create video_article content'
   - 'edit any activities content'
   - 'edit any article content'
-  - 'edit any chatbot content'
   - 'edit any child_development content'
   - 'edit any child_growth content'
   - 'edit any daily_homescreen_messages content'
@@ -41,11 +69,9 @@ permissions:
   - 'edit any video_article content'
   - 'edit own activities content'
   - 'edit own article content'
-  - 'edit own chatbot content'
   - 'edit own child_development content'
   - 'edit own child_growth content'
   - 'edit own daily_homescreen_messages content'
-  - 'edit own document media'
   - 'edit own faq content'
   - 'edit own health_check_ups content'
   - 'edit own image media'
@@ -80,7 +106,6 @@ permissions:
   - 'update media'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition create_new_draft'
-  - 'use group_workflow transition draft_to_reviewer_review'
   - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
   - 'use group_workflow transition publish_to_draft'
@@ -88,7 +113,6 @@ permissions:
   - 'use group_workflow transition require_modification_to_senior_editor_review'
   - 'use group_workflow transition require_modification_to_sme_review'
   - 'use group_workflow transition review_after_translation_to_draft'
-  - 'use group_workflow transition review_after_translation_to_review_after_translation'
   - 'use group_workflow transition review_after_translation_to_senior_editor_review'
   - 'use group_workflow transition review_after_translation_to_sme_review'
   - 'use text format full_html'
@@ -96,7 +120,6 @@ permissions:
   - 'view all media revisions'
   - 'view any unpublished content'
   - 'view article revisions'
-  - 'view chatbot revisions'
   - 'view child_development revisions'
   - 'view child_growth revisions'
   - 'view daily_homescreen_messages revisions'
@@ -108,6 +131,5 @@ permissions:
   - 'view own unpublished content'
   - 'view page revisions'
   - 'view survey revisions'
-  - 'view translatable_node revisions'
   - 'view vaccinations revisions'
   - 'view video_article revisions'

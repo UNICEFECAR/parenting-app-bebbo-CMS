@@ -19,23 +19,23 @@ mode: default
 content:
   field_media_oembed_video:
     type: oembed
-    weight: 0
-    region: content
     label: hidden
     settings:
       max_width: 640
       max_height: 480
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_video_embed_url:
-    weight: 1
+    type: video_embed_field_video
     label: above
     settings:
+      autoplay: false
       responsive: true
       width: 854
       height: 480
-      autoplay: false
     third_party_settings: {  }
-    type: video_embed_field_video
+    weight: 1
     region: content
 hidden:
   created: true

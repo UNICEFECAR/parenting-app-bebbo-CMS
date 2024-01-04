@@ -5,5 +5,5 @@ dependencies: {  }
 id: gr-arb
 label: Greece-Arabic
 direction: ltr
-weight: 13
+weight: -7
 locked: false

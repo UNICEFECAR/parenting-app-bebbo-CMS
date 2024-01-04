@@ -8,6 +8,8 @@ display:
       fields:
         thumbnail__target_id:
           label: 'Умањени приказ'
+        bundle:
+          label: Tип
         uid:
           label: Author
         status:
@@ -15,6 +17,9 @@ display:
         operations:
           label: Operations
       filters:
+        bundle:
+          expose:
+            label: Tип
         langcode:
           expose:
             label: Language

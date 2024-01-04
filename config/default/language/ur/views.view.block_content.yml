@@ -1,0 +1,19 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: '› گزشتہ'
+      fields:
+        info:
+          label: 'بلاک کی وضاحت'
+        operations:
+          label: معاملات
+      filters:
+        info:
+          expose:
+            label: 'بلاک کی وضاحت'

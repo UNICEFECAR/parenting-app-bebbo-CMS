@@ -1,0 +1,39 @@
+label: متن
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: فلٹر
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: '› گزشتہ'
+            first: '» ابتدائی'
+      fields:
+        title:
+          label: عنوان
+        name:
+          label: مصنف
+        status:
+          label: حالت
+        operations:
+          label: معاملات
+      filters:
+        title:
+          expose:
+            label: عنوان
+        status:
+          expose:
+            label: حالت
+        langcode:
+          expose:
+            label: زبان
+      title: متن
+  page_1:
+    display_options:
+      menu:
+        title: متن
+      tab_options:
+        title: متن

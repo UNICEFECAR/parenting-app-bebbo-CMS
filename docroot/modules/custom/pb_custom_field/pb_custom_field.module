@@ -736,7 +736,6 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
       ];
       $view->setHandler('block_1', 'header', 'area', $options);
     }
-
   }
   if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
     $filters = $view->display_handler->getOption('filters');
@@ -935,6 +934,7 @@ function redirect_to_add_member_page($form, FormStateInterface $form_state) {
  * Implements hook_entity_operation_alter().
  */
 function pb_custom_field_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  return; 
   $roles = \Drupal::currentUser()->getRoles();
   /* $roles_permissions = user_role_permissions($roles); */
   /* Hide operations in country listing page. */
@@ -1235,7 +1235,7 @@ function pb_custom_field_preprocess_html(&$variables) {
   if (!$logged_in) {
     $current_path = \Drupal::service('path.current')->getPath();
     $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
+    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/terms-and-conditions" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
       $variables['#attached']['library'][] = 'pb_custom_field/mylib';
       // Replace 'the-class-to-add' with your CSS class.
       $variables['attributes']['class'][] = 'pb-main-homepage';

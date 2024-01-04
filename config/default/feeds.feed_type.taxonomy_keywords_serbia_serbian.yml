@@ -7,8 +7,8 @@ dependencies:
     - taxonomy.vocabulary.keywords
   module:
     - taxonomy
-id: taxonomy_keywords_serbia_serbian
 label: 'Taxonomy - Keywords - Language'
+id: taxonomy_keywords_serbia_serbian
 description: 'Keywords - Language'
 help: ''
 import_period: -1
@@ -23,41 +23,46 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:taxonomy_term'
 processor_configuration:
-  langcode: sk
-  update_existing: 1
-  update_non_existent: _keep
-  expire: -1
-  skip_hash_check: false
   values:
     vid: keywords
-  owner_id: 0
+  langcode: kg-ru
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   term_name:
-    label: Term_name
     value: Term_name
+    label: Term_name
     machine_name: term_name
+    type: csv
   term_id:
-    label: Term_ID
     value: Term_ID
+    label: Term_ID
     machine_name: term_id
+    type: csv
   term_id1:
-    label: Term_id
     value: Term_id
+    label: Term_id
     machine_name: term_id1
+    type: csv
 mappings:
   -
     target: tid
     map:
       value: term_id1
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: term_name
-    unique: {  }
     settings:
-      language: sk
+      language: kg-ru
+    unique: {  }

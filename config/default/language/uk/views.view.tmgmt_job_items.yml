@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+        tags_count:
+          label: Теґи
+        operations:
+          label: Операції
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Тип

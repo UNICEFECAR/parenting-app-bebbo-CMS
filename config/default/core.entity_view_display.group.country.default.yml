@@ -20,66 +20,66 @@ mode: default
 content:
   field_country_flag:
     type: entity_reference_entity_view
-    weight: -4
     label: above
     settings:
       view_mode: media_library
       link: false
     third_party_settings: {  }
+    weight: -4
     region: content
   field_country_national_partner:
     type: entity_reference_entity_view
-    weight: -2
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: -2
     region: content
   field_country_sponsor_logo:
     type: entity_reference_entity_view
-    weight: -3
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: -3
     region: content
   field_language:
-    weight: 0
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 0
     region: content
   field_make_available_for_mobile:
-    weight: -1
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: -1
     region: content
   field_master_language:
-    weight: 1
+    type: languagefield_default
     label: above
     settings:
       link_to_entity: false
       format:
         name: name
     third_party_settings: {  }
-    type: languagefield_default
+    weight: 1
     region: content
   label:
-    label: hidden
     type: string
-    weight: -5
-    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: -5
+    region: content
 hidden:
   changed: true
   created: true

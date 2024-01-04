@@ -4,7 +4,7 @@ namespace Drupal\pb_custom_form\EventSubscriber;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -80,12 +80,12 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public function nodeViewRedirect(\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) {
+  public function nodeViewRedirect(\Symfony\Component\HttpKernel\Event\RequestEvent $event) {
     $node = $this->routeMatch->getParameter('node');
     global $base_url;
     $current_path = \Drupal::service('path.current')->getPath();
     $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    $landingPages = ['/homepage', '/about-us', '/privacy-policy', '/foleja', '/foleja-about-us', '/foleja-privacy-policy'];
+    $landingPages = ['/homepage', '/about-us','/terms-and-conditions','/privacy-policy', '/foleja', '/foleja-about-us', '/foleja-privacy-policy'];
     if (!$this->isNodeRoute()) {
       return;
     }

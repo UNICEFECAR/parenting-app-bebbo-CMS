@@ -56,7 +56,7 @@ class ChangeintoArchiveActionStatus {
 
         $node_lang_draft->setNewRevision(TRUE);
         $node_lang_draft->revision_log = 'Content Changed Into Archive';
-        $node_lang_draft->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_draft->setRevisionUserId($uid);
         $node_lang_draft->setRevisionTranslationAffected(NULL);
         $node_lang_draft->save();
@@ -71,7 +71,7 @@ class ChangeintoArchiveActionStatus {
 
         $node_lang_draft->setNewRevision(TRUE);
         $node_lang_draft->revision_log = 'Content Changed Into Archive';
-        $node_lang_draft->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_draft->setRevisionUserId($uid);
         $node_lang_draft->setRevisionTranslationAffected(NULL);
         $node_lang_draft->save();

@@ -7,8 +7,8 @@ dependencies:
     - node.type.health_check_ups
   module:
     - node
-id: content_health_check_up_language
 label: 'Content - Health Check-Up - Languages'
+id: content_health_check_up_language
 description: 'Content - Health Check-Up - Languages'
 help: ''
 import_period: -1
@@ -23,33 +23,37 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:node'
 processor_configuration:
+  values:
+    type: health_check_ups
   langcode: xk-sq
+  insert_new: 1
   update_existing: 1
   update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
   expire: -1
   owner_feed_author: false
   owner_id: 0
-  authorize: true
-  skip_hash_check: false
-  values:
-    type: health_check_ups
 custom_sources:
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
+    type: csv
   pinned_article:
-    label: Pinned_article
     value: Pinned_article
+    label: Pinned_article
     machine_name: pinned_article
+    type: csv
 mappings:
   -
     target: nid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: field_pinned_article
     map:

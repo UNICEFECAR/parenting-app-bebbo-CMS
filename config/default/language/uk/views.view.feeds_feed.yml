@@ -1,0 +1,19 @@
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+        type:
+          label: Тип
+        name:
+          label: Автор
+        operations:
+          label: Операції
+      filters:
+        title:
+          expose:
+            label: Заголовок
+        type:
+          expose:
+            label: Тип

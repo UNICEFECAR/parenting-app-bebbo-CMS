@@ -1,0 +1,28 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: فلٹر
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: '› گزشتہ'
+            first: '» ابتدائی'
+      fields:
+        name:
+          label: 'اسم صارف'
+        status:
+          label: حالت
+        operations:
+          label: معاملات
+      filters:
+        status:
+          group_info:
+            label: حالت
+      use_more_text: مزید
+  page_1:
+    display_options:
+      menu:
+        title: فہرست
