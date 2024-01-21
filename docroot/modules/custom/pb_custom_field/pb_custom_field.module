@@ -1023,6 +1023,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
+
   foreach ($grps as $grp) {
     $groups[] = $grp->getGroup();
   }
@@ -1046,6 +1047,28 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
+  if($view->id() =='taxonomy_term' && $view->current_display =='page_2') {
+    $current_uri = \Drupal::request()->getRequestUri();
+    $path_args = explode('/', $current_uri);
+    if(isset($path_args[3])){
+      $db_query = \Drupal::database()->select('node__field_keywords','nd')->fields('nd',['entity_id']);
+      $orGroup1  = $db_query->condition('nd.field_keywords_target_id', $path_args[3], 'IN');
+      $results = $orGroup1->distinct()->execute()->fetchAll();
+      //node_field_data.nid
+      if($query->where[0]['conditions'][0]['value']){
+        unset($query->where[0]['conditions'][0]);
+      }
+      $ids =[];
+      if(!empty($results)) {
+        foreach($results as $id) {
+            $ids[] = $id->entity_id;
+        }
+        $query->setGroupOperator('OR');
+        $query->addWhere(1,'node_field_data.nid', $ids, 'IN');
+      }
+    }
+  }
+
  
   if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1' || $view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
     $current_user = \Drupal::currentUser();
@@ -1373,6 +1396,19 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
     $query = $conn->query("SELECT status FROM users_field_data where uid = '" . $user_id . "'");
     $result = $query->fetchObject();
     $form['account']['status']['#default_value'] = $result->status;
+
+    if($user_id) {
+      $database = \Drupal::database();
+      $query = $database->select('user__field_receive_content_moderation', 'cm')
+          ->condition('cm.entity_id', $user_id, '=')
+          ->fields('cm', ['field_receive_content_moderation_value']);
+      $result = $query->execute()->fetchAll();
+
+      if(empty($result)){
+        $form['field_receive_content_moderation']['widget']['value']['#default_value'] = true;
+      }
+
+    }
   }
   if ($form_id == "user_form" && in_array("global_admin", $currentUser_roles)) {
     if (isset($path_args[count($path_args) - 3]) && $path_args[count($path_args) - 3] == "group" && isset($path_args[count($path_args) - 1]) && $path_args[count($path_args) - 1] == "members") {
@@ -1403,16 +1439,16 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
             }
           }
           elseif ($user_role == "global_admin") {
-            $form['account']['roles']['#access'] = TRUE;
+            $form['account']['roles']['#access'] = FALSE;
         
-            foreach ($roles as $role) {
-              if ($role->id() == "authenticated" || $role->id() == "administrator" ) {
-               unset($form['account']['roles']['#options'][$role->id()]);
-              }
-              if ($role->id() != "global_admin") {
-                unset($form['account']['roles']['#options'][$role->id()]);
-              }
-            }
+            // foreach ($roles as $role) {
+            //   if ($role->id() == "authenticated" || $role->id() == "administrator" ) {
+            //    unset($form['account']['roles']['#options'][$role->id()]);
+            //   }
+            //   if ($role->id() != "global_admin") {
+            //     unset($form['account']['roles']['#options'][$role->id()]);
+            //   }
+            // }
           }
         }
       }
@@ -1450,9 +1486,38 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
  */
 function pb_custom_field_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
   // Add an extra email address to the list.
+  //email notification 
+  $all_arry = [];
+  $all_mail = $data['to'];
+
+  foreach($all_mail as $key => $val) {
+    if($val) {
+      $user_load = user_load_by_mail($val);
+      $uid = $user_load->id();
+      $user = User::load($uid);
+      if($user->get('field_receive_content_moderation')->value == 0) {
+        $notify = $user->get('field_receive_content_moderation')->value;
+      }
+      elseif($user->get('field_receive_content_moderation')->value == 1){
+        $notify = $user->get('field_receive_content_moderation')->value;
+      }
+      else {
+        $notify = 'empty';
+      }
+
+      if($notify != '0') {
+        $all_arry[] = $val;
+      }
+    }
+  }
+
+  $data['to'] = $all_arry;
   global $base_url;
-  $notification_array = $data['notification'];
-  $notification_label = end($notification_array);
+  $notification_label = '';
+  if($data['notification']){
+    $notification_label = $data['notification']->label;
+  }
+  // $notification_label = end($notification_array);
   // For the master country users mail.
   if ($notification_label == "Master : Senior Editor Publish" || $notification_label == "Master :  Any state to Review_after_translation") {
     $nid = $data['params']['context']['entity']->nid[0]->value;
@@ -1491,9 +1556,12 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
             $uid = $user_load->id();
             $user = User::load($uid);
             $allowe_lng = $user->allowed_languages->getValue();
-            $new_array = array_column($allowe_lng, 'target_id');
-            if (in_array($node_language, $new_array)) {
-              $new_arry[] = $mail;
+            $notify = $user->get('field_receive_content_moderation')->value;
+            if($notify != '0') {
+              $new_array = array_column($allowe_lng, 'target_id');
+              if (in_array($node_language, $new_array)) {
+                $new_arry[] = $mail;
+              }
             }
           }
         }
@@ -1523,6 +1591,7 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     $body_old = str_replace("[node_id]", $nid, $message);
     $body = str_replace("[link]", $nid_with_link, $body_old);
     $all_users_email = $data['to'];
+  
     if (!empty($all_users_email)) {
       $new_arry = [];
       foreach ($all_users_email as $mail) {
@@ -1531,14 +1600,18 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
           $uid = $user_load->id();
           $user = User::load($uid);
           $allowe_lng = $user->allowed_languages->getValue();
-          $new_array = array_column($allowe_lng, 'target_id');
-          if (in_array($node_language, $new_array)) {
-            $new_arry[] = $mail;
+          $notify = $user->get('field_receive_content_moderation')->value;
+          if($notify != '0') {
+            $new_array = array_column($allowe_lng, 'target_id');
+            if (in_array($node_language, $new_array)) {
+              $new_arry[] = $mail;
+            }
           }
         }
       }
       $data['params']['message'] = $body;
       $data['to'] = $new_arry;
+    
     }
     else {
       $data['to'] = [];
@@ -1654,4 +1727,8 @@ function pb_custom_field_form_submit($form, FormStateInterface $form_state)
       $user->save();
     }
   }
+}
+
+function pb_custom_field_entity_presave(\Drupal\Core\Entity\EntityInterface $entity) {
+
 }
