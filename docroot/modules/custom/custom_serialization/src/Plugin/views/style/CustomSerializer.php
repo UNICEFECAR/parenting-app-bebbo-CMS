@@ -344,6 +344,7 @@ class CustomSerializer extends Serializer {
     if (!empty($values)) {
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
+      $base_url = \Drupal::request()->getSchemeAndHttpHost();
       if ($media_type === 'image') {
         $mid = $media_entity->get('field_media_image')->target_id;
         if (!empty($mid)) {
@@ -375,7 +376,7 @@ class CustomSerializer extends Serializer {
 
         }
         $media_data = [
-          'url'  => $url,
+          'url'  => $base_url.$url,
           'name' => $mname,
           'alt'  => $malt,
         ];
@@ -397,7 +398,7 @@ class CustomSerializer extends Serializer {
             $thumbnail_url = $thumbnail->createFileUrl();
           }
           $media_data = [
-            'url'  => $thumbnail_url,
+            'url'  => $base_url.$thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
@@ -430,7 +431,7 @@ class CustomSerializer extends Serializer {
             $thumbnail_url = $thumbnail->createFileUrl();
           }
           $media_data = [
-            'url'  => $thumbnail_url,
+            'url'  => $base_url.$thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
