@@ -396,9 +396,9 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
-            if (strpos($thumbnail_url, $base_url) !== FALSE) {
-              $thumbnail_url = $base_url.$thumbnail_url;
-            } 
+            // if (strpos($thumbnail_url, $base_url) !== FALSE) {
+            //   $thumbnail_url = $base_url.$thumbnail_url;
+            // } 
           }
           $media_data = [
             'url'  => $thumbnail_url,
@@ -432,6 +432,9 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
+            if (strpos($thumbnail_url, $base_url) !== FALSE) {
+              $thumbnail_url = $base_url.$thumbnail_url;
+            } 
           }
           $media_data = [
             'url'  => $thumbnail_url,
