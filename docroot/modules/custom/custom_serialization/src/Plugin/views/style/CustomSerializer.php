@@ -385,9 +385,9 @@ class CustomSerializer extends Serializer {
         $url = $media_entity->get('field_media_oembed_video')->value;
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-        if (strpos($url, $base_url) !== FALSE) {
-              $url = $base_url.$url;
-            } 
+        // if (strpos($url, $base_url) !== FALSE) {
+        //       $url = $base_url.$url;
+        //     } 
         $media_data = [
           'url'  => $url,
           'name' => $mname,
