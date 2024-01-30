@@ -376,7 +376,7 @@ class CustomSerializer extends Serializer {
 
         }
         $media_data = [
-          'url'  => $url,
+          'url'  => $base_url.'5'.$url,
           'name' => $mname,
           'alt'  => $malt,
         ];
@@ -389,7 +389,7 @@ class CustomSerializer extends Serializer {
         //       $url = $base_url.$url;
         //     } 
         $media_data = [
-          'url'  => $url,
+          'url'  => $base_url.'4'.$url,
           'name' => $mname,
           'site'  => $site,
         ];
@@ -404,7 +404,7 @@ class CustomSerializer extends Serializer {
             // } 
           }
           $media_data = [
-            'url'  => $thumbnail_url,
+            'url'  => $base_url.'1'.$thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
@@ -425,7 +425,7 @@ class CustomSerializer extends Serializer {
         }
 
         $media_data = [
-          'url'  => $url,
+          'url'  => $base_url.'2'.$url,
           'name' => $mname,
           'site'  => $site,
         ];
@@ -436,11 +436,11 @@ class CustomSerializer extends Serializer {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
             // if (strpos($thumbnail_url, $base_url) !== FALSE) {
-            //   $thumbnail_url = $base_url.$thumbnail_url;
+            //   $thumbnail_url = $c.$thumbnail_url;
             // } 
           }
           $media_data = [
-            'url'  => $thumbnail_url,
+            'url'  => $base_url.'3'.$thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
