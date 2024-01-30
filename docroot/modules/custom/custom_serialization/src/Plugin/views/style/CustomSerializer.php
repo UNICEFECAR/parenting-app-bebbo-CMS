@@ -385,6 +385,9 @@ class CustomSerializer extends Serializer {
         $url = $media_entity->get('field_media_oembed_video')->value;
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
+        if (strpos($url, $base_url) !== FALSE) {
+              $url = $base_url.$url;
+            } 
         $media_data = [
           'url'  => $url,
           'name' => $mname,
@@ -432,9 +435,9 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
-            if (strpos($thumbnail_url, $base_url) !== FALSE) {
-              $thumbnail_url = $base_url.$thumbnail_url;
-            } 
+            // if (strpos($thumbnail_url, $base_url) !== FALSE) {
+            //   $thumbnail_url = $base_url.$thumbnail_url;
+            // } 
           }
           $media_data = [
             'url'  => $thumbnail_url,
