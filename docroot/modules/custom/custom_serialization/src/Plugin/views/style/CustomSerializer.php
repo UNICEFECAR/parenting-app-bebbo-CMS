@@ -376,7 +376,7 @@ class CustomSerializer extends Serializer {
 
         }
         $media_data = [
-          'url'  => $base_url.'5'.$url,
+          'url'  => $url,
           'name' => $mname,
           'alt'  => $malt,
         ];
@@ -385,11 +385,8 @@ class CustomSerializer extends Serializer {
         $url = $media_entity->get('field_media_oembed_video')->value;
         $mname = $media_entity->get('name')->value;
         $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-        // if (strpos($url, $base_url) !== FALSE) {
-        //       $url = $base_url.$url;
-        //     } 
         $media_data = [
-          'url'  => $base_url.'4'.$url,
+          'url'  => $url,
           'name' => $mname,
           'site'  => $site,
         ];
@@ -399,12 +396,12 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
-            // if (strpos($thumbnail_url, $base_url) !== FALSE) {
-            //   $thumbnail_url = $base_url.$thumbnail_url;
-            // } 
+            if (strpos($thumbnail_url, $base_url) !== FALSE) {
+              $thumbnail_url = $base_url.$thumbnail_url;
+            } 
           }
           $media_data = [
-            'url'  => $base_url.'1'.$thumbnail_url,
+            'url'  => $thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
@@ -421,11 +418,11 @@ class CustomSerializer extends Serializer {
            * @var object
            */
           $file = File::load($mid);
-          $url = $file->createFileUrl();
+          $url = $file->createFileUrl(); 
         }
 
         $media_data = [
-          'url'  => $base_url.'2'.$url,
+          'url'  => $url,
           'name' => $mname,
           'site'  => $site,
         ];
@@ -435,12 +432,9 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
-            // if (strpos($thumbnail_url, $base_url) !== FALSE) {
-            //   $thumbnail_url = $c.$thumbnail_url;
-            // } 
           }
           $media_data = [
-            'url'  => $base_url.'3'.$thumbnail_url,
+            'url'  => $thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
