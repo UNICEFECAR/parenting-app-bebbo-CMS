@@ -376,7 +376,7 @@ class CustomSerializer extends Serializer {
 
         }
         $media_data = [
-          'url'  => $base_url.$url,
+          'url'  => $url,
           'name' => $mname,
           'alt'  => $malt,
         ];
@@ -396,9 +396,12 @@ class CustomSerializer extends Serializer {
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
+            if (strpos($thumbnail_url, $base_url) !== FALSE) {
+              $thumbnail_url = $base_url.$thumbnail_url;
+            } 
           }
           $media_data = [
-            'url'  => $base_url.$thumbnail_url,
+            'url'  => $thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
@@ -431,7 +434,7 @@ class CustomSerializer extends Serializer {
             $thumbnail_url = $thumbnail->createFileUrl();
           }
           $media_data = [
-            'url'  => $base_url.$thumbnail_url,
+            'url'  => $thumbnail_url,
             'name' => $mname,
             'alt'  => '',
           ];
