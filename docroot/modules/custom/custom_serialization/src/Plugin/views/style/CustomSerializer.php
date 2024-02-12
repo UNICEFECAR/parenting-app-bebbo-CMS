@@ -404,8 +404,18 @@ class CustomSerializer extends Serializer {
                   // Extract the Vimeo video ID from the path.
                   $path_segments = explode('/', $parsed_url['path']);
                   $vimeo_video_id = end($path_segments);
-                  $urls = "https://i.vimeocdn.com/video/{$vimeo_video_id}_640.jpg";
-              }
+                  $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
+                  // Fetch the JSON response from the Vimeo API.
+                  $json_response = file_get_contents($vimeo_api_url);
+                  // Decode the JSON response into an associative array.
+                  $data = json_decode($json_response, true);
+                  if (isset($data['thumbnail_url'])) {
+                    $vimeo_thumbnail_url = $data['thumbnail_url'];
+                  } else {
+                      // If the thumbnail URL is not found, you can handle the error here.
+                      $vimeo_thumbnail_url = null;
+                  }
+                }
            }
            else {
               $thumbnail = File::load($tid);
