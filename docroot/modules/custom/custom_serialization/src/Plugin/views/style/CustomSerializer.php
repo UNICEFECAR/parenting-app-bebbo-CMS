@@ -394,14 +394,28 @@ class CustomSerializer extends Serializer {
         if ($key == "cover_image") {
           $tid = $media_entity->get('thumbnail')->target_id;
           if (!empty($tid)) {
-            $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->createFileUrl();
-            if (strpos($thumbnail_url, $base_url) !== TRUE) {
-              $urls = $base_url.$thumbnail_url;
-            } 
-            else{
-              $urls = $thumbnail_url;
+            if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
+              // Get the value of the oEmbed video field.
+              $oembed_value = $media_entity->get('field_media_oembed_video')->value;
+              // Parse the oEmbed URL to extract the Vimeo video ID.
+              $parsed_url = parse_url($oembed_value);
+              if (isset($parsed_url['path'])) {
+                  // Extract the Vimeo video ID from the path.
+                  $path_segments = explode('/', $parsed_url['path']);
+                  $vimeo_video_id = end($path_segments);
+                  $urls = "https://i.vimeocdn.com/video/{$vimeo_video_id}_640.jpg";
+              }
             }
+            else {
+              $thumbnail = File::load($tid);
+              $thumbnail_url = $thumbnail->createFileUrl();
+              // if (strpos($thumbnail_url, $base_url) !== TRUE) {
+              //   $urls = $base_url.$thumbnail_url;
+              // } 
+              // else{
+                $urls = $thumbnail_url;
+              }
+            }  
           }
           $media_data = [
             'url'  => $urls,
