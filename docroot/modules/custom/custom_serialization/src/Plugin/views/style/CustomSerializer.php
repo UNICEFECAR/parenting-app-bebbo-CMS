@@ -397,7 +397,7 @@ class CustomSerializer extends Serializer {
             if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
               // Get the value of the oEmbed video field.
               $oembed_value = $media_entity->get('field_media_oembed_video')->value;
-          
+
               // Parse the oEmbed URL to extract the Vimeo video ID.
               $parsed_url = parse_url($oembed_value);
               if (isset($parsed_url['path'])) {
@@ -405,23 +405,51 @@ class CustomSerializer extends Serializer {
                   $path_segments = explode('/', $parsed_url['path']);
                   $vimeo_video_id = end($path_segments);
                   $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
-                  // Fetch the JSON response from the Vimeo API.
-                  $json_response = file_get_contents($vimeo_api_url);
-                  // Decode the JSON response into an associative array.
-                  $data = json_decode($json_response, true);
-                  if (isset($data['thumbnail_url'])) {
-                    $urls = $data['thumbnail_url'];
+                  
+                  // Initialize cURL session
+                  $ch = curl_init();
+
+                  // Set cURL options
+                  curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
+                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                  // Execute the cURL request
+                  $response = curl_exec($ch);
+
+                  if ($response === false) {
+                      // cURL error occurred
+                      $error_message = curl_error($ch);
+                      // Handle the error, log it, etc.
+                      echo "cURL Error: $error_message";
                   } else {
-                      // If the thumbnail URL is not found, you can handle the error here.
-                      $urls = null;
+                      // Close cURL session
+                      curl_close($ch);
+
+                      // Decode the JSON response into an associative array
+                      $data = json_decode($response, true);
+
+                      if ($data === null) {
+                          // JSON decoding error occurred
+                          $json_error = json_last_error_msg();
+                          // Handle the error, log it, etc.
+                          echo "JSON Error: $json_error";
+                      } else {
+                          // Extract the thumbnail URL from the response data
+                          $urls = isset($data['thumbnail_url']) ? $data['thumbnail_url'] : null;
+                      }
                   }
+                } else {
+                    // Vimeo video ID not found in the oEmbed URL
+                    // Handle the error, log it, etc.
+                    echo "Vimeo video ID not found";
                 }
-           }
-           else {
-              $thumbnail = File::load($tid);
-              $thumbnail_url = $thumbnail->createFileUrl();
-              $urls = $thumbnail_url;
+
             }
+            else {
+                $thumbnail = File::load($tid);
+                $thumbnail_url = $thumbnail->createFileUrl();
+                $urls = $thumbnail_url;
+              }
           }
           $media_data = [
             'url'  => $urls,
