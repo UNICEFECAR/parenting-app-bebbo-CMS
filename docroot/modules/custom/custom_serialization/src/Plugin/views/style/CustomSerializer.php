@@ -420,7 +420,7 @@ class CustomSerializer extends Serializer {
                       // cURL error occurred
                       $error_message = curl_error($ch);
                       // Handle the error, log it, etc.
-                      echo "cURL Error: $error_message";
+                      $urls ='cURL error';
                   } else {
                       // Close cURL session
                       curl_close($ch);
@@ -432,7 +432,7 @@ class CustomSerializer extends Serializer {
                           // JSON decoding error occurred
                           $json_error = json_last_error_msg();
                           // Handle the error, log it, etc.
-                          echo "JSON Error: $json_error";
+                          $urls ='Vimeo error';
                       } else {
                           // Extract the thumbnail URL from the response data
                           $urls = isset($data['thumbnail_url']) ? $data['thumbnail_url'] : null;
@@ -441,7 +441,7 @@ class CustomSerializer extends Serializer {
                 } else {
                     // Vimeo video ID not found in the oEmbed URL
                     // Handle the error, log it, etc.
-                    echo "Vimeo video ID not found";
+                    $urls ='Vimeo ID not found';
                 }
 
             }
