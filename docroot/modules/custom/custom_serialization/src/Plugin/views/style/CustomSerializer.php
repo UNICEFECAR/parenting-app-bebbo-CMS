@@ -410,10 +410,10 @@ class CustomSerializer extends Serializer {
                   // Decode the JSON response into an associative array.
                   $data = json_decode($json_response, true);
                   if (isset($data['thumbnail_url'])) {
-                    $vimeo_thumbnail_url = $data['thumbnail_url'];
+                    $urls = $data['thumbnail_url'];
                   } else {
                       // If the thumbnail URL is not found, you can handle the error here.
-                      $vimeo_thumbnail_url = null;
+                      $urls = null;
                   }
                 }
            }
