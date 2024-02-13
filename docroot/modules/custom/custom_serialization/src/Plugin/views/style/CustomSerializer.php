@@ -448,7 +448,12 @@ class CustomSerializer extends Serializer {
             else {
                 $thumbnail = File::load($tid);
                 $thumbnail_url = $thumbnail->createFileUrl();
-                $urls = $thumbnail_url;
+                if (strpos($thumbnail_url, $base_url) !== false) {
+                  // Base URL is present in the thumbnail URL
+                  $urls = $base_url.$thumbnail_url;
+                } else {
+                  $urls = $thumbnail_url;
+                }
               }
           }
           $media_data = [
