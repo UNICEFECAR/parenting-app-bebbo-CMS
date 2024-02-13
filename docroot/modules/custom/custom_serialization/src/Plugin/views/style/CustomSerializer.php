@@ -450,9 +450,10 @@ class CustomSerializer extends Serializer {
                 $thumbnail_url = $thumbnail->createFileUrl();
                 if (strpos($thumbnail_url, $base_url) !== false) {
                   // Base URL is present in the thumbnail URL
-                  $urls = $base_url.$thumbnail_url;
-                } else {
                   $urls = $thumbnail_url;
+                } else {
+                  // Base URL is Not present in the thumbnail URL
+                  $urls = $base_url.$thumbnail_url;
                 }
               }
           }
