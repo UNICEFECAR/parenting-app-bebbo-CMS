@@ -100,7 +100,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
       'by-be'  => 'https://www.unicef.by/bebbo-belarus/',
       'by-ru'  => 'https://www.unicef.by/bebbo-belarus/',
       'bg-bg'  => 'https://www.unicef.org/bulgaria/%D0%BD%D0%BE%D0%B2%D0%BE%D1%82%D0%BE-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B5%D0%B1%D0%B1%D0%BE',
-      'gr-el'  => 'https://www.unicef.org/greece/%CE%B4%CE%B5%CE%BB%CF%84%CE%AF%CE%B1-%CF%84%CF%8D%CF%80%CE%BF%CF%85/h-unicef-%CF%85%CF%80%CE%BF%CE%B4%CE%AD%CF%87%CE%B5%CF%84%CE%B1%CE%B9-%CF%84%CE%B7%CE%BD-%CE%B7%CE%BC%CE%AD%CF%81%CE%B1-%CE%B3%CE%BF%CE%BD%CE%AD%CF%89%CE%BD-%CE%BC%CE%B5-%CE%BC%CE%AF%CE%B1-%CE%BE%CE%B5%CF%87%CF%89%CF%81%CE%B9%CF%83%CF%84%CE%AE-%CE%B5%CE%BA%CE%B4%CE%AE%CE%BB%CF%89%CF%83%CE%B7-%CE%B3%CE%B9%CE%B1-%CF%84%CE%B7%CE%BD-%CF%80%CE%B1%CF%81%CE%BF%CF%85%CF%83%CE%AF%CE%B1%CF%83%CE%B7-%CF%84%CE%B7%CF%82',
+      'gr-el'  => 'https://www.unicef.org/greece/%CE%B3%CE%BD%CF%89%CF%81%CE%AF%CF%83%CF%84%CE%B5-%CF%84%CE%BF-%CE%B2ebbo',
       'xk-sq'  => 'https://www.bebbo.app/xk-sq/foleja',
       'xk-rs'  => 'https://www.bebbo.app/xk-rs/foleja',
       'kg-ky'  => 'https://www.unicef.org/kyrgyzstan/ky/%D0%B6%D0%B0%D2%A3%D1%8B-%D0%B1%D0%B5%D0%B1%D0%B1%D0%BE-%D1%82%D0%B8%D1%80%D0%BA%D0%B5%D0%BC%D0%B5%D1%81%D0%B8',
