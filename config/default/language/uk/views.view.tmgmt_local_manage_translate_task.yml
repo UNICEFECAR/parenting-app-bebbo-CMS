@@ -7,8 +7,6 @@ display:
   assigned:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Заголовок
       filters:
@@ -21,8 +19,6 @@ display:
   closed:
     display_options:
       fields:
-        status:
-          label: Стан
         created:
           label: Створено
         title:
@@ -37,8 +33,6 @@ display:
   completed:
     display_options:
       fields:
-        status:
-          label: Стан
         created:
           label: Створено
         title:
@@ -53,8 +47,6 @@ display:
   pending:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Заголовок
       filters:
@@ -67,8 +59,6 @@ display:
   rejected:
     display_options:
       fields:
-        status:
-          label: Стан
         created:
           label: Створено
         title:
@@ -83,7 +73,5 @@ display:
   unassigned:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Заголовок

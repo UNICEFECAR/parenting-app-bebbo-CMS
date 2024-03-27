@@ -20,10 +20,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_receive_content_moderation:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
 hidden:
   contact: true
   feeds_item: true
-  field_receive_content_moderation: true
   langcode: true
   language: true
   timezone: true

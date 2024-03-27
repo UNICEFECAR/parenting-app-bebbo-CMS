@@ -23,8 +23,6 @@ content:
     settings:
       max_width: 640
       max_height: 480
-      loading:
-        attribute: eager
     third_party_settings: {  }
     weight: 0
     region: content

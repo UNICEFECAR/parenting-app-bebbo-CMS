@@ -15,11 +15,9 @@ dependencies:
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
     - field.field.node.article.field_parent_gender
-    - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
-    - field.field.node.article.field_related_video_articles
     - node.type.article
   module:
     - user
@@ -50,9 +48,7 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_parent_gender: true
-  field_pre_populated: true
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true
-  field_related_video_articles: true
   langcode: true

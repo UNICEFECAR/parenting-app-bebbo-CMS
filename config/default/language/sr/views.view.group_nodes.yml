@@ -11,7 +11,3 @@ display:
           label: Status
         dropbutton:
           label: Operations
-      filters:
-        type:
-          expose:
-            label: Tип

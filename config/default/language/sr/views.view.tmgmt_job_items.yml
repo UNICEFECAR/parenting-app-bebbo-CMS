@@ -9,8 +9,6 @@ display:
           label: State
         label:
           label: Label
-        type:
-          label: Tип
         operations:
           label: Operations
   checkout:
@@ -18,5 +16,3 @@ display:
       fields:
         label:
           label: Label
-        type:
-          label: Tип

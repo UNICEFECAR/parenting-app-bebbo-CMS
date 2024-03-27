@@ -24,8 +24,6 @@ display:
           label: State
         label:
           label: Label
-        type:
-          label: Тип
         source_language:
           separator: ', '
         target_language:

@@ -6,9 +6,3 @@ display:
           label: Заголовок
         type:
           label: 'Тип матеріалів'
-        status:
-          label: Стан
-      filters:
-        type:
-          expose:
-            label: Тип

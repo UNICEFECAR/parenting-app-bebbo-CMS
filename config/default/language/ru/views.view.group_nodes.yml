@@ -32,10 +32,6 @@ display:
           separator: ', '
         dropbutton:
           label: Operations
-      filters:
-        type:
-          expose:
-            label: Тип
       arguments:
         gid:
           exception:

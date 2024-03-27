@@ -9,7 +9,5 @@ display:
           label: Status
         label:
           label: Label
-        item_type:
-          label: Tип
         operations:
           label: Operations

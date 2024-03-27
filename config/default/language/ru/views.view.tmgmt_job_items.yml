@@ -19,8 +19,6 @@ display:
           label: State
         label:
           label: Label
-        type:
-          label: Тип
         word_count:
           separator: ', '
         tags_count:
@@ -37,8 +35,6 @@ display:
       fields:
         label:
           label: Label
-        type:
-          label: Тип
         word_count:
           separator: ', '
         changed:

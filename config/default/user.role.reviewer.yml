@@ -12,7 +12,6 @@ dependencies:
     - allowed_languages
     - content_moderation
     - content_translation
-    - file
     - group
     - media
     - node
@@ -33,7 +32,6 @@ permissions:
   - 'create content translations'
   - 'create media'
   - 'create vaccinations content'
-  - 'delete own files'
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'

@@ -15,7 +15,6 @@ dependencies:
     - field.field.node.video_article.field_licensed_content
     - field.field.node.video_article.field_mandatory_content
     - field.field.node.video_article.field_parent_gender
-    - field.field.node.video_article.field_pre_populated
     - field.field.node.video_article.field_premature_content
     - field.field.node.video_article.field_references_and_comments
     - field.field.node.video_article.field_related_articles
@@ -60,7 +59,6 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_parent_gender: true
-  field_pre_populated: true
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true

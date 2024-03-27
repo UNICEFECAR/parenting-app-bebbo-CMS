@@ -5,8 +5,6 @@ display:
         options:
           reset_button_label: Reset
       fields:
-        type:
-          label: Lloji
         tags_count:
           label: Tags
         operations:
@@ -15,8 +13,3 @@ display:
         tjid:
           exception:
             title: All
-  checkout:
-    display_options:
-      fields:
-        type:
-          label: Lloji

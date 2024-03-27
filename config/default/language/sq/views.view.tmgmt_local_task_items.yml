@@ -7,8 +7,6 @@ display:
       fields:
         status:
           label: Status
-        item_type:
-          label: Lloji
         operations:
           label: Operations
       arguments:

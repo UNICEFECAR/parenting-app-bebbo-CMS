@@ -14,7 +14,7 @@ seckit_xss:
     img-src: ''
     media-src: ''
     frame-src: ''
-    frame-ancestors: "'self'"
+    frame-ancestors: '''self'''
     child-src: ''
     font-src: ''
     connect-src: ''

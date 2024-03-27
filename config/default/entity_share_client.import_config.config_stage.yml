@@ -1,0 +1,57 @@
+uuid: 70674b06-efa4-418a-a3c1-cc214024df9f
+langcode: en
+status: true
+dependencies: {  }
+id: config_stage
+label: 'Config stage'
+import_maxsize: 50
+import_processor_settings:
+  block_field_block_content_importer:
+    weights:
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  book_structure_importer:
+    weights:
+      post_entity_save: 20
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  changed_time:
+    weights:
+      process_entity: 100
+  default_data_processor:
+    weights:
+      is_entity_importable: -10
+      post_entity_save: 0
+      prepare_importable_entity_data: -100
+    policy: default
+    update_policy: false
+  embedded_entity_importer:
+    weights:
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  entity_reference:
+    weights:
+      process_entity: 10
+    max_recursion_depth: -1
+  link_internal_content_importer:
+    weights:
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  path_alias_processor:
+    weights:
+      prepare_importable_entity_data: -100
+  physical_file:
+    weights:
+      process_entity: 0
+    rename: false
+  prevent_update_processor:
+    weights:
+      is_entity_importable: -5
+  revision:
+    weights:
+      process_entity: 10
+    enforce_new_revision: false
+    translation_affected: false
+  skip_imported:
+    weights:
+      is_entity_importable: -5

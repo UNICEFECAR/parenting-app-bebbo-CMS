@@ -5,8 +5,6 @@ display:
         options:
           reset_button_label: Reset
       fields:
-        type:
-          label: Lloji
         target_language:
           label: To
         tags_count:

@@ -5,8 +5,6 @@ display:
       fields:
         thumbnail__target_id:
           label: 'Умањени приказ'
-        bundle:
-          label: Tип
         uid:
           label: Author
         status:
@@ -18,9 +16,6 @@ display:
           submit_button: Filter
           exposed_sorts_label: 'Sort by'
       filters:
-        bundle:
-          expose:
-            label: Tип
         langcode:
           expose:
             label: Language

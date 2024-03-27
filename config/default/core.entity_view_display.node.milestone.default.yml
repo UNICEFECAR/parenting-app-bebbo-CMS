@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.milestone.field_child_age
     - field.field.node.milestone.field_licensed_content
     - field.field.node.milestone.field_mandatory_content
-    - field.field.node.milestone.field_pre_populated
     - field.field.node.milestone.field_related_activities
     - field.field.node.milestone.field_related_articles
     - field.field.node.milestone.field_related_video_articles
@@ -90,5 +89,4 @@ content:
     weight: 100
     region: content
 hidden:
-  field_pre_populated: true
   langcode: true

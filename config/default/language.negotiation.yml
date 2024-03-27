@@ -37,7 +37,6 @@ url:
     ar: ar
     sk: sk
     tr: tr
-    hi: hi
   domains:
     en: ''
     sr: ''
@@ -70,5 +69,4 @@ url:
     ar: ''
     sk: ''
     tr: ''
-    hi: ''
 selected_langcode: site_default

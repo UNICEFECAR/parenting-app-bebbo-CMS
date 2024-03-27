@@ -4,16 +4,9 @@ display:
     display_options:
       title: Медіа
       fields:
-        bundle:
-          label: Тип
         uid:
           label: Автор
-        status:
-          label: Стан
       filters:
-        bundle:
-          expose:
-            label: Тип
         langcode:
           expose:
             label: Мова

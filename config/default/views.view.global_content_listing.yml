@@ -274,15 +274,6 @@ display:
             date_format: short
             custom_date_format: ''
             timezone: ''
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
         operations:
           id: operations
           table: node
@@ -1405,15 +1396,6 @@ display:
             date_format: short
             custom_date_format: ''
             timezone: ''
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
       arguments: {  }
       filters:
         nid:
@@ -2112,6 +2094,54 @@ display:
               sme: '0'
               se: '0'
               administrator: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        langcode_2:
+          id: langcode_2
+          table: node
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: langcode
+          plugin_id: language
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: langcode_2_op
+            label: 'Original language'
+            description: ''
+            use_operator: false
+            operator: langcode_2_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: langcode_2
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              global_admin: '0'
+              reviewer: '0'
+              editor: '0'
+              sme: '0'
+              se: '0'
+              administrator: '0'
+            reduce: false
           is_grouped: false
           group_info:
             label: ''

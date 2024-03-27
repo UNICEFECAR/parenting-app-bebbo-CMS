@@ -1,8 +1,0 @@
-display:
-  default:
-    display_options:
-      fields:
-        status:
-          label: अवस्था
-        item_type:
-          label: प्रकार

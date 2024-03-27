@@ -12,36 +12,36 @@ weight: null
 plugin: google
 settings:
   url: ''
-  api_key: AIzaSyCpR85mEPiGHhAcIyZQIHobpViqkX1lCAQ
+  api_key: AIzaSyAQ-bDTzgNbqXgd3TQkOvJgRy8wQeQqr1A
 remote_languages_mappings:
   en: en
   ru: ru
   sq: sq
-  al-sq: ''
-  by-be: ''
-  by-ru: ''
+  al-sq: sq
+  by-be: be
+  by-ru: ru
   bg-bg: bg
-  gr-el: ''
-  xk-sq: ''
-  xk-rs: ''
-  kg-ky: ''
-  kg-ru: ''
-  md-ro: ''
-  me-cnr: ''
+  gr-el: el
+  xk-sq: sq
+  xk-rs: sr
+  kg-ky: ky
+  kg-ru: ru
+  md-ro: ro
+  me-cnr: bs
   mk-sq: mk
   mk-mk: mk
   ro: ro
   ro-ro: ro
   sr: sr
-  rs-en: ''
-  rs-sr: ''
+  rs-en: en
+  rs-sr: sr
   sk: sk
-  tj-ru: ''
-  tj-tg: ''
+  tj-ru: ru
+  tj-tg: tg
   tr: tr
   uk: uk
   uz-ru: uz
   uz-uz: uz
   ar: ar
-  gr-arb: ''
-  gr-fa: ''
+  gr-arb: ar
+  gr-fa: fa

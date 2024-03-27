@@ -31,9 +31,13 @@ module:
   editor: 0
   entity: 0
   entity_share: 0
+  entity_share_async: 0
+  entity_share_client: 0
+  entity_share_server: 0
   feeds: 0
   feeds_tamper: 0
   field: 0
+  field_ui: 0
   file: 0
   filelog: 0
   filter: 0
@@ -45,6 +49,7 @@ module:
   image_style_quality: 0
   json_field: 0
   json_field_widget: 0
+  jsonapi: 0
   lang_dropdown: 0
   language: 0
   languagefield: 0
@@ -66,6 +71,7 @@ module:
   migrate_plus: 0
   migrate_source_csv: 0
   migrate_tools: 0
+  migrate_upgrade: 0
   mobile_app_links: 0
   mysql: 0
   node: 0
@@ -79,7 +85,6 @@ module:
   pb_custom_migrate: 0
   pb_custom_rest_api: 0
   pb_custom_standard_deviation: 0
-  phpass: 0
   purge: 0
   purge_ui: 0
   quickedit: 0
@@ -114,8 +119,6 @@ module:
   toolbar_menu: 0
   toolbar_menu_clean: 0
   tour: 0
-  update: 0
-  upgrade_status: 0
   user: 0
   variationcache: 0
   video_embed_field: 0
@@ -123,6 +126,7 @@ module:
   view_custom_table: 0
   views_bulk_operations: 0
   views_data_export: 0
+  views_ui: 0
   workflows: 0
   content_translation: 10
   views: 10
