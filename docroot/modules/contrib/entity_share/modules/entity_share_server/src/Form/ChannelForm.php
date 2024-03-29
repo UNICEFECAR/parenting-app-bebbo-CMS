@@ -121,7 +121,7 @@ class ChannelForm extends EntityForm implements ContainerInjectionInterface {
       '#description' => $this->t("The JSON:API's page limit option to limit the number of entities per page."),
       '#default_value' => $channel->get('channel_maxsize'),
       '#min' => 1,
-      '#max' => 50,
+      '#max' => 100,
       '#required' => TRUE,
     ];
 
