@@ -91,7 +91,7 @@ class ImportConfigForm extends EntityForm {
       '#description' => $this->t("The JSON:API's page limit option to limit the number of entities per page."),
       '#default_value' => $import_config->get('import_maxsize'),
       '#min' => 1,
-      '#max' => 100,
+      '#max' => 50,
       '#required' => TRUE,
     ];
 
