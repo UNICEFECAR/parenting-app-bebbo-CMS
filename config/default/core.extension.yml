@@ -85,7 +85,9 @@ module:
   pb_custom_migrate: 0
   pb_custom_rest_api: 0
   pb_custom_standard_deviation: 0
+  phpass: 0
   purge: 0
+  purge_queuer_coretags: 0
   purge_ui: 0
   quickedit: 0
   rdf: 0

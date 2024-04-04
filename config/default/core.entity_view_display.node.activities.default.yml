@@ -104,4 +104,5 @@ content:
 hidden:
   field_activity_child_age: true
   field_child_age: true
+  field_pre_populated: true
   langcode: true

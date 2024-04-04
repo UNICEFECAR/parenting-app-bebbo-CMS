@@ -39,4 +39,6 @@ hidden:
   feeds_item: true
   field_daily_message_category: true
   field_licensed_content: true
+  field_mandatory_content: true
+  field_pre_populated: true
   langcode: true

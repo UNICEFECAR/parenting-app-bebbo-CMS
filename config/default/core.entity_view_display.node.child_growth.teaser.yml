@@ -47,6 +47,7 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_pinned_article: true
+  field_pre_populated: true
   field_related_articles: true
   field_related_video_articles: true
   field_standard_deviation: true

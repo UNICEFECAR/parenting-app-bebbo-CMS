@@ -59,6 +59,7 @@ hidden:
   field_licensed_content: true
   field_mandatory_content: true
   field_parent_gender: true
+  field_pre_populated: true
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true

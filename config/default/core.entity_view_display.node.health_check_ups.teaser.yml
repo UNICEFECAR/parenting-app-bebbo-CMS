@@ -47,4 +47,5 @@ hidden:
   field_notification_to: true
   field_pinned_article: true
   field_pinned_video_article: true
+  field_pre_populated: true
   langcode: true

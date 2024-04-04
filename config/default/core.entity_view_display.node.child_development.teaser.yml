@@ -56,4 +56,5 @@ hidden:
   field_milestone_instructions: true
   field_pinned_article_for_boy: true
   field_pinned_article_for_girl: true
+  field_pre_populated: true
   langcode: true
