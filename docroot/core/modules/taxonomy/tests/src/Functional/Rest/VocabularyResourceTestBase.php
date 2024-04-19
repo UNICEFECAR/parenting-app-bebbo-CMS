@@ -71,7 +71,7 @@ abstract class VocabularyResourceTestBase extends ConfigEntityResourceTestBase {
    */
   protected function getExpectedUnauthorizedAccessMessage($method) {
     if ($method === 'GET') {
-      return "The following permissions are required: 'access taxonomy overview' OR 'administer taxonomy'.";
+      return "The following permissions are required: 'access taxonomy overview' OR 'administer taxonomy' OR 'access content'.";
     }
     return parent::getExpectedUnauthorizedAccessMessage($method);
   }

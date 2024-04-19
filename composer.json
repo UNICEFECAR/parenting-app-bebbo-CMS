@@ -28,6 +28,7 @@
         "drupal/date_popup": "^1.1",
         "drupal/entity": "^1.2",
         "drupal/entity_share": "^3.0",
+        "drupal/entity_share_cron": "^3.0",
         "drupal/features": "^3.8.0",
         "drupal/feeds": "^3.0@alpha",
         "drupal/feeds_tamper": "^2.0@beta",
@@ -158,7 +159,8 @@
         "patches": {
             "drupal/core": {
                 "Updated By sortable issue": "https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch",
-                "TypeError: implode(): Argument must be of type array":"https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch"
+                "TypeError: implode(): Argument must be of type array":"https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch",
+                "View vocabulery permission issue": "https://www.drupal.org/files/issues/2023-10-26/3114365-37.patch"
             },
             "drupal/video_embed_field": {
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"
