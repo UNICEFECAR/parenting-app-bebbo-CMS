@@ -1,7 +1,5 @@
 
-if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/parentbuddy2/pbbangladesh-settings.inc';
-}<?php
+<?php
 
 // @codingStandardsIgnoreFile
 
