@@ -41,6 +41,7 @@ module:
   file: 0
   filelog: 0
   filter: 0
+  google_analytics: 0
   gnode: 0
   group: 0
   group_country_field: 0
