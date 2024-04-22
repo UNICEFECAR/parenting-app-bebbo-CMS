@@ -1,0 +1,77 @@
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+  assigned:
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+        title:
+          expose:
+            label: Заголовок
+  closed:
+    display_options:
+      fields:
+        created:
+          label: Створено
+        title:
+          label: Заголовок
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+        title:
+          expose:
+            label: Заголовок
+  completed:
+    display_options:
+      fields:
+        created:
+          label: Створено
+        title:
+          label: Заголовок
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+        title:
+          expose:
+            label: Заголовок
+  pending:
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+        title:
+          expose:
+            label: Заголовок
+  rejected:
+    display_options:
+      fields:
+        created:
+          label: Створено
+        title:
+          label: Заголовок
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+        title:
+          expose:
+            label: Заголовок
+  unassigned:
+    display_options:
+      fields:
+        title:
+          label: Заголовок

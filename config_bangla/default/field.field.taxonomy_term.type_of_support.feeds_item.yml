@@ -1,0 +1,23 @@
+uuid: fa6d349c-2675-493a-b2e6-77efc504729a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.feeds_item
+    - taxonomy.vocabulary.type_of_support
+  module:
+    - feeds
+id: taxonomy_term.type_of_support.feeds_item
+field_name: feeds_item
+entity_type: taxonomy_term
+bundle: type_of_support
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

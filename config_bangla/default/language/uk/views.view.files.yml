@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        filename:
+          label: "Назва (ім'я)"
+        filemime:
+          label: 'Тип MIME'
+      filters:
+        filemime:
+          expose:
+            label: 'Тип MIME'

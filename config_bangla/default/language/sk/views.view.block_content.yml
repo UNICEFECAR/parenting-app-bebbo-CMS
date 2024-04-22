@@ -1,0 +1,49 @@
+label: 'Vlastné bloky'
+description: 'Nájsť a spravovať vlastné bloky.'
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      title: 'Vlastné bloky'
+      fields:
+        info:
+          label: 'Popis bloku'
+          separator: ', '
+        type:
+          label: 'Typ bloku'
+          separator: ', '
+        changed:
+          label: Aktualizované
+        operations:
+          label: Operácie
+      pager:
+        options:
+          tags:
+            next: Ďalej
+            previous: '‹ Predchádzajúci'
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      empty:
+        area_text_custom:
+          content: 'Nie sú k dispozícii žiadne vlastné bloky.'
+      filters:
+        info:
+          expose:
+            label: 'Popis bloku'
+        type:
+          expose:
+            label: 'Typ bloku'
+  page_1:
+    display_title: Stránka
+    display_options:
+      menu:
+        title: 'Vlastné bloky'

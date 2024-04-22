@@ -1,0 +1,20 @@
+uuid: bd8f0feb-d7ae-44d1-a107-554583e596f6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_notification_from
+field_name: field_notification_from
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

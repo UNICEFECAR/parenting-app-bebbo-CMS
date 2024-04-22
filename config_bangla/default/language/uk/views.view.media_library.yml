@@ -1,0 +1,28 @@
+display:
+  default:
+    display_options:
+      title: Медіа
+      filters:
+        name:
+          expose:
+            label: "Назва (ім'я)"
+        langcode:
+          expose:
+            label: Мова
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: "Назва (ім'я)"
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: "Назва (ім'я)"
+        uid:
+          label: Автор
+      filters:
+        name:
+          expose:
+            label: "Назва (ім'я)"

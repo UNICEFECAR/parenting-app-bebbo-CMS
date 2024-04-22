@@ -1,0 +1,37 @@
+display:
+  closed:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+  completed:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+  eligible:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+  my_tasks:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+  pending:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
+  rejected:
+    display_options:
+      filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'

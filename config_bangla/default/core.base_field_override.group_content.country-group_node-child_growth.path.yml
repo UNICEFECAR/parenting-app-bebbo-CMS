@@ -1,0 +1,20 @@
+uuid: 2e8311cb-ea40-4a16-9683-ea4b08b246bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-child_growth
+  module:
+    - path
+id: group_content.country-group_node-child_growth.path
+field_name: path
+entity_type: group_content
+bundle: country-group_node-child_growth
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path
