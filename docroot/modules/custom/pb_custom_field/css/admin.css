@@ -730,6 +730,12 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   padding-right: 35px !important;
 }
 
+.layout-container .progress {
+  display: block !important;
+  height: auto !important;
+  background-color: transparent !important;
+}
+
 
 /*Homepage css end*/
 
