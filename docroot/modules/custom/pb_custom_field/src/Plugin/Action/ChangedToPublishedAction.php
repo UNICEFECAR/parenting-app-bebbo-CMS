@@ -76,7 +76,7 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase {
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
-    $archive_node = node_load($nid);
+    $archive_node = Node::load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
     $node_lang_archive = $archive_node->getTranslation($current_language);
@@ -151,10 +151,12 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase {
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');
+        \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');
+        \Drupal::messenger()->addError($error_message);
       }
     }
     // if ($this->initial == 1) {

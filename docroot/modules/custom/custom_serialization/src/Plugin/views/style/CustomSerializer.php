@@ -4,11 +4,11 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
-use Drupal\rest\Plugin\views\style\Serializer;
-use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
+use Drupal\rest\Plugin\views\style\Serializer;
 
 /**
  * The style plugin for serialized output formats.
@@ -52,7 +52,7 @@ class CustomSerializer extends Serializer {
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
-        "related_article","old_calendar",
+        "related_article", "old_calendar",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -163,27 +163,12 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $body_summary;
               }
             }
-
-            //dblog after embedded images
-            \Drupal::logger('custom_serialization')->notice('This is after embedded images with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
-
             /* Custom image & video formattter.To check media image field exist  */
-            
-            //dblog before media formatter
-            \Drupal::logger('custom_serialization')->notice('This is before media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
             if (in_array($key, $media_fields)) {
               $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
               $rendered_data[$key] = $media_formatted_data;
             }
-
-            //dblog after media formatter
-            \Drupal::logger('custom_serialization')->notice('This is after media formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
-
             /* Custom array formatter.To check mulitple field.  */
-
-            //dblog before array formatter
-            \Drupal::logger('custom_serialization')->notice('This is before array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
-
             if (in_array($key, $array_of_multiple_values)) {
               $array_formatted_data = $this->customArrayFormatter($values);
               /* Convert array to array of int. */
@@ -196,9 +181,6 @@ class CustomSerializer extends Serializer {
                 $rendered_data[$key] = $array_formatted_data;
               }
             }
-
-            //dblog after array formatter
-            \Drupal::logger('custom_serialization')->notice('This is after array formatter with a timestamp: @time', ['@time' => date("Y-m-d H:i:s")]);
 
             /* Convert string to int. */
             if (in_array($key, $string_to_int)) {
@@ -215,7 +197,7 @@ class CustomSerializer extends Serializer {
               /* If the field have comma. */
               if (!empty($values) && strpos($values, ',') !== FALSE) {
                 /* remove keywords from taxonomy res */
-                if($values != "keywords,Keywords") {
+                if ($values != "keywords,Keywords") {
                   $formatted_data = explode(',', $values);
                   $vocabulary_name = $formatted_data[1];
                   $vocabulary_machine_name = $formatted_data[0];
@@ -362,6 +344,7 @@ class CustomSerializer extends Serializer {
     if (!empty($values)) {
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
+      $base_url = \Drupal::request()->getSchemeAndHttpHost();
       if ($media_type === 'image') {
         $mid = $media_entity->get('field_media_image')->target_id;
         if (!empty($mid)) {
@@ -411,11 +394,71 @@ class CustomSerializer extends Serializer {
         if ($key == "cover_image") {
           $tid = $media_entity->get('thumbnail')->target_id;
           if (!empty($tid)) {
-            $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->url();
+            if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
+              // Get the value of the oEmbed video field.
+              $oembed_value = $media_entity->get('field_media_oembed_video')->value;
+
+              // Parse the oEmbed URL to extract the Vimeo video ID.
+              $parsed_url = parse_url($oembed_value);
+              if (isset($parsed_url['path'])) {
+                  // Extract the Vimeo video ID from the path.
+                  $path_segments = explode('/', $parsed_url['path']);
+                  $vimeo_video_id = end($path_segments);
+                  $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
+                  
+                  // Initialize cURL session
+                  $ch = curl_init();
+
+                  // Set cURL options
+                  curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
+                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                  // Execute the cURL request
+                  $response = curl_exec($ch);
+
+                  if ($response === false) {
+                      // cURL error occurred
+                      $error_message = curl_error($ch);
+                      // Handle the error, log it, etc.
+                      $urls ='cURL error';
+                  } else {
+                      // Close cURL session
+                      curl_close($ch);
+
+                      // Decode the JSON response into an associative array
+                      $data = json_decode($response, true);
+
+                      if ($data === null) {
+                          // JSON decoding error occurred
+                          $json_error = json_last_error_msg();
+                          // Handle the error, log it, etc.
+                          $urls ='Vimeo error';
+                      } else {
+                          // Extract the thumbnail URL from the response data
+                          $urls = isset($data['thumbnail_url']) ? $data['thumbnail_url'] : null;
+                      }
+                  }
+                } else {
+                    // Vimeo video ID not found in the oEmbed URL
+                    // Handle the error, log it, etc.
+                    $urls ='Vimeo ID not found';
+                }
+
+            }
+            else {
+                $thumbnail = File::load($tid);
+                $thumbnail_url = $thumbnail->createFileUrl();
+                if (strpos($thumbnail_url, $base_url) !== false) {
+                  // Base URL is present in the thumbnail URL
+                  $urls = $thumbnail_url;
+                } else {
+                  // Base URL is Not present in the thumbnail URL
+                  $urls = $base_url.$thumbnail_url;
+                }
+              }
           }
           $media_data = [
-            'url'  => $thumbnail_url,
+            'url'  => $urls,
             'name' => $mname,
             'alt'  => '',
           ];
@@ -432,7 +475,7 @@ class CustomSerializer extends Serializer {
            * @var object
            */
           $file = File::load($mid);
-          $url = $file->url();
+          $url = $file->createFileUrl(); 
         }
 
         $media_data = [
@@ -445,7 +488,7 @@ class CustomSerializer extends Serializer {
           $tid = $media_entity->get('thumbnail')->target_id;
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->url();
+            $thumbnail_url = $thumbnail->createFileUrl();
           }
           $media_data = [
             'url'  => $thumbnail_url,
