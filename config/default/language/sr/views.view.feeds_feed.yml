@@ -8,7 +8,7 @@ display:
         title:
           label: Title
         type:
-          label: Type
+          label: Tип
         name:
           label: Author
         operations:
@@ -19,4 +19,4 @@ display:
             label: Title
         type:
           expose:
-            label: Type
+            label: Tип

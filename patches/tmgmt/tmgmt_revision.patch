@@ -12,7 +12,11 @@ index 23c2dc87..e5a4cd20 100644
              '@label' => $item->label(),
            ]));
 +		  $translation->setRevisionUserId($uid);
-+         $translation->setRevisionCreationTime(REQUEST_TIME);
++          $translation->setRevisionCreationTime(REQUEST_TIME);
++          /* Update the Entity Author Details */
++          $translation->set('uid', $uid);
++          $translation->set('changed', time());
++          $translation->set('created', time());
          }
        }
      }

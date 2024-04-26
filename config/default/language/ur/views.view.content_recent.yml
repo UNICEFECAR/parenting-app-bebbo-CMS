@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      use_more_text: مزید
+  block_1:
+    display_title: بلاک

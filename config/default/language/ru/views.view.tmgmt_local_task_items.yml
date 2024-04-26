@@ -4,7 +4,6 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Apply
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
@@ -15,15 +14,24 @@ display:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
       fields:
         status:
           label: Status
         label:
           label: Label
         item_type:
-          label: Type
+          label: Тип
           separator: ', '
         word_count:
           separator: ', '
         operations:
           label: Operations
+      arguments:
+        tltid:
+          exception:
+            title: All

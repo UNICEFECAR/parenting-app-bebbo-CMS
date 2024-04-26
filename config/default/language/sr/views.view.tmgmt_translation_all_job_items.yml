@@ -10,12 +10,13 @@ display:
         label:
           label: Label
         type:
-          label: Type
-        changed:
-          label: Changed
+          label: Tип
         operations:
           label: Operations
       filters:
         state:
           group_info:
             label: State
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

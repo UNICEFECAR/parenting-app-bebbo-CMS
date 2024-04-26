@@ -15,59 +15,59 @@ third_party_settings:
         find: review_after_translation
         replace: draft
         case_sensitive: false
+        word_boundaries: false
         whole: false
+        uuid: 2d809227-ef89-4ffb-a3cc-98cb6dc17b5f
         plugin: find_replace
         source: moderation_state
         weight: 0
         label: 'review_after_translation into draft'
-        word_boundaries: false
-        uuid: 2d809227-ef89-4ffb-a3cc-98cb6dc17b5f
       5d3c37c4-0dde-476e-814c-aac1d01be83d:
         find: Draft
         replace: draft
         case_sensitive: false
+        word_boundaries: false
         whole: false
+        uuid: 5d3c37c4-0dde-476e-814c-aac1d01be83d
         plugin: find_replace
         source: moderation_state
         weight: 1
         label: 'Draft into draft'
-        word_boundaries: false
-        uuid: 5d3c37c4-0dde-476e-814c-aac1d01be83d
       bc9ebb2d-9497-4e6e-a3f5-01064b13ade1:
         find: Published
         replace: published
         case_sensitive: false
+        word_boundaries: false
         whole: false
+        uuid: bc9ebb2d-9497-4e6e-a3f5-01064b13ade1
         plugin: find_replace
         source: moderation_state
         weight: 2
         label: 'Published into published'
-        word_boundaries: false
-        uuid: bc9ebb2d-9497-4e6e-a3f5-01064b13ade1
       ec84e537-89ad-4b19-bb2e-f47972e6229f:
         find: 'In review'
         replace: reviewer_review
         case_sensitive: false
+        word_boundaries: false
         whole: false
+        uuid: ec84e537-89ad-4b19-bb2e-f47972e6229f
         plugin: find_replace
         source: moderation_state
         weight: 3
         label: 'In review into reviewer_review'
-        word_boundaries: false
-        uuid: ec84e537-89ad-4b19-bb2e-f47972e6229f
       0cfc48e0-5036-4fe8-a7f9-7a975ddf469f:
         find: 'Review after translation'
         replace: draft
         case_sensitive: false
+        word_boundaries: false
         whole: false
+        uuid: 0cfc48e0-5036-4fe8-a7f9-7a975ddf469f
         plugin: find_replace
         source: moderation_state
         weight: 4
         label: 'Review after translation into draft'
-        word_boundaries: false
-        uuid: 0cfc48e0-5036-4fe8-a7f9-7a975ddf469f
-id: content_homescreen_messages
 label: 'Content - Homescreen Messages'
+id: content_homescreen_messages
 description: 'Content - Homescreen Messages'
 help: ''
 import_period: -1
@@ -82,60 +82,68 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:node'
 processor_configuration:
+  values:
+    type: daily_homescreen_messages
   langcode: en
+  insert_new: 1
   update_existing: 1
   update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
   expire: -1
   owner_feed_author: true
   owner_id: 0
-  authorize: true
-  skip_hash_check: false
-  values:
-    type: daily_homescreen_messages
 custom_sources:
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
+    type: csv
   title:
-    label: Title
     value: Title
+    label: Title
     machine_name: title
+    type: csv
   '':
-    label: ''
     value: ''
+    label: ''
     machine_name: ''
+    type: csv
   translation_language:
-    label: Translation_language
     value: Translation_language
+    label: Translation_language
     machine_name: translation_language
+    type: csv
   message_category:
-    label: Message_category
     value: Message_category
+    label: Message_category
     machine_name: message_category
+    type: csv
   moderation_state:
-    label: Moderation_state
     value: Moderation_state
+    label: Moderation_state
     machine_name: moderation_state
+    type: csv
 mappings:
   -
     target: nid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: title
     map:
       value: title
-    unique: {  }
     settings:
       language: en
+    unique: {  }
   -
     target: moderation_state
     map:
       value: moderation_state
-    unique: {  }
     settings:
       language: en
+    unique: {  }

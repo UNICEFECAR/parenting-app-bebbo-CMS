@@ -1,0 +1,28 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: فلٹر
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: '› گزشتہ'
+            first: '» ابتدائی'
+      fields:
+        bundle:
+          label: قِسم
+        uid:
+          label: مصنف
+        status:
+          label: حالت
+        operations:
+          label: معاملات
+      filters:
+        bundle:
+          expose:
+            label: قِسم
+        langcode:
+          expose:
+            label: زبان

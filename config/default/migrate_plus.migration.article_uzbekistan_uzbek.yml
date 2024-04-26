@@ -1,5 +1,11 @@
+uuid: a81a4be8-1e67-48c4-94f7-5a6085513c79
 langcode: en
+status: true
+dependencies: {  }
 id: article_uzbekistan_uzbek
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags: article_uzbekistan_uzbek
 migration_group: article
 label: 'Article Uzbekistan Uzbek'
@@ -14,15 +20,12 @@ process:
     plugin: default_value
     source: language
     default_value: uz-uz
-
   uid:
     plugin: default_value
     source: node_uid
     default_value: 1
-
   nid: ID
   moderation_state: Moderation_state
-
 destination:
   plugin: 'entity:node'
   default_bundle: article

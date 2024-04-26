@@ -10,9 +10,7 @@ display:
         label:
           label: Label
         type:
-          label: Type
-        changed:
-          label: Changed
+          label: Tип
         operations:
           label: Operations
   checkout:
@@ -21,6 +19,4 @@ display:
         label:
           label: Label
         type:
-          label: Type
-        changed:
-          label: Changed
+          label: Tип

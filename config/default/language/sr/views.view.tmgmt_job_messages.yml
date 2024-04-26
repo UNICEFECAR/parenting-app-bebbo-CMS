@@ -5,7 +5,5 @@ display:
         options:
           exposed_sorts_label: 'Sort by'
       fields:
-        created:
-          label: Created
         name:
           label: Name

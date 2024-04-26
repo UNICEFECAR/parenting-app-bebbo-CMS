@@ -21,74 +21,74 @@ bundle: health_check_ups
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 101
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 101
     region: content
   content_moderation_control:
-    weight: -20
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: -20
+    region: content
   field_growth_period:
-    weight: 102
+    type: entity_reference_label
     label: above
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 102
     region: content
   field_licensed_content:
-    weight: 107
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 107
     region: content
   field_notification_from:
-    weight: 104
+    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 104
     region: content
   field_notification_to:
-    weight: 105
+    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 105
     region: content
   field_pinned_article:
-    weight: 103
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 103
     region: content
   field_pinned_video_article:
-    weight: 106
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 106
     region: content
   links:
-    weight: 100
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 100
+    region: content
 hidden:
   feeds_item: true
   langcode: true

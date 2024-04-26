@@ -3,10 +3,15 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           exposed_sorts_label: 'Sort by'
       fields:
+        name:
+          label: Username
         status:
           label: Status
+        roles_target_id:
+          label: Roles
         operations:
           label: Operations
       filters:

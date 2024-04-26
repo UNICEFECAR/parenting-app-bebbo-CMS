@@ -1,0 +1,9 @@
+uuid: f975e395-9f9c-454b-8a9e-2f7ba3f50d4e
+langcode: en
+status: true
+dependencies: {  }
+id: ar
+label: Arabic
+direction: rtl
+weight: 28
+locked: false

@@ -3,6 +3,7 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           exposed_sorts_label: 'Sort by'
       fields:
         title:

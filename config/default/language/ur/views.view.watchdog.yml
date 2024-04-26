@@ -1,0 +1,21 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: فلٹر
+          exposed_sorts_label: 'کی طرف سے  کی گئی مرتب سازی'
+      pager:
+        options:
+          tags:
+            previous: ››
+            next: ‹‹
+      fields:
+        type:
+          label: قِسم
+        link:
+          label: معاملات
+      filters:
+        type:
+          expose:
+            label: قِسم

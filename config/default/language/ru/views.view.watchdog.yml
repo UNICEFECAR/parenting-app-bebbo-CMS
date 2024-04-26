@@ -4,6 +4,7 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
@@ -15,15 +16,25 @@ display:
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
       fields:
+        nothing:
+          admin_label: Icon
+        severity:
+          label: Важность
         type:
-          label: Type
+          label: Тип
+        timestamp:
+          label: Дата
+        message:
+          label: Сообщение
         name:
+          label: User
           separator: ', '
         link:
           label: Operations
       filters:
         type:
           expose:
-            label: Type
-  page:
-    display_title: Page
+            label: Тип
+        severity:
+          expose:
+            label: Важность

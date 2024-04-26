@@ -4,12 +4,16 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
         options:
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
           expose:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
@@ -18,9 +22,14 @@ display:
         filename:
           label: Name
           separator: ', '
+        filemime:
+          label: MIME-тип
         status:
           label: Status
       filters:
+        filemime:
+          expose:
+            label: MIME-тип
         status:
           expose:
             label: Status
@@ -28,7 +37,17 @@ display:
     display_options:
       pager:
         options:
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
           expose:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
+      fields:
+        type:
+          label: 'Тип сущности'
+      arguments:
+        fid:
+          exception:
+            title: All

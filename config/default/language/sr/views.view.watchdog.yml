@@ -3,13 +3,20 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           exposed_sorts_label: 'Sort by'
       fields:
         type:
-          label: Type
+          label: Tип
+        timestamp:
+          label: Датум
+        message:
+          label: Порука
+        name:
+          label: User
         link:
           label: Operations
       filters:
         type:
           expose:
-            label: Type
+            label: Tип

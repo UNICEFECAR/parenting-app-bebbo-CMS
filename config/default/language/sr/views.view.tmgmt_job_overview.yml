@@ -9,11 +9,14 @@ display:
           label: State
         label:
           label: Label
-        changed:
-          label: Changed
+        translator:
+          label: Provider
         operations:
           label: Operations
       filters:
         state:
           expose:
             label: State
+        translator:
+          expose:
+            label: Provider

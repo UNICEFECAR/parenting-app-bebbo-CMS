@@ -15,13 +15,13 @@ id: node.survey.field_survey_link
 field_name: field_survey_link
 entity_type: node
 bundle: survey
-label: 'Survey / Feedback or User Guide Link'
+label: Link
 description: ''
 required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  link_type: 16
   title: 0
+  link_type: 16
 field_type: link

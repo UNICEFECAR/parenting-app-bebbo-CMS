@@ -1,0 +1,28 @@
+uuid: 206aaf8e-2698-42b5-be7b-9d8e7cf4a528
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_old_calendar
+    - node.type.vaccinations
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.vaccinations.field_old_calendar
+field_name: field_old_calendar
+entity_type: node
+bundle: vaccinations
+label: 'Old Calendar'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

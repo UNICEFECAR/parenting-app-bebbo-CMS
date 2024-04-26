@@ -4,8 +4,8 @@ status: true
 dependencies:
   module:
     - user
-id: user_import
 label: 'User Import'
+id: user_import
 description: 'User Import Through CSV'
 help: ''
 import_period: 0
@@ -20,52 +20,59 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:user'
 processor_configuration:
+  values: {  }
   langcode: en
+  insert_new: 1
   update_existing: 0
   update_non_existent: _keep
-  expire: -1
   skip_hash_check: false
-  owner_id: 0
-  values: {  }
   authorize: false
+  revision: false
+  expire: -1
   owner_feed_author: false
+  owner_id: 0
 custom_sources:
   email:
-    label: Email
     value: Email
+    label: Email
     machine_name: email
+    type: csv
   user_name:
-    label: 'User Name'
     value: 'User Name'
+    label: 'User Name'
     machine_name: user_name
+    type: csv
   password:
-    label: password
     value: password
+    label: password
     machine_name: password
+    type: csv
   roles:
-    label: Roles
     value: Roles
+    label: Roles
     machine_name: roles
+    type: csv
   status:
-    label: Status
     value: Status
+    label: Status
     machine_name: status
+    type: csv
 mappings:
   -
     target: mail
     map:
       value: email
-    unique:
-      value: '1'
     settings:
       defuse: false
+    unique:
+      value: '1'
   -
     target: name
     map:
       value: user_name
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: pass
     map:

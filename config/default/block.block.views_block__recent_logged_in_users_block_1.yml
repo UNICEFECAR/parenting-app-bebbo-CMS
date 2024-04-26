@@ -13,27 +13,27 @@ dependencies:
 id: views_block__recent_logged_in_users_block_1
 theme: claro
 region: content
-weight: 5
+weight: 4
 provider: null
 plugin: 'views_block:recent_logged_in_users-block_1'
 settings:
   id: 'views_block:recent_logged_in_users-block_1'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
+  context_mapping: {  }
   views_label: ''
   items_per_page: none
-  context_mapping: {  }
 visibility:
   request_path:
     id: request_path
-    pages: /dashboard
     negate: false
     context_mapping: {  }
+    pages: /dashboard
   user_role:
     id: user_role
-    roles:
-      reviewer: reviewer
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      reviewer: reviewer

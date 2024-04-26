@@ -1,6 +1,34 @@
+label: Përmbajtja
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       fields:
+        title:
+          label: Title
+        name:
+          label: Author
+        status:
+          label: Status
         operations:
           label: Operations
+      filters:
+        title:
+          expose:
+            label: Title
+        status:
+          expose:
+            label: Status
+        langcode:
+          expose:
+            label: Language
+      title: Përmbajtja
+  page_1:
+    display_options:
+      menu:
+        title: Përmbajtja
+      tab_options:
+        title: Përmbajtja

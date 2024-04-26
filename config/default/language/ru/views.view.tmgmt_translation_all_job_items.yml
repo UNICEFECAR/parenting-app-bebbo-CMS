@@ -4,7 +4,6 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Apply
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
@@ -15,23 +14,36 @@ display:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
       fields:
+        state:
+          label: State
         label:
           label: Label
         type:
-          label: Type
+          label: Тип
         source_language:
           separator: ', '
         target_language:
+          label: To
           separator: ', '
         word_count:
           separator: ', '
         tags_count:
+          label: Tags
           separator: ', '
         changed:
-          label: Changed
           separator: ', '
         operations:
           label: Operations
-  page_1:
-    display_title: Page
+      filters:
+        state:
+          group_info:
+            label: State
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -5,5 +5,5 @@ dependencies: {  }
 id: by-be
 label: Belarus-Belarusian
 direction: ltr
-weight: 6
+weight: -10
 locked: false

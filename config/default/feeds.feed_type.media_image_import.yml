@@ -13,13 +13,13 @@ third_party_settings:
   feeds_tamper:
     tampers:
       22bb1332-d836-443d-9a30-58e434489a13:
+        uuid: 22bb1332-d836-443d-9a30-58e434489a13
         plugin: html_entity_decode
         source: name
         weight: 0
         label: 'HTML entity decode'
-        uuid: 22bb1332-d836-443d-9a30-58e434489a13
-id: media_image_import
 label: 'Media - Image'
+id: media_image_import
 description: 'Media image import'
 help: ''
 import_period: -1
@@ -34,56 +34,64 @@ parser_configuration:
   line_limit: 100
 processor: 'entity:media'
 processor_configuration:
+  values:
+    bundle: image
   langcode: en
+  insert_new: 1
   update_existing: 1
   update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
   expire: -1
   owner_feed_author: true
   owner_id: 0
-  authorize: true
-  skip_hash_check: false
-  values:
-    bundle: image
 custom_sources:
   '':
-    label: ''
     value: ''
+    label: ''
     machine_name: ''
+    type: csv
   id:
-    label: ID
     value: ID
+    label: ID
     machine_name: id
+    type: csv
   name:
-    label: Name
     value: Name
+    label: Name
     machine_name: name
+    type: csv
   image_id:
-    label: Image_ID
     value: Image_ID
+    label: Image_ID
     machine_name: image_id
+    type: csv
   alt_text:
-    label: Alt_text
     value: Alt_text
+    label: Alt_text
     machine_name: alt_text
+    type: csv
   thumbnail:
-    label: Thumbnail
     value: Thumbnail
+    label: Thumbnail
     machine_name: thumbnail
+    type: csv
 mappings:
   -
     target: mid
     map:
       value: id
+    settings: {  }
     unique:
       value: '1'
-    settings: {  }
   -
     target: name
     map:
       value: name
-    unique: {  }
     settings:
       language: null
+    unique: {  }
   -
     target: field_media_image
     map:

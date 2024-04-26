@@ -1,6 +1,6 @@
 uuid: f1065418-425c-4b04-b81e-203c719e6b70
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.main
@@ -12,27 +12,27 @@ dependencies:
 id: mainnavigation_2
 theme: claro
 region: content
-weight: 6
+weight: 5
 provider: null
 plugin: 'system_menu_block:main'
 settings:
   id: 'system_menu_block:main'
   label: 'Main navigation'
-  provider: system
   label_display: '0'
+  provider: system
   level: 1
   depth: 0
   expand_all_items: false
 visibility:
   request_path:
     id: request_path
-    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
     negate: false
     context_mapping: {  }
+    pages: "/homepage\r\n/about-us\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
   user_role:
     id: user_role
-    roles:
-      anonymous: anonymous
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous

@@ -1,0 +1,24 @@
+uuid: 77bd19ca-268d-4819-98a0-a1ea91a6389d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.keywords.feeds_item
+    - taxonomy.vocabulary.keywords
+  module:
+    - text
+id: taxonomy_term.keywords.default
+targetEntityType: taxonomy_term
+bundle: keywords
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

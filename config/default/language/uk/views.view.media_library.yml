@@ -1,0 +1,37 @@
+display:
+  default:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: 'Назва (ім''я)'
+        langcode:
+          expose:
+            label: Мова
+      title: Медіа
+  page:
+    display_options:
+      fields:
+        edit_media:
+          text: Редагувати
+        delete_media:
+          text: Видалити
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: 'Назва (ім''я)'
+  widget_table:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Мініатюра
+        name:
+          label: 'Назва (ім''я)'
+        uid:
+          label: Автор
+      filters:
+        name:
+          expose:
+            label: 'Назва (ім''я)'

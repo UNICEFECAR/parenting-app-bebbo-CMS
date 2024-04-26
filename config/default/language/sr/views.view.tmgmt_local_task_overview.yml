@@ -3,6 +3,7 @@ display:
     display_options:
       exposed_form:
         options:
+          submit_button: Filter
           exposed_sorts_label: 'Sort by'
       fields:
         title:
@@ -43,6 +44,8 @@ display:
         title:
           expose:
             label: Label
+      menu:
+        title: Completed
   eligible:
     display_options:
       fields:

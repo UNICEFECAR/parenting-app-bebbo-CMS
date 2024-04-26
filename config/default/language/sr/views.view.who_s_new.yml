@@ -4,3 +4,6 @@ display:
       exposed_form:
         options:
           exposed_sorts_label: 'Sort by'
+  block_1:
+    display_options:
+      block_category: User

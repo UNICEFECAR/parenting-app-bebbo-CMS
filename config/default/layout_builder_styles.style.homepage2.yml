@@ -1,0 +1,13 @@
+uuid: 74cfdcde-770e-4412-80a2-74a6bff35004
+langcode: en
+status: true
+dependencies: {  }
+id: homepage2
+label: Homepage2
+classes: homepageblock2
+type: component
+group: default
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }
+weight: 0

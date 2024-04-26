@@ -4,7 +4,6 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Apply
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
@@ -15,23 +14,27 @@ display:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
-          tags:
-            previous: '‹ previous'
-            next: 'next ›'
-            first: '« first'
-            last: 'last »'
       fields:
         state:
+          label: State
           separator: ', '
         label:
           label: Label
         source_language_1:
           separator: ', '
         target_language:
+          label: To
           separator: ', '
-        changed:
-          label: Changed
+        translator:
+          label: Provider
+        tags_count:
+          label: Tags
         operations:
           label: Operations
-  page_1:
-    display_title: Page
+      filters:
+        state:
+          expose:
+            label: State
+        translator:
+          expose:
+            label: Provider

@@ -1,6 +1,25 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       fields:
+        name:
+          label: Username
+        status:
+          label: Status
+          settings:
+            format_custom_true: Aktiv
+        roles_target_id:
+          label: Roles
         operations:
           label: Operations
+      filters:
+        status:
+          group_info:
+            label: Status
+            group_items:
+              1:
+                title: Aktiv
