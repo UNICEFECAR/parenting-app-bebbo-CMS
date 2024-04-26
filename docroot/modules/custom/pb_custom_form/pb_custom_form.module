@@ -6,8 +6,8 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\views\ViewExecutable;
 use Drupal\node\NodeInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_theme().
@@ -20,36 +20,36 @@ function pb_custom_form_theme($existing, $type, $theme, $path) {
       'variables' => ['app_share_script' => $config->get('mobile_app_share_link')],
     ],
     'kosovo-mobile' => [
-    'variables' => ['kosovo_app_share_script' => $config->get('kosovo_mobile_app_share_link')],
-  ]
+      'variables' => ['kosovo_app_share_script' => $config->get('kosovo_mobile_app_share_link')],
+    ],
   ];
 }
 
 /**
  * Implements hook_form_alter().
  */
-function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {  
+function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'group_country_edit_form') {
-    ##Make readonly if offload country is enabled
+    // Make readonly if offload country is enabled.
     $user = \Drupal::currentUser();
-    $roles = $user->getRoles();    
+    $roles = $user->getRoles();
     $global_user = ['global_admin'];
     if (count(array_intersect($roles, $global_user)) != 0) {
       if ($form['field_make_available_for_mobile']['widget']['value']['#default_value'] == 1) {
         $form['field_make_available_for_mobile']['widget']['value']['#disabled'] = 'true';
       }
-      else{
-            $form['field_make_available_for_mobile']['widget']['value']['#default_value'] = 'true';
-          }
-    }      
+      else {
+        $form['field_make_available_for_mobile']['widget']['value']['#default_value'] = 'true';
+      }
+    }
     /* $form['#attached']['js'][] = drupal_get_path('module', 'pb_custom_field') . '/js/homepage.js'; */
     $form['#attached']['library'][] = 'pb_custom_field/mylib';
     $form['actions']['submit']['#submit'][] = 'group_country_save';
 
   }
 
-  if(strpos($form_id,'edit_form')  !== false && strpos($form_id,'node')  !== false) {
+  if (strpos($form_id, 'edit_form') !== FALSE && strpos($form_id, 'node') !== FALSE) {
     $form['#validate'][] = 'pb_custom_form_node_validate';
   }
 }
@@ -62,17 +62,17 @@ function pb_custom_form_node_validate($form, FormStateInterface $form_state) {
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
 
-  $roles_arr = array (
-      'administrator',
-      'global_admin',
-  );
+  $roles_arr = [
+    'administrator',
+    'global_admin',
+  ];
 
   if ($form_state->getValue('moderation_state')[0]['value'] == 'archive') {
     if (!array_intersect($roles_arr, $roles)) {
       if (empty($form_state->getValue('revision_log')[0]['value'])) {
         $form_state->setErrorByName('revision_log', t('Revision log message is required when archiving.'));
       }
-      elseif(!empty($form_state->getValue('revision_log')[0]['value']) && strlen(trim($form_state->getValue('revision_log')[0]['value'])) < 3){
+      elseif (!empty($form_state->getValue('revision_log')[0]['value']) && strlen(trim($form_state->getValue('revision_log')[0]['value'])) < 3) {
         $form_state->setErrorByName('revision_log', t('Revision log message is required when archiving.'));
       }
     }
@@ -122,11 +122,10 @@ function group_country_save($form, FormStateInterface $form_state) {
 }
 
 /**
- * Implements hook_preprocess_HOOK() for views_view_field.html.twig
+ * Implements hook_preprocess_HOOK() for views_view_field.html.twig.
  */
-
-function pb_custom_field_preprocess_views_view_field(&$variables){
-  if( $variables['field']->field == 'revision_uid'){
+function pb_custom_field_preprocess_views_view_field(&$variables) {
+  if ($variables['field']->field == 'revision_uid') {
     $langcode = $variables['row']->node_field_data_langcode;
     $nid = $variables['row']->_entity->nid->value;
     $vid = \Drupal::entityTypeManager()->getStorage('node')->getLatestRevisionId($nid);
@@ -148,16 +147,17 @@ function pb_custom_field_preprocess_views_view_field(&$variables){
  * Implmenting this hook to avoid duplicate entry of nodes in view.
  */
 function pb_custom_form_views_post_execute(ViewExecutable $view) {
-  // for chil growth api
-
-  if ($view->id() == 'articles'){
+  // For chil growth api.
+  if ($view->id() == 'articles') {
     $display_name = $view->getDisplay()->display['id'];
     switch ($display_name) {
-      case 'rest_export_18': // Child Growth Pinned Content API
-      case 'rest_export_20':  // Milestone Related Content API
+      // Child Growth Pinned Content API.
+      case 'rest_export_18':
+        // Milestone Related Content API.
+      case 'rest_export_20':
         $arrNids = [];
         $new_result = [];
-        foreach($view->result as $k => $row) {
+        foreach ($view->result as $k => $row) {
           $id = $row->node_field_data_node__field_related_articles_nid;
           if (!in_array($id, $arrNids)) {
             $arrNids[] = $id;
@@ -167,12 +167,15 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
         $view->result = $new_result;
         break;
 
-      case 'rest_export_17':    // Health Check-Ups Pinned Content API
-      case 'rest_export_1':     // FAQ Pinned Content API  // api/pinned-contents/en/faq
-      case 'rest_export_21':    // FAQ Updated Pinned Content API   // api/updated-pinned-contents/en/faq
+      // Health Check-Ups Pinned Content API.
+      case 'rest_export_17':
+        // FAQ Pinned Content API  // api/pinned-contents/en/faq.
+      case 'rest_export_1':
+        // FAQ Updated Pinned Content API   // api/updated-pinned-contents/en/faq.
+      case 'rest_export_21':
         $arrNids = [];
         $new_result = [];
-        foreach($view->result as $k => $row) {
+        foreach ($view->result as $k => $row) {
           $id = $row->node_field_data_node__field_pinned_article_nid;
           if (!in_array($id, $arrNids)) {
             $arrNids[] = $id;
@@ -182,10 +185,11 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
         $view->result = $new_result;
         break;
 
-      case 'rest_export_16': // Child Development Girl Pinned Content API  // api/pinned-contents/en/child_development/41
+      // Child Development Girl Pinned Content API  // api/pinned-contents/en/child_development/41.
+      case 'rest_export_16':
         $arrNids = [];
         $new_result = [];
-        foreach($view->result as $k => $row) {
+        foreach ($view->result as $k => $row) {
           $id = $row->node_field_data_node__field_pinned_article_for_girl_nid;
           if (!in_array($id, $arrNids)) {
             $arrNids[] = $id;
@@ -194,134 +198,35 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
         }
         $view->result = $new_result;
         break;
-     
-        case 'rest_export_12': //Vaccinations Pinned Content API
-          // not able to test this as the data is empty
-          break;
 
-        case 'rest_export_19': // Child Development Boy Pinned Content API  // api/pinned-contents/en/child_development/40
-          $arrNids = [];
-          $new_result = [];
-          foreach($view->result as $k => $row) {
-            $id = $row->node_field_data_node__field_pinned_article_for_boy_nid;
-            if (!in_array($id, $arrNids)) {
-              $arrNids[] = $id;
-              $new_result[] = $row;
-            }
+      // Vaccinations Pinned Content API.
+      case 'rest_export_12':
+        // Not able to test this as the data is empty.
+        break;
+
+      // Child Development Boy Pinned Content API  // api/pinned-contents/en/child_development/40.
+      case 'rest_export_19':
+        $arrNids = [];
+        $new_result = [];
+        foreach ($view->result as $k => $row) {
+          $id = $row->node_field_data_node__field_pinned_article_for_boy_nid;
+          if (!in_array($id, $arrNids)) {
+            $arrNids[] = $id;
+            $new_result[] = $row;
           }
-          $view->result = $new_result;
-          break;
+        }
+        $view->result = $new_result;
+        break;
 
-       // case 'rest_export_2': // Article API
+      // Case 'rest_export_2': // Article API.
       default:
     }
   }
 }
 
-
-function pb_custom_form_cron() {
-  \Drupal::logger('pb_custom_form')->notice('Cron ran');
-}
-
 /**
- * Ultimate cron will call this function, from "ultimate_cron.job.article_api_cron.yml" config file
- * Depedency module = ultimate_cron
+ *
  */
-function article_api_cache_cron_job() {
-  $url = \Drupal::request()->getSchemeAndHttpHost();
-
-  if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
-    switch ($_ENV['AH_SITE_ENVIRONMENT']){
-      case 'dev':
-        $domain_name = 'dev.bebbo.app';
-        break;
-      case 'uat':
-        $domain_name = 'staging.bebbo.app';
-        break;
-      case 'prod':
-        $domain_name = 'www.bebbo.app';
-        break;
-      }
-  } 
-  else {
-    $domain_name = 'dev.bebbo.app';
-  }
-
-  //get access token
-  $access_url = 'https://accounts.acquia.com/api/auth/oauth/token';
-  $ac = curl_init($access_url);
-  curl_setopt($ac, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ac, CURLOPT_CUSTOMREQUEST, 'POST');
-  curl_setopt($ac, CURLOPT_POSTFIELDS, array('client_id' => '71b253a8-5c37-41de-b349-2e4f489aba6e',
-  'client_secret' => 'B1rLfGTncLXtHi6W/I3nYhPMh9bD3xjbSx8m/usnvxU=',
-  'grant_type' => 'client_credentials'));
-  $response_value = curl_exec($ac);
-  // Get the status code
-  $status_access = curl_getinfo($ac, CURLINFO_HTTP_CODE);
-  curl_close($ac);
-  if($status_access != 200) { 
-    \Drupal::logger('ultimate_cron_article_api')->notice('error in access token status - '.$status_access.' error details-'.$response_value);
-  } 
-  else {
-    //cleared cache programmatically.
-    $result = json_decode($response_value, true);
-    if(isset($result['access_token'])) {
-      $token_value = $result['access_token'];
-      $cache_url = 'https://cloud.acquia.com/api/environments/324529-08c5238f-9d4c-43ce-be88-b3d8e51c7750/domains/'.$domain_name.'/actions/clear-caches';
-      $cc = curl_init($cache_url);
-      curl_setopt($cc, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($cc, CURLOPT_CUSTOMREQUEST, 'POST');
-      curl_setopt($cc, CURLOPT_HTTPHEADER, array(
-           'Authorization: Bearer '.$token_value
-          ));
-      $ct = curl_exec($cc);
-      // Get the status code
-      $status_cache = curl_getinfo($cc, CURLINFO_HTTP_CODE);
-      curl_close($cc);
-      if($status_cache != '200' && $status_cache != '202' ) { 
-        \Drupal::logger('ultimate_cron_article_api')->notice('cloud cache not cleared '. $status_cache .' error -'.$ct);
-      }
-      else { 
-        \Drupal::logger('ultimate_cron_article_api')->notice('cloud cache cleared '.$status_cache.' Details -'.$ct);
-      }
-    }
-  }
-
-  $langcodes = \Drupal::languageManager()->getLanguages();
-  foreach ($langcodes as $key => $value) {
-    $id = $key;
-    if (isset($_ENV['AH_SITE_ENVIRONMENT'])) {
-      switch ($_ENV['AH_SITE_ENVIRONMENT']){
-        case 'dev':
-          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
-          break;
-        case 'test':
-          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
-          break;
-        case 'prod':
-          $article_api_url = $url.'/api/articles/'.$id.'?category=all';
-          break;
-        }
-    } else {
-      $article_api_url = $url.'/api/articles/'.$id.'?category=all';
-    }
-
-    $c = curl_init($article_api_url);
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-    $html = curl_exec($c);
-    // Get the status code
-    $status = curl_getinfo($c, CURLINFO_HTTP_CODE);
-    if($status != 200){
-      \Drupal::logger('ultimate_cron_article_api')->notice('There is an error to call an article api for language '.$id.' and error '.$article_api_url);
-      \Drupal::logger('ultimate_cron_article_api')->notice('error -'.$html);
-    } else {
-      \Drupal::logger('ultimate_cron_article_api')->notice('completed article api for language '.$id.' url '. $article_api_url);
-    }
-    curl_close($c);
-  }
-}
-
 function pb_custom_form_page_attachments_alter(&$page) {
   $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
 }
-
