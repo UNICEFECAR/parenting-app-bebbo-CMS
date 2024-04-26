@@ -812,9 +812,6 @@ if (file_exists('/var/www/site-php')) {
    if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
       require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
    }
-<<<<<<< HEAD
-}
-=======
 }
 $apikeys = "";
 if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
@@ -838,4 +835,3 @@ if(file_exists($apikeys)){
 }
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username');
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password');
->>>>>>> dev

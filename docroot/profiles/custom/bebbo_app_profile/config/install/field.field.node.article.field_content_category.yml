@@ -9,15 +9,9 @@ dependencies:
 id: node.article.field_content_category
 field_name: field_content_category
 entity_type: node
-<<<<<<< HEAD:config/default/field.field.node.faq.field_content_category.yml
-bundle: faq
-label: 'Chatbot Subcategory'
-description: ''
-=======
 bundle: article
 label: Category
 description: 'To Specify under which category this article falls'
->>>>>>> dev:docroot/profiles/custom/bebbo_app_profile/config/install/field.field.node.article.field_content_category.yml
 required: true
 translatable: false
 default_value: {  }
