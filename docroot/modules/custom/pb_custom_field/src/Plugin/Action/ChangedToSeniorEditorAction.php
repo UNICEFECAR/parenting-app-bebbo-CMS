@@ -77,7 +77,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
-    $archive_node = node_load($nid);
+    $archive_node = Node::load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
     $node_lang_archive = $archive_node->getTranslation($current_language);
@@ -92,7 +92,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
 
       $node_lang_archive->setNewRevision(TRUE);
       $node_lang_archive->revision_log = 'Content changed  into Senior Editor Review State';
-      $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+      $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
       $node_lang_archive->setRevisionTranslationAffected(NULL);
       $node_lang_archive->save();
@@ -110,7 +110,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
 
         $node_lang_archive->setNewRevision(TRUE);
         $node_lang_archive->revision_log = 'Content changed  into Senior Editor Review State';
-        $node_lang_archive->setRevisionCreationTime(REQUEST_TIME);
+        $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
         $node_lang_archive->setRevisionTranslationAffected(NULL);
         $node_lang_archive->save();
@@ -128,7 +128,6 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
 
     }
 
-    $log["client_ip"] =  \Drupal::request()->getClientIp();
     $log["source_language"] = $current_language;
     $log["nid"] = $nid;
     $log["uid"] = $uid;
@@ -152,10 +151,12 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');
+        \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');
+        \Drupal::messenger()->addError($error_message);
       }
     }
    

@@ -63,7 +63,7 @@ class CustomStandardDeviation extends Serializer {
         $child_5 = [];
 
         for ($i = 0; $i < count($weight_for_height); $i++) {
-          if(isset($weight_for_height[$i]['child_age'])){
+          if (isset($weight_for_height[$i]['child_age'])) {
             $sorted_weight_for_height = $this->sortChildAgeID($weight_for_height[$i]['child_age']);
             // \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');
             if ($sorted_weight_for_height === "43,44,45,46") {
@@ -122,7 +122,7 @@ class CustomStandardDeviation extends Serializer {
         $child_4 = [];
         $child_5 = [];
         for ($i = 0; $i <= count($height_for_age); $i++) {
-          if(isset($height_for_age[$i]['child_age'])){
+          if (isset($height_for_age[$i]['child_age'])) {
             $sorted_height_for_age = $this->sortChildAgeID($height_for_age[$i]['child_age']);
             // \Drupal::logger('pb_custom_standard_deviation')->notice('height_for_age => <pre><code>' . $sorted_height_for_age . '</code></pre>');
             if ($sorted_height_for_age === "43,44,45,46") {
@@ -246,11 +246,11 @@ class CustomStandardDeviation extends Serializer {
    * To sort child age id.
    */
   public function sortChildAgeID($child_age_id) {
-    $child_sorted_arr = array();
-    $child_age_arr = explode(',',$child_age_id);
+    $child_sorted_arr = [];
+    $child_age_arr = explode(',', $child_age_id);
     sort($child_age_arr);
     $child_arr_length = count($child_age_arr);
-    for($x = 0; $x < $child_arr_length; $x++) {
+    for ($x = 0; $x < $child_arr_length; $x++) {
       array_push($child_sorted_arr, $child_age_arr[$x]);
     }
     $child_age = implode(',', $child_age_arr);

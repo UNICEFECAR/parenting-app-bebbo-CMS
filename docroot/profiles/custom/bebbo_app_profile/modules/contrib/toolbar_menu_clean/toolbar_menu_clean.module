@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Contains toolbar_menu_clean.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function toolbar_menu_clean_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the toolbar_menu_clean module.
+    case 'help.page.toolbar_menu_clean':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Clean up Toolbar Menu for user') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function toolbar_menu_clean_toolbar_alter(&$items) {
+  if (!Drupal::currentUser()->hasPermission('show administration menu in the toolbar') && isset($items['administration'])) {
+    
+    if (isset($items['administration']['tray'])) {
+      $items['tray'] = $items['administration']['tray'];
+    }
+    
+    unset($items['administration']);
+
+    // Attaches library to show child menu items,
+    // since it was attached to 'administration' item before.
+    $items['_attached_library'] = [
+      '#type' => 'container',
+      '#attached' => ['library' => ['admin_toolbar/toolbar.tree']],
+    ];
+  }
+
+  if (!Drupal::currentUser()->hasPermission('show shortcut menu in the toolbar') && isset($items['shortcuts'])) {
+    unset($items['shortcuts']);
+  }
+}

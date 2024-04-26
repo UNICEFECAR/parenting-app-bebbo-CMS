@@ -1,0 +1,7 @@
+name: Custom Field
+description: Custom Field Customization
+core: 8.x
+type: module
+package: custom
+module: pb_custom_field
+core_version_requirement: ^8 || ^9

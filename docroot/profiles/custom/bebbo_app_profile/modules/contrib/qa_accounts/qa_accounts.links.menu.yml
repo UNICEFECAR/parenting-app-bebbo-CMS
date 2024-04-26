@@ -1,0 +1,5 @@
+qa_accounts.settings:
+  title: QA Accounts settings
+  description: 'Configure the QA Accounts settings'
+  route_name: qa_accounts.settings
+  parent: user.admin_index

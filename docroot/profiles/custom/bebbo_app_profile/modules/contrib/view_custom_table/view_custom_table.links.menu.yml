@@ -1,0 +1,5 @@
+view_custom_table.customtable:
+  title: Views Custom Tables
+  description: 'List of available custom tables for views'
+  parent: entity.view.collection
+  route_name: view_custom_table.customtable

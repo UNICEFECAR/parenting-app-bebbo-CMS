@@ -1,0 +1,21 @@
+toolbar_menu.toolbar_menu_element.*:
+  type: config_entity
+  label: 'Toolbar menu element config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string
+    weight:
+      type: integer
+      label: 'Weight'
+    menu:
+      type: string
+      label: 'Menu'
+    rewrite_label:
+      type: boolean
+      label: 'Rewrite menu label with this label'

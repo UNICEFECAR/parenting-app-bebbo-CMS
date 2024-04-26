@@ -1,0 +1,7 @@
+mylib:
+  css:
+    theme:
+      css/admin.css: {}
+ 
+  js:
+     js/homepage.js: {}

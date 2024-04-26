@@ -12,6 +12,7 @@ use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Symfony\Component\HttpFoundation;
+use Drupal\node\Entity\Node;
 
 /*
 use Drupal\group\Entity;
@@ -182,7 +183,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    */
   public function execute(ContentEntityInterface $entity = NULL) {
     $context = $this->context;
-    $total_selected = $context{'selected_count'};
+    $total_selected = $context['selected_count'];
     $langoption = $this->configuration['language_option'];
     $countryoption = $this->configuration['country_option'];
     $this->processItem = $this->processItem + 1;
@@ -191,7 +192,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
     if (!empty($langoption) && !empty($countryoption)) {
       $current_language = $entity->get('langcode')->value;
       $nid = $entity->get('nid')->getString();
-      $node = node_load($nid);
+      $node = Node::load($nid);
       $uid = \Drupal::currentUser()->id();
       $uname = \Drupal::currentUser()->getDisplayName();
       if (!$node->hasTranslation($langoption)) {
@@ -207,7 +208,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         /* Set new Revision */
         $node_es->setNewRevision(TRUE);
         $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
-        $node_es->setRevisionCreationTime(REQUEST_TIME);
+        $node_es->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_es->setRevisionUserId($uid);
         $node_es->save();
         $node->save();
@@ -217,7 +218,6 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         $this->nonAssigned = $this->nonAssigned + 1;
       }
 
-      $log["client_ip"] =  \Drupal::request()->getClientIp();
       $log["source_language"] = $current_language;
       $log["nid"] = $nid;
       $log["uid"] = $uid;
@@ -238,10 +238,12 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
     if ($total_selected == $this->processItem) {
       if (!empty($message)) {
-        drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');
+        \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');
+        \Drupal::messenger()->addError($error_message);
       }
     }
     return $this->t("Total content selected");

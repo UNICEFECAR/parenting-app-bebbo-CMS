@@ -1,7 +1,6 @@
 name: Group Country Field
 description: Group Country Field Customization
-core: 8.x
 type: module
 package: custom
 module: group_country_field
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9.2 || ^10 || ^11

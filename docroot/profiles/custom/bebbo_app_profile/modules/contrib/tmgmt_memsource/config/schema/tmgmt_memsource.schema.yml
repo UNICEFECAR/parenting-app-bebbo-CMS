@@ -1,0 +1,15 @@
+tmgmt.translator.settings.memsource:
+  type: mapping
+  mapping:
+    auto_accept:
+      type: boolean
+      label: Automatically accept
+    url:
+      type: string
+      label: Remote URL, used for tests.
+    client_id:
+      type: string
+      label: Client ID
+    client_secret:
+      type: string
+      label: Client Secret

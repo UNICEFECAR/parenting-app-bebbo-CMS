@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Enables Group functionality for the Node module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\NodeInterface;
+use Drupal\node\NodeTypeInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function gnode_node_type_insert(NodeTypeInterface $node_type) {
+  \Drupal::service('plugin.manager.group_content_enabler')->clearCachedDefinitions();
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function gnode_entity_operation(EntityInterface $entity) {
+  $operations = [];
+
+  if ($entity->getEntityTypeId() == 'group' && \Drupal::moduleHandler()->moduleExists('views')) {
+    /** @var \Drupal\group\Entity\GroupInterface $entity */
+    if ($entity->hasPermission('access group_node overview', \Drupal::currentUser())) {
+      /** @var \Symfony\Component\Routing\RouterInterface $router */
+      $router = \Drupal::service('router.no_access_checks');
+      if ($router->getRouteCollection()->get('view.group_nodes.page_1') !== NULL) {
+        $operations['nodes'] = [
+          'title' => t('Nodes'),
+          'weight' => 20,
+          'url' => Url::fromRoute('view.group_nodes.page_1', ['group' => $entity->id()]),
+        ];
+      }
+    }
+  }
+
+  return $operations;
+}

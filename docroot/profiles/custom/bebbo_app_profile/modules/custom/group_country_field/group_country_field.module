@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ * It contains group field module.
+ */
+
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+
+/**
+ * Implements form alter.
+ */
+function group_country_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form['#id'] == "tmgmt-job-item-edit-form") {
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+    $roles_permissions = user_role_permissions($user_roles);
+    $new_default_state = ["review_after_translation" => "Review_after_translation"];
+    if (!empty($roles_permissions['global_admin'])) {
+      if (in_array("administer nodes", $roles_permissions['global_admin'])) {
+        $form['moderation_state']['new_state']['#options'] = $form['moderation_state']['new_state']['#options'];
+      }
+    }
+    else {
+      $form['moderation_state']['new_state']['#options'] = $new_default_state;
+    }
+  }
+}
+
+/**
+ * Implements views query alter.
+ */
+function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() == "recent_logged_in_users") {
+    $user = \Drupal::currentUser();
+    /* $user_roles = $user->getRoles(); */
+    $groups = [];
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+    foreach ($grps as $grp) {
+      $groups[] = $grp->getGroup();
+    }
+    if (!empty($groups)) {
+      $title = $groups[0]->label();
+      foreach ($query->where as &$condition_group) {
+        foreach ($condition_group['conditions'] as &$condition) {
+          if ($condition['field'] == "groups_field_data_group_content_field_data.label") {
+            $condition['value'] = $title;
+            /* $condition['operator'] = "IN"; */
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements views form alter.
+ *
+ * Translation job items item id size.
+ */
+function group_country_field_form_views_exposed_form_alter(&$form, $form_state) {
+  if ($form['#id'] == 'views-exposed-form-tmgmt-translation-all-job-items-page-1') {
+    $form['item_id']['#size'] = 5;
+  }
+  if ($form['#id'] == 'views-exposed-form-country-reports-page-5' || $form['#id'] == 'views-exposed-form-global-reports-page-4') {
+    $form['created']['min']['#title'] = t('Created From');
+    $form['created']['max']['#title'] = t('Created To');
+    $form['changed']['min']['#title'] = t('Updated From');
+    $form['changed']['max']['#title'] = t('Updated To');
+  }
+}

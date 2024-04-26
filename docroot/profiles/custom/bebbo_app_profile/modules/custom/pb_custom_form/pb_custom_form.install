@@ -1,0 +1,106 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+/**
+ * @file
+ * Force update check api schema.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function pb_custom_form_schema() {
+  $schema['forcefull_check_update_api'] = [
+    'description' => 'Stores value in custom table',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique id for forcefull_check_update_api',
+      ],
+      'flag' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Store flag of force update',
+      ],
+      'country_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Store country id',
+      ],
+      'updated_at' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Store current date and time',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  return $schema;
+}
+
+function pb_custom_form_update_70010() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store current user uuid',
+  );
+  db_add_field('forcefull_check_update_api', 'uuid', $spec);
+}
+
+function pb_custom_form_update_70011() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store created at',
+  );
+  db_add_field('forcefull_check_update_api', 'created_at', $spec);
+}
+
+function pb_custom_form_update_70012() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store country id',
+  );
+  db_add_field('forcefull_check_update_api', 'countries_id', $spec);
+}
+
+function pb_custom_form_update_70013() {
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'description' => 'Store flag status',
+  );
+  db_add_field('forcefull_check_update_api', 'flag_status', $spec);
+}
+
+function pb_custom_form_update_70014() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'flag');
+
+}
+
+function pb_custom_form_update_70015() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'country_id');
+
+}
+
+function pb_custom_form_update_70016() {
+  return Database::getConnection()
+    ->schema()
+    ->dropField('forcefull_check_update_api', 'updated_at');
+
+}

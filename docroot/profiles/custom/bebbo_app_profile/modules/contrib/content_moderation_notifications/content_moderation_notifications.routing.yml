@@ -1,0 +1,53 @@
+# This is the router item for listing all entities.
+entity.content_moderation_notification.collection:
+  path: '/admin/config/workflow/notifications'
+  defaults:
+    _entity_list: 'content_moderation_notification'
+    _title: 'Content Moderation Notifications'
+  requirements:
+    _permission: 'administer content moderation notifications'
+
+# This is the router item for adding our entity.
+entity.content_moderation_notification.add_form:
+  path: '/admin/config/workflow/notifications/add'
+  defaults:
+    _title: 'Add notification'
+    _entity_form: content_moderation_notification.add
+  requirements:
+    _entity_create_access: content_moderation_notification
+
+# This is the router item for editing our entity.
+entity.content_moderation_notification.edit_form:
+  path: '/admin/config/workflow/notifications/manage/{content_moderation_notification}'
+  defaults:
+    _title: 'Edit notification'
+    _entity_form: content_moderation_notification.edit
+  requirements:
+    _entity_access: content_moderation_notification.update
+
+# This is the router item for deleting an instance of our entity.
+entity.content_moderation_notification.delete_form:
+  path: '/admin/config/workflow/notifications/manage/{content_moderation_notification}/delete'
+  defaults:
+    _title: 'Delete notification'
+    _entity_form: content_moderation_notification.delete
+  requirements:
+    _entity_access: content_moderation_notification.delete
+
+# Enable a notification.
+entity.content_moderation_notification.enable_form:
+  path: '/admin/config/workflow/notifications/manage/{content_moderation_notification}/enable'
+  defaults:
+    _title: 'Enable notification'
+    _entity_form: content_moderation_notification.enable
+  requirements:
+    _entity_access: content_moderation_notification.update
+
+# Disable a notification.
+entity.content_moderation_notification.disable_form:
+  path: '/admin/config/workflow/notifications/manage/{content_moderation_notification}/disable'
+  defaults:
+    _title: 'Disable notification'
+    _entity_form: content_moderation_notification.disable
+  requirements:
+    _entity_access: content_moderation_notification.update

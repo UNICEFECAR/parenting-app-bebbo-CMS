@@ -1,0 +1,20 @@
+uuid: a3ae86bc-2e0e-41b8-8ecf-1baa051c24d7
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_buffers_days
+field_name: field_buffers_days
+entity_type: taxonomy_term
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

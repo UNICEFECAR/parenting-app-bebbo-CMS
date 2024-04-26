@@ -1,0 +1,13 @@
+name: 'PHP Authentication shield'
+description: 'Creates a general shield for the site.'
+package: 'Administration'
+
+type: module
+core_version_requirement: ^8.8 || ^9
+
+configure: shield.settings
+
+# Information added by Drupal.org packaging script on 2021-12-13
+version: '8.x-1.5'
+project: 'shield'
+datestamp: 1639410383

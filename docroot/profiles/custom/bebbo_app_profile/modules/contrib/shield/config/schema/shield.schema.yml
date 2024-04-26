@@ -1,0 +1,77 @@
+# Schema for the configuration files of the shield module.
+
+shield.settings:
+  type: config_object
+  label: 'Shield settings'
+  mapping:
+    shield_enable:
+      type: boolean
+      label: 'Enable shield'
+    credential_provider:
+      type: 'string'
+      label: 'Credential provider'
+    credentials:
+      type: sequence
+      label: 'Credentials'
+      sequence:
+        type: shield.credentials.[%key]
+    allow_cli:
+      type: boolean
+      label: 'CLI bypass'
+    debug_header:
+      type: boolean
+      label: 'Add a custom header in response to indicate shield status.'
+    unset_basic_auth_headers:
+      type: boolean
+      label: 'Unset basic_auth headers to avoid conflicts.'
+    print:
+      type: string
+      label: 'The greeting text, [user] and [pass] tokens are usable.'
+    method:
+      type: integer
+      label: 'Determines if paths should be excluded or included from Shield protection.'
+    paths:
+      type: text
+      label: 'Newline delimited list of paths that should be excluded or included from Shield protection.'
+    allowlist:
+      type: string
+      label: 'Bypass shield based on user IP'
+    http_method_allowlist:
+      type: sequence
+      label: 'Bypass shield based on http method'
+      sequence:
+        type: string
+        label: 'Allowed HTTP method'
+    domains:
+      type: text
+      label: 'Bypass shield based on domain name'
+
+shield.credentials.shield:
+  type: mapping
+  label: 'Shield credentials'
+  mapping:
+    user:
+      type: string
+      label: 'Username'
+    pass:
+      type: string
+      label: 'Password'
+
+shield.credentials.key:
+  type: mapping
+  label: 'Shield credentials with Key Module'
+  mapping:
+    user:
+      type: string
+      label: 'Username'
+    pass_key:
+      type: string
+      label: 'Password key'
+
+shield.credentials.multikey:
+  type: mapping
+  label: 'Shield credentials with Key Module (user/password keys)'
+  mapping:
+    user_pass_key:
+      type: string
+      label: 'User/Password key'

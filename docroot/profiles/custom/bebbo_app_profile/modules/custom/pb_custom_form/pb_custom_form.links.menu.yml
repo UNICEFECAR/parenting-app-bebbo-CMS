@@ -1,0 +1,23 @@
+pb_custom_form.admin_config_parent_buddy:
+  title: 'Parent Buddy'
+  route_name: pb_custom_form.admin_config_parent_buddy
+  parent: system.admin_config
+  weight: 100
+pb_custom_form.mobile_app_share_link_form:
+  title: 'Manage Mobile APP Javascript'
+  route_name: pb_custom_form.mobile_app_share_link_form
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the Mobile APP share link javascript.'
+  weight: 101
+pb_custom_form.forcefull_update_check:
+  title: 'Force Full Update Check'
+  route_name: pb_custom_form.forcefull_update_check
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the forcefull update check to sync latest content in mobile application.'
+  weight: 102
+pb_custom_form.admin_settings_form:
+  title: 'Adminster Parent Buddy'
+  route_name: pb_custom_form.admin_settings_form
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the Master langauage for notification.'
+  weight: 103

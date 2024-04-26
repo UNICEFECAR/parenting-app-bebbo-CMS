@@ -1,0 +1,28 @@
+uuid: 1a7dcf9e-a1e5-46bd-87a2-c8596e02c6c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.survey
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.survey.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: survey
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

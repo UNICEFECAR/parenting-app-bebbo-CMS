@@ -812,4 +812,30 @@ if (file_exists('/var/www/site-php')) {
    if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
       require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
    }
+<<<<<<< HEAD
 }
+=======
+}
+$apikeys = "";
+if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
+  switch ($_ENV['AH_SITE_ENVIRONMENT']){
+    case 'dev':
+      $apikeys = '/mnt/gfs/parentbuddy2.dev/nobackup/bebbo_app_apikeys_test.php';
+      break;
+    case 'test':
+      $apikeys = '/mnt/gfs/parentbuddy2.dev/nobackup/bebbo_app_apikeys_test.php';
+      break;
+    case 'prod':
+      $apikeys = '/mnt/gfs/parentbuddy2.dev/nobackup/bebbo_app_apikeys.php';
+      break;
+    }
+}else{
+   // do something for a non-Acquia-hosted application
+   // (like a local dev install).
+}
+if(file_exists($apikeys)){
+  require $apikeys;
+}
+$config['smtp.settings']['smtp_username'] = getenv('smtp_username');
+$config['smtp.settings']['smtp_password'] = getenv('smtp_password');
+>>>>>>> dev

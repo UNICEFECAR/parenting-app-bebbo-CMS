@@ -21,3 +21,9 @@ pb_custom_form.admin_settings_form:
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Configure the Master langauage for notification.'
   weight: 103
+pb_custom_form.apply_trans_related_articles_video:
+  title: 'Updating translations for articles and video articles'
+  route_name: pb_custom_form.apply_trans_related_articles_video
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Apply related articles and video articles in English content to all translations'
+  weight: 104

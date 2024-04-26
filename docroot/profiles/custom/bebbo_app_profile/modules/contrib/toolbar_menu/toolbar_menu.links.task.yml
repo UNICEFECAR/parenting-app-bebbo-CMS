@@ -1,0 +1,4 @@
+toolbar_menu.settings:
+  title: 'Toolbar Menu settings'
+  route_name: toolbar_menu.settings
+  base_route: toolbar_menu.settings.base

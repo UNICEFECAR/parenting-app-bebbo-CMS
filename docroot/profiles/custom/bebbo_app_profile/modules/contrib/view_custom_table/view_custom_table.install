@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for the View Custom Table module.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Add 'table_database' column so tables from other database can be implemented.
+ */
+function view_custom_table_update_8101() {
+  $table_database = [
+    'description' => 'Database of the table.',
+    'type' => 'varchar',
+    'length' => 100,
+    'not null' => TRUE,
+    'default' => 'default',
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->addField('custom_table_view_data', 'table_database', $table_database);
+}
+
+/**
+ * Take values from database and save to config file.
+ */
+function view_custom_table_update_8102() {
+  $connection = Database::getConnection();
+  $query = $connection->select('custom_table_view_data')
+    ->fields('custom_table_view_data');
+  $result = $query->execute()->fetchAll();
+  if (!empty($result)) {
+    $config = \Drupal::service('config.factory')->getEditable('view_custom_table.tables');
+    foreach ($result as $row) {
+      $config->set($row->table_name . '.table_name', $row->table_name);
+      $config->set($row->table_name . '.table_database', $row->table_database);
+      $config->set($row->table_name . '.description', $row->description);
+      $config->set($row->table_name . '.column_relations', $row->column_relations);
+      $config->set($row->table_name . '.created_by', $row->created_by);
+    }
+    $config->save();
+  }
+  Database::getConnection()->schema()->dropTable('custom_table_view_data');
+}

@@ -1,0 +1,3 @@
+views.filter.languagefield:
+  type: views.filter.in_operator
+  label: 'Languagefield filter'

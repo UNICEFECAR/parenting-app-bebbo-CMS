@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for title length module.
+ */
+
+use Drupal\Core\Database\Database;
+use Drupal\Core\Extension\ModuleUninstallValidatorException;
+use Drupal\Core\Site\Settings;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function title_length_install() {
+  // Get length of settings.
+  $length = Settings::get('node_title_length_chars') ?: TITLE_LENGTH_CHARS;
+
+  // Change node title length.
+  if ($schema = Database::getConnection()->schema()) {
+    $schema->changeField('node_field_data', 'title', 'title', [
+      'length'   => $length,
+      'not null' => TRUE,
+      'type'     => 'varchar',
+    ]);
+    $schema->changeField('node_field_revision', 'title', 'title', [
+      'default' => NULL,
+      'length'  => $length,
+      'type'    => 'varchar',
+    ]);
+    // Update storage definition.
+    $node_type = Drupal::service('entity_type.manager')->getDefinition('node');
+    $fields    = Node::baseFieldDefinitions($node_type);
+    $fields['title']->setSetting('max_length', $length);
+    Drupal::entityDefinitionUpdateManager()
+          ->installFieldStorageDefinition('title', 'node', 'node', $fields['title']);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function title_length_uninstall() {
+  $length_function = 'char_length';
+  $connection      = Database::getConnection();
+  switch ($connection->databaseType()) {
+    case 'sqlite':
+      $length_function = 'length';
+      break;
+
+    case 'sqlsrv':
+      $length_function = 'len';
+      break;
+  }
+
+  /** @var \Drupal\Core\Database\Query\Select $query */
+  $query = $connection->select('node_field_data', 'n');
+  $query->addField('n', 'title');
+  $query->where("$length_function(title) > 255");
+  $long_title_count = $query
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+
+  /** @var \Drupal\Core\Database\Query\Select $query */
+  $query = $connection->select('node_field_revision', 'n');
+  $query->addField('n', 'title');
+  $query->where("$length_function(title) > 255");
+  $long_revision_title_count = $query
+    ->countQuery()
+    ->execute()
+    ->fetchField();
+
+  if ($long_title_count + $long_revision_title_count > 0) {
+    throw new ModuleUninstallValidatorException('Nodes or node revisions exist with long titles. Module cannot be uninstalled.');
+  }
+
+  // Change node title length.
+  if ($schema = $connection->schema()) {
+    $schema->changeField('node_field_data', 'title', 'title', [
+      'length'   => 255,
+      'not null' => TRUE,
+      'type'     => 'varchar',
+    ]);
+    $schema->changeField('node_field_revision', 'title', 'title', [
+      'default' => NULL,
+      'length'  => 255,
+      'type'    => 'varchar',
+    ]);
+    // Update storage definition.
+    $node_type = Drupal::service('entity_type.manager')->getDefinition('node');
+    $fields    = Node::baseFieldDefinitions($node_type);
+    Drupal::entityDefinitionUpdateManager()
+          ->installFieldStorageDefinition('title', 'node', 'node', $fields['title']);
+  }
+
+}

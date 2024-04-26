@@ -15,7 +15,7 @@ class PbMobile extends ControllerBase {
    * @return array
    *   Return pb-mobile array.
    */
-  public  function render($param1,$param2,$param3) {
+  public function render($param1, $param2, $param3) {
     return [
       '#theme' => 'pb-mobile',
     ];
@@ -26,7 +26,7 @@ class PbMobile extends ControllerBase {
    * @return array
    *   Return kosovo-mobile array.
    */
-  public  function kosovorender($param1,$param2,$param3) {
+  public function kosovorender($param1, $param2, $param3) {
     return [
       '#theme' => 'kosovo-mobile',
     ];

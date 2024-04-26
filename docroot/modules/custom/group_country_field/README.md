@@ -23,4 +23,3 @@ View:
 Form ids:
 Views-exposed-form-tmgmt-translation-all-job-items-page-1
 tmgmt-job-item-edit-form
-

@@ -34,7 +34,7 @@ class AssigncontentStatus {
     $same_status_error = 0;
     foreach ($n_language as $key => $langs) {
       $current_language = $langs[0];
-      $node = node_load($key);
+      $node = Node::load($key);
       if (!$node->hasTranslation($langoption)) {
         $node_lang = $node->getTranslation($current_language);
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
@@ -46,7 +46,7 @@ class AssigncontentStatus {
         $node_es->set('created', time());
         $node_es->setNewRevision(TRUE);
         $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
-        $node_es->setRevisionCreationTime(REQUEST_TIME);
+        $node_es->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_es->setRevisionUserId($uid);
         //$node_es->save();
 		$results_save = $node->save();
@@ -61,11 +61,13 @@ class AssigncontentStatus {
 	
     if ($success_msg > 0) {
       $Succ_message = "Content assigned to country (" . $success_msg . ") <br/>";
-      drupal_set_message(t($Succ_message), 'status');
+      // drupal_set_message(t($Succ_message), 'status');
+      \Drupal::messenger()->addStatus($Succ_message);
     }
     if ($same_status_error > 0) {
       $msg = "Content already exists in country (" . $same_status_error . ")<br/>";
-      drupal_set_message(t($msg), 'error');
+      // drupal_set_message(t($msg), 'error');
+      \Drupal::messenger()->addError($msg);
     }
     $context['message'] = $message;
 	$context['results'] = $results;
@@ -86,7 +88,8 @@ class AssigncontentStatus {
     }
     else {
       $message = t('Finished with an error.');
-	  drupal_set_message($message);
+	  // drupal_set_message($message);
+    \Drupal::messenger()->addMessage($message);
     }
   }
 

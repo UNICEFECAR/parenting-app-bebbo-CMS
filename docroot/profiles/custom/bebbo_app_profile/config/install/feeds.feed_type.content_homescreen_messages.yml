@@ -1,0 +1,141 @@
+uuid: 5dfa04a8-21b6-4a3c-8581-85ea11bd9759
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.node.daily_homescreen_messages.title
+    - node.type.daily_homescreen_messages
+  module:
+    - feeds_tamper
+    - node
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      2d809227-ef89-4ffb-a3cc-98cb6dc17b5f:
+        find: review_after_translation
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 0
+        label: 'review_after_translation into draft'
+        word_boundaries: false
+        uuid: 2d809227-ef89-4ffb-a3cc-98cb6dc17b5f
+      5d3c37c4-0dde-476e-814c-aac1d01be83d:
+        find: Draft
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 1
+        label: 'Draft into draft'
+        word_boundaries: false
+        uuid: 5d3c37c4-0dde-476e-814c-aac1d01be83d
+      bc9ebb2d-9497-4e6e-a3f5-01064b13ade1:
+        find: Published
+        replace: published
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 2
+        label: 'Published into published'
+        word_boundaries: false
+        uuid: bc9ebb2d-9497-4e6e-a3f5-01064b13ade1
+      ec84e537-89ad-4b19-bb2e-f47972e6229f:
+        find: 'In review'
+        replace: reviewer_review
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 3
+        label: 'In review into reviewer_review'
+        word_boundaries: false
+        uuid: ec84e537-89ad-4b19-bb2e-f47972e6229f
+      0cfc48e0-5036-4fe8-a7f9-7a975ddf469f:
+        find: 'Review after translation'
+        replace: draft
+        case_sensitive: false
+        whole: false
+        plugin: find_replace
+        source: moderation_state
+        weight: 4
+        label: 'Review after translation into draft'
+        word_boundaries: false
+        uuid: 0cfc48e0-5036-4fe8-a7f9-7a975ddf469f
+id: content_homescreen_messages
+label: 'Content - Homescreen Messages'
+description: 'Content - Homescreen Messages'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  langcode: en
+  update_existing: 1
+  update_non_existent: _keep
+  expire: -1
+  owner_feed_author: true
+  owner_id: 0
+  authorize: true
+  skip_hash_check: false
+  values:
+    type: daily_homescreen_messages
+custom_sources:
+  id:
+    label: ID
+    value: ID
+    machine_name: id
+  title:
+    label: Title
+    value: Title
+    machine_name: title
+  '':
+    label: ''
+    value: ''
+    machine_name: ''
+  translation_language:
+    label: Translation_language
+    value: Translation_language
+    machine_name: translation_language
+  message_category:
+    label: Message_category
+    value: Message_category
+    machine_name: message_category
+  moderation_state:
+    label: Moderation_state
+    value: Moderation_state
+    machine_name: moderation_state
+mappings:
+  -
+    target: nid
+    map:
+      value: id
+    unique:
+      value: '1'
+    settings: {  }
+  -
+    target: title
+    map:
+      value: title
+    unique: {  }
+    settings:
+      language: en
+  -
+    target: moderation_state
+    map:
+      value: moderation_state
+    unique: {  }
+    settings:
+      language: en
