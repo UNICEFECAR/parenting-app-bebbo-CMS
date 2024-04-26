@@ -1,0 +1,29 @@
+uuid: 8cc082a1-ff5e-49ca-b4a5-94d3c0b1b867
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_chatbot_child_age
+    - node.type.faq
+    - taxonomy.vocabulary.chatbot_child_age
+id: node.faq.field_chatbot_child_age
+field_name: field_chatbot_child_age
+entity_type: node
+bundle: faq
+label: 'Chatbot Child Age'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      chatbot_child_age: chatbot_child_age
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

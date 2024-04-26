@@ -9,6 +9,10 @@ use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\rest\Plugin\views\style\Serializer;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
+use Drupal\group\Entity\Group;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * The style plugin for serialized output formats.

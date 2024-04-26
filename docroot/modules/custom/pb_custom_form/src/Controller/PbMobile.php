@@ -20,7 +20,6 @@ class PbMobile extends ControllerBase {
       '#theme' => 'pb-mobile',
     ];
   }
-
   /**
    * Display the Kosovo-mobile.
    *

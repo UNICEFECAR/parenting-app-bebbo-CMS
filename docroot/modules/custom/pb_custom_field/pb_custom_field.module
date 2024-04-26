@@ -673,7 +673,6 @@ function pb_custom_field_link_alter(&$variables) {
         $entity->save();
       }
     }
-
     /* Dashboard - add members. */
 
     if ($add_group_members_url) {
@@ -1023,7 +1022,6 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
-
   foreach ($grps as $grp) {
     $groups[] = $grp->getGroup();
   }
