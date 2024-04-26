@@ -15,7 +15,3 @@ Specific for Parent Buddy Project
 NOTES
 ------------
 Terms ids are hard coded as the rules are mapped to the same.
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
