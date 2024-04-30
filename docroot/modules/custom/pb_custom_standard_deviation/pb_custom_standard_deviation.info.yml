@@ -2,4 +2,4 @@ name: PB Custom Standard Deviation
 description: Define's a custom standard deviation
 package: Custom
 type: module
-core_version_requirement: ^9.2 || ^10
+core_version_requirement: ^9.2 || ^10 || ^11

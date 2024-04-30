@@ -340,7 +340,7 @@ height: 20px;
 }
 .pb-main-homepage .main-logo .align-center 
 {
-  width: 50%;
+  width: 100%;
   margin: 0;
 }
 .pb-main-homepage .region.region-header.headerbg .menu--main {
@@ -503,12 +503,12 @@ height: 20px;
   font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 }
 img[alt="bebbo-hearts"] {
-  width: 100px;
+  width: 50px;
   text-align: center;
-  margin-top: 40px;
+  margin: 20px;
 }
 .block-download-applogo .media--type-image { 
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 .block-download-header {
   font-size: 30px;
@@ -527,9 +527,9 @@ img[alt="bebbo-hearts"] {
   justify-content: center;
 }
 .homepageblock3 {
-background: #e8e8e8;
+  background: #e8e8e8;
   text-align: center;
-  padding: 20px;
+  padding: 60px 20px 20px;
 }
 .homepageblock6 p,
 .homepageblock3 p{
@@ -540,11 +540,11 @@ text-align: center;
 font-size: 18px;
 font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 }
-.homepageblock6 p:first-child,
-.homepageblock3 p:first-child{
-font-size: 24px;
-font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
-}
+/* .homepageblock6 p:first-child {
+/* .homepageblock3 p:first-child{ */
+/* font-size: 24px; */
+/* font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+} */ 
 .homepageblock4 img {
   width: 100px;
 }
@@ -572,15 +572,15 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 }
 .homepageblock5 {
   background-image: url(/sites/default/files/2023-08/Bebbo%20key%20visual.jpg);
-    min-height: 500px;
+    min-height: 300px;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 .featured-bb-image {
-  width: 200px;
+  width: 120px;
   margin: auto;
 }
 .head-text {
@@ -601,21 +601,22 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   text-align: center;
   margin-bottom: 30px;
 }
-.layout--twocol-section--67-33 img {
-  width: 125px
+.layout--twocol-section--50-50 img {
+  width: 75px;
+  margin-left: 13px;
 }
-.layout--twocol-section--67-33 .menu-item {
+.layout--twocol-section--50-50 .menu-item {
   list-style: none;
 }
-.layout--twocol-section--67-33 .menu-item a{
+.layout--twocol-section--50-50 .menu-item a{
   color: white;
   font-size: 20px;
 }
-.layout--twocol-section--67-33 {
+.layout--twocol-section--50-50 {
   background: #4FA9DD;
   padding: 30px;
 }
-.layout--twocol-section--67-33 .menu {
+.layout--twocol-section--50-50 .menu {
   display: flex;
   justify-content: space-around;
 }
@@ -635,13 +636,14 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 }
 .homepageblock7 {
   background: #e8e8e8;
-  padding: 20px;
+  padding: 30px;
   font-size: 18px;
 }
 .homepageblock7 img{
  width: 50px;
+ margin: 20px;
 }
-.layout--twocol-section--67-33 .menu li a {
+.layout--twocol-section--50-50 .menu li a {
   color: white !important;
 }
 .para-img-wrap p{
@@ -669,8 +671,8 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   margin-top: 160px;
 }
 
-.homepageblock2 .block-download-googlelogo img{
-  height: 145px;
+.homepageblock2 {
+  padding-bottom: 30px;
 }
 .flx {
   display: flex;
@@ -687,6 +689,54 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 .layout.layout--onecol {
   margin-top: 100px;
 }
+.menu .menu-item a:hover {
+  color: #4fa9dd;
+}
+.menu .menu-item .active {
+  color: #4fa9dd;
+}
+.menu .menu-item .is-active {
+  color: #4fa9dd !important;
+}
+#features,
+#why-bebbo {
+  scroll-margin-top: 120px;
+}
+.pb-main-homepage .menu li a {
+  padding: 0 15px 0 0!important;
+}
+
+.block.block-layout-builder.block-field-blocknodepagetitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* .block-download-applogo img, .block-download-googlelogo img{
+  width: 70%;
+} */
+
+.homepageblock6 {
+  padding: 60px 20px;
+}
+.homepageblock6 h2 {
+  text-align: center;
+}
+.block-download-googlelogo .align-center {
+  justify-content: flex-end;
+}
+
+.homepageblock6 .col-md-4 {
+  padding-left: 35px !important;
+  padding-right: 35px !important;
+}
+
+.layout-container .progress {
+  display: block !important;
+  height: auto !important;
+  background-color: transparent !important;
+}
+
+
 /*Homepage css end*/
 
 @media screen and (max-width:767px)
@@ -723,6 +773,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       /* float: none;
       width: 95%; */
       text-align: center;
+      font-size: 29px;
       /* margin:auto ;
       margin-top: 10px;
       font-size: 22px; */
@@ -735,7 +786,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       width: 92%;
     }
     .layout__region--first .media--type-image {
-      justify-content: center;
+      justify-content: flex-start;
    }
     .pb-main-homepage #block-logo {
       width: 100% !important;
@@ -743,12 +794,13 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
     .pb-main-homepage .main-logo {
         background-color: #f2f2f2;
         height: 70px;
+        align-items: center;
     }
     .pb-main-homepage .navbar-toggle .icon-bar {
         background-color: #393636;
     }
     .pb-main-homepage .navbar-toggle {
-      top: 50px;
+      top: 30px;
       background: #f4f4f4;
     }
     .header-un-logo img {
@@ -756,15 +808,63 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
     }
     .pb-main-homepage .menu li a {
         padding: 0 !important;
+        font-size: 13px;
     }
-    .layout--twocol-section--67-33 .menu {
+    .layout--twocol-section--50-50 .menu {
       margin-top: 20px;
     }
     .pb-main-homepage .menu li {
       list-style: none;
-      width: 48vw;
+      width: 42vw;
    }
    .homepageblock7 p {
     width: 100%;
    }
+   .header-un-logo img {
+    margin-left: 16px;
+   }
+   .block-download-googlelogo .media--type-image,
+   .block-download-applogo .media--type-image {
+    justify-content: center;
+   }
+   .homepageblock5 {
+    min-height: 300px; /* Adjust the height as needed for mobile view */
+    background-attachment: scroll; /* Change background attachment for better mobile scrolling */
+   }
+   .block-download-header {
+    font-size: 22px;
+    margin-top: 40px;
+    font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
+  }
+  .navigation .menu .menu-item {
+    padding-left: 30px;
+  }
+  .navigation .menu .menu-item:first-child {
+    padding-left: 0px;
+  }
+  .navigation .menu .menu-item:last-child {
+    padding-left: 0px;
+  }
+  .homepageblock4 img {
+    width: 70px;
+        height: 70px;
+    }
+  .img-wrapper-sub2 {
+      display: flex;
+      width: 80%;
+      margin: auto;
+      justify-content: center;
+  }
+  .menu .menu-item a:hover {
+   color: inherit;
+  }
+
+}
+@media screen and (min-width: 768px) and (max-width: 950px) {
+  .pb-main-homepage .menu li a {
+    font-size: 14px;
+  }
+  .pb-main-homepage .main-logo {
+    font-size: 16px;
+  }
 }

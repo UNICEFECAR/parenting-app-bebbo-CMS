@@ -91,15 +91,18 @@ class ChangeActionStatus {
     }
     if($success_msg > 0){
       $Succ_message = "Content changed into Draft successfully (" . $success_msg . ")";
-      drupal_set_message(t($Succ_message), 'status');
+      // drupal_set_message(t($Succ_message), 'status');
+      \Drupal::messenger()->addStatus($Succ_message);
     }
     if($same_status_error > 0){
       $msg = "Selected content is already In Draft state (" . $same_status_error . ")";
-        drupal_set_message(t($msg), 'error');
+        // drupal_set_message(t($msg), 'error');
+        \Drupal::messenger()->addError($msg);
     }
     if($country_error > 0){
       $country_msg = "This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization. (" . $country_error .")";
-        drupal_set_message(t($country_msg), 'error');
+        // drupal_set_message(t($country_msg), 'error');
+        \Drupal::messenger()->addError($country_msg);
     }
 
     $context['message'] = $message;
@@ -121,7 +124,8 @@ class ChangeActionStatus {
     }
     else {
       $message = t('Finished with an error.');
-	  drupal_set_message($message);
+	  // drupal_set_message($message);
+    \Drupal::messenger()->addMessage($message);
     }
     
   }

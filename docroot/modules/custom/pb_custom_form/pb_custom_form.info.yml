@@ -1,6 +1,6 @@
 name: Custom Form
-description: Custom form
+description: Custom form for Bebbo app
 type: module
 package: custom
 module: pb_custom_form
-core_version_requirement: ^9.2 || ^10
+core_version_requirement: ^9.2 || ^10 || ^11
