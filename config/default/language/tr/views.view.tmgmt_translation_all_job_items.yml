@@ -22,7 +22,7 @@ display:
             last: 'Son »'
       fields:
         state:
-          label: Eyalet
+          label: Durum
         label:
           label: Etiket
         type:
@@ -48,7 +48,7 @@ display:
           expose:
             label: Durumlar
           group_info:
-            label: Eyalet
+            label: Durum
         source_language:
           expose:
             label: 'Kaynak dil'

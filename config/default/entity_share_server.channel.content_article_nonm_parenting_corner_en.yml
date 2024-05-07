@@ -1,13 +1,17 @@
-uuid: bd852949-d800-4d1d-9ddf-4e3494a6cace
+uuid: c3353b2c-eb63-421c-94dd-9075f4aae30a
 langcode: en
 status: true
 dependencies: {  }
-id: tax_child_gender
-label: 'Tax child gender'
-channel_entity_type: taxonomy_term
-channel_bundle: child_gender
+id: content_article_nonm_parenting_corner_en
+label: 'Content - Article nonm. Parenting Corner (EN)'
+channel_entity_type: node
+channel_bundle: article
 channel_langcode: en
-channel_filters: null
+channel_filters:
+  field_mandatory_content:
+    path: field_mandatory_content
+    operator: '='
+    value: {  }
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null

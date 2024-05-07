@@ -3,6 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
+        type:
+          label: Tип
         name:
           label: User
         link:
@@ -11,3 +13,7 @@ display:
         options:
           submit_button: Filter
           exposed_sorts_label: 'Sort by'
+      filters:
+        type:
+          expose:
+            label: Tип

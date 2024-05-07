@@ -26,6 +26,7 @@ dependencies:
     - allowed_languages
     - content_moderation
     - content_translation
+    - file
     - filter
     - group
     - media
@@ -55,6 +56,7 @@ permissions:
   - 'create survey content'
   - 'create video media'
   - 'create video_article content'
+  - 'delete own files'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'

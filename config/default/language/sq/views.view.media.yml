@@ -3,6 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
+        bundle:
+          label: Lloji
         uid:
           label: Author
         status:
@@ -14,6 +16,9 @@ display:
           submit_button: Filter
           reset_button_label: Reset
       filters:
+        bundle:
+          expose:
+            label: Lloji
         langcode:
           expose:
             label: Language

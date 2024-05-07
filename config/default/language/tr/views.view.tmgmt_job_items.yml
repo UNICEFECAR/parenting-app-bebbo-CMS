@@ -22,7 +22,7 @@ display:
             last: 'son »'
       fields:
         state:
-          label: Eyalet
+          label: Durum
         label:
           label: Etiket
         type:

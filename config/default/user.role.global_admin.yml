@@ -78,6 +78,7 @@ dependencies:
     - content_translation
     - feeds
     - feeds_tamper
+    - file
     - filter
     - group
     - language
@@ -228,6 +229,7 @@ permissions:
   - 'delete media'
   - 'delete media_image_import feeds'
   - 'delete media_remote_video feeds'
+  - 'delete own files'
   - 'delete taxonomy_categories feeds'
   - 'delete taxonomy_categories_serbia_serbi feeds'
   - 'delete taxonomy_charbot_child_age feeds'

@@ -11,6 +11,7 @@ display:
         name:
           separator: ', '
         bundle:
+          label: Тип
           separator: ', '
         uid:
           label: Author
@@ -42,6 +43,9 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       filters:
+        bundle:
+          expose:
+            label: Тип
         langcode:
           expose:
             label: Language

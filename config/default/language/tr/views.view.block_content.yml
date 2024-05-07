@@ -1,10 +1,7 @@
-label: 'Özel blok kütüphanesi'
-description: 'Özel blokları bulun ve yönetin.'
 display:
   default:
     display_title: Varsayılan
     display_options:
-      title: 'Özel blok kütüphanesi'
       fields:
         info:
           label: 'Blok açıklaması'
@@ -32,9 +29,6 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
-      empty:
-        area_text_custom:
-          content: 'Kullanılabilir özel blok yok.'
       filters:
         info:
           expose:
@@ -46,4 +40,4 @@ display:
     display_title: Sayfa
     display_options:
       menu:
-        title: 'Özel blok kütüphanesi'
+        title: Bloklar

@@ -3,6 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
+        type:
+          label: Lloji
         name:
           label: User
         link:
@@ -11,3 +13,7 @@ display:
         options:
           submit_button: Filter
           reset_button_label: Reset
+      filters:
+        type:
+          expose:
+            label: Lloji

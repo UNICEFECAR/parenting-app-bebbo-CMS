@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.faq.field_licensed_content
     - field.field.node.faq.field_mandatory_content
     - field.field.node.faq.field_pinned_article
+    - field.field.node.faq.field_pre_populated
     - node.type.faq
   module:
     - text

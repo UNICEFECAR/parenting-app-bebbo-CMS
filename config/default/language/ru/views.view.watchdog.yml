@@ -5,6 +5,8 @@ display:
       fields:
         nothing:
           admin_label: Icon
+        type:
+          label: Тип
         name:
           label: User
           separator: ', '
@@ -23,3 +25,7 @@ display:
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
           sort_desc_label: Desc
+      filters:
+        type:
+          expose:
+            label: Тип

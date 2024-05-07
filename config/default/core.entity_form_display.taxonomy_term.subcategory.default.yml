@@ -1,10 +1,10 @@
-uuid: f827c6b0-01cb-404e-ad5c-e4e13a202418
+uuid: a3defacc-7716-47c8-824d-b8e5677a9421
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.taxonomy_term.subcategory.field_category
-    - field.field.taxonomy_term.subcategory.field_child_s_age
+    - field.field.taxonomy_term.subcategory.field_child_age
     - taxonomy.vocabulary.subcategory
   module:
     - path
@@ -28,7 +28,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_child_s_age:
+  field_child_age:
     type: options_select
     weight: 102
     region: content

@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
+    - field.field.node.article.field_suggest_as_daily_reads
     - node.type.article
   module:
     - text
@@ -172,6 +173,16 @@ content:
       link: true
     third_party_settings: {  }
     weight: 7
+    region: content
+  field_suggest_as_daily_reads:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 18
     region: content
   links:
     settings: {  }

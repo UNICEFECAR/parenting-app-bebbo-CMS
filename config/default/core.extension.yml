@@ -31,8 +31,8 @@ module:
   editor: 0
   entity: 0
   entity_share: 0
-  entity_share_async: 0
   entity_share_client: 0
+  entity_share_diff: 0
   entity_share_server: 0
   feeds: 0
   feeds_tamper: 0
@@ -51,7 +51,6 @@ module:
   json_field_widget: 0
   jsonapi: 0
   jsonapi_extras: 0
-  jsonapi_page_limit: 0
   lang_dropdown: 0
   language: 0
   languagefield: 0
@@ -89,7 +88,6 @@ module:
   pb_custom_standard_deviation: 0
   phpass: 0
   purge: 0
-  purge_queuer_coretags: 0
   purge_ui: 0
   quickedit: 0
   rdf: 0

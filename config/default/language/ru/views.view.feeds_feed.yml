@@ -19,6 +19,7 @@ display:
           label: Title
           separator: ', '
         type:
+          label: Тип
           separator: ', '
         name:
           label: Author
@@ -34,3 +35,6 @@ display:
         title:
           expose:
             label: Title
+        type:
+          expose:
+            label: Тип

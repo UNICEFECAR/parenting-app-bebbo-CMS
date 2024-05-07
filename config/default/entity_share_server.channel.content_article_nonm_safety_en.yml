@@ -1,13 +1,17 @@
-uuid: 605268da-a03b-4c4c-b107-e04cb77dc95e
+uuid: af3fdd3a-78bb-4cf4-987c-a7c7b23307ec
 langcode: en
 status: true
 dependencies: {  }
-id: article
-label: Article
+id: content_article_nonm_safety_en
+label: 'Content - Article nonm. Safety (EN)'
 channel_entity_type: node
 channel_bundle: article
 channel_langcode: en
-channel_filters: null
+channel_filters:
+  field_mandatory_content:
+    path: field_mandatory_content
+    operator: '='
+    value: {  }
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null

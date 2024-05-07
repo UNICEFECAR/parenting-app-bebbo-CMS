@@ -1,14 +1,21 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Фільтр
       fields:
         title:
           label: Заголовок
   assigned:
     display_options:
       fields:
+        status:
+          label: Стан
         title:
           label: Заголовок
+        operations:
+          label: Операції
       filters:
         source_language:
           expose:
@@ -19,10 +26,14 @@ display:
   closed:
     display_options:
       fields:
+        status:
+          label: Стан
         created:
           label: Створено
         title:
           label: Заголовок
+        operations:
+          label: Операції
       filters:
         source_language:
           expose:
@@ -33,10 +44,14 @@ display:
   completed:
     display_options:
       fields:
+        status:
+          label: Стан
         created:
           label: Створено
         title:
           label: Заголовок
+        operations:
+          label: Операції
       filters:
         source_language:
           expose:
@@ -47,8 +62,12 @@ display:
   pending:
     display_options:
       fields:
+        status:
+          label: Стан
         title:
           label: Заголовок
+        operations:
+          label: Операції
       filters:
         source_language:
           expose:
@@ -59,10 +78,14 @@ display:
   rejected:
     display_options:
       fields:
+        status:
+          label: Стан
         created:
           label: Створено
         title:
           label: Заголовок
+        operations:
+          label: Операції
       filters:
         source_language:
           expose:
@@ -73,5 +96,9 @@ display:
   unassigned:
     display_options:
       fields:
+        status:
+          label: Стан
         title:
           label: Заголовок
+        operations:
+          label: Операції
