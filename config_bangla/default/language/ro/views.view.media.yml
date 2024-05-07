@@ -1,69 +1,16 @@
-label: Media
 display:
   default:
     display_title: Default
     display_options:
-      title: Media
       fields:
-        thumbnail__target_id:
-          label: Thumbnail
-          separator: ', '
-        name:
-          separator: ', '
         bundle:
-          label: Type
-          separator: ', '
-        uid:
-          label: Author
-          separator: ', '
-        status:
-          label: Status
-          settings:
-            format_custom_false: Unpublished
-            format_custom_true: Published
-          separator: ', '
-        changed:
-          label: Updated
-          separator: ', '
+          label: Tip
         operations:
-          label: Operations
-      pager:
-        options:
-          tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
+          label: Operațiuni
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Filtru
       filters:
         bundle:
           expose:
-            label: Type
-        status:
-          expose:
-            label: 'True'
-          group_info:
-            label: 'Published status'
-            group_items:
-              1:
-                title: Published
-              2:
-                title: Unpublished
-        langcode:
-          expose:
-            label: Language
-  media_page_list:
-    display_title: Media
-    display_options:
-      menu:
-        title: Media
+            label: Tip

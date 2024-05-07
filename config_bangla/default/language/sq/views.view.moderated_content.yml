@@ -3,20 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
-        title:
-          label: Title
-        name:
-          label: Author
         operations:
-          label: Operations
+          label: Operacionet
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-      filters:
-        title:
-          expose:
-            label: Title
-        langcode:
-          expose:
-            label: Language
+          submit_button: Filtri

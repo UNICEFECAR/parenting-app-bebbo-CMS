@@ -3,17 +3,14 @@ display:
     display_title: Default
     display_options:
       fields:
-        uid:
-          label: Author
-        status:
-          label: Status
+        bundle:
+          label: Lloji
         operations:
-          label: Operations
+          label: Operacionet
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
+          submit_button: Filtri
       filters:
-        langcode:
+        bundle:
           expose:
-            label: Language
+            label: Lloji

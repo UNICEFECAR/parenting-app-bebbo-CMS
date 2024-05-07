@@ -1,7 +1,12 @@
 display:
   default:
     display_options:
+      fields:
+        state:
+          label: Стан
+        operations:
+          label: Операції
       filters:
-        source_language:
+        state:
           expose:
-            label: 'Вихідна мова'
+            label: Стан

@@ -1,17 +1,16 @@
-label: Медіа
 display:
   default:
+    display_title: Базово
     display_options:
-      title: Медіа
       fields:
-        uid:
-          label: Автор
+        bundle:
+          label: Тип
+        operations:
+          label: Операції
+      exposed_form:
+        options:
+          submit_button: Фільтр
       filters:
-        langcode:
+        bundle:
           expose:
-            label: Мова
-  media_page_list:
-    display_title: Медіа
-    display_options:
-      menu:
-        title: Медіа
+            label: Тип

@@ -1,14 +1,11 @@
 display:
   default:
+    display_title: Базово
     display_options:
-      title: Медіа
       filters:
         name:
           expose:
             label: "Назва (ім'я)"
-        langcode:
-          expose:
-            label: Мова
   widget:
     display_options:
       filters:
@@ -20,8 +17,6 @@ display:
       fields:
         name:
           label: "Назва (ім'я)"
-        uid:
-          label: Автор
       filters:
         name:
           expose:

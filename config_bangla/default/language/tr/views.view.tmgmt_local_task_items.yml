@@ -27,14 +27,9 @@ display:
           label: Etiket
         item_type:
           label: Tip
-          separator: ', '
-        word_count:
-          separator: ', '
         operations:
           label: İşlemler
       arguments:
         tltid:
           exception:
             title: Tümü
-  block_1:
-    display_title: Blok

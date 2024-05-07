@@ -37,6 +37,7 @@ url:
     ar: ar
     sk: sk
     tr: tr
+    bn: bn
   domains:
     en: ''
     sr: ''
@@ -69,4 +70,5 @@ url:
     ar: ''
     sk: ''
     tr: ''
+    bn: ''
 selected_langcode: site_default

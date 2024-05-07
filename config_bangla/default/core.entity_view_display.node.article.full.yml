@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
+    - field.field.node.article.field_suggest_as_daily_reads
     - node.type.article
   module:
     - text
@@ -174,4 +175,5 @@ content:
 hidden:
   field_pre_populated: true
   field_subcategory: true
+  field_suggest_as_daily_reads: true
   langcode: true

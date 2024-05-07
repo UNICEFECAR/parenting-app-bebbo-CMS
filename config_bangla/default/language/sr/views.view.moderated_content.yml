@@ -3,20 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
-        title:
-          label: Title
-        name:
-          label: Author
         operations:
-          label: Operations
+          label: Операције
       exposed_form:
         options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
-      filters:
-        title:
-          expose:
-            label: Title
-        langcode:
-          expose:
-            label: Language
+          submit_button: Филтрирај

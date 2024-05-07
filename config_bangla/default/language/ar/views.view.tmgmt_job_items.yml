@@ -26,11 +26,8 @@ display:
           label: التسمية
         type:
           label: النوع
-        word_count:
-          separator: ', '
         tags_count:
           label: وسوم
-          separator: ', '
         changed:
           label: 'تم التغير'
         operations:
@@ -47,10 +44,7 @@ display:
           label: التسمية
         type:
           label: النوع
-        word_count:
-          separator: ', '
         changed:
           label: 'تم التغير'
-          separator: ', '
   submitted:
     display_title: 'تم الإرسال'

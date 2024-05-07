@@ -1,5 +1,3 @@
-label: 'Ana sayfa'
-description: 'Tüm içerik ana sayfaya yükseltildi.'
 display:
   default:
     display_title: Varsayılan
@@ -22,7 +20,5 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
-  feed_1:
-    display_title: Akış
   page_1:
     display_title: Sayfa

@@ -41,8 +41,8 @@ module:
   file: 0
   filelog: 0
   filter: 0
-  google_analytics: 0
   gnode: 0
+  google_analytics: 0
   group: 0
   group_country_field: 0
   help: 0
@@ -52,7 +52,6 @@ module:
   json_field_widget: 0
   jsonapi: 0
   jsonapi_extras: 0
-  jsonapi_page_limit: 0
   lang_dropdown: 0
   language: 0
   languagefield: 0

@@ -1,77 +1,36 @@
 display:
   default:
     display_options:
-      fields:
-        title:
-          label: Заголовок
+      exposed_form:
+        options:
+          submit_button: Фільтр
   assigned:
     display_options:
       fields:
-        title:
-          label: Заголовок
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
-        title:
-          expose:
-            label: Заголовок
+        operations:
+          label: Операції
   closed:
     display_options:
       fields:
-        created:
-          label: Створено
-        title:
-          label: Заголовок
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
-        title:
-          expose:
-            label: Заголовок
+        operations:
+          label: Операції
   completed:
     display_options:
       fields:
-        created:
-          label: Створено
-        title:
-          label: Заголовок
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
-        title:
-          expose:
-            label: Заголовок
+        operations:
+          label: Операції
   pending:
     display_options:
       fields:
-        title:
-          label: Заголовок
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
-        title:
-          expose:
-            label: Заголовок
+        operations:
+          label: Операції
   rejected:
     display_options:
       fields:
-        created:
-          label: Створено
-        title:
-          label: Заголовок
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
-        title:
-          expose:
-            label: Заголовок
+        operations:
+          label: Операції
   unassigned:
     display_options:
       fields:
-        title:
-          label: Заголовок
+        operations:
+          label: Операції

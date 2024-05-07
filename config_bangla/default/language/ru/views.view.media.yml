@@ -7,44 +7,17 @@ display:
       fields:
         thumbnail__target_id:
           label: Миниатюра
-          separator: ', '
-        name:
-          separator: ', '
         bundle:
-          separator: ', '
-        uid:
-          label: Author
-          separator: ', '
-        status:
-          label: Status
-          separator: ', '
-        changed:
-          label: Updated
-          separator: ', '
+          label: Тип
         operations:
-          label: Operations
-      pager:
-        options:
-          tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
+          label: Операции
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Фильтр
       filters:
-        langcode:
+        bundle:
           expose:
-            label: Language
+            label: Тип
   media_page_list:
     display_title: Мультимедиа
     display_options:

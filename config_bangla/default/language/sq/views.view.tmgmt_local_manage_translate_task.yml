@@ -3,103 +3,40 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-      fields:
-        title:
-          label: Title
+          submit_button: Filtri
   assigned:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
+          label: Operacionet
   closed:
-    display_title: Closed
     display_options:
-      menu:
-        title: Closed
       fields:
-        status:
-          label: Status
         created:
           label: Krijuar
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
+          label: Operacionet
   completed:
     display_options:
       fields:
-        status:
-          label: Status
         created:
           label: Krijuar
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
+          label: Operacionet
   pending:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
+          label: Operacionet
   rejected:
     display_options:
       fields:
-        status:
-          label: Status
         created:
           label: Krijuar
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
-      filters:
-        title:
-          expose:
-            label: Title
+          label: Operacionet
   unassigned:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
-        target_language:
-          label: To
         operations:
-          label: Operations
+          label: Operacionet

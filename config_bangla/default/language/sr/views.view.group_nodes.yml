@@ -1,13 +1,10 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
-        title:
-          label: Title
-        status:
-          label: Status
         dropbutton:
-          label: Operations
+          label: Операције
+      filters:
+        type:
+          expose:
+            label: Tип

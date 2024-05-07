@@ -12,8 +12,6 @@ display:
       pager:
         options:
           tags:
-            previous: ‹‹
-            next: ››
             first: '« İlk'
             last: 'Son »'
           expose:
@@ -23,16 +21,18 @@ display:
       fields:
         name:
           label: Kullanıcı
-          separator: ', '
         group_roles:
           label: Roller
-          separator: ', '
         changed:
           label: Güncellendi
-          separator: ', '
         created:
           label: Katıldı
-          separator: ', '
+        view_group_content:
+          text: 'Manage member'
+        edit_group_content:
+          text: 'Assign roles'
+        edit_user:
+          text: 'Edit member'
         dropbutton:
           label: İşlemler
       arguments:

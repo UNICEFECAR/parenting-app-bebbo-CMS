@@ -3,11 +3,14 @@ display:
     display_title: Default
     display_options:
       fields:
-        name:
-          label: User
+        type:
+          label: Lloji
         link:
-          label: Operations
+          label: Operacionet
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
+          submit_button: Filtri
+      filters:
+        type:
+          expose:
+            label: Lloji

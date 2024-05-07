@@ -23,15 +23,12 @@ display:
       fields:
         state:
           label: Eyalet
-          separator: ', '
         label:
           label: Etiket
         source_language_1:
           label: Kimden
-          separator: ', '
         target_language:
           label: Kime
-          separator: ', '
         translator:
           label: Sağlayıcı
         tags_count:

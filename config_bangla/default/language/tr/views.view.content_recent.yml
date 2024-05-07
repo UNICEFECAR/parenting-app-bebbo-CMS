@@ -1,13 +1,7 @@
-label: 'Güncel içerik'
-description: 'Güncel içerik.'
 display:
   default:
     display_title: Varsayılan
     display_options:
-      title: 'Güncel içerik'
-      fields:
-        changed:
-          separator: ', '
       exposed_form:
         options:
           submit_button: Uygula
@@ -18,6 +12,3 @@ display:
       empty:
         area_text_custom:
           content: 'Hiçbir içerik mevcut değil.'
-      use_more_text: Devamı
-  block_1:
-    display_title: Blok

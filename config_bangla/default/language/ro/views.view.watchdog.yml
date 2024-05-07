@@ -7,37 +7,19 @@ display:
       fields:
         nothing:
           admin_label: Pictogramă
-        wid:
-          label: WID
         severity:
           label: Gravitate
         type:
-          label: Type
+          label: Tip
         timestamp:
           label: Data
         message:
           label: Mesaj
-        name:
-          label: User
-          separator: ', '
         link:
-          label: Operations
-      pager:
-        options:
-          tags:
-            next: ››
-            previous: ‹‹
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
+          label: Operațiuni
       exposed_form:
         options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          submit_button: Filtru
       empty:
         area:
           admin_label: 'Nu este disponibil niciun mesaj log.'
@@ -45,9 +27,7 @@ display:
       filters:
         type:
           expose:
-            label: Type
+            label: Tip
         severity:
           expose:
             label: Gravitate
-  page:
-    display_title: Page

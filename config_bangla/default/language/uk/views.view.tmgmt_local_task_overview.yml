@@ -1,37 +1,41 @@
 display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Фільтр
   closed:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
   completed:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
   eligible:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
   my_tasks:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
   pending:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
   rejected:
     display_options:
-      filters:
-        source_language:
-          expose:
-            label: 'Вихідна мова'
+      fields:
+        operations:
+          label: Операції
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Операції

@@ -1,11 +1,9 @@
 display:
   default:
-    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Filter
-          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -26,7 +24,6 @@ display:
           action_title: 'S výberom'
         title:
           label: Názov
-          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -42,24 +39,16 @@ display:
           action_title: 'S výberom'
         status:
           label: Stav
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -83,27 +72,18 @@ display:
           action_title: 'S výberom'
         status:
           label: Stav
-          separator: ', '
         created:
           label: Vytvorené
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -127,27 +107,18 @@ display:
           action_title: 'S výberom'
         status:
           label: Stav
-          separator: ', '
         created:
           label: Vytvorené
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -171,23 +142,16 @@ display:
           action_title: 'S výberom'
         status:
           label: Stav
-        tuid:
-          separator: ', '
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -210,24 +174,16 @@ display:
           label: Stav
         created:
           label: Vytvorené
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -250,18 +206,13 @@ display:
           label: Stav
         title:
           label: Názov
-          separator: ', '
         source_language:
           label: Od
-          separator: ', '
         target_language:
           label: Komu
-          separator: ', '
         word_count:
           label: Slov
         item_count:
           label: Položky
-        loop_count:
-          separator: ', '
         operations:
           label: Operácie

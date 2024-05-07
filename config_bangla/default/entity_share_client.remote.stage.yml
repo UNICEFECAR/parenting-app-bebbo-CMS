@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: stage
-label: Stage
-url: 'https://staging.bebbo.app'
+label: Prod
+url: 'https://bebbo.app'
 auth:
   pid: basic_auth
   uuid: 9135abf7-8436-4b33-b199-0c8b3895d88e

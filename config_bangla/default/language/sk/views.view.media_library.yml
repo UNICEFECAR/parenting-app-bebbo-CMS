@@ -8,16 +8,12 @@ display:
           action_title: Akcia
       pager:
         options:
-          tags:
-            next: ››
-            previous: ‹‹
           expose:
             items_per_page_label: 'Položiek na stránku'
             items_per_page_options_all_label: '- Všetko -'
             offset_label: 'Zobraziť od'
       exposed_form:
         options:
-          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -45,14 +41,11 @@ display:
       fields:
         media_bulk_form:
           action_title: Akcia
-        name:
-          separator: ', '
         edit_media:
           text: Upraviť
         delete_media:
           text: Odstrániť
   widget:
-    display_title: Widget
     display_options:
       arguments:
         bundle:

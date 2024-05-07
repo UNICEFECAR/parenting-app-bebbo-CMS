@@ -12,8 +12,6 @@ display:
       pager:
         options:
           tags:
-            previous: ‹‹
-            next: ››
             first: '« İlk'
             last: 'Son »'
           expose:
@@ -23,19 +21,15 @@ display:
       fields:
         title:
           label: Başlık
-          separator: ', '
         type:
           label: 'İçerik türü'
-          separator: ', '
         status:
           label: Durum
           settings:
             format_custom_true: Yayında
             format_custom_false: 'Yayında değil'
-          separator: ', '
         changed:
           label: Güncellendi
-          separator: ', '
         edit_node:
           text: 'Düğümü düzenle'
         delete_node:

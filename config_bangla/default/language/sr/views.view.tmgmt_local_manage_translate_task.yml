@@ -3,106 +3,40 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
-      fields:
-        title:
-          label: Title
+          submit_button: Филтрирај
   assigned:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
         operations:
-          label: Operations
-      filters:
-        uid:
-          expose:
-            label: Provider
-        title:
-          expose:
-            label: Title
+          label: Операције
   closed:
     display_options:
       fields:
-        status:
-          label: Status
         created:
           label: Направљено
-        title:
-          label: Title
         operations:
-          label: Operations
-      filters:
-        uid:
-          expose:
-            label: Provider
-        title:
-          expose:
-            label: Title
+          label: Операције
   completed:
-    display_title: Completed
     display_options:
-      menu:
-        title: Completed
       fields:
-        status:
-          label: Status
         created:
           label: Направљено
-        title:
-          label: Title
         operations:
-          label: Operations
-      filters:
-        uid:
-          expose:
-            label: Provider
-        title:
-          expose:
-            label: Title
+          label: Операције
   pending:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
         operations:
-          label: Operations
-      filters:
-        uid:
-          expose:
-            label: Provider
-        title:
-          expose:
-            label: Title
+          label: Операције
   rejected:
     display_options:
       fields:
-        status:
-          label: Status
         created:
           label: Направљено
-        title:
-          label: Title
         operations:
-          label: Operations
-      filters:
-        uid:
-          expose:
-            label: Provider
-        title:
-          expose:
-            label: Title
+          label: Операције
   unassigned:
     display_options:
       fields:
-        status:
-          label: Status
-        title:
-          label: Title
         operations:
-          label: Operations
+          label: Операције

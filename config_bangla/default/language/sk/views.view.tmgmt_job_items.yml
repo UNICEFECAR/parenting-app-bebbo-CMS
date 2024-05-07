@@ -1,11 +1,9 @@
 display:
   default:
-    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Použiť
-          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -29,10 +27,8 @@ display:
           label: Typ
         word_count:
           label: Slov
-          separator: ', '
         tags_count:
           label: Značky
-          separator: ', '
         changed:
           label: Zmenené
         operations:
@@ -51,9 +47,7 @@ display:
           label: Typ
         word_count:
           label: Slov
-          separator: ', '
         changed:
           label: Zmenené
-          separator: ', '
   submitted:
     display_title: Odoslané

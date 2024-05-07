@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: config_stage
-label: 'Config stage'
+label: 'Config Production'
 import_maxsize: 50
 import_processor_settings:
   block_field_block_content_importer:

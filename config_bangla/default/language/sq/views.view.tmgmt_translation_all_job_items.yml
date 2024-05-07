@@ -1,16 +1,11 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
       fields:
-        target_language:
-          label: To
-        tags_count:
-          label: Tags
+        type:
+          label: Lloji
         operations:
-          label: Operations
+          label: Operacionet
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -8,10 +8,8 @@ display:
       fields:
         info:
           label: 'Popis bloku'
-          separator: ', '
         type:
           label: 'Typ bloku'
-          separator: ', '
         changed:
           label: Aktualizované
         operations:
@@ -28,7 +26,6 @@ display:
       exposed_form:
         options:
           submit_button: Použiť
-          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne

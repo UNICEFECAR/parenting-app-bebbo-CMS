@@ -8,7 +8,6 @@ display:
       fields:
         filename:
           label: Názov
-          separator: ', '
         filemime:
           label: 'MIME typ'
         filesize:
@@ -36,7 +35,6 @@ display:
       exposed_form:
         options:
           submit_button: Filter
-          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -54,7 +52,6 @@ display:
           expose:
             label: Stav
   page_1:
-    display_title: 'Files overview'
     display_options:
       menu:
         title: Súbory

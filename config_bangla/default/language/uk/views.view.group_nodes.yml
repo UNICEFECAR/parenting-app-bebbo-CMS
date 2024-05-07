@@ -2,7 +2,9 @@ display:
   default:
     display_options:
       fields:
-        title:
-          label: Заголовок
+        dropbutton:
+          label: Операції
+      filters:
         type:
-          label: 'Тип матеріалів'
+          expose:
+            label: Тип
