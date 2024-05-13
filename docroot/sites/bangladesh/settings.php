@@ -798,7 +798,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # }
 
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/parentbuddy2/pbbangladesh-settings.inc';
+  require '/var/www/site-php/parentbuddy2/prod_pbbangladesh-settings.inc';
 }
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
 $settings["config_sync_directory"] = '../config_bangla/default';
