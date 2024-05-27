@@ -8,6 +8,70 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
+
+
+function pb_custom_form_dynamic_category_ajax_callback(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  $selected_category = $form_state->getValue(['field_content_category', 0, 'target_id']);
+
+  // Logic to fetch subcategory options based on the selected category.
+  $subcategory_options = pb_custom_form_get_subcategory_options($selected_category);
+  // Update the options of the subcategory select field.
+  if (isset($form['field_subcategory']['widget']['#options'])) {
+    $form['field_subcategory']['widget']['#options'] = $subcategory_options;
+  }
+
+  // Return the updated subcategory field element.
+  return $form['field_subcategory'];
+}
+
+
+function pb_custom_form_get_subcategory_options($category_id) {
+  // This is a placeholder function; replace with actual logic.
+  $options = [];
+
+  $vid = 'subcategory'; // Replace with your vocabulary machine name
+  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+  $matched_terms = [];
+ 
+  foreach ($terms as $term) {
+    // Load the full term entity
+    $term_entity = \Drupal\taxonomy\Entity\Term::load($term->tid);
+    // Check if the term has field_category with the specified ID
+    if ($term_entity->hasField('field_category') && !$term_entity->get('field_category')->isEmpty()) {
+      $field_category = $term_entity->get('field_category')->getValue();
+      foreach ($field_category as $value) {
+        if ($value['target_id'] == $category_id) {
+          $matched_terms[] = $term->tid;
+          break;
+        }
+      }
+    }
+  }
+
+
+  if($matched_terms){
+    // Initialize an empty array to store term IDs and names.
+    $options = [];
+    $terms = \Drupal\taxonomy\Entity\Term::loadMultiple($matched_terms);
+    foreach ($terms as $term_id => $term) {
+      // Check if the term is loaded successfully.
+      if ($term) {
+        // Get the name of the term.
+       $options[$term_id] = $term->getName();
+      }
+    }
+  }
+
+  if(empty($options)) {
+    $options = ['_none'=>'- None -'];
+  }
+  return $options;
+}
+
 
 /**
  * Implements hook_theme().
@@ -51,6 +115,37 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
 
   if (strpos($form_id, 'edit_form') !== FALSE && strpos($form_id, 'node') !== FALSE) {
     $form['#validate'][] = 'pb_custom_form_node_validate';
+  }
+
+  //node_article_edit_form //node_article_form
+  if ($form_id == 'node_article_edit_form' || $form_id == 'node_article_form') {
+    if (isset($form['field_content_category'])) {
+      $form['field_content_category']['widget']['#ajax'] = [
+        'callback' => 'pb_custom_form_dynamic_category_ajax_callback',
+        'wrapper' => 'subcategory-wrapper',
+        'event' => 'change',
+      ];
+    }
+    if (isset($form['field_subcategory'])) {
+      $form['field_subcategory']['#prefix'] = '<div id="subcategory-wrapper">';
+      $form['field_subcategory']['#suffix'] = '</div>';
+    }
+
+    // Get the current value of the Category field
+    $selected_category = $form_state->getValue(['field_content_category', 0, 'target_id']);
+    if (!$selected_category && isset( $form['field_content_category']['widget']['#default_value'][0])) {
+      $selected_category = $form['field_content_category']['widget']['#default_value'][0];
+    }
+
+     // Update Subcategory options based on the selected Category
+    if ($selected_category) {
+      $form['field_subcategory']['widget']['#options'] = pb_custom_form_get_subcategory_options($selected_category);
+    } else {
+      $form['field_subcategory']['widget']['#options'] = ['_none' => t('- None -')];
+    }
+
+    // // Add custom validation handler
+    // $form['#validate'][] = 'pb_custom_form_validate';
   }
 }
 
@@ -225,7 +320,9 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
 }
 
 /**
+ * Implements hook_page_attachments_alter().
  *
+ * Allows alteration of page attachments before rendering.
  */
 function pb_custom_form_page_attachments_alter(&$page) {
   $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
