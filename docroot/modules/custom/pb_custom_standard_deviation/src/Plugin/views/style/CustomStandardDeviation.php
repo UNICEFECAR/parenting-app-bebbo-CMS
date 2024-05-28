@@ -68,23 +68,23 @@ class CustomStandardDeviation extends Serializer {
           if (isset($weight_for_height[$i]['child_age'])) {
             $sorted_weight_for_height = $this->sortChildAgeID($weight_for_height[$i]['child_age']);
             // \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');
-            if ($sorted_weight_for_height === "43,44,45,46") {
+            if ($sorted_weight_for_height === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481") {
               $child_1[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "47") {
+            if ($sorted_weight_for_height === "47" || $sorted_weight_for_height === "486") {
               $child_2[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "48") {
+            if ($sorted_weight_for_height === "48" || $sorted_weight_for_height === "491") {
               $child_3[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "49,50") {
+            if ($sorted_weight_for_height === "49,50" || $sorted_weight_for_height === "496,501") {
               $child_4[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "51,52,57,58") {
+            if ($sorted_weight_for_height === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521") {
               $child_5[] = $weight_for_height[$i];
             }
           }
@@ -127,23 +127,23 @@ class CustomStandardDeviation extends Serializer {
           if (isset($height_for_age[$i]['child_age'])) {
             $sorted_height_for_age = $this->sortChildAgeID($height_for_age[$i]['child_age']);
             // \Drupal::logger('pb_custom_standard_deviation')->notice('height_for_age => <pre><code>' . $sorted_height_for_age . '</code></pre>');
-            if ($sorted_height_for_age === "43,44,45,46") {
+            if ($sorted_height_for_age === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481") {
               $child_1[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "47") {
+            if ($sorted_height_for_age === "47" || $sorted_weight_for_height === "486") {
               $child_2[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "48") {
+            if ($sorted_height_for_age === "48" || $sorted_weight_for_height === "491") {
               $child_3[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "49,50") {
+            if ($sorted_height_for_age === "49,50" || $sorted_weight_for_height === "496,501") {
               $child_4[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "51,52,57,58") {
+            if ($sorted_height_for_age === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521") {
               $child_5[] = $height_for_age[$i];
             }
           }
