@@ -25,6 +25,8 @@ class CustomStandardDeviation extends Serializer {
 
     $request_uri = \Drupal::service('path.current')->getPath(); /* Gives request path e.x (api/articles/en/1) */
     $request = explode('/', $request_uri);
+   
+
     /* Validating request params to response error code */
     $validate_params_res = $this->checkRequestParams($request_uri);
     if (empty($validate_params_res)) {
@@ -46,11 +48,11 @@ class CustomStandardDeviation extends Serializer {
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
           foreach ($rendered_data as $key => $values) {
-            if ($key === 'growth_type' && $values === "6461") {
+            if ( ($key === 'growth_type' && $values === "6461") || ($key === 'growth_type' && $values === "606")) {
               $weight_for_height[] = $rendered_data;
             }
 
-            if ($key === 'growth_type' && $values === "32786") {
+            if(($key === 'growth_type' && $values === "32786") || ($key === 'growth_type' && $values === "601")) {
               $height_for_age[] = $rendered_data;
             }
           }
