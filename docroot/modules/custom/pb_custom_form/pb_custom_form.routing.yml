@@ -43,7 +43,7 @@ pb_custom_form.pb_mobile:
     param1: ''
     param2: ''
     param3: ''
-    _title: 'Parentbuddy Mobile'
+    _title: 'Bebbo'
   requirements:
     _permission: 'manage mobile javascript'
 
@@ -55,7 +55,7 @@ pb_custom_form.kosovo_pb_mobile:
     param1: ''
     param2: ''
     param3: ''
-    _title: 'Parentbuddy Mobile'
+    _title: 'Bebbo'
   requirements:
     _permission: 'manage mobile javascript'
 
