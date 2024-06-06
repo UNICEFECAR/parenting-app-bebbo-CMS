@@ -56,3 +56,4 @@
  * @see https://www.drupal.org/documentation/install/multi-site
  */
 $sites['babuni.app'] = 'bangladesh';
+$sites['bangla.bebbo.app'] = 'bangladesh';
