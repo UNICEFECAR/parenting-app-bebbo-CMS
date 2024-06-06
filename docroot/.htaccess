@@ -1,10 +1,13 @@
-# Enable the rewrite engine
-RewriteEngine on
 
-# Custom redirect from non-www to www
-RewriteCond %{HTTP_HOST} ^babuni\.app [NC]
-RewriteCond %{HTTPS} on
-RewriteRule ^(.*)$ https://www.babuni.app/$1 [L,R=301]
+# Enable the rewrite engine
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+# Redirect all domains, except acquia-sites domains, to www
+  RewriteCond %{HTTP_HOST} !prod\.acquia-sites\.com
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ http%{ENV:protossl}://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
 
 #
 # Apache/PHP/Drupal settings:
