@@ -1,14 +1,3 @@
-
-# Enable the rewrite engine
-<IfModule mod_rewrite.c>
-  RewriteEngine on
-
-# Redirect all domains, except acquia-sites domains, to www
-  RewriteCond %{HTTP_HOST} !prod\.acquia-sites\.com
-  RewriteCond %{HTTP_HOST} !^www\. [NC]
-  RewriteRule ^ http%{ENV:protossl}://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</IfModule>
-
 #
 # Apache/PHP/Drupal settings:
 #
@@ -77,6 +66,10 @@ AddEncoding gzip svgz
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
   RewriteEngine on
+
+  RewriteCond %{HTTP_HOST} !prod\.acquia-sites\.com
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ http%{ENV:protossl}://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
