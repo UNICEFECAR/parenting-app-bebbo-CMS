@@ -178,6 +178,12 @@ AddEncoding gzip svgz
   </IfModule>
 </IfModule>
 
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^babuni\.app [NC]
+    RewriteRule ^(.*)$ http://www.babuni.app/$1 [L,R=301]
+</IfModule>
+
 # Various header fixes.
 <IfModule mod_headers.c>
   # Disable content sniffing, since it's an attack vector.
