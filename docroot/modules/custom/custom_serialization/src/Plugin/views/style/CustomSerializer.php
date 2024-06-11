@@ -73,6 +73,10 @@ class CustomSerializer extends Serializer {
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
+          //custom country listing
+          if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 131) {
+            continue;
+          }
           /* error_log("type =>".$rendered_data['type']); */
           /* Custom pinned api formatter. */
           if (strpos($request_uri, "pinned-contents") !== FALSE && isset($request[4]) && in_array($request[4], $pinned_content)) {
@@ -206,6 +210,35 @@ class CustomSerializer extends Serializer {
                   $field_formatter[$formatted_data[0]] = $taxonomy_data;
                 }
               }
+            }
+
+            if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {              
+              $Countryname = isset($rendered_data['Countryname']) ? $rendered_data['Countryname'] : 'Unknown';
+              $rendered_data['name'] = 'Rest of the world';
+              $rendered_data['displayName'] = 'Rest of the world';
+              $rendered_data['languages'] = [
+                [
+                  'name' => 'English',
+                  'displayName' => 'English',
+                  'languageCode' => 'en',
+                  'locale' => 'en',
+                  'luxonLocale' => 'en-US',
+                  'pluralShow' => false,
+                ],
+                [
+                  'name' => 'Russian',
+                  'displayName' => 'Русский',
+                  'languageCode' => 'ru',
+                  'locale' => 'ru',
+                  'luxonLocale' => 'ru-RU',
+                  'pluralShow' => true,
+                ],
+              ];
+              unset($rendered_data['Countryname'] );
+              unset($rendered_data['field_make_available_for_mobile'] );
+              unset($rendered_data['logo'] );
+              unset($rendered_data['field_country_national_partner'] );
+              unset($rendered_data['published'] );
             }
           }
 
