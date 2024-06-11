@@ -325,7 +325,7 @@ class CustomSerializer extends Serializer {
       else {
         $rows = [];
         $rows['status'] = 204;
-        $rows['message'] = "No Records Founds";
+        $rows['message'] = "No Records Found";
         $rows['datetime'] = $timestamp;
 
         return $this->serializer->serialize($rows, 'json', ['views_style_plugin' => $this]);
