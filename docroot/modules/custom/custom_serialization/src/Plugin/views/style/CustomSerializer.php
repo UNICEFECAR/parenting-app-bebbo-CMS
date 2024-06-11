@@ -9,6 +9,10 @@ use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\rest\Plugin\views\style\Serializer;
+use Drupal\locale\LocaleTranslation;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\language\Entity\ConfigurableLanguage;
+
 
 /**
  * The style plugin for serialized output formats.
@@ -108,6 +112,7 @@ class CustomSerializer extends Serializer {
             }
           }
           $embedded_images = [];
+          $languages_all = [];
           foreach ($rendered_data as $key => $values) {
             /* Replace special charater into normal. */
             if ($key === "title") {
@@ -209,6 +214,31 @@ class CustomSerializer extends Serializer {
                   /* \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
                   $field_formatter[$formatted_data[0]] = $taxonomy_data;
                 }
+              }
+            }
+
+            if (strpos($request_uri, "country-groups") !== FALSE ){
+              if($rendered_data['CountryID']){
+                $groups = Group::load($rendered_data['CountryID']);
+                $master_languages = $groups->get('field_master_language')->getValue();
+                $country_languages = $groups->get('field_language')->getValue();                
+                $parts = explode("-", $country_languages[0]['value']);
+
+                if (count($parts) > 1) {
+                  $langcode = $parts[1];
+                  if($langcode){
+                    $language = \Drupal::languageManager()->getLanguage($langcode);
+                    $original_language = \Drupal::languageManager()->setConfigOverrideLanguage($language);
+                    $languages = ConfigurableLanguage::load($langcode);
+                    if ($languages) {
+                      // Retrieve the display name (label) of the language
+                      if ($languages->label()) {
+                          $rendered_data['display_name'] = $languages->label();
+                      }
+                    }
+                   
+                  }
+                }               
               }
             }
 
