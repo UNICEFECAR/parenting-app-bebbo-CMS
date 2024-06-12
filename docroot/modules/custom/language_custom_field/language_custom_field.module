@@ -1,0 +1,111 @@
+<?php
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\language\Entity\ConfigurableLanguage;
+
+
+
+function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
+  // Check if the form ID is language_admin_add_form or language_admin_edit_form.
+  if ($form_id == 'language_admin_edit_form') {
+    // Add your custom field to the form.
+
+    $langcode = '';
+    
+    // If we are editing, we should have a langcode.
+    if ($form_id == 'language_admin_edit_form' && isset($form['langcode']['#value'])) {
+      $langcode = $form['langcode']['#value'];
+    }
+
+    // Load existing data for the given langcode from the database.
+    $existing_data = [];
+    if (!empty($langcode)) {
+      $existing_data = \Drupal::database()->select('custom_language_data', 'cld')
+        ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
+        ->condition('langcode', $langcode)
+        ->execute()
+        ->fetchAssoc();
+    }
+    
+    $form['field_custom_locale'] = array(
+      '#type' => 'textfield',
+      '#title' => t('locale'),
+      '#description' => t('Enter locale data.'),
+      '#default_value' => isset($existing_data['field_custom_locale']) ? $existing_data['field_custom_locale'] : '',
+    );
+
+    $form['field_custom_luxon'] = array(
+      '#type' => 'textfield',
+      '#title' => t('luxonLocale'),
+      '#description' => t('Enter luxonLocale data.'),
+      '#default_value' => isset($existing_data['field_custom_luxon']) ? $existing_data['field_custom_luxon'] : '',
+    );
+
+    $form['field_custom_plural'] = array(
+      '#type' => 'textfield',
+      '#title' => t('pluralShow'),
+      '#description' => t('Enter pluralShow data.'),
+      '#default_value' => isset($existing_data['field_custom_plural']) ? $existing_data['field_custom_plural'] : '',
+    );
+
+    $form['actions']['submit']['#submit'][] = 'language_custom_field_custom_submit';
+
+  }
+}
+
+function language_custom_field_custom_submit($form, &$form_state) {
+  $field_custom_locale = $field_custom_luxon = $field_custom_plural = $langcode = '';
+  // Get the value of the custom field.
+  if($form_state->getValue('field_custom_locale')){
+    $field_custom_locale = $form_state->getValue('field_custom_locale');
+  }
+
+  if($form_state->getValue('field_custom_luxon')){
+    $field_custom_luxon = $form_state->getValue('field_custom_luxon');
+  }
+
+  if($form_state->getValue('field_custom_plural')){
+    $field_custom_plural = $form_state->getValue('field_custom_plural');
+  }
+
+  if($form_state->getValue('langcode')){
+    $langcode = $form_state->getValue('langcode');
+  }
+ 
+
+  $current_timestamp = time();
+
+  if (!empty($langcode)) {
+    // Check if a record already exists for this langcode.
+    $existing_record = \Drupal::database()->select('custom_language_data', 'cld')
+      ->fields('cld', ['langcode'])
+      ->condition('langcode', $langcode)
+      ->execute()
+      ->fetchField();
+
+    if ($existing_record) {
+      // Update the existing record.
+      \Drupal::database()->update('custom_language_data')
+        ->fields([
+          'field_custom_locale' => $field_custom_locale,
+          'field_custom_luxon' => $field_custom_luxon,
+          'field_custom_plural' => $field_custom_plural,
+          'created_date' => $current_timestamp,
+        ])
+        ->condition('langcode', $langcode)
+        ->execute();
+    } else {
+      // Insert a new record.
+      \Drupal::database()->insert('custom_language_data')
+        ->fields([
+          'langcode' => $langcode,
+          'field_custom_locale' => $field_custom_locale,
+          'field_custom_luxon' => $field_custom_luxon,
+          'field_custom_plural' => $field_custom_plural,
+          'created_date' => $current_timestamp,
+        ])
+        ->execute();
+    }
+  }
+}

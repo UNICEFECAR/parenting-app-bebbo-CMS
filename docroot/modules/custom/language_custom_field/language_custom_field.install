@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Force update check api schema.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_schema().
+ */
+
+function language_custom_field_schema() {
+  $schema = [];
+
+  $schema['custom_language_data'] = array(
+		'description' => 'Language Custom field data value in custom table',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique id for custom_language_data',
+      ),
+      'langcode' => [
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+      ],
+      'custom_locale' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+			'custom_luxon' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+			'custom_plural' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+			'created_date' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+    ),
+    'primary key' => array('id'),    
+  );  
+  return $schema;
+}
+
+
+function language_custom_field_uninstall() {
+  \Drupal::database()->schema()->dropTable('custom_language_data');
+}
+
