@@ -22,31 +22,31 @@ function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
     $existing_data = [];
     if (!empty($langcode)) {
       $existing_data = \Drupal::database()->select('custom_language_data', 'cld')
-        ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
+        ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural'])
         ->condition('langcode', $langcode)
         ->execute()
         ->fetchAssoc();
     }
     
-    $form['field_custom_locale'] = array(
+    $form['custom_locale'] = array(
       '#type' => 'textfield',
       '#title' => t('locale'),
       '#description' => t('Enter locale data.'),
-      '#default_value' => isset($existing_data['field_custom_locale']) ? $existing_data['field_custom_locale'] : '',
+      '#default_value' => isset($existing_data['custom_locale']) ? $existing_data['custom_locale'] : '',
     );
 
-    $form['field_custom_luxon'] = array(
+    $form['custom_luxon'] = array(
       '#type' => 'textfield',
       '#title' => t('luxonLocale'),
       '#description' => t('Enter luxonLocale data.'),
-      '#default_value' => isset($existing_data['field_custom_luxon']) ? $existing_data['field_custom_luxon'] : '',
+      '#default_value' => isset($existing_data['custom_luxon']) ? $existing_data['custom_luxon'] : '',
     );
 
-    $form['field_custom_plural'] = array(
+    $form['custom_plural'] = array(
       '#type' => 'textfield',
       '#title' => t('pluralShow'),
       '#description' => t('Enter pluralShow data.'),
-      '#default_value' => isset($existing_data['field_custom_plural']) ? $existing_data['field_custom_plural'] : '',
+      '#default_value' => isset($existing_data['custom_plural']) ? $existing_data['custom_plural'] : '',
     );
 
     $form['actions']['submit']['#submit'][] = 'language_custom_field_custom_submit';
@@ -57,16 +57,16 @@ function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
 function language_custom_field_custom_submit($form, &$form_state) {
   $field_custom_locale = $field_custom_luxon = $field_custom_plural = $langcode = '';
   // Get the value of the custom field.
-  if($form_state->getValue('field_custom_locale')){
-    $field_custom_locale = $form_state->getValue('field_custom_locale');
+  if($form_state->getValue('custom_locale')){
+    $field_custom_locale = $form_state->getValue('custom_locale');
   }
 
-  if($form_state->getValue('field_custom_luxon')){
-    $field_custom_luxon = $form_state->getValue('field_custom_luxon');
+  if($form_state->getValue('custom_luxon')){
+    $field_custom_luxon = $form_state->getValue('custom_luxon');
   }
 
-  if($form_state->getValue('field_custom_plural')){
-    $field_custom_plural = $form_state->getValue('field_custom_plural');
+  if($form_state->getValue('custom_plural')){
+    $field_custom_plural = $form_state->getValue('custom_plural');
   }
 
   if($form_state->getValue('langcode')){
@@ -88,9 +88,9 @@ function language_custom_field_custom_submit($form, &$form_state) {
       // Update the existing record.
       \Drupal::database()->update('custom_language_data')
         ->fields([
-          'field_custom_locale' => $field_custom_locale,
-          'field_custom_luxon' => $field_custom_luxon,
-          'field_custom_plural' => $field_custom_plural,
+          'custom_locale' => $field_custom_locale,
+          'custom_luxon' => $field_custom_luxon,
+          'custom_plural' => $field_custom_plural,
           'created_date' => $current_timestamp,
         ])
         ->condition('langcode', $langcode)
@@ -100,9 +100,9 @@ function language_custom_field_custom_submit($form, &$form_state) {
       \Drupal::database()->insert('custom_language_data')
         ->fields([
           'langcode' => $langcode,
-          'field_custom_locale' => $field_custom_locale,
-          'field_custom_luxon' => $field_custom_luxon,
-          'field_custom_plural' => $field_custom_plural,
+          'custom_locale' => $field_custom_locale,
+          'custom_luxon' => $field_custom_luxon,
+          'custom_plural' => $field_custom_plural,
           'created_date' => $current_timestamp,
         ])
         ->execute();
