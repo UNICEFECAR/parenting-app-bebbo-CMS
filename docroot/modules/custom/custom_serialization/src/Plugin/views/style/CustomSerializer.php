@@ -238,15 +238,17 @@ class CustomSerializer extends Serializer {
 
                 if($langcode) {
                   if (!empty($langcode)) {
-                    $existing_data = \Drupal::database()->select('custom_language_data', 'cld')
-                      ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
-                      ->condition('langcode', $langcode)
-                      ->execute()
-                      ->fetchAssoc();
-                      if(!empty($existing_data)){
-                        $rendered_data['locale'] = $existing_data['field_custom_locale'];
-                        $rendered_data['luxon_locale'] = $existing_data['field_custom_luxon'];
-                        $rendered_data['plural_show'] = $existing_data['field_custom_plural'];
+                    if (\Drupal::database()->schema()->tableExists('custom_language_data')) {
+                        $existing_data = \Drupal::database()->select('custom_language_data', 'cld')
+                        ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
+                        ->condition('langcode', $langcode)
+                        ->execute()
+                        ->fetchAssoc();
+                        if(!empty($existing_data)){
+                          $rendered_data['locale'] = $existing_data['field_custom_locale'];
+                          $rendered_data['luxon_locale'] = $existing_data['field_custom_luxon'];
+                          $rendered_data['plural_show'] = $existing_data['field_custom_plural'];
+                        }
                       }
                   }
 
@@ -273,53 +275,55 @@ class CustomSerializer extends Serializer {
 
             if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {              
               $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
-              //langcode en
-              $existing_data_en = \Drupal::database()->select('custom_language_data', 'cld')
-                ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
-                ->condition('langcode', 'en')
-                ->execute()
-                ->fetchAssoc();
+                if (\Drupal::database()->schema()->tableExists('custom_language_data')) {
+                  //langcode en
+                  $existing_data_en = \Drupal::database()->select('custom_language_data', 'cld')
+                  ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
+                  ->condition('langcode', 'en')
+                  ->execute()
+                  ->fetchAssoc();
 
-                if(!empty($existing_data)){
-                  $custom_locale_en = $existing_data_en['field_custom_locale'];
-                  $custom_luxon_en = $existing_data_en['field_custom_luxon'];
-                  $custom_plural_en  = $existing_data_en['field_custom_plural'];
-                }
-              
-              //langcode ru
-                $existing_data_ru = \Drupal::database()->select('custom_language_data', 'cld')
-                ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
-                ->condition('langcode', 'ru')
-                ->execute()
-                ->fetchAssoc();
-                
-                if(!empty($existing_data)){
-                  $custom_locale_ru = $existing_data_ru['field_custom_locale'];
-                  $custom_luxon_ru = $existing_data_ru['field_custom_luxon'];
-                  $custom_plural_ru = $existing_data_ru['field_custom_plural'];
+                  if(!empty($existing_data)){
+                    $custom_locale_en = $existing_data_en['field_custom_locale'];
+                    $custom_luxon_en = $existing_data_en['field_custom_luxon'];
+                    $custom_plural_en  = $existing_data_en['field_custom_plural'];
+                  }
+                  
+                  //langcode ru
+                  $existing_data_ru = \Drupal::database()->select('custom_language_data', 'cld')
+                  ->fields('cld', ['field_custom_locale', 'field_custom_luxon', 'field_custom_plural'])
+                  ->condition('langcode', 'ru')
+                  ->execute()
+                  ->fetchAssoc();
+                  
+                  if(!empty($existing_data)){
+                    $custom_locale_ru = $existing_data_ru['field_custom_locale'];
+                    $custom_luxon_ru = $existing_data_ru['field_custom_luxon'];
+                    $custom_plural_ru = $existing_data_ru['field_custom_plural'];
+                  }
                 }
               
                 $Countryname = isset($rendered_data['Countryname']) ? $rendered_data['Countryname'] : 'Unknown';
                 $rendered_data['name'] = 'Rest of the world';
                 $rendered_data['displayName'] = 'Rest of the world';
                 $rendered_data['languages'] = [
-                [
-                  'name' => 'English',
-                  'displayName' => 'English',
-                  'languageCode' => 'en',
-                  'locale' => $custom_locale_en,
-                  'luxonLocale' =>  $custom_luxon_en,
-                  'pluralShow' => $custom_plural_en,
-                ],
-                [
-                  'name' => 'Russian',
-                  'displayName' => 'Русский',
-                  'languageCode' => 'ru',
-                  'locale' => $custom_locale_ru,
-                  'luxonLocale' => $custom_luxon_ru,
-                  'pluralShow' =>  $custom_plural_ru,
-                ],
-              ];
+                  [
+                    'name' => 'English',
+                    'displayName' => 'English',
+                    'languageCode' => 'en',
+                    'locale' => $custom_locale_en,
+                    'luxonLocale' =>  $custom_luxon_en,
+                    'pluralShow' => $custom_plural_en,
+                  ],
+                  [
+                    'name' => 'Russian',
+                    'displayName' => 'Русский',
+                    'languageCode' => 'ru',
+                    'locale' => $custom_locale_ru,
+                    'luxonLocale' => $custom_luxon_ru,
+                    'pluralShow' =>  $custom_plural_ru,
+                  ],
+                ];
               unset($rendered_data['locale'] );
               unset($rendered_data['luxon_locale'] );
               unset($rendered_data['plural_show'] );
