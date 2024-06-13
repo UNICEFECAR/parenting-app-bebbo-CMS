@@ -295,6 +295,7 @@ class CustomSerializer extends Serializer {
                    'pluralShow' =>  $custom_plural_ru,
                  ],
                ];
+                unset($rendered_data['langcode'] );
                 unset($rendered_data['field_make_available_for_mobile'] );
                 unset($rendered_data['logo'] );
                 unset($rendered_data['field_country_national_partner'] );
@@ -360,7 +361,7 @@ class CustomSerializer extends Serializer {
                     ];
                   }
                 }
-
+                unset($rendered_data['langcode'] );
                 unset($rendered_data['field_make_available_for_mobile'] );
                 unset($rendered_data['logo'] );
                 unset($rendered_data['field_country_national_partner'] );
