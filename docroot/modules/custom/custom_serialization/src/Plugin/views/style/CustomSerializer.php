@@ -258,7 +258,7 @@ class CustomSerializer extends Serializer {
                 ->execute()
                 ->fetchAssoc();
 
-                $langcode_ru = 'en';
+                $langcode_ru = 'ru';
                 $language_ru = \Drupal::languageManager()->getLanguage($langcode_ru);
                 $original_language_ru = \Drupal::languageManager()->setConfigOverrideLanguage($language_ru);
                 $language_ru = ConfigurableLanguage::load($langcode_ru);
