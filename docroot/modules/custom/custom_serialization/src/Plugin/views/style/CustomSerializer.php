@@ -303,19 +303,19 @@ class CustomSerializer extends Serializer {
             }
 
             if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {              
-                $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
+                $langcodes = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
                 $groups = Group::load($rendered_data['CountryID']);
                 $master_languages = $groups->get('field_master_language')->getValue();
                 $country_languages = $groups->get('field_language')->getValue();                
                 $rendered_data['languages'] = [];
 
                 foreach ($country_languages as $val) {
-                  if (strpos($val['value'], '-') !== false) {
-                    $langcodes = explode("-", $val['value']);
-                    $langcode = $langcodes[1];
-                  } else {
+                  // if (strpos($val['value'], '-') !== false) {
+                  //   $langcodes = explode("-", $val['value']);
+                  //   $langcode = $langcodes[1];
+                  // } else {
                     $langcode = $val['value'];
-                  }
+                  // }
 
                   if($langcode) {
                     $language = \Drupal::languageManager()->getLanguage($langcode);
@@ -354,7 +354,7 @@ class CustomSerializer extends Serializer {
                     $rendered_data['languages'][] = [
                       'name' => $rendered_data['name'], // Adjust as necessary.
                       'displayName' => $rendered_data['display_name'], // Adjust as necessary.
-                      'languageCode' => $langcode,
+                      'languageCode' => $val['value'],
                       'locale' => $custom_locale_all,
                       'luxonLocale' => $custom_luxon_all,
                       'pluralShow' => $custom_plural_all,
@@ -366,6 +366,7 @@ class CustomSerializer extends Serializer {
                 unset($rendered_data['logo'] );
                 unset($rendered_data['field_country_national_partner'] );
                 unset($rendered_data['published'] );
+                unset($rendered_data['field_language'] );
             }
           }
 
