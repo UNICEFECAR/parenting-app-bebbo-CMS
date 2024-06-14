@@ -45,7 +45,7 @@ class CustomSerializer extends Serializer {
         "language", "related_milestone", "embedded_images",
       ];
       $media_fields = [
-        "cover_image", "country_flag", "country_sponsor_logo", "country_national_partner",
+        "cover_image", "country_flag", "country_sponsor_logo", "unicef_logo", "country_national_partner",
         "cover_video",
       ];
       $pinned_content = [
