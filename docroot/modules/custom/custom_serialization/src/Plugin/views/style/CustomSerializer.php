@@ -303,7 +303,7 @@ class CustomSerializer extends Serializer {
             }
 
             if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {              
-                $langcodes = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
+                $langcodes = $display_name = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
                 $groups = Group::load($rendered_data['CountryID']);
                 $master_languages = $groups->get('field_master_language')->getValue();
                 $country_languages = $groups->get('field_language')->getValue();                
@@ -324,14 +324,14 @@ class CustomSerializer extends Serializer {
                     if ($languages) {
                       // Retrieve the display name (label) of the language
                       if ($languages->label()) {
-                          $rendered_data['display_name'] = $languages->label();
+                          $display_name = $languages->label();
                       }
                       else {
-                        $rendered_data['display_name'] = $rendered_data['name'];
+                        $display_name = $rendered_data['name'];
                       }
                     } 
                     else {
-                      $rendered_data['display_name'] = $rendered_data['name'];
+                      $display_name = $rendered_data['name'];
                     }
 
                     // Fetch the existing data from the database.
@@ -353,7 +353,7 @@ class CustomSerializer extends Serializer {
                     // Add the language data to the array.
                     $rendered_data['languages'][] = [
                       'name' => $rendered_data['name'], // Adjust as necessary.
-                      'displayName' => $rendered_data['display_name'], // Adjust as necessary.
+                      'displayName' => $display_name, // Adjust as necessary.
                       'languageCode' => $val['value'],
                       'locale' => $custom_locale_all,
                       'luxonLocale' => $custom_luxon_all,
