@@ -109,3 +109,46 @@ function language_custom_field_custom_submit($form, &$form_state) {
     }
   }
 }
+
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function language_custom_field_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+
+  // Check if the node has a body field and a summary.
+  if (!empty($node->body) && !empty($node->body->summary)) {
+    // Get the summary from the body field.
+    $body_summary = $node->body->summary;
+
+    // Add the summary to the content array.
+    $variables['content']['body_summary'] = [
+      '#markup' => $body_summary,
+      '#allowed_tags' => \Drupal\Component\Utility\Xss::getHtmlTagList(),
+      '#prefix' => '<div class="node-summary">',
+      '#suffix' => '</div>',
+    ];
+  }
+}
+
+
+/**
+ * Implements hook_node_view().
+ */
+function language_custom_field_node_view(array &$build, \Drupal\node\NodeInterface $node, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  // Check if the node has a body field and a summary.
+  if ($node->hasField('body') && !$node->body->isEmpty()) {
+    $body_field = $node->get('body')->getValue();
+
+    if (!empty($body_field[0]['summary'])) {
+      // Add the summary to the content array.
+      $build['body_summary'] = [
+        '#markup' => $body_field[0]['summary'],
+        '#allowed_tags' => \Drupal\Component\Utility\Xss::getHtmlTagList(),
+        '#prefix' => '<div class="node-summary">',
+        '#suffix' => '</div>',
+      ];
+    }
+  }
+}
