@@ -1,18 +1,25 @@
 <?php
 
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\language\Entity\ConfigurableLanguage;
+/**
+ * @file
+ * To add custom field in language configuration form.
+ *
+ * @file
+ * @file
+ * .*/
 
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\NodeInterface;
 
-
+/**
+ * Hook form alter.
+ */
 function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
-  // Check if the form ID is language_admin_add_form or language_admin_edit_form.
+  // Check if the form ID is  language_admin_edit_form.
   if ($form_id == 'language_admin_edit_form') {
     // Add your custom field to the form.
-
     $langcode = '';
-    
     // If we are editing, we should have a langcode.
     if ($form_id == 'language_admin_edit_form' && isset($form['langcode']['#value'])) {
       $langcode = $form['langcode']['#value'];
@@ -27,116 +34,101 @@ function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
         ->execute()
         ->fetchAssoc();
     }
-    
-    $form['custom_locale'] = array(
+
+    $form['custom_locale'] = [
       '#type' => 'textfield',
       '#title' => t('locale'),
       '#description' => t('Enter locale data.'),
-      '#default_value' => isset($existing_data['custom_locale']) ? $existing_data['custom_locale'] : '',
-    );
-
-    $form['custom_luxon'] = array(
+      '#default_value' => $existing_data['custom_locale'] ?? '',
+    ];
+    $form['custom_luxon'] = [
       '#type' => 'textfield',
       '#title' => t('luxonLocale'),
       '#description' => t('Enter luxonLocale data.'),
-      '#default_value' => isset($existing_data['custom_luxon']) ? $existing_data['custom_luxon'] : '',
-    );
-
-    $form['custom_plural'] = array(
+      '#default_value' => $existing_data['custom_luxon'] ?? '',
+    ];
+    $form['custom_plural'] = [
       '#type' => 'textfield',
       '#title' => t('pluralShow'),
       '#description' => t('Enter pluralShow data.'),
-      '#default_value' => isset($existing_data['custom_plural']) ? $existing_data['custom_plural'] : '',
-    );
-
+      '#default_value' => $existing_data['custom_plural'] ?? '',
+    ];
     $form['actions']['submit']['#submit'][] = 'language_custom_field_custom_submit';
-
   }
 }
 
+/**
+ * Sumbit handler.
+ */
 function language_custom_field_custom_submit($form, &$form_state) {
   $field_custom_locale = $field_custom_luxon = $field_custom_plural = $langcode = '';
   // Get the value of the custom field.
-  if($form_state->getValue('custom_locale')){
+  if ($form_state->getValue('custom_locale')) {
     $field_custom_locale = $form_state->getValue('custom_locale');
   }
 
-  if($form_state->getValue('custom_luxon')){
+  if ($form_state->getValue('custom_luxon')) {
     $field_custom_luxon = $form_state->getValue('custom_luxon');
   }
 
-  if($form_state->getValue('custom_plural')){
+  if ($form_state->getValue('custom_plural')) {
     $field_custom_plural = $form_state->getValue('custom_plural');
   }
 
-  if($form_state->getValue('langcode')){
+  if ($form_state->getValue('langcode')) {
     $langcode = $form_state->getValue('langcode');
   }
- 
 
   $current_timestamp = time();
-
   if (!empty($langcode)) {
     // Check if a record already exists for this langcode.
-    $existing_record = \Drupal::database()->select('custom_language_data', 'cld')
-      ->fields('cld', ['langcode'])
-      ->condition('langcode', $langcode)
-      ->execute()
-      ->fetchField();
-
+    $existing_record = \Drupal::database()->select('custom_language_data', 'cld')->fields('cld', ['langcode'])->condition('langcode', $langcode)->execute()->fetchField();
     if ($existing_record) {
       // Update the existing record.
-      \Drupal::database()->update('custom_language_data')
-        ->fields([
-          'custom_locale' => $field_custom_locale,
-          'custom_luxon' => $field_custom_luxon,
-          'custom_plural' => $field_custom_plural,
-          'created_date' => $current_timestamp,
-        ])
-        ->condition('langcode', $langcode)
+      \Drupal::database()->update('custom_language_data')->fields([
+        'custom_locale' => $field_custom_locale,
+        'custom_luxon' => $field_custom_luxon,
+        'custom_plural' => $field_custom_plural,
+        'created_date' => $current_timestamp,
+      ])->condition('langcode', $langcode)
         ->execute();
-    } else {
+    }
+    else {
       // Insert a new record.
-      \Drupal::database()->insert('custom_language_data')
-        ->fields([
-          'langcode' => $langcode,
-          'custom_locale' => $field_custom_locale,
-          'custom_luxon' => $field_custom_luxon,
-          'custom_plural' => $field_custom_plural,
-          'created_date' => $current_timestamp,
-        ])
-        ->execute();
+      \Drupal::database()->insert('custom_language_data')->fields([
+        'langcode' => $langcode,
+        'custom_locale' => $field_custom_locale,
+        'custom_luxon' => $field_custom_luxon,
+        'custom_plural' => $field_custom_plural,
+        'created_date' => $current_timestamp,
+      ])->execute();
     }
   }
 }
-
 
 /**
  * Implements hook_preprocess_node().
  */
 function language_custom_field_preprocess_node(array &$variables) {
   $node = $variables['node'];
-
   // Check if the node has a body field and a summary.
   if (!empty($node->body) && !empty($node->body->summary)) {
     // Get the summary from the body field.
     $body_summary = $node->body->summary;
-
     // Add the summary to the content array.
     $variables['content']['body_summary'] = [
       '#markup' => $body_summary,
-      '#allowed_tags' => \Drupal\Component\Utility\Xss::getHtmlTagList(),
+      '#allowed_tags' => Xss::getHtmlTagList(),
       '#prefix' => '<div class="node-summary">',
       '#suffix' => '</div>',
     ];
   }
 }
 
-
 /**
  * Implements hook_node_view().
  */
-function language_custom_field_node_view(array &$build, \Drupal\node\NodeInterface $node, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function language_custom_field_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   // Check if the node has a body field and a summary.
   if ($node->hasField('body') && !$node->body->isEmpty()) {
     $body_field = $node->get('body')->getValue();
@@ -145,10 +137,13 @@ function language_custom_field_node_view(array &$build, \Drupal\node\NodeInterfa
       // Add the summary to the content array.
       $build['body_summary'] = [
         '#markup' => $body_field[0]['summary'],
-        '#allowed_tags' => \Drupal\Component\Utility\Xss::getHtmlTagList(),
+        '#allowed_tags' => Xss::getHtmlTagList(),
         '#prefix' => '<div class="node-summary">',
         '#suffix' => '</div>',
       ];
+
     }
+
   }
+
 }

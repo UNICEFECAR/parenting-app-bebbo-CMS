@@ -5,4 +5,4 @@ core_version_requirement: ^8 || ^9 || ^10
 package: Custom
 dependencies:
   - field:field
-  - field:field_ui
+  - field:field_ui 

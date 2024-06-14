@@ -1,0 +1,22 @@
+{# node--article.html.twig #}
+<article{{ attributes }}>
+  <header>
+    <h1>{{ label }}</h1>
+  </header>
+  <div{{ content_attributes }}>
+    {# Render the summary if available #}
+    {% if node.body.summary is not empty %}
+      <div class="node-summary">
+        {{ node.body.summary }}
+      </div>
+    {% else %}
+      <div class="node-summary">
+        {{ node.body.value|striptags|truncate(200, true) }}
+      </div>
+    {% endif %}
+    {# Render the full body content #}
+    <div class="node-body">
+      {{ content.body }}
+    </div>
+  </div>
+</article>
