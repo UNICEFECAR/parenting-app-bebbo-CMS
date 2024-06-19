@@ -43,6 +43,8 @@ function pb_custom_form_get_subcategory_options($category_id) {
     // Check if the term has field_category with the specified ID
     if ($term_entity->hasField('field_category') && !$term_entity->get('field_category')->isEmpty()) {
       $field_category = $term_entity->get('field_category')->getValue();
+      
+
       foreach ($field_category as $value) {
         if ($value['target_id'] == $category_id) {
           $matched_terms[] = $term->tid;
@@ -51,11 +53,13 @@ function pb_custom_form_get_subcategory_options($category_id) {
       }
     }
   }
+  
 
 
   if($matched_terms){
     // Initialize an empty array to store term IDs and names.
     $options = [];
+    $options = ['_none'=>'- None -'];
     $terms = \Drupal\taxonomy\Entity\Term::loadMultiple($matched_terms);
     foreach ($terms as $term_id => $term) {
       // Check if the term is loaded successfully.
@@ -66,9 +70,9 @@ function pb_custom_form_get_subcategory_options($category_id) {
     }
   }
 
-  if(empty($options)) {
-    $options = ['_none'=>'- None -'];
-  }
+  // if(empty($options)) {
+    
+  // }
   return $options;
 }
 
