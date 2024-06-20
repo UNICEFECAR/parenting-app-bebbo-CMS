@@ -145,7 +145,7 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     if ($selected_category) {
       $form['field_subcategory']['widget']['#options'] = pb_custom_form_get_subcategory_options($selected_category);
     } else {
-      $form['field_subcategory']['widget']['#options'] = ['_none' => t('- None -')];
+      $form['field_subcategory']['widget']['#options'] = ['_none' => t('- Select a value -')];
     }
 
     // // Add custom validation handler
