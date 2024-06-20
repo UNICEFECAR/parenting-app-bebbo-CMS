@@ -67,10 +67,6 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
-  # Redirect non-www to www
-  RewriteCond %{HTTP_HOST} ^babuni\.app [NC]
-  RewriteRule ^(.*)$ http://www.babuni.app/$1 [L,R=301]
-
   # RewriteCond %{HTTP_HOST} !prod\.acquia-sites\.com
   # RewriteCond %{HTTP_HOST} !^www\. [NC]
   # RewriteRule ^ http%{ENV:protossl}://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
