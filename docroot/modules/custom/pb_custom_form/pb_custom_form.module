@@ -32,7 +32,7 @@ function pb_custom_form_dynamic_category_ajax_callback(array &$form, \Drupal\Cor
 function pb_custom_form_get_subcategory_options($category_id) {
   // This is a placeholder function; replace with actual logic.
   $options = [];
-  $options = ['_none'=>'- None -'];
+  $options = ['_none'=>'- Select a value -'];
 
   $vid = 'subcategory'; // Replace with your vocabulary machine name
   $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
