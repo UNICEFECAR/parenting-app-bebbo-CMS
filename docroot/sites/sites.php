@@ -57,3 +57,5 @@
  */
 $sites['babuni.app'] = 'bangladesh';
 $sites['bangla.bebbo.app'] = 'bangladesh';
+$sites['tr.bebbo.app'] = 'turkey';
+$sites['ec.bebbo.app'] = 'ecuador';
