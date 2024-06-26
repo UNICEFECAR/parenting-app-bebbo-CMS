@@ -1,0 +1,18 @@
+label: 'Najnovší obsah'
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      title: 'Najnovší obsah'
+      exposed_form:
+        options:
+          submit_button: Použiť
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      empty:
+        area_text_custom:
+          content: 'Žiaden obsah nie je dostupný.'
+      use_more_text: Viac
+  block_1:
+    display_title: Blok

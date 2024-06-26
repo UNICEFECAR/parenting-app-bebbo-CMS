@@ -1,0 +1,33 @@
+description: 'Mesaje recente din jurnal'
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: 'Mesaje recente din jurnal'
+      fields:
+        nothing:
+          admin_label: Pictogramă
+        severity:
+          label: Gravitate
+        type:
+          label: Tip
+        timestamp:
+          label: Data
+        message:
+          label: Mesaj
+        link:
+          label: Operațiuni
+      exposed_form:
+        options:
+          submit_button: Filtru
+      empty:
+        area:
+          admin_label: 'Nu este disponibil niciun mesaj log.'
+          content: 'Nu este disponibil niciun mesaj log.'
+      filters:
+        type:
+          expose:
+            label: Tip
+        severity:
+          expose:
+            label: Gravitate

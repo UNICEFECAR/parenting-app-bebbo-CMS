@@ -1,0 +1,9 @@
+_core:
+  default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
+ignored_config_entities:
+  - smtp.settings
+  - tmgmt.translator.memsource
+  - google_analytics.settings
+  - mobile_app_links.ios
+  - mobile_app_links.android
+  - pb_custom_form.mobile_app_share_link_form

@@ -1,0 +1,14 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Стан
+        type:
+          label: Тип
+        operations:
+          label: Операції
+      filters:
+        state:
+          group_info:
+            label: Стан

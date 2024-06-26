@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        dropbutton:
+          label: Операције
+      filters:
+        type:
+          expose:
+            label: Tип

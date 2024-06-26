@@ -1,0 +1,17 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Статус
+        type:
+          label: Tип
+        operations:
+          label: Операције
+      filters:
+        state:
+          group_info:
+            label: Статус
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -1,0 +1,8 @@
+uuid: d37c661c-c8fd-4081-9887-09d1b64dd7e2
+langcode: en
+status: true
+dependencies: {  }
+name: Subcategory
+vid: subcategory
+description: 'Thematic subcategories related to all articles'
+weight: 0

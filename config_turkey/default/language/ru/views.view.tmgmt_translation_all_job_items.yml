@@ -1,0 +1,20 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Состояние
+        type:
+          label: Тип
+        operations:
+          label: Операции
+      filters:
+        state:
+          group_info:
+            label: Состояние
+        source_language:
+          expose:
+            label: 'Исходный язык'
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -1,0 +1,42 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Филтрирај
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: Операције
+  closed:
+    display_options:
+      fields:
+        created:
+          label: Направљено
+        operations:
+          label: Операције
+  completed:
+    display_options:
+      fields:
+        created:
+          label: Направљено
+        operations:
+          label: Операције
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Операције
+  rejected:
+    display_options:
+      fields:
+        created:
+          label: Направљено
+        operations:
+          label: Операције
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Операције

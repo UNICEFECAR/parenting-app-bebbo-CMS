@@ -1,0 +1,18 @@
+uuid: dbe051e0-86e2-4a97-b004-31f10c9ea6d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.milestone
+id: node.milestone.created
+field_name: created
+entity_type: node
+bundle: milestone
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

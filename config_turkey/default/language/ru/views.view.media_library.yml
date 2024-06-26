@@ -1,0 +1,26 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: Мультимедиа
+      filters:
+        name:
+          expose:
+            label: Название
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Название
+  widget_table:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Миниатюра
+        name:
+          label: Название
+      filters:
+        name:
+          expose:
+            label: Название

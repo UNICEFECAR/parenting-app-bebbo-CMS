@@ -1,0 +1,18 @@
+label: Содержимое
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: Содержимое
+      fields:
+        operations:
+          label: Операции
+      exposed_form:
+        options:
+          submit_button: Фильтр
+  page_1:
+    display_options:
+      menu:
+        title: Содержимое
+      tab_options:
+        title: Содержимое

@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Tип
+        operations:
+          label: Операције
+      filters:
+        type:
+          expose:
+            label: Tип
