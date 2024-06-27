@@ -1,0 +1,18 @@
+uuid: c1a1d754-1acd-4254-b700-574085e5b5ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-milestone
+id: group_content.country-group_node-milestone.created
+field_name: created
+entity_type: group_content
+bundle: country-group_node-milestone
+label: 'Created on'
+description: 'The time that the group content was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

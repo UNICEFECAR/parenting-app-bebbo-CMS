@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Status
+        type:
+          label: Tip
+        operations:
+          label: Operațiuni
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Tip

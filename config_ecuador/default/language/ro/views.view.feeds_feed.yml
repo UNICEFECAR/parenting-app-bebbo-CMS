@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Tip
+        operations:
+          label: Operațiuni
+      filters:
+        type:
+          expose:
+            label: Tip

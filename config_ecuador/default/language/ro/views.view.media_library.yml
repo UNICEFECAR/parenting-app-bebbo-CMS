@@ -1,0 +1,23 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Nume
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Nume
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: Nume
+      filters:
+        name:
+          expose:
+            label: Nume

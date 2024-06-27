@@ -1,0 +1,41 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtri
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  eligible:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  my_tasks:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet

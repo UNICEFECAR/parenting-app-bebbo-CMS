@@ -1,0 +1,74 @@
+uuid: 2ad6a915-49b4-4d33-86f7-5b76bdcbcbf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.activity_category.name
+    - taxonomy.vocabulary.activity_category
+  module:
+    - taxonomy
+label: 'Taxonomy - Domain'
+id: taxonomy_domain
+description: 'Taxonomy - Domain'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: activity_category
+  langcode: en
+  insert_new: 1
+  update_existing: 0
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+    type: csv
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+    type: csv
+  language_code:
+    value: Language_code
+    label: Language_code
+    machine_name: language_code
+    type: csv
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    settings: {  }
+    unique:
+      value: '1'
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: langcode
+    map:
+      value: language_code
+    settings:
+      language: null

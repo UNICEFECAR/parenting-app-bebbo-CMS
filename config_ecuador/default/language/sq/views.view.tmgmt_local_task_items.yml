@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        item_type:
+          label: Lloji
+        operations:
+          label: Operacionet

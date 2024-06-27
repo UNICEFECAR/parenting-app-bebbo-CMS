@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Tip
+        operations:
+          label: Operațiuni
+      exposed_form:
+        options:
+          submit_button: Filtru
+      filters:
+        bundle:
+          expose:
+            label: Tip

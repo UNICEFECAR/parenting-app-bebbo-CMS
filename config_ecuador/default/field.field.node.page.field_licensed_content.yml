@@ -1,0 +1,28 @@
+uuid: a2b94c2a-cf19-4428-a5d6-cd1d0da0374f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.page
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.page.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: page
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

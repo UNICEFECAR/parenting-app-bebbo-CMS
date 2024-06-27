@@ -1,0 +1,62 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Фильтр
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+      filters:
+        source_language:
+          expose:
+            label: 'Исходный язык'
+  closed:
+    display_options:
+      fields:
+        created:
+          label: Создано
+        operations:
+          label: Операции
+      filters:
+        source_language:
+          expose:
+            label: 'Исходный язык'
+  completed:
+    display_options:
+      fields:
+        created:
+          label: Создано
+        operations:
+          label: Операции
+      filters:
+        source_language:
+          expose:
+            label: 'Исходный язык'
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+      filters:
+        source_language:
+          expose:
+            label: 'Исходный язык'
+  rejected:
+    display_options:
+      fields:
+        created:
+          label: Создано
+        operations:
+          label: Операции
+      filters:
+        source_language:
+          expose:
+            label: 'Исходный язык'
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Операции

@@ -1,0 +1,10 @@
+display:
+  default:
+    display_title: Базово
+    display_options:
+      fields:
+        filename:
+          label: "Назва (ім'я)"
+      exposed_form:
+        options:
+          submit_button: Фільтр

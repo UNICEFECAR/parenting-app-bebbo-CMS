@@ -1,0 +1,18 @@
+label: Садржај
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: Садржај
+      fields:
+        operations:
+          label: Операције
+      exposed_form:
+        options:
+          submit_button: Филтрирај
+  page_1:
+    display_options:
+      menu:
+        title: Садржај
+      tab_options:
+        title: Садржај

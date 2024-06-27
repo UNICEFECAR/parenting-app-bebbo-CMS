@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Стан
+        type:
+          label: Тип
+        operations:
+          label: Операції
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Тип

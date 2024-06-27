@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        filename:
+          label: Название
+        filemime:
+          label: MIME-тип
+      exposed_form:
+        options:
+          submit_button: Фильтр
+      filters:
+        filemime:
+          expose:
+            label: MIME-тип

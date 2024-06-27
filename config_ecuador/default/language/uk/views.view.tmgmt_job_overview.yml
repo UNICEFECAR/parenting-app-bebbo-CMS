@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Стан
+        operations:
+          label: Операції
+      filters:
+        state:
+          expose:
+            label: Стан

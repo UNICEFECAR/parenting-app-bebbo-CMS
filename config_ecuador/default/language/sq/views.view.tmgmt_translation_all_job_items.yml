@@ -1,0 +1,11 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Lloji
+        operations:
+          label: Operacionet
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

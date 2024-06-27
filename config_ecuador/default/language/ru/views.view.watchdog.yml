@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        type:
+          label: Тип
+        link:
+          label: Операции
+      exposed_form:
+        options:
+          submit_button: Фильтр
+      filters:
+        type:
+          expose:
+            label: Тип

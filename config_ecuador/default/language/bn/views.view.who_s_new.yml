@@ -1,0 +1,11 @@
+label: 'নতুন সদস্য'
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: 'নতুন সদস্য'
+  block_1:
+    display_title: 'নতুন সদস্য'
+    display_options:
+      block_description: 'নতুন সদস্য'
+      block_category: ব্যবহারকারী
