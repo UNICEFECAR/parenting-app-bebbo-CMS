@@ -695,7 +695,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 .menu .menu-item .active {
   color: #4fa9dd;
 }
-.menu .menu-item .is-active {
+.region-header .menu .menu-item .is-active {
   color: #4fa9dd !important;
 }
 #features,
