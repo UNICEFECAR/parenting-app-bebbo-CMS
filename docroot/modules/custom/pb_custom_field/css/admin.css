@@ -601,6 +601,9 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   text-align: center;
   margin-bottom: 30px;
 }
+.layout--twocol-section {
+  display: flex;
+}
 .layout--twocol-section--50-50 img {
   width: 75px;
   margin-left: 13px;
