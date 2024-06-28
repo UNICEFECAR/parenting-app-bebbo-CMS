@@ -689,7 +689,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 .layout.layout--onecol {
   margin-top: 100px;
 }
-.menu .menu-item a:hover {
+.region-header .menu .menu-item a:hover {
   color: #4fa9dd;
 }
 .menu .menu-item .active {
@@ -855,7 +855,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       margin: auto;
       justify-content: center;
   }
-  .menu .menu-item a:hover {
+  .region-header .menu .menu-item a:hover {
    color: inherit;
   }
 
