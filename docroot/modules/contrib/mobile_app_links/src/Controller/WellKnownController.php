@@ -32,34 +32,46 @@ class WellKnownController extends ControllerBase {
 
     $body = [];
     $android_packages = $config->get('android_packages');
+
     if (!empty($android_packages)) {
       foreach ($android_packages as $android_package) {
-           $target = ['namespace'=>'android_app','package_name'=>$android_packages,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
-           $relation = ['delegate_permission/common.handle_all_urls'];
-           $item[] = [
-             'relation'=>$relation,
-             'target'=>$target,
-             ];
-
-        $body[] = $item;
+          if (is_array($android_package)) {
+              $target = [
+                  'namespace' => 'android_app',
+                  'package_name' => $android_package['package_name'], // Ensure this is just a string
+                  'sha256_cert_fingerprints' => explode(PHP_EOL, $android_package['sha256_cert_fingerprints']), // This is now an array
+              ];
+              $relation = ['delegate_permission/common.handle_all_urls'];
+              $body[] = [
+                  'relation' => $relation,
+                  'target' => $target,
+              ];
+          }
       }
     }
+
     /* Kosovo Details */
     $kosovo_package_name = $config->get('kosovo_package_name');
     if (empty($kosovo_package_name)) {
-      throw new CacheableNotFoundHttpException($cacheMeta);
+        throw new CacheableNotFoundHttpException($cacheMeta);
     }
-    $kosovo_target = ['namespace'=>'android_app','package_name'=>$kosovo_package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),];
+    $kosovo_target = [
+        'namespace' => 'android_app',
+        'package_name' => $kosovo_package_name,
+        'sha256_cert_fingerprints' => explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),
+    ];
     $kosovo_relation = ['delegate_permission/common.handle_all_urls'];
     $body[] = [
-      'relation'=>$kosovo_relation,
-      'target'=>$kosovo_target,
+        'relation' => $kosovo_relation,
+        'target' => $kosovo_target,
     ];
- 
+
     $response = new CacheableJsonResponse(json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 200, [], TRUE);
     $response->addCacheableDependency($cacheMeta);
     return $response;
-  }
+ }
+
+
 
   /**
    * Page callback for apple-developer-merchantid-domain-association.txt file.
