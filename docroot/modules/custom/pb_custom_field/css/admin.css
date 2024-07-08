@@ -583,6 +583,11 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   width: 120px;
   margin: auto;
 }
+
+.homepageblock3 .featured-bb-image {
+  width: 185px !important;
+  margin: auto;
+}
 .head-text {
   font-size: 24px;
   text-align: center;
