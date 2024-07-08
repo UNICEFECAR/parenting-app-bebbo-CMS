@@ -21,7 +21,6 @@ class CustomArticleUpdate extends DrushCommands {
     // Fetch all article nodes.
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'article')
-      ->condition('nid', '6221')
       ->accessCheck(FALSE)
       ->execute();
 
