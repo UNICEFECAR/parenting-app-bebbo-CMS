@@ -1,0 +1,5 @@
+services:
+  custom_article.copy_vde_csv:
+    class: \Drupal\custom_article\Commands\CustomArticleUpdate
+    tags:
+      - { name: drush.command }
