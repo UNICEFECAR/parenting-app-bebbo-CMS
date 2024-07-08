@@ -22,6 +22,7 @@ class CustomArticleUpdate extends DrushCommands {
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'article')
       ->accessCheck(FALSE)
+      ->sort('created', 'ASC') 
       ->execute();
 
     $nodes = Node::loadMultiple($nids);
