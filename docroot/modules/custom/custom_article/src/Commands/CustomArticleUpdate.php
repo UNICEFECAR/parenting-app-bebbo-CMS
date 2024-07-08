@@ -21,6 +21,7 @@ class CustomArticleUpdate extends DrushCommands {
     // Fetch all article nodes.
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'article')
+      ->condition('nid', 61881, '>')
       ->accessCheck(FALSE)
       ->sort('created', 'ASC') 
       ->execute();
@@ -32,9 +33,9 @@ class CustomArticleUpdate extends DrushCommands {
       $this->output()->writeln('Processing node ID: ' . $node->id());
 
       if ($node->hasField($source_field) && $node->hasField($target_field)) {
-        $source_value = $node->get($source_field)->value;
+        $source_value = $node->getTranslation('en')->get($source_field)->value;
         $target_value = !$source_value;
-        $node->set($target_field, $target_value);
+        $node->getTranslation('en')->set($target_field, $target_value);
         $node->save();
       }
     }
