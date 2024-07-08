@@ -19,12 +19,18 @@ class CustomArticleUpdate extends DrushCommands {
     $target_field = 'field_do_not_feature';
 
     // Fetch all article nodes.
-    $nids = \Drupal::entityQuery('node')
-      ->condition('type', 'article')
-      ->condition('nid', 61881, '>')
-      ->accessCheck(FALSE)
-      ->sort('created', 'ASC') 
+    $query = \Drupal::database()->select('node_field_data', 'nfd')
+      ->fields('nfd', ['nid'])
+      ->condition('nfd.type', 'article')
+      ->condition('nfd.langcode', 'en', '=')
       ->execute();
+
+    $nids = $query->fetchCol();
+
+    if (empty($nids)) {
+      $this->logger()->warning('No articles found with NID greater than 61881.');
+      return;
+    }
 
     $nodes = Node::loadMultiple($nids);
 
@@ -33,14 +39,14 @@ class CustomArticleUpdate extends DrushCommands {
       $this->output()->writeln('Processing node ID: ' . $node->id());
 
       if ($node->hasField($source_field) && $node->hasField($target_field)) {
-        $source_value = $node->getTranslation('en')->get($source_field)->value;
+        $source_value = $node->get($source_field)->value;
         $target_value = !$source_value;
-        $node->getTranslation('en')->set($target_field, $target_value);
+        $node->set($target_field, $target_value);
         $node->save();
       }
     }
 
-    $this->logger()->success(dt('Updated @count articles.', ['@count' => count($nodes)]));
+    $this->logger()->success('Updated ' . count($nodes) . ' articles.');
   }
 
 }
