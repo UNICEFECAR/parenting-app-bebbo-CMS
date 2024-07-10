@@ -503,6 +503,7 @@ class CustomSerializer extends Serializer {
   public function customMediaFormatter($key, $values, $language_code) {
 
     if (!empty($values)) {
+      $url = $mname = $malt = '';
       $media_data = [];
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
