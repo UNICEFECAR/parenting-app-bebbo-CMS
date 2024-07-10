@@ -52,7 +52,7 @@ class CustomSerializer extends Serializer {
         "vaccinations", "child_growth", "health_check_ups", "child_development",
       ];
       $string_to_int = [
-        "id", "category", "child_gender", "parent_gender", "licensed", "premature",
+        "id", "category","subcategory","child_gender", "parent_gender", "licensed", "premature",
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
@@ -503,6 +503,7 @@ class CustomSerializer extends Serializer {
   public function customMediaFormatter($key, $values, $language_code) {
 
     if (!empty($values)) {
+      $media_data = [];
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
       $base_url = \Drupal::request()->getSchemeAndHttpHost();
