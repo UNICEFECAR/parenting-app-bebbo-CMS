@@ -82,7 +82,7 @@ class CustomSerializer extends Serializer {
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
           //custom country listing
-          if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 131) {
+          if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 131) {
             continue;
           }
           /* error_log("type =>".$rendered_data['type']); */
@@ -222,7 +222,7 @@ class CustomSerializer extends Serializer {
             }
 
            
-            if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
+            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
               $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = ''; 
               $Countryname = isset($rendered_data['Countryname']) ? $rendered_data['Countryname'] : 'Unknown';
 
@@ -302,7 +302,7 @@ class CustomSerializer extends Serializer {
                 unset($rendered_data['published'] );
             }
 
-            if (strpos($request_uri, "country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {              
+            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {              
                 $langcodes = $display_name = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
                 $groups = Group::load($rendered_data['CountryID']);
                 $master_languages = $groups->get('field_master_language')->getValue();
