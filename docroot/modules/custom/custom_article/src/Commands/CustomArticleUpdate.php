@@ -22,7 +22,10 @@ class CustomArticleUpdate extends DrushCommands {
     $query = \Drupal::database()->select('node_field_data', 'nfd')
       ->fields('nfd', ['nid'])
       ->condition('nfd.type', 'article')
-      ->condition('nfd.langcode', 'en', '=')
+      ->condition('nfd.default_langcode', 1, '=')
+      ->condition('nfd.langcode', 'en', '<>')
+      ->orderBy('nfd.nid', 'ASC')
+      ->range(0, 2)
       ->execute();
 
     $nids = $query->fetchCol();
