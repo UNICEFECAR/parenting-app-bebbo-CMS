@@ -38,7 +38,13 @@ class CustomSerializer extends Serializer {
     $request_path = \Drupal::request()->getSchemeAndHttpHost();
 
     /* Validating request params to response error code. */
-    $validate_params_res = $this->checkRequestParams($request_uri);
+    if (strpos($request_uri, "api/country-groups") !== FALSE) {
+      $validate_params_res = '';
+    }
+    else {
+      $validate_params_res = $this->checkRequestParams($request_uri);
+    }
+   
     if (empty($validate_params_res)) {
       $array_of_multiple_values = [
         "child_age", "keywords", "related_articles", "related_video_articles", "related_activities",
@@ -301,7 +307,6 @@ class CustomSerializer extends Serializer {
                 unset($rendered_data['field_country_national_partner'] );
                 unset($rendered_data['published'] );
             }
-
             if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {              
                 $langcodes = $display_name = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
                 $groups = Group::load($rendered_data['CountryID']);
