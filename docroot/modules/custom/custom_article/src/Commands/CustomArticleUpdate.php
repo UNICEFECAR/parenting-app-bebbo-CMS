@@ -24,8 +24,8 @@ class CustomArticleUpdate extends DrushCommands {
       ->condition('nfd.type', 'article')
       ->condition('nfd.default_langcode', 1, '=')
       ->condition('nfd.langcode', 'en', '<>')
+      ->condition('nfd.status', 1, '=')
       ->orderBy('nfd.nid', 'ASC')
-      ->range(0, 2)
       ->execute();
 
     $nids = $query->fetchCol();
