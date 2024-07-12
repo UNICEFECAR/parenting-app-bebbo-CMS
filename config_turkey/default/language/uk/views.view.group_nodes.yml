@@ -2,6 +2,12 @@ display:
   default:
     display_options:
       fields:
+        title:
+          label: Заголовок
+        type:
+          label: 'Тип матеріалів'
+        status:
+          label: Стан
         dropbutton:
           label: Операції
       filters:

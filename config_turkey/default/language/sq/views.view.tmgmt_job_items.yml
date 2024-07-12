@@ -1,11 +1,20 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         type:
           label: Lloji
+        tags_count:
+          label: Tags
         operations:
-          label: Operacionet
+          label: Operations
+      arguments:
+        tjid:
+          exception:
+            title: All
   checkout:
     display_options:
       fields:

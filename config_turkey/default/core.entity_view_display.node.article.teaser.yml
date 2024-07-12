@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.article.field_child_gender
     - field.field.node.article.field_content_category
     - field.field.node.article.field_cover_image
+    - field.field.node.article.field_do_not_feature
     - field.field.node.article.field_generic_content
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
@@ -55,6 +56,7 @@ hidden:
   field_child_gender: true
   field_content_category: true
   field_cover_image: true
+  field_do_not_feature: true
   field_generic_content: true
   field_keywords: true
   field_licensed_content: true

@@ -20,6 +20,7 @@ display:
       fields:
         title:
           label: التسمية
+          separator: ', '
         item_count:
           label: أخبار
       filters:
@@ -33,10 +34,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -57,10 +61,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -81,10 +88,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -103,10 +113,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -123,12 +136,16 @@ display:
       fields:
         status:
           label: الحالة
+          separator: ', '
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -149,10 +166,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:
@@ -171,10 +191,13 @@ display:
           label: الحالة
         title:
           label: التسمية
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
         operations:

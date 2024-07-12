@@ -25,6 +25,7 @@ display:
           label: 'Toplu güncelleme'
         title:
           label: Başlık
+          separator: ', '
         item_count:
           label: Öğeler
   assigned:
@@ -37,14 +38,22 @@ display:
           label: 'Toplu güncelleme'
         status:
           label: Durum
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -67,16 +76,25 @@ display:
           label: 'Toplu güncelleme'
         status:
           label: Durum
+          separator: ', '
         created:
           label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -99,16 +117,25 @@ display:
           label: 'Toplu güncelleme'
         status:
           label: Durum
+          separator: ', '
         created:
           label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -131,14 +158,21 @@ display:
           label: 'Toplu güncelleme'
         status:
           label: Durum
+        tuid:
+          separator: ', '
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -163,14 +197,22 @@ display:
           label: Durum
         created:
           label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -192,11 +234,16 @@ display:
           label: Durum
         title:
           label: Başlık
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
+        loop_count:
+          separator: ', '
         operations:
           label: İşlemler

@@ -3,7 +3,7 @@ langcode: tr
 status: true
 dependencies: {  }
 id: tr
-label: 'Türkiye - Turkish'
+label: Türkçe
 direction: ltr
 weight: 8
 locked: false

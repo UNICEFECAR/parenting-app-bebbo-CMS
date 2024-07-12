@@ -32,6 +32,7 @@ dependencies:
     - field.storage.node.field_related_video_articles
     - field.storage.node.field_seasons
     - field.storage.node.field_standard_deviation
+    - field.storage.node.field_subcategory
     - field.storage.node.field_survey_link
     - field.storage.node.field_type
     - field.storage.node.field_type_of_support
@@ -14470,6 +14471,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      title: 'Deleted API'
       fields:
         nid:
           id: nid
@@ -14948,6 +14950,68 @@ display:
           id: field_content_category
           table: node__field_content_category
           field: field_content_category
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_entity_id
+          settings: {  }
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_subcategory:
+          id: field_subcategory
+          table: node__field_subcategory
+          field: field_subcategory
           relationship: none
           group_type: group
           admin_label: ''
@@ -15971,6 +16035,9 @@ display:
             field_content_category:
               alias: category
               raw_output: false
+            field_subcategory:
+              alias: subcategory
+              raw_output: false
             field_child_age:
               alias: child_age
               raw_output: false
@@ -16012,6 +16079,7 @@ display:
       defaults:
         access: false
         query: false
+        title: false
         group_by: false
         relationships: false
         fields: false
@@ -16046,6 +16114,7 @@ display:
         - 'config:field.storage.node.field_premature_content'
         - 'config:field.storage.node.field_related_articles'
         - 'config:field.storage.node.field_related_video_articles'
+        - 'config:field.storage.node.field_subcategory'
   rest_export_20:
     id: rest_export_20
     display_title: 'Milestone Related Content API'

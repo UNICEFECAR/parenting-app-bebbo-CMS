@@ -2,22 +2,50 @@ display:
   default:
     display_title: Default
     display_options:
+      fields:
+        media_bulk_form:
+          action_title: Action
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         name:
           expose:
-            label: Emri
+            label: Name
+        langcode:
+          expose:
+            label: Language
+  page:
+    display_options:
+      fields:
+        media_bulk_form:
+          action_title: Action
+        edit_media:
+          text: Edit
+        delete_media:
+          text: Delete
   widget:
     display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:
-            label: Emri
+            label: Name
   widget_table:
     display_options:
       fields:
         name:
-          label: Emri
+          label: Name
+        uid:
+          label: Author
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:
-            label: Emri
+            label: Name

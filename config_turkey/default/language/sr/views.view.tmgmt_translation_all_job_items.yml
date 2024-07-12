@@ -1,17 +1,22 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
       fields:
         state:
-          label: Статус
+          label: State
+        label:
+          label: Label
         type:
           label: Tип
         operations:
-          label: Операције
+          label: Operations
       filters:
         state:
           group_info:
-            label: Статус
+            label: State
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

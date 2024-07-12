@@ -3,39 +3,102 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filtri
+          submit_button: Filter
+          reset_button_label: Reset
+      filters:
+        status:
+          expose:
+            label: Status
   closed:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+      menu:
+        title: Closed
   completed:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
   eligible:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
   my_tasks:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
   pending:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
   rejected:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
   unassigned:
     display_options:
       fields:
+        status:
+          label: Status
+        target_language:
+          label: To
         operations:
-          label: Operacionet
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status

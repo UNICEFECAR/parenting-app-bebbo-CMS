@@ -118,6 +118,12 @@ type_settings:
         - published
       to: draft
       weight: -1
+    published_to_published:
+      label: 'Published to Published'
+      from:
+        - published
+      to: published
+      weight: 26
     published_to_review_after_translation:
       label: 'Published to Review_after_translation'
       from:

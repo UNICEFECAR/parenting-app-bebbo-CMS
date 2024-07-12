@@ -4,13 +4,50 @@ display:
     display_options:
       fields:
         filename:
-          label: Название
+          label: Name
+          separator: ', '
         filemime:
           label: MIME-тип
+        status:
+          label: Status
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       exposed_form:
         options:
-          submit_button: Фильтр
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       filters:
         filemime:
           expose:
             label: MIME-тип
+        status:
+          expose:
+            label: Status
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Тип сущности'
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      arguments:
+        fid:
+          exception:
+            title: All

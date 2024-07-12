@@ -3,6 +3,12 @@ display:
     display_title: Varsayılan
     display_options:
       fields:
+        info:
+          label: 'Blok açıklaması'
+          separator: ', '
+        type:
+          label: 'Blok tipi'
+          separator: ', '
         changed:
           label: Güncellendi
         operations:
@@ -23,5 +29,15 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      filters:
+        info:
+          expose:
+            label: 'Blok açıklaması'
+        type:
+          expose:
+            label: 'Blok tipi'
   page_1:
     display_title: Sayfa
+    display_options:
+      menu:
+        title: Bloklar

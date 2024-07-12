@@ -22,12 +22,18 @@ display:
       fields:
         title:
           label: العنوان
+          separator: ', '
         type:
           label: النوع
+          separator: ', '
         name:
           label: المؤلف
+          separator: ', '
         changed:
           label: التحديث
+          separator: ', '
+        imported:
+          separator: ', '
         operations:
           label: عمليات
       filters:

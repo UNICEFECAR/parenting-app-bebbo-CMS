@@ -49,7 +49,7 @@ content:
     third_party_settings: {  }
   field_child_age:
     type: options_select
-    weight: 12
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -139,7 +139,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

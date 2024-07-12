@@ -1,16 +1,20 @@
 label: 'Uzly skupiny'
 display:
   default:
+    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Použiť
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
       pager:
         options:
           tags:
+            previous: ‹‹
+            next: ››
             first: '« Prvý'
             last: Koniec
           expose:
@@ -20,15 +24,19 @@ display:
       fields:
         title:
           label: Názov
+          separator: ', '
         type:
           label: 'Typ obsahu'
+          separator: ', '
         status:
           label: Stav
           settings:
             format_custom_true: Zverejnené
             format_custom_false: Nezverejnené
+          separator: ', '
         changed:
           label: Aktualizované
+          separator: ', '
         delete_node:
           text: 'Vymazať uzol'
         dropbutton:

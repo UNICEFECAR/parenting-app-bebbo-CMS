@@ -25,6 +25,7 @@ display:
           label: 'Toplu güncelleme'
         title:
           label: Etiket
+          separator: ', '
         item_count:
           label: Öğeler
       filters:
@@ -40,10 +41,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -69,10 +73,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -98,10 +105,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -125,10 +135,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -150,12 +163,16 @@ display:
           label: 'Toplu güncelleme'
         status:
           label: Durum
+          separator: ', '
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -181,10 +198,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:
@@ -210,10 +230,13 @@ display:
           label: Durum
         title:
           label: Etiket
+          separator: ', '
         source_language:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         item_count:
           label: Öğeler
         operations:

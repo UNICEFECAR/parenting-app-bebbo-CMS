@@ -357,8 +357,7 @@ display:
         options:
           perm: 'access content overview'
       cache:
-        type: none
-        options: {  }
+        type: tag
       empty:
         area_text_custom:
           id: area_text_custom
@@ -1053,7 +1052,7 @@ display:
           clear_on_exposed: true
           force_selection_info: false
           selected_actions:
-            6:
+            9:
               action_id: pb_custom_field_assign_action
               preconfiguration:
                 add_confirmation: false
@@ -1865,38 +1864,34 @@ display:
           plugin_id: language
           operator: in
           value:
+            all: all
             '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
             '***LANGUAGE_language_interface***': '***LANGUAGE_language_interface***'
             en: en
+            sr: sr
             ru: ru
+            rs-sr: rs-sr
             sq: sq
             al-sq: al-sq
             by-be: by-be
             by-ru: by-ru
             bg-bg: bg-bg
+            gr-arb: gr-arb
             gr-el: gr-el
+            gr-fa: gr-fa
             xk-sq: xk-sq
             xk-rs: xk-rs
             kg-ky: kg-ky
             kg-ru: kg-ru
-            md-ro: md-ro
             me-cnr: me-cnr
             mk-sq: mk-sq
             mk-mk: mk-mk
-            ro: ro
-            ro-ro: ro-ro
-            sr: sr
             rs-en: rs-en
-            rs-sr: rs-sr
-            sk: sk
             tj-ru: tj-ru
             tj-tg: tj-tg
-            tr: tr
-            uk: uk
             uz-ru: uz-ru
             uz-uz: uz-uz
-            gr-arb: gr-arb
-            gr-fa: gr-fa
+            uk: uk
             und: und
             zxx: zxx
           group: 1

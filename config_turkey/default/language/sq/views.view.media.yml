@@ -5,12 +5,20 @@ display:
       fields:
         bundle:
           label: Lloji
+        uid:
+          label: Author
+        status:
+          label: Status
         operations:
-          label: Operacionet
+          label: Operations
       exposed_form:
         options:
-          submit_button: Filtri
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         bundle:
           expose:
             label: Lloji
+        langcode:
+          expose:
+            label: Language

@@ -4,4 +4,7 @@ display:
     display_options:
       fields:
         operations:
-          label: Операције
+          label: Operations
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'

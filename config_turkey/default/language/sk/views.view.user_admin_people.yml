@@ -23,6 +23,8 @@ display:
           label: 'Posledný prístup'
         operations:
           label: Operácie
+        mail:
+          separator: ', '
       pager:
         options:
           tags:
@@ -37,6 +39,7 @@ display:
       exposed_form:
         options:
           submit_button: Filter
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne

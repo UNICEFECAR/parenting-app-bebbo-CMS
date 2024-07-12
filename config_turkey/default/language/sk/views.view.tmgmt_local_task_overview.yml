@@ -1,9 +1,11 @@
 display:
   default:
+    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Filter
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -24,6 +26,7 @@ display:
           action_title: 'S výberom'
         title:
           label: Označenie
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -42,10 +45,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -74,10 +80,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -106,10 +115,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -136,10 +148,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -164,12 +179,16 @@ display:
           action_title: 'S výberom'
         status:
           label: Stav
+          separator: ', '
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -198,10 +217,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:
@@ -228,10 +250,13 @@ display:
           label: Stav
         title:
           label: Označenie
+          separator: ', '
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
         word_count:
           label: Slov
         item_count:

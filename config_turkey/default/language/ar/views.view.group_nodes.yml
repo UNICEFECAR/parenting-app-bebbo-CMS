@@ -17,15 +17,19 @@ display:
       fields:
         title:
           label: العنوان
+          separator: ', '
         type:
           label: 'نوع المحتوى'
+          separator: ', '
         status:
           label: الحالة
           settings:
             format_custom_true: منشور
             format_custom_false: 'غير منشور'
+          separator: ', '
         changed:
           label: التحديث
+          separator: ', '
         dropbutton:
           label: عمليات
       filters:

@@ -7,8 +7,48 @@ dependencies:
 name: deepl_pro
 label: 'DeepL API Pro'
 description: 'DeepL API Pro Translator service.'
-auto_accept: null
+auto_accept: false
 weight: null
 plugin: deepl_pro
-settings: {  }
-remote_languages_mappings: {  }
+settings:
+  url: 'https://api.deepl.com/v2/translate'
+  url_usage: 'https://api.deepl.com/v2/usage'
+  auth_key: bb450b3f-8d87-44df-95bc-57441939bab2
+  tag_handling: '0'
+  non_splitting_tags: ''
+  splitting_tags: ''
+  ignore_tags: ''
+  split_sentences: '1'
+  preserve_formatting: 0
+  formality: default
+  outline_detection: 0
+remote_languages_mappings:
+  en: EN
+  ru: RU
+  sq: ''
+  al-sq: ''
+  by-be: ''
+  by-ru: ''
+  bg-bg: BG
+  gr-el: ''
+  xk-sq: ''
+  xk-rs: ''
+  kg-ky: ''
+  kg-ru: ''
+  md-ro: ''
+  me-cnr: ''
+  mk-sq: ''
+  mk-mk: ''
+  ro: RO
+  ro-ro: ''
+  sr: ''
+  rs-en: ''
+  rs-sr: ''
+  sk: SK
+  tj-ru: ''
+  tj-tg: ''
+  tr: TR
+  uk: UK
+  uz-ru: ''
+  uz-uz: ''
+  ar: ''

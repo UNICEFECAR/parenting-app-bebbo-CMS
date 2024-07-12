@@ -26,6 +26,7 @@ display:
           label: عنصر
         name:
           label: الاسم
+          separator: ', '
       title: الرسائل
       arguments:
         tjid:

@@ -5,11 +5,14 @@ display:
       fields:
         type:
           label: Lloji
+        name:
+          label: User
         link:
-          label: Operacionet
+          label: Operations
       exposed_form:
         options:
-          submit_button: Filtri
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         type:
           expose:

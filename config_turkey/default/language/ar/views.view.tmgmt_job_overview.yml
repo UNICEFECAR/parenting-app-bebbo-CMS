@@ -22,12 +22,15 @@ display:
       fields:
         state:
           label: الحالة
+          separator: ', '
         label:
           label: التسمية
         source_language_1:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         translator:
           label: المزود
         tags_count:
