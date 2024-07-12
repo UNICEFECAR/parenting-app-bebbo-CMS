@@ -10,9 +10,13 @@ channel_langcode: en
 channel_filters:
   field_mandatory_content:
     path: field_mandatory_content
-    operator: '<>'
+    operator: '='
+    value: {  }
+  field_content_category_name:
+    path: field_content_category.name
+    operator: '='
     value:
-      - '1'
+      - 'Health and Wellbeing'
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null

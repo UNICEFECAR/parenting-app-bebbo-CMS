@@ -111,6 +111,7 @@ permissions:
   - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
   - 'use group_workflow transition publish_to_draft'
+  - 'use group_workflow transition published_to_published'
   - 'use group_workflow transition reject_to_draft'
   - 'use group_workflow transition require_modification_to_senior_editor_review'
   - 'use group_workflow transition require_modification_to_sme_review'

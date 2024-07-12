@@ -16,7 +16,7 @@ field_name: field_subcategory
 entity_type: node
 bundle: article
 label: Subcategory
-description: ''
+description: 'Select one only <b>if the category is one of 6 </b>: Health & Wellbeing, Nutrition & Breastfeeding, Parenting Corner, Play & Learning, Responsive Pareting, Safety & Protection'
 required: false
 translatable: false
 default_value: {  }

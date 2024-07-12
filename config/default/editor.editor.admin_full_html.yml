@@ -45,10 +45,10 @@ settings:
   plugins:
     ckeditor5_alignment:
       enabled_alignments:
-        - left
         - center
-        - right
         - justify
+        - left
+        - right
     ckeditor5_codeBlock:
       languages:
         -
@@ -121,7 +121,7 @@ settings:
         - '<div id data-oembed-url class>'
         - '<a hreflang>'
         - '<blockquote cite>'
-        - '<ul type>'
+        - '<ul type class>'
         - '<ol type>'
         - '<h2 id>'
         - '<h3 id>'
@@ -130,6 +130,7 @@ settings:
         - '<h6 id>'
         - '<img data-entity-type data-entity-uuid>'
         - '<drupal-media title>'
+        - '<li class>'
     media_media:
       allow_view_mode_override: true
 image_upload:

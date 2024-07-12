@@ -13,6 +13,11 @@ channel_filters:
     operator: '='
     value:
       - '1'
+  status:
+    path: status
+    operator: '='
+    value:
+      - '1'
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null

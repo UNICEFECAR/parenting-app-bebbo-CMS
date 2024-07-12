@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_child_gender
     - field.field.node.article.field_content_category
     - field.field.node.article.field_cover_image
+    - field.field.node.article.field_do_not_feature
     - field.field.node.article.field_generic_content
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
@@ -82,6 +83,13 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_do_not_feature:
+    type: boolean_checkbox
+    weight: 27
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_keywords:
     type: entity_reference_autocomplete_tags

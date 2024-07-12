@@ -1,0 +1,33 @@
+uuid: 183a2c94-a25a-425d-89b0-026a2442cd08
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - options
+id: group.field_content_toggle
+field_name: field_content_toggle
+entity_type: group
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Chatbot
+      label: Chatbot
+    -
+      value: "Child's Growth"
+      label: "Child's Growth"
+    -
+      value: 'Health Check-up'
+      label: 'Health Check-up'
+    -
+      value: Vaccination
+      label: Vaccination
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

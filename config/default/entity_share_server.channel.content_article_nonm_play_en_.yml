@@ -12,6 +12,11 @@ channel_filters:
     path: field_mandatory_content
     operator: '='
     value: {  }
+  field_content_category_name:
+    path: field_content_category.name
+    operator: '='
+    value:
+      - 'Play and Learning'
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null
