@@ -4,6 +4,8 @@ display:
       fields:
         state:
           label: Стан
+        label:
+          label: Мітка
         type:
           label: Тип
         operations:
@@ -12,3 +14,6 @@ display:
         state:
           group_info:
             label: Стан
+        source_language:
+          expose:
+            label: 'Вихідна мова'

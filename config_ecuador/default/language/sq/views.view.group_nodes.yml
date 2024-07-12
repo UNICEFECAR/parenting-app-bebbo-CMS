@@ -1,10 +1,21 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
+        title:
+          label: Title
+        status:
+          label: Status
         dropbutton:
-          label: Operacionet
+          label: Operations
       filters:
         type:
           expose:
             label: Lloji
+      arguments:
+        gid:
+          exception:
+            title: All

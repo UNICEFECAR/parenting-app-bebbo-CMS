@@ -4,7 +4,20 @@ display:
     display_options:
       fields:
         filename:
-          label: Emri
+          label: Name
+        status:
+          label: Status
       exposed_form:
         options:
-          submit_button: Filtri
+          submit_button: Filter
+          reset_button_label: Reset
+      filters:
+        status:
+          expose:
+            label: Status
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

@@ -22,13 +22,16 @@ display:
             last: 'son »'
       fields:
         state:
-          label: Eyalet
+          label: Durum
+          separator: ', '
         label:
           label: Etiket
         source_language_1:
           label: Kimden
+          separator: ', '
         target_language:
           label: Kime
+          separator: ', '
         translator:
           label: Sağlayıcı
         tags_count:
@@ -40,7 +43,7 @@ display:
       filters:
         state:
           expose:
-            label: Eyalet
+            label: Durum
         source_language:
           expose:
             label: 'Kaynak dil'

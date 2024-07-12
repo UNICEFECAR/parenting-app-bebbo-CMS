@@ -22,13 +22,16 @@ display:
             last: 'son »'
       fields:
         state:
-          label: Eyalet
+          label: Durum
         label:
           label: Etiket
         type:
           label: Tip
+        word_count:
+          separator: ', '
         tags_count:
           label: Etiketler
+          separator: ', '
         changed:
           label: Değişti
         operations:
@@ -38,11 +41,15 @@ display:
           exception:
             title: Tümü
   checkout:
+    display_title: Kasa
     display_options:
       fields:
         label:
           label: Etiket
         type:
           label: Tip
+        word_count:
+          separator: ', '
         changed:
           label: Değişti
+          separator: ', '

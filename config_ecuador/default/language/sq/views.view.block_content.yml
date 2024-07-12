@@ -1,17 +1,14 @@
-label: 'Custom block library'
-description: 'Find and manage custom blocks.'
 display:
   default:
     display_title: Default
     display_options:
-      title: 'Custom block library'
       fields:
         operations:
-          label: Operacionet
-      empty:
-        area_text_custom:
-          content: 'There are no custom blocks available.'
+          label: Operations
+      exposed_form:
+        options:
+          reset_button_label: Reset
   page_1:
     display_options:
       menu:
-        title: 'Custom block library'
+        title: Blloqet

@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.milestone.field_child_age
     - field.field.node.milestone.field_licensed_content
     - field.field.node.milestone.field_mandatory_content
+    - field.field.node.milestone.field_pre_populated
     - field.field.node.milestone.field_related_activities
     - field.field.node.milestone.field_related_articles
     - field.field.node.milestone.field_related_video_articles
@@ -41,7 +42,7 @@ content:
     region: content
   field_licensed_content:
     type: boolean
-    label: hidden
+    label: above
     settings:
       format: default
       format_custom_false: ''
@@ -51,7 +52,7 @@ content:
     region: content
   field_mandatory_content:
     type: boolean
-    label: above
+    label: inline
     settings:
       format: default
       format_custom_false: ''

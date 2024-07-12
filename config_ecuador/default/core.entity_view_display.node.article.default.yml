@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_child_gender
     - field.field.node.article.field_content_category
     - field.field.node.article.field_cover_image
+    - field.field.node.article.field_do_not_feature
     - field.field.node.article.field_generic_content
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
@@ -86,6 +87,16 @@ content:
       link: false
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_do_not_feature:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 19
     region: content
   field_generic_content:
     type: boolean

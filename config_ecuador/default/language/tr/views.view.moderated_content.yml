@@ -1,16 +1,26 @@
+label: 'Denetlenen içerik'
+description: 'İçeriği bulun ve denetleyin.'
 display:
   default:
     display_title: Varsayılan
     display_options:
+      title: 'Denetlenen içerik'
       fields:
         title:
           label: Başlık
+          separator: ', '
         type:
           label: 'İçerik türü'
+          separator: ', '
         name:
           label: Yazar
+          separator: ', '
+        moderation_state:
+          label: 'Denetim durumu'
+          separator: ', '
         changed:
           label: Güncellendi
+          separator: ', '
         operations:
           label: İşlemler
       pager:
@@ -38,6 +48,11 @@ display:
         type:
           expose:
             label: 'İçerik türü'
+        moderation_state:
+          expose:
+            label: 'Denetim durumu'
         langcode:
           expose:
             label: Dil
+  moderated_content:
+    display_title: 'Denetlenen içerik'

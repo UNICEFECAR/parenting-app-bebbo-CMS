@@ -1,10 +1,16 @@
+label: Медіа
 display:
   default:
     display_title: Базово
     display_options:
+      title: Медіа
       fields:
         bundle:
           label: Тип
+        uid:
+          label: Автор
+        status:
+          label: Стан
         operations:
           label: Операції
       exposed_form:
@@ -14,3 +20,11 @@ display:
         bundle:
           expose:
             label: Тип
+        langcode:
+          expose:
+            label: Мова
+  media_page_list:
+    display_title: Медіа
+    display_options:
+      menu:
+        title: Медіа

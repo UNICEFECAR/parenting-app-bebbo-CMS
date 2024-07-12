@@ -26,14 +26,19 @@ display:
           label: النوع
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         word_count:
           label: كلمة
+          separator: ', '
         tags_count:
           label: وسوم
+          separator: ', '
         changed:
           label: 'تم التغير'
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -47,8 +52,5 @@ display:
             group_items:
               1:
                 title: طبيعي
-      empty:
-        area_text_custom:
-          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
   page_1:
     display_title: الصفحة

@@ -7,19 +7,25 @@ display:
       fields:
         thumbnail__target_id:
           label: Miniatúra
+          separator: ', '
         name:
           label: 'Názov média'
+          separator: ', '
         bundle:
           label: Typ
+          separator: ', '
         uid:
           label: Autor
+          separator: ', '
         status:
           label: Stav
           settings:
             format_custom_false: Nezverejnené
             format_custom_true: Zverejnené
+          separator: ', '
         changed:
           label: Aktualizované
+          separator: ', '
         operations:
           label: Operácie
       pager:
@@ -36,6 +42,7 @@ display:
       exposed_form:
         options:
           submit_button: Filter
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne

@@ -3,14 +3,24 @@ display:
     display_title: Default
     display_options:
       fields:
+        thumbnail__target_id:
+          label: 'Умањени приказ'
         bundle:
           label: Tип
+        uid:
+          label: Author
+        status:
+          label: Status
         operations:
-          label: Операције
+          label: Operations
       exposed_form:
         options:
-          submit_button: Филтрирај
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
       filters:
         bundle:
           expose:
             label: Tип
+        langcode:
+          expose:
+            label: Language

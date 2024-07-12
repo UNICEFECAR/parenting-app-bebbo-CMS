@@ -20,6 +20,7 @@ display:
       fields:
         title:
           label: العنوان
+          separator: ', '
         item_count:
           label: أخبار
   assigned:
@@ -27,14 +28,22 @@ display:
       fields:
         status:
           label: الحالة
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -52,16 +61,25 @@ display:
       fields:
         status:
           label: الحالة
+          separator: ', '
         created:
           label: الإنشاء
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -79,16 +97,25 @@ display:
       fields:
         status:
           label: الحالة
+          separator: ', '
         created:
           label: الإنشاء
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -106,14 +133,21 @@ display:
       fields:
         status:
           label: الحالة
+        tuid:
+          separator: ', '
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -130,14 +164,22 @@ display:
           label: الحالة
         created:
           label: الإنشاء
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات
       filters:
@@ -154,11 +196,16 @@ display:
           label: الحالة
         title:
           label: العنوان
+          separator: ', '
         source_language:
           label: من
+          separator: ', '
         target_language:
           label: إلى
+          separator: ', '
         item_count:
           label: أخبار
+        loop_count:
+          separator: ', '
         operations:
           label: عمليات

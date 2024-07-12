@@ -24,6 +24,9 @@ display:
           label: التسمية
         item_type:
           label: النوع
+          separator: ', '
+        word_count:
+          separator: ', '
         operations:
           label: عمليات
       arguments:

@@ -1,7 +1,14 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
+        name:
+          label: User
+        group_roles:
+          label: Roles
         view_group_content:
           text: 'Manage member'
         edit_group_content:
@@ -9,4 +16,8 @@ display:
         edit_user:
           text: 'Edit member'
         dropbutton:
-          label: Operacionet
+          label: Operations
+      arguments:
+        gid:
+          exception:
+            title: All

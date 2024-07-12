@@ -2,10 +2,21 @@ display:
   default:
     display_title: Базово
     display_options:
+      title: Медіа
       filters:
         name:
           expose:
             label: "Назва (ім'я)"
+        langcode:
+          expose:
+            label: Мова
+  page:
+    display_options:
+      fields:
+        edit_media:
+          text: Редагувати
+        delete_media:
+          text: Видалити
   widget:
     display_options:
       filters:
@@ -17,6 +28,8 @@ display:
       fields:
         name:
           label: "Назва (ім'я)"
+        uid:
+          label: Автор
       filters:
         name:
           expose:

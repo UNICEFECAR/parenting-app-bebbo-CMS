@@ -1,9 +1,11 @@
 display:
   default:
+    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: Použiť
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
@@ -27,12 +29,18 @@ display:
           label: Typ
         source_language:
           label: Od
+          separator: ', '
         target_language:
           label: Komu
+          separator: ', '
+        word_count:
+          separator: ', '
         tags_count:
           label: Značky
+          separator: ', '
         changed:
           label: Zmenené
+          separator: ', '
         operations:
           label: Operácie
       filters:
@@ -47,8 +55,5 @@ display:
             group_items:
               1:
                 title: Normálny
-      empty:
-        area_text_custom:
-          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
   page_1:
     display_title: Stránka

@@ -3,8 +3,22 @@ display:
     display_title: Default
     display_options:
       fields:
+        name:
+          label: Username
+        status:
+          label: Status
+        roles_target_id:
+          label: Roles
         operations:
-          label: Операције
+          label: Operations
       exposed_form:
         options:
-          submit_button: Филтрирај
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      filters:
+        status:
+          group_info:
+            label: Status
+        roles_target_id:
+          expose:
+            label: Улога

@@ -1,15 +1,22 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
       fields:
         state:
-          label: Статус
+          label: State
+        label:
+          label: Label
         type:
           label: Tип
         operations:
-          label: Операције
+          label: Operations
   checkout:
     display_options:
       fields:
+        label:
+          label: Label
         type:
           label: Tип

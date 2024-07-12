@@ -4,6 +4,8 @@ display:
       fields:
         state:
           label: Стан
+        label:
+          label: Мітка
         type:
           label: Тип
         operations:
@@ -11,5 +13,7 @@ display:
   checkout:
     display_options:
       fields:
+        label:
+          label: Мітка
         type:
           label: Тип

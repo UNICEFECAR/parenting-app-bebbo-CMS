@@ -10,6 +10,7 @@ display:
           label: Názov
         type:
           label: 'Typ obsahu'
+          separator: ', '
         name:
           label: Autor
         status:
@@ -31,6 +32,7 @@ display:
       exposed_form:
         options:
           submit_button: Filter
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne

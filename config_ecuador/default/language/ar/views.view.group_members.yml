@@ -17,16 +17,15 @@ display:
       fields:
         name:
           label: المستخدم
+          separator: ', '
         group_roles:
           label: الأدوار
+          separator: ', '
         changed:
           label: التحديث
-        view_group_content:
-          text: 'Manage member'
-        edit_group_content:
-          text: 'Assign roles'
-        edit_user:
-          text: 'Edit member'
+          separator: ', '
+        created:
+          separator: ', '
         dropbutton:
           label: عمليات
       arguments:

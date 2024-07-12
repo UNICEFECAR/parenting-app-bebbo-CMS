@@ -7,14 +7,19 @@ display:
       fields:
         title:
           label: Názov
+          separator: ', '
         type:
           label: 'Typ obsahu'
+          separator: ', '
         name:
           label: Autor
+          separator: ', '
         moderation_state:
           label: 'Stav moderácie'
+          separator: ', '
         changed:
           label: Aktualizované
+          separator: ', '
         operations:
           label: Operácie
       pager:
@@ -31,6 +36,7 @@ display:
       exposed_form:
         options:
           submit_button: Filter
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne

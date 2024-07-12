@@ -1,15 +1,14 @@
-label: 'Vlastné bloky'
-description: 'Nájsť a spravovať vlastné bloky.'
 display:
   default:
     display_title: Predvolené
     display_options:
-      title: 'Vlastné bloky'
       fields:
         info:
           label: 'Popis bloku'
+          separator: ', '
         type:
           label: 'Typ bloku'
+          separator: ', '
         changed:
           label: Aktualizované
         operations:
@@ -26,12 +25,10 @@ display:
       exposed_form:
         options:
           submit_button: Použiť
+          reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
-      empty:
-        area_text_custom:
-          content: 'Nie sú k dispozícii žiadne vlastné bloky.'
       filters:
         info:
           expose:
@@ -43,4 +40,4 @@ display:
     display_title: Stránka
     display_options:
       menu:
-        title: 'Vlastné bloky'
+        title: Bloky

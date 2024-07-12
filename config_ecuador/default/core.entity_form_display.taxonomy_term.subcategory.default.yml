@@ -1,10 +1,10 @@
-uuid: f827c6b0-01cb-404e-ad5c-e4e13a202418
+uuid: a3defacc-7716-47c8-824d-b8e5677a9421
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.taxonomy_term.subcategory.field_category
-    - field.field.taxonomy_term.subcategory.field_child_s_age
+    - field.field.taxonomy_term.subcategory.field_child_age
     - taxonomy.vocabulary.subcategory
   module:
     - path
@@ -16,7 +16,7 @@ mode: default
 content:
   description:
     type: text_textarea
-    weight: 0
+    weight: 1
     region: content
     settings:
       rows: 5
@@ -24,13 +24,13 @@ content:
     third_party_settings: {  }
   field_category:
     type: options_select
-    weight: 101
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_child_s_age:
+  field_child_age:
     type: options_select
-    weight: 102
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -43,7 +43,7 @@ content:
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -51,19 +51,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 100
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -1,7 +1,14 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
       fields:
+        name:
+          label: User
+        group_roles:
+          label: Roles
         view_group_content:
           text: 'Manage member'
         edit_group_content:
@@ -9,4 +16,4 @@ display:
         edit_user:
           text: 'Edit member'
         dropbutton:
-          label: Операције
+          label: Operations
