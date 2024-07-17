@@ -768,7 +768,7 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
       $view->setHandler('block_1', 'header', 'area', $options);
     }
   }
-  if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
+  if ($view->id() == 'global_content_listing' && $display_id == 'page_4' || $view->id() == 'global_content_listing' && $display_id == 'data_export_1') {
     $filters = $view->display_handler->getOption('filters');
     $langcodes = \Drupal::languageManager()->getLanguages();
     foreach ($langcodes as $key => $value) {

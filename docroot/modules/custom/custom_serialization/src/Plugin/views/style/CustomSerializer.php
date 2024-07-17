@@ -251,7 +251,7 @@ class CustomSerializer extends Serializer {
                   }
                 } 
                 
-                if(!empty($existing_data)){
+                if(!empty($existing_data_en)){
                   $custom_locale_en = $existing_data_en['custom_locale'];
                   $custom_luxon_en = $existing_data_en['custom_luxon'];
                   $custom_plural_en  = $existing_data_en['custom_plural'];
@@ -276,7 +276,7 @@ class CustomSerializer extends Serializer {
                   }
                 } 
 
-                if(!empty($existing_data)){
+                if(!empty($existing_data_ru)){
                   $custom_locale_ru = $existing_data_ru['custom_locale'];
                   $custom_luxon_ru = $existing_data_ru['custom_luxon'];
                   $custom_plural_ru = $existing_data_ru['custom_plural'];
