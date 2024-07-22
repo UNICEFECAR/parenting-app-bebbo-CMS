@@ -384,6 +384,8 @@ class CustomSerializer extends Serializer {
             }
           }
 
+         
+
           if (strpos($request_uri, "vocabularies") !== FALSE || strpos($request_uri, "taxonomies") !== FALSE) {
             $data = $field_formatter;
             $rows['status'] = 200;
@@ -414,6 +416,20 @@ class CustomSerializer extends Serializer {
 
           }
         }
+
+        if (strpos($request_uri, "api/country-groups") !== false) {
+            $index = array_search('126', array_column($data, 'CountryID'));
+
+            // Check if the entry exists
+            if ($index !== false) {
+                // Remove the entry from the array
+                $entry = array_splice($data, $index, 1);
+                
+                // Append the entry to the end of the array
+                $data[] = $entry[0];
+            }
+         }
+
         /* To validate request params. */
         if (isset($request[3]) && !empty($request[3])) {
           $rows['langcode'] = $request[3];
