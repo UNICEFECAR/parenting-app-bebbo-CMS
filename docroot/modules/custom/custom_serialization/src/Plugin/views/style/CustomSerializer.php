@@ -315,17 +315,15 @@ class CustomSerializer extends Serializer {
                 $rendered_data['languages'] = [];
 
                 foreach ($country_languages as $val) {
-                  // if (strpos($val['value'], '-') !== false) {
-                  //   $langcodes = explode("-", $val['value']);
-                  //   $langcode = $langcodes[1];
-                  // } else {
-                    $langcode = $val['value'];
-                  // }
+                  $langcode = $val['value'];
 
                   if($langcode) {
                     $language = \Drupal::languageManager()->getLanguage($langcode);
+                 
                     $original_language = \Drupal::languageManager()->setConfigOverrideLanguage($language);
                     $languages = ConfigurableLanguage::load($langcode);
+                   
+                    $view_weight = $languages->get('weight') ?? 0;
                     if ($languages) {
                       // Retrieve the display name (label) of the language
                       if ($languages->label()) {
@@ -363,8 +361,19 @@ class CustomSerializer extends Serializer {
                       'locale' => $custom_locale_all,
                       'luxonLocale' => $custom_luxon_all,
                       'pluralShow' => $custom_plural_all,
+                      'view_weight' => $view_weight,
                     ];
                   }
+                }
+
+                // Reorder the array to place the preferred language code first
+                usort($rendered_data['languages'], function($a, $b) {
+                  return $a['view_weight'] <=> $b['view_weight'];
+                });
+
+                // Remove view_weight from each language entry in the array
+                 foreach ($rendered_data['languages'] as &$values_lng) {
+                    unset($values_lng['view_weight']);
                 }
                 unset($rendered_data['langcode'] );
                 unset($rendered_data['field_make_available_for_mobile'] );
