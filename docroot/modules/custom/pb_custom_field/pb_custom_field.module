@@ -1068,6 +1068,10 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       }
     }
   }
+  if($view->id() =='taxonomy_export' && $view->current_display =='page_1' || $view->id() =='taxonomy_export' && $view->current_display =='data_export_1') {
+    // $query->addWhere(1,'taxonomy_term_field_data.vid', 'keywords', '=');
+    $query->addWhere(2,'taxonomy_term_field_data.langcode', 'en', '=');
+  }
 
  
   if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1' || $view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
