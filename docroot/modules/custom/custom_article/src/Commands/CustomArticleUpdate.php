@@ -65,7 +65,7 @@ class CustomArticleUpdate extends DrushCommands {
         $this->logger()->warning(dt('No terms found for keyword'));
         return;
       }
-      dump($tids);exit;
+      // dump($tids);exit;
 
       $terms = Term::loadMultiple($tids);
       foreach ($terms as $term) {
