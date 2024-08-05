@@ -560,9 +560,15 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       $query->innerJoin('group_content_field_data', 'g', "g.type LIKE '%country-group_node%' AND g.gid = ".$_GET['country']." AND g. entity_id = e." . $id_key);
     }
 
-    if(isset($_GET['mandatory_content']) && !empty($_GET['mandatory_content'])){
-      $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
-      $query->condition('mc.field_mandatory_content_value' , $_GET['mandatory_content'], '=');
+
+    if(isset($_GET['mandatory_content'])) {
+      if(empty($_GET['mandatory_content']) && $_GET['mandatory_content'] != 0){
+        $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
+      }
+      else{
+        $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
+        $query->condition('mc.field_mandatory_content_value' , $_GET['mandatory_content'], '=');
+      }
     }
 
 
