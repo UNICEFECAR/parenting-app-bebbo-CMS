@@ -1,11 +1,21 @@
 diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/content/src/ContentEntitySourcePluginUi.php
+index e6e6829..97d9571 100644
 --- a/sources/content/src/ContentEntitySourcePluginUi.php
 +++ b/sources/content/src/ContentEntitySourcePluginUi.php
-@@ -50,6 +50,48 @@
+@@ -11,6 +11,8 @@ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\tmgmt\JobItemInterface;
+ use Drupal\tmgmt\SourcePluginUiBase;
+ use Drupal\tmgmt_content\Plugin\tmgmt\Source\ContentEntitySource;
++use Drupal\taxonomy\Entity\Term;
++
+ 
+ /**
+  * Content entity source plugin UI.
+@@ -50,6 +52,48 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
        );
      }
  
-+         ## node id custom filter
++    ## node id custom filter
 +
 +    $form['search_wrapper']['search']['node_id'] = array(
 +        '#type' => 'textfield',
@@ -16,7 +26,7 @@ diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/conte
 +
 +
 +    ## country filter
-+    $gids = \Drupal::entityQuery('group')->condition('type','country')->execute();
++    $gids = \Drupal::entityQuery('group')->accessCheck(TRUE)->condition('type','country')->execute();
 +    $groups = \Drupal\group\Entity\Group::loadMultiple($gids);
 +    $options = ['' => 'All'];
 +
@@ -50,12 +60,139 @@ diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/conte
      $form['search_wrapper']['search']['langcode'] = array(
        '#type' => 'language_select',
        '#title' => t('Source Language'),
-@@ -437,6 +479,16 @@
+@@ -99,6 +143,43 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+       ),
+     );
+ 
++    $form['search_wrapper']['search']['mandatory_content'] = array(
++      '#type' => 'select',
++      '#title' => $this->t('Mandatory Content'),
++      '#options' => array('' => 'Any', 1 => 'Yes', 0 => 'No'),
++      '#default_value' => isset($_GET['mandatory_content']) ? $_GET['mandatory_content'] : NULL,
++      '#empty_option' => $this->t('- Any -'),
++    );
++  
++    $form['search_wrapper']['search']['pre_populated'] = array(
++      '#type' => 'select',
++      '#title' => $this->t('Pre Populated	'),
++      '#options' => array(''=> 'Any',1=> 'Yes', 0 => 'No'),
++      '#default_value' => isset($_GET['pre_populated']) ? $_GET['pre_populated'] : NULL,
++      '#empty_option' => $this->t('- Any -'),
++    );
++  
++    $content_category_options = [];    
++    $query_cat = \Drupal::entityQuery('taxonomy_term')->accessCheck(TRUE)
++                ->condition('vid', 'category')
++                ->execute();
++    if($query_cat) {
++      foreach ($query_cat as $key => $val) {
++        $category_option = Term::load($val)->get('name')->value;
++        if (!empty($category_option)) {
++          $content_category_options[$val] = $category_option;
++        }
++      }
++    }
++  
++    $form['search_wrapper']['search']['field_content_category'] = array(
++      '#type' => 'select',
++      '#title' => $this->t('Category'),
++      '#options' => $content_category_options,
++      '#default_value' => isset($_GET['field_content_category']) ? $_GET['field_content_category'] : NULL,
++      '#empty_option' => $this->t('- Any -'),
++    );
++
+     return $form;
+   }
+ 
+@@ -243,13 +324,12 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+     $search_property_params = array_intersect_key($search_property_params, array_flip($whitelist));
+     $bundles = $this->getTranslatableBundles($type);
+ 
+-    foreach (static::getTranslatableEntities($type, $search_property_params, TRUE) as $entity) {
++    foreach (self::getTranslatableEntities($type, $search_property_params, TRUE) as $entity) {
+       // This occurs on user entity type.
+       if ($entity->id()) {
+         $form['items']['#options'][$entity->id()] = $this->overviewRow($entity, $bundles);
+       }
+     }
+-
+     $form['pager'] = array('#type' => 'pager');
+ 
+     return $form;
+@@ -365,7 +445,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+    *   Array of translatable entities.
+    */
+   public static function getTranslatableEntities($entity_type_id, $property_conditions = array(), $pager = FALSE, $offset = 0, $limit = 0) {
+-    $query = static::buildTranslatableEntitiesQuery($entity_type_id, $property_conditions);
++    $query = self::buildTranslatableEntitiesQuery($entity_type_id, $property_conditions);
+ 
+     if ($query) {
+       if ($pager) {
+@@ -381,14 +461,49 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+       $result = $query->execute();
+       $entity_ids = $result->fetchCol();
+       $entities = array();
++      
+ 
+       if (!empty($entity_ids)) {
+-        $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($entity_ids);
++        $all_ids = [];
++        foreach($entity_ids as $nid) {  
++          // Define the base query.
++          $query = \Drupal::database()->select('node_field_revision', 'nfr')
++            ->fields('nfr', ['status'])
++            ->condition('nfr.nid', $nid, '=')
++            ->orderBy('nfr.vid', 'DESC')
++            ->range(0, 1);
++            $result = $query->execute();
++            $results = $result->fetchField();
++            if($results == 1){
++              $all_ids[] = $nid;
++            }
++            // if($results == 1){
++            //   if(isset($_GET['mandatory_content'])){
++            //     $query = \Drupal::database()->select('node_revision__field_mandatory_content', 'mfc')
++            //           ->fields('mfc', ['field_mandatory_content_value'])
++            //           ->condition('mfc.entity_id', $nid, '=')
++            //           ->orderBy('mfc.revision_id', 'DESC')
++            //           ->range(0, 1);
++            //           $result = $query->execute();
++            //           $results2 = $result->fetchField();
++            //           if($results2 == $_GET['mandatory_content']){
++            //             $all_ids[] = $nid;
++            //           }
++            //   } 
++            //   else {
++            //     $all_ids[] = $nid;
++            //   }
++            // }
++        } 
++
++        $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($all_ids);
+       }
+       return $entities;
+     }
+     return array();
+   }
++  
++  
+ 
+   /**
+    * Returns the query for translatable entities of a given type.
+@@ -407,7 +522,6 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+    *   built for this entity type.
+    */
+   public static function buildTranslatableEntitiesQuery($entity_type_id, $property_conditions = array()) {
+-
+     // If given entity type does not have entity translations enabled, no reason
+     // to continue.
+     $enabled_types = \Drupal::service('plugin.manager.tmgmt.source')->createInstance('content')->getItemTypes();
+@@ -436,6 +550,39 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+     }
  
      $property_conditions += array('langcode' => $langcodes);
- 
 +     #### condition for node id and country filter
-+
++       
 +    if(isset($_GET['node_id']) && !empty($_GET['node_id'])){
 +      $query->condition('e.nid', $_GET['node_id']);
 +    }
@@ -64,6 +201,84 @@ diff --git a/sources/content/src/ContentEntitySourcePluginUi.php b/sources/conte
 +      $query->innerJoin('group_content_field_data', 'g', "g.type LIKE '%country-group_node%' AND g.gid = ".$_GET['country']." AND g. entity_id = e." . $id_key);
 +    }
 +
++
++    if(isset($_GET['mandatory_content'])) {
++      if(empty($_GET['mandatory_content']) && $_GET['mandatory_content'] != 0){
++        $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
++      }
++      else{
++        $query->leftjoin('node__field_mandatory_content', 'mc', "mc.entity_id = e." . $id_key);
++        $query->condition('mc.field_mandatory_content_value' , $_GET['mandatory_content'], '=');
++      }
++    }
++
++
++    if(isset($_GET['pre_populated']) && !empty($_GET['pre_populated'])){
++      $query->leftjoin('node__field_pre_populated', 'pp', "pp.entity_id = e." . $id_key);
++      $query->condition('pp.field_pre_populated_value' , $_GET['pre_populated'], '=');
++    }
++
++    if(isset($_GET['field_content_category']) && !empty($_GET['field_content_category'])) {
++      $query->leftjoin('node__field_content_category', 'cc', "cc.entity_id = e." . $id_key);
++      $query->condition('cc.field_content_category_target_id' , $_GET['field_content_category'], '=');
++    }
++
++    
+ 
      // Searching for sources with missing translation.
      if (!empty($property_conditions['target_status']) && !empty($property_conditions['target_language']) && in_array($property_conditions['target_language'], $languages)) {
+@@ -468,10 +615,18 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
  
+     // Searching for the source label.
+     if (!empty($label_key) && isset($property_conditions[$label_key])) {
+-      $search_token = trim($property_conditions[$label_key]);
++      $search_tokens = explode(' ', $property_conditions[$label_key]);
++      $or = \Drupal::database()->condition('OR');
+ 
+-      if ($search_token !== '') {
+-        $query->condition('data_table.' . $label_key, '%' . \Drupal::database()->escapeLike($search_token) . '%', 'LIKE');
++      foreach ($search_tokens as $search_token) {
++        $search_token = trim($search_token);
++        if (strlen($search_token) > 2) {
++          $or->condition('data_table.' . $label_key, '%' . \Drupal::database()->escapeLike($search_token) . '%', 'LIKE');
++        }
++      }
++
++      if ($or->count() > 0) {
++        $query->condition($or);
+       }
+ 
+       unset($property_conditions[$label_key]);
+@@ -500,15 +655,16 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+         $query->condition('e.' . $bundle_key, $bundles, 'IN');
+       }
+     }
+-
+     // Add remaining query conditions which are expected to be handled in a
+     // generic way.
+     foreach ($property_conditions as $property_name => $property_value) {
+       $alias = $property_name == 'langcode' ? $langcode_table_alias : 'e';
+       $query->condition($alias . '.' . $property_name, (array) $property_value, 'IN');
+     }
+-    $query->orderBy($entity_type->getKey('id'), 'DESC');
+ 
++   
++    $query->orderBy($entity_type->getKey('id'), 'DESC');
++    
+     return $query;
+   }
+ 
+@@ -522,11 +678,11 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
+       $context['sandbox']['offset'] = 0;
+       $context['results']['job_items'] = 0;
+       $context['sandbox']['progress'] = 0;
+-      $query = static::buildTranslatableEntitiesQuery($item_type, $search_property_params);
++      $query = self::buildTranslatableEntitiesQuery($item_type, $search_property_params);
+       $context['sandbox']['max'] = $query->countQuery()->execute()->fetchField();
+     }
+     $limit = \Drupal::config('tmgmt.settings')->get('source_list_limit');
+-    $entities = static::getTranslatableEntities($item_type, $search_property_params, FALSE, $context['sandbox']['offset'], $limit);
++    $entities = self::getTranslatableEntities($item_type, $search_property_params, FALSE, $context['sandbox']['offset'], $limit);
+     $context['sandbox']['offset'] += $limit;
+ 
+     // Loop through entities and add them to continuous jobs.
