@@ -1,0 +1,25 @@
+diff --git a/entity_share/modules/entity_share_client/src/Service/ImportService.php b/entity_share/modules/entity_share_client/src/Service/ImportService.php
+index db0bb2e..362db46 100644
+--- a/entity_share/modules/entity_share_client/src/Service/ImportService.php
++++ b/entity_share/modules/entity_share_client/src/Service/ImportService.php
+@@ -260,6 +260,12 @@ class ImportService implements ImportServiceInterface {
+   public function importEntityListData(array $entity_list_data) {
+     $imported_entity_ids = [];
+ 
++    $values = '';
++    if(isset($entity_list_data[0]['type'])){
++      $values = $entity_list_data[0]['type'];
++    }
++
++    if (!str_contains($values, 'feeds')) { 
+     foreach (EntityShareUtility::prepareData($entity_list_data) as $entity_data) {
+       foreach ($this->importProcessors[ImportProcessorInterface::STAGE_PREPARE_ENTITY_DATA] as $import_processor) {
+         $import_processor->prepareEntityData($this->runtimeImportContext, $entity_data);
+@@ -303,6 +309,7 @@ class ImportService implements ImportServiceInterface {
+         $import_processor->postEntitySave($this->runtimeImportContext, $processed_entity);
+       }
+     }
++  }
+     return $imported_entity_ids;
+   }
+ 
