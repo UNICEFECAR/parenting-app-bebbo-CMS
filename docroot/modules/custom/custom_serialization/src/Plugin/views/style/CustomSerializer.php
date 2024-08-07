@@ -12,6 +12,8 @@ use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\locale\LocaleTranslation;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Core\Cache\CacheableMetadata;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -448,7 +450,26 @@ class CustomSerializer extends Serializer {
         else {
           $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
         }
-        return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+
+        if (strpos($request_uri, "api/country-groups") !== false) {
+         $serialized_data = $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+
+         // Create a response object to set headers
+          $response = new Response($serialized_data);
+          $response->headers->set('Content-Type', $content_type);
+          $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
+          $response->headers->set('Pragma', 'no-cache');
+          $response->headers->set('Expires', '0');
+
+          // Send headers and return serialized data
+          $response->sendHeaders();
+
+          return $serialized_data;
+        }
+        else {
+          return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+        }
+
       }
       else {
         $rows = [];
