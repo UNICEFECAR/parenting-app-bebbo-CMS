@@ -884,19 +884,19 @@ class CustomSerializer extends Serializer {
         $data[$key] = array_values($data[$key]);
     }
     else {
-      foreach ($data as $k => $val) {
-        if (in_array($tid, $val[$key])) {
-          // Find the key of the value to remove
-          $keyToRemove = array_search($tid, $val[$key]);
+      // foreach ($data as $k => $val) {
+      //   if (in_array($tid, $val[$key])) {
+      //     // Find the key of the value to remove
+      //     $keyToRemove = array_search($tid, $val[$key]);
           
-          // If the value exists, remove it
-          if ($keyToRemove !== false) {
-              unset($data[$k][$key][$keyToRemove]);
-              // Reindex array keys to be consecutive integers
-              $data[$k][$key] = array_values($data[$k][$key]);
-          }
-        }
-      }
+      //     // If the value exists, remove it
+      //     if ($keyToRemove !== false) {
+      //         unset($data[$k][$key][$keyToRemove]);
+      //         // Reindex array keys to be consecutive integers
+      //         $data[$k][$key] = array_values($data[$k][$key]);
+      //     }
+      //   }
+      // }
     }
     return $data;
   }
