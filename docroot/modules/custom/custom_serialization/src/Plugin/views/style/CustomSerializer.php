@@ -432,7 +432,7 @@ class CustomSerializer extends Serializer {
                   if ($term_value) {
                     $tid = $term_value->id(); // Use ->id() to get the term ID
                     $vid = $term_value->bundle();// Get the vocabulary ID
-                    $data = $this->removeItemsByKeyValue($data, $vid, $tid); // Adjust 'taxonomy_terms' to your actual key
+                    $data = $this->removeItemsByKeyValue($request_uri,$data, $vid, $tid); // Adjust 'taxonomy_terms' to your actual key
                   }
               }
           }
@@ -873,30 +873,34 @@ class CustomSerializer extends Serializer {
     }
   }
 
-  public function removeItemsByKeyValue($data, $key, $tid) {
-    if (isset($data[$key]) && is_array($data[$key])) {
-        foreach ($data[$key] as $itemKey => $item) {
-            if (isset($item['id']) && $item['id'] == $tid) {
-                unset($data[$key][$itemKey]);
-            }
-        }
-        // Reindex array keys to be consecutive integers
-        $data[$key] = array_values($data[$key]);
+  public function removeItemsByKeyValue($request_uri, $data, $key, $tid) {
+
+    if(strpos($request_uri, "/api/taxonomies") !== FALSE) {
+      if (isset($data[$key]) && is_array($data[$key])) {
+          foreach ($data[$key] as $itemKey => $item) {
+              if (isset($item['id']) && $item['id'] == $tid) {
+                  unset($data[$key][$itemKey]);
+              }
+          }
+          // Reindex array keys to be consecutive integers
+          $data[$key] = array_values($data[$key]);
+      }
     }
-    else {
-      // foreach ($data as $k => $val) {
-      //   if (in_array($tid, $val[$key])) {
-      //     // Find the key of the value to remove
-      //     $keyToRemove = array_search($tid, $val[$key]);
+
+    if(strpos($request_uri, "/api/articles") !== FALSE) {
+      foreach ($data as $k => $val) {
+        if (in_array($tid, $val[$key])) {
+          // Find the key of the value to remove
+          $keyToRemove = array_search($tid, $val[$key]);
           
-      //     // If the value exists, remove it
-      //     if ($keyToRemove !== false) {
-      //         unset($data[$k][$key][$keyToRemove]);
-      //         // Reindex array keys to be consecutive integers
-      //         $data[$k][$key] = array_values($data[$k][$key]);
-      //     }
-      //   }
-      // }
+          // If the value exists, remove it
+          if ($keyToRemove !== false) {
+              unset($data[$k][$key][$keyToRemove]);
+              // Reindex array keys to be consecutive integers
+              $data[$k][$key] = array_values($data[$k][$key]);
+          }
+        }
+      }
     }
     return $data;
   }
