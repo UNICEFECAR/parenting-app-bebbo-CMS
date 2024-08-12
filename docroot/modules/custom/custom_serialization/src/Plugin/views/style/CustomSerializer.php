@@ -419,6 +419,25 @@ class CustomSerializer extends Serializer {
           }
         }
 
+        if (strpos($request_uri, "/api/taxonomies") !== FALSE || strpos($request_uri, "/api/articles") !== FALSE) {
+          if(strpos($request_uri, "/api/articles") !== FALSE){
+            $term_name_arr = ['Pregnancy'];
+          } 
+          else {
+            $term_name_arr = ['Pregnancy', 'Week by Week'];
+          }
+          foreach ($term_name_arr as $val) {
+              $term_values = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $val]);
+              foreach ($term_values as $term_value) {
+                  if ($term_value) {
+                    $tid = $term_value->id(); // Use ->id() to get the term ID
+                    $vid = $term_value->bundle();// Get the vocabulary ID
+                    $data = $this->removeItemsByKeyValue($data, $vid, $tid); // Adjust 'taxonomy_terms' to your actual key
+                  }
+              }
+          }
+        }
+
         if (strpos($request_uri, "api/country-groups") !== false) {
             $index = array_search('126', array_column($data, 'CountryID'));
 
@@ -854,4 +873,31 @@ class CustomSerializer extends Serializer {
     }
   }
 
+  public function removeItemsByKeyValue($data, $key, $tid) {
+    if (isset($data[$key]) && is_array($data[$key])) {
+        foreach ($data[$key] as $itemKey => $item) {
+            if (isset($item['id']) && $item['id'] == $tid) {
+                unset($data[$key][$itemKey]);
+            }
+        }
+        // Reindex array keys to be consecutive integers
+        $data[$key] = array_values($data[$key]);
+    }
+    else {
+      foreach ($data as $k => $val) {
+        if (in_array($tid, $val[$key])) {
+          // Find the key of the value to remove
+          $keyToRemove = array_search($tid, $val[$key]);
+          
+          // If the value exists, remove it
+          if ($keyToRemove !== false) {
+              unset($data[$k][$key][$keyToRemove]);
+              // Reindex array keys to be consecutive integers
+              $data[$k][$key] = array_values($data[$k][$key]);
+          }
+        }
+      }
+    }
+    return $data;
+  }
 }
