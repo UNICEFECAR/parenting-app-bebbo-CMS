@@ -3,3 +3,7 @@ services:
     class: \Drupal\custom_article\Commands\CustomArticleUpdate
     tags:
       - { name: drush.command }
+  custom_article.copy_keyword:
+    class: \Drupal\custom_article\Commands\CopyKeyword
+    tags:
+      - { name: drush.command }
