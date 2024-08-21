@@ -456,6 +456,10 @@ class CustomSerializer extends Serializer {
           $rows['langcode'] = $request[3];
         }
 
+        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+          $rows['langcode'] = 'en';
+        }
+
         if (strpos($request_uri, "sponsors") !== FALSE) {
           unset($rows['langcode']);
         }
