@@ -6,11 +6,9 @@ display:
         type:
           label: টাইপ
         timestamp:
-          label: তারিখ
+          label: Date
         message:
-          label: বার্তা
-        name:
-          label: ব্যবহারকারী
+          label: Message
         link:
           label: কার্যাবলী
       exposed_form:
@@ -18,8 +16,8 @@ display:
           submit_button: ফিল্টার
       empty:
         area:
-          admin_label: 'কোন লগ বার্তা নেই।'
-          content: 'কোন লগ বার্তা নেই।'
+          admin_label: 'No log messages available.'
+          content: 'No log messages available.'
       filters:
         type:
           expose:

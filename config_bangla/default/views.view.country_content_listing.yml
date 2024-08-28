@@ -2738,7 +2738,10 @@ display:
           entity_field: langcode
           plugin_id: language
           operator: in
-          value: {  }
+          value:
+            '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+            en: en
+            bn: bn
           group: 1
           exposed: true
           expose:
@@ -2762,7 +2765,7 @@ display:
               sme: '0'
               se: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''

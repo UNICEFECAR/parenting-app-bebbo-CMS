@@ -2,41 +2,12 @@ display:
   default:
     display_title: Varsayılan
     display_options:
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Sayfa başına öğe sayısı'
-            items_per_page_options_all_label: '- Tümü -'
-            offset_label: 'Başlangıç değeri'
-      exposed_form:
-        options:
-          reset_button_label: Sıfırla
-          exposed_sorts_label: 'Sıralama anahtarı'
-          sort_asc_label: Artan
-          sort_desc_label: Azalan
       filters:
-        status:
-          group_info:
-            label: Yayında
-            group_items:
-              1:
-                title: Yayında
-              2:
-                title: 'Yayında değil'
         name:
           expose:
             label: İsim
-        langcode:
-          expose:
-            label: Dil
-  page:
-    display_title: Sayfa
   widget:
     display_options:
-      arguments:
-        bundle:
-          exception:
-            title: Tümü
       filters:
         name:
           expose:
@@ -46,14 +17,6 @@ display:
       fields:
         name:
           label: İsim
-        uid:
-          label: Yazar
-        changed:
-          label: Güncellendi
-      arguments:
-        bundle:
-          exception:
-            title: Tümü
       filters:
         name:
           expose:

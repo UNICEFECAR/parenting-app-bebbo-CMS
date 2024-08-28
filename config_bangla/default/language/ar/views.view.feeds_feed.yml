@@ -1,41 +1,28 @@
 display:
   default:
-    display_title: الرئيسي
     display_options:
-      exposed_form:
-        options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
       pager:
         options:
           tags:
-            previous: '‹ السابقة'
-            next: 'التالية ›'
-            first: '« الأولى'
-            last: 'الأخيرة »'
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
       fields:
         title:
-          label: العنوان
+          label: Title
         type:
           label: النوع
         name:
-          label: المؤلف
+          label: Author
         changed:
-          label: التحديث
+          label: Updated
         operations:
           label: عمليات
       filters:
         title:
           expose:
-            label: العنوان
+            label: Title
         type:
           expose:
             label: النوع
-  page_1:
-    display_title: الصفحة

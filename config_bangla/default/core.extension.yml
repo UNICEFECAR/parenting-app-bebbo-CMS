@@ -33,6 +33,7 @@ module:
   entity_share: 0
   entity_share_async: 0
   entity_share_client: 0
+  entity_share_diff: 0
   entity_share_server: 0
   feeds: 0
   feeds_tamper: 0

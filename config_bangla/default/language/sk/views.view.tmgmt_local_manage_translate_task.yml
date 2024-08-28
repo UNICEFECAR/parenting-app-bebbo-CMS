@@ -1,218 +1,37 @@
 display:
-  default:
-    display_options:
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Zoradiť podľa'
-          sort_asc_label: Vzostupne
-          sort_desc_label: Zostupne
-      pager:
-        options:
-          tags:
-            previous: '‹ Predchádzajúci'
-            next: Ďalej
-            first: '« Prvý'
-            last: Koniec
-          expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
-      fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        title:
-          label: Názov
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
   assigned:
-    display_title: Pridelené
     display_options:
-      menu:
-        title: Pridelené
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
         operations:
           label: Operácie
-      filters:
-        source_language:
-          expose:
-            label: 'Zdrojový jazyk'
-        uid:
-          expose:
-            label: Poskytovateľ
-        title:
-          expose:
-            label: Názov
   closed:
-    display_title: Uzavreté
     display_options:
-      menu:
-        title: Uzavreté
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
         created:
-          label: Vytvorené
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
+          label: Created
         operations:
           label: Operácie
-      filters:
-        source_language:
-          expose:
-            label: 'Zdrojový jazyk'
-        uid:
-          expose:
-            label: Poskytovateľ
-        title:
-          expose:
-            label: Názov
   completed:
-    display_title: Ukončená
     display_options:
-      menu:
-        title: Ukončená
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
         created:
-          label: Vytvorené
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
+          label: Created
         operations:
           label: Operácie
-      filters:
-        source_language:
-          expose:
-            label: 'Zdrojový jazyk'
-        uid:
-          expose:
-            label: Poskytovateľ
-        title:
-          expose:
-            label: Názov
   pending:
-    display_title: Čakajúce
     display_options:
-      menu:
-        title: Čakajúce
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
         operations:
           label: Operácie
-      filters:
-        source_language:
-          expose:
-            label: 'Zdrojový jazyk'
-        uid:
-          expose:
-            label: Poskytovateľ
-        title:
-          expose:
-            label: Názov
   rejected:
     display_options:
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
         created:
-          label: Vytvorené
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
+          label: Created
         operations:
           label: Operácie
-      filters:
-        source_language:
-          expose:
-            label: 'Zdrojový jazyk'
-        uid:
-          expose:
-            label: Poskytovateľ
-        title:
-          expose:
-            label: Názov
   unassigned:
     display_options:
       fields:
-        tmgmt_local_task_bulk_form:
-          label: 'Hromadná aktualizácia'
-          action_title: 'S výberom'
-        status:
-          label: Stav
-        title:
-          label: Názov
-        source_language:
-          label: Od
-        target_language:
-          label: Komu
-        word_count:
-          label: Slov
-        item_count:
-          label: Položky
         operations:
           label: Operácie

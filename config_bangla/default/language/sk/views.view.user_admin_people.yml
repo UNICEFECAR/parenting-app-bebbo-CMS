@@ -1,73 +1,7 @@
-label: Používatelia
-description: 'Nájsť a spravovať ľudí, ktorí sú aktívni na vašich stránkach.'
 display:
   default:
     display_title: Predvolené
     display_options:
-      title: Používatelia
       fields:
-        user_bulk_form:
-          label: 'Hromadná aktualizácia'
-        name:
-          label: 'Používateľské meno'
-        status:
-          label: Stav
-          settings:
-            format_custom_false: Blokovaný
-            format_custom_true: Aktívny
-        roles_target_id:
-          label: 'Kategórie používateľov'
-        created:
-          label: 'Členom už'
-        access:
-          label: 'Posledný prístup'
         operations:
           label: Operácie
-      pager:
-        options:
-          tags:
-            next: Ďalej
-            previous: '‹ Predchádzajúci'
-            first: '« Prvý'
-            last: Koniec
-          expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Zoradiť podľa'
-          sort_asc_label: Vzostupne
-          sort_desc_label: Zostupne
-      empty:
-        area_text_custom:
-          content: 'Nie sú dostupný žiadni používatelia.'
-      filters:
-        combine:
-          expose:
-            label: 'Meno alebo email obsahujú'
-        status:
-          group_info:
-            label: Stav
-            group_items:
-              1:
-                title: Aktívny
-              2:
-                title: Blokovaný
-        roles_target_id:
-          expose:
-            label: 'Kategória používateľov'
-        permission:
-          expose:
-            label: Oprávnenie
-      use_more_text: viac
-  page_1:
-    display_title: Stránka
-    display_options:
-      menu:
-        title: Zoznam
-        description: 'Nájsť a spravovať ľudí, ktorí sú aktívni na vašich stránkach.'
-      tab_options:
-        title: Používatelia
-        description: 'Spravovať používateľské účty, kategórie používateľov a oprávnení.'

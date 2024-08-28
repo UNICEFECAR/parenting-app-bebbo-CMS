@@ -2,7 +2,6 @@ label: 'Custom block library'
 description: 'Find and manage custom blocks.'
 display:
   default:
-    display_title: Default
     display_options:
       title: 'Custom block library'
       fields:

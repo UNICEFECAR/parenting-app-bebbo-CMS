@@ -2,11 +2,5 @@ display:
   default:
     display_options:
       fields:
-        state:
-          label: Status
         operations:
           label: Operațiuni
-      filters:
-        state:
-          expose:
-            label: Status

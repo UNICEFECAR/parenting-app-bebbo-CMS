@@ -1,27 +1,9 @@
 display:
   default:
-    display_title: الرئيسي
     display_options:
-      exposed_form:
-        options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
       fields:
         status:
-          label: الحالة
-        label:
-          label: التسمية
+          label: Status
         item_type:
           label: النوع
         operations:
@@ -29,6 +11,6 @@ display:
       arguments:
         tltid:
           exception:
-            title: الكل
+            title: All
   block_1:
-    display_title: الصندوق
+    display_title: Block

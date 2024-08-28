@@ -4,9 +4,8 @@ display:
       fields:
         type:
           label: টাইপ
-        target_language:
-          label: বরাবর
-        tags_count:
-          label: ট্যাগ
         operations:
           label: কার্যাবলী
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -2,8 +2,6 @@ display:
   default:
     display_options:
       fields:
-        state:
-          label: Состояние
         type:
           label: Тип
         operations:

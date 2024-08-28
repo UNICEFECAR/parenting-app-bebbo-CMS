@@ -1,12 +1,7 @@
-label: Мультимедиа
 display:
   default:
-    display_title: Default
     display_options:
-      title: Мультимедиа
       fields:
-        thumbnail__target_id:
-          label: Миниатюра
         bundle:
           label: Тип
         operations:
@@ -18,8 +13,3 @@ display:
         bundle:
           expose:
             label: Тип
-  media_page_list:
-    display_title: Мультимедиа
-    display_options:
-      menu:
-        title: Мультимедиа

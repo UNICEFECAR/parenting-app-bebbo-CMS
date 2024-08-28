@@ -1,48 +1,15 @@
 display:
   default:
-    display_title: 'Ana (master)'
     display_options:
-      exposed_form:
-        options:
-          submit_button: Uygula
-          reset_button_label: Sıfırla
-          exposed_sorts_label: 'Sıralama anahtarı'
-          sort_asc_label: Artan
-          sort_desc_label: Azalan
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Sayfa başına öğe sayısı'
-            items_per_page_options_all_label: '- Tümü -'
-            offset_label: 'Başlangıç değeri'
-          tags:
-            previous: '‹ önceki'
-            next: 'sonraki ›'
-            first: '« ilk'
-            last: 'son »'
       fields:
         state:
           label: Eyalet
-        label:
-          label: Etiket
         type:
           label: Tip
-        tags_count:
-          label: Etiketler
-        changed:
-          label: Değişti
         operations:
           label: İşlemler
-      arguments:
-        tjid:
-          exception:
-            title: Tümü
   checkout:
     display_options:
       fields:
-        label:
-          label: Etiket
         type:
           label: Tip
-        changed:
-          label: Değişti

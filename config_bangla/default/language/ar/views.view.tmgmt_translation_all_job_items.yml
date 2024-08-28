@@ -1,54 +1,15 @@
 display:
   default:
-    display_title: الرئيسي
     display_options:
-      exposed_form:
-        options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
       fields:
-        state:
-          label: الحالة
-        label:
-          label: التسمية
         type:
           label: النوع
-        source_language:
-          label: من
         target_language:
-          label: إلى
-        word_count:
-          label: كلمة
+          label: To
         tags_count:
-          label: وسوم
-        changed:
-          label: 'تم التغير'
+          label: Tags
         operations:
           label: عمليات
-      filters:
-        state:
-          expose:
-            label: الحالات
-          group_info:
-            label: الحالة
-        job_type:
-          group_info:
-            group_items:
-              1:
-                title: طبيعي
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
-  page_1:
-    display_title: الصفحة

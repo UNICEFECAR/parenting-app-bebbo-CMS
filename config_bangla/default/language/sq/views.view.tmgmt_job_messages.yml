@@ -2,7 +2,5 @@ display:
   default:
     display_options:
       fields:
-        created:
-          label: Krijuar
         name:
           label: Emri

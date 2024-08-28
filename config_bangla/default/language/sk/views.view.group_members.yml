@@ -1,31 +1,7 @@
-label: 'Členovia skupiny'
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          submit_button: Použiť
-          exposed_sorts_label: 'Zoradiť podľa'
-          sort_asc_label: Vzostupne
-          sort_desc_label: Zostupne
-      pager:
-        options:
-          tags:
-            first: '« Prvý'
-            last: Koniec
-          expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
       fields:
-        name:
-          label: Používateľ
-        group_roles:
-          label: 'Kategórie používateľov'
-        changed:
-          label: Aktualizované
-        created:
-          label: 'Členom od'
         view_group_content:
           text: 'Manage member'
         edit_group_content:
@@ -34,13 +10,3 @@ display:
           text: 'Edit member'
         dropbutton:
           label: Operácie
-      arguments:
-        gid:
-          exception:
-            title: Všetko
-      title: Členovia
-  page_1:
-    display_title: Stránka
-    display_options:
-      menu:
-        title: Členovia

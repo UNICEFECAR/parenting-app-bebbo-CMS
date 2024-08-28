@@ -3,6 +3,6 @@ display:
     display_options:
       fields:
         created:
-          label: Создано
+          label: Created
         name:
           label: Название

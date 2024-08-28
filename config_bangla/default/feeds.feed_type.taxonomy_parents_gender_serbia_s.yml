@@ -15,7 +15,7 @@ import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'
-  directory: 'private://feeds'
+  directory: 'public://feeds'
 parser: csv
 parser_configuration:
   delimiter: ','
@@ -25,7 +25,7 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: parent_gender
-  langcode: sk
+  langcode: bn
   insert_new: 1
   update_existing: 1
   update_non_existent: _keep
@@ -51,11 +51,11 @@ mappings:
       value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: term_name
     settings:
-      language: sk
+      language: bn
     unique: {  }

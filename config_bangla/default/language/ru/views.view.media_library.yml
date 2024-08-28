@@ -1,8 +1,6 @@
 display:
   default:
-    display_title: Default
     display_options:
-      title: Мультимедиа
       filters:
         name:
           expose:
@@ -16,8 +14,6 @@ display:
   widget_table:
     display_options:
       fields:
-        thumbnail__target_id:
-          label: Миниатюра
         name:
           label: Название
       filters:

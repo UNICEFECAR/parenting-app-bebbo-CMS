@@ -5,40 +5,6 @@ display:
       fields:
         filename:
           label: İsim
-        status:
-          label: Durum
-      pager:
-        options:
-          tags:
-            next: 'Sonraki ›'
-            previous: '‹ Önceki'
-          expose:
-            items_per_page_label: 'Sayfa başına öğe sayısı'
-            items_per_page_options_all_label: '- Tümü -'
-            offset_label: 'Başlangıç değeri'
       exposed_form:
         options:
           submit_button: Süzgeç
-          reset_button_label: Sıfırla
-          exposed_sorts_label: 'Sıralama anahtarı'
-          sort_asc_label: Artan
-          sort_desc_label: Azalan
-      filters:
-        status:
-          expose:
-            label: Durum
-  page_2:
-    display_options:
-      pager:
-        options:
-          tags:
-            next: 'Sonraki ›'
-            previous: '‹ Önceki'
-          expose:
-            items_per_page_label: 'Sayfa başına öğe sayısı'
-            items_per_page_options_all_label: '- Tümü -'
-            offset_label: 'Başlangıç değeri'
-      arguments:
-        fid:
-          exception:
-            title: Tümü

@@ -2,20 +2,12 @@ display:
   default:
     display_title: الافتراضي
     display_options:
-      title: 'المتصلون الأن'
-      exposed_form:
-        options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+      title: "Who's online"
       filters:
         access:
           expose:
-            label: 'آخر وصول'
-            description: 'تحسب فترة وجود المستخدم عالخط منذ آخر عرض لصفحة.'
+            label: 'Last access'
   who_s_online_block:
-    display_title: 'المتصلون الأن'
+    display_title: "Who's online"
     display_options:
-      block_description: 'المتصلون الأن'
+      block_description: "Who's online"

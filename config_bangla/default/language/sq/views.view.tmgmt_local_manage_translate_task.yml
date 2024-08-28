@@ -12,15 +12,11 @@ display:
   closed:
     display_options:
       fields:
-        created:
-          label: Krijuar
         operations:
           label: Operacionet
   completed:
     display_options:
       fields:
-        created:
-          label: Krijuar
         operations:
           label: Operacionet
   pending:
@@ -31,8 +27,6 @@ display:
   rejected:
     display_options:
       fields:
-        created:
-          label: Krijuar
         operations:
           label: Operacionet
   unassigned:

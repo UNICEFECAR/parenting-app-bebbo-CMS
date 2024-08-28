@@ -2,14 +2,5 @@ display:
   default:
     display_options:
       fields:
-        state:
-          label: Состояние
         operations:
           label: Операции
-      filters:
-        state:
-          expose:
-            label: Состояние
-        source_language:
-          expose:
-            label: 'Исходный язык'

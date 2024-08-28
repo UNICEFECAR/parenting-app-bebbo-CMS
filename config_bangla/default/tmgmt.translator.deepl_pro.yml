@@ -8,7 +8,7 @@ name: deepl_pro
 label: 'DeepL API Pro'
 description: 'DeepL API Pro Translator service.'
 auto_accept: null
-weight: null
+weight: -6
 plugin: deepl_pro
 settings: {  }
 remote_languages_mappings: {  }

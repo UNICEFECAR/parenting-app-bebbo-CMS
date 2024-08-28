@@ -15,7 +15,7 @@ import_period: -1
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'
-  directory: 'private://feeds'
+  directory: 'public://feeds'
 parser: csv
 parser_configuration:
   delimiter: ','
@@ -25,7 +25,7 @@ processor: 'entity:node'
 processor_configuration:
   values:
     type: vaccinations
-  langcode: xk-sq
+  langcode: bn
   insert_new: 1
   update_existing: 1
   update_non_existent: _keep
@@ -51,13 +51,14 @@ mappings:
       value: id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: field_pinned_article
     map:
       target_id: pinned_article
     settings:
-      language: xk-sq
+      language: bn
       reference_by: nid
       feeds_item: guid
       autocreate: 0
+      autocreate_bundle: false

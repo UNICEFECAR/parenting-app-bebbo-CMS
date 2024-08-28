@@ -1,64 +1,50 @@
-label: المحتوى
-description: 'إيجاد وإدارة المحتوى'
+label: Content
 display:
   default:
     display_title: الافتراضي
     display_options:
-      title: المحتوى
+      title: Content
       fields:
         title:
-          label: العنوان
+          label: Title
         type:
-          label: 'نوع المحتوى'
+          label: 'Content type'
         name:
-          label: المؤلف
+          label: Author
         status:
-          label: الحالة
+          label: Status
           settings:
-            format_custom_false: 'غير منشور'
-            format_custom_true: منشور
+            format_custom_true: Published
         changed:
-          label: التحديث
+          label: Updated
         operations:
           label: عمليات
-      pager:
-        options:
-          tags:
-            next: 'التالي ›'
-            previous: '‹ السابق'
       exposed_form:
         options:
           submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
       empty:
         area_text_custom:
-          content: 'لا يوجد محتوى.'
+          content: 'No content available.'
       filters:
         title:
           expose:
-            label: العنوان
+            label: Title
         type:
           expose:
-            label: 'نوع المحتوى'
+            label: 'Content type'
         status:
           expose:
-            label: الحالة
+            label: Status
           group_info:
             group_items:
               1:
-                title: منشور
-              2:
-                title: 'غير منشور'
+                title: Published
         langcode:
           expose:
-            label: اللغة
+            label: Language
   page_1:
-    display_title: الصفحة
     display_options:
       menu:
-        title: المحتوى
+        title: Content
       tab_options:
-        title: المحتوى
+        title: Content
