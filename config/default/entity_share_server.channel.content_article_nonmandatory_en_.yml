@@ -1,13 +1,17 @@
-uuid: fb48ddb0-9af3-4a94-9c62-efdc4c1a7418
+uuid: 0eb422f9-7275-4f94-bc79-530272ec7b8f
 langcode: en
 status: true
 dependencies: {  }
-id: content_child_development_age_periods
-label: 'Content - Child Dev (EN)'
+id: content_article_nonmandatory_en_
+label: 'Content - Article nonmandatory (EN)'
 channel_entity_type: node
-channel_bundle: child_development
+channel_bundle: article
 channel_langcode: en
 channel_filters:
+  field_mandatory_content:
+    path: field_mandatory_content
+    operator: '='
+    value: {  }
   status:
     path: status
     operator: '='

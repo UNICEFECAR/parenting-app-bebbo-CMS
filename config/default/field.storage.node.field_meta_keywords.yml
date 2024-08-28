@@ -1,14 +1,15 @@
-uuid: 17d80f68-107d-4ac5-80ea-e9239418a51e
+uuid: 960c5b0c-e2df-419c-a454-ab01efd29d58
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_suggest_as_daily_reads
-field_name: field_suggest_as_daily_reads
+id: node.field_meta_keywords
+field_name: field_meta_keywords
 entity_type: node
-type: boolean
-settings: {  }
+type: string_long
+settings:
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

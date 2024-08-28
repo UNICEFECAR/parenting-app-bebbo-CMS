@@ -24,7 +24,7 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: chatbot_child_age
-  langcode: sk
+  langcode: tr
   insert_new: 1
   update_existing: 1
   update_non_existent: _keep
@@ -50,11 +50,11 @@ mappings:
       value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: term_name
     settings:
-      language: sk
+      language: tr
     unique: {  }

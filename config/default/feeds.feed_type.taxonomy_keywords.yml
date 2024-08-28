@@ -65,10 +65,10 @@ mappings:
   -
     target: tid
     map:
-      value: term_id3
+      value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:

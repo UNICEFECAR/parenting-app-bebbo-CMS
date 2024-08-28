@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
+    - field.field.node.article.field_meta_keywords
     - field.field.node.article.field_parent_gender
     - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
@@ -21,7 +22,6 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
-    - field.field.node.article.field_suggest_as_daily_reads
     - node.type.article
   module:
     - text
@@ -136,6 +136,13 @@ content:
     third_party_settings: {  }
     weight: 17
     region: content
+  field_meta_keywords:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 20
+    region: content
   field_parent_gender:
     type: entity_reference_label
     label: above
@@ -184,16 +191,6 @@ content:
       link: true
     third_party_settings: {  }
     weight: 7
-    region: content
-  field_suggest_as_daily_reads:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 18
     region: content
   links:
     settings: {  }

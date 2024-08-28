@@ -1,18 +1,13 @@
-uuid: ed8cd18b-e9c0-4e97-8830-6867671c141c
+uuid: 0ea27ea5-9b2e-4b89-966a-aab7d2b984a7
 langcode: en
 status: true
 dependencies: {  }
-id: content_article_en
-label: 'Content - Article (EN)'
-channel_entity_type: node
-channel_bundle: article
+id: taxonomy_chatbot_subcategory_en_
+label: 'Taxonomy - Chatbot Subcategory (EN)'
+channel_entity_type: taxonomy_term
+channel_bundle: chatbot_subcategory
 channel_langcode: en
-channel_filters:
-  status:
-    path: status
-    operator: '='
-    value:
-      - '1'
+channel_filters: null
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null

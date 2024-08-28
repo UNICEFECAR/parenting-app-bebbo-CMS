@@ -19,9 +19,10 @@ settings:
   label_display: '0'
   provider: lang_dropdown
   showall: false
+  hide_only_one: true
   tohome: false
   width: 165
-  display: 1
+  display: 0
   widget: 0
   msdropdown:
     visible_rows: 5
