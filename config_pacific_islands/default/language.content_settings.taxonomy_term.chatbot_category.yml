@@ -1,0 +1,18 @@
+uuid: 510c8d97-112a-4ead-a9d9-7236f1346ded
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.chatbot_category
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.chatbot_category
+target_entity_type_id: taxonomy_term
+target_bundle: chatbot_category
+default_langcode: current_interface
+language_alterable: true

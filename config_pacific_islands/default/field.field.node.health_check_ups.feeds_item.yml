@@ -1,0 +1,23 @@
+uuid: 5a5f03ba-62ff-4f0e-9ef0-cd0b882db772
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.feeds_item
+    - node.type.health_check_ups
+  module:
+    - feeds
+id: node.health_check_ups.feeds_item
+field_name: feeds_item
+entity_type: node
+bundle: health_check_ups
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

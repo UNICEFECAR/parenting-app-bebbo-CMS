@@ -1,0 +1,11 @@
+label: 'Diller ekleniyor'
+tips:
+  language-add-overview:
+    label: 'Diller ekleniyor'
+    body: '<p>Site için ortak diller bu bölümden eklenebilir.</p><p>Aradığınız dil yoksa özel bir dil ekleyebilirsiniz.</p>'
+  language-add-choose:
+    label: 'Dil seçiniz'
+    body: '<p>Listeden bir dil ya da listenin sonundan "Özel dil..." seçeneğini seçin.</p><p>Dil seçiminizi tamamlamak için "Dil Ekle" düğmesine tıklayın.</p><p>Özel bir dil eklerken, dil adı, dil kodu ve dil yazım yönünü belirtebileceğiniz bir form açılır.</p>'
+  language-add-continue:
+    label: 'Devam ediliyor'
+    body: '<p>"Dil ekleme" özelliği hakkında özet bilgileri aldığınıza göre şimdi şu işlemleri yapabilirsiniz:<ul><li>Dil ekleme</li><li>Özel dil ekleme</li><li><a href="[site:url]/admin/config/regional/language">Ayarlanmış dilleri görüntüleme</a></li></ul></p>'
