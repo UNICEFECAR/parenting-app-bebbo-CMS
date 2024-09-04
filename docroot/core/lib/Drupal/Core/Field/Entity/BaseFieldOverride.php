@@ -114,49 +114,56 @@ class BaseFieldOverride extends FieldConfigBase {
    * {@inheritdoc}
    */
   public function getFieldStorageDefinition() {
-    return $this->getBaseFieldDefinition()->getFieldStorageDefinition();
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->getFieldStorageDefinition() : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isDisplayConfigurable($context) {
-    return $this->getBaseFieldDefinition()->isDisplayConfigurable($context);
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->isDisplayConfigurable($context) : FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDisplayOptions($display_context) {
-    return $this->getBaseFieldDefinition()->getDisplayOptions($display_context);
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->getDisplayOptions($display_context) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isReadOnly() {
-    return $this->getBaseFieldDefinition()->isReadOnly();
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->isReadOnly() : TRUE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isComputed() {
-    return $this->getBaseFieldDefinition()->isComputed();
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->isComputed() : FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getClass() {
-    return $this->getBaseFieldDefinition()->getClass();
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->getClass() : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getUniqueIdentifier() {
-    return $this->getBaseFieldDefinition()->getUniqueIdentifier();
+    $base_field_definition = $this->getBaseFieldDefinition();
+    return $base_field_definition ? $base_field_definition->getUniqueIdentifier() : NULL;
   }
 
   /**
@@ -167,7 +174,9 @@ class BaseFieldOverride extends FieldConfigBase {
   protected function getBaseFieldDefinition() {
     if (!isset($this->baseFieldDefinition)) {
       $fields = \Drupal::service('entity_field.manager')->getBaseFieldDefinitions($this->entity_type);
-      $this->baseFieldDefinition = $fields[$this->getName()];
+      if (!empty($fields[$this->getName()])) {
+        $this->baseFieldDefinition = $fields[$this->getName()];
+      }
     }
     return $this->baseFieldDefinition;
   }
@@ -207,7 +216,10 @@ class BaseFieldOverride extends FieldConfigBase {
       $previous_definition = $this->original;
     }
     // Notify the entity storage.
-    $this->entityTypeManager()->getStorage($this->getTargetEntityTypeId())->onFieldDefinitionUpdate($this, $previous_definition);
+    if ($previous_definition) {
+      // Notify the entity storage.
+      $this->entityTypeManager()->getStorage($this->getTargetEntityTypeId())->onFieldDefinitionUpdate($this, $previous_definition);
+    }
   }
 
   /**
@@ -224,7 +236,9 @@ class BaseFieldOverride extends FieldConfigBase {
       // @todo This assumes that there isn't a non-config-based override that
       //   we're returning to, but that might not be the case:
       //   https://www.drupal.org/node/2321071.
-      $entity_type_manager->getStorage($field_override->getTargetEntityTypeId())->onFieldDefinitionUpdate($field_override->getBaseFieldDefinition(), $field_override);
+      if ($field_override->getBaseFieldDefinition()) {
+        $entity_type_manager->getStorage($field_override->getTargetEntityTypeId())->onFieldDefinitionUpdate($field_override->getBaseFieldDefinition(), $field_override);
+      }
     }
   }
 
