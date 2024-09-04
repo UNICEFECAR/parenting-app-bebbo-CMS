@@ -9,3 +9,11 @@ TypeError: implode(): Argument must be of type array
 Source: https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch
 
 
+View vocabulery permission issue
+Source: https://www.drupal.org/files/issues/2023-10-26/3114365-37.patch
+
+
+core fixes
+Source: https://www.drupal.org/files/issues/2019-12-24/2321071-39.patch
+
+

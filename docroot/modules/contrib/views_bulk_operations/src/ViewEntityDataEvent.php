@@ -8,40 +8,37 @@ use Drupal\views\ViewExecutable;
 /**
  * Defines Views Bulk Operations event type.
  */
-class ViewsBulkOperationsEvent extends Event {
+class ViewEntityDataEvent extends Event {
 
-  public const NAME = 'views_bulk_operations.view_data';
+  public const NAME = 'views_bulk_operations.view_entity_data';
 
   /**
    * The provider of the current view.
+   *
+   * @var string
    */
-  protected string $provider;
+  protected $provider;
 
   /**
    * The views data of the current view.
    *
    * @var array
    */
-  protected array $viewData;
+  protected $viewData;
 
   /**
    * The current view object.
+   *
+   * @var \Drupal\views\ViewExecutable
    */
-  protected ViewExecutable $view;
+  protected $view;
 
   /**
-   * IDs of entity types returned by the view.
+   * Entity data array - bulk form keys and labels keyed by row index.
    *
-   * @var array
+   * @var array<string, string>
    */
-  protected array $entityTypeIds = [];
-
-  /**
-   * Row entity getter information.
-   *
-   * @var array
-   */
-  protected array $entityGetter = [];
+  protected array $viewEntityData = [];
 
   /**
    * Object constructor.
@@ -90,46 +87,23 @@ class ViewsBulkOperationsEvent extends Event {
   }
 
   /**
-   * Get entity type IDs displayed by the current view.
+   * Get view entity data.
    *
-   * @return array
-   *   Entity type IDs.
+   * @return array<string, string>
+   *   See ViewsBulkOperationsViewDataInterface::getViewEntityData().
    */
-  public function getEntityTypeIds(): array {
-    return $this->entityTypeIds;
+  public function getViewEntityData(): array {
+    return $this->viewEntityData;
   }
 
   /**
-   * Get entity getter callable.
+   * Set view entity data.
    *
-   * @return array
-   *   Entity getter information.
+   * @param array<string, string> $data
+   *   See ViewsBulkOperationsViewDataInterface::getViewEntityData().
    */
-  public function getEntityGetter(): array {
-    return $this->entityGetter;
-  }
-
-  /**
-   * Set entity type IDs.
-   *
-   * @param array $entityTypeIds
-   *   Entity type IDs.
-   */
-  public function setEntityTypeIds(array $entityTypeIds): void {
-    $this->entityTypeIds = $entityTypeIds;
-  }
-
-  /**
-   * Set entity getter callable.
-   *
-   * @param array $entityGetter
-   *   Entity getter information.
-   */
-  public function setEntityGetter(array $entityGetter): void {
-    if (!isset($entityGetter['callable'])) {
-      throw new \Exception('Views Bulk Operations entity getter callable is not defined.');
-    }
-    $this->entityGetter = $entityGetter;
+  public function setViewEntityData(array $data) {
+    $this->viewEntityData = $data;
   }
 
 }
