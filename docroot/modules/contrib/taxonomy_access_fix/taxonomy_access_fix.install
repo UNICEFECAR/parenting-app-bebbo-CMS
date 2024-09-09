@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Install, uninstall and update hooks for taxonomy_access_fix module.
+ */
+
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function taxonomy_access_fix_update_last_removed() {
+  return 8202;
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function taxonomy_access_fix_update_dependencies() {
+  $dependencies = [];
+
+  // If a role still contains non-existing permissions during a Drupal 9 to 10
+  // update, the user update hook must run first. If we're still on Drupal 9,
+  // don't add these dependencies in order to not block updates.
+  if (function_exists('user_update_10000')) {
+    $dependencies['taxonomy_access_fix'][9401] = [
+      'user' => 10000,
+    ];
+    $dependencies['taxonomy_access_fix'][9402] = [
+      'user' => 10000,
+    ];
+  }
+
+  return $dependencies;
+}
+
+/**
+ * Populate 'VOCABULARY: View published term names' permission.
+ */
+function taxonomy_access_fix_update_9401() {
+  $vocabularies = Vocabulary::loadMultiple();
+
+  foreach (Role::loadMultiple() as $role) {
+    foreach ($vocabularies as $vocabulary) {
+      if (!$role->hasPermission('view terms in ' . $vocabulary->id())) {
+        continue;
+      }
+      $role
+        ->grantPermission('view term names in ' . $vocabulary->id())
+        ->save();
+    }
+  }
+  return t('The new per-vocabulary permission %new_permission_label has been granted to roles with permission %old_permission_label, which was required to perform this operation previously. You may want to review the updated permissions.', [
+    '%new_permission_label' => t('%vocabulary: View published term names', [
+      '%vocabulary' => t('Vocabulary label'),
+    ]),
+    '%old_permission_label' => t('%vocabulary: View published terms', [
+      '%vocabulary' => t('Vocabulary label'),
+    ]),
+  ]);
+}
+
+/**
+ * Populate 'VOCABULARY: Select published terms' permission.
+ */
+function taxonomy_access_fix_update_9402() {
+  $vocabularies = Vocabulary::loadMultiple();
+
+  foreach (Role::loadMultiple() as $role) {
+    foreach ($vocabularies as $vocabulary) {
+      if (!$role->hasPermission('view terms in ' . $vocabulary->id())) {
+        continue;
+      }
+      $role
+        ->grantPermission('select terms in ' . $vocabulary->id())
+        ->save();
+    }
+  }
+
+  return t('The new per-vocabulary permission %new_permission_label has been granted to roles with permission %old_permission_label, which was required to perform this operation previously. You may want to review the updated permissions.', [
+    '%new_permission_label' => t('%vocabulary: Select published terms', [
+      '%vocabulary' => t('Vocabulary label'),
+    ]),
+    '%old_permission_label' => t('%vocabulary: View published terms', [
+      '%vocabulary' => t('Vocabulary label'),
+    ]),
+    '@module_name' => t('Taxonomy Access Fix'),
+  ]);
+}
