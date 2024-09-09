@@ -1,0 +1,2 @@
+permission_callbacks:
+  - \Drupal\taxonomy_permissions\TaxonomyPermissions::permissions

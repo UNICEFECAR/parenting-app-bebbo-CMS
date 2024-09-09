@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the taxonomy_permissions module.
+ */
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
+
+/**
+ * Implements hook_install().
+ */
+function taxonomy_permissions_install() {
+  // Give 'view terms' access to all vocabularies to all users to avoid
+  // surprises upon installation.
+  $perms = [];
+  $vocabularies = Vocabulary::loadMultiple();
+  foreach ($vocabularies as $id => $vocabulary) {
+    $perms[] = 'view terms in ' . $id;
+  }
+  if ($perms) {
+    user_role_grant_permissions(AccountInterface::ANONYMOUS_ROLE, $perms);
+    user_role_grant_permissions(AccountInterface::AUTHENTICATED_ROLE, $perms);
+  }
+}

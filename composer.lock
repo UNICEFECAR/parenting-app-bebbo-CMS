@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b308fc50b34741097969b5cc3711da8",
+    "content-hash": "352dff947de6b1f8eefa33f645bfd54e",
     "packages": [
         {
             "name": "acquia/drupal-spec-tool",
@@ -5917,6 +5917,54 @@
             "homepage": "https://www.drupal.org/project/taxonomy_access_fix",
             "support": {
                 "source": "https://git.drupalcode.org/project/taxonomy_access_fix"
+            }
+        },
+        {
+            "name": "drupal/taxonomy_permissions",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/taxonomy_permissions.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/taxonomy_permissions-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "c52d5ae3ea7d6a3b5fe607e960e7abf7f412aefb"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1722859568",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "leymannx",
+                    "homepage": "https://www.drupal.org/user/2482808"
+                },
+                {
+                    "name": "salvis",
+                    "homepage": "https://www.drupal.org/user/82964"
+                }
+            ],
+            "description": "Adds the missing 'view' permissions to the Taxonomy module.",
+            "homepage": "https://www.drupal.org/project/taxonomy_permissions",
+            "support": {
+                "source": "https://git.drupalcode.org/project/taxonomy_permissions"
             }
         },
         {
