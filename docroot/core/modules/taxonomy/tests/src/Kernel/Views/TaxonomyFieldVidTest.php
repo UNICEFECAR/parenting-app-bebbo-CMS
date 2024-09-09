@@ -4,8 +4,8 @@ namespace Drupal\Tests\taxonomy\Kernel\Views;
 
 use Drupal\Core\Render\RenderContext;
 use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
+use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
-use Drupal\user\Entity\User;
 use Drupal\views\Tests\ViewTestData;
 use Drupal\views\Views;
 use Drupal\taxonomy\Entity\Vocabulary;
@@ -18,6 +18,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 class TaxonomyFieldVidTest extends ViewsKernelTestBase {
 
   use TaxonomyTestTrait;
+  use UserCreationTrait;
 
   /**
    * Modules to enable.
@@ -72,12 +73,6 @@ class TaxonomyFieldVidTest extends ViewsKernelTestBase {
     $term = $this->createTerm($vocabulary2);
     $this->terms[$term->id()] = $term;
 
-    // Create user 1 and set is as the logged in user, so that the logged in
-    // user has the correct permissions to view the vocabulary name.
-    $this->adminUser = User::create(['name' => $this->randomString()]);
-    $this->adminUser->save();
-    $this->container->get('current_user')->setAccount($this->adminUser);
-
     ViewTestData::createTestViews(static::class, ['taxonomy_test_views']);
   }
 
@@ -90,6 +85,9 @@ class TaxonomyFieldVidTest extends ViewsKernelTestBase {
 
     $view = Views::getView('test_taxonomy_vid_field');
     $this->executeView($view);
+
+    // Test with user who is an admin.
+    $this->setUpCurrentUser([], [], TRUE);
 
     $actual = $renderer->executeInRenderContext(new RenderContext(), function () use ($view) {
       return $view->field['vid']->advancedRender($view->result[0]);
@@ -116,6 +114,26 @@ class TaxonomyFieldVidTest extends ViewsKernelTestBase {
 
     $this->assertEquals($expected, $actual, 'Displayed vocabulary name should match that loaded from the term.');
     $this->assertEquals('bbb', $vocabulary->id(), 'First result should be vocabulary "bbb", due to DESC sorting.');
+
+    // Test with user without 'access content' permission.
+    $this->setUpCurrentUser([], []);
+
+    $actual = $renderer->executeInRenderContext(new RenderContext(), function () use ($view) {
+      return $view->field['vid']->advancedRender($view->result[0]);
+    });
+    $expected = '';
+
+    $this->assertEquals($expected, $actual);
+
+    // Test with user with 'access content' permission.
+    $this->setUpCurrentUser([], ['access content']);
+
+    $actual = $renderer->executeInRenderContext(new RenderContext(), function () use ($view) {
+      return $view->field['vid']->advancedRender($view->result[0]);
+    });
+    $expected = $vocabulary->get('name');
+
+    $this->assertEquals($expected, $actual);
   }
 
 }
