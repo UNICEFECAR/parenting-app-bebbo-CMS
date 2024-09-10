@@ -204,7 +204,9 @@ class Role extends ConfigEntityBase implements RoleInterface {
     $valid_permissions = array_intersect($this->permissions, array_keys($permission_definitions));
     $invalid_permissions = array_diff($this->permissions, $valid_permissions);
     if (!empty($invalid_permissions)) {
-      throw new \RuntimeException('Adding non-existent permissions to a role is not allowed. The incorrect permissions are "' . implode('", "', $invalid_permissions) . '".');
+      foreach ($invalid_permissions as $invalid_permission) {
+        $this->revokePermission($invalid_permission);
+      }
     }
     foreach ($valid_permissions as $permission) {
       // Depend on the module that is providing this permissions.
