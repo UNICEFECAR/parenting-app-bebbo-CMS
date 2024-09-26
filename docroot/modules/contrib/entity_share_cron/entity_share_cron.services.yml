@@ -1,0 +1,12 @@
+services:
+  logger.channel.entity_share_cron:
+    parent: logger.channel_base
+    arguments: ['entity_share_cron']
+
+  entity_share_cron:
+    class: Drupal\entity_share_cron\EntityShareCronService
+    arguments:
+      - '@config.factory'
+      - '@queue'
+      - '@entity_type.manager'
+      - '@entity_share_client.import_service'

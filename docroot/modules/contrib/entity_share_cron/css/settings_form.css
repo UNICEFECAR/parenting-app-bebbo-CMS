@@ -1,0 +1,8 @@
+.channels-container {
+  padding-left: 20px;
+}
+
+.channel-operations .form-item {
+  display: inline-block;
+  margin: 0 15px 0 0;
+}

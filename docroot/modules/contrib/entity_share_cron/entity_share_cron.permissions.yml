@@ -1,0 +1,4 @@
+administer entity_share_cron module:
+  title: 'Administer Entity Share Cron module'
+  description: 'Allows to view and edit Entity Share Cron module settings.'
+  restrict access: true

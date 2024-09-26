@@ -384,13 +384,16 @@ abstract class WidgetBase extends PluginSettingsBase implements WidgetInterface,
 
       // Let the widget massage the submitted values.
       $values = $this->massageFormValues($values, $form, $form_state);
+      $field_state = static::getWidgetState($form['#parents'], $field_name, $form_state);
 
       // Assign the values and remove the empty ones.
-      $items->setValue($values);
-      $items->filterEmptyItems();
+      $widget = NestedArray::getValue($form, $field_state['array_parents']);
+      if (Element::isVisibleElement($widget) || $items->getFieldDefinition()->getName() == 'status') {
+        $items->setValue($values);
+        $items->filterEmptyItems();
+      }
 
       // Put delta mapping in $form_state, so that flagErrors() can use it.
-      $field_state = static::getWidgetState($form['#parents'], $field_name, $form_state);
       foreach ($items as $delta => $item) {
         $field_state['original_deltas'][$delta] = $item->_original_delta ?? $delta;
         unset($item->_original_delta, $item->_weight);

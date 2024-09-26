@@ -1,0 +1,51 @@
+entity_share_cron.settings:
+  type: config_object
+  mapping:
+    cron_interval:
+      type: integer
+      label: 'Interval between executions'
+    page_limit:
+      type: integer
+      label: 'Maximum number of pages imported'
+    remotes:
+      type: sequence
+      label: 'Remotes'
+      nullable: true
+      sequence:
+        type: entity_share_cron.remote
+        label: 'Remote'
+
+entity_share_cron.remote:
+  type: mapping
+  label: 'Remote'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enabled'
+    channels:
+      type: sequence
+      label: 'Channels'
+      sequence:
+        type: entity_share_cron.channel
+        label: 'Channel'
+
+entity_share_cron.channel:
+  type: mapping
+  label: 'Channel'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enabled'
+    import_config:
+      type: string
+      label: 'Import config ID'
+    operations:
+      type: mapping
+      label: 'Operations'
+      mapping:
+        create:
+          type: boolean
+          label: 'Create'
+        update:
+          type: boolean
+          label: 'Update'

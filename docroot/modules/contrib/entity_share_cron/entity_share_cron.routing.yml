@@ -1,0 +1,7 @@
+entity_share_cron.settings:
+  path: '/admin/config/services/entity_share/cron'
+  defaults:
+    _form: '\Drupal\entity_share_cron\Form\SettingsForm'
+    _title: 'Entity Share Cron settings'
+  requirements:
+    _permission: 'administer entity_share_cron module'

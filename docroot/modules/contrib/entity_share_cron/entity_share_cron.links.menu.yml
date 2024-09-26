@@ -1,0 +1,5 @@
+entity_share_cron.admin.config.services.settings:
+  title: 'Cron'
+  description: 'Entity Share Cron settings.'
+  route_name: entity_share_cron.settings
+  parent: entity_share.admin_config_page

@@ -13,7 +13,15 @@ View vocabulery permission issue
 Source: https://www.drupal.org/files/issues/2023-10-26/3114365-37.patch
 
 
-core fixes
+fieldDefinitionUpdate  must be of type null given fixes
 Source: https://www.drupal.org/files/issues/2019-12-24/2321071-39.patch
+
+
+view vocabulery issue fixes for non-existent permissions to a role is not allowed
+Source: https://www.drupal.org/files/issues/2023-09-14/3358586-11.patch
+
+
+Field translated field issue fixed
+Source: https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch
 
 

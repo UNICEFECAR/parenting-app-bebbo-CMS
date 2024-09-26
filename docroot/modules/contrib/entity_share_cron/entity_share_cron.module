@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the Entity Share Cron module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\entity_share_cron\HookHandler\CronHookHandler;
+
+/**
+ * Implements hook_cron().
+ */
+function entity_share_cron_cron(): void {
+  \Drupal::service('class_resolver')
+    ->getInstanceFromDefinition(CronHookHandler::class)
+    ->process();
+}

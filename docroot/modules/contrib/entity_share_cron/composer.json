@@ -1,0 +1,18 @@
+{
+    "name": "drupal/entity_share_cron",
+    "description": "Synchronizes entities on Cron execution.",
+    "license": "GPL-2.0-or-later",
+    "type": "drupal-module",
+    "require": {
+        "drupal/entity_share": "^3.0"
+    },
+    "require-dev": {
+        "drupal/block_field": "~1.0",
+        "drupal/dynamic_entity_reference": "~3.0 || ~4.0",
+        "drupal/field_group": "~3.0",
+        "drupal/jsonapi_extras": "~3.14",
+        "drupal/metatag": "~1.0",
+        "drupal/paragraphs": "~1.0",
+        "drupal/pathauto": "~1.0"
+    }
+}

@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Entity Share Cron module.
+ */
+
+declare(strict_types = 1);
+
+use Drupal\entity_share_cron\EntityShareCronServiceInterface;
+use Drupal\entity_share_cron\Form\SettingsForm;
+use Drupal\entity_share_cron\HookHandler\CronHookHandler;
+
+/**
+ * Implements hook_install().
+ */
+function entity_share_cron_install(): void {
+  // Initializes the queue.
+  $queue_name = EntityShareCronServiceInterface::PENDING_QUEUE_NAME;
+  \Drupal::queue($queue_name)->createQueue();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function entity_share_cron_uninstall(): void {
+  \Drupal::state()->delete(CronHookHandler::STATE_ID);
+
+  $queue = \Drupal::queue(EntityShareCronServiceInterface::PENDING_QUEUE_NAME);
+  $queue->deleteQueue();
+}
+
+/**
+ * Set enabled operations for channels.
+ */
+function entity_share_cron_update_8101(): void {
+  $config = \Drupal::configFactory()->getEditable('entity_share_cron.settings');
+
+  // Enables both operations (create and update) for each channel.
+  /** @var array $remotes */
+  $remotes = $config->get('remotes');
+  foreach ($remotes as $remote_id => $remote_config) {
+    $channels = $remote_config['channels'] ?? [];
+    foreach (array_keys($channels) as $channel_id) {
+      $remotes[$remote_id]['channels'][$channel_id]['operations'] = [
+        'create' => TRUE,
+        'update' => TRUE,
+      ];
+    }
+  }
+  $config->set('remotes', $remotes)
+    ->save();
+}
+
+/**
+ * Switch existing configuration from config to state.
+ */
+function entity_share_cron_update_8201(): void {
+  $config = \Drupal::configFactory()->getEditable('entity_share_cron.settings');
+  $state = \Drupal::state();
+
+  $old_last_run = $config->get('cron_last_run');
+  $state->set(CronHookHandler::STATE_ID, $old_last_run);
+  $config->clear('cron_last_run')->save();
+}
+
+/**
+ * Clear the queue and the last cron run and update config.
+ */
+function entity_share_cron_update_8301(): void {
+  \Drupal::state()->delete(CronHookHandler::STATE_ID);
+  $queue = \Drupal::queue(EntityShareCronServiceInterface::PENDING_QUEUE_NAME);
+  $queue->deleteQueue();
+
+  $config = \Drupal::configFactory()->getEditable('entity_share_cron.settings');
+  $config->set('page_limit', SettingsForm::DEFAULT_PAGE_LIMIT);
+  /** @var array $remotes */
+  $remotes = $config->get('remotes');
+  foreach ($remotes as $remote_id => $remote_config) {
+    $channels = $remote_config['channels'] ?? [];
+    foreach (array_keys($channels) as $channel_id) {
+      // Use the default import config.
+      $remotes[$remote_id]['channels'][$channel_id]['import_config'] = 'default';
+      // Remove url and url_uuid keys.
+      unset($remotes[$remote_id]['channels'][$channel_id]['url']);
+      unset($remotes[$remote_id]['channels'][$channel_id]['url_uuid']);
+    }
+  }
+  $config->set('remotes', $remotes)
+    ->save();
+}

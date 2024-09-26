@@ -1,0 +1,13 @@
+name: 'Entity Share Cron'
+type: module
+description: 'Synchronizes entities on Cron execution.'
+core_version_requirement: ^9 || ^10
+package: 'Web services'
+configure: entity_share_cron.settings
+dependencies:
+  - entity_share:entity_share_client
+
+# Information added by Drupal.org packaging script on 2023-03-23
+version: '3.0.2'
+project: 'entity_share_cron'
+datestamp: 1679587423

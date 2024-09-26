@@ -163,7 +163,8 @@
                 "TypeError: implode(): Argument must be of type array":"https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch",
                 "View vocabulery permission issue": "https://www.drupal.org/files/issues/2023-10-26/3114365-37.patch",
                 "fieldDefinitionUpdate  must be of type null given fixes":"https://www.drupal.org/files/issues/2019-12-24/2321071-39.patch",
-                "view vocabulery issue fixes for non-existent permissions to a role is not allowed": "https://www.drupal.org/files/issues/2023-09-14/3358586-11.patch"
+                "view vocabulery issue fixes for non-existent permissions to a role is not allowed": "https://www.drupal.org/files/issues/2023-09-14/3358586-11.patch",
+                "Field translated field issue fixed": "https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch"
             },
             "drupal/video_embed_field": {
                 "Fixed the issue -Mapping for Feeds module missing": "https://www.drupal.org/files/issues/2019-09-02/3056385-feeds-mapping-missing-5.patch"
