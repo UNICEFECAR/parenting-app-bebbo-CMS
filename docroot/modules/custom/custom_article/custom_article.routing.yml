@@ -1,0 +1,15 @@
+custom_article.form:
+  path: '/admin/content/copy-translated-field'
+  defaults:
+    _form: '\Drupal\custom_article\Form\CopyTranslatedField'
+    _title: 'Copy Translated Field'
+  requirements:
+    _permission: 'administer site configuration'
+custom_article.lowercase_keywords:
+  path: '/admin/content/lowercase-keywords'
+  defaults:
+    _form: '\Drupal\custom_article\Form\LowercaseKeywordsForm'
+    _title: 'Lowercase Keyword Terms'
+  requirements:
+    _permission: 'administer taxonomy'
+    
