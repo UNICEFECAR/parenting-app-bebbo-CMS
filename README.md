@@ -35,7 +35,7 @@ If skipping, you may need to replace `composer` with `php composer.phar` for you
    
    For example: `git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS`
    
-3. Download the database from Acquia server and import the database into your local.
+3. Download the database from Acquia server and import the database into your local. If you don’t have access to Acquia, you can download the dump database from this [link](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
 4. Update the database details in settings.php file (docroot/sites/default/settings.php).
 5. Then run the application in your browser.
 
