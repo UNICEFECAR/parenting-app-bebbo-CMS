@@ -21,6 +21,13 @@ Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where 
 
 ## Requirements
 
+- **PHP** (7.4 or higher, based on your project requirements)
+- **Composer** (for managing dependencies)
+- **MySQL** or **MariaDB**
+- **Apache** or **Nginx** (this guide assumes Apache)
+- Drupal's core installed in your project
+
+
 Make sure you have installed all of the following prerequisites on your development machine:
 
 1. Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
@@ -32,9 +39,9 @@ If skipping, you may need to replace `composer` with `php composer.phar` for you
 ## Installation
 
 1. Download Bebbo App from [git repo](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS)
-   
+
    For example: `git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS`
-   
+
 3. Download the database from Acquia server and import the database into your local. If you don’t have access to Acquia, you can download the dump database from this [link](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
 4. Update the database details in settings.php file (docroot/sites/default/settings.php).
 5. Then run the application in your browser.
@@ -172,7 +179,7 @@ The following themes are installed and enabled by the profile:
 
 ## Custom Roles
 
-Globaladmin: This User handles all the country and country users, configures new languages and new country, Taxonomies data and offload a country.            
+Globaladmin: This User handles all the country and country users, configures new languages and new country, Taxonomies data and offload a country.
 Senior editor: Senior editors have access to create, update, publish and translate the content to their country language.
 SME: SME have access to updates and approve the content.
 Editor: Editor have access to create, update and translate the content to their country language
@@ -198,7 +205,59 @@ Manage reports - user can see their reports based on their allowed language.
 
 ## Configurations
 
-Installation profile assists in setting up a base instance. 
+Installation profile assists in setting up a base instance.
+
+## Multi-Site Installation Guide for Drupal
+
+   This guide details the process of setting up a multi-site Drupal installation locally, with `bebbo.app` as the main site and `bangladesh` (accessible at `babuni.app`) as a sub-site located in the `sites/bangladesh` directory.
+
+1. **Configure `sites.php`:**
+
+   - Open the `sites.php` file located in the project root directory. `/docroot/sites/sites.php`.
+   - Add a new entry for the Bangladesh sub-site in the file:
+   ```php
+   $sites['babuni.app'] = 'bangladesh';
+   ```
+
+2. **Create `sites/bangladesh` Directory:**
+
+   - Inside the `sites` directory, create a new folder named `bangladesh`.
+
+3. **Configure `settings.php` in `sites/bangladesh`:**
+
+   - Create a new file named `settings.php` inside the `sites/bangladesh` directory.
+   - Copy the contents of `sites/default/default.settings.php` into this new file.
+   - Update the following settings in `sites/bangladesh/settings.php`:
+   - Add database connection settings for the Bangladesh sub-site at the end of the file:
+   ```php
+   $databases['default']['default'] = [
+      'database' => 'DATABASE', // Replace with your sub-site database name
+      'username' => 'USERNAME', // Replace with your sub-site username
+      'password' => 'PASSWORD', // Replace with your sub-site password
+      'host' => '127.0.0.1', // Replace with your local databse host name or IP address
+      'port' => '3306',
+      'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+      'driver' => 'mysql',
+      'prefix' => '',
+   ];
+   // Replace with your sub-site database name
+   $config_directories[CONFIG_SYNC_DIRECTORY] = '../config_bangladesh'; // Point to the `config_bangladesh` folder
+   ```
+4. **Create `config_bangladesh` Folder:**
+
+   - In the project root directory, create a directory named `docroot/config_bangladesh`. This is where you'll store configuration specific to the Bangladesh sub-site.
+
+5. **Download and Import Database (Optional):**
+
+   - If you have a pre-existing database for the Bangladesh sub-site, import it to your newly created database.
+
+6. **Configure Apache (Optional):**
+
+   - If you're using Apache, you'll need to configure a virtual host for the Bangladesh sub-site. This involves creating a new `.conf` file in the `sites-available` directory and enabling it in the `sites-enabled` directory. Refer to your Apache documentation for specific instructions. Typically, the `.conf` file will contain details like the server name (babuni.app) and the document root (path to the `sites/bangladesh` directory).
+
+7. **Access the Sub-site:**
+
+   - Access the Bangladesh sub-site by visiting `http://babuni.app` in your browser.
 
 ## Maintainers
 
