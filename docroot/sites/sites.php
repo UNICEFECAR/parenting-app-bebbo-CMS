@@ -61,4 +61,4 @@ $sites['tr.bebbo.app'] = 'turkey';
 $sites['ec.bebbo.app'] = 'ecuador';
 $sites['merhababebek.app'] = 'turkey';
 $sites['pc.bebbo.app'] = 'pacific_islands';
-$sites['ws.bebbo.app'] = 'samoa';
+$sites['ws.bebbo.app'] = 'somoa';
