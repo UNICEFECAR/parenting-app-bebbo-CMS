@@ -1,0 +1,20 @@
+uuid: 7bb13fcc-f7c4-4617-9fca-d2478198e085
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-survey
+  module:
+    - path
+id: group_content.country-group_node-survey.path
+field_name: path
+entity_type: group_content
+bundle: country-group_node-survey
+label: 'URL alias'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

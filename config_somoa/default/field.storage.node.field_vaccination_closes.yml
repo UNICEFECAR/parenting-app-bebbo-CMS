@@ -1,0 +1,20 @@
+uuid: 91491c44-35c2-4145-a2e6-e7c14bd4f76a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_vaccination_closes
+field_name: field_vaccination_closes
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

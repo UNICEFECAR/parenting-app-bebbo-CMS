@@ -1,0 +1,35 @@
+uuid: f136ef00-cdd6-473e-a849-a8df22c9a2e5
+langcode: en
+status: true
+dependencies: {  }
+id: article_serbia_english
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: article_serbia_english
+migration_group: article
+label: 'Article North Macedonia Macedonian'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/article/article_serbia_english.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: rs-en
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+  nid: ID
+  moderation_state: Moderation_state
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

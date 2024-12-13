@@ -1,0 +1,18 @@
+uuid: 97a13540-7bad-4fe0-bd2f-abfbcc81749c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

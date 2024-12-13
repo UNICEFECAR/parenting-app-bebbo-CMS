@@ -1,0 +1,6 @@
+forcefull_check_update_api:
+  table_name: forcefull_check_update_api
+  table_database: default
+  description: ''
+  column_relations: 'a:1:{s:2:"id";s:4:"node";}'
+  created_by: '1'

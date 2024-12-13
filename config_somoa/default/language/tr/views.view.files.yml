@@ -1,0 +1,89 @@
+label: Dosyalar
+description: 'Dosyaları bulun ve yönetin.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: Dosyalar
+      fields:
+        fid:
+          label: Fid
+        filename:
+          label: İsim
+          separator: ', '
+        filemime:
+          label: 'MIME tipi'
+        filesize:
+          label: Boyut
+        status:
+          label: Durum
+          settings:
+            format_custom_false: Geçici
+            format_custom_true: Kalıcı
+        created:
+          label: 'Yüklenme tarihi'
+        changed:
+          label: 'Değiştirilme tarihi'
+        count:
+          label: 'Şurada kullanılıyor'
+      pager:
+        options:
+          tags:
+            next: 'Sonraki ›'
+            previous: '‹ Önceki'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Dosya yok.'
+      filters:
+        filename:
+          expose:
+            label: 'Dosya adı'
+        filemime:
+          expose:
+            label: 'MIME tipi'
+        status:
+          expose:
+            label: Durum
+  page_1:
+    display_title: 'Dosya Özeti'
+    display_options:
+      menu:
+        title: Dosyalar
+  page_2:
+    display_title: 'Dosya kullanımı'
+    display_options:
+      title: 'Dosya kullanımı'
+      fields:
+        entity_label:
+          label: Nesne
+        type:
+          label: 'Varlık tipi'
+        module:
+          label: 'Eklenti kayıt ediliyor'
+        count:
+          label: 'Kullanım sayısı'
+      pager:
+        options:
+          tags:
+            next: 'Sonraki ›'
+            previous: '‹ Önceki'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      arguments:
+        fid:
+          exception:
+            title: Tümü
+          title: '{{ arguments.fid }} için dosya kullanım bilgileri'

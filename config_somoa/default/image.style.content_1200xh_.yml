@@ -1,0 +1,23 @@
+uuid: 3abfa3c6-d4a9-4e4c-be54-74edac131c86
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_style_quality
+name: content_1200xh_
+label: Content(1200XH)
+effects:
+  15450a15-06b7-4e39-be15-c296641dc2b2:
+    uuid: 15450a15-06b7-4e39-be15-c296641dc2b2
+    id: image_scale
+    weight: 1
+    data:
+      width: 1200
+      height: null
+      upscale: false
+  188f2d10-1d14-4085-ad43-a6a2c24c98d8:
+    uuid: 188f2d10-1d14-4085-ad43-a6a2c24c98d8
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 70
