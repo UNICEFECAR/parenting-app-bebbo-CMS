@@ -25,7 +25,6 @@ class CustomStandardDeviation extends Serializer {
 
     $request_uri = \Drupal::service('path.current')->getPath(); /* Gives request path e.x (api/articles/en/1) */
     $request = explode('/', $request_uri);
-   
 
     /* Validating request params to response error code */
     $validate_params_res = $this->checkRequestParams($request_uri);
@@ -48,16 +47,15 @@ class CustomStandardDeviation extends Serializer {
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
           foreach ($rendered_data as $key => $values) {
-            if ( ($key === 'growth_type' && $values === "6461") || ($key === 'growth_type' && $values === "606")) {
+            if (($key === 'growth_type' && $values === "6461") || ($key === 'growth_type' && $values === "606") || ($key === 'growth_type' && $values === "6891")) {
               $weight_for_height[] = $rendered_data;
             }
 
-            if(($key === 'growth_type' && $values === "32786") || ($key === 'growth_type' && $values === "601")) {
+            if (($key === 'growth_type' && $values === "32786") || ($key === 'growth_type' && $values === "601") || ($key === 'growth_type' && $values === "25466")) {
               $height_for_age[] = $rendered_data;
             }
           }
         }
-
         $child_1 = [];
         $child_2 = [];
         $child_3 = [];
@@ -67,24 +65,24 @@ class CustomStandardDeviation extends Serializer {
         for ($i = 0; $i < count($weight_for_height); $i++) {
           if (isset($weight_for_height[$i]['child_age'])) {
             $sorted_weight_for_height = $this->sortChildAgeID($weight_for_height[$i]['child_age']);
-            // \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');
-            if ($sorted_weight_for_height === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481") {
+            // \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');.
+            if ($sorted_weight_for_height === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481" || $sorted_weight_for_height === "596,601,606,611") {
               $child_1[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "47" || $sorted_weight_for_height === "486") {
+            if ($sorted_weight_for_height === "47" || $sorted_weight_for_height === "486" || $sorted_weight_for_height === "616") {
               $child_2[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "48" || $sorted_weight_for_height === "491") {
+            if ($sorted_weight_for_height === "48" || $sorted_weight_for_height === "491" || $sorted_weight_for_height === "621") {
               $child_3[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "49,50" || $sorted_weight_for_height === "496,501") {
+            if ($sorted_weight_for_height === "49,50" || $sorted_weight_for_height === "496,501" || $sorted_weight_for_height === "626,631") {
               $child_4[] = $weight_for_height[$i];
             }
 
-            if ($sorted_weight_for_height === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521") {
+            if ($sorted_weight_for_height === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521" || $sorted_weight_for_height === "636,641,646,651") {
               $child_5[] = $weight_for_height[$i];
             }
           }
@@ -127,23 +125,23 @@ class CustomStandardDeviation extends Serializer {
           if (isset($height_for_age[$i]['child_age'])) {
             $sorted_height_for_age = $this->sortChildAgeID($height_for_age[$i]['child_age']);
             // \Drupal::logger('pb_custom_standard_deviation')->notice('height_for_age => <pre><code>' . $sorted_height_for_age . '</code></pre>');
-            if ($sorted_height_for_age === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481") {
+            if ($sorted_height_for_age === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481" || $sorted_weight_for_height === "596,601,606,611") {
               $child_1[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "47" || $sorted_weight_for_height === "486") {
+            if ($sorted_height_for_age === "47" || $sorted_weight_for_height === "486" || $sorted_weight_for_height === "616") {
               $child_2[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "48" || $sorted_weight_for_height === "491") {
+            if ($sorted_height_for_age === "48" || $sorted_weight_for_height === "491" || $sorted_weight_for_height === "621") {
               $child_3[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "49,50" || $sorted_weight_for_height === "496,501") {
+            if ($sorted_height_for_age === "49,50" || $sorted_weight_for_height === "496,501" || $sorted_weight_for_height === "626,631") {
               $child_4[] = $height_for_age[$i];
             }
 
-            if ($sorted_height_for_age === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521") {
+            if ($sorted_height_for_age === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521" || $sorted_weight_for_height === "636,641,646,651") {
               $child_5[] = $height_for_age[$i];
             }
           }
