@@ -13,28 +13,34 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\node\NodeInterface;
 
 /**
- * Hook form alter.
+ * hook_form_alter.
  */
 function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
   // Check if the form ID is  language_admin_edit_form.
   if ($form_id == 'language_admin_edit_form') {
-    // Add your custom field to the form.
+    // Change the weight of the direction field.
+    $form['direction']['#weight'] = 10;
+    // Add custom field to the form.
     $langcode = '';
     // If we are editing, we should have a langcode.
     if ($form_id == 'language_admin_edit_form' && isset($form['langcode']['#value'])) {
       $langcode = $form['langcode']['#value'];
     }
-
     // Load existing data for the given langcode from the database.
     $existing_data = [];
     if (!empty($langcode)) {
       $existing_data = \Drupal::database()->select('custom_language_data', 'cld')
-        ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural'])
+        ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
         ->condition('langcode', $langcode)
         ->execute()
         ->fetchAssoc();
     }
-
+    $form['custom_language_name_local'] = [
+      '#type' => 'textfield',
+      '#title' => t('Language name in local'),
+      '#description' => t('Display name of the language in the app'),
+      '#default_value' => $existing_data['custom_language_name_local'] ?? '',
+    ];
     $form['custom_locale'] = [
       '#type' => 'textfield',
       '#title' => t('locale'),
@@ -61,7 +67,7 @@ function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
  * Sumbit handler.
  */
 function language_custom_field_custom_submit($form, &$form_state) {
-  $field_custom_locale = $field_custom_luxon = $field_custom_plural = $langcode = '';
+  $field_custom_locale = $field_custom_luxon = $field_custom_plural = $langcode = $custom_language_name_local = '';
   // Get the value of the custom field.
   if ($form_state->getValue('custom_locale')) {
     $field_custom_locale = $form_state->getValue('custom_locale');
@@ -79,6 +85,10 @@ function language_custom_field_custom_submit($form, &$form_state) {
     $langcode = $form_state->getValue('langcode');
   }
 
+  if ($form_state->getValue('custom_language_name_local')) {
+    $custom_language_name_local = $form_state->getValue('custom_language_name_local');
+  }
+
   $current_timestamp = time();
   if (!empty($langcode)) {
     // Check if a record already exists for this langcode.
@@ -89,6 +99,7 @@ function language_custom_field_custom_submit($form, &$form_state) {
         'custom_locale' => $field_custom_locale,
         'custom_luxon' => $field_custom_luxon,
         'custom_plural' => $field_custom_plural,
+        'custom_language_name_local' => $custom_language_name_local,
         'created_date' => $current_timestamp,
       ])->condition('langcode', $langcode)
         ->execute();
@@ -100,6 +111,7 @@ function language_custom_field_custom_submit($form, &$form_state) {
         'custom_locale' => $field_custom_locale,
         'custom_luxon' => $field_custom_luxon,
         'custom_plural' => $field_custom_plural,
+        'custom_language_name_local' => $custom_language_name_local,
         'created_date' => $current_timestamp,
       ])->execute();
     }
