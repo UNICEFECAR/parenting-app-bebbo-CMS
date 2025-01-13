@@ -1,0 +1,90 @@
+# Define a data type for blocks captured by structure_sync.
+structure_sync_block:
+  type: mapping
+  mapping:
+    info:
+      type: label
+    langcode:
+      type: string
+    uuid:
+      type: string
+    bundle:
+      type: string
+    revision_id:
+      type: integer
+      nullable: true
+    rev_id_current:
+      type: integer
+      nullable: true
+    fields:
+      type: sequence
+      sequence:
+        type: ignore
+
+# Define a data type for menu items captured by structure_sync.
+structure_sync_menu_item:
+  type: mapping
+  mapping:
+    menu_name:
+      type: string
+    title:
+      type: label
+    parent:
+      type: string
+      nullable: true
+    uri:
+      type: string
+    link_title:
+      type: label
+    description:
+      type: text
+    enabled:
+      type: boolean
+    expanded:
+      type: boolean
+    weight:
+      type: integer
+    langcode:
+      type: string
+    uuid:
+      type: string
+    options:
+      type: sequence
+      label: 'Link options'
+      # Ignore the type of the items in the sequence, since we're not sure what
+      # they could be: integer, mapping, sequence, string, etc...
+      sequence:
+        type: ignore
+
+# Define a data type for taxonomies captured by structure_sync.
+structure_sync_taxonomy:
+  type: sequence
+  sequence:
+    type: structure_sync_taxonomy_term
+
+# Define a type for taxonomy terms captured by structure_sync.
+# Note that, unlike how this module handles blocks (i.e.: the fields are in a
+# 'fields' sub-structure that we can ignore), the fields are at the root of this
+# structure (and changing that would be a BC break). So, we have to ignore this
+# whole structure, unfortunately.
+structure_sync_taxonomy_term:
+  type: ignore
+
+# Define the main structure_sync data structure.
+structure_sync.data:
+  type: config_object
+  label: 'Structure Sync data'
+  mapping:
+    blocks:
+      type: sequence
+      label: 'Blocks'
+      sequence:
+        type: structure_sync_block
+    menus:
+      type: sequence
+      sequence:
+        type: structure_sync_menu_item
+    taxonomies:
+      type: sequence
+      sequence:
+        type: structure_sync_taxonomy

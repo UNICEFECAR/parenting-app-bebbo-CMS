@@ -1,0 +1,20 @@
+{
+    "name": "drupal/structure_sync",
+    "description": "Tool for syncing structural data that is stored as content.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/structure_sync",
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "drush/drush": "^9 || ^10 || ^11 || ^12 || ^13"
+    },
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9 || ^10 || ^11 || ^12 || ^13"
+            }
+        }
+    }
+}

@@ -60,6 +60,7 @@
         "drupal/security_review": "^2.0",
         "drupal/shield": "^1.2.0",
         "drupal/smtp": "^1.0",
+        "drupal/structure_sync": "^2.0",
         "drupal/svg_image": "^1.16",
         "drupal/symfony_mailer": "^1.4",
         "drupal/tamper": "^1.0@alpha",
