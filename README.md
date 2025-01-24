@@ -50,4 +50,4 @@ For ongoing maintenance, please reach out to the following maintainers:
 @evrimm @Akhror @saurabhEDU @mhdosman  
 
 ## Community
-Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily on our repository Github Discussion and we welcome all interested contributors to join the conversation.
+Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
