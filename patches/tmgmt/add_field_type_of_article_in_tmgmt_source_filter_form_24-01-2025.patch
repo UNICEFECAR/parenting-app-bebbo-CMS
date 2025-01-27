@@ -1,0 +1,113 @@
+diff --git a/docroot/modules/contrib/tmgmt/sources/content/src/ContentEntitySourcePluginUi.php b/docroot/modules/contrib/tmgmt/sources/content/src/ContentEntitySourcePluginUi.php
+index 42222e77f..2c4eac58c 100644
+--- a/docroot/modules/contrib/tmgmt/sources/content/src/ContentEntitySourcePluginUi.php
++++ b/docroot/modules/contrib/tmgmt/sources/content/src/ContentEntitySourcePluginUi.php
+@@ -84,7 +84,7 @@ public function overviewSearchFormPart(array $form, FormStateInterface $form_sta
+         '#default_value' => isset($_GET['country']) ? $_GET['country'] : NULL,
+       );
+     }
+-    // In case country is not enabled 
++    // In case country is not enabled
+     // display appropriate message.
+     elseif (count($options) == 0) {
+       $this->messenger()->addWarning($this->t('Country is not enabled for any of existing content types.'));
+@@ -149,7 +149,7 @@ public function overviewSearchFormPart(array $form, FormStateInterface $form_sta
+       '#default_value' => isset($_GET['mandatory_content']) ? $_GET['mandatory_content'] : NULL,
+       '#empty_option' => $this->t('- Any -'),
+     );
+-  
++
+     $form['search_wrapper']['search']['pre_populated'] = array(
+       '#type' => 'select',
+       '#title' => $this->t('Pre Populated	'),
+@@ -157,8 +157,8 @@ public function overviewSearchFormPart(array $form, FormStateInterface $form_sta
+       '#default_value' => isset($_GET['pre_populated']) ? $_GET['pre_populated'] : NULL,
+       '#empty_option' => $this->t('- Any -'),
+     );
+-  
+-    $content_category_options = [];    
++
++    $content_category_options = [];
+     $query_cat = \Drupal::entityQuery('taxonomy_term')->accessCheck(TRUE)
+                 ->condition('vid', 'category')
+                 ->execute();
+@@ -170,7 +170,7 @@ public function overviewSearchFormPart(array $form, FormStateInterface $form_sta
+         }
+       }
+     }
+-  
++
+     $form['search_wrapper']['search']['field_content_category'] = array(
+       '#type' => 'select',
+       '#title' => $this->t('Category'),
+@@ -179,6 +179,28 @@ public function overviewSearchFormPart(array $form, FormStateInterface $form_sta
+       '#empty_option' => $this->t('- Any -'),
+     );
+ 
++    // Add field type of Article to the source filter form.
++    $field_type_of_article_options = [];
++    $query_cat = \Drupal::entityQuery('taxonomy_term')->accessCheck(TRUE)
++      ->condition('vid', 'type_of_article')
++      ->execute();
++    if ($query_cat) {
++      foreach ($query_cat as $val) {
++        $category_option = Term::load($val)->get('name')->value;
++        if (!empty($category_option)) {
++          $field_type_of_article_options[$val] = $category_option;
++        }
++      }
++    }
++
++    $form['search_wrapper']['search']['field_type_of_article'] = [
++      '#type' => 'select',
++      '#title' => $this->t('Type of Article'),
++      '#options' => $field_type_of_article_options,
++      '#default_value' => $_GET['field_type_of_article'] ?? NULL,
++      '#empty_option' => $this->t('- Any -'),
++    ];
++
+     return $form;
+   }
+ 
+@@ -461,11 +483,11 @@ public static function getTranslatableEntities($entity_type_id, $property_condit
+       $result = $query->execute();
+       $entity_ids = $result->fetchCol();
+       $entities = array();
+-      
++
+ 
+       if (!empty($entity_ids)) {
+         $all_ids = [];
+-        foreach($entity_ids as $nid) {  
++        foreach($entity_ids as $nid) {
+           // Define the base query.
+           $query = \Drupal::database()->select('node_field_revision', 'nfr')
+             ->fields('nfr', ['status'])
+@@ -489,12 +511,12 @@ public static function getTranslatableEntities($entity_type_id, $property_condit
+             //           if($results2 == $_GET['mandatory_content']){
+             //             $all_ids[] = $nid;
+             //           }
+-            //   } 
++            //   }
+             //   else {
+             //     $all_ids[] = $nid;
+             //   }
+             // }
+-        } 
++        }
+ 
+         $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($all_ids);
+       }
+@@ -575,6 +597,12 @@ public static function buildTranslatableEntitiesQuery($entity_type_id, $property
+       $query->condition('cc.field_content_category_target_id' , $_GET['field_content_category'], '=');
+     }
+ 
++    // Add type of article query.
++    if (isset($_GET['field_type_of_article']) && !empty($_GET['field_type_of_article'])) {
++      $query->leftjoin('node__field_type_of_article', 'aa', "aa.entity_id = e." . $id_key);
++      $query->condition('aa.field_type_of_article_target_id', $_GET['field_type_of_article'], '=');
++    }
++
+     // Searching for sources with missing translation.
+     if (!empty($property_conditions['target_status']) && !empty($property_conditions['target_language']) && in_array($property_conditions['target_language'], $languages)) {
+ 
