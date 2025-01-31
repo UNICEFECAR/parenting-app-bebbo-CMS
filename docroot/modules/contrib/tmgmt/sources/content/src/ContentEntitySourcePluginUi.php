@@ -331,7 +331,12 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
 
     // Build a list of allowed search conditions and get their values from the request.
     $entity_type = \Drupal::entityTypeManager()->getDefinition($type);
-    $whitelist = ['langcode', 'target_language', 'target_status'];
+    $whitelist = ['langcode', 'target_language', 'target_status', 'source_language'];
+
+    // 'pre_populated',
+    // 'taxonomy_term',
+    // 'field_content_category',
+    // 'field_type_of_article',
     if ($entity_type->hasKey('bundle')) {
       $whitelist[] = $entity_type->getKey('bundle');
     }
@@ -463,7 +468,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
    *   Array of translatable entities.
    */
   public static function getTranslatableEntities($entity_type_id, $property_conditions = [], $pager = FALSE, $offset = 0, $limit = 0) {
-    $query = self::buildTranslatableEntitiesQuery($entity_type_id, $property_conditions);
+    $query = static::buildTranslatableEntitiesQuery($entity_type_id, $property_conditions);
 
     if ($query) {
       if ($pager) {
@@ -481,39 +486,7 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
       $entities = [];
 
       if (!empty($entity_ids)) {
-        $all_ids = [];
-        foreach ($entity_ids as $nid) {
-          // Define the base query.
-          $query = \Drupal::database()->select('node_field_revision', 'nfr')
-            ->fields('nfr', ['status'])
-            ->condition('nfr.nid', $nid, '=')
-            ->orderBy('nfr.vid', 'DESC')
-            ->range(0, 1);
-          $result = $query->execute();
-          $results = $result->fetchField();
-          if ($results == 1) {
-            $all_ids[] = $nid;
-          }
-          // if($results == 1){
-          //   if(isset($_GET['mandatory_content'])){
-          //     $query = \Drupal::database()->select('node_revision__field_mandatory_content', 'mfc')
-          //           ->fields('mfc', ['field_mandatory_content_value'])
-          //           ->condition('mfc.entity_id', $nid, '=')
-          //           ->orderBy('mfc.revision_id', 'DESC')
-          //           ->range(0, 1);
-          //           $result = $query->execute();
-          //           $results2 = $result->fetchField();
-          //           if($results2 == $_GET['mandatory_content']){
-          //             $all_ids[] = $nid;
-          //           }
-          //   }
-          //   else {
-          //     $all_ids[] = $nid;
-          //   }
-          // }.
-        }
-
-        $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($all_ids);
+        $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($entity_ids);
       }
       return $entities;
     }
@@ -563,6 +536,12 @@ class ContentEntitySourcePluginUi extends SourcePluginUiBase {
     if ($data_table) {
       $langcode_table_alias = $query->innerJoin($data_table, 'data_table', '%alias.' . $id_key . ' = e.' . $id_key . ' AND %alias.default_langcode = 1');
     }
+
+    // Ensure we query only published nodes (status = 1).
+    $status_table = $entity_type->getDataTable() ?: $entity_type->getBaseTable();
+    $query->innerJoin($status_table, 'status_table', 'status_table.' . $id_key . ' = e.' . $id_key);
+    // Ensure alias is used here.
+    $query->condition('status_table.status', 1);
 
     $property_conditions += ['langcode' => $langcodes];
     // Condition for node id and country filter.
