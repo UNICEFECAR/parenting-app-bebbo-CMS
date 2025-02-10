@@ -1,151 +1,97 @@
 # **Contributing to the Unicef Bebbo CMS**
 
-[Thank you for your interest in contributing to Unicef Bebbo CMS! We aim
+Thank you for your interest in contributing to Unicef Bebbo CMS! We aim
 to build an inclusive, accessible, and impactful content management
 system to provide parents and caregivers with valuable, localized, and
 evidence-based information. This document explains how to contribute
-changes to the Unicef Bebbo CMS repository.]{.mark}
+changes to the Unicef Bebbo CMS repository.
 
-[Feel free to browse the [[open
-issues]{.underline}](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/issues?q=is%3Aissue+is%3Aopen+)
-and file new ones, all feedback is welcome!]{.mark}
+Feel free to browse the [open
+issues](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/issues?q=is%3Aissue+is%3Aopen+)
+and file new ones, all feedback is welcome!
 
-[We welcome submissions and appreciate your contributions.]{.mark}
+We welcome submissions and appreciate your contributions.
 
-[This guide is broken up into the following sections. It is recommended
-that you follow these steps in order:]{.mark}
+This guide is broken up into the following sections. It is recommended
+that you follow these steps in order:
 
-- [[Code of conduct]{.underline} - our code of conduct ensures a
-  > respectful and inclusive community for everyone.]{.mark}
+- Code of conduct - our code of conduct ensures a respectful and inclusive community for everyone.
+- How to contribute - steps to get started with contributing to the project.
+- Setting up your environment - detailed instructions on setting up your environment,
+  making changes, and submitting contributions to the repository.
+- Style guide - learn about our coding standards and best practices to keep
+  the codebase clean and consistent.
+- Pull request checklist - helpful tips and guidelines to make sure your
+  pull request gets reviewed and merged quickly.
+- Reporting an issue - find out how to submit bug reports or feature requests, 
+  so they're addressed effectively.
+- Review process and approval workflow
+- Contributed modules
+- Custom libraries
+- Custom modules
+- Theme
+- Custom roles
+- Menus
+- Configurations.
+  
+## **Code of conduct**
 
-- [[How to contribute]{.underline} - steps to get started with
-  > contributing to the project.]{.mark}
+Please make sure to read and observe the [code of conduct](CODE_OF_CONDUCT.md).
 
-- [[Setting up your environment]{.underline} - detailed instructions on
-  > setting up your environment, making changes, and submitting
-  > contributions to the repository.]{.mark}
-
-- [[Style guide]{.underline} - learn about our coding standards and best
-  > practices to keep the codebase clean and consistent.]{.mark}
-
-- [[Pull request checklist]{.underline} - helpful tips and guidelines to
-  > make sure your pull request gets reviewed and merged
-  > quickly.]{.mark}
-
-- [[Reporting an issue]{.underline} - find out how to submit bug reports
-  > or feature requests, so they're addressed effectively.]{.mark}
-
-- [[Review process and approval workflow]{.underline}]{.mark}
-
-- [[Contributed modules]{.underline}]{.mark}
-
-- [[Custom libraries]{.underline}]{.mark}
-
-- [[Custom modules]{.underline}]{.mark}
-
-- [[Theme]{.underline}]{.mark}
-
-- [[Custom roles]{.underline}]{.mark}
-
-- [[Menus]{.underline}]{.mark}
-
-- [[Configurations]{.underline}]{.mark}
-
-# **Code of conduct**
-
-[Please make sure to read and observe the [[Code of
-Conduct]{.underline}](https://docs.google.com/document/d/1q4RET8CRo7M4Y6qktWHXzUE6V1kzSl5s/edit?usp=sharing&ouid=103248080299151163337&rtpof=true&sd=true).]{.mark}
-
-# **How to contribute**
+## **How to contribute**
 
 If you would like to contribute to the CMS, start by searching through
-our [open issues]{.underline} or [pull requests]{.underline} to see if
-someone else has raised a similar idea or question.
+our [open issues](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/issues?q=is%3Aissue+is%3Aopen+) 
+or [pull requests](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/pulls) 
+to see if someone else has raised a similar idea or question.
 
 If you don't see your idea listed and you think it fits into the goal of
 the project, you can raise an issue and the maintainers will check it
 out.
 
-# 
-
-# **Setting up your environment**
+## **Setting up your environment**
 
 Follow these steps to set up your development environment for
 contributing to Unicef Bebbo CMS:
 
-1.  **Fork the Repository**
-
-> Click the \"Fork\" button at the top right of the repository page to
-> create a copy in your GitHub account.
+1.  **Fork the Repository**   
+      Click the \"Fork\" button at the top right of the repository page to create a copy in your GitHub account.
 
 2.  **Clone Your Fork**
-
-- For Windows users, run the following command:
-
-> \`[git config \--global core.longpaths true]{.mark}\`
-
-- Open your terminal and run:
-
-> \`[git clone
-> https://github.com/YOUR_USERNAME/parenting-app-bebbo-CMS.git]{.mark}\`
+    - For Windows users, run the following command: `git config --global core.longpaths true`
+    - Open your terminal and run: `git clone https://github.com/YOUR_USERNAME/parenting-app-bebbo-CMS.git`
 
 3.  **Add Upstream Remote**
+      Set the original repository as a remote upstream to easily sync changes.
 
-> Set the original repository as a remote upstream to easily sync
-> changes
->
-> [\`git remote add upstream
-> https://github.com/UNICEFECAR/parenting-app-bebbo-CMS.git\`]{.mark}
+      `git remote add upstream https://github.com/UNICEFECAR/parenting-app-bebbo-CMS.git\`
 
 4.  **Install Dependencies**
+    - In your root directory, navigate to the project: `cd parenting-app-bebbo-CMS`
+    - Ensure you have the required software installed on your development machine:
+    - **PHP:** Make sure PHP 8.2 is installed and configured. For installation, you can follow [this guide](https://www.php.net/manual/en/install.php).
+    - **Composer:** Install Composer by following the instructions [here](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+    - **Drush:** Install Drush as a project dependency, navigate to your Drupal project\'s root directory and execute:
 
-- In your root directory, navigate to the project:
-
-> \`[cd parenting-app-bebbo-CMS]{.mark}\`
-
-- Ensure you have the required software installed on your development
-  > machine:
-
-  - **PHP:** Make sure PHP 8.2 is installed and configured. For
-    > installation, you can follow \[this
-    > guide\]([[https://www.php.net/manual/en/install.php]{.underline}](https://www.php.net/manual/en/install.php)).
-
-  - **Composer:** Install Composer by following the instructions
-    > \[here\](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-
-  - **Drush:** Install Drush as a project dependency, navigate to your
-    > Drupal project\'s root directory and execute: \`[composer require
-    > drush/drush]{.mark}\`.
+      `composer require drush/drush`.
 
 5.  **Database Setup**
-
-- If you don\'t have access to the Acquia server, you can download the
-  > database dump from \[this
-  > link\]([[https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view]{.underline}](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view)).
-
-- Import the downloaded database into your local environment.
-
-- Modify the database details in the settings.php file, which is located
-  > at: \`[docroot/sites/default/settings.php]{.mark}\`
+    - If you don\'t have access to the Acquia server, you can download a
+      [dump database](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
+    - Import the downloaded database into your local environment.
+    - Modify database details in the settings.php file, which is located
+      at: `docroot/sites/default/settings.php`
 
 6.  **Run the Application**
+    Launch the application in your browser to verify everything is set up correctly.
+    1.  Select your Installation Profile (e.g., Standard).
+    2.  Enter Database Details (username, password, database name).
+    3.  Complete the Site Configuration (site name, admin account).
+    4.  Once installation is complete, you'll see the Drupal homepage.
 
-> Launch the application in your browser to verify everything is set up
-> correctly.
+Feel free to reach out if you have any questions or need assistance during the setup process!
 
-1.  Select your Installation Profile (e.g., Standard).
-
-2.  Enter Database Details (username, password, database name).
-
-3.  Complete the Site Configuration (site name, admin account).
-
-4.  Verify Installation: Once installation is complete, you'll see the
-    > Drupal homepage.
-
-Feel free to reach out if you have any questions or need assistance
-during the setup process!
-
-# **Style guide**
+## **Style guide**
 
 To ensure our codebase remains clean, consistent, and easy to maintain,
 we follow specific coding standards and best practices. Our style guide
@@ -154,12 +100,9 @@ documentation standards. Following these guidelines will help facilitate
 collaboration and improve the overall quality of our contributions.
 
 For detailed information on our coding standards and practices, please
-refer to the [[styleguide
-file]{.underline}](https://docs.google.com/document/d/1g3qSJVisdVNMQLUDxQBPhwGcY1_4ZR0X/edit?usp=sharing&ouid=103248080299151163337&rtpof=true&sd=true)
+refer to the [coding style guide](CODING_STYLE_GUIDE.md).
 
-# 
-
-# **Pull request checklist**
+## **Pull request checklist**
 
 Below are extensive steps you can follow to easily open a pull request.
 
@@ -207,9 +150,7 @@ You can learn more about pull requests and how they work by checking out
 [[Github's
 documentation]{.underline}](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 
-# 
-
-# **Reporting an issue**
+## **Reporting an issue**
 
 We value your feedback and encourage you to report any issues you
 encounter or suggest new features. Reporting issues helps us identify
@@ -263,7 +204,7 @@ efficient, and impactful.
 5.  **Stay Engaged:** Be responsive to follow-up questions or requests
     > for additional information from maintainers.
 
-# **Code review and approval process**
+## **Code review and approval process**
 
 To ensure the quality and consistency of contributions to Unicef Bebbo
 CMS, all submissions go through a structured review and approval
