@@ -1,0 +1,105 @@
+/* Comments
+-------------------------------------------- */
+#node-comment {
+  position: relative;
+  margin-top: 30px;
+  border-top: 3px double var(--border);
+}
+#node-comment i {
+  color: var(--color-primary);
+}
+.comment-form-wrap {
+  position: relative;
+  margin: 10px 0;
+  padding: 20px;
+  background: var(--light);
+  border: 3px solid #ffffff;
+  box-shadow: var(--shadow);
+}
+h2.add-comment-title {
+  border-bottom: 2px solid #ffffff;
+}
+.filter-wrapper {
+  font-size: 0.9rem;
+  border: 2px solid #ffffff;
+}
+.filter-wrapper ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-type: none;
+}
+.filter-wrapper ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid #ffffff;
+}
+.filter-wrapper ul li:last-child {
+  border: 0;
+}
+
+/* single comment */
+.single-comment {
+  position: relative;
+  display: table;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 1rem 0;
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+}
+.comment-user-picture {
+  position: relative;
+  display: table-cell;
+  padding: 0 10px;
+  vertical-align: top;
+  width: 100px;
+  border-right: 2px solid #ffffff;
+}
+.comment-user-picture img {
+  width: 100px;
+  height: auto;
+}
+h3.single-comment-title {
+  margin: 0.1rem 0;
+  font-size: 1.2rem;
+}
+.single-comment-meta {
+  width: 100%;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  font-size: 0.9rem;
+  color: #909090;
+  border-bottom: 1px solid var(--border);
+}
+.single-comment-meta a {
+  color: #909090;
+}
+.single-comment-content-body {
+  position: relative;
+  display: table-cell;
+  padding: 0 10px;
+  vertical-align: top;
+}
+.single-comment-content-body {
+  position: relative;
+  display: table-cell;
+  vertical-align: top;
+}
+#node-comment .indented {
+  margin-left: 60px;
+}
+.single-comment-content ul.links.inline {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+}
+.single-comment-content .links a {
+  padding: 5px 10px;
+  border: 4px solid #ffffff;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+.single-comment-content .links a:hover {
+  background-color: #ffffff;
+}

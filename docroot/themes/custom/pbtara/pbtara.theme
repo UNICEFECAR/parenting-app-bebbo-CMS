@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function pbtara_preprocess_page(array &$variables) {
+  // Add custom class to the body.
+  $variables['attributes']['class'][] = 'bebbo-tara-theme';
+}
+
+/**
+ * Add current page to breadcrumb.
+ */
+function tara_preprocess_breadcrumb(&$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  $node = \Drupal::routeMatch()->getParameter('node');
+  // Check if it's a node of type "article".
+  if ($node && $route_name === 'entity.node.canonical' && $node instanceof NodeInterface) {
+    if ($node->bundle() === 'article' || $node->bundle() === 'video_article') {
+      // Get field values from the node.
+      $categories = $node->get('field_content_category')->referencedEntities();
+      $subcategories = $node->get('field_child_age')->referencedEntities();
+      $node_title = $node->label();
+
+      // Initialize the breadcrumb array.
+      $breadcrumb = [];
+
+      // Add the "Home" link.
+      $breadcrumb[] = [
+        'text' => t('Home'),
+        'url' => Url::fromRoute('<front>'),
+      ];
+
+      $breadcrumb[] = [
+        'text' => t('Advice'),
+        'url' => '/advice',
+      ];
+
+      // Add Category links if available.
+      foreach ($categories as $category) {
+        $breadcrumb[] = [
+          'text' => $category->label(),
+          'url' => $category->toUrl(),
+        ];
+      }
+
+      // Add Subcategory links if available.
+      // foreach ($subcategories as $subcategory) {
+      //   $breadcrumb[] = [
+      //     'text' => $subcategory->label(),
+      //     'url' => $subcategory->toUrl(),
+      //   ];
+      // }
+      // Add the current node's title as the last breadcrumb without a link.
+      // $breadcrumb[] = [
+      //   'text' => $node_title,
+      //   'url' => NULL,
+      // ];.
+      // Assign the modified breadcrumb to the variables.
+      $variables['breadcrumb'] = $breadcrumb;
+
+    }
+
+    // Add cache context based on url.
+    $variables['#cache']['contexts'][] = 'url';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().s.
+ */
+function pbtara_preprocess_block__pbtara_appbanner(&$variables) {
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $node_id = NULL;
+  $content_type = NULL;
+  $final_url = NULL;
+
+  // Check if we are on a node page.
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    // Get Node ID.
+    $node_id = $node->id();
+    // Get Content Type.
+    $content_type = $node->bundle();
+
+    // Change the 'activities' content type to 'games'.
+    if ($content_type == 'activities') {
+      $content_type = 'games';
+    }
+
+    // Construct the final URL format.
+    // Get base URL (e.g., https://example.com)
+    $base_url = \Drupal::request()->getSchemeAndHttpHost();
+    $final_url = "/share/" . $current_language . "/" . $content_type . "/" . $node_id;
+    // https://bebbo.app/share/en/article/66071
+  }
+
+  // Pass the variables to the block template.
+  $variables['current_language'] = $current_language;
+  $variables['node_id'] = $node_id;
+  $variables['content_type'] = $content_type;
+  $variables['app_share_url'] = $final_url;
+
+}
+

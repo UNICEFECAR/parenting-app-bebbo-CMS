@@ -1,0 +1,26 @@
+/* Pages
+-------------------------------------------- */
+/* maintenance page*/
+.header-maintenance {
+  padding: 1rem 0;
+}
+.maintenance-main {
+  width: 100%;
+  text-align: center;
+  padding: 2rem 0;
+}
+.maintenance-icon {
+  margin-bottom: 1.5rem;
+}
+.maintenance-icon svg {
+  max-height: 20rem;
+}
+/* Error page */
+.error-page {
+  text-align: center;
+}
+.error-page h1,
+.error-page h2,
+.error-page h3 {
+  font-size: 5rem;
+}

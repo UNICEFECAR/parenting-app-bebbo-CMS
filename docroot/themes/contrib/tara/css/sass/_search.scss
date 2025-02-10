@@ -1,0 +1,24 @@
+/* Search result page */
+.search-advanced summary {
+  margin: 10px 0;
+  cursor: pointer;
+}
+.search-advanced .form-details-wrapper {
+  padding: 0.5rem 1.4rem;
+  border: 1px solid var(--border);
+}
+.search-advanced .form-wrapper {
+  padding: 0.5rem 1.4rem;
+}
+ol.search-results {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border);
+  list-style: none;
+  list-style-type: none;
+}
+ol.search-results li {
+  margin: 0 0 16px 0;
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid var(--border);
+}
