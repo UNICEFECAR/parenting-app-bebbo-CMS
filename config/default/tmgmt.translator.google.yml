@@ -8,7 +8,7 @@ name: google
 label: Google
 description: 'Google Translator service.'
 auto_accept: false
-weight: null
+weight: -9
 plugin: google
 settings:
   url: ''

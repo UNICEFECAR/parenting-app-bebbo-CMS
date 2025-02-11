@@ -1,0 +1,21 @@
+uuid: 6f03536f-c581-4693-876a-0defc5da78af
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - pbtara
+id: pbtara_searchform
+theme: pbtara
+region: search_box
+weight: 0
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form'
+  label_display: '0'
+  provider: search
+  page_id: ''
+visibility: {  }

@@ -3,7 +3,7 @@ langcode: sk
 status: true
 dependencies: {  }
 id: sk
-label: slovenský
+label: Slovak
 direction: ltr
 weight: 6
 locked: false

@@ -1,18 +1,13 @@
-uuid: 1aabf390-ce9c-4e2a-b4ac-8859d367f816
+uuid: 2bcbbb85-4c62-4551-b8ff-c6b400674cb9
 langcode: en
 status: true
 dependencies: {  }
-id: content_basic_page_kg_
-label: 'Content - Basic Page (KG)'
+id: content_vaccinations_age_tr
+label: 'Content - Vaccinations Age (TR)'
 channel_entity_type: node
-channel_bundle: page
-channel_langcode: kg-ky
-channel_filters:
-  status:
-    path: status
-    operator: '='
-    value:
-      - '1'
+channel_bundle: vaccinations
+channel_langcode: tr
+channel_filters: null
 channel_groups: null
 channel_sorts: {  }
 channel_searches: null
@@ -24,3 +19,4 @@ authorized_users:
   94f74816-8dce-4b06-bf3b-299e8832e5f9: 94f74816-8dce-4b06-bf3b-299e8832e5f9
   769078fd-5d20-4f46-b94d-0b1078c72d8e: 769078fd-5d20-4f46-b94d-0b1078c72d8e
   06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115
+  4a2acf8b-48d0-4c14-8e52-09cf8dabfbf8: 4a2acf8b-48d0-4c14-8e52-09cf8dabfbf8

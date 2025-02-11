@@ -1,0 +1,20 @@
+uuid: 296ca22e-d279-4ff0-ab20-403173c7c0cc
+langcode: en
+status: true
+dependencies:
+  theme:
+    - pbtara
+_core:
+  default_config_hash: osZQ9lL2jTdH5am4LJiZ29RaivhzOf6vCpoRy6FZwIE
+id: pbtara_local_actions
+theme: pbtara
+region: content
+weight: -14
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  label_display: '0'
+  provider: core
+visibility: {  }
