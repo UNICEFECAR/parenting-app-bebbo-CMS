@@ -1,22 +1,22 @@
-uuid: 1d8c0fcf-5ee7-485c-ad7b-c5a0aa729bbb
+uuid: 7beabb67-80aa-4bd4-86d6-0870c25120b2
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - node
-id: basic_pages_alias
-label: 'Basic pages alias'
+id: games
+label: Games
 type: 'canonical_entities:node'
 pattern: '[node:title]'
 selection_criteria:
-  5143a803-316f-4bc7-868d-943827c57545:
+  50a8959b-ebc9-4bad-a8ae-615478bd37f9:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 5143a803-316f-4bc7-868d-943827c57545
+    uuid: 50a8959b-ebc9-4bad-a8ae-615478bd37f9
     context_mapping:
       node: node
     bundles:
-      page: page
+      activities: activities
 selection_logic: and
-weight: -8
+weight: -9
 relationships: {  }

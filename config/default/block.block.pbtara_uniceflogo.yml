@@ -1,9 +1,9 @@
-uuid: 5be76d94-cfdc-4062-8aff-c2beca688eba
+uuid: de87ccba-4406-4e83-ad88-7ca653129020
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:7180f86b-ec6f-49a5-9765-f4dc902fefbb'
+    - 'block_content:basic:7b224686-a8d1-4af2-abb6-bdb0afe4dd34'
   module:
     - block_content
   theme:
@@ -13,9 +13,9 @@ theme: pbtara
 region: header_top
 weight: 0
 provider: null
-plugin: 'block_content:7180f86b-ec6f-49a5-9765-f4dc902fefbb'
+plugin: 'block_content:7b224686-a8d1-4af2-abb6-bdb0afe4dd34'
 settings:
-  id: 'block_content:7180f86b-ec6f-49a5-9765-f4dc902fefbb'
+  id: 'block_content:7b224686-a8d1-4af2-abb6-bdb0afe4dd34'
   label: 'UNICEF Logo'
   label_display: '0'
   provider: block_content

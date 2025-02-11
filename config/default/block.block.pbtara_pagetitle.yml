@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - system
-    - user
   theme:
     - pbtara
 id: pbtara_pagetitle
@@ -24,10 +23,3 @@ visibility:
     negate: true
     context_mapping: {  }
     pages: "/homepage\r\n/share\r\n/foleja"
-  user_role:
-    id: user_role
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    roles:
-      anonymous: anonymous

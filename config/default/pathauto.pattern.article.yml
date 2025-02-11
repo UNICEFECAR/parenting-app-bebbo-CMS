@@ -1,22 +1,22 @@
-uuid: 1d8c0fcf-5ee7-485c-ad7b-c5a0aa729bbb
+uuid: ce981848-59f3-4365-a9bd-8bf62c4f2801
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - node
-id: basic_pages_alias
-label: 'Basic pages alias'
+id: article
+label: Article
 type: 'canonical_entities:node'
 pattern: '[node:title]'
 selection_criteria:
-  5143a803-316f-4bc7-868d-943827c57545:
+  193caf22-2771-4c1b-85fa-e072804e45fc:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 5143a803-316f-4bc7-868d-943827c57545
+    uuid: 193caf22-2771-4c1b-85fa-e072804e45fc
     context_mapping:
       node: node
     bundles:
-      page: page
+      article: article
 selection_logic: and
-weight: -8
+weight: -10
 relationships: {  }
