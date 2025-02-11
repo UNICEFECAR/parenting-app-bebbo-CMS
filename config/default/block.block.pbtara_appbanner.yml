@@ -1,0 +1,25 @@
+uuid: 4e8e9fa2-2834-4da1-8f68-38e5966450bb
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+  module:
+    - block_content
+  theme:
+    - pbtara
+id: pbtara_appbanner
+theme: pbtara
+region: footer_bottom
+weight: 0
+provider: null
+plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+settings:
+  id: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+  label: 'App Banner'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
