@@ -48,7 +48,7 @@ For ongoing maintenance, please reach out to the following maintainers:
 - [Evrim Sahin](https://github.com/evrimm)
 - [Akhror Abduvaliev](https://github.com/Akhror)
 - [Saurabh Agarwal](https://github.com/saurabhEDU)
-- [Muhammed Osman](https://github.com/Akhror)
+- [Muhammed Osman](https://github.com/mhdosman)
 
 ## Community
 Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
