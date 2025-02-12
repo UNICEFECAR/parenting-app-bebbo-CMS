@@ -1,14 +1,12 @@
-<h1>Bebbo CMS - Drupal content management system</h1>
-
-[Bebbo website](https://bebbo.app/)
+# [Bebbo](https://bebbo.app/) CMS - Drupal content management system
 
 ## Table of Contents
-- Introduction  
-- Installation  
-- Pre-requisites  
-- Configuration  
-- Maintainers  
-- Community  
+* [Introduction](#introduction)
+* [Installation](#installation)
+  * [Pre-requisites](#pre-requisites)
+  * [Configuration](#configuration)
+* [Maintainers](#maintainers)
+* [Community](#community)
 
 ## Introduction
 Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the content is added through the web interface and serves as REST APIs for a mobile app. This application assists editors in adding different types of content under various content types and taxonomies configured in Drupal CMS. Go through the [onboarding document](./ONBOARDING.md) before continuing with the Installation guidelines below.  
@@ -26,7 +24,7 @@ Before installing the Bebbo CMS application, ensure that you have the following 
 - **Install Drush**: `composer global require drush/drush`  
 
 ### Configuration
-After installing all the prerequisites, follow the steps below to set up the Bebbo CMS:  
+After installing all the pre-requisites, follow the steps below to set up the Bebbo CMS:  
 For Windows users, before proceeding to the next step, run the following command:  
 ```
 git config --global core.longpaths true
