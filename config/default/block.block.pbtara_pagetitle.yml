@@ -9,7 +9,7 @@ dependencies:
 id: pbtara_pagetitle
 theme: pbtara
 region: content
-weight: -17
+weight: -8
 provider: null
 plugin: page_title_block
 settings:

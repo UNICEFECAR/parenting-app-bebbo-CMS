@@ -7,7 +7,7 @@ dependencies:
 id: pbtara_tabs
 theme: pbtara
 region: content
-weight: -15
+weight: -6
 provider: null
 plugin: local_tasks_block
 settings:

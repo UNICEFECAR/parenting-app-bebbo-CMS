@@ -6,12 +6,13 @@ dependencies:
     - 'block_content:basic:48ebb274-1671-4326-ad1c-64a0d8bfa678'
   module:
     - block_content
+    - node
   theme:
     - pbtara
 id: pbtara_appbanner
 theme: pbtara
-region: footer_bottom
-weight: -8
+region: content
+weight: -3
 provider: null
 plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
 settings:
@@ -22,4 +23,13 @@ settings:
   status: true
   info: ''
   view_mode: full
-visibility: {  }
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      activities: activities
+      article: article
+      video_article: video_article

@@ -2,8 +2,13 @@ header#header {
   position: fixed;
 }
 
+.homepageblock1 {
+  margin-top: 25px;
+}
+
 .main-wrapper {
-  top: 90px;
+  margin-top: 7rem;
+  padding: 0px;
 }
 
 #breadcrumb {
@@ -26,9 +31,13 @@ header#header {
 
 .views-view-grid .items img.image-field {
   margin: 0 0 1rem 0;
-  height: 200px;
-  /* object-fit: cover; */
+  height: 180px;
+  object-fit: cover;
   width: 100%;
+}
+
+.pb-main-homepage .menu li a {
+  text-transform: inherit;
 }
 
 select#edit-field-activity-category-target-id--2,
@@ -90,14 +99,6 @@ select#edit-field-content-category-target-id--2 {
   margin-left: 10px;
 }
 
-/* Show banner only on mobile devices */
-@media screen and (max-width: 768px) {
-  .app-banner {
-    display: block;
-  }
-}
-
-
 /* Header menu overrides */
 .align-center,
 img.align-center,
@@ -121,17 +122,19 @@ figure.align-center {
 
 .header-container {
   padding: 0.1rem 1.7rem;
-  background-color: #eeeeee;
+  border-bottom: 1px solid #cccccc;
 }
 
 #footer {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
+  /* padding-bottom: 5rem; */
 }
 
 .site-branding img {
   width: auto;
   max-height: 60px;
+  padding: 5px;
 }
 
 #footer img.image-field {
@@ -139,14 +142,15 @@ figure.align-center {
   margin-left: 13px;
 }
 
-@media screen and (max-width: 767px) {
-  #sidebar-left {
-    order: 1;
-  }
-
-  #main {
-    order: 2;
-  }
+#footer .footer-bottom-middle-right .menu li a {
+  /* list-style: none; */
+  /* border-bottom: none; */
+  color: #ffffff;
+  text-transform: inherit;
+  font-size: 17px;
+  /* font-weight: 500; */
+  /* padding: 15px; */
+  /* text-decoration: none;*/
 }
 
 .footer li a {
@@ -218,13 +222,6 @@ img.image-field {
   background-color: transparent;
 }
 
-@media (min-width: 768px) {
-  .region-primary-menu .menu-item-level-1:hover {
-    color: #4fa9dd;
-    background-color: transparent;
-  }
-}
-
 .homepageblock7 .media--type-image,
 .block-download-doubl-heart .media--type-image {
   justify-content: center;
@@ -248,4 +245,50 @@ img[alt="bebbo-hearts"] {
   background-color: #ffffff;
   box-shadow: var(--shadow);
   padding: 0.4rem;
+}
+
+/* Article detail page */
+.layout.layout--onecol {
+  margin-top: 0px;
+}
+
+/* Media Queries */
+/* Show banner only on mobile devices */
+@media screen and (max-width: 768px) {
+  .app-banner {
+    display: block;
+  }
+
+  .breadcrumb {
+    padding-top: 1.5rem;
+  }
+
+  #footer {
+    padding-bottom: 5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main-wrapper {
+    margin-top: 4rem;
+  }
+  #sidebar-left {
+    order: 1;
+  }
+
+  #main {
+    order: 2;
+  }
+
+  #footer {
+    z-index: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .region-primary-menu .menu-item-level-1:hover {
+    color: #4fa9dd;
+    background-color: transparent;
+  }
+
 }

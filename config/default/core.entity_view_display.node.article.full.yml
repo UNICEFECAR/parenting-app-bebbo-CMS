@@ -42,22 +42,6 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_child_age:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  field_content_category:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
   field_cover_image:
     type: entity_reference_entity_view
     label: hidden
@@ -67,20 +51,15 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_keywords:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    weight: 4
-    region: content
 hidden:
   content_moderation_control: true
   field_australian_article: true
+  field_child_age: true
   field_child_gender: true
+  field_content_category: true
   field_do_not_feature: true
   field_generic_content: true
+  field_keywords: true
   field_licensed_content: true
   field_mandatory_content: true
   field_meta_keywords: true

@@ -10,9 +10,8 @@
 #}
 
 {% include '@pbtara/template-parts/header.html.twig' %}
-{% if slider_show %}
-  {% include '@pbtara/template-parts/slider.html.twig' %}
-{% endif %}
+{% include '@pbtara/template-parts/breadcrumb_region.html.twig' %}
+{% include '@pbtara/templates/content/page-title.html.twig' %}
 <div id="main-wrapper" class="main-wrapper">
   <div class="">
     {% if front_sidebar %}
