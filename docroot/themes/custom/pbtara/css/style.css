@@ -1,3 +1,16 @@
+header#header {
+  position: fixed;
+}
+
+.main-wrapper {
+  top: 90px;
+}
+
+#breadcrumb {
+  top: 5.1rem;
+  padding: 0px;
+}
+
 #breadcrumb .block-content nav.breadcrumb {
   background-color: transparent !important;
   margin-bottom: 0px;
@@ -5,6 +18,10 @@
 
 .breadcrumb-item+.breadcrumb-item::before {
   content: '' !important;
+}
+
+.breadcrumb {
+  padding: .35rem 1rem;
 }
 
 .views-view-grid .items img.image-field {
@@ -109,6 +126,7 @@ figure.align-center {
 
 #footer {
   background: #00aeef none repeat scroll 0 0;
+  position: relative;
 }
 
 .site-branding img {
@@ -223,4 +241,11 @@ img[alt="bebbo-hearts"] {
   width: 50px;
   text-align: center;
   margin: 20px;
+}
+
+.box {
+  position: relative;
+  background-color: #ffffff;
+  box-shadow: var(--shadow);
+  padding: 0.4rem;
 }

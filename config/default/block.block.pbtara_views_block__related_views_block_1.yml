@@ -1,0 +1,34 @@
+uuid: 984450d5-e750-45af-935a-94b453b3f790
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.related_views
+  module:
+    - node
+    - views
+  theme:
+    - pbtara
+id: pbtara_views_block__related_views_block_1
+theme: pbtara
+region: sidebar_second
+weight: -8
+provider: null
+plugin: 'views_block:related_views-block_1'
+settings:
+  id: 'views_block:related_views-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      article: article
+      video_article: video_article

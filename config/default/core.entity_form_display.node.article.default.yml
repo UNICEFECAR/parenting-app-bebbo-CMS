@@ -24,9 +24,7 @@ dependencies:
     - field.field.node.article.field_subcategory
     - field.field.node.article.field_type_of_article
     - node.type.article
-    - workflows.workflow.group_workflow
   module:
-    - content_moderation
     - media_library
     - path
     - text
@@ -192,10 +190,12 @@ content:
       include_locked: true
     third_party_settings: {  }
   moderation_state:
-    type: moderation_state_default
+    type: string_textfield
     weight: 26
     region: content
-    settings: {  }
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path

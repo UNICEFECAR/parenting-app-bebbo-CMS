@@ -12,7 +12,7 @@ dependencies:
 id: pbtara_views_block__category_block_block_3
 theme: pbtara
 region: sidebar_first
-weight: -4
+weight: -7
 provider: null
 plugin: 'views_block:category_block-block_3'
 settings:

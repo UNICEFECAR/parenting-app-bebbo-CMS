@@ -1,11 +1,6 @@
-{% set media_id = fields.field_cover_image.content|striptags|trim %}
-{% set media = drupal_entity('media', media_id, check_access=false) %}
-{% set media_uri = media['#media'].field_media_image.entity.uri.value %}
-
 <div class="box">
 	<div>
-{# {{ drupal_image(media_uri, '', {alt: fields.title.content, title: fields.title.content, responsive:true }) }} #}
-    <img loading="lazy" src="{{ file_url(media_uri) }}" alt="image" class="image-field">
+    {{ fields.field_cover_image.content }}
 	</div>
 	{{ fields.field_activity_category.content }}
 	<div class="views-field views-field-title">

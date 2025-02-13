@@ -10,8 +10,8 @@ dependencies:
     - pbtara
 id: pbtara_appbanner
 theme: pbtara
-region: hidden_blocks
-weight: -7
+region: footer_bottom
+weight: -8
 provider: null
 plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
 settings:

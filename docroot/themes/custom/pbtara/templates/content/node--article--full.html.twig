@@ -113,7 +113,7 @@ set node_classes = [
 		</header>
 	{% endif %}
 	<div{{content_attributes.addClass('node-content')}}>
-    {{ content|without('field_content_category', 'field_child_age', 'field_child_gender') }}
+    {{ content }}
 	</div>
 </article>
 
