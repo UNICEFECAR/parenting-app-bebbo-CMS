@@ -64,7 +64,7 @@ contributing to Unicef Bebbo CMS:
 3.  **Add Upstream Remote**
       Set the original repository as a remote upstream to easily sync changes.
 
-      `git remote add upstream https://github.com/UNICEFECAR/parenting-app-bebbo-CMS.git\`
+      `git remote add upstream https://github.com/UNICEFECAR/parenting-app-bebbo-CMS.git`
 
 4.  **Install Dependencies**
     - In your root directory, navigate to the project: `cd parenting-app-bebbo-CMS`
@@ -106,49 +106,32 @@ refer to the [coding style guide](CODING_STYLE_GUIDE.md).
 
 Below are extensive steps you can follow to easily open a pull request.
 
-- Be sure to follow our coding standards outlined in the \[style
-  > guide\](https://docs.google.com/document/d/1g3qSJVisdVNMQLUDxQBPhwGcY1_4ZR0X/edit?usp=sharing&ouid=103248080299151163337&rtpof=true&sd=true).
+- Be sure to follow our coding standards outlined in the [coding style guide](CODING_STYLE_GUIDE.md).
 
-- Create and switch to a new branch from the dev branch. Use the
-  > following command:
-
-> \`[git checkout -b feature_name]{.mark}\`
+- Create and switch to a new branch from the dev branch. Use the following command: `git checkout -b feature_name`
 
 - Implement the changes you want to contribute.
 
   - Install and run a PHPCS to check the coding standards locally.
 
-- After making your changes, stage them using:
+- After making your changes, stage them using: `git add .`
 
-> \`[git add .]{.mark}\`
->
-> Then commit with a clear and concise message:
->
-> \`[git commit -m \"A brief description of your changes"]{.mark}\`
-> \[naming convention for commit messages\]
+- Then commit with a clear and concise message: `git commit -m "A brief description of your changes"`
 
-- Push your new branch to your forked repository:
+- Push your new branch to your forked repository: `git push origin your-branch-name`
 
-> \`[git push origin your-branch-name]{.mark}\`
+- To open a pull request, go to the original repository on GitHub. You will see a notification for your recently pushed branch.
+  Click on "Compare & pull request."
+  
+- Create a pull request (PR) against the \"dev\" branch of the original repository.
+  The title of your PR should describe your changes, for example, \"Adding new distribution to the application.\"
+  In the PR description, provide additional information about the changes, and their purpose.
 
-- To open a pull request, go to the original repository on GitHub. You
-  > will see a notification for your recently pushed branch. Click on
-  > "Compare & pull request."
+- Wait for the project maintainers to review your pull request.
+  They may provide feedback or request further changes. If your pull request is not accepted,
+  the reviewer will mention the reason in the PR comments.
 
-- Create a pull request (PR) against the \"dev\" branch of the original
-  > repository. The title of your PR should be descriptive of your
-  > changes, for example, \"Adding new distribution to the
-  > application.\" In the PR description, provide additional information
-  > about the changes, and their purpose.
-
-- Wait for the project maintainers to review your pull request. They may
-  > provide feedback or request further changes. If your pull request is
-  > not accepted, the reviewer will mention the reason in the PR
-  > comments.
-
-You can learn more about pull requests and how they work by checking out
-[[Github's
-documentation]{.underline}](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+You can learn more about pull requests and how they work by checking out [Github's documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 
 ## **Reporting an issue**
 
@@ -159,50 +142,38 @@ efficient, and impactful.
 
 **How to Report an Issue:**
 
-1.  **Search Existing Issues:** Before creating a new issue, check the
-    > Issues section of the repository to see if the problem has already
-    > been reported. If a similar issue exists, feel free to add
-    > comments or additional details.
+1. **Search Existing Issues:** Before creating a new issue, check the issues section of the repository to see if the problem has already been reported. If a similar issue exists, feel free to add comments or additional details.
 
-2.  **Create a New Issue:**
+2. **Create a New Issue**
 
     - Go to the Issues tab in the repository.
 
-    - Click on \`[New Issue]{.mark}\`.
+    - Click on `New Issue`.
 
-    - Choose the appropriate issue template (e.g., \"Bug Report\" or
-      > \"Feature Request\") if available.
+    - Choose the appropriate issue template (e.g., \"Bug Report\" or \"Feature Request\") if available.
 
-3.  **Provide a Detailed Description:**
+3. **Provide a Detailed Description**
 
-> Include the following details in your issue
+    Include the following details in your issue
 
-- **Summary:** A concise title that clearly describes the issue or
-  > feature.
+    - **Summary:** A concise title that clearly describes the issue or feature.
 
-- **Expected Behavior:** Highlight the behavior that was supposed to
-  > happen.
+    - **Expected Behavior:** Highlight the behavior that was supposed to happen.
 
-- **Actual Behavior:** Highlight what actually occurred.
+    - **Actual Behavior:** Highlight what actually occurred.
 
-- **Steps to Reproduce (for bugs):** A step-by-step explanation to help
-  > us replicate the issue.
+    - **Steps to Reproduce (for bugs):** A step-by-step explanation to help us replicate the issue.
 
-- **Environment:** Mention the browser, OS, or other relevant
-  > environment details where the issue occurs.
+    - **Environment:** Mention the browser, OS, or other relevant environment details where the issue occurs.
 
-- **Screenshots or Logs:** If applicable, attach screenshots or error
-  > logs to provide additional context.
+    - **Screenshots or Logs:** If applicable, attach screenshots or error logs to provide additional context.
 
-4.  **Label the Issue (Optional):**
+4. **Label the Issue (Optional)**
 
-> (most open-source projects don't give permission for labelling) Add
-> appropriate labels like \"bug,\" \"enhancement,\" or \"design\" to
-> categorize the issue. Otherwise, maintainers will label it during
-> triage.
+    Add appropriate labels like \"bug,\" \"enhancement,\" or \"design\" to categorize the issue. 
+    Otherwise, maintainers will label it during triage.
 
-5.  **Stay Engaged:** Be responsive to follow-up questions or requests
-    > for additional information from maintainers.
+5.  **Stay Engaged:** Be responsive to follow-up questions or requests for additional information from maintainers.
 
 ## **Code review and approval process**
 
@@ -211,23 +182,19 @@ CMS, all submissions go through a structured review and approval
 process. This section outlines what to expect after you've created a
 pull request (PR).
 
-#### **1. Automated Checks** {#automated-checks}
+#### **1. Automated Checks**
 
-- Once you submit your PR, our continuous integration (CI) system will
-  > automatically run checks, including:
+- Once you submit your PR, our continuous integration (CI) setup will automatically run checks, including:
 
   - Code linting for style compliance.
 
-  - Security checks are automated using CodeQL to ensure no
-    > vulnerabilities are introduced.
+  - Security checks are automated using CodeQL to ensure no vulnerabilities are introduced.
 
-- If any checks fail, review the logs, update your code, and push
-  > changes to the same branch to rerun the checks.
+- If any checks fail, review the logs, update your code, and push changes to the same branch to rerun the checks.
 
-#### **2. Code Review** {#code-review}
+#### **2. Code Review**
 
-- A maintainer or reviewer will evaluate your pull request. They will
-  > focus on:
+- A maintainer or reviewer will evaluate your pull request. They will focus on:
 
   - Adherence to coding standards and the style guide.
 
@@ -237,46 +204,37 @@ pull request (PR).
 
   - Compatibility with the existing codebase.
 
-- Expect comments or suggestions for improvement. Feedback will be
-  > provided constructively to help refine your contribution.
+- Expect comments or suggestions for improvement. Feedback will be provided constructively to help refine your contribution.
 
-#### **3. Revisions (If Required)** {#revisions-if-required}
+#### **3. Revisions if required**
 
-- Address any requested changes by updating your branch and pushing the
-  > changes.
+- Address any requested changes by updating your branch and pushing the changes.
 
-- Add a comment on Github to explain how you resolved each piece of
-  > feedback to help reviewers re-evaluate efficiently.
+- Add a comment on Github to explain how you resolved each piece of feedback to help reviewers re-evaluate efficiently.
 
-#### **4. Approval** {#approval}
+#### **4. Approval**
 
-- Once your PR meets all requirements and receives approval from at
-  > least one maintainer:
+- Once your PR meets all requirements and receives approval from at least one maintainer:
 
   - It will be marked as \"Ready to Merge.\"
 
-  - If multiple maintainers' approval is required, additional reviewers
-    > will be assigned.
+  - If multiple maintainers' approval is required, additional reviewers will be assigned.
 
-#### **5. Merging** {#merging}
+#### **5. Merging**
 
-- Approved pull requests are merged into the repository's main branch by
-  > a maintainer.
+- Approved pull requests are merged into the repository's main branch by a maintainer.
 
-- The PR will be closed, and you'll be notified when the changes are
-  > live.
+- The PR will be closed, and you'll be notified when the changes are live.
 
-#### **6. Post-Merge Workflow** {#post-merge-workflow}
+#### **6. Post-Merge Workflow**
 
 - After your PR is merged:
 
   - The changes will be included in the next scheduled release.
 
-  - Your contribution will be acknowledged in the release notes, if
-    > applicable (This would be nice to have).
+  - Your contribution should be acknowledged in the release notes, if applicable.
 
-- Feel free to monitor the live application and report any issues or
-  > suggest improvements for subsequent contributions.
+- Feel free to monitor the live application and report any issues or suggest improvements for subsequent contributions.
 
 #### **Tips for a Smooth Review Process**
 
@@ -318,11 +276,9 @@ The following themes are installed and enabled by the profile:
 
 ## **Custom roles**
 
-- **Globaladmin**: Manages all countries, configures languages, and
-  > offloads countries.
+- **Globaladmin**: Manages all countries, configures languages, and offloads countries.
 
-- **Senior editor**: Access to create, update, publish, and translate
-  > content.
+- **Senior editor**: Access to create, update, publish, and translate content.
 
 - **SME**: Access to update and approve content.
 
@@ -330,30 +286,26 @@ The following themes are installed and enabled by the profile:
 
 - **Country admin**: Manages country users and language content.
 
-Each user role has a dashboard. Country admin and Senior editor have
+Each user role has a dashboard. Country admin and senior editor have
 access to country reports.
 
 ## **Menus**
 
 - **Global content list**: Shows all published content.
 
-- **Country content list**: Shows language-specific content for the
-  > user.
+- **Country content list**: Shows language-specific content for the user.
 
-- **Add content**: Editors, Global Admin, and Senior Editors can create
-  > content.
+- **Add content**: Editors, Global Admin, and Senior Editors can create content.
 
 - **Manage Taxonomies**: Shows all taxonomy terms.
 
 - **Manage Media**: Allows users to manage image-related details.
 
-- **Manage Country**: Global Admin can add or update country and user
-  > details.
+- **Manage Country**: Global Admin can add or update country and user details.
 
 - **Manage Language**: Create or update languages.
 
-- **Manage Users**: Global Admin can add new admins and assign
-  > languages.
+- **Manage Users**: Global Admin can add new admins and assign languages.
 
 - **Manage Translation**: Users can send content translation requests.
 
