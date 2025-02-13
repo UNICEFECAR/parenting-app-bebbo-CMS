@@ -36,14 +36,14 @@ contribute. Learn more in our [Code of Conduct](CODE_OF_CONDUCT.md) document.
 
 **How to Contribute**
 
-1.  **Contribute to Bebbo Projects**
+1.  Contribute to Bebbo Projects:
 
-- Explore our GitHub repositories: The Bebbo CMS repository is [here](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS),
-  and its contribution guidelines are [here](CONTRIBUTING.md).
+    - Explore our GitHub repositories: The Bebbo CMS repository is [here](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS),
+      and its contribution guidelines are [here](CONTRIBUTING.md).
 
-- Bebbo mobile app repository can be found [here](https://github.com/UNICEFECAR/parenting-app-bebbo-mobile).
-  Set up your development environment with our tech stack (e.g., React Native, PHP) using the instructions in the respective guidelines.
-  Note that the installation process differs for the Bebbo CMS and Mobile App codebases.
+    - Bebbo mobile app repository can be found [here](https://github.com/UNICEFECAR/parenting-app-bebbo-mobile).
+      Set up your development environment with our tech stack (e.g., React Native, PHP) using the instructions in the respective guidelines.
+      Note that the installation process differs for the Bebbo CMS and Mobile App codebases.
 
 2.  Engage with the Community:
 
@@ -65,9 +65,4 @@ need to nurture and empower their children.
 Join the Bebbo community today and make a lasting difference!
 
 **Hashtags:** 
-*#Bebbo* 
-*#OpenSource*
-*#DigitalParenting*
-*#EarlyChildhoodDevelopment*
-*#GlobalCommunity*
-
+*#Bebbo* *#OpenSource* *#DigitalParenting* *#EarlyChildhoodDevelopment* *#GlobalCommunity*  
