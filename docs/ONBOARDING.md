@@ -9,8 +9,8 @@ their location or circumstances.
 We\'re excited to welcome passionate individuals who share our vision.
 Whether you\'re a developer, designer, translator, content creator, or
 someone who cares about early childhood development, your contribution
-matters. Explore our [project description and goals document](DESCRIPTION_GOALS.md)
-to learn more about Bebbo.
+matters. Explore our [project description and goals](DESCRIPTION_GOALS.md)
+document to learn more about Bebbo.
 
 **Why Contribute to Bebbo?**
 
