@@ -11,8 +11,12 @@ header#header {
   padding: 0px;
 }
 
+.container {
+  padding: 0 25px;
+}
+
 #breadcrumb {
-  top: 5.1rem;
+  top: 6.1rem;
   padding: 0px;
 }
 
@@ -121,7 +125,7 @@ figure.align-center {
 }
 
 .header-container {
-  padding: 0.1rem 1.7rem;
+  padding: 0 25px;
   border-bottom: 1px solid #cccccc;
 }
 
@@ -134,12 +138,13 @@ figure.align-center {
 .site-branding img {
   width: auto;
   max-height: 60px;
-  padding: 5px;
+  padding: 5px 0px;
 }
 
 #footer img.image-field {
   width: 75px;
   margin-left: 13px;
+  padding-bottom: 25px;
 }
 
 #footer .footer-bottom-middle-right .menu li a {
@@ -203,17 +208,13 @@ figure.align-center {
 }
 
 .header-top img.image-field {
-  height: 1.3rem;
+  height: 1.4rem;
   width: 100%;
+  margin: 10px 0px;
 }
-
 
 .header-top .image-field {
   margin: 0 0 0 0;
-}
-
-img.image-field {
-  margin-left: 13px;
 }
 
 .region-primary-menu .menu-item-level-1 a:hover,
@@ -252,6 +253,11 @@ img[alt="bebbo-hearts"] {
   margin-top: 0px;
 }
 
+.sidebar .block {
+  margin-bottom: 0px;
+  padding: 15px 0px 0px;
+}
+
 /* Media Queries */
 /* Show banner only on mobile devices */
 @media screen and (max-width: 768px) {
@@ -272,6 +278,7 @@ img[alt="bebbo-hearts"] {
   .main-wrapper {
     margin-top: 4rem;
   }
+
   #sidebar-left {
     order: 1;
   }
@@ -282,6 +289,9 @@ img[alt="bebbo-hearts"] {
 
   #footer {
     z-index: 0;
+  }
+  .copyright {
+    margin-bottom: 0px;
   }
 }
 
