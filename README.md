@@ -48,7 +48,7 @@ Launch the application in your browser to verify everything is set up correctly.
 4.  Once installation is complete, you'll see the Drupal homepage.
 
 ## Maintainers
-The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners. It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.  
+The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners (including DATAMATICS). It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.  
 
 For ongoing maintenance, please reach out to the following maintainers:  
 - [Evrim Sahin](https://github.com/evrimm)
