@@ -23,6 +23,13 @@ function pbtara_preprocess_breadcrumb(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   // Check if it's a node of type "article".
   if ($node && $route_name === 'entity.node.canonical' && $node instanceof NodeInterface) {
+
+    $language_manager = \Drupal::languageManager();
+    $current_langcode = $language_manager->getCurrentLanguage()->getId();
+    $default_langcode = $language_manager->getDefaultLanguage()->getId();
+    // If the current language is the default (e.g., 'en'), do not add the language prefix.
+    $lang_prefix = ($current_langcode !== $default_langcode) ? "/$current_langcode" : "";
+
     $breadcrumb = [];
     $breadcrumb[] = [
       'text' => t('Home'),
@@ -37,22 +44,33 @@ function pbtara_preprocess_breadcrumb(&$variables) {
       // Initialize the breadcrumb array.
       $breadcrumb[] = [
         'text' => t('Advice'),
-        'url' => '/advice',
+        'url' => Url::fromUserInput("$lang_prefix/advice"),
       ];
-
       // Add Category links if available.
       foreach ($categories as $category) {
+        $translated_category = $category->getTranslation($current_langcode);
         $breadcrumb[] = [
-          'text' => $category->label(),
-          'url' => $category->toUrl(),
+          'text' => $translated_category->label(),
+          'url' => $category->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
         ];
       }
     }
     elseif ($node->bundle() === 'activities') {
+      $activity_category = $node->get('field_activity_category')->referencedEntities();
       $breadcrumb[] = [
         'text' => t('Games'),
-        'url' => '/games',
+        'url' => Url::fromUserInput("$lang_prefix/games"),
       ];
+      foreach ($activity_category as $activity) {
+        $translated_activity = $activity->getTranslation($current_langcode);
+        $breadcrumb[] = [
+          'text' => t($translated_activity->label()),
+          'url' => $activity->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
+        ];
+      }
+    }
+    else {
+      $breadcrumb = $variables['breadcrumb'];
     }
     $variables['breadcrumb'] = $breadcrumb;
     // Add cache context based on url.

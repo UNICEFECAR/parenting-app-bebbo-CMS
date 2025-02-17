@@ -1,26 +1,26 @@
-uuid: d907f63d-4e7d-4ff7-9f60-c0eadd889890
+uuid: edeaf037-74e5-4209-ba57-80a49f69b26c
 langcode: en
 status: true
 dependencies:
   config:
-    - views.view.related_views
+    - views.view.taxonomy_term_display
   module:
     - node
     - views
   theme:
     - pbtara
-id: pbtara_views_block__related_views_activities_random_content
+id: pbtara_views_block__taxonomy_term_activities_categories_block
 theme: pbtara
 region: sidebar_second
 weight: 0
 provider: null
-plugin: 'views_block:related_views-activities_random_content'
+plugin: 'views_block:taxonomy_term_display-activities_categories_block'
 settings:
-  id: 'views_block:related_views-activities_random_content'
-  label: 'Related Content'
+  id: 'views_block:taxonomy_term_display-activities_categories_block'
+  label: ''
   label_display: visible
   provider: views
-  views_label: 'Related Content'
+  views_label: ''
   items_per_page: none
 visibility:
   'entity_bundle:node':
