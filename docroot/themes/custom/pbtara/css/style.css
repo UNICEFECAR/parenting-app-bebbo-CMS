@@ -303,6 +303,9 @@ img[alt="bebbo-hearts"] {
   .header-top-left {
     margin-bottom: 0px;
   }
+    #footer img.image-field {
+      padding-bottom: 0px;
+    }
 }
 
 @media (min-width: 768px) {
