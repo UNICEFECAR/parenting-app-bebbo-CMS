@@ -875,3 +875,13 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
     font-size: 16px;
   }
 }
+
+pre,
+samp {
+  background-color: #000 !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    font-family: monospace, monospace;
+    font-size: 12px !important;
+    box-shadow: none !important;
+}

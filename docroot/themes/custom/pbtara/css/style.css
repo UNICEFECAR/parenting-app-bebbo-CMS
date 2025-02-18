@@ -1,3 +1,8 @@
+h5,
+h6 {
+  font-size: 1.2rem;
+  text-transform: none
+}
 header#header {
   position: fixed;
 }
@@ -62,8 +67,7 @@ select#edit-field-content-category-target-id--2 {
   padding: 10px;
   font-family: Arial, sans-serif;
   z-index: 1000;
-  display: none;
-  /* Initially hidden on larger screens */
+  display: block;
 }
 
 .banner-content {
@@ -95,6 +99,10 @@ select#edit-field-content-category-target-id--2 {
   text-decoration: none;
   font-weight: bold;
   filter: drop-shadow(0 0 2px grey);
+}
+
+a.download-btn:hover {
+  background-color: #EEEEEE;
 }
 
 .close-btn {
@@ -291,6 +299,9 @@ img[alt="bebbo-hearts"] {
     z-index: 0;
   }
   .copyright {
+    margin-bottom: 0px;
+  }
+  .header-top-left {
     margin-bottom: 0px;
   }
 }
