@@ -67,7 +67,7 @@ select#edit-field-content-category-target-id--2 {
   padding: 10px;
   font-family: Arial, sans-serif;
   z-index: 1000;
-  display: block;
+  display: none;
 }
 
 .banner-content {
