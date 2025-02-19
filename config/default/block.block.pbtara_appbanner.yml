@@ -1,35 +1,25 @@
-uuid: 4e8e9fa2-2834-4da1-8f68-38e5966450bb
+uuid: 41ebb32c-e297-4be4-aba7-632698120379
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+    - 'block_content:basic:9b381d82-af77-48b1-a192-c2ad8f5e5771'
   module:
     - block_content
-    - node
   theme:
     - pbtara
 id: pbtara_appbanner
 theme: pbtara
 region: content
-weight: -3
+weight: 0
 provider: null
-plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+plugin: 'block_content:9b381d82-af77-48b1-a192-c2ad8f5e5771'
 settings:
-  id: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
+  id: 'block_content:9b381d82-af77-48b1-a192-c2ad8f5e5771'
   label: 'App Banner'
   label_display: '0'
   provider: block_content
   status: true
   info: ''
   view_mode: full
-visibility:
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      activities: activities
-      article: article
-      video_article: video_article
+visibility: {  }
