@@ -21,7 +21,7 @@ header#header {
 }
 
 #breadcrumb {
-  top: 6.1rem;
+  top: 4.9rem;
   padding: 0px;
 }
 
@@ -140,7 +140,7 @@ figure.align-center {
 #footer {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
-  /* padding-bottom: 5rem; */
+  margin-top: 30px;
 }
 
 .site-branding img {

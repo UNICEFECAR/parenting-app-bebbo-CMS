@@ -3099,6 +3099,7 @@ display:
         description: 'Find and manage content'
         weight: -10
         menu_name: admin
+      use_admin_theme: true
     cache_metadata:
       max-age: 0
       contexts:

@@ -49,9 +49,11 @@ function pbtara_preprocess_breadcrumb(&$variables) {
       // Add Category links if available.
       foreach ($categories as $category) {
         $translated_category = $category->getTranslation($current_langcode);
+        $tid = $translated_category->id();
         $breadcrumb[] = [
           'text' => $translated_category->label(),
-          'url' => $category->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
+          'url' => "$lang_prefix/advice?type=All&field_content_category_target_id=$tid&field_child_age_target_id=All&sort_bef_combine=changed_DESC",
+          // 'url' => $category->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
         ];
       }
     }
@@ -63,9 +65,11 @@ function pbtara_preprocess_breadcrumb(&$variables) {
       ];
       foreach ($activity_category as $activity) {
         $translated_activity = $activity->getTranslation($current_langcode);
+        $tid = $translated_activity->id();
         $breadcrumb[] = [
-          'text' => t($translated_activity->label()),
-          'url' => $activity->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
+          'text' => $translated_activity->label(),
+          'url' => "$lang_prefix/games?type=All&field_activity_category__target_id=$tid&field_child_age_target_id=All&sort_bef_combine=changed_DESC",
+          // 'url' => $activity->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
         ];
       }
     }
