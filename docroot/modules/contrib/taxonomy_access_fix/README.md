@@ -1,4 +1,4 @@
-
+<!--- cspell:ignore Dekhteruk GABB Oleksandr pifagor rudiedirkx -->
 CONTENTS OF THIS FILE
 ---------------------
 

@@ -21,13 +21,6 @@ class TermAccessTest extends OriginalTermAccessTest {
   protected static $modules = ['taxonomy', 'block'];
 
   /**
-   * The vocabularies used.
-   *
-   * @var \Drupal\taxonomy\VocabularyInterface[]
-   */
-  protected $vocabularies;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -42,7 +35,7 @@ class TermAccessTest extends OriginalTermAccessTest {
   /**
    * {@inheritdoc}
    */
-  public function testTermAccess() {
+  public function testTermAccess(): void {
     $assert_session = $this->assertSession();
 
     $published_terms = [];

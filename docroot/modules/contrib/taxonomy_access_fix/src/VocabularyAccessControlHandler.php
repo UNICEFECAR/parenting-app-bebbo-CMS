@@ -3,8 +3,8 @@
 namespace Drupal\taxonomy_access_fix;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityHandlerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -106,7 +106,7 @@ class VocabularyAccessControlHandler extends OriginalVocabularyAccessControlHand
   /**
    * {@inheritdoc}
    */
-  protected function checkFieldAccess($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  protected function checkFieldAccess($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
     if ($items !== NULL && $field_definition->getName() === $this->entityType->getKey('label')) {
       $entity = $items->getEntity();
       return $this->checkAccess($entity, 'view label', $account);

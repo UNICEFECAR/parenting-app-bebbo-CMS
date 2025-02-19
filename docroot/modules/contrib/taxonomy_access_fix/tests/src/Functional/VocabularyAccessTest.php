@@ -3,10 +3,10 @@
 namespace Drupal\Tests\taxonomy_access_fix\Functional;
 
 use Drupal\Core\Url;
-use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\taxonomy\VocabularyInterface;
 use Drupal\Tests\taxonomy\Functional\TaxonomyTestBase;
 use Drupal\Tests\taxonomy_access_fix\Traits\TaxonomyAccessFixTestTrait;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\VocabularyInterface;
 
 /**
  * Tests administrative Taxonomy UI access.
@@ -35,13 +35,6 @@ class VocabularyAccessTest extends TaxonomyTestBase {
    * @var \Drupal\user\UserInterface[]
    */
   protected $users;
-
-  /**
-   * The vocabularies used.
-   *
-   * @var \Drupal\taxonomy\VocabularyInterface[]
-   */
-  protected $vocabularies;
 
   /**
    * {@inheritdoc}

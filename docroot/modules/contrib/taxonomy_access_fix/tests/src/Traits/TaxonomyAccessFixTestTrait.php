@@ -10,6 +10,13 @@ use Drupal\Component\Render\FormattableMarkup;
 trait TaxonomyAccessFixTestTrait {
 
   /**
+   * The vocabularies used.
+   *
+   * @var \Drupal\taxonomy\VocabularyInterface[]
+   */
+  protected $vocabularies;
+
+  /**
    * Passes if an element matching the specified CSS selector is found.
    *
    * An optional element index may be passed.

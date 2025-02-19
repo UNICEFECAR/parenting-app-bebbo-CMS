@@ -4,7 +4,7 @@ namespace Drupal\Tests\taxonomy_access_fix\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\JSWebAssert;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
-use Drupal\Tests\field\Traits\EntityReferenceTestTrait;
+use Drupal\Tests\field\Traits\EntityReferenceFieldCreationTrait;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
@@ -17,7 +17,7 @@ use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 class TermSelectAccessTest extends WebDriverTestBase {
 
   use ContentTypeCreationTrait;
-  use EntityReferenceTestTrait;
+  use EntityReferenceFieldCreationTrait;
   use NodeCreationTrait;
   use TaxonomyTestTrait;
 

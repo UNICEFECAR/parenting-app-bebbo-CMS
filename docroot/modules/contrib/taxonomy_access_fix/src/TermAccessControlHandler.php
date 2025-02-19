@@ -61,7 +61,7 @@ class TermAccessControlHandler extends OriginalTermAccessControlHandler {
   /**
    * {@inheritdoc}
    */
-  protected function checkFieldAccess($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  protected function checkFieldAccess($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
     if ($items !== NULL && $field_definition->getName() === $this->entityType->getKey('label')) {
       $entity = $items->getEntity();
       return $this->checkAccess($entity, 'view label', $account);

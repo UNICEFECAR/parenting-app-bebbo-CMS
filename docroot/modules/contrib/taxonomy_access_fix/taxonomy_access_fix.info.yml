@@ -1,13 +1,13 @@
 name: Taxonomy Access Fix
 type: module
-description: Fixes the crooked access checks for Taxonomy pages.
-core_version_requirement: ^9.3 || ^10
+description: "Extends access handling of Drupal Core's Taxonomy module."
+core_version_requirement: ^10 || ^11
 package: Taxonomy
 
 dependencies:
   - drupal:taxonomy
 
-# Information added by Drupal.org packaging script on 2023-08-14
-version: '4.0.1'
+# Information added by Drupal.org packaging script on 2025-01-10
+version: '4.0.2'
 project: 'taxonomy_access_fix'
-datestamp: 1691980928
+datestamp: 1736506233

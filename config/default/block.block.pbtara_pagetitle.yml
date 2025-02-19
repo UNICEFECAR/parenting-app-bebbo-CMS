@@ -22,4 +22,4 @@ visibility:
     id: request_path
     negate: true
     context_mapping: {  }
-    pages: "/homepage\r\n/share\r\n/foleja"
+    pages: "/homepage\r\n/node/66001\r\n/share\r\n/foleja"

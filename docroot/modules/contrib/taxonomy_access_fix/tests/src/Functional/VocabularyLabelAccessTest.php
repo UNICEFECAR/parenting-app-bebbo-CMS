@@ -86,8 +86,6 @@ class VocabularyLabelAccessTest extends BrowserTestBase {
     $assert_session->pageTextContains($view_title);
     $assert_session->pageTextContains($vocabulary1_label);
     $assert_session->pageTextNotContains($vocabulary2_label);
-    $this->assertLinkByEndOfHref($vocabulary1_path);
-    $this->assertNoLinkByEndOfHref($vocabulary2_path);
     $this->drupalGet($vocabulary1_path);
     $assert_session->statusCodeEquals(403);
     $this->drupalGet($vocabulary2_path);
@@ -101,8 +99,6 @@ class VocabularyLabelAccessTest extends BrowserTestBase {
     $assert_session->pageTextContains($view_title);
     $assert_session->pageTextContains($vocabulary1_label);
     $assert_session->pageTextContains($vocabulary2_label);
-    $this->assertLinkByEndOfHref($vocabulary1_path);
-    $this->assertLinkByEndOfHref($vocabulary2_path);
     $this->drupalGet($vocabulary1_path);
     $assert_session->statusCodeEquals(403);
     $this->drupalGet($vocabulary2_path);
@@ -119,8 +115,6 @@ class VocabularyLabelAccessTest extends BrowserTestBase {
     $assert_session->pageTextContains($view_title);
     $assert_session->pageTextContains($vocabulary1_label);
     $assert_session->pageTextNotContains($vocabulary2_label);
-    $this->assertLinkByEndOfHref($vocabulary1_path);
-    $this->assertNoLinkByEndOfHref($vocabulary2_path);
     $this->drupalGet($vocabulary1_path);
     $assert_session->statusCodeEquals(403);
     $this->drupalGet($vocabulary2_path);
@@ -139,8 +133,6 @@ class VocabularyLabelAccessTest extends BrowserTestBase {
     $assert_session->pageTextContains($view_title);
     $assert_session->pageTextContains($vocabulary1_label);
     $assert_session->pageTextContains($vocabulary2_label);
-    $this->assertLinkByEndOfHref($vocabulary1_path);
-    $this->assertLinkByEndOfHref($vocabulary2_path);
     $this->drupalGet($vocabulary1_path);
     $assert_session->statusCodeEquals(403);
     $this->drupalGet($vocabulary2_path);
@@ -157,8 +149,6 @@ class VocabularyLabelAccessTest extends BrowserTestBase {
     $assert_session->pageTextContains($view_title);
     $assert_session->pageTextNotContains($vocabulary1_label);
     $assert_session->pageTextContains($vocabulary2_label);
-    $this->assertNoLinkByEndOfHref($vocabulary1_path);
-    $this->assertLinkByEndOfHref($vocabulary2_path);
     $this->drupalGet($vocabulary1_path);
     $assert_session->statusCodeEquals(403);
     $this->drupalGet($vocabulary2_path);

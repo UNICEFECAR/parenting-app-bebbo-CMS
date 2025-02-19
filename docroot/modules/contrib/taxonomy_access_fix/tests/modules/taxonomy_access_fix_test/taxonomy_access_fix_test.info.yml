@@ -1,0 +1,13 @@
+name: 'Taxonomy access fix test'
+type: module
+description: 'Support module for taxonomy testing.'
+package: Testing
+hidden: true
+dependencies:
+  - 'taxonomy_access_fix:taxonomy_access_fix'
+  - 'drupal:views'
+
+# Information added by Drupal.org packaging script on 2025-01-10
+version: '4.0.2'
+project: 'taxonomy_access_fix'
+datestamp: 1736506233

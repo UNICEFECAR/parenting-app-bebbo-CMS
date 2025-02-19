@@ -1,0 +1,14 @@
+{
+  "name": "drupal/taxonomy_access_fix",
+  "type": "drupal-module",
+  "description": "Extends access handling of Drupal Core's Taxonomy module.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/taxonomy_access_fix",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/taxonomy_access_fix",
+    "source": "https://git.drupalcode.org/project/taxonomy_access_fix"
+  },
+  "require": { }
+}

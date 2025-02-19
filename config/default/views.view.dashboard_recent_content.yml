@@ -190,6 +190,7 @@ display:
           query_tags: {  }
       relationships: {  }
       css_class: hide
+      show_admin_links: false
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -297,6 +298,7 @@ display:
         fields: false
       display_extenders: {  }
       path: dashboard
+      use_admin_theme: true
     cache_metadata:
       max-age: -1
       contexts:
