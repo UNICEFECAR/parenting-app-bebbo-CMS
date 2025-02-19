@@ -1,9 +1,9 @@
-uuid: 41ebb32c-e297-4be4-aba7-632698120379
+uuid: 836d1539-e67c-411b-bb6d-6daf2c532169
 langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:basic:9b381d82-af77-48b1-a192-c2ad8f5e5771'
+    - 'block_content:basic:48ebb274-1671-4326-ad1c-64a0d8bfa678'
   module:
     - block_content
   theme:
@@ -13,9 +13,9 @@ theme: pbtara
 region: content
 weight: 0
 provider: null
-plugin: 'block_content:9b381d82-af77-48b1-a192-c2ad8f5e5771'
+plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
 settings:
-  id: 'block_content:9b381d82-af77-48b1-a192-c2ad8f5e5771'
+  id: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
   label: 'App Banner'
   label_display: '0'
   provider: block_content
