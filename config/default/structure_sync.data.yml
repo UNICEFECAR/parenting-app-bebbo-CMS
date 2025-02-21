@@ -183,229 +183,6 @@ menus:
       attributes:
         target: _blank
   -
-    menu_name: main
-    title: 'About Us'
-    parent: null
-    uri: 'internal:/about-us'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -45
-    langcode: en
-    uuid: 7c08c104-94b0-405a-bc91-52fa41efde0e
-    options:
-      attributes:
-        target: _blank
-  -
-    menu_name: main
-    title: 'Privacy Policy'
-    parent: null
-    uri: 'internal:/privacy-policy'
-    link_title: ''
-    description: null
-    enabled: false
-    expanded: false
-    weight: -44
-    langcode: en
-    uuid: 75b0da68-01d9-4088-b965-3abb1df5bc39
-    options: {  }
-  -
-    menu_name: main
-    title: 'WHY BEBBO?'
-    parent: null
-    uri: 'internal:/#why-bebbo'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -48
-    langcode: en
-    uuid: b87411f5-92e8-49c5-818f-80dc015e1b3d
-    options: {  }
-  -
-    menu_name: main
-    title: Download
-    parent: null
-    uri: 'internal:/#download'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -49
-    langcode: en
-    uuid: 71c0abd6-7bf2-44be-b8c4-d3ce909e781c
-    options: {  }
-  -
-    menu_name: main
-    title: FEATURES
-    parent: null
-    uri: 'internal:/#features'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -47
-    langcode: en
-    uuid: cbc13f68-ef4d-4418-978b-92f1698a27c1
-    options: {  }
-  -
-    menu_name: main
-    title: Stories
-    parent: null
-    uri: 'internal:/#case_studies'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -46
-    langcode: en
-    uuid: 6e1eb80a-d00f-4ab8-9b07-1108630a6aad
-    options: {  }
-  -
-    menu_name: main
-    title: Home
-    parent: null
-    uri: 'internal:/'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -50
-    langcode: en
-    uuid: 8237687b-9dcf-470e-bbd3-c4310f3b0ef0
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Add Article Content'
-    parent: null
-    uri: 'internal:/node/add/article'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -50
-    langcode: en
-    uuid: 5938b637-6df9-477e-ba0e-4a106b998135
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Add Video Article Content'
-    parent: null
-    uri: 'internal:/node/add/video_article'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -49
-    langcode: en
-    uuid: 39eb675c-7430-45b1-b501-bda99a7dfe8c
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Add Games'
-    parent: null
-    uri: 'internal:/node/add/activities'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -48
-    langcode: en
-    uuid: 0acbe75d-18ff-4d51-b7bc-423e054d1cb6
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Media List'
-    parent: null
-    uri: 'internal:/admin/content/media'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -47
-    langcode: en
-    uuid: c56622e6-3fd0-4180-8dfe-c3fdaea70fbd
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Country Content'
-    parent: null
-    uri: 'internal:/country-content-list'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -46
-    langcode: en
-    uuid: 7b8d91fa-f87a-4f9c-b75c-8b0d0944fb22
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Global Content'
-    parent: null
-    uri: 'internal:/global-content-list'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -45
-    langcode: en
-    uuid: 83c154d3-56f6-4834-ba51-22a665620409
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Manage Users'
-    parent: null
-    uri: 'internal:/group/146/members'
-    link_title: null
-    description: null
-    enabled: true
-    expanded: false
-    weight: -44
-    langcode: en
-    uuid: 0736d23b-75ab-4966-b716-2f5b7316e4b5
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Add Members'
-    parent: null
-    uri: 'internal:/group/146/content/create/group_membership'
-    link_title: null
-    description: null
-    enabled: true
-    expanded: false
-    weight: -43
-    langcode: en
-    uuid: 4e6d08bd-f8ea-49f7-b4a3-8d9fd114d1be
-    options: {  }
-  -
-    menu_name: quick-links
-    title: 'Manage Country'
-    parent: null
-    uri: 'internal:/admin/group'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -42
-    langcode: en
-    uuid: 991f5995-d42c-441b-9516-cbf39e854be2
-    options: {  }
-  -
-    menu_name: quick-links
-    title: Logout
-    parent: null
-    uri: 'internal:/user/logout'
-    link_title: ''
-    description: null
-    enabled: true
-    expanded: false
-    weight: -41
-    langcode: en
-    uuid: 47e8302f-c21b-4013-8733-13c8bedbf25d
-    options: {  }
-  -
     menu_name: editorial-menu
     title: 'Manage Content'
     parent: null
@@ -469,6 +246,19 @@ menus:
     weight: -49
     langcode: en
     uuid: 6ffc3c54-07d8-4788-8e51-663b6737d818
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Copy keywords/related articles to translations'
+    parent: 'menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818'
+    uri: 'internal:/admin/content/copy-translated-field'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: b9e8641b-cfa1-46b8-ab4e-343a76776709
     options: {  }
   -
     menu_name: editorial-menu
@@ -669,7 +459,7 @@ menus:
     menu_name: editorial-menu
     title: 'Country Users'
     parent: null
-    uri: 'internal:/group/146/members'
+    uri: 'internal:/group/151/members'
     link_title: null
     description: null
     enabled: true

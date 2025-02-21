@@ -11,8 +11,8 @@ dependencies:
     - pbtara
 id: pbtara_exposedformlisting_viewpage_1
 theme: pbtara
-region: sidebar_first
-weight: -8
+region: sidebar_second
+weight: -9
 provider: null
 plugin: 'views_exposed_filter_block:listing_view-page_1'
 settings:

@@ -3,6 +3,7 @@ h6 {
   font-size: 1.2rem;
   text-transform: none
 }
+
 header#header {
   position: fixed;
 }
@@ -21,7 +22,7 @@ header#header {
 }
 
 #breadcrumb {
-  top: 4.9rem;
+  top: 5.5rem;
   padding: 0px;
 }
 
@@ -50,7 +51,10 @@ header#header {
 }
 
 select#edit-field-activity-category-target-id--2,
-select#edit-field-content-category-target-id--2 {
+select#edit-field-child-age-target-id--2,
+select#edit-sort-bef-combine--2,
+select#edit-field-content-category-target-id--2,
+select#edit-type--2 {
   width: 90%;
 }
 
@@ -137,10 +141,16 @@ figure.align-center {
   border-bottom: 1px solid #cccccc;
 }
 
+.pager {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 #footer {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 .site-branding img {
@@ -208,7 +218,7 @@ figure.align-center {
   justify-content: flex-end;
   align-items: flex-start;
   width: 100%;
-  padding-right: 30px;
+  padding: 5px 30px 5px 0px;
 }
 
 .header-top-container {
@@ -273,7 +283,7 @@ img[alt="bebbo-hearts"] {
   }
 
   .breadcrumb {
-    padding-top: 1.5rem;
+    padding-top: 1rem;
   }
 
   #footer {
@@ -286,26 +296,34 @@ img[alt="bebbo-hearts"] {
     margin-top: 4rem;
   }
 
-  #sidebar-left {
+  /* Change orders for node pages */
+  .path-advice #sidebar-left,
+  .path-games #sidebar-left,
+  .path-advice #sidebar-right,
+  .path-games #sidebar-right {
     order: 1;
   }
 
-  #main {
+  .path-advice #main,
+  .path-games #main {
     order: 2;
   }
 
   #footer {
     z-index: 0;
   }
+
   .copyright {
     margin-bottom: 0px;
   }
+
   .header-top-left {
     margin-bottom: 0px;
   }
-    #footer img.image-field {
-      padding-bottom: 0px;
-    }
+
+  #footer img.image-field {
+    padding-bottom: 0px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -313,5 +331,88 @@ img[alt="bebbo-hearts"] {
     color: #4fa9dd;
     background-color: transparent;
   }
+}
 
+/* Page 404 */
+.page-404-wrapper .cta-block {
+  padding: 50px 0px;
+}
+
+.page-404-wrapper .cta-block-text {
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+
+.page-404-wrapper .center {
+  text-align: center;
+}
+
+.page-404-wrapper .btn:not(:disabled):not(.disabled).active,
+.page-404-wrapper .btn:not(:disabled):not(.disabled):active {
+  background-image: none;
+}
+
+.page-404-wrapper a.btn.outlined,
+.page-404-wrapper button.outlined {
+  border-width: 3px;
+  border-style: solid;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  -webkit-box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+}
+
+.page-404-wrapper .primary,
+.page-404-wrapper a.primary {
+  color: #00aeef;
+}
+
+.page-404-wrapper button,
+.page-404-wrapper .button,
+.page-404-wrapper a.btn {
+  font-weight: bold;
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  min-width: 160px;
+  word-wrap: break-word;
+  cursor: pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-clip: padding-box;
+  border-color: #00aeef;
+  -webkit-box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12)
+}
+
+.page-404-wrapper .btn:focus,
+.page-404-wrapper .btn:hover {
+  text-decoration: none;
+}
+
+.page-404-footer #footer {
+  background: #00aeef none repeat scroll 0 0;
+  position: fixed;
+  bottom: 0px;
+}
+
+@media only screen and (min-width: 992px) {
+
+  .page-404-wrapper .text,
+  .page-404-wrapper .text_long,
+  .page-404-wrapper .text-long {
+    max-width: 770px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .cta-block-text {
+    margin-top: 16px;
+    margin-bottom: 26px;
+  }
 }

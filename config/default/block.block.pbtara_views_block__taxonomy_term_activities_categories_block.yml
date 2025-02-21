@@ -12,7 +12,7 @@ dependencies:
 id: pbtara_views_block__taxonomy_term_activities_categories_block
 theme: pbtara
 region: sidebar_second
-weight: 0
+weight: -3
 provider: null
 plugin: 'views_block:taxonomy_term_display-activities_categories_block'
 settings:
