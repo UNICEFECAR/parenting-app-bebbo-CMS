@@ -77,43 +77,42 @@ set node_classes = [
 ]
 %}
 <article{{attributes.addClass(node_classes)}}>
-	{{ title_prefix }}
-	{% if not page %}
-		<h2{{title_attributes.addClass('node-title')}}>
-			<a href="{{ url }}" rel="bookmark">{{ label }}</a>
-		</h2>
-	{% endif %}
-	{{ title_suffix }}
+  {{ title_prefix }}
+  {% if not page %}
+    <h2{{title_attributes.addClass('node-title')}}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
 
-	{% if display_submitted %}
-		<header class="node-header">
-			{% if node_author_pic %}
-				<div class="author-picture">{{ author_picture }}</div>
-			{% endif %}
-			<div{{author_attributes.addClass('node-submitted-details')}}>
-				<div class="node-user">
-					{% trans %}<i class="icon-user" aria-hidden="true"></i>
-					{{  author_name }}
-				</div>
-				<div class="node-date">
-					<i class="icon-calendar" aria-hidden="true"></i>
-					{{ date }}{% endtrans %}
-				</div>
-				{% if node_tags and content.field_tags %}
-					<div class="node-tags">
-						{% for item in content.field_tags %}
-							{% if item['#title'] %}
-								<a href="{{ item['#url']}}">{{ item['#title']  }}</a>
-							{% endif %}
-						{% endfor %}
-					</div>
-				{% endif %}
-				{{ metadata }}
-			</div>
-		</header>
-	{% endif %}
-	<div{{content_attributes.addClass('node-content')}}>
-    {{ content|without('field_content_category', 'field_child_age', 'field_child_gender') }}
-	</div>
+  {% if display_submitted %}
+    <header class="node-header">
+      {% if node_author_pic %}
+        <div class="author-picture">{{ author_picture }}</div>
+      {% endif %}
+      <div{{author_attributes.addClass('node-submitted-details')}}>
+        <div class="node-user">
+          {% trans %}<i class="icon-user" aria-hidden="true"></i>
+          {{  author_name }}
+        </div>
+        <div class="node-date">
+          <i class="icon-calendar" aria-hidden="true"></i>
+          {{ date }}{% endtrans %}
+        </div>
+        {% if node_tags and content.field_tags %}
+          <div class="node-tags">
+            {% for item in content.field_tags %}
+              {% if item['#title'] %}
+                <a href="{{ item['#url']}}">{{ item['#title']  }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        {{ metadata }}
+      </div>
+    </header>
+  {% endif %}
+  <div{{content_attributes.addClass('node-content')}}>
+    {{ content }}
+  </div>
 </article>
-

@@ -129,7 +129,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
+          quantity: 4
       exposed_form:
         type: bef
         options:
@@ -486,7 +486,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<br/>\r\n<small><a class=\"text-secondary\" href=\"/advice?field_content_category_target_id={{ field_content_category__target_id }}\" >{{ field_content_category }}</a></small>"
+            text: '<small><a class="text-secondary" href="/advice?field_content_category_target_id={{ field_content_category__target_id }}" >{{ field_content_category }}</a></small>'
             make_link: false
             path: '/article-listing?field_content_category_target_id={{ field_content_category__target_id }}'
             absolute: false
@@ -518,7 +518,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -551,7 +551,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<br/>\r\n{{ title }}\r\n<br/>"
+            text: '{{ title }}'
             make_link: false
             path: ''
             absolute: false
@@ -1413,7 +1413,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false

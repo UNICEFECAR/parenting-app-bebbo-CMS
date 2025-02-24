@@ -1,3 +1,6 @@
+body {
+  line-height: 1.5rem;
+}
 h5,
 h6 {
   font-size: 1.2rem;
@@ -17,12 +20,16 @@ header#header {
   padding: 0px;
 }
 
+.main-container {
+  gap: 1.8rem;
+}
+
 .container {
   padding: 0 25px;
 }
 
 #breadcrumb {
-  top: 5.5rem;
+  top: 6.7rem;
   padding: 0px;
 }
 
@@ -137,7 +144,7 @@ figure.align-center {
 }
 
 .header-container {
-  padding: 0 25px;
+  padding: .625rem 1.6rem;
   border-bottom: 1px solid #cccccc;
 }
 
@@ -262,7 +269,11 @@ img[alt="bebbo-hearts"] {
   position: relative;
   background-color: #ffffff;
   box-shadow: var(--shadow);
-  padding: 0.4rem;
+  padding: 0.8rem;
+}
+
+.box .views-field-title a {
+  font-weight: bold;
 }
 
 /* Article detail page */
