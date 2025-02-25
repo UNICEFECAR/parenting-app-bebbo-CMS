@@ -28,6 +28,11 @@ header#header {
   padding: 0 25px;
 }
 
+article .node-content {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
 #breadcrumb {
   top: 6.7rem;
   padding: 0px;
@@ -55,6 +60,13 @@ header#header {
 
 .pb-main-homepage .menu li a {
   text-transform: inherit;
+}
+
+.node-taxonomy-container,
+.node-links-container {
+  border-top: none;
+  margin: 0px;
+  padding: 0px;
 }
 
 select#edit-field-activity-category-target-id--2,
@@ -216,6 +228,14 @@ figure.align-center {
 
 .sidebar .block {
   box-shadow: 0 0 0 0px transparent;
+}
+
+.sidebar li::before {
+  content: "➤";
+  color: #2a3280;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 5px;
 }
 
 /* Header top */

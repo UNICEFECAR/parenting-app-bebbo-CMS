@@ -31,17 +31,16 @@ bundle: video_article
 mode: default
 content:
   body:
-    type: text_summary_or_trimmed
+    type: text_default
     label: above
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
-    weight: 101
+    weight: 2
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_australian_article:
     type: boolean
@@ -51,7 +50,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 102
+    weight: 4
     region: content
   field_child_age:
     type: entity_reference_label
@@ -59,7 +58,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 107
+    weight: 9
     region: content
   field_child_gender:
     type: entity_reference_label
@@ -67,7 +66,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 108
+    weight: 10
     region: content
   field_content_category:
     type: entity_reference_label
@@ -75,16 +74,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 109
-    region: content
-  field_cover_video:
-    type: entity_reference_entity_view
-    label: above
-    settings:
-      view_mode: default
-      link: false
-    third_party_settings: {  }
-    weight: 115
+    weight: 11
     region: content
   field_generic_content:
     type: boolean
@@ -94,7 +84,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 103
+    weight: 5
     region: content
   field_keywords:
     type: entity_reference_label
@@ -102,7 +92,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 110
+    weight: 12
     region: content
   field_licensed_content:
     type: boolean
@@ -112,7 +102,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 6
     region: content
   field_mandatory_content:
     type: boolean
@@ -122,14 +112,14 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 105
+    weight: 7
     region: content
   field_meta_keywords:
     type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 20
+    weight: 3
     region: content
   field_parent_gender:
     type: entity_reference_label
@@ -137,7 +127,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 111
+    weight: 13
     region: content
   field_premature_content:
     type: boolean
@@ -147,14 +137,14 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 106
+    weight: 8
     region: content
   field_references_and_comments:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 114
+    weight: 16
     region: content
   field_related_articles:
     type: entity_reference_label
@@ -162,7 +152,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 112
+    weight: 14
     region: content
   field_related_video_articles:
     type: entity_reference_label
@@ -170,7 +160,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 116
+    weight: 17
     region: content
   field_seasons:
     type: entity_reference_label
@@ -178,14 +168,15 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 113
+    weight: 15
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
 hidden:
   feeds_item: true
+  field_cover_video: true
   field_pre_populated: true
   langcode: true

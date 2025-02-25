@@ -37,17 +37,11 @@ bundle: video_article
 mode: full
 content:
   body:
-    type: text_summary_or_trimmed
+    type: text_default
     label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   field_cover_video:
     type: entity_reference_entity_view
@@ -56,21 +50,22 @@ content:
       view_mode: default
       link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
   field_references_and_comments:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
 hidden:
+  content_moderation_control: true
   feeds_item: true
   field_australian_article: true
   field_child_age: true
@@ -88,3 +83,4 @@ hidden:
   field_related_video_articles: true
   field_seasons: true
   langcode: true
+  search_api_excerpt: true

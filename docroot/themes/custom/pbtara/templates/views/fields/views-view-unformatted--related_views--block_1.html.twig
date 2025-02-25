@@ -1,7 +1,7 @@
 {% for row in rows %}
   {% set node = row.content['#row']._entity %}
   {% if node.field_related_articles|length > 0 %}
-    <h2 class="block-title">{{ 'Related Article'|t }}</h2>
+    <h2 class="block-title">{{ 'Related Articles'|t }}</h2>
     <div class="views-view-grid horizontal cols-3 clearfix">
       <div class="items">
         {# {% for row in rows %} #}

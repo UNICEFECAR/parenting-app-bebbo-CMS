@@ -2,14 +2,15 @@
 	<div class="views-view-grid horizontal cols-3 clearfix">
 		<div class="items">
 			{% for item in items %}
+				{% set result = item.value['#result'] %}
 				<div class="box">
 					<div class="views-field views-field-title">
 						<span class="field-content">
-							<a href="{{ item.url }}">{{ item.title }}</a>
+							<a href="{{ result.link }}">{{ result.title }}</a>
 						</span>
 					</div>
 					<div>
-						{{ item.snippet }}
+						{{ result.snippet['#markup']|raw }}
 					</div>
 				</div>
 			{% endfor %}
