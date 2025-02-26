@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Фільтр
+      fields:
+        created:
+          label: Створено

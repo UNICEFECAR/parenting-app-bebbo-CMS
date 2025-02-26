@@ -8,7 +8,6 @@ dependencies:
     - media
     - pb_custom_form
     - rest
-    - search
     - system
     - taxonomy
 _core:
@@ -22,5 +21,4 @@ permissions:
   - 'access taxonomy overview'
   - 'manage mobile javascript'
   - 'restful get custom_rest_resource'
-  - 'search content'
   - 'view media'

@@ -22,6 +22,7 @@ header#header {
 
 .main-container {
   gap: 1.8rem;
+  top: 30px;
 }
 
 .container {
@@ -75,6 +76,10 @@ select#edit-sort-bef-combine--2,
 select#edit-field-content-category-target-id--2,
 select#edit-type--2 {
   width: 90%;
+}
+
+form#views-exposed-form-content-search-page-1 input[type=text] {
+  max-width: 90%;
 }
 
 /* Sticky App Download Banner */
@@ -169,7 +174,7 @@ figure.align-center {
 #footer {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
-  /* margin-top: 30px; */
+  margin-top: 30px;
 }
 
 .site-branding img {
@@ -230,7 +235,9 @@ figure.align-center {
   box-shadow: 0 0 0 0px transparent;
 }
 
-.sidebar li::before {
+.sidebar li::before,
+.sidebar .view-display-id-activities_categories_block .views-row a::before
+ {
   content: "➤";
   color: #2a3280;
   font-weight: bold;

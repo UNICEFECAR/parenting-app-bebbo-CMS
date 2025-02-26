@@ -11,7 +11,7 @@ _core:
 id: pbtara_content
 theme: pbtara
 region: content
-weight: -4
+weight: -6
 provider: null
 plugin: system_main_block
 settings:

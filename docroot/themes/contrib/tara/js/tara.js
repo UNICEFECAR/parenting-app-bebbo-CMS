@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
   // Full page search.
   $('.search-icon').click(function () {
     $('.search-box').css('display', 'flex');
-    return false;
+    // return false;
   });
   $('.search-box-close').click(function () {
     $('.search-box').css('display', 'none');

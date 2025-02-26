@@ -9,7 +9,7 @@ dependencies:
 id: pbtara_help_2
 theme: pbtara
 region: content
-weight: -7
+weight: -9
 provider: null
 plugin: help_block
 settings:

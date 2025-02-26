@@ -15,7 +15,6 @@ dependencies:
     - media
     - node
     - pb_custom_form
-    - search
     - shortcut
     - system
     - taxonomy
@@ -42,7 +41,6 @@ permissions:
   - 'edit any video media'
   - entity_share_client_pull_content
   - 'manage mobile javascript'
-  - 'search content'
   - 'use text format admin_full_html'
   - 'view latest version'
   - 'view media'
