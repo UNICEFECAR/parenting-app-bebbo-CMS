@@ -1666,7 +1666,7 @@ display:
           type: media_thumbnail
           settings:
             image_link: ''
-            image_style: ''
+            image_style: medium
             image_loading:
               attribute: lazy
           group_column: target_id
