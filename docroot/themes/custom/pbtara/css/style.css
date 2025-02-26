@@ -34,6 +34,7 @@ article .node-content {
   padding-top: 10px;
 }
 
+
 #breadcrumb {
   top: 6.7rem;
   padding: 0px;
@@ -174,7 +175,7 @@ figure.align-center {
 #footer {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 .site-branding img {
