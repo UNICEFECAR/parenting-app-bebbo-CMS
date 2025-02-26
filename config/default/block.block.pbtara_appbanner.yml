@@ -1,5 +1,5 @@
-uuid: 836d1539-e67c-411b-bb6d-6daf2c532169
-langcode: en
+uuid: 25825e2e-8091-4c31-8907-3a2e0afbe0ca
+langcode: rs-en
 status: true
 dependencies:
   content:
@@ -11,7 +11,7 @@ dependencies:
 id: pbtara_appbanner
 theme: pbtara
 region: content
-weight: -5
+weight: 0
 provider: null
 plugin: 'block_content:48ebb274-1671-4326-ad1c-64a0d8bfa678'
 settings:
