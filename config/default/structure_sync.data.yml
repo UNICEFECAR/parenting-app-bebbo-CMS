@@ -1,5 +1,31 @@
 blocks:
   -
+    info: 'UNICEF Logo'
+    langcode: en
+    uuid: 92bd7f57-04e4-4791-8e2d-0c4a610720b4
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<drupal-media data-entity-type="media" data-entity-uuid="202f163c-76cd-453f-af5d-dee6c17fa2fa">&nbsp;</drupal-media>'
+          summary: ''
+          format: full_html
+  -
+    info: 'App Banner'
+    langcode: en
+    uuid: 48ebb274-1671-4326-ad1c-64a0d8bfa678
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<p>App Banner</p>'
+          summary: ''
+          format: full_html
+  -
     info: 'BLOCK 9'
     langcode: en
     uuid: a450e752-a8ab-4e0b-a05d-840dc8145324
