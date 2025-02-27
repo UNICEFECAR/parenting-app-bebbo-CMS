@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d120963002ceb1464f54cd232325cb9",
+    "content-hash": "c47129791b2982d8f9eb546a43fe3ad2",
     "packages": [
         {
             "name": "acquia/drupal-spec-tool",
@@ -4310,26 +4310,26 @@
         },
         {
             "name": "drupal/lang_dropdown",
-            "version": "2.1.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/lang_dropdown.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/lang_dropdown-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "9ce32e352b4fa708831cc525d7b49a903a1286c1"
+                "url": "https://ftp.drupal.org/files/projects/lang_dropdown-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "939adb961069d4b0f240119190fa6d1fd1771c33"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10"
+                "drupal/core": "^9.3 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1688063326",
+                    "version": "8.x-2.3",
+                    "datestamp": "1736928342",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4354,11 +4354,11 @@
                     "homepage": "https://www.drupal.org/user/506264"
                 },
                 {
-                    "name": "Mohammed J. Razem",
+                    "name": "mohammed j. razem",
                     "homepage": "https://www.drupal.org/user/255384"
                 },
                 {
-                    "name": "Rajab Natshah",
+                    "name": "rajab natshah",
                     "homepage": "https://www.drupal.org/user/1414312"
                 }
             ],
@@ -13978,7 +13978,6 @@
         "drupal/feeds": 15,
         "drupal/feeds_tamper": 10,
         "drupal/json_field": 5,
-        "drupal/lang_dropdown": 10,
         "drupal/tamper": 15,
         "drupal/title_length": 5,
         "drupal/ultimate_cron": 15

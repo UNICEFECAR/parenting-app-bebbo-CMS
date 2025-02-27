@@ -17,6 +17,7 @@ use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\lang_dropdown\LanguageDropdownConstants;
 
 /**
  * Language Switch Form.
@@ -157,21 +158,21 @@ class LanguageDropdownForm extends FormBase {
       // Build the options in an associative array,
       // so it will be ready for #options in select form element.
       switch ($this->settings['display']) {
-        case LANGDROPDOWN_DISPLAY_TRANSLATED:
+        case LanguageDropdownConstants::LANGDROPDOWN_DISPLAY_TRANSLATED:
         default:
           $options += [$lang_code => $this->t($language->getName())];
           break;
 
-        case LANGDROPDOWN_DISPLAY_NATIVE:
+        case LanguageDropdownConstants::LANGDROPDOWN_DISPLAY_NATIVE:
           $native_language = $this->languageManager->getNativeLanguages()[$lang_code];
           $options += [$lang_code => $native_language->getName()];
           break;
 
-        case LANGDROPDOWN_DISPLAY_LANGCODE:
+        case LanguageDropdownConstants::LANGDROPDOWN_DISPLAY_LANGCODE:
           $options += [$lang_code => $lang_code];
           break;
 
-        case LANGDROPDOWN_DISPLAY_SELFTRANSLATED:
+        case LanguageDropdownConstants::LANGDROPDOWN_DISPLAY_SELFTRANSLATED:
           $native_language = $this->languageManager->getNativeLanguages()[$lang_code];
           $native_language_translated = $this->t($native_language->getName(), [], ['langcode' => $lang_code]);
           $options += [$lang_code => $native_language_translated];
@@ -232,7 +233,7 @@ class LanguageDropdownForm extends FormBase {
     }
 
     // Add required files and settings for JS widget.
-    if ($this->settings['widget'] == LANGDROPDOWN_MSDROPDOWN) {
+    if ($this->settings['widget'] == LanguageDropdownConstants::LANGDROPDOWN_MSDROPDOWN) {
       $js_settings += [
         'widget' => 'msdropdown',
         'visibleRows' => $this->settings['msdropdown']['visible_rows'],
@@ -260,7 +261,7 @@ class LanguageDropdownForm extends FormBase {
       $form['#attached']['library'][] = 'lang_dropdown/ms-dropdown';
       $form['#attached']['drupalSettings']['lang_dropdown'][$unique_id] = $js_settings;
     }
-    elseif ($this->settings['widget'] == LANGDROPDOWN_CHOSEN) {
+    elseif ($this->settings['widget'] == LanguageDropdownConstants::LANGDROPDOWN_CHOSEN) {
       $js_settings += [
         'widget' => 'chosen',
         'disable_search' => $this->settings['chosen']['disable_search'],
@@ -270,7 +271,7 @@ class LanguageDropdownForm extends FormBase {
       $form['#attached']['library'][] = 'lang_dropdown/chosen';
       $form['#attached']['drupalSettings']['lang_dropdown'][$unique_id] = $js_settings;
     }
-    elseif ($this->settings['widget'] == LANGDROPDOWN_DDSLICK) {
+    elseif ($this->settings['widget'] == LanguageDropdownConstants::LANGDROPDOWN_DDSLICK) {
       $form['#attached']['library'][] = 'lang_dropdown/ddslick';
       $selected_skin = $this->settings['ddslick']['skin'];
       $js_settings += [

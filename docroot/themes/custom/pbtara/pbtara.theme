@@ -23,7 +23,6 @@ function pbtara_preprocess_breadcrumb(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   // Check if it's a node of type "article".
   if ($node && $route_name === 'entity.node.canonical' && $node instanceof NodeInterface) {
-
     $language_manager = \Drupal::languageManager();
     $current_langcode = $language_manager->getCurrentLanguage()->getId();
     $default_langcode = $language_manager->getDefaultLanguage()->getId();

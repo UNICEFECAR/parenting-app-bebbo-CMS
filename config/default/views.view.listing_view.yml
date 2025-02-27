@@ -1508,8 +1508,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: true
-            text: "{% set paragraphs = body__value|split('</p>') %}\r\n{% for paragraph in paragraphs %}\r\n{% if 'What Your Child is Learning' in paragraph %}\r\n    {{ paragraph|raw }}</p>\r\n  {% endif %}\r\n{% endfor %}"
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -1524,9 +1524,9 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 150
-            word_boundary: false
-            ellipsis: false
+            max_length: 120
+            word_boundary: true
+            ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
@@ -1547,9 +1547,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: text_trimmed
-          settings:
-            trim_length: 120
+          type: text_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true

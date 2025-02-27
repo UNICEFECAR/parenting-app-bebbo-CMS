@@ -275,6 +275,13 @@ figure.align-center {
   background-color: transparent;
 }
 
+.block-region.region-primary-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
 .homepageblock7 .media--type-image,
 .block-download-doubl-heart .media--type-image {
   justify-content: center;
