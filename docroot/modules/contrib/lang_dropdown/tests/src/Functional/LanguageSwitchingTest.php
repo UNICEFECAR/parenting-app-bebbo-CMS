@@ -20,7 +20,7 @@ class LanguageSwitchingTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = [
+  public static $modules = [
     'block',
     'language',
     'lang_dropdown',

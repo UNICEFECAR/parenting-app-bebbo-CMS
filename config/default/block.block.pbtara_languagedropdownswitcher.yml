@@ -1,4 +1,4 @@
-uuid: d731efae-247e-4a7f-bd9a-5135b85e9bc1
+uuid: eae625c4-a67a-453b-b8d3-7d46c4e4212f
 langcode: en
 status: true
 dependencies:
@@ -17,11 +17,11 @@ settings:
   label: 'Language dropdown switcher'
   label_display: '0'
   provider: lang_dropdown
-  showall: true
+  showall: false
   hide_only_one: true
   tohome: false
   width: 165
-  display: 3
+  display: 1
   widget: 0
   msdropdown:
     visible_rows: 5
