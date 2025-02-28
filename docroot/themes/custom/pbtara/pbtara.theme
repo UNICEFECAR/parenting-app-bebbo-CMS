@@ -86,9 +86,7 @@ function pbtara_preprocess_breadcrumb(&$variables) {
  */
 function pbtara_preprocess_block__pbtara_appbanner(&$variables) {
   $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
-  $node_id = NULL;
-  $content_type = NULL;
-  $final_url = NULL;
+  $node_id = $content_type = $final_url = NULL;
 
   // Check if we are on a node page.
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
@@ -103,10 +101,7 @@ function pbtara_preprocess_block__pbtara_appbanner(&$variables) {
     }
 
     // Construct the final URL format.
-    // Get base URL (e.g., https://example.com)
-    $base_url = \Drupal::request()->getSchemeAndHttpHost();
     $final_url = "/share/" . $current_language . "/" . $content_type . "/" . $node_id;
-    // https://bebbo.app/share/en/article/66071
   }
 
   // Pass the variables to the block template.

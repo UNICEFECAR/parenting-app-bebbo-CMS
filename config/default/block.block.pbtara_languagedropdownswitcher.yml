@@ -20,7 +20,7 @@ settings:
   showall: false
   hide_only_one: true
   tohome: false
-  width: 165
+  width: 120
   display: 1
   widget: 0
   msdropdown:
@@ -41,5 +41,20 @@ settings:
     custom_skin: ''
   languageicons:
     flag_position: 1
-  hidden_languages: {  }
+  hidden_languages:
+    anonymous:
+      - sq
+      - by-ru
+      - xk-sq
+      - xk-rs
+      - kg-ru
+      - md-ro
+      - mk-sq
+      - ro
+      - sr
+      - rs-en
+      - tj-ru
+      - tr
+      - uz-ru
+      - ar
 visibility: {  }
