@@ -1,6 +1,7 @@
 body {
   line-height: 1.5rem;
 }
+
 h5,
 h6 {
   font-size: 1.2rem;
@@ -237,8 +238,7 @@ figure.align-center {
 }
 
 .sidebar li::before,
-.sidebar .view-display-id-activities_categories_block .views-row a::before
- {
+.sidebar .view-display-id-activities_categories_block .views-row a::before {
   content: "➤";
   color: #2a3280;
   font-weight: bold;
@@ -334,6 +334,21 @@ img[alt="bebbo-hearts"] {
 
   #footer {
     padding-bottom: 5rem;
+  }
+
+  .block-region.region-primary-menu {
+    align-items: inherit;
+    gap: 1rem;
+    flex-direction: column;
+  }
+
+  div#block-pbtara-languagedropdownswitcher {
+    order: 1;
+    margin-left: 2rem;
+  }
+
+  nav#block-pbtara-mainnavigation {
+    order: 2;
   }
 }
 
