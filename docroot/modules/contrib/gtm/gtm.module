@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Module gtm.module.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function gtm_page_attachments(array &$page) {
+  $config = \Drupal::config('gtm.settings');
+  $is_admin = \Drupal::service('router.admin_context')->isAdminRoute();
+
+  $admin_pages = ($config->get('admin-pages') || !$is_admin);
+  if (\Drupal::currentUser()->id() == 1 && $config->get('admin-disable')) {
+    $admin_pages = FALSE;
+  }
+  if ($config->get('enable') && $config->get('google-tag') && $admin_pages) {
+    $google_tag = $config->get('google-tag');
+    $script = "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','{$google_tag}');\n";
+    $page['#attached']['html_head'][] = [
+      ['#tag' => 'script', '#value' => $script],
+      'gtm',
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function gtm_page_top(array &$page_top) {
+  $config = \Drupal::config('gtm.settings');
+  $is_admin = \Drupal::service('router.admin_context')->isAdminRoute();
+
+  $admin_pages = ($config->get('admin-pages') || !$is_admin);
+  if ($config->get('enable') && $config->get('google-tag') && $admin_pages) {
+    $google_tag = $config->get('google-tag');
+    $src = "https://www.googletagmanager.com/ns.html?id={$google_tag}";
+    $page_top['gtm'] = [
+      '#noscript' => TRUE,
+      '#type' => 'html_tag',
+      '#tag' => 'iframe',
+      '#attributes' => [
+        'src' => $src,
+        'height' => 0,
+        'width' => 0,
+        'style' => 'display:none;visibility:hidden;'
+      ],
+    ];
+  }
+}

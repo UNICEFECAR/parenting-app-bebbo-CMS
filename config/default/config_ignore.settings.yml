@@ -3,6 +3,7 @@ _core:
 mode: simple
 ignored_config_entities:
   - google_analytics.settings
+  - gtm.settings
   - mobile_app_links.android
   - mobile_app_links.ios
   - pb_custom_form.mobile_app_share_link_form

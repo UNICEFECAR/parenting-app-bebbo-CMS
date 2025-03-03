@@ -1,0 +1,13 @@
+stages:
+  - build
+
+## build stage.
+build:
+  stage: build
+  only:
+    - master
+  tags:
+    - dev
+  script:
+    - PROJ="gtm"
+    - ~/git-push.sh $PROJ

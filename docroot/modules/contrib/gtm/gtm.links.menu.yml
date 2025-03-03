@@ -1,0 +1,5 @@
+gtm.settings:
+  title: 'Google Tag Manager'
+  parent: system.admin_config_system
+  description: 'Configure GTM tracking code'
+  route_name: gtm.settings
