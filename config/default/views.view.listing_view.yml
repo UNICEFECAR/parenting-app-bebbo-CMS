@@ -1868,7 +1868,7 @@ display:
           exposed: true
           expose:
             operator_id: field_activity_category_target_id_op
-            label: 'Activities Categories'
+            label: Category
             description: ''
             use_operator: false
             operator: field_activity_category_target_id_op
