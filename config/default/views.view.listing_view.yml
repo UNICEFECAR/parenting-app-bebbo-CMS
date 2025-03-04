@@ -975,7 +975,7 @@ display:
           exposed: true
           expose:
             operator_id: field_child_age_target_id_op
-            label: 'Child Age'
+            label: 'Child age'
             description: ''
             use_operator: false
             operator: field_child_age_target_id_op
@@ -1933,7 +1933,7 @@ display:
           exposed: true
           expose:
             operator_id: field_child_age_target_id_op
-            label: 'Child Age'
+            label: 'Child age'
             description: ''
             use_operator: false
             operator: field_child_age_target_id_op

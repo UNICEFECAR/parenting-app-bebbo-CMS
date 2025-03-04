@@ -21,7 +21,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Activity Categories'
+      title: Category
       fields:
         tid:
           id: tid
