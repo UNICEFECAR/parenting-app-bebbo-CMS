@@ -1,0 +1,24 @@
+<div class="box">
+	<div>
+		{{ fields.field_cover_image.content }}
+	</div>
+	{{ fields.field_activity_category.content }}
+	<div class="views-field views-field-title">
+		<span class="field-content">
+			<a href="{{ fields.view_node.content }}">{{ fields.title.content }}</a>
+		</span>
+	</div>
+	<div>
+		{% set paragraphs = fields.body.content|replace({'</p>': '</p>||'})|split('||') %}
+		{% set selected_paragraph = '' %}
+		{% for paragraph in paragraphs %}
+			{% if 'What Your Child is Learning' in paragraph %}
+				{% set selected_paragraph = paragraph %}
+			{% endif %}
+		{% endfor %}
+		{% if selected_paragraph == '' %}
+			{% set selected_paragraph = paragraphs|first %}
+		{% endif %}
+		{{ selected_paragraph|replace({'&nbsp;': ' '})|striptags|slice(0, 120) ~ '...' }}
+	</div>
+</div>

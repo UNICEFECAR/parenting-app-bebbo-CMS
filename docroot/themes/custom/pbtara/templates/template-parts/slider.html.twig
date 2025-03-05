@@ -1,0 +1,35 @@
+{{ attach_library('tara/slider') }}
+<section id="slider">
+  <div class="container">
+    <ul class="owl-carousel home-slider">
+      {% if slider_code != '' %}
+        {{ slider_code | striptags('<ol>,<ul>,<li>,<p>,<a>,<img>,<video>,<h1>,<h2>,<h3>,<h4>,<h5>,<h6>,<em>,<strong>,<br>,<i>,<div>,<span>,<button>') | raw }}
+      {% else %}
+      <li>
+        <h1>Slider Heading One</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        <br />
+        <a class="button" href="#">read more</a>
+      </li>
+      <li>
+        <h1>Slider Heading Two</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        <br />
+        <a class="button" href="#">read more</a>
+      </li>
+      <li>
+        <h1>Slider Heading Three</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        <br />
+        <a class="button" href="#">read more</a>
+      </li>
+      <li>
+        <h1>Slider Heading Four</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        <br />
+        <a class="button" href="#">read more</a>
+      </li>
+      {% endif %}
+    </ul> <!--/.home-slider -->
+  </div>
+</section>
