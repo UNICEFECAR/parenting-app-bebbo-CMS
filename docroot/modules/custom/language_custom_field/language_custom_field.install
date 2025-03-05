@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * @file
+ * Force update check api schema.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function language_custom_field_schema() {
+  $schema = [];
+
+  $schema['custom_language_data'] = [
+    'description' => 'Language Custom field data value in custom table',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique id for custom_language_data',
+      ],
+      'langcode' => [
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+      ],
+      'custom_locale' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'custom_luxon' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'custom_plural' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'custom_language_name_local' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'Custom language name in local',
+      ],
+      'created_date' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Add custom_language_name_local name column to language_custom_data table.
+ */
+function language_custom_field_update_9001() {
+  $schema = \Drupal::database()->schema();
+  // Check if the column already exists to avoid duplication.
+  if (!$schema->fieldExists('custom_language_data', 'custom_language_name_local')) {
+    $schema->addField('custom_language_data', 'custom_language_name_local', [
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => FALSE,
+      'description' => 'Custom language name in local.',
+      'default' => '',
+    ]);
+    \Drupal::messenger()->addMessage(t('Added column "custom_language_name_local" to custom_language_data.'));
+  }
+  else {
+    \Drupal::messenger()->addMessage(t('Column "custom_language_name_local" already exists in custom_language_data.'));
+  }
+}
+
+/**
+ * Hook_uninstall.
+ */
+function language_custom_field_uninstall() {
+  \Drupal::database()->schema()->dropTable('custom_language_data');
+}
