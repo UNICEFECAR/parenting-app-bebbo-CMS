@@ -1,6 +1,6 @@
-label: Вміст
 display:
   default:
+    display_title: Базово
     display_options:
       fields:
         title:
@@ -13,6 +13,9 @@ display:
           label: Стан
         operations:
           label: Операції
+      exposed_form:
+        options:
+          submit_button: Фільтр
       filters:
         title:
           expose:
@@ -26,10 +29,3 @@ display:
         langcode:
           expose:
             label: Мова
-      title: Вміст
-  page_1:
-    display_options:
-      menu:
-        title: Вміст
-      tab_options:
-        title: Вміст

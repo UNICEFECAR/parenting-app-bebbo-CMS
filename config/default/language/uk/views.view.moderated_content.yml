@@ -1,5 +1,6 @@
 display:
   default:
+    display_title: Базово
     display_options:
       fields:
         title:
@@ -10,6 +11,9 @@ display:
           label: Автор
         operations:
           label: Операції
+      exposed_form:
+        options:
+          submit_button: Фільтр
       filters:
         title:
           expose:

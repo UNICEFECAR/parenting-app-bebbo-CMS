@@ -4,6 +4,8 @@ display:
       fields:
         status:
           label: Стан
+        label:
+          label: Мітка
         item_type:
           label: Тип
         operations:

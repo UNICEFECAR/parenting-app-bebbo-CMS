@@ -12,7 +12,7 @@ dependencies:
 id: mainnavigation_2
 theme: claro
 region: content
-weight: 5
+weight: 6
 provider: null
 plugin: 'system_menu_block:main'
 settings:
@@ -28,7 +28,7 @@ visibility:
     id: request_path
     negate: false
     context_mapping: {  }
-    pages: "/homepage\r\n/about-us\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
   user_role:
     id: user_role
     negate: false

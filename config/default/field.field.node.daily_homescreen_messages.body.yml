@@ -7,10 +7,6 @@ dependencies:
     - node.type.daily_homescreen_messages
   module:
     - text
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: true
 id: node.daily_homescreen_messages.body
 field_name: body
 entity_type: node

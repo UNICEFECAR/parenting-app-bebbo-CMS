@@ -1,0 +1,22 @@
+uuid: fbbcee9d-6c6f-43ac-811a-6091ff7690fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - pbtara
+_core:
+  default_config_hash: iIy-YIc9d9s1isAtTIKWDBKd6kd2r6LxoYz_-hkLJco
+id: pbtara_messages
+theme: pbtara
+region: highlighted
+weight: -15
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  label_display: '0'
+  provider: system
+visibility: {  }

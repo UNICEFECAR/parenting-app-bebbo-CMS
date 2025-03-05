@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.user.compact
     - field.field.user.user.feeds_item
+    - field.field.user.user.field_receive_content_moderation
     - field.field.user.user.tmgmt_translation_skills
     - field.field.user.user.user_picture
     - image.style.thumbnail
@@ -35,6 +36,7 @@ content:
     region: content
 hidden:
   feeds_item: true
+  field_receive_content_moderation: true
   langcode: true
   member_for: true
   tmgmt_translation_skills: true

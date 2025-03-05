@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.child_development.field_milestone_instructions
     - field.field.node.child_development.field_pinned_article_for_boy
     - field.field.node.child_development.field_pinned_article_for_girl
+    - field.field.node.child_development.field_pre_populated
     - node.type.child_development
   module:
     - text
@@ -56,4 +57,5 @@ hidden:
   field_milestone_instructions: true
   field_pinned_article_for_boy: true
   field_pinned_article_for_girl: true
+  field_pre_populated: true
   langcode: true

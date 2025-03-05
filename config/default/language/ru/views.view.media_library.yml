@@ -1,22 +1,23 @@
 display:
   default:
-    display_title: Master
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+      title: Мультимедиа
+      fields:
+        media_bulk_form:
+          action_title: Action
       pager:
         options:
           expose:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
             offset_label: Offset
-      fields:
-        media_bulk_form:
-          action_title: Action
+      exposed_form:
+        options:
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       filters:
         name:
           expose:
@@ -29,7 +30,6 @@ display:
         langcode:
           expose:
             label: Language
-      title: Мультимедиа
   page:
     display_options:
       fields:
@@ -43,14 +43,14 @@ display:
           text: Delete
   widget:
     display_options:
-      filters:
-        name:
-          expose:
-            label: Name
       arguments:
         bundle:
           exception:
             title: All
+      filters:
+        name:
+          expose:
+            label: Name
   widget_table:
     display_options:
       fields:
@@ -62,11 +62,11 @@ display:
           label: Author
         changed:
           label: Updated
-      filters:
-        name:
-          expose:
-            label: Name
       arguments:
         bundle:
           exception:
             title: All
+      filters:
+        name:
+          expose:
+            label: Name

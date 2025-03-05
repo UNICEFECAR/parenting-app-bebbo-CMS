@@ -6,11 +6,7 @@ dependencies:
     - core.base_field_override.taxonomy_term.keywords.name
     - taxonomy.vocabulary.keywords
   module:
-    - feeds_tamper
     - taxonomy
-third_party_settings:
-  feeds_tamper:
-    tampers: {  }
 label: 'Taxonomy - Keywords'
 id: taxonomy_keywords
 description: 'Taxonomy - Keywords'
@@ -29,11 +25,11 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: keywords
-  langcode: en
+  langcode: bg-bg
   insert_new: 1
-  update_existing: 2
+  update_existing: 1
   update_non_existent: _keep
-  skip_hash_check: true
+  skip_hash_check: false
   authorize: false
   revision: false
   expire: -1
@@ -65,26 +61,6 @@ custom_sources:
     label: Term_id
     machine_name: term_id3
     type: csv
-  language:
-    value: Language
-    label: Language
-    machine_name: language
-    type: csv
-  term_name_sq:
-    value: Term_name_sq
-    label: Term_name_sq
-    machine_name: term_name_sq
-    type: csv
-  term_name_en:
-    value: Term_name_ru
-    label: Term_name_ru
-    machine_name: term_name_en
-    type: csv
-  term_name_ru:
-    value: Term_name_ru
-    label: Term_name_ru
-    machine_name: term_name_ru
-    type: csv
 mappings:
   -
     target: tid
@@ -92,18 +68,11 @@ mappings:
       value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
-      value: term_name_sq
+      value: term_name
     settings:
-      language: sq
-    unique: {  }
-  -
-    target: name
-    map:
-      value: term_name_ru
-    settings:
-      language: ru
+      language: bg-bg
     unique: {  }

@@ -1,7 +1,16 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
+      title: ميديا
+      fields:
+        media_bulk_form:
+          action_title: إجراء
+      pager:
+        options:
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
       exposed_form:
         options:
           submit_button: 'عمل تصفية'
@@ -9,14 +18,6 @@ display:
           exposed_sorts_label: 'الترتيب حسب'
           sort_asc_label: تصاعدي
           sort_desc_label: تنازلي
-      pager:
-        options:
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-      fields:
-        media_bulk_form:
-          action_title: إجراء
       filters:
         status:
           group_info:
@@ -32,7 +33,6 @@ display:
         langcode:
           expose:
             label: اللغة
-      title: ميديا
   page:
     display_title: الصفحة
     display_options:
@@ -48,14 +48,14 @@ display:
   widget:
     display_title: ودجة
     display_options:
-      filters:
-        name:
-          expose:
-            label: الاسم
       arguments:
         bundle:
           exception:
             title: الكل
+      filters:
+        name:
+          expose:
+            label: الاسم
       header:
         display_link_grid:
           label: شبكة
@@ -72,14 +72,14 @@ display:
           label: المؤلف
         changed:
           label: التحديث
-      filters:
-        name:
-          expose:
-            label: الاسم
       arguments:
         bundle:
           exception:
             title: الكل
+      filters:
+        name:
+          expose:
+            label: الاسم
       header:
         display_link_grid:
           label: شبكة

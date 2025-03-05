@@ -48,10 +48,18 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 26
+    weight: 12
     region: content
     settings:
       sidebar: true
+      use_details: true
+    third_party_settings: {  }
+  field_pre_populated:
+    type: boolean_checkbox
+    weight: 13
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   langcode:
     type: language_select
@@ -119,5 +127,4 @@ content:
 hidden:
   feeds_item: true
   field_licensed_content: true
-  field_pre_populated: true
   layout_builder__layout: true

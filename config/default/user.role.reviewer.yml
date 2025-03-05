@@ -6,32 +6,39 @@ dependencies:
     - media.type.image
     - media.type.remote_video
     - media.type.video
+    - node.type.vaccinations
   module:
     - actions_permissions
-    - block
+    - allowed_languages
     - content_moderation
     - content_translation
+    - file
+    - group
     - media
     - node
     - system
+    - tmgmt
     - toolbar_menu
-    - toolbar_menu_clean
 id: reviewer
 label: 'Country Admin'
 weight: -6
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access content'
-  - 'administer blocks'
-  - 'administer content translation'
-  - 'administer toolbar menu'
+  - 'access media overview'
+  - 'access user profiles'
+  - 'administer allowed languages'
+  - 'bypass group access'
   - 'create content translations'
   - 'create media'
+  - 'create vaccinations content'
+  - 'delete own files'
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'
   - 'execute pb_custom_field_assign_action node'
-  - 'show administration menu in the toolbar'
+  - 'translate all languages'
   - 'translate any entity'
   - 'translate image media'
   - 'translate remote_video media'
