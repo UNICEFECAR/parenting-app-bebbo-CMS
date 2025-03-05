@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Фільтр
       fields:
         title:
           label: Заголовок
@@ -14,6 +17,9 @@ display:
         operations:
           label: Операції
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
@@ -22,11 +28,16 @@ display:
       fields:
         status:
           label: Стан
+        created:
+          label: Створено
         title:
           label: Заголовок
         operations:
           label: Операції
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
@@ -35,11 +46,16 @@ display:
       fields:
         status:
           label: Стан
+        created:
+          label: Створено
         title:
           label: Заголовок
         operations:
           label: Операції
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
@@ -53,6 +69,9 @@ display:
         operations:
           label: Операції
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок
@@ -61,11 +80,16 @@ display:
       fields:
         status:
           label: Стан
+        created:
+          label: Створено
         title:
           label: Заголовок
         operations:
           label: Операції
       filters:
+        source_language:
+          expose:
+            label: 'Вихідна мова'
         title:
           expose:
             label: Заголовок

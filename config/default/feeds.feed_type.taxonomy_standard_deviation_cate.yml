@@ -24,7 +24,7 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: standard_deviation_category
-  langcode: uz-uz
+  langcode: tr
   insert_new: 1
   update_existing: 1
   update_non_existent: _keep
@@ -62,11 +62,11 @@ mappings:
       value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: term_name
     settings:
-      language: uz-uz
+      language: tr
     unique: {  }

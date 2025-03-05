@@ -26,8 +26,8 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: growth_introductory
-  langcode: uz-uz
-  insert_new: 1
+  langcode: tr
+  insert_new: 0
   update_existing: 1
   update_non_existent: _keep
   skip_hash_check: false
@@ -69,18 +69,18 @@ mappings:
       value: id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: title
     settings:
-      language: uz-uz
+      language: tr
     unique: {  }
   -
     target: description
     map:
       value: body
     settings:
-      language: uz-uz
+      language: tr
       format: plain_text

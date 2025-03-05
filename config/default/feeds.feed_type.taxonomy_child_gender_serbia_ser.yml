@@ -25,7 +25,7 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: child_gender
-  langcode: bg-bg
+  langcode: tr
   insert_new: 1
   update_existing: 1
   update_non_existent: _keep
@@ -40,17 +40,14 @@ custom_sources:
     value: Term_ID
     label: Term_ID
     machine_name: term_id
-    type: csv
   term_name:
     value: Term_name
     label: Term_name
     machine_name: term_name
-    type: csv
   language_code:
     value: Language_code
     label: Language_code
     machine_name: language_code
-    type: csv
 mappings:
   -
     target: tid
@@ -58,11 +55,11 @@ mappings:
       value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: term_name
     settings:
-      language: bg-bg
+      language: tr
     unique: {  }

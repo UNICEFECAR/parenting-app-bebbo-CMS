@@ -1,11 +1,9 @@
 label: Садржај
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
+      title: Садржај
       fields:
         title:
           label: Title
@@ -15,6 +13,10 @@ display:
           label: Status
         operations:
           label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
       filters:
         title:
           expose:
@@ -25,7 +27,6 @@ display:
         langcode:
           expose:
             label: Language
-      title: Садржај
   page_1:
     display_options:
       menu:

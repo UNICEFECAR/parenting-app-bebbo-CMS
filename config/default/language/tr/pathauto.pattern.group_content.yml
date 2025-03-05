@@ -1,0 +1,4 @@
+label: 'Grup içeriği'
+relationships:
+  'group_content:langcode:language':
+    label: Dil

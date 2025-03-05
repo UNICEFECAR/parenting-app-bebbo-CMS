@@ -1,0 +1,26 @@
+uuid: a4b61121-708b-4712-a21a-04357b80de0c
+langcode: en
+status: true
+dependencies: {  }
+id: content_article_pregnancy_en
+label: 'Content - Article Pregnancy (EN)'
+channel_entity_type: node
+channel_bundle: article
+channel_langcode: en
+channel_filters:
+  field_type_of_article_name:
+    path: field_type_of_article.name
+    operator: '='
+    value:
+      - 'Article for Pregnancy'
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: false
+authorized_roles:
+  administrator: administrator
+authorized_users:
+  7c481cc7-f8a4-4662-b577-793b9170df9e: 7c481cc7-f8a4-4662-b577-793b9170df9e
+  06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115
+  a00d5049-ab3f-4fc3-8cf0-67ce7cd5494a: a00d5049-ab3f-4fc3-8cf0-67ce7cd5494a

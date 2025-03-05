@@ -1,0 +1,29 @@
+uuid: 7c656376-e933-43cc-aad1-4e63cb1917fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.category_block
+  module:
+    - system
+    - views
+  theme:
+    - pbtara
+id: pbtara_views_block__category_block_block_2
+theme: pbtara
+region: sidebar_second
+weight: -7
+provider: null
+plugin: 'views_block:category_block-block_2'
+settings:
+  id: 'views_block:category_block-block_2'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /video-article-list

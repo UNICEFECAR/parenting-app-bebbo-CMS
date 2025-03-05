@@ -1,0 +1,25 @@
+uuid: b31ac525-50b8-4e12-9409-4b15d34a28ae
+langcode: rs-en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:92bd7f57-04e4-4791-8e2d-0c4a610720b4'
+  module:
+    - block_content
+  theme:
+    - pbtara
+id: pbtara_uniceflogo
+theme: pbtara
+region: header_top
+weight: 0
+provider: null
+plugin: 'block_content:92bd7f57-04e4-4791-8e2d-0c4a610720b4'
+settings:
+  id: 'block_content:92bd7f57-04e4-4791-8e2d-0c4a610720b4'
+  label: 'UNICEF Logo'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

@@ -35,6 +35,9 @@ display:
         state:
           expose:
             label: State
+        source_language:
+          expose:
+            label: 'Исходный язык'
         translator:
           expose:
             label: Provider

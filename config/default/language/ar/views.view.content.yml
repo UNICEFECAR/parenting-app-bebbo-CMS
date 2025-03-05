@@ -2,19 +2,9 @@ label: المحتوى
 description: 'إيجاد وإدارة المحتوى'
 display:
   default:
+    display_title: الافتراضي
     display_options:
-      exposed_form:
-        options:
-          submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
+      title: المحتوى
       fields:
         title:
           label: العنوان
@@ -26,12 +16,27 @@ display:
         status:
           label: الحالة
           settings:
-            format_custom_true: منشور
             format_custom_false: 'غير منشور'
+            format_custom_true: منشور
         changed:
           label: التحديث
         operations:
           label: عمليات
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: 'إعادة الضبط'
+          exposed_sorts_label: 'الترتيب حسب'
+          sort_asc_label: تصاعدي
+          sort_desc_label: تنازلي
+      empty:
+        area_text_custom:
+          content: 'لا يوجد محتوى.'
       filters:
         title:
           expose:
@@ -51,15 +56,10 @@ display:
         langcode:
           expose:
             label: اللغة
-      title: المحتوى
-      empty:
-        area_text_custom:
-          content: 'لا يوجد محتوى.'
-    display_title: الرئيسي
   page_1:
+    display_title: الصفحة
     display_options:
       menu:
         title: المحتوى
       tab_options:
         title: المحتوى
-    display_title: الصفحة

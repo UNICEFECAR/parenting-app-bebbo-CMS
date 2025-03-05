@@ -1,0 +1,22 @@
+uuid: ec663b2c-89c5-4f87-aad5-4fc0dd676783
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - pbtara
+_core:
+  default_config_hash: b6mUaCq5YPapRUABXRHfNTT6fxWIj5lgf0Mg4HaRJ_I
+id: pbtara_breadcrumbs
+theme: pbtara
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility: {  }
