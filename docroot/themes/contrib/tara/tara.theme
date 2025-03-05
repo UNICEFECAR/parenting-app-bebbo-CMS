@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * @file
+ * Contains Tara theme override and preprocess functions.
+ */
+
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+use Drupal\node\NodeInterface;
+
+/**
+ * Sanitise input urls.
+ */
+function santise_val_url($url) {
+  if ($url != '') {
+
+    // Sanitise (remove all illegal characters) from url.
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+
+    // Validate url.
+    if (filter_var($url, FILTER_VALIDATE_URL) == TRUE) {
+      $url = $url;
+    }
+    else {
+      $url = '#';
+    }
+    return $url;
+  }
+}
+
+/**
+ * Tara page preprocess.
+ * Define variables for theme settings.
+ */
+function tara_preprocess_page(array &$variables) {
+  $config = \Drupal::config('system.site');
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
+  $variables['slider_show'] = theme_get_setting('slider_show', 'tara');
+  $variables['slider_code'] = theme_get_setting('slider_code', 'tara');
+  $variables['all_icons_show'] = theme_get_setting('all_icons_show', 'tara');
+  $variables['facebook_url'] = santise_val_url(theme_get_setting('facebook_url', 'tara'));
+  $variables['twitter_url'] = santise_val_url(theme_get_setting('twitter_url', 'tara'));
+  $variables['instagram_url'] = santise_val_url(theme_get_setting('instagram_url', 'tara'));
+  $variables['linkedin_url'] = santise_val_url(theme_get_setting('linkedin_url', 'tara'));
+  $variables['youtube_url'] = santise_val_url(theme_get_setting('youtube_url', 'tara'));
+  $variables['vk_url'] = santise_val_url(theme_get_setting('vk_url', 'tara'));
+  $variables['vimeo_url'] = santise_val_url(theme_get_setting('vimeo_url', 'tara'));
+  $variables['whatsapp_url'] = santise_val_url(theme_get_setting('whatsapp_url', 'tara'));
+  $variables['github_url'] = santise_val_url(theme_get_setting('github_url', 'tara'));
+  $variables['telegram_url'] = santise_val_url(theme_get_setting('telegram_url', 'tara'));
+  $variables['scrolltotop_on'] = theme_get_setting('scrolltotop_on', 'tara');
+  $variables['copyright_text'] = theme_get_setting('copyright_text', 'tara');
+  $variables['front_sidebar'] = theme_get_setting('front_sidebar', 'tara');
+  $variables['fontawesome_four'] = theme_get_setting('fontawesome_four', 'tara');
+  $variables['fontawesome_five'] = theme_get_setting('fontawesome_five', 'tara');
+  $variables['fontawesome_six'] = theme_get_setting('fontawesome_six', 'tara');
+  $variables['bootstrapicons'] = theme_get_setting('bootstrapicons', 'tara');
+}
+
+/**
+ * Node preprocess.
+ */
+function tara_preprocess_node(array &$variables) {
+  $variables['node_author_pic'] = theme_get_setting('node_author_pic', 'tara');
+  $variables['node_tags'] = theme_get_setting('node_tags', 'tara');
+}
+
+/**
+ * Comment preprocess.
+ */
+function tara_preprocess_comment(array &$variables) {
+  $variables['comment_user_pic'] = theme_get_setting('comment_user_pic', 'tara');
+}
+
+/**
+ * Html preprocess for Tara theme.
+ * Adds body classes if certain regions have content.
+ * Used for creating different page layout.
+ */
+function tara_preprocess_html(&$variables) {
+  $variables['base_path'] = base_path();
+  $variables['google_font'] = theme_get_setting('google_font', 'tara');
+  // Add variables for theme Settings.
+  $variables['css_extra'] = theme_get_setting('css_extra', 'tara');
+  $variables['css_code'] = theme_get_setting('css_code', 'tara');
+  $variables['slider_show'] = theme_get_setting('slider_show', 'tara');
+  $variables['slider_time'] = theme_get_setting('slider_time', 'tara');
+  $variables['slider_dots'] = theme_get_setting('slider_dots', 'tara');
+  $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+  // Slider image.
+  $variables['slider_image'] = theme_get_setting('slider_image', 'tara');
+  $slider_image_id = theme_get_setting('slider_image', 'tara');
+  if (!empty($slider_image_id)) {
+    $slider_image_file = File::load($slider_image_id[0]);
+    $slider_image_file->setPermanent();
+    $slider_image_file->save();
+    $slider_image_file_usage = \Drupal::service('file.usage');
+    $slider_image_file_usage->add($slider_image_file, 'tara', 'theme', $slider_image_id[0]);
+  };
+  if (!empty($slider_image_file)) {
+    $imageuri = $slider_image_file->getFileUri();
+    $variables['slider_image_path'] = \Drupal::service('file_url_generator')->generateAbsoluteString($imageuri);
+  };
+}
+

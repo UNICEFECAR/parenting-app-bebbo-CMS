@@ -1,0 +1,159 @@
+/* Status message
+------------------------*/
+.message {
+  position: relative;
+  color: #ffffff;
+  text-shadow: none;
+  margin: 1rem 0;
+  padding: 14px 14px 14px 64px;
+}
+.message em {
+  color: #ffffff;
+  font-style: italic;
+  border-bottom: 1px dotted #ffffff;
+}
+.message p:last-of-type {
+  margin: 0;
+}
+.message a {
+  color: #ffffff;
+  text-decoration: none;
+}
+.message-status {
+  background-color: #89ad32;
+}
+.message-status::before {
+  content: "\e004";
+  background-color: #759625;
+}
+.message-error {
+  background-color: #c94d1c;
+}
+.message-error::before {
+  content: "\e005";
+  background-color: #b3461b;
+}
+.message-warning {
+  background-color: #cd5a0a;
+}
+.message-warning::before {
+  content: "\e006";
+  background-color: #a44707;
+}
+.message::before {
+  font-family: "tara";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 53px;
+  text-align: center;
+  height: 100%;
+  line-height: 53px;
+  font-size: 30px;
+}
+.status-message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+
+/* Form
+------------------------*/
+form .description {
+  font-size: 0.9em;
+}
+
+/* Admin Tabs
+------------------------*/
+.page-tabs {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+  border-bottom: 2px solid var(--border);
+}
+.page-tabs li {
+  background-color: var(--border);
+  padding: 0;
+  border-right: 2px solid #ffffff;
+  text-shadow: 1px 1px #ffffff;
+}
+.page-tabs li:last-child {
+  border-right: 0;
+}
+.page-tabs li a {
+  display: block;
+  padding: 5px 10px;
+  color: var(--bold-color);
+  transition: all 0.3s ease;
+}
+.page-tabs .active-page-tab {
+  background-color: var(--color-primary);
+  text-shadow: none;
+}
+.page-tabs .active-page-tab a {
+  color: #ffffff;
+}
+.page-tabs li:hover {
+  background: var(--color-secondary);
+  text-shadow: none;
+}
+.page-tabs li:hover a {
+  color: #ffffff;
+}
+/* Pager
+------------------------*/
+.pager {
+  width: 100%;
+  margin-top: 1rem;
+}
+.pager-items {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pager-item {
+  display: grid;
+  place-content: center;
+  color: var(--bold-color);
+  height: 44px;
+  min-width: 44px;
+  border-radius: 4px;
+  border: 2px solid var(--bold-color);
+}
+.pager-item-control {
+  border-color: var(--color-primary);
+}
+.pager-item a {
+  display: grid;
+  place-content: center;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  height: 40px;
+  min-width: 40px;
+}
+/* pager full */
+.pager__item:hover {
+  border-color: var(--color-primary);
+}
+.pager__item a {
+  background-color: transparent;
+  color: var(--bold-color);
+  padding: 0 2px;
+}
+.pager .is-active {
+  border-color: var(--color-primary);
+}
+.pager__item a:hover,
+.pager__item.is-active a {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: #ffffff;
+}

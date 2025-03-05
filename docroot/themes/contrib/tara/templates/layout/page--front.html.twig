@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * Tara's theme implementation to display front page.
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template.
+ *
+ */
+#}
+{% include '@tara/template-parts/header.html.twig' %}
+{% if slider_show %}
+  {% include '@tara/template-parts/slider.html.twig' %}
+{% endif %}
+<div id="main-wrapper" class="main-wrapper">
+  <div class="container">
+    {% if front_sidebar %}
+      <div class="main-container">
+    {% endif %}
+    <main id="main" class="homepage-content page-content" role="main">
+      <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+      {% include '@tara/template-parts/content_top.html.twig' %}
+      {% if page.content %}
+				{{ page.content }}
+			{% endif %}
+			{% if page.content_home %}
+				<div class="content-home">
+					{{ page.content_home }}
+				</div><!--/.homepage-content -->
+			{% endif %}
+      {% include '@tara/template-parts/content_bottom.html.twig' %}
+    </main>
+    {% if front_sidebar %}
+      {% include '@tara/template-parts/left_sidebar.html.twig' %}
+      {% include '@tara/template-parts/right_sidebar.html.twig' %}
+      </div> {# /.main-container #}
+    {% endif %}
+  </div><!--/.container -->
+</div><!-- /main-wrapper -->
+{% include '@tara/template-parts/footer.html.twig' %}
