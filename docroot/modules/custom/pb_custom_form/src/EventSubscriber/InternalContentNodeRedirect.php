@@ -130,16 +130,16 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
       ;
       if ($current_lang == 'en') {
         $path = $base_url . '/';
-        $event->setResponse(new RedirectResponse($path));
+        // $event->setResponse(new RedirectResponse($path));
       }
       else {
         if (array_key_exists($current_lang, $redirect_urls)) {
           $path = $redirect_urls[$current_lang];
-          $event->setResponse(new TrustedRedirectResponse($path));
+          // $event->setResponse(new TrustedRedirectResponse($path));
         }
         else {
           $path = $base_url . '/';
-          $event->setResponse(new RedirectResponse($path));
+          // $event->setResponse(new RedirectResponse($path));
         }
 
       }
