@@ -5,9 +5,162 @@
  * It contains custom field module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
+
+/**
+ * AJAX callback to filter Subcategory options.
+ */
+function pb_custom_form_dynamic_category_ajax_callback(array &$form, FormStateInterface $form_state) {
+  $selected_category = $form_state->getValue(['field_content_category', 0, 'target_id']);
+  // Logic to fetch subcategory options based on the selected category.
+  $subcategory_options = pb_custom_form_get_subcategory_options($selected_category);
+  // Update the options of the subcategory select field.
+  if (count($subcategory_options) > 1) {
+    $form['field_subcategory']['widget']['#options'] = $subcategory_options;
+    $form['field_subcategory']['widget']['#attributes']['disabled'] = NULL;
+  }
+  else {
+    $form['field_subcategory']['widget']['#options'] = $subcategory_options;
+    $form['field_subcategory']['widget']['#attributes']['disabled'] = NULL;
+    $form['field_subcategory']['widget']['#default_value'] = NULL;
+    // unset($form['field_subcategory']['widget']['#options']);
+    // $form['field_subcategory']['widget'][0]['#value'] = NULL;
+    // $form_state->setValue(['field_subcategory', 0, 'target_id'], NULL);.
+  }
+  // Return the updated subcategory field element.
+  return $form['field_subcategory'];
+}
+
+/**
+ * AJAX callback to filter Category options.
+ *
+ * Based on selected, Subject Area and Type of Article.
+ */
+function custom_article_filter_categories(array &$form, FormStateInterface $form_state) {
+  // Get the selected subject area and type of article.
+  $type_of_article = $form_state->getValue(['field_type_of_article', 0, 'target_id']);
+  $options = get_content_category_option($type_of_article);
+  if (count($options) > 1) {
+    $form['field_content_category']['widget']['#options'] = $options;
+    $form['field_content_category']['widget']['#attributes']['disabled'] = NULL;
+  }
+  else {
+    // $form['field_content_category']['widget']['#options'] = $options;
+    $form['field_content_category']['widget']['#default_value'] = NULL;
+  }
+  return $form['field_content_category'];
+}
+
+/**
+ * Get content category options.
+ */
+function get_content_category_option($type_of_article) {
+  if ($type_of_article) {
+    // Load categories and filter them based on the selected subject area and type of article.
+    $categories = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('category');
+    $options = ['_none' => '- Select a value -'];
+    foreach ($categories as $category) {
+      $term = Term::load($category->tid);
+      $category_type_of_article = $term->get('field_type_of_article')->target_id;
+      // Only include categories that match  type of article.
+      if ($category_type_of_article == $type_of_article) {
+        $options[$category->tid] = $category->name;
+      }
+    }
+    return $options;
+  }
+}
+
+/**
+ * Get subcategory options.
+ */
+function pb_custom_form_get_subcategory_options($category_id) {
+  // This is a placeholder function; replace with actual logic.
+  $options = ['_none' => '- Select a value -'];
+  // Replace with your vocabulary machine name.
+  $vid = 'subcategory';
+  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+  $matched_terms = [];
+  foreach ($terms as $term) {
+    // Load the full term entity.
+    $term_entity = Term::load($term->tid);
+    // Check if the term has field_category with the specified ID.
+    if ($term_entity->hasField('field_category') && !$term_entity->get('field_category')->isEmpty()) {
+      $field_category = $term_entity->get('field_category')->getValue();
+      foreach ($field_category as $value) {
+        if ($value['target_id'] == $category_id) {
+          $matched_terms[] = $term->tid;
+          break;
+        }
+      }
+    }
+  }
+
+  if ($matched_terms) {
+    // Initialize an empty array to store term IDs and names.
+    $terms = Term::loadMultiple($matched_terms);
+    foreach ($terms as $term_id => $term) {
+      // Check if the term is loaded successfully.
+      if ($term) {
+        // Get the name of the term.
+        $options[$term_id] = $term->getName();
+      }
+    }
+  }
+  return $options;
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Check if it's your specific view and display.
+  if ($view->id() == 'articles' && $view->current_display == 'rest_export_2') {
+
+    // Retrieve the contextual filter value.
+    // Adjust index based on your view's configuration.
+    $contextual_value = $view->args;
+
+    // Retrieve all query parameters from the URL.
+    $query_params = \Drupal::request()->query->all();
+
+    // Check if the 'version' parameter is passed and is set to 2.
+    // $query_params['version'] == '2'.
+    if (isset($query_params['pregnancy']) && $query_params['pregnancy'] == 'true') {
+
+      // Remove 'Child Age' filter (<> Pregnancy) condition dynamically.
+      // Look for the condition related to 'Child Age' and remove it from the query.
+      // Assuming 'field_child_age' is the machine name of the 'Child Age' field.
+      foreach ($query->where as $key => &$where) {
+        if (!empty($where['conditions'])) {
+          foreach ($where['conditions'] as $index => &$condition) {
+
+            if (isset($condition['field']) && $condition['field'] == 'node__field_child_age.field_child_age_target_id IN(:node__field_child_age_field_child_age_target_id[])') {
+
+              $terms = \Drupal::service('entity_type.manager')->getStorage('taxonomy_term')->loadByProperties([
+                'name' => 'Pregnancy',
+                'vid' => 'child_age',
+              ]);
+              // Check if the term exists and return its name.
+              if ($terms) {
+                // Get the first term if there are multiple results.
+                $term = reset($terms);
+                $tid_pregnancy = (int) $term->id();
+                array_push($condition['value'][':node__field_child_age_field_child_age_target_id[]'], $tid_pregnancy);
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_theme().
@@ -46,11 +199,56 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     /* $form['#attached']['js'][] = drupal_get_path('module', 'pb_custom_field') . '/js/homepage.js'; */
     $form['#attached']['library'][] = 'pb_custom_field/mylib';
     $form['actions']['submit']['#submit'][] = 'group_country_save';
-
   }
-
   if (strpos($form_id, 'edit_form') !== FALSE && strpos($form_id, 'node') !== FALSE) {
     $form['#validate'][] = 'pb_custom_form_node_validate';
+  }
+
+  // node_article_edit_form //node_article_form.
+  if ($form_id == 'node_article_edit_form' || $form_id == 'node_article_form') {
+    // Attach the AJAX behavior to the 'field_subject_area'.
+    if (isset($form['field_type_of_article'])) {
+      $form['field_type_of_article']['widget']['#ajax'] = [
+        'callback' => 'custom_article_filter_categories',
+        'wrapper' => 'category-wrapper',
+        'event' => 'change',
+      ];
+    }
+    // Wrap the field_category field in a div so we can replace it via AJAX.
+    $form['field_content_category']['#prefix'] = '<div id="category-wrapper">';
+    $form['field_content_category']['#suffix'] = '</div>';
+    if (isset($form['field_content_category'])) {
+      $form['field_content_category']['widget']['#ajax'] = [
+        'callback' => 'pb_custom_form_dynamic_category_ajax_callback',
+        'wrapper' => 'subcategory-wrapper',
+        'event' => 'change',
+      ];
+    }
+    if (isset($form['field_subcategory'])) {
+      $form['field_subcategory']['#prefix'] = '<div id="subcategory-wrapper">';
+      $form['field_subcategory']['#suffix'] = '</div>';
+    }
+    $form['field_content_category']['widget']['#attributes']['disabled'] = 'disabled';
+    $form['field_subcategory']['widget']['#attributes']['disabled'] = 'disabled';
+    // $form['field_make_available_for_mobile']['widget']['value']['#disabled'] = 'true';
+    // Get the current value of the Category field.
+    // $field_type_of_article = $form_state->getValue(['field_type_of_article', 0, 'target_id']);
+    // if (!$field_type_of_article && isset($form['field_type_of_article']['widget']['#default_value'][0])) {
+    //   $field_type_of_article = $form['field_type_of_article']['widget']['#default_value'][0];
+    // }
+    // if ($field_type_of_article) {
+    //   $form['field_content_category']['widget']['#options'] = get_content_category_option($field_type_of_article);
+    // }
+    // Subcategory. 161526.
+    // $selected_category = $form_state->getValue(['field_content_category', 0, 'target_id']);
+    // if (!$selected_category && isset($form['field_content_category']['widget']['#default_value'][0])) {
+    //   $selected_category = $form['field_content_category']['widget']['#default_value'][0];
+    // }
+    // if ($selected_category) {
+    //   $form['field_subcategory']['widget']['#options'] = pb_custom_form_get_subcategory_options($selected_category);
+    // }
+    // // Add custom validation handler.
+    // $form['#validate'][] = 'pb_custom_form_validate';.
   }
 }
 
@@ -140,6 +338,49 @@ function pb_custom_field_preprocess_views_view_field(&$variables) {
       $variables['output'] = $objUser->name->value;
     }
   }
+
+  $view = $variables['view'];
+  $field = $variables['field'];
+
+  if ($view->storage->id() == 'country_content_listing' && $view->current_display == 'page_5' && $field->field == 'moderation_state') {
+    // Get the row entity (in this case, assuming a node).
+    if (isset($variables['row']->_entity) && $variables['row']->_entity instanceof NodeInterface) {
+      // $node = $variables['row']->_entity;
+      $nid = $variables['row']->_entity->nid->value;
+      $vid = \Drupal::entityTypeManager()->getStorage('node')->getLatestRevisionId($nid);
+      $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($vid);
+
+      $field_language = $variables['row']->node_field_data_langcode;
+
+      // Get the moderation information service.
+      $moderation_information = \Drupal::service('content_moderation.moderation_information');
+
+      // Check if the node is moderated.
+      if ($moderation_information->isModeratedEntity($node)) {
+
+        if ($variables['field']->field == 'moderation_state') {
+          if ($node->hasField('moderation_state')) {
+            $storage = \Drupal::entityTypeManager()->getStorage($node->getEntityTypeId());
+            $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(), $field_language);
+            $revisionNode = $storage->loadRevision($revision_id);
+            if ($revisionNode instanceof ContentEntityInterface) {
+              $info = $moderation_information->getAffectedRevisionTranslation($revisionNode);
+              if ($info instanceof ContentEntityInterface) {
+                $moderation_state = $info->get('moderation_state')->value;
+
+                $workflow = $moderation_information->getWorkflowForEntity($info);
+                $label = $workflow->getTypePlugin()->getState($moderation_state)->label();
+                $variables['output'] = $label;
+
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
 }
 
 /**
@@ -225,7 +466,9 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
 }
 
 /**
+ * Implements hook_page_attachments_alter().
  *
+ * Allows alteration of page attachments before rendering.
  */
 function pb_custom_form_page_attachments_alter(&$page) {
   $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
