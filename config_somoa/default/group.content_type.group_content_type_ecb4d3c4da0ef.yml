@@ -1,0 +1,19 @@
+uuid: 0632979d-9e67-401b-ba98-322c1f1d2654
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+    - node.type.child_development
+  module:
+    - gnode
+    - node
+id: group_content_type_ecb4d3c4da0ef
+label: 'Country: Group node (Child Development)'
+description: 'Adds <em class="placeholder">Child Development</em> content to groups both publicly and privately.'
+group_type: country
+content_plugin: 'group_node:child_development'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

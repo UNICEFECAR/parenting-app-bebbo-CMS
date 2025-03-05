@@ -1,0 +1,272 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        title:
+          label: Label
+          separator: ', '
+        item_count:
+          label: Items
+        progress:
+          label: Progress
+      filters:
+        status:
+          expose:
+            label: Status
+  closed:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          format_plural_string: !!binary MQNAY291bnQ=
+        progress:
+          label: Progress
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+      menu:
+        title: Closed
+  completed:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          format_plural_string: !!binary MQNAY291bnQ=
+        progress:
+          label: Progress
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+      menu:
+        title: Completed
+  eligible:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          format_plural_string: !!binary MQNAY291bnQ=
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+  my_tasks:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+        progress:
+          label: Progress
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+  pending:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          separator: ', '
+        progress:
+          label: Progress
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+      menu:
+        title: Pending
+  rejected:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          format_plural_string: !!binary MQNAY291bnQ=
+        progress:
+          label: Progress
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+        source_language:
+          expose:
+            label: 'Source language'
+        title:
+          expose:
+            label: Label
+  unassigned:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+          action_title: 'With selection'
+        status:
+          label: Status
+          format_plural_string: !!binary MQNAY291bnQ=
+        title:
+          label: Label
+          separator: ', '
+        source_language:
+          label: From
+          separator: ', '
+        target_language:
+          label: To
+          separator: ', '
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        status:
+          expose:
+            label: Status
+      tab_options:
+        title: Translate

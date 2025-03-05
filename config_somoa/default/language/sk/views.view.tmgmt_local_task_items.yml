@@ -1,0 +1,41 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+          tags:
+            previous: '‹ Predchádzajúci'
+            next: Ďalej
+            first: '« Prvý'
+            last: Koniec
+      fields:
+        status:
+          label: Stav
+        label:
+          label: Označenie
+        item_type:
+          label: Typ
+          separator: ', '
+        word_count:
+          label: Slov
+          separator: ', '
+        operations:
+          label: Operácie
+      arguments:
+        tltid:
+          exception:
+            title: Všetko
+  block_1:
+    display_title: Blok

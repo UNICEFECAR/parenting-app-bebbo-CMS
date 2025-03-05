@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        group_roles:
+          label: Ролі
+        dropbutton:
+          label: Операції

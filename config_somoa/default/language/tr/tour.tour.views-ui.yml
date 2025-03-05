@@ -1,0 +1,32 @@
+label: 'Düzenleme sayfasını görüntüle'
+tips:
+  views-main:
+    label: 'Görünüm ayarları yönetimi'
+    body: 'Yapılandırmaya bakın ve düzenleyin.'
+  views-ui-displays:
+    label: 'Bu görünümdeki gösterimler'
+    body: 'Bir gösterim sonuçların sayfa ya da blok gibi biçimlerde görüntülenmesini sağlar. Bir görünümde burada listelenen birden fazla gösterim bulunabilir. Etkin gösterim vurgulanmıştır.'
+  views-ui-view-admin:
+    label: 'Yönetimi görüntüle'
+    body: 'Bir açıklama eklemek ya da bir kopya oluşturmak gibi yönetim görevlerini yerine getirin. Kullanılabilecek seçenekleri görüntülemek için kutuyu açma düğmesine tıklayın.'
+  views-ui-format:
+    label: 'Çıkış biçimi'
+    body: 'Sonuçların nasıl çıkarılacağını seçin. Örneğin her öğenin gösterim ayarlarınıza göre tam olarak görüntülenmesi için <em>İçerik</em> seçin. Her sonucun yalnızca belirli bir alanının görüntülenmesi için <em>Alanlar</em> seçin. Temel Drupal işlevselliğini <em>genişletmek</em> için modül yüklenerek ek biçimler kullanılabilir.'
+  views-ui-fields:
+    label: Alanlar
+    body: 'Bu görünümde alan kullanılıyorsa, bu bölümde görüntülenir. Bir alanın üzerine tıklayarak yapılandırabilirsiniz.'
+  views-ui-filter:
+    label: 'Görünümünüzü süzün'
+    body: 'Çıktı sonuçlarını sınırlamak için süzgeçler ekleyin. Örneğin yalnızca <em>yayımlanmış</em> içeriklerin görüntülenmesi için <em>Yayımlanmış</em> ögeler için bir süzgeç ekleyin ve <em>Evet</em> olarak seçin.'
+  views-ui-filter-operations:
+    label: 'Süzgeç eylemleri'
+    body: 'Süzgeçleri ekleyin, düzenleyin veya silin.'
+  views-ui-sorts:
+    label: 'Sıralama Kriteri'
+    body: 'Sonuçların çıktı sıralamasını denetleyin. Yapılandırmak için etkin bir sıralama kuralına tıklayın'
+  views-ui-sorts-operations:
+    label: 'Sıralama eylemleri'
+    body: 'Sıralama kuralı ekleyin, düzenleyin veya silin.'
+  views-ui-preview:
+    label: 'Ön izleme'
+    body: 'Görünüm çıktısının ön izlemesini göster.'
