@@ -1,0 +1,13 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: 'যারা অনলাইনে আছেন'
+      filters:
+        access:
+          expose:
+            label: 'সর্বশেষ ব্যবহার'
+  who_s_online_block:
+    display_title: 'যারা অনলাইনে আছেন'
+    display_options:
+      block_description: 'যারা অনলাইনে আছেন'

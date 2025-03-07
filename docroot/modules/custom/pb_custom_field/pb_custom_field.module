@@ -673,6 +673,7 @@ function pb_custom_field_link_alter(&$variables) {
         $entity->save();
       }
     }
+
     /* Dashboard - add members. */
 
     if ($add_group_members_url) {
@@ -767,7 +768,7 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
       $view->setHandler('block_1', 'header', 'area', $options);
     }
   }
-  if ($view->id() == 'global_content_listing' && $display_id == 'page_4') {
+  if ($view->id() == 'global_content_listing' && $display_id == 'page_4' || $view->id() == 'global_content_listing' && $display_id == 'data_export_1') {
     $filters = $view->display_handler->getOption('filters');
     $langcodes = \Drupal::languageManager()->getLanguages();
     foreach ($langcodes as $key => $value) {
@@ -1022,6 +1023,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
+
   foreach ($grps as $grp) {
     $groups[] = $grp->getGroup();
   }
@@ -1065,6 +1067,10 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
         $query->addWhere(1,'node_field_data.nid', $ids, 'IN');
       }
     }
+  }
+  if($view->id() =='taxonomy_export' && $view->current_display =='page_1' || $view->id() =='taxonomy_export' && $view->current_display =='data_export_1') {
+    // $query->addWhere(1,'taxonomy_term_field_data.vid', 'keywords', '=');
+    $query->addWhere(2,'taxonomy_term_field_data.langcode', 'en', '=');
   }
 
  

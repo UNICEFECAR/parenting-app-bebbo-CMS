@@ -1,0 +1,53 @@
+uuid: 2bc99c08-ff36-4994-878d-8bdfbca52e39
+langcode: sr
+status: true
+dependencies:
+  module:
+    - lang_dropdown
+    - user
+  theme:
+    - claro
+id: languagedropdownswitcher
+theme: claro
+region: header
+weight: -11
+provider: null
+plugin: 'language_dropdown_block:language_interface'
+settings:
+  id: 'language_dropdown_block:language_interface'
+  label: 'Language dropdown switcher'
+  label_display: '0'
+  provider: lang_dropdown
+  showall: false
+  hide_only_one: true
+  tohome: false
+  width: 165
+  display: 1
+  widget: 0
+  msdropdown:
+    visible_rows: 5
+    rounded: true
+    animation: slideDown
+    event: click
+    skin: ldsSkin
+    custom_skin: ''
+  chosen:
+    disable_search: true
+    no_results_text: 'No language match'
+  ddslick:
+    ddslick_height: 0
+    showSelectedHTML: true
+    imagePosition: left
+    skin: ddsDefault
+    custom_skin: ''
+  languageicons:
+    flag_position: 1
+  hidden_languages: {  }
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

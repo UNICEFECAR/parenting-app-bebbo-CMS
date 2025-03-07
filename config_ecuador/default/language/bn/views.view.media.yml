@@ -1,0 +1,39 @@
+label: মাধ্যম
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: মাধ্যম
+      fields:
+        bundle:
+          label: টাইপ
+        uid:
+          label: লেখক
+        status:
+          label: স্ট্যাটাস
+          settings:
+            format_custom_true: প্রকাশিত
+        changed:
+          label: আপডেটকৃত
+        operations:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      filters:
+        bundle:
+          expose:
+            label: টাইপ
+        status:
+          group_info:
+            group_items:
+              1:
+                title: প্রকাশিত
+        langcode:
+          expose:
+            label: ভাষা
+  media_page_list:
+    display_title: মাধ্যম
+    display_options:
+      menu:
+        title: মাধ্যম

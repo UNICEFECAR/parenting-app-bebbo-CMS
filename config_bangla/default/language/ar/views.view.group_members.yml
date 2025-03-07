@@ -1,0 +1,22 @@
+display:
+  default:
+    display_options:
+      fields:
+        name:
+          label: User
+        group_roles:
+          label: Roles
+        changed:
+          label: Updated
+        view_group_content:
+          text: 'Manage member'
+        edit_group_content:
+          text: 'Assign roles'
+        edit_user:
+          text: 'Edit member'
+        dropbutton:
+          label: عمليات
+      arguments:
+        gid:
+          exception:
+            title: All

@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        view_group_content:
+          text: 'Manage member'
+        edit_group_content:
+          text: 'Assign roles'
+        edit_user:
+          text: 'Edit member'
+        dropbutton:
+          label: কার্যাবলী

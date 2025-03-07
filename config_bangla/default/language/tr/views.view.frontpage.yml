@@ -1,0 +1,7 @@
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      empty:
+        title:
+          title: 'Welcome to [site:name]'

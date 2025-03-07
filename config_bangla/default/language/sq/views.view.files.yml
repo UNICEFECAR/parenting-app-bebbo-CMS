@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      fields:
+        filename:
+          label: Emri
+      exposed_form:
+        options:
+          submit_button: Filtri

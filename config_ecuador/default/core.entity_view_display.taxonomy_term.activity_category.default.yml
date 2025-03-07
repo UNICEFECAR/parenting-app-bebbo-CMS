@@ -1,0 +1,26 @@
+uuid: b070de8b-b523-43a6-9dc0-02b25c756746
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.activity_category.feeds_item
+    - field.field.taxonomy_term.activity_category.field_unique_name
+    - taxonomy.vocabulary.activity_category
+  module:
+    - text
+id: taxonomy_term.activity_category.default
+targetEntityType: taxonomy_term
+bundle: activity_category
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  feeds_item: true
+  field_unique_name: true
+  langcode: true

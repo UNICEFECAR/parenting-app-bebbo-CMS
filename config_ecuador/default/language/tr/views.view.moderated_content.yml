@@ -1,0 +1,58 @@
+label: 'Denetlenen içerik'
+description: 'İçeriği bulun ve denetleyin.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: 'Denetlenen içerik'
+      fields:
+        title:
+          label: Başlık
+          separator: ', '
+        type:
+          label: 'İçerik türü'
+          separator: ', '
+        name:
+          label: Yazar
+          separator: ', '
+        moderation_state:
+          label: 'Denetim durumu'
+          separator: ', '
+        changed:
+          label: Güncellendi
+          separator: ', '
+        operations:
+          label: İşlemler
+      pager:
+        options:
+          tags:
+            next: 'Sonraki ›'
+            previous: '‹ Önceki'
+            first: '« İlk'
+            last: 'Son »'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      filters:
+        title:
+          expose:
+            label: Başlık
+        type:
+          expose:
+            label: 'İçerik türü'
+        moderation_state:
+          expose:
+            label: 'Denetim durumu'
+        langcode:
+          expose:
+            label: Dil
+  moderated_content:
+    display_title: 'Denetlenen içerik'

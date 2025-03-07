@@ -1,0 +1,17 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ পূর্ববর্তী'
+            next: 'পরবর্তী ›'
+            first: '« প্রথম'
+            last: 'শেষ »'
+      fields:
+        name:
+          label: নাম
+      arguments:
+        tjid:
+          exception:
+            title: সমস্ত

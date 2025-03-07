@@ -1,0 +1,20 @@
+uuid: 9fab405b-d500-4b02-825e-fe83b4158114
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  module:
+    - metatag
+id: group.country.metatag
+field_name: metatag
+entity_type: group
+bundle: country
+label: 'Metatags (Hidden field for JSON support)'
+description: 'The computed meta tags for the entity.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: metatag_computed

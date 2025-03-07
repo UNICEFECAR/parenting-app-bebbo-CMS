@@ -1,0 +1,19 @@
+uuid: 8c6dd6f8-92b1-48df-bc20-10e2f899b234
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_child_gender
+field_name: field_child_gender
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

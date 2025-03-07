@@ -1,0 +1,9 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        changed:
+          label: আপডেটকৃত
+        operations:
+          label: কার্যাবলী

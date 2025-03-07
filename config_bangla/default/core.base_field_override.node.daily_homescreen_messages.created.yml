@@ -1,0 +1,18 @@
+uuid: cc3de42c-f97a-471c-8855-1a3dbe6e47e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.created
+field_name: created
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

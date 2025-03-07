@@ -1,0 +1,18 @@
+uuid: 1da13622-917d-4fcb-8cb9-1e2878c76d76
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.faq
+id: node.faq.created
+field_name: created
+entity_type: node
+bundle: faq
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

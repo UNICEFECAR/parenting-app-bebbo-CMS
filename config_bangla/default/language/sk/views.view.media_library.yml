@@ -1,0 +1,23 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Názov
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Názov
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: Názov
+      filters:
+        name:
+          expose:
+            label: Názov

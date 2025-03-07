@@ -1,0 +1,18 @@
+uuid: 8ffadbe5-e7f9-4b48-9050-f46cbfaafab6
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-survey
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: group_content.country-group_node-survey
+target_entity_type_id: group_content
+target_bundle: country-group_node-survey
+default_langcode: current_interface
+language_alterable: true

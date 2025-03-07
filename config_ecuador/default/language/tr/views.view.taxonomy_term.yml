@@ -1,0 +1,31 @@
+label: 'Sınıflandırma terimi'
+description: 'Belirli bir sınıflandırma terimine ait içerik.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      arguments:
+        tid:
+          exception:
+            title: Tümü
+          title: '{{ arguments.tid }}'
+  feed_1:
+    display_title: Akış
+  page_1:
+    display_title: Sayfa

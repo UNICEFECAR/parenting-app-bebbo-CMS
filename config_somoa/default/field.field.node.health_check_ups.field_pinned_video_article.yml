@@ -1,0 +1,31 @@
+uuid: ee13f55b-bca4-4627-ae97-4b4b07c5bb0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_video_article
+    - node.type.health_check_ups
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.health_check_ups.field_pinned_video_article
+field_name: field_pinned_video_article
+entity_type: node
+bundle: health_check_ups
+label: 'Pinned Video Article'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - video_article
+field_type: entity_reference

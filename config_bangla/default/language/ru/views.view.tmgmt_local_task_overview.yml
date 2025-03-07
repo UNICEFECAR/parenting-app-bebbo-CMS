@@ -1,0 +1,41 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Фильтр
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  eligible:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  my_tasks:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Операции

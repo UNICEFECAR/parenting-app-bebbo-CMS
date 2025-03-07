@@ -1,0 +1,8 @@
+uuid: 112ed581-e5e2-4387-823a-6f2c59c0f017
+langcode: en
+status: true
+dependencies: {  }
+name: 'Chatbot Subcategory'
+vid: chatbot_subcategory
+description: 'Used in FQA content type for the purpose of chatbot'
+weight: 0

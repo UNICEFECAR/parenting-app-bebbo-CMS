@@ -1,0 +1,23 @@
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      filters:
+        name:
+          expose:
+            label: İsim
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: İsim
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: İsim
+      filters:
+        name:
+          expose:
+            label: İsim

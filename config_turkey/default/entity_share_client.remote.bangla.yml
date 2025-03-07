@@ -1,0 +1,13 @@
+uuid: 2f23301f-7c48-4a9c-8735-e7f56a869152
+langcode: en
+status: true
+dependencies: {  }
+id: bangla
+label: Dev
+url: 'https://dev.bebbo.app'
+auth:
+  pid: basic_auth
+  uuid: 7d00a4ef-6649-4413-b28a-757c45964a9b
+  data:
+    credential_provider: entity_share
+    storage_key: 7d00a4ef-6649-4413-b28a-757c45964a9b

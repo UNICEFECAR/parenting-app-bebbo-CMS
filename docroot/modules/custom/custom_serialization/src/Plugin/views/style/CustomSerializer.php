@@ -7,12 +7,10 @@ ini_set('serialize_precision', 6);
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\media\Entity\Media;
 use Drupal\rest\Plugin\views\style\Serializer;
-use Drupal\media\Entity\Media;
-use Drupal\file\Entity\File;
-use Drupal\group\Entity\Group;
-use Drupal\image\Entity\ImageStyle;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The style plugin for serialized output formats.
@@ -38,21 +36,27 @@ class CustomSerializer extends Serializer {
     $request_path = \Drupal::request()->getSchemeAndHttpHost();
 
     /* Validating request params to response error code. */
-    $validate_params_res = $this->checkRequestParams($request_uri);
+    if (strpos($request_uri, "api/country-groups") !== FALSE) {
+      $validate_params_res = '';
+    }
+    else {
+      $validate_params_res = $this->checkRequestParams($request_uri);
+    }
+
     if (empty($validate_params_res)) {
       $array_of_multiple_values = [
         "child_age", "keywords", "related_articles", "related_video_articles", "related_activities",
         "language", "related_milestone", "embedded_images",
       ];
       $media_fields = [
-        "cover_image", "country_flag", "country_sponsor_logo", "country_national_partner",
+        "cover_image", "country_flag", "country_sponsor_logo", "unicef_logo", "country_national_partner",
         "cover_video",
       ];
       $pinned_content = [
         "vaccinations", "child_growth", "health_check_ups", "child_development",
       ];
       $string_to_int = [
-        "id", "category", "child_gender", "parent_gender", "licensed", "premature",
+        "id", "field_type_of_article", "category", "subcategory", "child_gender", "parent_gender", "licensed", "premature",
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
         "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
@@ -70,13 +74,22 @@ class CustomSerializer extends Serializer {
       date_default_timezone_set('Asia/Kolkata');
       $timestamp = date("Y-m-d H:i");
       if (isset($this->view->result) && !empty($this->view->result)) {
-        $language_code = $request[3];
+        if (isset($request[3])) {
+          $language_code = $request[3];
+        }
+        else {
+          $language_code = '';
+        }
         foreach ($this->view->result as $row_index => $row) {
           $this->view->row_index = $row_index;
 
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
+          // Custom country listing.
+          if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 131) {
+            continue;
+          }
           /* error_log("type =>".$rendered_data['type']); */
           /* Custom pinned api formatter. */
           if (strpos($request_uri, "pinned-contents") !== FALSE && isset($request[4]) && in_array($request[4], $pinned_content)) {
@@ -108,6 +121,7 @@ class CustomSerializer extends Serializer {
             }
           }
           $embedded_images = [];
+          $languages_all = [];
           foreach ($rendered_data as $key => $values) {
             /* Replace special charater into normal. */
             if ($key === "title") {
@@ -211,6 +225,163 @@ class CustomSerializer extends Serializer {
                 }
               }
             }
+
+            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
+              $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
+              $Countryname = $rendered_data['Countryname'] ?? 'Unknown';
+
+              // Langcode en.
+              $existing_data_en = \Drupal::database()->select('custom_language_data', 'cld')
+                ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
+                ->condition('langcode', 'en')
+                ->execute()
+                ->fetchAssoc();
+
+              $langcode_en = 'en';
+              $language_en = \Drupal::languageManager()->getLanguage($langcode_en);
+              $original_language_en = \Drupal::languageManager()->setConfigOverrideLanguage($language_en);
+              $languages_en = ConfigurableLanguage::load($langcode_en);
+
+              if ($languages_en) {
+                // Retrieve the display name (label) of the language.
+                if ($languages_en->label()) {
+                  $display_en = $languages_en->label();
+                }
+              }
+
+              if (!empty($existing_data_en)) {
+                $custom_locale_en = $existing_data_en['custom_locale'];
+                $custom_luxon_en = $existing_data_en['custom_luxon'];
+                $custom_plural_en = $existing_data_en['custom_plural'];
+              }
+
+              // Langcode ru.
+              $existing_data_ru = \Drupal::database()->select('custom_language_data', 'cld')
+                ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
+                ->condition('langcode', 'ru')
+                ->execute()
+                ->fetchAssoc();
+
+              $langcode_ru = 'ru';
+              $language_ru = \Drupal::languageManager()->getLanguage($langcode_ru);
+              $original_language_ru = \Drupal::languageManager()->setConfigOverrideLanguage($language_ru);
+              $language_ru = ConfigurableLanguage::load($langcode_ru);
+
+              if ($language_ru) {
+                // Retrieve the display name (label) of the language.
+                if ($language_ru->label()) {
+                  $display_ru = $language_ru->label();
+                }
+              }
+
+              if (!empty($existing_data_ru)) {
+                $custom_locale_ru = $existing_data_ru['custom_locale'];
+                $custom_luxon_ru = $existing_data_ru['custom_luxon'];
+                $custom_plural_ru = $existing_data_ru['custom_plural'];
+              }
+              $rendered_data['name'] = 'Rest of the world';
+              $rendered_data['displayName'] = 'Rest of the world';
+              $rendered_data['languages'] = [
+                 [
+                   'name' => 'English',
+                   'displayName' => $display_en,
+                   'languageCode' => 'en',
+                   'locale' => $custom_locale_en,
+                   'luxonLocale' => $custom_luxon_en,
+                   'pluralShow' => $custom_plural_en,
+                 ],
+                 [
+                   'name' => 'Russian',
+                   'displayName' => $display_ru,
+                   'languageCode' => 'ru',
+                   'locale' => $custom_locale_ru,
+                   'luxonLocale' => $custom_luxon_ru,
+                   'pluralShow' => $custom_plural_ru,
+                 ],
+              ];
+              unset($rendered_data['langcode']);
+              unset($rendered_data['field_make_available_for_mobile']);
+              unset($rendered_data['logo']);
+              unset($rendered_data['field_country_national_partner']);
+              unset($rendered_data['published']);
+            }
+            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {
+              $langcodes = $display_name = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
+              $groups = Group::load($rendered_data['CountryID']);
+              $master_languages = $groups->get('field_master_language')->getValue();
+              $country_languages = $groups->get('field_language')->getValue();
+              $rendered_data['languages'] = [];
+
+              foreach ($country_languages as $val) {
+                $langcode = $val['value'];
+
+                if ($langcode) {
+                  $language = \Drupal::languageManager()->getLanguage($langcode);
+
+                  $original_language = \Drupal::languageManager()->setConfigOverrideLanguage($language);
+                  $languages = ConfigurableLanguage::load($langcode);
+
+                  $view_weight = $languages->get('weight') ?? 0;
+                  if ($languages) {
+                    // Retrieve the display name (label) of the language.
+                    if ($languages->label()) {
+                      $display_name = $languages->label();
+                    }
+                    else {
+                      $display_name = $rendered_data['name'];
+                    }
+                  }
+                  else {
+                    $display_name = $rendered_data['name'];
+                  }
+
+                  // Fetch the existing data from the database.
+                  $existing_data_all = \Drupal::database()->select('custom_language_data', 'cld')
+                    ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
+                    ->condition('langcode', $langcode)
+                    ->execute()
+                    ->fetchAssoc();
+
+                  // Initialize variables.
+                  $custom_locale_all = $custom_luxon_all = $custom_plural_all = '';
+
+                  if (!empty($existing_data_all)) {
+                    $custom_locale_all = $existing_data_all['custom_locale'];
+                    $custom_luxon_all = $existing_data_all['custom_luxon'];
+                    $custom_plural_all = $existing_data_all['custom_plural'];
+                    $custom_language_name_local = !empty($existing_data_all['custom_language_name_local']) ? $existing_data_all['custom_language_name_local'] : '';
+                  }
+
+                  // Add the language data to the array.
+                  $rendered_data['languages'][] = [
+                  // Adjust as necessary.
+                    'name' => $rendered_data['name'],
+                    'displayName' => $custom_language_name_local,
+                    'languageCode' => $val['value'],
+                    'locale' => $custom_locale_all,
+                    'luxonLocale' => $custom_luxon_all,
+                    'pluralShow' => $custom_plural_all,
+                    'view_weight' => $view_weight,
+                  ];
+                }
+              }
+
+              // Reorder the array to place the preferred language code first.
+              usort($rendered_data['languages'], function ($a, $b) {
+                return $a['view_weight'] <=> $b['view_weight'];
+              });
+
+              // Remove view_weight from each language entry in the array.
+              foreach ($rendered_data['languages'] as &$values_lng) {
+                unset($values_lng['view_weight']);
+              }
+              unset($rendered_data['langcode']);
+              unset($rendered_data['field_make_available_for_mobile']);
+              unset($rendered_data['logo']);
+              unset($rendered_data['field_country_national_partner']);
+              unset($rendered_data['published']);
+              unset($rendered_data['field_language']);
+            }
           }
 
           if (strpos($request_uri, "vocabularies") !== FALSE || strpos($request_uri, "taxonomies") !== FALSE) {
@@ -243,9 +414,57 @@ class CustomSerializer extends Serializer {
 
           }
         }
+
+        if (strpos($request_uri, "/api/taxonomies") !== FALSE || strpos($request_uri, "/api/articles") !== FALSE) {
+          if (strpos($request_uri, "/api/articles") !== FALSE) {
+            $term_name_arr = ['Pregnancy'];
+          }
+          else {
+            $query_params = \Drupal::request()->query->all();
+            if (isset($query_params['pregnancy']) && $query_params['pregnancy'] == 'true') {
+              // pregnancy,Week by Week (if above condition gets true we are removing it from term array to display pregnancy in  child age taxo)
+              $term_name_arr = [];
+            }
+            else {
+              // To hide pregnancy term in child age taxo.
+              $term_name_arr = ['pregnancy'];
+            }
+          }
+          foreach ($term_name_arr as $val) {
+            $term_values = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $val]);
+            foreach ($term_values as $term_value) {
+              if ($term_value) {
+                // Use ->id() to get the term ID.
+                $tid = $term_value->id();
+                // Get the vocabulary ID.
+                $vid = $term_value->bundle();
+                // Adjust 'taxonomy_terms' to your actual key.
+                $data = $this->removeItemsByKeyValue($request_uri, $data, $vid, $tid);
+              }
+            }
+          }
+        }
+
+        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+          $index = array_search('126', array_column($data, 'CountryID'));
+
+          // Check if the entry exists.
+          if ($index !== FALSE) {
+            // Remove the entry from the array.
+            $entry = array_splice($data, $index, 1);
+
+            // Append the entry to the end of the array.
+            $data[] = $entry[0];
+          }
+        }
+
         /* To validate request params. */
         if (isset($request[3]) && !empty($request[3])) {
           $rows['langcode'] = $request[3];
+        }
+
+        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+          $rows['langcode'] = 'en';
         }
 
         if (strpos($request_uri, "sponsors") !== FALSE) {
@@ -261,7 +480,26 @@ class CustomSerializer extends Serializer {
         else {
           $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
         }
-        return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+
+        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+          $serialized_data = $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+
+          // Create a response object to set headers.
+          $response = new Response($serialized_data);
+          $response->headers->set('Content-Type', $content_type);
+          $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
+          $response->headers->set('Pragma', 'no-cache');
+          $response->headers->set('Expires', '0');
+
+          // Send headers and return serialized data.
+          $response->sendHeaders();
+
+          return $serialized_data;
+        }
+        else {
+          return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
+        }
+
       }
       else {
         $rows = [];
@@ -346,6 +584,8 @@ class CustomSerializer extends Serializer {
   public function customMediaFormatter($key, $values, $language_code) {
 
     if (!empty($values)) {
+      $url = $mname = $malt = '';
+      $media_data = [];
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
       $base_url = \Drupal::request()->getSchemeAndHttpHost();
@@ -405,61 +645,65 @@ class CustomSerializer extends Serializer {
               // Parse the oEmbed URL to extract the Vimeo video ID.
               $parsed_url = parse_url($oembed_value);
               if (isset($parsed_url['path'])) {
-                  // Extract the Vimeo video ID from the path.
-                  $path_segments = explode('/', $parsed_url['path']);
-                  $vimeo_video_id = end($path_segments);
-                  $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
-                  
-                  // Initialize cURL session
-                  $ch = curl_init();
+                // Extract the Vimeo video ID from the path.
+                $path_segments = explode('/', $parsed_url['path']);
+                $vimeo_video_id = end($path_segments);
+                $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
 
-                  // Set cURL options
-                  curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
-                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                // Initialize cURL session.
+                $ch = curl_init();
 
-                  // Execute the cURL request
-                  $response = curl_exec($ch);
+                // Set cURL options.
+                curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-                  if ($response === false) {
-                      // cURL error occurred
-                      $error_message = curl_error($ch);
-                      // Handle the error, log it, etc.
-                      $urls ='cURL error';
-                  } else {
-                      // Close cURL session
-                      curl_close($ch);
+                // Execute the cURL request.
+                $response = curl_exec($ch);
 
-                      // Decode the JSON response into an associative array
-                      $data = json_decode($response, true);
-
-                      if ($data === null) {
-                          // JSON decoding error occurred
-                          $json_error = json_last_error_msg();
-                          // Handle the error, log it, etc.
-                          $urls ='Vimeo error';
-                      } else {
-                          // Extract the thumbnail URL from the response data
-                          $urls = isset($data['thumbnail_url']) ? $data['thumbnail_url'] : null;
-                      }
-                  }
-                } else {
-                    // Vimeo video ID not found in the oEmbed URL
-                    // Handle the error, log it, etc.
-                    $urls ='Vimeo ID not found';
+                if ($response === FALSE) {
+                  // cURL error occurred.
+                  $error_message = curl_error($ch);
+                  // Handle the error, log it, etc.
+                  $urls = 'cURL error';
                 }
+                else {
+                  // Close cURL session.
+                  curl_close($ch);
+
+                  // Decode the JSON response into an associative array.
+                  $data = json_decode($response, TRUE);
+
+                  if ($data === NULL) {
+                    // JSON decoding error occurred.
+                    $json_error = json_last_error_msg();
+                    // Handle the error, log it, etc.
+                    $urls = 'Vimeo error';
+                  }
+                  else {
+                    // Extract the thumbnail URL from the response data.
+                    $urls = $data['thumbnail_url'] ?? NULL;
+                  }
+                }
+              }
+              else {
+                // Vimeo video ID not found in the oEmbed URL
+                // Handle the error, log it, etc.
+                $urls = 'Vimeo ID not found';
+              }
 
             }
             else {
-                $thumbnail = File::load($tid);
-                $thumbnail_url = $thumbnail->createFileUrl();
-                if (strpos($thumbnail_url, $base_url) !== false) {
-                  // Base URL is present in the thumbnail URL
-                  $urls = $thumbnail_url;
-                } else {
-                  // Base URL is Not present in the thumbnail URL
-                  $urls = $base_url.$thumbnail_url;
-                }
+              $thumbnail = File::load($tid);
+              $thumbnail_url = $thumbnail->createFileUrl();
+              if (strpos($thumbnail_url, $base_url) !== FALSE) {
+                // Base URL is present in the thumbnail URL.
+                $urls = $thumbnail_url;
               }
+              else {
+                // Base URL is Not present in the thumbnail URL.
+                $urls = $base_url . $thumbnail_url;
+              }
+            }
           }
           $media_data = [
             'url'  => $urls,
@@ -479,7 +723,7 @@ class CustomSerializer extends Serializer {
            * @var object
            */
           $file = File::load($mid);
-          $url = $file->createFileUrl(); 
+          $url = $file->createFileUrl();
         }
 
         $media_data = [
@@ -625,7 +869,16 @@ class CustomSerializer extends Serializer {
             'unique_name' => $term_obj->get('field_unique_name')->value,
           ];
         }
-        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "category" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
+        elseif ($vocabulary_machine_name === "category") {
+          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_data[] = [
+            'id' => (int) $tax_result[$tax]->tid,
+            'name' => $tax_result[$tax]->name,
+            'unique_name' => $term_obj->get('field_unique_name')->value,
+            'field_type_of_article' => $term_obj->get('field_type_of_article')->entity->name->value,
+          ];
+        }
+        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
           $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
@@ -642,6 +895,41 @@ class CustomSerializer extends Serializer {
       }
       return $term_data;
     }
+  }
+
+  /**
+   *
+   */
+  public function removeItemsByKeyValue($request_uri, $data, $key, $tid) {
+
+    if (strpos($request_uri, "/api/taxonomies") !== FALSE) {
+      if (isset($data[$key]) && is_array($data[$key])) {
+        foreach ($data[$key] as $itemKey => $item) {
+          if (isset($item['id']) && $item['id'] == $tid) {
+            unset($data[$key][$itemKey]);
+          }
+        }
+        // Reindex array keys to be consecutive integers.
+        $data[$key] = array_values($data[$key]);
+      }
+    }
+
+    if (strpos($request_uri, "/api/articles") !== FALSE) {
+      foreach ($data as $k => $val) {
+        if (in_array($tid, $val[$key])) {
+          // Find the key of the value to remove.
+          $keyToRemove = array_search($tid, $val[$key]);
+
+          // If the value exists, remove it.
+          if ($keyToRemove !== FALSE) {
+            unset($data[$k][$key][$keyToRemove]);
+            // Reindex array keys to be consecutive integers.
+            $data[$k][$key] = array_values($data[$k][$key]);
+          }
+        }
+      }
+    }
+    return $data;
   }
 
 }

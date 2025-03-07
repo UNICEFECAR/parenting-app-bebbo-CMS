@@ -1,0 +1,101 @@
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: Medya
+      fields:
+        media_bulk_form:
+          action_title: Eylem
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      exposed_form:
+        options:
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      sorts:
+        created:
+          expose:
+            label: 'Önce en yeniler'
+      filters:
+        status:
+          expose:
+            label: 'Yayımlanma durumu'
+          group_info:
+            label: Yayında
+            group_items:
+              1:
+                title: Yayında
+              2:
+                title: 'Yayında değil'
+        name:
+          expose:
+            label: İsim
+        bundle:
+          expose:
+            label: 'Medya tipi'
+          group_info:
+            label: 'Medya tipi'
+        langcode:
+          expose:
+            label: Dil
+  page:
+    display_title: Sayfa
+    display_options:
+      fields:
+        media_bulk_form:
+          action_title: Eylem
+        name:
+          separator: ', '
+        edit_media:
+          text: Düzenle
+        delete_media:
+          text: Sil
+  widget:
+    display_title: 'Arayüz kontrolu (widget)'
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: Tümü
+      filters:
+        name:
+          expose:
+            label: İsim
+      header:
+        display_link_grid:
+          label: Izgara
+        display_link_table:
+          label: Tablo
+  widget_table:
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: 'Küçük resim'
+        name:
+          label: İsim
+        uid:
+          label: Yazar
+        changed:
+          label: Güncellendi
+      arguments:
+        bundle:
+          exception:
+            title: Tümü
+      filters:
+        name:
+          expose:
+            label: İsim
+      header:
+        display_link_grid:
+          label: Izgara
+        display_link_table:
+          label: Tablo

@@ -1,0 +1,36 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: İşlemler

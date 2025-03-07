@@ -1,0 +1,123 @@
+uuid: f8cea152-51f1-4e6f-ab4a-9a1dbcc022f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group.country.field_app_name
+    - field.field.group.country.field_content_toggle
+    - field.field.group.country.field_country_email
+    - field.field.group.country.field_country_flag
+    - field.field.group.country.field_country_national_partner
+    - field.field.group.country.field_country_sponsor_logo
+    - field.field.group.country.field_language
+    - field.field.group.country.field_make_available_for_mobile
+    - field.field.group.country.field_master_language
+    - field.field.group.country.field_unicef_logo
+    - group.type.country
+  module:
+    - languagefield
+    - media_library
+id: group.country.default
+targetEntityType: group
+bundle: country
+mode: default
+content:
+  field_app_name:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_content_toggle:
+    type: options_select
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_country_email:
+    type: email_default
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_country_flag:
+    type: media_library_widget
+    weight: 4
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_country_national_partner:
+    type: media_library_widget
+    weight: 7
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_country_sponsor_logo:
+    type: media_library_widget
+    weight: 6
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_language:
+    type: options_select
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_make_available_for_mobile:
+    type: boolean_checkbox
+    weight: 12
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_master_language:
+    type: languagefield_select
+    weight: 8
+    region: content
+    settings:
+      format:
+        name: name
+    third_party_settings: {  }
+  field_unicef_logo:
+    type: media_library_widget
+    weight: 5
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  label:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 11
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  path: true
+  uid: true

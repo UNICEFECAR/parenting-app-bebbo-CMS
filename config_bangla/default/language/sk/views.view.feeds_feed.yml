@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Typ
+        operations:
+          label: Operácie
+      filters:
+        type:
+          expose:
+            label: Typ

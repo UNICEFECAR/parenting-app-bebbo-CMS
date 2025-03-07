@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+      exposed_form:
+        options:
+          submit_button: Filtru

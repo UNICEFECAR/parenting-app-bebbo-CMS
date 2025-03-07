@@ -1,0 +1,28 @@
+uuid: 42b295c3-d732-4f17-a308-69e36ed8faaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pre_populated
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_pre_populated
+field_name: field_pre_populated
+entity_type: node
+bundle: article
+label: 'Pre Populated'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

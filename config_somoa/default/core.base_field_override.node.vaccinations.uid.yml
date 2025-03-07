@@ -1,0 +1,20 @@
+uuid: 8d2a7193-29c8-48fe-ae39-57bc33bb5687
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.uid
+field_name: uid
+entity_type: node
+bundle: vaccinations
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

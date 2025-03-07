@@ -1,0 +1,32 @@
+display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Title
+        type:
+          label: 'Content type'
+        status:
+          label: Status
+          settings:
+            format_custom_true: Published
+        changed:
+          label: Updated
+        dropbutton:
+          label: عمليات
+      filters:
+        status:
+          group_info:
+            group_items:
+              1:
+                title: Published
+        type:
+          expose:
+            label: النوع
+      empty:
+        area_text_custom:
+          content: 'No content available.'
+      arguments:
+        gid:
+          exception:
+            title: All

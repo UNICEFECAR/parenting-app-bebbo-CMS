@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        bundle:
+          label: Tип
+        operations:
+          label: Операције
+      exposed_form:
+        options:
+          submit_button: Филтрирај
+      filters:
+        bundle:
+          expose:
+            label: Tип

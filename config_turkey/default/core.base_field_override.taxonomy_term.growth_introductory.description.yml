@@ -1,0 +1,20 @@
+uuid: 42d6eb22-4c15-4991-8167-3d90db5592b8
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - text
+id: taxonomy_term.growth_introductory.description
+field_name: description
+entity_type: taxonomy_term
+bundle: growth_introductory
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

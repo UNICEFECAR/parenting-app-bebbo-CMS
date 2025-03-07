@@ -1,0 +1,18 @@
+uuid: 8734cc07-af3c-41a0-9605-e54903cec777
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-vaccinations
+id: group_content.country-group_node-vaccinations.created
+field_name: created
+entity_type: group_content
+bundle: country-group_node-vaccinations
+label: 'Created on'
+description: 'The time that the group content was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created
