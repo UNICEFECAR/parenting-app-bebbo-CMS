@@ -1,0 +1,24 @@
+uuid: 628a48db-9355-49f1-93c7-924ac113b585
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meta_keywords
+    - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.video_article.field_meta_keywords
+field_name: field_meta_keywords
+entity_type: node
+bundle: video_article
+label: 'Meta keywords'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

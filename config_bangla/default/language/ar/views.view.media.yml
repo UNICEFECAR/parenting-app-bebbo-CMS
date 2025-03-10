@@ -1,0 +1,39 @@
+label: Media
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: Media
+      fields:
+        bundle:
+          label: النوع
+        uid:
+          label: Author
+        status:
+          label: Status
+          settings:
+            format_custom_true: Published
+        changed:
+          label: Updated
+        operations:
+          label: عمليات
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      filters:
+        bundle:
+          expose:
+            label: النوع
+        status:
+          group_info:
+            group_items:
+              1:
+                title: Published
+        langcode:
+          expose:
+            label: Language
+  media_page_list:
+    display_title: Media
+    display_options:
+      menu:
+        title: Media

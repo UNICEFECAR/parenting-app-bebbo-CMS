@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী
+      filters:
+        type:
+          expose:
+            label: টাইপ

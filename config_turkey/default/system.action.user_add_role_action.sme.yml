@@ -1,0 +1,14 @@
+uuid: a0c09971-6b3b-4953-9603-754b95ad3282
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.sme
+  module:
+    - user
+id: user_add_role_action.sme
+label: 'Add the SME role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: sme

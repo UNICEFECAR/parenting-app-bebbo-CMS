@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Eyalet
+        type:
+          label: Tip
+        operations:
+          label: İşlemler
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Tip

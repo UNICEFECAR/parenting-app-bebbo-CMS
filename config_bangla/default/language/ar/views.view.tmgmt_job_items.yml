@@ -1,0 +1,26 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+      fields:
+        type:
+          label: النوع
+        tags_count:
+          label: Tags
+        operations:
+          label: عمليات
+      arguments:
+        tjid:
+          exception:
+            title: All
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: النوع

@@ -1,0 +1,49 @@
+uuid: 22e4619e-ce5f-4d58-92b4-14d7d806ddcd
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.admin_full_html
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+  module:
+    - content_moderation
+    - file
+    - filter
+    - media
+    - node
+    - pb_custom_form
+    - search
+    - shortcut
+    - system
+    - taxonomy
+    - toolbar
+_core:
+  default_config_hash: btW6TFHajhy7Eo6YUvdFiPh4TcPggo8GBXYctjV6zag
+id: authenticated
+label: 'Authenticated user'
+weight: -9
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access content overview'
+  - 'access shortcuts'
+  - 'access taxonomy overview'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'create image media'
+  - 'create remote_video media'
+  - 'create video media'
+  - 'delete own files'
+  - 'edit any image media'
+  - 'edit any remote_video media'
+  - 'edit any video media'
+  - 'manage mobile javascript'
+  - 'search content'
+  - 'use text format admin_full_html'
+  - 'view latest version'
+  - 'view media'
+  - 'view own unpublished content'
+  - 'view own unpublished media'
+  - 'view the administration theme'

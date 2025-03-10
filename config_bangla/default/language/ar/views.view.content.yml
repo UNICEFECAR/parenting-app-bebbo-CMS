@@ -1,0 +1,50 @@
+label: Content
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: Content
+      fields:
+        title:
+          label: Title
+        type:
+          label: 'Content type'
+        name:
+          label: Author
+        status:
+          label: Status
+          settings:
+            format_custom_true: Published
+        changed:
+          label: Updated
+        operations:
+          label: عمليات
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      empty:
+        area_text_custom:
+          content: 'No content available.'
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: 'Content type'
+        status:
+          expose:
+            label: Status
+          group_info:
+            group_items:
+              1:
+                title: Published
+        langcode:
+          expose:
+            label: Language
+  page_1:
+    display_options:
+      menu:
+        title: Content
+      tab_options:
+        title: Content

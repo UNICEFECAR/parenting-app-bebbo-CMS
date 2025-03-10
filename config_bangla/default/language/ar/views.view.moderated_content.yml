@@ -1,0 +1,28 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        title:
+          label: Title
+        type:
+          label: 'Content type'
+        name:
+          label: Author
+        changed:
+          label: Updated
+        operations:
+          label: عمليات
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: 'Content type'
+        langcode:
+          expose:
+            label: Language

@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        bundle:
+          label: Тип
+        operations:
+          label: Операции
+      exposed_form:
+        options:
+          submit_button: Фильтр
+      filters:
+        bundle:
+          expose:
+            label: Тип

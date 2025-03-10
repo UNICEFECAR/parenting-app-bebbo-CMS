@@ -1,0 +1,20 @@
+label: 'Kimler yeni'
+description: 'Sitedeki en yeni kullanıcıların listesini görüntüler.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: 'Kimler yeni'
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+  block_1:
+    display_title: 'Kimler yeni'
+    display_options:
+      display_description: 'Yeni kullanıcılar listesi'
+      block_description: 'Kimler yeni'
+      block_category: Kullanıcı

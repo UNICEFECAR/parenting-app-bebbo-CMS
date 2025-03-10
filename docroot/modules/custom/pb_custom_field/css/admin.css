@@ -583,6 +583,11 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   width: 120px;
   margin: auto;
 }
+
+.homepageblock3 .featured-bb-image {
+  width: 185px !important;
+  margin: auto;
+}
 .head-text {
   font-size: 24px;
   text-align: center;
@@ -600,6 +605,9 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   font-size: 18px;
   text-align: center;
   margin-bottom: 30px;
+}
+.layout--twocol-section {
+  display: flex;
 }
 .layout--twocol-section--50-50 img {
   width: 75px;
@@ -689,13 +697,13 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
 .layout.layout--onecol {
   margin-top: 100px;
 }
-.menu .menu-item a:hover {
+.region-header .menu .menu-item a:hover {
   color: #4fa9dd;
 }
 .menu .menu-item .active {
   color: #4fa9dd;
 }
-.menu .menu-item .is-active {
+.region-header .menu .menu-item .is-active {
   color: #4fa9dd !important;
 }
 #features,
@@ -855,7 +863,7 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
       margin: auto;
       justify-content: center;
   }
-  .menu .menu-item a:hover {
+  .region-header .menu .menu-item a:hover {
    color: inherit;
   }
 

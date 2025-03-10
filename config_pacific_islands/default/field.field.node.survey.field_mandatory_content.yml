@@ -1,0 +1,28 @@
+uuid: 81f65b07-e328-4ebf-b1b2-4d1ad35cecca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mandatory_content
+    - node.type.survey
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.survey.field_mandatory_content
+field_name: field_mandatory_content
+entity_type: node
+bundle: survey
+label: 'Mandatory Content'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,23 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      filters:
+        name:
+          expose:
+            label: নাম
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: নাম
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: নাম
+      filters:
+        name:
+          expose:
+            label: নাম

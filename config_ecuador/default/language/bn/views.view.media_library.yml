@@ -1,0 +1,58 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: মাধ্যম
+      filters:
+        status:
+          group_info:
+            label: প্রকাশিত
+            group_items:
+              1:
+                title: প্রকাশিত
+        name:
+          expose:
+            label: নাম
+        langcode:
+          expose:
+            label: ভাষা
+  page:
+    display_options:
+      fields:
+        edit_media:
+          text: সম্পাদন
+        delete_media:
+          text: 'মুছে ফেল'
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: সমস্ত
+      filters:
+        name:
+          expose:
+            label: নাম
+      header:
+        display_link_table:
+          label: টেবিল
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: নাম
+        uid:
+          label: লেখক
+        changed:
+          label: আপডেটকৃত
+      arguments:
+        bundle:
+          exception:
+            title: সমস্ত
+      filters:
+        name:
+          expose:
+            label: নাম
+      header:
+        display_link_table:
+          label: টেবিল

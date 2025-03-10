@@ -1,0 +1,26 @@
+label: Çeviri
+tips:
+  locale-overview:
+    label: 'Kullanıcı arayüzü çevirisi'
+    body: 'Bu sayfa sizin kullanıcı arayüzü çevirme ve varolan çevirileri düzenlemenizi sağlar. Sitenizi İngilizce olarak kurduysanız, bu sayfayı kullanabilmek için önce <a href="[site:url]/admin/config/regional/language">Diller</a> bölümünden başka bir dil eklemelisiniz.'
+  locale-language:
+    label: 'Çeviri dili'
+    body: 'Çevirmek istediğiniz dili seçin.'
+  locale-search:
+    label: Ara
+    body: 'Çevirmek istediğiniz sözcük ya da cümlenin tamamını ya da bir bölümünü yazın.'
+  locale-filter:
+    label: 'Aramayı süzün'
+    body: 'Henüz çevrilmemiş dizgeleri çevirmek istiyorsanız, arama sonuçlarında çevrilmemiş dizgeleri, varolan bir çeviriyi düzenlemek için çevrilmiş dizgeleri süzebilirsiniz.'
+  locale-submit:
+    label: 'Arama ölçütünü uygulayın'
+    body: 'Arama ölçütünü uygulamak için <em>Süz</em> düğmesine tıklayın.'
+  locale-translate:
+    label: Çevir
+    body: 'Çeviriyi sağ sütundaki metin alanına yazabilirsiniz. Çeviriyi metnin kullanıcılacağı bağlama uygun yapmaya çalışın.'
+  locale-validate:
+    label: 'Çeviriyi doğrulayın'
+    body: 'Çevirileri tamamladığınızda <em>Çevirileri Kaydet</em> düğmesine tıklayın Bu bölümde yeni bir çeviri ya da arama yaptıktan sonra çevirilerinizi kaydetmelisiniz.'
+  locale-continue:
+    label: 'Devam ediliyor'
+    body: 'Burada yaptığınız çeviriler sitenizin kullanıcı arayüzünde kullanılacaktır. Bu çevirileri başka bir sitede kullanmak veya dış bir çeviri düzenleyicide düzenlemek istiyorsanız bir .po dosyasına <a href="[site:url]admin/config/regional/translate/export"> aktarabilir</a> ve daha sonra <a href="[site:url]admin/config/regional/translate/import">içeri alabilirsiniz</a>.'

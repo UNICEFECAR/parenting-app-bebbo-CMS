@@ -1,0 +1,38 @@
+display:
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  eligible:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  my_tasks:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+      tab_options:
+        title: Preložiť

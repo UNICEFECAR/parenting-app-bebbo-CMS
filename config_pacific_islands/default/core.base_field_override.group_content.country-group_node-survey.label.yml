@@ -1,0 +1,18 @@
+uuid: e46a1f12-4603-4cc3-809f-2632fc94cbd5
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-survey
+id: group_content.country-group_node-survey.label
+field_name: label
+entity_type: group_content
+bundle: country-group_node-survey
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

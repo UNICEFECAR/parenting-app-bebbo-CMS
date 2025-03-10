@@ -1,0 +1,10 @@
+uuid: efb8afd9-619d-418f-8ee2-7934a43e254e
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt
+id: tmgmt_message.token
+label: Token
+targetEntityType: tmgmt_message
+cache: true

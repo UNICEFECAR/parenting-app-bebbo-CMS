@@ -1,0 +1,60 @@
+uuid: dacd088d-fe0e-401f-8e67-737b80179bf8
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.relationship_to_parent
+  module:
+    - taxonomy
+label: 'Taxonomy - Relationship to child - Language'
+id: taxonomy_relationship_to_child_l
+description: 'Taxonomy - Relationship to child - Language'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: relationship_to_parent
+  langcode: tr
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    settings: {  }
+    unique:
+      value: 1
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: tr
+    unique: {  }

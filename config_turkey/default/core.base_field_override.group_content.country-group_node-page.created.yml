@@ -1,0 +1,18 @@
+uuid: 94304f8a-5796-42ef-a6e0-8933b9674135
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-page
+id: group_content.country-group_node-page.created
+field_name: created
+entity_type: group_content
+bundle: country-group_node-page
+label: 'Created on'
+description: 'The time that the group content was created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

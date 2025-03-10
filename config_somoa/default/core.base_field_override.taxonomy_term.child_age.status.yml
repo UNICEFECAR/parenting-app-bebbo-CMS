@@ -1,0 +1,22 @@
+uuid: 9a2e3536-3db2-4acb-96c6-4507d64b866c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.status
+field_name: status
+entity_type: taxonomy_term
+bundle: child_age
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

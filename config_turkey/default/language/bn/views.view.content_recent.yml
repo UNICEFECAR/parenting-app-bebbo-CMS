@@ -1,0 +1,12 @@
+label: 'সাম্প্রতিক বিষয়বস্তু'
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: 'সাম্প্রতিক বিষয়বস্তু'
+      empty:
+        area_text_custom:
+          content: 'কোন কন্টেন্ট নেই।'
+      use_more_text: আরও
+  block_1:
+    display_title: ব্লক

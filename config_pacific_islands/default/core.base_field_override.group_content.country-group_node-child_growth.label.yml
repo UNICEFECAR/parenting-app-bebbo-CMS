@@ -1,0 +1,18 @@
+uuid: 170f91fc-7773-4929-8cce-5ffff12167ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-child_growth
+id: group_content.country-group_node-child_growth.label
+field_name: label
+entity_type: group_content
+bundle: country-group_node-child_growth
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

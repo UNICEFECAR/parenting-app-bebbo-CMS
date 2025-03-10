@@ -1,0 +1,18 @@
+uuid: 0384b0fb-41b5-43c9-b8e5-d9a24560b18e
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group.field_make_available_for_mobile
+field_name: field_make_available_for_mobile
+entity_type: group
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

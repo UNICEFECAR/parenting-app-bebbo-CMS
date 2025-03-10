@@ -1,0 +1,56 @@
+label: 'Kanály správ'
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      pager:
+        options:
+          tags:
+            previous: '‹ predchádzajúca'
+            next: 'nasledujúca ›'
+            first: '« prvá'
+            last: 'posledná »'
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      fields:
+        feeds_feed_bulk_form:
+          label: 'Hromadná aktualizácia'
+          action_title: 'S výberom'
+        title:
+          label: Názov
+          separator: ', '
+        type:
+          label: Typ
+          separator: ', '
+        name:
+          label: Autor
+          separator: ', '
+        changed:
+          label: Aktualizované
+          separator: ', '
+        imported:
+          separator: ', '
+        operations:
+          label: Operácie
+      filters:
+        title:
+          expose:
+            label: Názov
+        type:
+          expose:
+            label: Typ
+      title: 'Kanály správ'
+  page_1:
+    display_title: Stránka
+    display_options:
+      menu:
+        title: 'Kanály správ'

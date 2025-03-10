@@ -1,0 +1,22 @@
+display:
+  default:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Име
+  widget:
+    display_options:
+      filters:
+        name:
+          expose:
+            label: Име
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: Име
+      filters:
+        name:
+          expose:
+            label: Име

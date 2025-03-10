@@ -1,0 +1,7 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      fields:
+        operations:
+          label: Operácie
