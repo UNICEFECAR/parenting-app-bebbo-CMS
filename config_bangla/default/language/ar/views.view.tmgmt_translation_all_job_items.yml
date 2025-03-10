@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: النوع
+        target_language:
+          label: To
+        tags_count:
+          label: Tags
+        operations:
+          label: عمليات
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

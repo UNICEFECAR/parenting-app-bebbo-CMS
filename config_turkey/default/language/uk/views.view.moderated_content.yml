@@ -1,0 +1,26 @@
+display:
+  default:
+    display_title: Базово
+    display_options:
+      fields:
+        title:
+          label: Заголовок
+        type:
+          label: 'Тип матеріалів'
+        name:
+          label: Автор
+        operations:
+          label: Операції
+      exposed_form:
+        options:
+          submit_button: Фільтр
+      filters:
+        title:
+          expose:
+            label: Заголовок
+        type:
+          expose:
+            label: 'Тип матеріалів'
+        langcode:
+          expose:
+            label: Мова

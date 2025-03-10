@@ -1,0 +1,26 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        type:
+          label: النوع
+        timestamp:
+          label: Date
+        message:
+          label: Message
+        name:
+          label: User
+        link:
+          label: عمليات
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      empty:
+        area:
+          admin_label: 'No log messages available.'
+          content: 'No log messages available.'
+      filters:
+        type:
+          expose:
+            label: النوع

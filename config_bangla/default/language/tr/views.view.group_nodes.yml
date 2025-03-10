@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        dropbutton:
+          label: İşlemler
+      filters:
+        type:
+          expose:
+            label: Tip

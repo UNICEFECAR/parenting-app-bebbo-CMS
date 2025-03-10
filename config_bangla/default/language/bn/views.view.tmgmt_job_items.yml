@@ -1,0 +1,13 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: টাইপ

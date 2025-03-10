@@ -1,0 +1,13 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        title:
+          label: Title
+        name:
+          label: Author
+        changed:
+          label: 'Last update'
+  attachment_1:
+    display_title: Attachment

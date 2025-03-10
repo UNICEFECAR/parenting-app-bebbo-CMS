@@ -1,0 +1,37 @@
+display:
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  closed:
+    display_options:
+      fields:
+        created:
+          label: Created
+        operations:
+          label: Operácie
+  completed:
+    display_options:
+      fields:
+        created:
+          label: Created
+        operations:
+          label: Operácie
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Operácie
+  rejected:
+    display_options:
+      fields:
+        created:
+          label: Created
+        operations:
+          label: Operácie
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Operácie

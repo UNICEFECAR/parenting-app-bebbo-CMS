@@ -1,0 +1,28 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        title:
+          label: শিরোনাম
+        type:
+          label: 'কন্টেন্টের ধরণ'
+        name:
+          label: লেখক
+        changed:
+          label: আপডেটকৃত
+        operations:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+        type:
+          expose:
+            label: 'কন্টেন্টের ধরণ'
+        langcode:
+          expose:
+            label: ভাষা

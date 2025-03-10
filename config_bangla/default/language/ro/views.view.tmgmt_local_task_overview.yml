@@ -1,0 +1,41 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filtru
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  eligible:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  my_tasks:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Operațiuni

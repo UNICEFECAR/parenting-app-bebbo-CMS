@@ -1,0 +1,28 @@
+uuid: 9345596a-d1e2-448c-be93-3b23a56ee250
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_suggest_as_daily_reads
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_suggest_as_daily_reads
+field_name: field_suggest_as_daily_reads
+entity_type: node
+bundle: article
+label: 'Suggest as Daily Reads'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,61 @@
+uuid: d1673679-0d82-43ce-a07b-9a04794bc162
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.type_of_support.name
+    - taxonomy.vocabulary.type_of_support
+  module:
+    - taxonomy
+label: 'Taxonomy - Type of Support - Language'
+id: taxonomy_type_of_support_languag
+description: 'Taxonomy - Type of Support - Language'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'public://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: type_of_support
+  langcode: bn
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    settings: {  }
+    unique:
+      value: 1
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: bn
+    unique: {  }

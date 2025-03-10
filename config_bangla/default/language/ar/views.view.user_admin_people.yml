@@ -1,0 +1,40 @@
+label: People
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: People
+      fields:
+        name:
+          label: Username
+        status:
+          label: Status
+          settings:
+            format_custom_false: Blocked
+            format_custom_true: Active
+        roles_target_id:
+          label: Roles
+        created:
+          label: 'Member for'
+        access:
+          label: 'Last access'
+        operations:
+          label: عمليات
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      filters:
+        status:
+          group_info:
+            label: Status
+            group_items:
+              1:
+                title: Active
+              2:
+                title: Blocked
+  page_1:
+    display_options:
+      menu:
+        title: List
+      tab_options:
+        title: People

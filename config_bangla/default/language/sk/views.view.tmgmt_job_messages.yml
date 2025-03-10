@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        created:
+          label: Created
+        name:
+          label: Názov

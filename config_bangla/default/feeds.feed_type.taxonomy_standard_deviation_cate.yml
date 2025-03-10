@@ -1,0 +1,72 @@
+uuid: fde65fe9-541b-46d2-ae0d-ba3e2e87f70a
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.standard_deviation_category
+  module:
+    - taxonomy
+label: 'Taxonomy - Standard Deviation Category - Language'
+id: taxonomy_standard_deviation_cate
+description: 'Taxonomy - Standard Deviation Category - - Language'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'public://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: standard_deviation_category
+  langcode: bn
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+    type: csv
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+    type: csv
+  weight:
+    value: Weight
+    label: Weight
+    machine_name: weight
+    type: csv
+  language_code:
+    value: Language_code
+    label: Language_code
+    machine_name: language_code
+    type: csv
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    settings: {  }
+    unique:
+      value: 1
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: bn
+    unique: {  }

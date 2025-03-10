@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Eyalet
+        operations:
+          label: İşlemler
+      filters:
+        state:
+          expose:
+            label: Eyalet

@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        bundle:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      filters:
+        bundle:
+          expose:
+            label: টাইপ

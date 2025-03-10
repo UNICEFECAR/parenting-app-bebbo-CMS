@@ -1,0 +1,9 @@
+label: Jazyk
+tips:
+  language-overview:
+    label: Jazyky
+    body: '<p>Stránka "Jazyky" vám umožňuje pridať, upraviť, odstrániť a zoradiť jazyky na stránke.</p>'
+  language-add:
+    label: 'Pridanie jazykov'
+  language-operations:
+    body: '<p>Operácie umožňujúce editovanie a odstránenie vašich jazykov.</p><p>Môžete zmeniť názov a smer jazyka.</p><p>Odstránené jazyky môžu byť neskôr pridané späť. Odstránenie jazyka odstrání všetky preklady rozhrania s týmto jazykom a obsah vytvorený v tomto jazyku bude mať priradený neutrálny jazyk. Predvolený jazyk nemôže byť odstránený.</p>'

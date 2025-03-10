@@ -1,0 +1,144 @@
+uuid: c80e4a5f-af60-48ae-93cd-6f6ac8d4f802
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.full_html
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.activities
+    - node.type.article
+    - node.type.child_development
+    - node.type.child_growth
+    - node.type.daily_homescreen_messages
+    - node.type.faq
+    - node.type.health_check_ups
+    - node.type.milestone
+    - node.type.page
+    - node.type.survey
+    - node.type.vaccinations
+    - node.type.video_article
+    - workflows.workflow.group_workflow
+  module:
+    - actions_permissions
+    - allowed_languages
+    - content_moderation
+    - content_translation
+    - file
+    - filter
+    - group
+    - media
+    - node
+    - tmgmt
+    - toolbar_menu
+id: se
+label: 'Senior Editor'
+weight: -3
+is_admin: null
+permissions:
+  - 'accept translation jobs'
+  - 'access media overview'
+  - 'bypass group access'
+  - 'create activities content'
+  - 'create article content'
+  - 'create content translations'
+  - 'create faq content'
+  - 'create image media'
+  - 'create media'
+  - 'create milestone content'
+  - 'create page content'
+  - 'create remote_video media'
+  - 'create survey content'
+  - 'create video media'
+  - 'create video_article content'
+  - 'delete own files'
+  - 'edit any activities content'
+  - 'edit any article content'
+  - 'edit any child_development content'
+  - 'edit any child_growth content'
+  - 'edit any daily_homescreen_messages content'
+  - 'edit any faq content'
+  - 'edit any health_check_ups content'
+  - 'edit any milestone content'
+  - 'edit any page content'
+  - 'edit any survey content'
+  - 'edit any vaccinations content'
+  - 'edit any video_article content'
+  - 'edit own activities content'
+  - 'edit own article content'
+  - 'edit own child_development content'
+  - 'edit own child_growth content'
+  - 'edit own daily_homescreen_messages content'
+  - 'edit own faq content'
+  - 'edit own health_check_ups content'
+  - 'edit own image media'
+  - 'edit own milestone content'
+  - 'edit own page content'
+  - 'edit own remote_video media'
+  - 'edit own survey content'
+  - 'edit own vaccinations content'
+  - 'edit own video media'
+  - 'edit own video_article content'
+  - 'execute pb_custom_field_assign_action node'
+  - 'execute pb_custom_field_change_to_archive node'
+  - 'execute pb_custom_field_change_to_publish node'
+  - 'execute pb_custom_field_change_to_senior_editor node'
+  - 'execute pb_custom_field_change_to_sme node'
+  - 'execute pb_custom_field_publish_to_draft node'
+  - 'execute pb_custom_field_publish_to_senioreditor node'
+  - 'execute pb_custom_field_publish_to_sme node'
+  - 'translate activities node'
+  - 'translate all languages'
+  - 'translate any entity'
+  - 'translate article node'
+  - 'translate child_development node'
+  - 'translate child_growth node'
+  - 'translate daily_homescreen_messages node'
+  - 'translate faq node'
+  - 'translate health_check_ups node'
+  - 'translate image media'
+  - 'translate milestone node'
+  - 'translate page node'
+  - 'translate remote_video media'
+  - 'translate survey node'
+  - 'translate vaccinations node'
+  - 'translate video media'
+  - 'translate video_article node'
+  - 'update any media'
+  - 'update content translations'
+  - 'update media'
+  - 'use group_workflow transition archive_to_draft'
+  - 'use group_workflow transition create_new_draft'
+  - 'use group_workflow transition draft_to_published'
+  - 'use group_workflow transition draft_to_sme_review'
+  - 'use group_workflow transition publish_to_archive'
+  - 'use group_workflow transition publish_to_draft'
+  - 'use group_workflow transition published_to_published'
+  - 'use group_workflow transition reject_to_draft'
+  - 'use group_workflow transition require_modification_to_published'
+  - 'use group_workflow transition require_modification_to_sme_review'
+  - 'use group_workflow transition review_after_translation_to_draft'
+  - 'use group_workflow transition review_after_translation_to_review_after_translation'
+  - 'use group_workflow transition review_after_translation_to_senior_editor_review'
+  - 'use group_workflow transition review_after_translation_to_sme_review'
+  - 'use group_workflow transition senior_editor_review_to_published'
+  - 'use group_workflow transition senior_editor_review_to_reject'
+  - 'use text format full_html'
+  - 'view activities revisions'
+  - 'view all media revisions'
+  - 'view any unpublished content'
+  - 'view article revisions'
+  - 'view child_development revisions'
+  - 'view child_growth revisions'
+  - 'view daily_homescreen_messages revisions'
+  - 'view editorial_menu in toolbar'
+  - 'view faq revisions'
+  - 'view health_check_ups revisions'
+  - 'view latest version'
+  - 'view milestone revisions'
+  - 'view own unpublished content'
+  - 'view page revisions'
+  - 'view survey revisions'
+  - 'view vaccinations revisions'
+  - 'view video_article revisions'

@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      fields:
+        operations:
+          label: Operacionet
+      exposed_form:
+        options:
+          submit_button: Filtri

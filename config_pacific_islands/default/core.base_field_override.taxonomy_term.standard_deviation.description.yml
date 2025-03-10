@@ -1,0 +1,20 @@
+uuid: 90367981-6de7-47cf-9f26-e2a7602def7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.standard_deviation
+  module:
+    - text
+id: taxonomy_term.standard_deviation.description
+field_name: description
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

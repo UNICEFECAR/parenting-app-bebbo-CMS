@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+        operations:
+          label: Операции
+      filters:
+        type:
+          expose:
+            label: Тип

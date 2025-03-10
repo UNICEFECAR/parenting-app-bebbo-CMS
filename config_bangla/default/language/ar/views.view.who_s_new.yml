@@ -1,0 +1,11 @@
+label: "Who's new"
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: "Who's new"
+  block_1:
+    display_title: "Who's new"
+    display_options:
+      block_description: "Who's new"
+      block_category: User

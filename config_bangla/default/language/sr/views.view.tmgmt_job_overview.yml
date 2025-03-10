@@ -1,0 +1,12 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Статус
+        operations:
+          label: Операције
+      filters:
+        state:
+          expose:
+            label: Статус

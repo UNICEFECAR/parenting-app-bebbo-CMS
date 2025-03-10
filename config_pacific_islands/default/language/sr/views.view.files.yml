@@ -1,0 +1,27 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        filename:
+          label: Name
+        filemime:
+          label: 'MIME тип'
+        status:
+          label: Status
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      filters:
+        filemime:
+          expose:
+            label: 'MIME тип'
+        status:
+          expose:
+            label: Status
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Тип ентитета'

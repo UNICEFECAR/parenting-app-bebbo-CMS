@@ -1,0 +1,13 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      fields:
+        type:
+          label: Typ
+        link:
+          label: Operácie
+      filters:
+        type:
+          expose:
+            label: Typ

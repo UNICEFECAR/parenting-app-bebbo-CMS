@@ -1,0 +1,106 @@
+uuid: 0b551137-55ef-42fe-9131-4c7064cde2f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.growth_period.name
+    - field.field.taxonomy_term.growth_period.field_vaccination_opens
+    - taxonomy.vocabulary.growth_period
+  module:
+    - taxonomy
+label: 'Taxonomy - Growth Period'
+id: taxonomy_growth_period
+description: 'Taxonomy - Growth Period'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: growth_period
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+    type: csv
+  days_from:
+    value: Days_from
+    label: Days_from
+    machine_name: days_from
+    type: csv
+  days_to:
+    value: Days_to
+    label: Days_to
+    machine_name: days_to
+    type: csv
+  language_code:
+    value: Language_code
+    label: Language_code
+    machine_name: language_code
+    type: csv
+  weight:
+    value: Weight
+    label: Weight
+    machine_name: weight
+    type: csv
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+    type: csv
+  vaccination_opens:
+    value: Vaccination_opens
+    label: Vaccination_opens
+    machine_name: vaccination_opens
+    type: csv
+  title:
+    value: Title
+    label: Title
+    machine_name: title
+    type: csv
+  id:
+    value: ID
+    label: ID
+    machine_name: id
+    type: csv
+mappings:
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: tid
+    map:
+      value: id
+    settings: {  }
+    unique:
+      value: '1'
+  -
+    target: field_vaccination_opens
+    map:
+      value: vaccination_opens
+    settings:
+      language: en
+    unique: {  }

@@ -1,0 +1,20 @@
+uuid: aa71c763-8030-4008-8608-f7244d380337
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-vaccinations
+id: group_content.country-group_node-vaccinations.uid
+field_name: uid
+entity_type: group_content
+bundle: country-group_node-vaccinations
+label: 'Group content creator'
+description: 'The username of the group content creator.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\group\Entity\GroupContent::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

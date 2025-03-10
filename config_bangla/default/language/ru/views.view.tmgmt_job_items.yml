@@ -1,0 +1,13 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+        operations:
+          label: Операции
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Тип

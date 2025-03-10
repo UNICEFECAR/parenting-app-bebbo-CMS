@@ -1,0 +1,58 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: Media
+      filters:
+        status:
+          group_info:
+            label: Published
+            group_items:
+              1:
+                title: Published
+        name:
+          expose:
+            label: الاسم
+        langcode:
+          expose:
+            label: Language
+  page:
+    display_options:
+      fields:
+        edit_media:
+          text: Edit
+        delete_media:
+          text: Delete
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
+      filters:
+        name:
+          expose:
+            label: الاسم
+      header:
+        display_link_table:
+          label: Table
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: الاسم
+        uid:
+          label: Author
+        changed:
+          label: Updated
+      arguments:
+        bundle:
+          exception:
+            title: All
+      filters:
+        name:
+          expose:
+            label: الاسم
+      header:
+        display_link_table:
+          label: Table

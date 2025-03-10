@@ -375,17 +375,6 @@ table.tmgmt-ui-review input.unreviewed,
   list-style: none;
 }
 
-.pb-main-homepage .menu li a {
-  /* list-style: none;
-  border-bottom: none;
-  color: black;
-  text-transform: uppercase;
-  font-size: 17px;
-  font-weight: 500;
-  padding: 15px;
-  text-decoration: none; */
-}
-
 .pb-main-homepage #block-logo {
   background-color: #4FA9DD;
 }
@@ -785,19 +774,6 @@ img[alt="bebbo-hearts"] {
   scroll-margin-top: 120px;
 }
 
-.pb-main-homepage .menu li a {
-  /* padding: 0 15px 0 0!important; */
-}
-
-.block.block-layout-builder.block-field-blocknodepagetitle {
-  /* font-size: 18px;
-  font-weight: 600; */
-}
-
-/* .block-download-applogo img, .block-download-googlelogo img{
-  width: 70%;
-} */
-
 .homepageblock6 {
   padding: 60px 20px;
 }
@@ -901,11 +877,6 @@ img[alt="bebbo-hearts"] {
     width: 200px;
   }
 
-  .pb-main-homepage .menu li a {
-    /* padding: 0 !important;
-        font-size: 13px; */
-  }
-
   .layout--twocol-section--50-50 .menu {
     margin-top: 20px;
   }
@@ -966,6 +937,7 @@ img[alt="bebbo-hearts"] {
   }
 
   .region-header .menu .menu-item a:hover {
+    color: inherit;
     color: inherit;
   }
 

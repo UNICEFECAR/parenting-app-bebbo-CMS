@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      fields:
+        filename:
+          label: Име
+      exposed_form:
+        options:
+          submit_button: Филтрирај

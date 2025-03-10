@@ -1,0 +1,20 @@
+uuid: 0587ba69-8091-44bf-8c5c-8e34e201fb80
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_file
+name: file
+label: 'File exchange'
+description: 'Provider to export and import files.'
+auto_accept: null
+weight: -8
+plugin: file
+settings:
+  export_format: xlf
+  allow_override: true
+  scheme: public
+  xliff_processing: false
+  xliff_cdata: false
+  format_configuration: {  }
+remote_languages_mappings: {  }

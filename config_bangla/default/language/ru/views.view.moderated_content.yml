@@ -1,0 +1,9 @@
+display:
+  default:
+    display_options:
+      fields:
+        operations:
+          label: Операции
+      exposed_form:
+        options:
+          submit_button: Фильтр

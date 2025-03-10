@@ -1,0 +1,112 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      fields:
+        title:
+          label: শিরোনাম
+        item_count:
+          label: আইটেমসমূহ
+  assigned:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+  closed:
+    display_title: বন্ধ
+    display_options:
+      menu:
+        title: বন্ধ
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+  completed:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+  pending:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        title:
+          expose:
+            label: শিরোনাম
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        title:
+          label: শিরোনাম
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী

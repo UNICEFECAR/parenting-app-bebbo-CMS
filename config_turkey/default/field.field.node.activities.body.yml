@@ -1,0 +1,23 @@
+uuid: 31489af3-a720-41c9-a993-95264fa93200
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.activities
+  module:
+    - text
+id: node.activities.body
+field_name: body
+entity_type: node
+bundle: activities
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

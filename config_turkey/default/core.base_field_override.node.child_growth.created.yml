@@ -1,0 +1,18 @@
+uuid: c0170136-ff7c-420b-b690-225090aea4cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.child_growth
+id: node.child_growth.created
+field_name: created
+entity_type: node
+bundle: child_growth
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

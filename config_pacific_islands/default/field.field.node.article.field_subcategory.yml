@@ -1,0 +1,34 @@
+uuid: 3da51a2f-6e0b-410e-b611-ee2147931fb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subcategory
+    - node.type.article
+    - taxonomy.vocabulary.subcategory
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_subcategory
+field_name: field_subcategory
+entity_type: node
+bundle: article
+label: Subcategory
+description: 'Select one only <b>if the category is one of 6 </b>: Health & Wellbeing, Nutrition & Breastfeeding, Parenting Corner, Play & Learning, Responsive Pareting, Safety & Protection'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subcategory: subcategory
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
