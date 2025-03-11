@@ -2,31 +2,17 @@ label: الأشخاص
 description: 'بحث وإدارة الأشخاص المتفاعلين مع موقعك.'
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
-      exposed_form:
-        options:
-          submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+      title: الأشخاص
       fields:
         name:
           label: 'اسم المستخدم'
         status:
           label: الحالة
           settings:
-            format_custom_true: نشط
             format_custom_false: ممنوع
+            format_custom_true: نشط
         roles_target_id:
           label: الأدوار
         created:
@@ -37,6 +23,24 @@ display:
           label: عمليات
         mail:
           separator: ', '
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: 'إعادة الضبط'
+          exposed_sorts_label: 'الترتيب حسب'
+          sort_asc_label: تصاعدي
+          sort_desc_label: تنازلي
+      empty:
+        area_text_custom:
+          content: 'لا يوجد أشخاص.'
       filters:
         status:
           group_info:
@@ -52,10 +56,6 @@ display:
         permission:
           expose:
             label: الصلاحية
-      title: الأشخاص
-      empty:
-        area_text_custom:
-          content: 'لا يوجد أشخاص.'
       use_more_text: المزيد
   page_1:
     display_title: الصفحة

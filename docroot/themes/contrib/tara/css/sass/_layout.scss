@@ -1,0 +1,54 @@
+/* Page layout -> container */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 1170px;
+  height: auto;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+/* content warpper including main, sidebar */
+.main-wrapper {
+  position: relative;
+  display: block;
+  background: var(--bg-body);
+  width: 100%;
+  padding: 1rem 0;
+  z-index: 2;
+}
+.main-container {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+}
+/* Main */
+.no-sidebar .main-container {
+  grid-template-columns: 100%;
+}
+.sidebar-left .main-container {
+  grid-template-columns: 25% 75%;
+}
+.sidebar-right .main-container {
+  grid-template-columns: 75% 25%;
+}
+.two-sidebar .main-container {
+  grid-template-columns: 25% 50% 25%;
+}
+#sidebar-left {
+  order: 1;
+}
+#main {
+  position: relative;
+  background: var(--bg-body);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  order: 2;
+  z-index: 2;
+}
+#sidebar-right {
+  order: 3;
+}

@@ -6,7 +6,6 @@ dependencies:
     - user.role.authenticated
   module:
     - node
-    - search
     - tmgmt
     - user
 id: dashboard_recent_content
@@ -190,6 +189,8 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      css_class: hide
+      show_admin_links: false
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -218,7 +219,7 @@ display:
           entity_field: title
           plugin_id: field
           label: Title
-          exclude: true
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -284,9 +285,12 @@ display:
           row_class: ''
           default_row_class: true
       row:
-        type: search_view
+        type: fields
         options:
-          score: true
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
       defaults:
         access: false
         style: false
@@ -294,6 +298,7 @@ display:
         fields: false
       display_extenders: {  }
       path: dashboard
+      use_admin_theme: true
     cache_metadata:
       max-age: -1
       contexts:

@@ -1,0 +1,21 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      title: 'Kto je online'
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      filters:
+        access:
+          expose:
+            label: 'Posledný prístup'
+            description: 'Používateľ sa považuje za online v tomto čase od posledného zobrazenia stránky.'
+  who_s_online_block:
+    display_title: 'Kto je online'
+    display_options:
+      block_description: 'Kto je online'

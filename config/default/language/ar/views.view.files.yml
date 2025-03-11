@@ -1,23 +1,9 @@
 label: الملفات
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
-      exposed_form:
-        options:
-          submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+      title: الملفات
       fields:
         filename:
           label: الاسم
@@ -30,6 +16,21 @@ display:
           label: الحالة
         count:
           label: 'مستخدمة في'
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: 'إعادة الضبط'
+          exposed_sorts_label: 'الترتيب حسب'
+          sort_asc_label: تصاعدي
+          sort_desc_label: تنازلي
       filters:
         filename:
           expose:
@@ -40,21 +41,12 @@ display:
         status:
           expose:
             label: الحالة
-      title: الملفات
   page_1:
     display_options:
       menu:
         title: الملفات
   page_2:
     display_options:
-      pager:
-        options:
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
       fields:
         entity_label:
           label: الكيان
@@ -62,6 +54,14 @@ display:
           label: 'نوع الكيان'
         count:
           label: 'استخدام العد'
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
       arguments:
         fid:
           exception:

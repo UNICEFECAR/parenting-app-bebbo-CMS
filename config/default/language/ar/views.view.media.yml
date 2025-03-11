@@ -1,23 +1,9 @@
 label: ميديا
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
-      exposed_form:
-        options:
-          submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
+      title: ميديا
       fields:
         thumbnail__target_id:
           label: 'النسخة المصغرة'
@@ -33,14 +19,29 @@ display:
         status:
           label: الحالة
           settings:
-            format_custom_true: منشور
             format_custom_false: 'غير منشور'
+            format_custom_true: منشور
           separator: ', '
         changed:
           label: التحديث
           separator: ', '
         operations:
           label: عمليات
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: 'إعادة الضبط'
+          exposed_sorts_label: 'الترتيب حسب'
+          sort_asc_label: تصاعدي
+          sort_desc_label: تنازلي
       filters:
         bundle:
           expose:
@@ -57,7 +58,6 @@ display:
         langcode:
           expose:
             label: اللغة
-      title: ميديا
   media_page_list:
     display_title: ميديا
     display_options:

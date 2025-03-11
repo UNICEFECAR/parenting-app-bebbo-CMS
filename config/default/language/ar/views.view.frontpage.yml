@@ -1,6 +1,15 @@
 display:
   default:
+    display_title: الافتراضي
     display_options:
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
       exposed_form:
         options:
           submit_button: تطبيق
@@ -8,15 +17,6 @@ display:
           exposed_sorts_label: 'الترتيب حسب'
           sort_asc_label: تصاعدي
           sort_desc_label: تنازلي
-      pager:
-        options:
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
-    display_title: الرئيسي
   feed_1:
     display_title: التلقيمة
   page_1:

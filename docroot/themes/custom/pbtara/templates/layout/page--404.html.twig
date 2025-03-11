@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Tara's theme implementation to display front page.
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template.
+ *
+ */
+#}
+{% include '@pbtara/template-parts/header.html.twig' %}
+{% include '@pbtara/template-parts/breadcrumb_region.html.twig' %}
+{% include '@pbtara/templates/content/page-title.html.twig' %}
+<div id="main-wrapper" class="main-wrapper">
+	<div class="container">
+		<div class="main-container">
+			<main id="main" class="homepage-content page-content page-404-wrapper" role="main">
+				<div class="cta-block text--block">
+					<div class="text--block-content">
+						<h1 class="cta-block-title center text ">{{ "404 error: page not found"|t }}</h1>
+						<div class="cta-block-text text-long center ">{{ "Sorry, we can’t find the page you are looking for. As we continue to keep our site up to date, this page may have been moved or updated."|t }}</div>
+					</div>
+					<div class="cta-block--button center">
+						<a href="{{ path('<front>') }}" target="" class="btn primary outlined primary-outlined" data-action="{{ path('<front>') }}" data-bound="click" data-label="Back to our home page">{{ "Back to our home page"|t }}</a>
+					</div>
+				</div>
+			</main>
+		</div>
+		{# /.main-container #}
+	</div>
+	<!--/.container -->
+</div>
+<!-- /main-wrapper -->
+<div class="page-404-footer">
+	{% include '@pbtara/template-parts/footer.html.twig' %}
+</div>

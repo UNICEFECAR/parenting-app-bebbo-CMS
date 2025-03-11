@@ -1,9 +1,9 @@
 uuid: f3a24a54-9a6e-43b3-9ab5-67b6fbb93b79
-langcode: en
+langcode: ro-ro
 status: true
 dependencies: {  }
 id: ro-ro
 label: Romania-Romanian
 direction: ltr
-weight: 5
+weight: 2
 locked: false

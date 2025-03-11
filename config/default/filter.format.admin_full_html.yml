@@ -2,6 +2,10 @@ uuid: 0d8c5d5b-2f4d-497e-9f78-216fd97f95a5
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.full
+    - core.entity_view_mode.media.media_library
+    - core.entity_view_mode.media.token
   module:
     - editor
     - media
@@ -33,7 +37,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type style> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <h1> <pre> <drupal-media data-entity-type data-entity-uuid data-view-mode data-align data-caption alt title><iframe width height src allow title allowfullscreen style><div class style> <align><* id><div id class><br/><br>'
+      allowed_html: '<br> <p class="text-align-left text-align-center text-align-right text-align-justify"> <h1 class="text-align-left text-align-center text-align-right text-align-justify"> <h2 id class="text-align-left text-align-center text-align-right text-align-justify"> <h3 id class="text-align-left text-align-center text-align-right text-align-justify"> <h4 id class="text-align-left text-align-center text-align-right text-align-justify"> <h5 id class="text-align-left text-align-center text-align-right text-align-justify"> <h6 id class="text-align-left text-align-center text-align-right text-align-justify"> <cite> <dl> <dt> <dd> <align> <span dir> <oembed> <iframe width height src allow title allowfullscreen> <div id data-oembed-url class> <a hreflang target href> <blockquote cite> <ul type class> <ol type start> <img data-entity-type data-entity-uuid src alt height width data-caption data-align> <drupal-media title data-entity-type data-entity-uuid alt data-view-mode data-caption data-align> <li class> <strong> <em> <u> <code class="language-*"> <pre class="text-align-left text-align-center text-align-right text-align-justify"> <s> <sub> <sup> <hr> <table> <tr> <td rowspan colspan> <th rowspan colspan> <thead> <tbody> <tfoot> <caption>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
@@ -49,8 +53,18 @@ filters:
     weight: 100
     settings:
       default_view_mode: default
-      allowed_view_modes: {  }
+      allowed_view_modes:
+        default: default
+        full: full
+        media_library: media_library
+        token: token
       allowed_media_types:
         image: image
         remote_video: remote_video
         video: video
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
+    status: true
+    weight: 1
+    settings: {  }

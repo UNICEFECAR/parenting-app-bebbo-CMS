@@ -6,7 +6,7 @@ dependencies:
     - 'block_content:basic:89c9a297-e84c-4422-8c77-8568cb271855'
   module:
     - block_content
-    - system
+    - language
     - user
   theme:
     - claro
@@ -32,8 +32,11 @@ visibility:
       user: '@user.current_user_context:current_user'
     roles:
       anonymous: anonymous
-  request_path:
-    id: request_path
+  language:
+    id: language
     negate: false
-    context_mapping: {  }
-    pages: "/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy\r\n/xk-sq\r\n/xk-rs"
+    context_mapping:
+      language: '@language.current_language_context:language_interface'
+    langcodes:
+      xk-sq: xk-sq
+      xk-rs: xk-rs

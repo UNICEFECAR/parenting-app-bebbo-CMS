@@ -5,6 +5,8 @@ display:
         options:
           reset_button_label: Reset
       fields:
+        created:
+          label: Krijuar
         name:
           label: Name
       arguments:

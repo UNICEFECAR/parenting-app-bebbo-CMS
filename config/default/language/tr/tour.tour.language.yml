@@ -1,0 +1,20 @@
+label: Dil
+tips:
+  language-overview:
+    label: Diller
+    body: '<p>"Diller" sayfası site dillerini ekleme, düzenleme, silme ve sıralama işlemlerini yapmanıza olanak sağlar.</p>'
+  language-add:
+    label: 'Diller ekleniyor'
+    body: '<p>Sitenize başka diller eklemek için "Dil ekle" düğmesine tıklayın.</p><p>Eklenen diller dil listesinde görüntülenir ve düzenlenip silinebilir.</p>'
+  language-reorder:
+    label: 'Dil sıralamasını değiştirmek'
+    body: '<p>Sitedeki dillerin sıralamasını değiştirmek için her dilin başındaki sürükleme simgelerine tıklayıp dili sürükleyin.</p><p>Burada görüntülenen sıralama Arayüz Çevirisi ve İçerik Çeviri Eklentilerindeki dil değiştirici blokları tarafından kullanılır.</p><p>Dilleri sıraladıktan sonra yaptığınız değişikliklerin geçerli olması için "Ayarları Kaydet" düğmesine tıklayın.</p>'
+  language-default:
+    label: 'Bir dili varsayılan olarak atamak'
+    body: '<p>Sitede kullanılan varsayılan dili değiştirmek için yapılandırılmış dillerden birini varsayılan olarak atayabilirsiniz. Dil seçimi yapılmayan durumlarda site varsayılan dilde görüntülenir.</p>'
+  language-operations:
+    label: 'Dilleri düzenlemek'
+    body: '<p>Dil düzenleme ve silme işlemleri yapabilirsiniz.</p><p>Dilin adını ve yönünü değiştirebilirsiniz.</p><p>Silinen diller daha sonra yeniden eklenebilir. Bir dil silindiğinde o dildeki tüm arayüz çevirileri silinir ve bu dildeki tüm içerik nötr olarak ayarlanır. Varsayılan site dilinin silinemeyeceğini unutmayın.</p>'
+  language-continue:
+    label: 'Devam ediliyor'
+    body: '<p>Diller sayfası hakkında özet bilgileri aldığınıza göre şimdi şu işlemleri yapabilirsiniz:<ul><li><a href="[site:url]admin/config/regional/language/add">Dil ekleme</a></li><li>Dilleri yeniden sıralama</li><li>Dil düzenleme/li><li>Dil silme</li></ul></p>'

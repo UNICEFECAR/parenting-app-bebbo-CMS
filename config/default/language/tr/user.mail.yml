@@ -1,0 +1,31 @@
+cancel_confirm:
+  subject: '[site:name] hesabı iptali [user:display-name]'
+password_reset:
+  subject: '[site:name] sitesindeki [user:display-name] oturum açma bilgilerinde değişiklik'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesindeki hesabınızın parolasını sıfırlamak için bir istek yapıldı.\r\n\r\nŞimdi aşağıdaki bağlantıya tıklayarak veya kopyalayıp tarayıcınıza yapıştırarak giriş yapabilirsiniz:\r\n\r\n[user:one-time-login-url]\r\n\r\nBu bağlantı giriş yapmak için yalnızca bir defa kullanılabilir ve sizi parolanızı belirleyebileceğiniz bir sayfaya götürecektir. Bağlantı bir gün sonra iptal olur ve kullanılmazsa hiçbir şey olmaz.\r\n\r\n-- [site:name] ekibi"
+register_admin_created:
+  subject: 'Bir yönetici [site:name] sitesinde sizin için bir hesap oluşturdu'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesinde bir yönetici sizin için bir hesap oluşturdu. Şimdi aşağıdaki bağlantıya tıklayarak veya kopyalayıp tarayıcınıza yapıştırarak giriş yapabilirsiniz:\r\n\r\n[user:one-time-login-url]\r\n\r\nBu bağlantı giriş yapmak için yalnızca bir defa kullanılabilir ve sizi parolanızı belirleyebileceğiniz bir sayfaya götürecektir.\r\n\r\nParolanızı belirledikten sonra, aşağıdaki bilgileri kullanarak [site:login-url] adresinden giriş yapabilirsiniz:\r\n\r\nkullanıcı adı: [user:name]\r\nparola: Parolanız\r\n\r\n-- [site:name] ekibi"
+register_no_approval_required:
+  subject: '[site:name] sitesindeki [user:display-name] için hesap ayrıntıları'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesine kaydolduğunuz için teşekkür ederiz. Şimdi aşağıdaki bağlantıya tıklayarak veya kopyalayıp tarayıcınıza yapıştırarak giriş yapabilirsiniz:\r\n\r\n[user:one-time-login-url]\r\n\r\nBu bağlantı giriş yapmak için yalnızca bir defa kullanılabilir ve sizi parolanızı belirleyebileceğiniz bir sayfaya götürecektir.\r\n\r\nParolanızı belirledikten sonra, aşağıdaki bilgileri kullanarak [site:login-url] adresinden giriş yapabilirsiniz:\r\n\r\nkullanıcı adı: [user:name]\r\nparola: Parolanız\r\n\r\n-- [site:name] ekibi"
+register_pending_approval:
+  subject: '[site:name] sitesindeki [user:display-name] kullanıcısının hesap ayrıntıları (yönetici onayı bekliyor)'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesine kaydolduğunuz için teşekkür ederiz. Hesap başvurunuz şu anda onaylanmayı bekliyor. Başvurunuz onaylandığında; oturum açma, parolanızı değiştirme ve diğer bilgileri içeren bir e-posta daha alacaksınız.\r\n\r\n\r\n--  [site:name] ekibi"
+register_pending_approval_admin:
+  subject: '[site:name] sitesindeki [user:display-name] kullanıcısının hesap ayrıntıları (yönetici onayı bekliyor)'
+  body: "[user:display-name] bir hesap başvurusunda bulundu.\r\n\r\n[user:edit-url]"
+status_activated:
+  subject: '[site:name] sitesindeki [user:display-name] kullanıcısının hesap ayrıntıları (onaylandı)'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesindeki hesabınız etkinleştirildi.\r\n\r\nŞimdi aşağıdaki bağlantıya tıklayarak veya kopyalayıp tarayıcınıza yapıştırarak giriş yapabilirsiniz:\r\n\r\n[user:one-time-login-url]\r\n\r\nBu bağlantı giriş yapmak için yalnızca bir defa kullanılabilir ve sizi parolanızı belirleyebileceğiniz bir sayfaya götürecektir.\r\n\r\nParolanızı belirledikten sonra, aşağıdaki bilgileri kullanarak [site:login-url] adresinden giriş yapabilirsiniz:\r\n\r\nkullanıcı adı: [user:account-name]\r\nparola: Parolanız\r\n\r\n-- [site:name] ekibi"
+status_blocked:
+  subject: '[site:name] sitesindeki [user:display-name] kullanıcısının hesap ayrıntıları (engellendi)'
+  body: |-
+    [user:display-name],
+
+    [site:name] sitesindeki hesabınız engellendi.
+
+    --  [site:name] ekibi
+status_canceled:
+  subject: '[site:name] sitesindeki [user:display-name] kullanıcısının hesap ayrıntıları (iptal edildi)'
+  body: "[user:display-name],\r\n\r\n[site:name] sitesindeki hesabınız iptal edildi.\r\n\r\n--  [site:name] ekibi"

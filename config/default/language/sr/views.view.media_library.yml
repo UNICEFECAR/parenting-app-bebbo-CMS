@@ -1,12 +1,13 @@
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
         media_bulk_form:
           action_title: Action
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
       filters:
         name:
           expose:

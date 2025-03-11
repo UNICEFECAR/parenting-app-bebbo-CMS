@@ -13,7 +13,7 @@ dependencies:
 id: views_block__global_recent_logged_in_users_block_1
 theme: claro
 region: content
-weight: 3
+weight: 4
 provider: null
 plugin: 'views_block:global_recent_logged_in_users-block_1'
 settings:

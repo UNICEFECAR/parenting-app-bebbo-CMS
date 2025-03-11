@@ -10,14 +10,7 @@ dependencies:
     - field.field.node.page.field_pre_populated
     - field.field.node.page.layout_builder__layout
     - node.type.page
-  content:
-    - 'block_content:basic:1db0cf1f-71e5-459a-a2be-e41fc934bd78'
-    - 'block_content:basic:6a5cb8e3-cf5d-451d-8345-49941fc59f43'
-    - 'block_content:basic:6ed5e166-9367-43a9-855e-1a98bba652f6'
-    - 'block_content:basic:caa2df01-045d-46d3-abad-d3fe286e22e6'
-    - 'block_content:basic:e72f101e-ef93-4df0-8dfa-eebdc5de7c3b'
   module:
-    - block_content
     - layout_builder
     - layout_discovery
     - metatag
@@ -34,75 +27,91 @@ third_party_settings:
           label: ''
           context_mapping: {  }
         components:
-          f15b0f6e-2fa0-47ae-aa02-67b1bc3f1719:
-            uuid: f15b0f6e-2fa0-47ae-aa02-67b1bc3f1719
+          0c75e798-927f-4ea9-a84c-55fc7bc373e1:
+            uuid: 0c75e798-927f-4ea9-a84c-55fc7bc373e1
             region: content
             configuration:
-              id: 'block_content:caa2df01-045d-46d3-abad-d3fe286e22e6'
-              label: 'Homepage - Video'
+              id: 'extra_field_block:node:page:content_moderation_control'
               label_display: '0'
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
             weight: 0
             additional: {  }
-          cd76c6b7-ab48-4a4e-b9a9-8e20f12dbecc:
-            uuid: cd76c6b7-ab48-4a4e-b9a9-8e20f12dbecc
+          b1c5c369-1f66-4b60-83cc-b2df3733d953:
+            uuid: b1c5c369-1f66-4b60-83cc-b2df3733d953
             region: content
             configuration:
-              id: 'block_content:e72f101e-ef93-4df0-8dfa-eebdc5de7c3b'
-              label: 'Homepage - Download the free Bebbo app'
+              id: 'field_block:node:page:body'
               label_display: '0'
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: 1
             additional: {  }
-          0c6e18d1-4c02-4ca5-b41f-7d62811ea987:
-            uuid: 0c6e18d1-4c02-4ca5-b41f-7d62811ea987
+          b445a49b-26d0-4ddf-b1b3-5e0fd311dac7:
+            uuid: b445a49b-26d0-4ddf-b1b3-5e0fd311dac7
             region: content
             configuration:
-              id: 'block_content:1db0cf1f-71e5-459a-a2be-e41fc934bd78'
-              label: 'Homepage - parenting is hard all parents can use some support'
+              id: 'extra_field_block:node:page:links'
               label_display: '0'
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
             weight: 2
             additional: {  }
-          8d5cd8a2-a8d8-47dc-86d7-ba024724e016:
-            uuid: 8d5cd8a2-a8d8-47dc-86d7-ba024724e016
+          398bfacb-e8da-4737-baf8-ee7ac62e4341:
+            uuid: 398bfacb-e8da-4737-baf8-ee7ac62e4341
             region: content
             configuration:
-              id: 'block_content:6a5cb8e3-cf5d-451d-8345-49941fc59f43'
-              label: 'Homepage - FEATURES'
+              id: 'field_block:node:page:field_mandatory_content'
               label_display: '0'
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: boolean
+                label: above
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
             weight: 3
             additional: {  }
-          e4912435-fcd6-4c57-a4cb-99e1658c1380:
-            uuid: e4912435-fcd6-4c57-a4cb-99e1658c1380
+          6b92b3ee-da75-4dc4-9898-f44b539d19e1:
+            uuid: 6b92b3ee-da75-4dc4-9898-f44b539d19e1
             region: content
             configuration:
-              id: 'block_content:6ed5e166-9367-43a9-855e-1a98bba652f6'
-              label: 'Homepage - Download FREE App now!'
+              id: 'field_block:node:page:field_licensed_content'
               label_display: '0'
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: boolean
+                label: above
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
             weight: 4
+            additional: {  }
+          f6acd2d9-b29e-4062-9a4a-77c4c909258a:
+            uuid: f6acd2d9-b29e-4062-9a4a-77c4c909258a
+            region: content
+            configuration:
+              id: 'field_block:node:page:field_meta_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: metatag_empty_formatter
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
             additional: {  }
         third_party_settings: {  }
 _core:

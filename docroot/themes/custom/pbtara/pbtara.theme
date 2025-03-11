@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function pbtara_preprocess_page(array &$variables) {
+  // Add custom class to the body.
+  $variables['attributes']['class'][] = 'bebbo-tara-theme';
+}
+
+/**
+ * Add current page to breadcrumb.
+ */
+function pbtara_preprocess_breadcrumb(&$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  $node = \Drupal::routeMatch()->getParameter('node');
+  // Check if it's a node of type "article".
+  if ($node && $route_name === 'entity.node.canonical' && $node instanceof NodeInterface) {
+    $language_manager = \Drupal::languageManager();
+    $current_langcode = $language_manager->getCurrentLanguage()->getId();
+    $default_langcode = $language_manager->getDefaultLanguage()->getId();
+    // If the current language is the default (e.g., 'en'), do not add the language prefix.
+    $lang_prefix = ($current_langcode !== $default_langcode) ? "/$current_langcode" : "";
+
+    $breadcrumb = [];
+    $breadcrumb[] = [
+      'text' => t('Home'),
+      'url' => Url::fromRoute('<front>'),
+    ];
+    if ($node->bundle() === 'article' || $node->bundle() === 'video_article') {
+      // Get field values from the node.
+      $categories = $node->get('field_content_category')->referencedEntities();
+      $subcategories = $node->get('field_child_age')->referencedEntities();
+      $node_title = $node->label();
+
+      // Initialize the breadcrumb array.
+      $breadcrumb[] = [
+        'text' => t('Advice'),
+        'url' => Url::fromUserInput("$lang_prefix/advice"),
+      ];
+      // Add Category links if available.
+      foreach ($categories as $category) {
+        $translated_category = $category->getTranslation($current_langcode);
+        $tid = $translated_category->id();
+        $breadcrumb[] = [
+          'text' => $translated_category->label(),
+          'url' => "$lang_prefix/advice?type=All&field_content_category_target_id=$tid&field_child_age_target_id=All&sort_bef_combine=changed_DESC",
+          // 'url' => $category->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
+        ];
+      }
+    }
+    elseif ($node->bundle() === 'activities') {
+      $activity_category = $node->get('field_activity_category')->referencedEntities();
+      $breadcrumb[] = [
+        'text' => t('Games'),
+        'url' => Url::fromUserInput("$lang_prefix/games"),
+      ];
+      foreach ($activity_category as $activity) {
+        $translated_activity = $activity->getTranslation($current_langcode);
+        $tid = $translated_activity->id();
+        $breadcrumb[] = [
+          'text' => $translated_activity->label(),
+          'url' => "$lang_prefix/games?type=All&field_activity_category__target_id=$tid&field_child_age_target_id=All&sort_bef_combine=changed_DESC",
+          // 'url' => $activity->toUrl('canonical', ['language' => \Drupal::languageManager()->getCurrentLanguage()]),
+        ];
+      }
+    }
+    else {
+      $breadcrumb = $variables['breadcrumb'];
+    }
+    $variables['breadcrumb'] = $breadcrumb;
+    // Add cache context based on url.
+    $variables['#cache']['contexts'][] = 'url';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function pbtara_preprocess_block__pbtara_appbanner(&$variables) {
+  $current_language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $node_id = $content_type = $final_url = NULL;
+
+  // Check if we are on a node page.
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    // Get Node ID.
+    $node_id = $node->id();
+    // Get Content Type.
+    $content_type = $node->bundle();
+
+    // Change the 'activities' content type to 'games'.
+    if ($content_type == 'activities') {
+      $content_type = 'games';
+    }
+
+    // Construct the final URL format.
+    $final_url = "/share/" . $current_language . "/" . $content_type . "/" . $node_id;
+  }
+
+  // Pass the variables to the block template.
+  $variables['current_language'] = $current_language;
+  $variables['node_id'] = $node_id;
+  $variables['content_type'] = $content_type;
+  $variables['app_share_url'] = $final_url;
+}

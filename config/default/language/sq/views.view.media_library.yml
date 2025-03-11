@@ -1,12 +1,13 @@
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
       fields:
         media_bulk_form:
           action_title: Action
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         name:
           expose:
@@ -25,14 +26,14 @@ display:
           text: Delete
   widget:
     display_options:
-      filters:
-        name:
-          expose:
-            label: Name
       arguments:
         bundle:
           exception:
             title: All
+      filters:
+        name:
+          expose:
+            label: Name
   widget_table:
     display_options:
       fields:
@@ -40,11 +41,11 @@ display:
           label: Name
         uid:
           label: Author
-      filters:
-        name:
-          expose:
-            label: Name
       arguments:
         bundle:
           exception:
             title: All
+      filters:
+        name:
+          expose:
+            label: Name

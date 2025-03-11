@@ -1,7 +1,8 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
+      title: 'المتصلون الأن'
       exposed_form:
         options:
           submit_button: تطبيق
@@ -14,7 +15,6 @@ display:
           expose:
             label: 'آخر وصول'
             description: 'تحسب فترة وجود المستخدم عالخط منذ آخر عرض لصفحة.'
-      title: 'المتصلون الأن'
   who_s_online_block:
     display_title: 'المتصلون الأن'
     display_options:

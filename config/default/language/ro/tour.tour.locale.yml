@@ -11,7 +11,7 @@ tips:
     body: 'Enter the specific word or sentence you want to translate, you can also write just a part of a word.'
   locale-filter:
     label: 'Filter the search'
-    body: 'You can search for untranslated strings if you want to translate something that isn''t translated yet. If you want to modify an existing translation, you might want to search only for translated strings.'
+    body: "You can search for untranslated strings if you want to translate something that isn't translated yet. If you want to modify an existing translation, you might want to search only for translated strings."
   locale-submit:
     label: 'Apply your search criteria'
     body: 'To apply your search criteria, click on the <em>Filter</em> button.'

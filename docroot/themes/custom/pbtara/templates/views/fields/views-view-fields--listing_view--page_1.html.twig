@@ -1,0 +1,17 @@
+<div class="box">
+	<div>
+  {{ fields.field_cover_image.content }}
+	</div>
+	{{ fields.field_content_category.content }}
+	<div class="views-field views-field-title">
+		<span class="field-content">
+			<a href="{{ fields.view_node.content }}">{{ fields.title.content }}</a>
+		</span>
+	</div>
+	<div>
+		{% set clean_body = fields.body.content|replace({'&nbsp;': ' '})|striptags|trim %}
+		{{ clean_body[:120] }}
+		{% if clean_body|length > 120 %}...
+		{% endif %}
+	</div>
+</div>

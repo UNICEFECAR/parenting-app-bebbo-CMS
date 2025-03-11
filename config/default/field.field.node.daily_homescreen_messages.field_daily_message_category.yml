@@ -6,11 +6,6 @@ dependencies:
     - field.storage.node.field_daily_message_category
     - node.type.daily_homescreen_messages
     - taxonomy.vocabulary.daily_home_screen_message_catego
-  module:
-    - tmgmt_content
-third_party_settings:
-  tmgmt_content:
-    excluded: false
 id: node.daily_homescreen_messages.field_daily_message_category
 field_name: field_daily_message_category
 entity_type: node

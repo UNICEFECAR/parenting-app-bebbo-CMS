@@ -2,7 +2,16 @@ display:
   default:
     display_options:
       fields:
-        tags_count:
-          label: Теґи
+        state:
+          label: Стан
+        label:
+          label: Мітка
         operations:
           label: Операції
+      filters:
+        state:
+          expose:
+            label: Стан
+        source_language:
+          expose:
+            label: 'Вихідна мова'

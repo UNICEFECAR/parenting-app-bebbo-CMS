@@ -1,0 +1,16 @@
+.local-action {
+  list-style: none;
+}
+.button-action {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  padding: 6px 12px;
+}
+.button-action:hover {
+  background-color: var(--color-primary);
+  color: #ffffff; 
+}
+/* Vertical tabs */
+.vertical-tabs .vertical-tabs__panes {
+  padding: 1rem;
+}

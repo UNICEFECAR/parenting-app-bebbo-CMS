@@ -29,6 +29,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Направљено
         title:
           label: Title
         operations:
@@ -48,6 +50,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Направљено
         title:
           label: Title
         operations:
@@ -80,6 +84,8 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Направљено
         title:
           label: Title
         operations:

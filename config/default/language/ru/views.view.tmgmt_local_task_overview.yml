@@ -47,6 +47,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -71,6 +74,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -95,6 +101,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -117,6 +126,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -140,6 +152,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -162,6 +177,9 @@ display:
         status:
           expose:
             label: Status
+        source_language:
+          expose:
+            label: 'Исходный язык'
         title:
           expose:
             label: Label
@@ -184,5 +202,3 @@ display:
         status:
           expose:
             label: Status
-      tab_options:
-        title: Переводы

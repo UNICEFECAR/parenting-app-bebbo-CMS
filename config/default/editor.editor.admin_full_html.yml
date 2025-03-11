@@ -1,80 +1,143 @@
-uuid: 7d8f7e07-6468-47eb-b3e0-17feeb529b79
+uuid: b5ed5023-c34c-43f8-ba41-495a6dfb7285
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.admin_full_html
   module:
-    - ckeditor
+    - ckeditor5
 format: admin_full_html
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - Underline
-            - Superscript
-            - Subscript
-            - JustifyRight
-            - JustifyBlock
-            - JustifyCenter
-            - Embed
-            - DrupalMediaLibrary
-            - Language
-            - Undo
-            - Redo
-            - Cut
-            - Paste
-            - PasteText
-            - SpecialChar
-            - ShowBlocks
-            - EmbedSemantic
-            - Table
-            - Copy
-            - PasteFromWord
-            - HorizontalRule
-            - Indent
-            - Outdent
-            - JustifyLeft
-            - RemoveFormat
-            - Format
-            - Maximize
-            - Styles
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
-        -
-          name: Media
-          items:
-            - Blockquote
-        -
-          name: Tools
-          items:
-            - Source
-            - DrupalImage
+    items:
+      - bold
+      - italic
+      - strikethrough
+      - underline
+      - superscript
+      - subscript
+      - alignment
+      - drupalMedia
+      - textPartLanguage
+      - undo
+      - redo
+      - specialCharacters
+      - insertTable
+      - horizontalLine
+      - indent
+      - outdent
+      - removeFormat
+      - heading
+      - '|'
+      - link
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - blockQuote
+      - '|'
+      - sourceEditing
+      - drupalInsertImage
+      - '|'
+      - code
+      - codeBlock
   plugins:
-    language:
+    ckeditor5_alignment:
+      enabled_alignments:
+        - center
+        - justify
+        - left
+        - right
+    ckeditor5_codeBlock:
+      languages:
+        -
+          label: 'Plain text'
+          language: plaintext
+        -
+          label: C
+          language: c
+        -
+          label: 'C#'
+          language: cs
+        -
+          label: C++
+          language: cpp
+        -
+          label: CSS
+          language: css
+        -
+          label: Diff
+          language: diff
+        -
+          label: HTML
+          language: html
+        -
+          label: Java
+          language: java
+        -
+          label: JavaScript
+          language: javascript
+        -
+          label: PHP
+          language: php
+        -
+          label: Python
+          language: python
+        -
+          label: Ruby
+          language: ruby
+        -
+          label: TypeScript
+          language: typescript
+        -
+          label: XML
+          language: xml
+    ckeditor5_heading:
+      enabled_headings:
+        - heading1
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_imageResize:
+      allow_resize: true
+    ckeditor5_language:
       language_list: un
-    stylescombo:
-      styles: ''
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<align>'
+        - '<span>'
+        - '<oembed>'
+        - '<iframe width height src allow title allowfullscreen>'
+        - '<div id data-oembed-url class>'
+        - '<a hreflang target>'
+        - '<blockquote cite>'
+        - '<ul type class>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<img data-entity-type data-entity-uuid>'
+        - '<drupal-media title>'
+        - '<li class>'
+    media_media:
+      allow_view_mode_override: true
 image_upload:
   status: false
   scheme: public
   directory: inline-images
   max_size: ''
   max_dimensions:
-    width: null
-    height: null
+    width: 0
+    height: 0

@@ -2,8 +2,6 @@ display:
   default:
     display_options:
       fields:
-        name:
-          label: Користувач
         group_roles:
           label: Ролі
         dropbutton:

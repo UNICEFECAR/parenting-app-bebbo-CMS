@@ -78,6 +78,7 @@ dependencies:
     - content_translation
     - feeds
     - feeds_tamper
+    - file
     - filter
     - group
     - language
@@ -228,6 +229,7 @@ permissions:
   - 'delete media'
   - 'delete media_image_import feeds'
   - 'delete media_remote_video feeds'
+  - 'delete own files'
   - 'delete taxonomy_categories feeds'
   - 'delete taxonomy_categories_serbia_serbi feeds'
   - 'delete taxonomy_charbot_child_age feeds'
@@ -508,6 +510,7 @@ permissions:
   - 'use group_workflow transition draft_to_sme_review'
   - 'use group_workflow transition publish_to_archive'
   - 'use group_workflow transition publish_to_draft'
+  - 'use group_workflow transition published_to_published'
   - 'use group_workflow transition published_to_review_after_translation'
   - 'use group_workflow transition reject_to_draft'
   - 'use group_workflow transition require_modification_to_published'

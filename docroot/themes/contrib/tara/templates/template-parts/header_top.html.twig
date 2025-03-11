@@ -1,0 +1,16 @@
+<div class="header-top">
+  <div class="container">
+    <div class="header-top-container">
+      {% if page.header_top %}
+        <div class="header-top-left header-top-block">
+            {{ page.header_top }}
+        </div> <!--/.header-top-left -->
+      {% endif %}
+      {% if all_icons_show %}
+        <div class="header-top-right header-top-block">
+          {% include '@tara/template-parts/social-icons.html.twig' %}
+        </div> <!--/.header-top-right -->
+      {% endif %}
+    </div> <!--/.header-top-container -->
+  </div> <!--/.container -->
+</div> <!--/.header-top -->

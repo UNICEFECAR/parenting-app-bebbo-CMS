@@ -1,0 +1,11 @@
+tips:
+  views-ui-format:
+    label: 'Výstupný formát'
+  views-ui-fields:
+    label: Polia
+  views-ui-filter:
+    body: 'Pridajte filtre na obmedzenie počtu výsledkov na výstupe. Napríklad na zobrazenie obsahu ktorý je <em>zverejnený</em>, pridajte filter <em>Zverejnené</em> a zvoľte možnosť <em>Áno</em>.'
+  views-ui-sorts:
+    label: 'Kritérium zoradenia'
+  views-ui-preview:
+    label: Náhľad

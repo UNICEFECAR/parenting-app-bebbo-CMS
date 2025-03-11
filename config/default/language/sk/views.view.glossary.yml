@@ -1,0 +1,31 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      fields:
+        title:
+          label: Názov
+        name:
+          label: Autor
+        changed:
+          label: 'Posledná aktualizácia'
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+  attachment_1:
+    display_title: Príloha
+  page_1:
+    display_title: Stránka

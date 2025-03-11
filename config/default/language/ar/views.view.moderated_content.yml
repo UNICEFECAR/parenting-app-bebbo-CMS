@@ -1,23 +1,9 @@
 label: 'محتوى خاضع للإشراف'
 display:
   default:
-    display_title: الرئيسي
+    display_title: الافتراضي
     display_options:
-      exposed_form:
-        options:
-          submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      pager:
-        options:
-          tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
-          expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+      title: 'محتوى خاضع للإشراف'
       fields:
         title:
           label: العنوان
@@ -35,6 +21,21 @@ display:
           separator: ', '
         operations:
           label: عمليات
+      pager:
+        options:
+          tags:
+            next: 'التالي ›'
+            previous: '‹ السابق'
+          expose:
+            items_per_page_options_all_label: '- الكل -'
+            offset_label: الإزاحة
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: 'إعادة الضبط'
+          exposed_sorts_label: 'الترتيب حسب'
+          sort_asc_label: تصاعدي
+          sort_desc_label: تنازلي
       filters:
         title:
           expose:
@@ -45,6 +46,5 @@ display:
         langcode:
           expose:
             label: اللغة
-      title: 'محتوى خاضع للإشراف'
   moderated_content:
     display_title: 'محتوى خاضع للإشراف'

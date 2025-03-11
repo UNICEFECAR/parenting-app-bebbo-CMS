@@ -1,0 +1,80 @@
+/* Footer
+--------------------------------------*/
+#last-section {
+  position: relative;
+  visibility: hidden;
+  width: 100%;
+  min-height: 1px;
+  z-index: 12;
+}
+#footer {
+  display: block;
+  position: fixed;
+  background: var(--color-primary-light) url(../images/footer-bg.svg);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 4px solid #ffffff;
+  z-index: 0;
+}
+.footer,
+.footer-top,
+.footer-bottom {
+  position: relative;
+  width: 100%;
+}
+.footer-top,
+.footer-bottom {
+  padding: 1rem 0;
+}
+.region-footer-top,
+.region-footer-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.region-footer-top .block p:last-of-type,
+.region-footer-bottom .block p:last-child {
+  margin: 0;
+}
+.footer-blocks {
+  position: relative;
+  display: flex;
+  padding: 1rem 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-block {
+  flex: 1 0 260px;
+}
+.footer .block-title {
+  position: relative;
+  font-size: 1.3rem;
+  padding-left: 6px;
+  border-left: 2px solid var(--color-primary);
+}
+
+/* footer list style */
+.footer ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-type: none;
+}
+.footer li {
+  padding: 4px 0;
+  border-bottom: 1px solid #bbb0a1;
+}
+.footer li:last-child {
+  border-bottom: 0;
+}
+/* Footer -> Footer Bottom Middle */
+.footer-bottom-middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 3px double #bbb0a1;
+  padding: 1rem 0;
+}
+/* Footer -> Footer Bottom last*/

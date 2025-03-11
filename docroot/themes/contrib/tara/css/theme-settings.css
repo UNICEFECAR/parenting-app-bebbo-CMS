@@ -1,0 +1,35 @@
+label[for="edit-tara"] {
+	width: 100%;
+	text-align: center;
+}
+
+.settings-form-title {
+	background-color: #D2EFE8;
+	background-image: url("../images/logo2.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 90px;
+	color: #EF7709;
+	margin: 0 auto;
+}
+
+/* Fieldset */
+.fieldset__label {
+	background-color: #eef4fb;
+}
+fieldset.set-default-fieldset,
+details.set-default-fieldset {
+	background-color: #ffeaa7;
+}
+fieldset.info-fieldset,
+details.info-fieldset {
+	background-color: #bbd9ff;
+	border: 1px solid #2e86de;
+}
+mark {
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+li {
+	padding: 6px 0;
+}

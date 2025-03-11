@@ -10,13 +10,12 @@ module:
   allowed_languages: 0
   automated_cron: 0
   basic_auth: 0
+  better_exposed_filters: 0
   big_pipe: 0
   block: 0
-  block_classes: 0
   block_content: 0
   breakpoint: 0
-  ckeditor: 0
-  ckeditor_media_embed: 0
+  ckeditor5: 0
   color: 0
   config: 0
   config_ignore: 0
@@ -25,6 +24,7 @@ module:
   content_moderation_notifications: 0
   contextual: 0
   csv_serialization: 0
+  custom_article: 0
   custom_serialization: 0
   date_popup: 0
   datetime: 0
@@ -32,6 +32,10 @@ module:
   dynamic_page_cache: 0
   editor: 0
   entity: 0
+  entity_share: 0
+  entity_share_client: 0
+  entity_share_diff: 0
+  entity_share_server: 0
   feeds: 0
   feeds_tamper: 0
   field: 0
@@ -42,13 +46,17 @@ module:
   gnode: 0
   group: 0
   group_country_field: 0
+  gtm: 0
   help: 0
   image: 0
   image_style_quality: 0
   json_field: 0
   json_field_widget: 0
+  jsonapi: 0
+  jsonapi_extras: 0
   lang_dropdown: 0
   language: 0
+  language_custom_field: 0
   languagefield: 0
   layout_builder: 0
   layout_builder_styles: 0
@@ -63,9 +71,6 @@ module:
   menu_per_role: 0
   menu_ui: 0
   metatag: 0
-  metatag_open_graph: 0
-  metatag_twitter_cards: 0
-  metatag_views: 0
   migrate: 0
   migrate_drupal: 0
   migrate_plus: 0
@@ -77,7 +82,6 @@ module:
   node: 0
   node_title_length: 0
   options: 0
-  page_cache: 0
   path: 0
   path_alias: 0
   pb_custom_field: 0
@@ -85,20 +89,21 @@ module:
   pb_custom_migrate: 0
   pb_custom_rest_api: 0
   pb_custom_standard_deviation: 0
+  phpass: 0
   purge: 0
+  purge_queuer_coretags: 0
   purge_ui: 0
   quickedit: 0
   rdf: 0
-  responsive_image: 0
+  redirect: 0
   rest: 0
   restui: 0
-  search: 0
   seckit: 0
   serialization: 0
   shortcut: 0
   smtp: 0
+  structure_sync: 0
   svg_image: 0
-  svg_image_responsive: 0
   syslog: 0
   system: 0
   tamper: 0
@@ -108,8 +113,10 @@ module:
   tmgmt: 0
   tmgmt_config: 0
   tmgmt_content: 0
+  tmgmt_deepl: 0
   tmgmt_demo: 0
   tmgmt_file: 0
+  tmgmt_google: 0
   tmgmt_language_combination: 0
   tmgmt_local: 0
   tmgmt_locale: 0
@@ -119,7 +126,7 @@ module:
   toolbar_menu: 0
   toolbar_menu_clean: 0
   tour: 0
-  ultimate_cron: 0
+  twig_tweak: 0
   user: 0
   variationcache: 0
   video_embed_field: 0
@@ -129,12 +136,14 @@ module:
   views_data_export: 0
   views_ui: 0
   workflows: 0
+  pathauto: 1
   content_translation: 10
   views: 10
   contextual_range_filter: 11
   standard: 1000
 theme:
-  bartik: 0
-  seven: 0
   claro: 0
+  stable9: 0
+  tara: 0
+  pbtara: 0
 profile: standard

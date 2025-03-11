@@ -9,7 +9,7 @@ dependencies:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
-    excluded: true
+    excluded: false
 id: node.daily_homescreen_messages.field_mandatory_content
 field_name: field_mandatory_content
 entity_type: node

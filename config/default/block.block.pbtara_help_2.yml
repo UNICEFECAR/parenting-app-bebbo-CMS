@@ -1,0 +1,20 @@
+uuid: 4a06e635-cd7f-40f2-a7dd-ecfe896716b1
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - pbtara
+id: pbtara_help_2
+theme: pbtara
+region: content
+weight: -9
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  label_display: '0'
+  provider: help
+visibility: {  }

@@ -40,12 +40,10 @@ custom_sources:
     value: ID
     label: ID
     machine_name: id
-    type: csv
   pinned_article:
     value: Pinned_article
     label: Pinned_article
     machine_name: pinned_article
-    type: csv
 mappings:
   -
     target: nid

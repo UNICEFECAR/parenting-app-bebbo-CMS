@@ -35,4 +35,4 @@ visibility:
     id: request_path
     negate: false
     context_mapping: {  }
-    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"

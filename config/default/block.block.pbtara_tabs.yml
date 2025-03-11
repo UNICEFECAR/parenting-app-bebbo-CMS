@@ -1,0 +1,20 @@
+uuid: 3315daaa-1504-4830-95c0-e8e434c19a68
+langcode: en
+status: true
+dependencies:
+  theme:
+    - pbtara
+id: pbtara_tabs
+theme: pbtara
+region: content
+weight: -8
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: true
+visibility: {  }

@@ -1,0 +1,21 @@
+{% if items %}
+	<div class="views-view-grid horizontal cols-3 clearfix">
+		<div class="items">
+			{% for item in items %}
+				{% set result = item.value['#result'] %}
+				<div class="box">
+					<div class="views-field views-field-title">
+						<span class="field-content">
+							<a href="{{ result.link }}">{{ result.title }}</a>
+						</span>
+					</div>
+					<div>
+						{{ result.snippet['#markup']|raw }}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% else %}
+	<p>No search results found.</p>
+{% endif %}

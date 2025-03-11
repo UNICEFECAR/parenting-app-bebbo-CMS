@@ -3,12 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.group.country.field_app_name
+    - field.field.group.country.field_content_toggle
+    - field.field.group.country.field_country_email
     - field.field.group.country.field_country_flag
     - field.field.group.country.field_country_national_partner
     - field.field.group.country.field_country_sponsor_logo
     - field.field.group.country.field_language
+    - field.field.group.country.field_language_name_in_local
     - field.field.group.country.field_make_available_for_mobile
     - field.field.group.country.field_master_language
+    - field.field.group.country.field_unicef_logo
     - group.type.country
   module:
     - languagefield
@@ -18,6 +23,27 @@ targetEntityType: group
 bundle: country
 mode: default
 content:
+  field_app_name:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_content_toggle:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_country_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_country_flag:
     type: entity_reference_entity_view
     label: above
@@ -52,6 +78,14 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  field_language_name_in_local:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
   field_make_available_for_mobile:
     type: boolean
     label: above
@@ -71,6 +105,15 @@ content:
         name: name
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_unicef_logo:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 5
     region: content
   label:
     type: string

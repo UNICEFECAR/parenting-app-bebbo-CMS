@@ -1,0 +1,69 @@
+label: İçerik
+description: 'İçeriği bul ve yönet.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: İçerik
+      fields:
+        title:
+          label: Başlık
+        type:
+          label: 'İçerik türü'
+          separator: ', '
+        name:
+          label: Yazar
+        status:
+          label: Durum
+          settings:
+            format_custom_false: 'Yayında değil'
+            format_custom_true: Yayında
+        changed:
+          label: Güncellendi
+        operations:
+          label: İşlemler
+      pager:
+        options:
+          tags:
+            next: 'Sonraki ›'
+            previous: '‹ Önceki'
+            first: '« İlk'
+            last: 'Son »'
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Hiçbir içerik mevcut değil.'
+      filters:
+        title:
+          expose:
+            label: Başlık
+        type:
+          expose:
+            label: 'İçerik türü'
+        status:
+          expose:
+            label: Durum
+          group_info:
+            label: 'Yayın durumu'
+            group_items:
+              1:
+                title: Yayında
+              2:
+                title: 'Yayında değil'
+        langcode:
+          expose:
+            label: Dil
+  page_1:
+    display_title: Sayfa
+    display_options:
+      menu:
+        title: İçerik
+      tab_options:
+        title: İçerik
+        description: 'İçeriği bulun ve yönetin'

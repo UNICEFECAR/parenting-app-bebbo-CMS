@@ -1,21 +1,18 @@
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
       fields:
         type:
           label: Tип
-        timestamp:
-          label: Датум
-        message:
-          label: Порука
         name:
           label: User
         link:
           label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
       filters:
         type:
           expose:

@@ -1,10 +1,7 @@
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
       fields:
         name:
           label: Username
@@ -14,7 +11,14 @@ display:
           label: Roles
         operations:
           label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
       filters:
         status:
           group_info:
             label: Status
+        roles_target_id:
+          expose:
+            label: Улога

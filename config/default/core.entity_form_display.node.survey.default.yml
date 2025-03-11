@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.survey.body
     - field.field.node.survey.field_licensed_content
+    - field.field.node.survey.field_mandatory_content
     - field.field.node.survey.field_pre_populated
     - field.field.node.survey.field_survey_link
     - field.field.node.survey.field_type
@@ -35,6 +36,13 @@ content:
     weight: 3
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_mandatory_content:
+    type: boolean_checkbox
+    weight: 26
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_survey_link:
     type: link_default

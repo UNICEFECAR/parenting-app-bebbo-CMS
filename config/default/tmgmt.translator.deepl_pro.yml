@@ -1,0 +1,54 @@
+uuid: 57419342-620d-4003-9052-d75d5c8b1076
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_deepl
+name: deepl_pro
+label: 'DeepL API Pro'
+description: 'DeepL API Pro Translator service.'
+auto_accept: false
+weight: -10
+plugin: deepl_pro
+settings:
+  url: 'https://api.deepl.com/v2/translate'
+  url_usage: 'https://api.deepl.com/v2/usage'
+  auth_key: bb450b3f-8d87-44df-95bc-57441939bab2
+  tag_handling: '0'
+  non_splitting_tags: ''
+  splitting_tags: ''
+  ignore_tags: ''
+  split_sentences: '1'
+  preserve_formatting: 0
+  formality: default
+  outline_detection: 0
+remote_languages_mappings:
+  en: EN
+  ru: RU
+  sq: ''
+  al-sq: ''
+  by-be: ''
+  by-ru: RU
+  bg-bg: BG
+  gr-el: EL
+  xk-sq: ''
+  xk-rs: ''
+  kg-ky: ''
+  kg-ru: RU
+  md-ro: RO
+  me-cnr: ''
+  mk-mk: ''
+  mk-sq: ''
+  ro: RO
+  ro-ro: RO
+  sr: ''
+  rs-sr: ''
+  rs-en: EN
+  sk: SK
+  tj-tg: ''
+  tj-ru: RU
+  tr: TR
+  uk: UK
+  uz-uz: ''
+  uz-ru: RU
+  ar: ''

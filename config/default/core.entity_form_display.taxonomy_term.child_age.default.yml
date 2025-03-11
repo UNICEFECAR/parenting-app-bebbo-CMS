@@ -8,6 +8,7 @@ dependencies:
     - field.field.taxonomy_term.child_age.field_buffers_days
     - field.field.taxonomy_term.child_age.field_days_from
     - field.field.taxonomy_term.child_age.field_days_to
+    - field.field.taxonomy_term.child_age.field_unique_name
     - field.field.taxonomy_term.child_age.field_weeks_from
     - field.field.taxonomy_term.child_age.field_weeks_to
     - taxonomy.vocabulary.child_age
@@ -45,6 +46,14 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  field_unique_name:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 2
@@ -62,19 +71,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 7
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }

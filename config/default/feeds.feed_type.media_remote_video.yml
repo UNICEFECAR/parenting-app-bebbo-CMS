@@ -5,10 +5,12 @@ dependencies:
   config:
     - core.base_field_override.media.remote_video.name
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_video_embed_url
     - media.type.remote_video
   module:
     - feeds_tamper
     - media
+    - video_embed_field
 third_party_settings:
   feeds_tamper:
     tampers:

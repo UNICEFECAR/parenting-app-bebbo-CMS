@@ -1,0 +1,71 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« İlk'
+            last: 'Son »'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      fields:
+        title:
+          label: Başlık
+          separator: ', '
+        type:
+          label: 'İçerik türü'
+          separator: ', '
+        status:
+          label: Durum
+          settings:
+            format_custom_true: Yayında
+            format_custom_false: 'Yayında değil'
+          separator: ', '
+        changed:
+          label: Güncellendi
+          separator: ', '
+        edit_node:
+          text: 'Düğümü düzenle'
+        delete_node:
+          text: 'Düğümü sil'
+        dropbutton:
+          label: İşlemler
+      filters:
+        status:
+          expose:
+            label: 'Yayın durumu'
+          group_info:
+            label: 'Yayın durumu'
+            group_items:
+              1:
+                title: Yayında
+              2:
+                title: 'Yayında değil'
+        type:
+          expose:
+            label: Tip
+      empty:
+        area_text_custom:
+          content: 'Hiçbir içerik mevcut değil.'
+      arguments:
+        gid:
+          exception:
+            title: Tümü
+      title: Düğümler
+  page_1:
+    display_title: Sayfa
+    display_options:
+      menu:
+        title: Düğümler

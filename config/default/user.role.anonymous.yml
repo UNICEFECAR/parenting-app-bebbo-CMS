@@ -8,8 +8,8 @@ dependencies:
     - media
     - pb_custom_form
     - rest
-    - search
     - system
+    - taxonomy
 _core:
   default_config_hash: pq_mEIu_B4widZN7Ap81iCJSjShFFdcL0jEiCi8VrDk
 id: anonymous
@@ -18,7 +18,7 @@ weight: -10
 is_admin: false
 permissions:
   - 'access content'
+  - 'access taxonomy overview'
   - 'manage mobile javascript'
   - 'restful get custom_rest_resource'
-  - 'search content'
   - 'view media'

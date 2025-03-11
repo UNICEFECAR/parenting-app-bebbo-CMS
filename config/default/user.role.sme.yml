@@ -24,6 +24,7 @@ dependencies:
     - actions_permissions
     - content_moderation
     - content_translation
+    - file
     - filter
     - group
     - media
@@ -36,6 +37,7 @@ is_admin: null
 permissions:
   - 'access media overview'
   - 'bypass group access'
+  - 'delete own files'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'

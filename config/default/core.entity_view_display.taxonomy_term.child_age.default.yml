@@ -3,10 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.taxonomy_term.child_age.feeds_item
     - field.field.taxonomy_term.child_age.field_age_bracket
     - field.field.taxonomy_term.child_age.field_buffers_days
     - field.field.taxonomy_term.child_age.field_days_from
     - field.field.taxonomy_term.child_age.field_days_to
+    - field.field.taxonomy_term.child_age.field_unique_name
     - field.field.taxonomy_term.child_age.field_weeks_from
     - field.field.taxonomy_term.child_age.field_weeks_to
     - taxonomy.vocabulary.child_age
@@ -58,6 +60,14 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_unique_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_weeks_from:
     type: number_integer

@@ -1,0 +1,47 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« İlk'
+            last: 'Son »'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      fields:
+        name:
+          label: Kullanıcı
+          separator: ', '
+        group_roles:
+          label: Roller
+          separator: ', '
+        changed:
+          label: Güncellendi
+          separator: ', '
+        created:
+          label: Katıldı
+          separator: ', '
+        dropbutton:
+          label: İşlemler
+      arguments:
+        gid:
+          exception:
+            title: Tümü
+      title: Üyeler
+  page_1:
+    display_title: Sayfa
+    display_options:
+      menu:
+        title: Üyeler

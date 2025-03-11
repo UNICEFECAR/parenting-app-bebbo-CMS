@@ -1,10 +1,10 @@
 label: Медіа
 display:
   default:
+    display_title: Базово
     display_options:
+      title: Медіа
       fields:
-        thumbnail__target_id:
-          label: Мініатюра
         bundle:
           label: Тип
         uid:
@@ -13,6 +13,9 @@ display:
           label: Стан
         operations:
           label: Операції
+      exposed_form:
+        options:
+          submit_button: Фільтр
       filters:
         bundle:
           expose:
@@ -20,7 +23,6 @@ display:
         langcode:
           expose:
             label: Мова
-      title: Медіа
   media_page_list:
     display_title: Медіа
     display_options:

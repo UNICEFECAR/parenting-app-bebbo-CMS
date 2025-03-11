@@ -1,0 +1,27 @@
+uuid: d058b97a-3fd0-4010-a961-44df6ea8a8d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - options
+id: group.field_app_name
+field_name: field_app_name
+entity_type: group
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Bebbo
+      label: Bebbo
+    -
+      value: Foleja
+      label: Foleja
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

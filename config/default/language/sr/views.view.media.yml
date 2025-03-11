@@ -1,10 +1,7 @@
 display:
   default:
+    display_title: Default
     display_options:
-      exposed_form:
-        options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
       fields:
         thumbnail__target_id:
           label: 'Умањени приказ'
@@ -16,6 +13,10 @@ display:
           label: Status
         operations:
           label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
       filters:
         bundle:
           expose:

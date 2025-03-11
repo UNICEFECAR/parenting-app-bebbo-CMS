@@ -51,72 +51,58 @@ custom_sources:
     value: Growth_type
     label: Growth_type
     machine_name: growth_type
-    type: csv
   length_or_day:
     value: Length_or_day
     label: Length_or_day
     machine_name: length_or_day
-    type: csv
   child_gender:
     value: Child_gender
     label: Child_gender
     machine_name: child_gender
-    type: csv
   sd4neg:
     value: SD4neg
     label: SD4neg
     machine_name: sd4neg
-    type: csv
   sd3neg:
     value: SD3neg
     label: SD3neg
     machine_name: sd3neg
-    type: csv
   sd2neg:
     value: SD2neg
     label: SD2neg
     machine_name: sd2neg
-    type: csv
   sd1neg:
     value: SD1neg
     label: SD1neg
     machine_name: sd1neg
-    type: csv
   sd0:
     value: SD0
     label: SD0
     machine_name: sd0
-    type: csv
   sd1:
     value: SD1
     label: SD1
     machine_name: sd1
-    type: csv
   sd2:
     value: SD2
     label: SD2
     machine_name: sd2
-    type: csv
   sd3:
     value: SD3
     label: SD3
     machine_name: sd3
-    type: csv
   sd4:
     value: SD4
     label: SD4
     machine_name: sd4
-    type: csv
   language_code:
     value: Language_code
     label: Language_code
     machine_name: language_code
-    type: csv
   weight:
     value: Weight
     label: Weight
     machine_name: weight
-    type: csv
 mappings:
   -
     target: field_growth_type

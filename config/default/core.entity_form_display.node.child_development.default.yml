@@ -84,6 +84,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_pre_populated:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 1
@@ -154,4 +161,3 @@ hidden:
   field_home_message_before_end: true
   field_home_message_before_start: true
   field_licensed_content: true
-  field_pre_populated: true

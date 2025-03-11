@@ -1,0 +1,17 @@
+uuid: b7f4f580-c7ce-4e40-8284-73553c8548de
+langcode: en
+status: true
+dependencies: {  }
+id: content_pregnancy_articles_non_mandatory_en_content_pregnancyart
+label: 'Content - Pregnancy articles non-mandatory (EN) (content_pregnancyarticle_nonmandatory_en)'
+channel_entity_type: node
+channel_bundle: article
+channel_langcode: en
+channel_filters: null
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles: {  }
+authorized_users: {  }

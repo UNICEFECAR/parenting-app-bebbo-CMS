@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.category.feeds_item
+    - field.field.taxonomy_term.category.field_type_of_article
     - field.field.taxonomy_term.category.field_unique_name
     - taxonomy.vocabulary.category
   module:
@@ -13,9 +14,15 @@ targetEntityType: taxonomy_term
 bundle: category
 mode: default
 content:
+  field_type_of_article:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 1
+    weight: 2
     region: content
     settings:
       include_locked: true
@@ -30,19 +37,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }

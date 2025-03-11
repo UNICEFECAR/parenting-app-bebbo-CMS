@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.activities.field_equipment
     - field.field.node.activities.field_licensed_content
     - field.field.node.activities.field_mandatory_content
+    - field.field.node.activities.field_pre_populated
     - field.field.node.activities.field_related_articles
     - field.field.node.activities.field_type_of_support
     - node.type.activities
@@ -48,6 +49,7 @@ hidden:
   field_equipment: true
   field_licensed_content: true
   field_mandatory_content: true
+  field_pre_populated: true
   field_related_articles: true
   field_type_of_support: true
   langcode: true

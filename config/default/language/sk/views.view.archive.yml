@@ -1,0 +1,25 @@
+display:
+  default:
+    display_title: Predvolené
+    display_options:
+      title: 'Mesačný archív'
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      exposed_form:
+        options:
+          submit_button: Použiť
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+  block_1:
+    display_title: Blok
+  page_1:
+    display_title: Stránka

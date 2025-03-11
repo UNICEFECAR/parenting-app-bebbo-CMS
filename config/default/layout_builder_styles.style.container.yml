@@ -1,4 +1,4 @@
-uuid: 2ca40459-73bd-4c55-b918-31e4889f99f6
+uuid: e36d2c5a-58f3-46f6-b162-69df32dc88ad
 langcode: en
 status: true
 dependencies: {  }
@@ -7,9 +7,7 @@ label: container
 classes: container
 type: section
 group: default
-block_restrictions:
-  - 'field_block:block_content:basic:body'
-  - page_title_block
+block_restrictions: {  }
 layout_restrictions:
   - layout_onecol
   - layout_twocol_section

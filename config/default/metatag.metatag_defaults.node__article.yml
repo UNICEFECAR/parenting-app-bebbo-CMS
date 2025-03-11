@@ -1,0 +1,8 @@
+uuid: 77526441-0025-4bfa-ac7d-468e39e6c1e7
+langcode: en
+status: true
+dependencies: {  }
+id: node__article
+label: 'Content: Article'
+tags:
+  keywords: '[node:field_meta_keywords]'

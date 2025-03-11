@@ -56,42 +56,34 @@ custom_sources:
     value: Term_ID
     label: Term_ID
     machine_name: term_id
-    type: csv
   term_name:
     value: Term_name
     label: Term_name
     machine_name: term_name
-    type: csv
   language_code:
     value: Language_code
     label: Language_code
     machine_name: language_code
-    type: csv
   days_from:
     value: Days_from
     label: Days_from
     machine_name: days_from
-    type: csv
   days_to:
     value: Days_to
     label: Days_to
     machine_name: days_to
-    type: csv
   age_bracket:
     value: Age_bracket
     label: Age_bracket
     machine_name: age_bracket
-    type: csv
   buffers_days:
     value: Buffers_days
     label: Buffers_days
     machine_name: buffers_days
-    type: csv
   weight:
     value: Weight
     label: Weight
     machine_name: weight
-    type: csv
 mappings:
   -
     target: tid

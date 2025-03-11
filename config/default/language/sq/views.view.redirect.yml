@@ -1,0 +1,14 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      fields:
+        created:
+          label: Krijuar
+      filters:
+        redirect_redirect__uri:
+          expose:
+            label: To
