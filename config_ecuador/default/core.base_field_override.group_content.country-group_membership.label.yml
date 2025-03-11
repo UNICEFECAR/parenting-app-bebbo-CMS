@@ -1,0 +1,18 @@
+uuid: 5a508a0a-522f-44ec-88a7-fe43df566ab8
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_membership
+id: group_content.country-group_membership.label
+field_name: label
+entity_type: group_content
+bundle: country-group_membership
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

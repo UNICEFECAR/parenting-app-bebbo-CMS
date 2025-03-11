@@ -1,0 +1,21 @@
+uuid: 3e324bc2-be3e-4956-ab19-626f6fee48c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_milestone_instructions
+    - node.type.child_development
+  module:
+    - text
+id: node.child_development.field_milestone_instructions
+field_name: field_milestone_instructions
+entity_type: node
+bundle: child_development
+label: 'Milestone Instructions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

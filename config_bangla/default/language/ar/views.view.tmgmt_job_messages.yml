@@ -1,0 +1,17 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+      fields:
+        name:
+          label: الاسم
+      arguments:
+        tjid:
+          exception:
+            title: All

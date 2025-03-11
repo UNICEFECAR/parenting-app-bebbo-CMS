@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Tip
+        link:
+          label: Operațiuni
+      exposed_form:
+        options:
+          submit_button: Filtru
+      filters:
+        type:
+          expose:
+            label: Tip

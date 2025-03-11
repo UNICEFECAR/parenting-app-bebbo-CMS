@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        item_type:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী

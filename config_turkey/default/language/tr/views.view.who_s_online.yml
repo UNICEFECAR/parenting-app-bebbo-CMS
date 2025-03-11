@@ -1,0 +1,30 @@
+label: 'Çevrimiçi kullanıcılar bloğu'
+description: 'Son zamanlarda en etkin kullanıcıların adlarını ve toplam etkin kullanıcı sayısını görüntüler.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: 'Kimler çevrim içi'
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Şu anda 0 kullanıcı çevrimiçi.'
+      filters:
+        access:
+          expose:
+            label: 'Son erişim'
+            description: 'Bir kullanıcı son sayfa ziyaretinden itibaren bu kadar süre boyunca çevrim içi olarak kabul edilir.'
+      header:
+        result:
+          content: 'Şu anda @total kullanıcı çevrimiçi.'
+  who_s_online_block:
+    display_title: 'Kimler çevrim içi'
+    display_options:
+      display_description: 'Şu anda oturum açmış kullanıcıların listesi.'
+      block_description: 'Kimler çevrim içi'

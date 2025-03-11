@@ -1,0 +1,82 @@
+uuid: 25185c23-d04e-4518-9e77-87285795da3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.child_age.field_age_bracket
+    - field.field.taxonomy_term.child_age.field_buffers_days
+    - field.field.taxonomy_term.child_age.field_days_from
+    - field.field.taxonomy_term.child_age.field_days_to
+    - field.field.taxonomy_term.child_age.field_weeks_from
+    - field.field.taxonomy_term.child_age.field_weeks_to
+    - taxonomy.vocabulary.child_age
+  module:
+    - text
+id: taxonomy_term.child_age.default
+targetEntityType: taxonomy_term
+bundle: child_age
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_age_bracket:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_buffers_days:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_days_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_days_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_weeks_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_weeks_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

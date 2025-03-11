@@ -1,0 +1,16 @@
+display:
+  default:
+    display_options:
+      fields:
+        status:
+          label: Status
+        item_type:
+          label: النوع
+        operations:
+          label: عمليات
+      arguments:
+        tltid:
+          exception:
+            title: All
+  block_1:
+    display_title: Block

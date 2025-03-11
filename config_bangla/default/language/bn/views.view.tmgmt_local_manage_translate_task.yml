@@ -1,0 +1,36 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+  closed:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+  completed:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+  rejected:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী

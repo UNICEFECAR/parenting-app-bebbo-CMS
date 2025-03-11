@@ -1,0 +1,26 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        type:
+          label: টাইপ
+        timestamp:
+          label: তারিখ
+        message:
+          label: বার্তা
+        name:
+          label: ব্যবহারকারী
+        link:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      empty:
+        area:
+          admin_label: 'কোন লগ বার্তা নেই।'
+          content: 'কোন লগ বার্তা নেই।'
+      filters:
+        type:
+          expose:
+            label: টাইপ

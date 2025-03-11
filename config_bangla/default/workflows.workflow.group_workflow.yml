@@ -1,0 +1,231 @@
+uuid: f39237e3-a5a9-42be-9303-96aac8645b47
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.activities
+    - node.type.article
+    - node.type.child_development
+    - node.type.child_growth
+    - node.type.daily_homescreen_messages
+    - node.type.faq
+    - node.type.health_check_ups
+    - node.type.milestone
+    - node.type.page
+    - node.type.survey
+    - node.type.vaccinations
+    - node.type.video_article
+  module:
+    - content_moderation
+id: group_workflow
+label: 'Group workflow'
+type: content_moderation
+type_settings:
+  states:
+    archive:
+      label: Archived
+      weight: 2
+      published: false
+      default_revision: true
+    draft:
+      label: Draft
+      weight: -4
+      published: false
+      default_revision: false
+    published:
+      label: Published
+      weight: 1
+      published: true
+      default_revision: true
+    reject:
+      label: 'Require Modification'
+      weight: 0
+      published: false
+      default_revision: true
+    review_after_translation:
+      label: Review_after_translation
+      weight: 3
+      published: false
+      default_revision: false
+    senior_editor_review:
+      label: 'Senior Editor Review'
+      weight: -2
+      published: false
+      default_revision: false
+    sme_review:
+      label: 'SME Review'
+      weight: -3
+      published: false
+      default_revision: false
+  transitions:
+    _sme_review_to_require_modification:
+      label: ' SME Review to Require Modification'
+      from:
+        - sme_review
+      to: reject
+      weight: 14
+    archive_to_draft:
+      label: 'Archive to Draft'
+      from:
+        - archive
+      to: draft
+      weight: 2
+    archive_to_review_after_translation:
+      label: 'Archive to Review_after_translation'
+      from:
+        - archive
+      to: review_after_translation
+      weight: 18
+    create_new_draft:
+      label: 'Draft to Draft'
+      from:
+        - draft
+      to: draft
+      weight: -4
+    draft_to_published:
+      label: 'Draft to Published'
+      from:
+        - draft
+      to: published
+      weight: 13
+    draft_to_review_after_translation:
+      label: 'Draft to Review after translation'
+      from:
+        - draft
+      to: review_after_translation
+      weight: 15
+    draft_to_senior_editor_review:
+      label: 'Draft to Senior Editor Review'
+      from:
+        - draft
+      to: senior_editor_review
+      weight: -2
+    draft_to_sme_review:
+      label: 'Draft to SME Review'
+      from:
+        - draft
+      to: sme_review
+      weight: -3
+    publish_to_archive:
+      label: 'Published to Archive'
+      from:
+        - published
+      to: archive
+      weight: 1
+    publish_to_draft:
+      label: 'Publish to Draft'
+      from:
+        - published
+      to: draft
+      weight: -1
+    published_to_review_after_translation:
+      label: 'Published to Review_after_translation'
+      from:
+        - published
+      to: review_after_translation
+      weight: 10
+    reject_to_draft:
+      label: 'Require Modification to draft'
+      from:
+        - reject
+      to: draft
+      weight: 0
+    require_modification_to_published:
+      label: 'Require Modification to Published'
+      from:
+        - reject
+      to: published
+      weight: 22
+    require_modification_to_review_after_translation:
+      label: 'Require Modification to Review_after_translation'
+      from:
+        - reject
+      to: review_after_translation
+      weight: 19
+    require_modification_to_senior_editor_review:
+      label: 'Require Modification to Senior Editor Review'
+      from:
+        - reject
+      to: senior_editor_review
+      weight: 24
+    require_modification_to_sme_review:
+      label: 'Require Modification to SME Review'
+      from:
+        - reject
+      to: sme_review
+      weight: 23
+    review_after_translation_to_draft:
+      label: 'Review_after_translation to Draft'
+      from:
+        - review_after_translation
+      to: draft
+      weight: 21
+    review_after_translation_to_review_after_translation:
+      label: 'Review_after_translation to Review_after_translation'
+      from:
+        - review_after_translation
+      to: review_after_translation
+      weight: 20
+    review_after_translation_to_senior_editor_review:
+      label: 'Review_after_translation to Senior Editor Review'
+      from:
+        - review_after_translation
+      to: senior_editor_review
+      weight: 12
+    review_after_translation_to_sme_review:
+      label: 'Review_after_translation to SME Review'
+      from:
+        - review_after_translation
+      to: sme_review
+      weight: 11
+    senior_editor_review_to_published:
+      label: 'Senior Editor Review to Published'
+      from:
+        - senior_editor_review
+      to: published
+      weight: 8
+    senior_editor_review_to_reject:
+      label: 'Senior Editor Review to Require Modification'
+      from:
+        - senior_editor_review
+      to: reject
+      weight: 6
+    senior_editor_review_to_review_after_translation:
+      label: 'Senior Editor Review to Review After Translation'
+      from:
+        - senior_editor_review
+      to: review_after_translation
+      weight: 17
+    sme_review_to_review_after_translation:
+      label: 'SME Review to Review_after_Translation'
+      from:
+        - sme_review
+      to: review_after_translation
+      weight: 16
+    sme_review_to_senior_editor_review:
+      label: 'SME Review to Senior Editor Review'
+      from:
+        - sme_review
+      to: senior_editor_review
+      weight: 4
+    sme_review_to_sme_review:
+      label: 'SME Review to SME Review'
+      from:
+        - sme_review
+      to: sme_review
+      weight: 25
+  entity_types:
+    node:
+      - activities
+      - article
+      - child_development
+      - child_growth
+      - daily_homescreen_messages
+      - faq
+      - health_check_ups
+      - milestone
+      - page
+      - survey
+      - vaccinations
+      - video_article
+  default_moderation_state: draft

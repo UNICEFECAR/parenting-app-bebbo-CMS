@@ -1,0 +1,32 @@
+label: 'Pagina de editare a vizualizării'
+tips:
+  views-main:
+    label: 'Administrarea setărilor view-ului'
+    body: 'Vizualizează sau editează configurația.'
+  views-ui-displays:
+    label: 'Modurile de afișare pentru acest views'
+    body: 'O afișare este un mod de expunere a rezultatelor, ex., ca o pagină sau un bloc. Un view poate conține mai multe afișări, care sunt listate aici. Afișarea activă este evidențiată.'
+  views-ui-view-admin:
+    label: 'Administrare view'
+    body: 'Efectuează sarcini administrative, inclusiv adăugarea unei descrieri și crearea unei clone. Faceți clic pe butonul drop-down pentru a vizualiza opțiunile disponibile.'
+  views-ui-format:
+    label: 'Formatul de ieşire'
+    body: 'Alegeți modul de afișare al rezultatelor. De exemplu, alege <em>Content</em> pentru a afișa fiecare element complet, folosind setările de afișare configurate. Sau alegeți <em>Fields</em>, care vă permite să afișați numai câmpurile specificate pentru fiecare rezultat. Pot fi adăugate formate adiționale prin instalarea de module pentru a <em>extinde</em> funcționalitatea de bază a Drupalului.'
+  views-ui-fields:
+    label: Câmpuri
+    body: 'Dacă acest view utilizează câmpuri, acestea sunt enumerate aici. Puteți face clic pe un câmp pentru a-l configura.'
+  views-ui-filter:
+    label: 'Filtrează vizualizarea'
+    body: 'Adaugă filtre pentru a limita rezultatele la afișare. De exemplu, pentru a arăta doar conținutul, care este <em>publicat</em>, trebuie să adăugați un filtru pentru <em>Publicat</em> și să selectați <em>Da</em>.'
+  views-ui-filter-operations:
+    label: 'Acțiuni de filtrare'
+    body: 'Adaugă, rearanjează sau elimină filtre.'
+  views-ui-sorts:
+    label: 'Criterii de sortare'
+    body: 'Controlează ordinea în care rezultatele sunt afișate. Faceți clic pe o regulă de sortare activă pentru a o configura.'
+  views-ui-sorts-operations:
+    label: 'Acțiuni de sortare'
+    body: 'Adaugă, rearanjează sau elimină regulile de sortare.'
+  views-ui-preview:
+    label: Previzualizare
+    body: 'Arată o previzualizare a ieșirii view-ului.'

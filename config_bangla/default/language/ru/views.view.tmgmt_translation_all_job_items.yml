@@ -1,0 +1,11 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Тип
+        operations:
+          label: Операции
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

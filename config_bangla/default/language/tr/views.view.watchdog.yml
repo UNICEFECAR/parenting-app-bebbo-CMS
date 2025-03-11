@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      fields:
+        type:
+          label: Tip
+        link:
+          label: İşlemler
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+      filters:
+        type:
+          expose:
+            label: Tip

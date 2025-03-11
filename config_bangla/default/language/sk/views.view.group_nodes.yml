@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        dropbutton:
+          label: Operácie
+      filters:
+        type:
+          expose:
+            label: Typ

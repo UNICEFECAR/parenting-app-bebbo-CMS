@@ -1,0 +1,7 @@
+label: 'Pridanie jazykov'
+tips:
+  language-add-overview:
+    label: 'Pridanie jazykov'
+    body: '<p>Táto stránka vám umožňuje pridať bežný jazyk na vašu stránku.</p><p>Pokiaľ vami želaný jazyk nie je dostupný, môžete pridať vlastný jazyk.</p>'
+  language-add-choose:
+    label: 'Vyberte jazyk'

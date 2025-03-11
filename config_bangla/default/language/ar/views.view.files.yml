@@ -1,0 +1,27 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        filename:
+          label: الاسم
+        filesize:
+          label: Size
+        status:
+          label: Status
+      exposed_form:
+        options:
+          submit_button: انتقاء
+      filters:
+        filename:
+          expose:
+            label: Filename
+        status:
+          expose:
+            label: Status
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

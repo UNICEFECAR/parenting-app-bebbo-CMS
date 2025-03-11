@@ -1,0 +1,20 @@
+uuid: 76e53fcc-2a21-417e-b8ae-cf530e7e4071
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_growth_period
+field_name: field_growth_period
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

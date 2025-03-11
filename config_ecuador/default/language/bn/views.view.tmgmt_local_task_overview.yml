@@ -1,0 +1,122 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      fields:
+        item_count:
+          label: আইটেমসমূহ
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  closed:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+      menu:
+        title: বন্ধ
+  completed:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  eligible:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  my_tasks:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  pending:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        target_language:
+          label: বরাবর
+        item_count:
+          label: আইটেমসমূহ
+        operations:
+          label: কার্যাবলী
+      filters:
+        status:
+          expose:
+            label: স্ট্যাটাস
+      tab_options:
+        title: অনুবাদ

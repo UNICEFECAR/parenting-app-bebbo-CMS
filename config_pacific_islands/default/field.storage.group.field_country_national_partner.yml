@@ -1,0 +1,20 @@
+uuid: 174fa04e-cdad-4687-8fc4-0d5bd96a08ff
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - media
+id: group.field_country_national_partner
+field_name: field_country_national_partner
+entity_type: group
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

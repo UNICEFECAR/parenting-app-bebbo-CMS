@@ -1,0 +1,10 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        operations:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার

@@ -1,0 +1,8 @@
+uuid: 33f091a4-95b7-4169-85e8-ed660e8f6e5f
+langcode: en
+status: true
+dependencies: {  }
+name: 'Standard Deviation Category'
+vid: standard_deviation_category
+description: 'Standardized WHO Growth charts values with standard deviations'
+weight: 0

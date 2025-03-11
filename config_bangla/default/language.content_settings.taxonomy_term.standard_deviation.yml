@@ -1,0 +1,18 @@
+uuid: 34b7a36d-1a2c-44cd-bcbf-4575d476068e
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.standard_deviation
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.standard_deviation
+target_entity_type_id: taxonomy_term
+target_bundle: standard_deviation
+default_langcode: current_interface
+language_alterable: true

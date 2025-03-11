@@ -1,0 +1,28 @@
+display:
+  default:
+    display_options:
+      pager:
+        options:
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+      fields:
+        title:
+          label: Title
+        type:
+          label: النوع
+        name:
+          label: Author
+        changed:
+          label: Updated
+        operations:
+          label: عمليات
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: النوع

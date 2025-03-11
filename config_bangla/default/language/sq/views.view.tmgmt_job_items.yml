@@ -1,0 +1,13 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Lloji
+        operations:
+          label: Operacionet
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Lloji

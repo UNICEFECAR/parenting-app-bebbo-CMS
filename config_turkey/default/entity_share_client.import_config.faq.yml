@@ -1,0 +1,28 @@
+uuid: bc2f41ce-1e80-4d7a-a7c0-fbadeca16459
+langcode: en
+status: true
+dependencies: {  }
+id: faq
+label: FAQ
+import_maxsize: 50
+import_processor_settings:
+  block_field_block_content_importer:
+    weights:
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  book_structure_importer:
+    weights:
+      post_entity_save: 20
+      prepare_importable_entity_data: 20
+    max_recursion_depth: -1
+  default_data_processor:
+    weights:
+      is_entity_importable: -10
+      post_entity_save: 0
+      prepare_importable_entity_data: -100
+    policy: default
+    update_policy: false
+  entity_reference:
+    weights:
+      process_entity: 10
+    max_recursion_depth: -1

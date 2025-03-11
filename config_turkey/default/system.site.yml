@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE
+langcode: en
+uuid: 3a31b21d-7c72-4ddb-a1c1-18e3c7a5c21c
+name: Bebbo
+mail: admin@bebbo.app
+slogan: ''
+page:
+  403: /user/login
+  404: ''
+  front: /node/64076
+admin_compact_mode: false
+weight_select_max: 100
+default_langcode: en
+mail_notification: admin@bebbo.app

@@ -1,0 +1,15 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: Статус
+        type:
+          label: Tип
+        operations:
+          label: Операције
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Tип

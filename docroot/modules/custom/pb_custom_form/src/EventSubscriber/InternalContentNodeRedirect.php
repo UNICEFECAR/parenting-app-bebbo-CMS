@@ -45,9 +45,10 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    *
    * @inheritDoc
    */
-  public function __construct(CurrentRouteMatch $route_match,
-                              LanguageManager $language_manager,
-                              AccountProxy $current_user
+  public function __construct(
+    CurrentRouteMatch $route_match,
+    LanguageManager $language_manager,
+    AccountProxy $current_user,
   ) {
     $this->routeMatch = $route_match;
     $this->languageManager = $language_manager;

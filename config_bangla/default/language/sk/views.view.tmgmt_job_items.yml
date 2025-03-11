@@ -1,0 +1,13 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: Typ
+        operations:
+          label: Operácie
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: Typ

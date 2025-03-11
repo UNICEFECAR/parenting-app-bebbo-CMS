@@ -1,0 +1,20 @@
+uuid: 3c818d8a-288a-4b52-8cce-62be11885534
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+  module:
+    - path
+id: node.daily_homescreen_messages.path
+field_name: path
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path
