@@ -917,6 +917,10 @@ class CustomSerializer extends Serializer {
     if (strpos($request_uri, "/api/articles") !== FALSE) {
       foreach ($data as $k => $val) {
         if (in_array($tid, $val[$key])) {
+          // Ignore removal if tid is 166191 (Pregnancy).
+          if ($tid == 166191) {
+            continue;
+          }
           // Find the key of the value to remove.
           $keyToRemove = array_search($tid, $val[$key]);
 
