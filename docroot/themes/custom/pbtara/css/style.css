@@ -16,6 +16,10 @@ header#header {
   margin-top: 25px;
 }
 
+#main {
+  margin-bottom: 40px;
+}
+
 .main-wrapper {
   margin-top: 7rem;
   padding: 0px;
@@ -97,7 +101,7 @@ form#views-exposed-form-content-search-page-1 input[type=text] {
   padding: 10px;
   font-family: Arial, sans-serif;
   z-index: 1000;
-  display: none;
+  display: block;
 }
 
 .banner-content {
@@ -177,6 +181,7 @@ figure.align-center {
   background: #00aeef none repeat scroll 0 0;
   position: relative;
   margin-top: 60px;
+  bottom: 64px;
 }
 
 .site-branding img {
@@ -317,23 +322,16 @@ img[alt="bebbo-hearts"] {
 }
 
 .sidebar .block {
-  margin-bottom: 0px;
+  margin-bottom: 40px;
   padding: 15px 0px 0px;
 }
 
 /* Media Queries */
 /* Show banner only on mobile devices */
 @media screen and (max-width: 768px) {
-  .app-banner {
-    display: block;
-  }
 
   .breadcrumb {
     padding-top: 1rem;
-  }
-
-  #footer {
-    padding-bottom: 5rem;
   }
 
   .block-region.region-primary-menu {
