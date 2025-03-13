@@ -8,7 +8,7 @@ dependencies:
     - field.storage.node.field_content_category
     - field.storage.node.field_cover_image
     - field.storage.node.field_cover_video
-    - image.style.medium
+    - image.style.large
     - node.type.activities
     - node.type.article
     - node.type.video_article
@@ -461,7 +461,7 @@ display:
           type: media_thumbnail
           settings:
             image_link: ''
-            image_style: medium
+            image_style: large
             image_loading:
               attribute: lazy
           group_column: target_id
@@ -1665,7 +1665,7 @@ display:
           type: media_thumbnail
           settings:
             image_link: ''
-            image_style: medium
+            image_style: large
             image_loading:
               attribute: lazy
           group_column: target_id
