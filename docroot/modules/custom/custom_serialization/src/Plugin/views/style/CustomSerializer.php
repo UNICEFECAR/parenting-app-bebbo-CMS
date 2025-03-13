@@ -787,6 +787,9 @@ class CustomSerializer extends Serializer {
       $tax_query->condition('langcode', $language_code);
       $tax_query->condition('status', 1);
       $tax_query->fields('taxonomy_term_field_data');
+      $tax_query->addExpression("CASE WHEN vid = 'child_age' THEN weight ELSE 999999 END", 'sorted_weight');
+      $tax_query->orderBy('vid', 'ASC');
+      $tax_query->orderBy('sorted_weight', 'ASC');
       $tax_result = $tax_query->execute()->fetchAll();
       for ($tax = 0; $tax < count($tax_result); $tax++) {
         if ($vocabulary_machine_name === "growth_period") {
