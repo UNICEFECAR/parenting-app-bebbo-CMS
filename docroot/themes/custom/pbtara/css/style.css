@@ -47,7 +47,7 @@ article .node-content {
 
 #breadcrumb .block-content nav.breadcrumb {
   background-color: transparent !important;
-  margin-bottom: 0px;
+  Margin-bottom: 1rem;
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
@@ -175,6 +175,10 @@ figure.align-center {
   width: 100%;
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.pager-item {
+  border: none;
 }
 
 #footer {
@@ -324,6 +328,10 @@ img[alt="bebbo-hearts"] {
 .sidebar .block {
   margin-bottom: 40px;
   padding: 15px 0px 0px;
+}
+
+.mobile-menu span:nth-child(2) {
+  background-color: #00aeef !important;
 }
 
 /* Media Queries */
