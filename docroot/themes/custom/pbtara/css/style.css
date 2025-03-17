@@ -188,6 +188,10 @@ figure.align-center {
   bottom: 64px;
 }
 
+#footer .footer-bottom-middle-right .menu li a:hover {
+  color: #000;
+}
+
 .site-branding img {
   width: auto;
   max-height: 60px;
@@ -244,6 +248,10 @@ figure.align-center {
 
 .sidebar .block {
   box-shadow: 0 0 0 0px transparent;
+}
+
+.sidebar .views-element-container {
+  margin-bottom: 30px;
 }
 
 .sidebar li::before,

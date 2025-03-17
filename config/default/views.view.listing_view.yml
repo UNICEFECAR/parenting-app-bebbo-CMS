@@ -16,10 +16,6 @@ dependencies:
     - taxonomy.vocabulary.category
     - taxonomy.vocabulary.child_age
   content:
-    - 'taxonomy_term:activity_category:516d007c-eef2-4530-b28b-82f011e4a1b1'
-    - 'taxonomy_term:activity_category:52062531-bfba-430c-9ec5-099aabbe5d92'
-    - 'taxonomy_term:activity_category:7b2ca01e-b3f4-4aa4-94f3-63067d367afe'
-    - 'taxonomy_term:activity_category:ea58d00b-a830-4425-afca-b831ac9132c4'
     - 'taxonomy_term:category:11849ad0-f395-418a-bbf6-7b8be0e61831'
     - 'taxonomy_term:category:66c6c8f8-68e4-459f-b402-45691f92b955'
     - 'taxonomy_term:category:8fbeb205-e523-4c6d-ac3c-3bbba799297e'
@@ -29,7 +25,6 @@ dependencies:
     - 'taxonomy_term:child_age:04fd7356-7d87-48cc-90c8-c1e279d6c0e0'
     - 'taxonomy_term:child_age:18f97ba2-6aaa-4bf9-b091-6bb14ececff4'
     - 'taxonomy_term:child_age:1da80bce-47e0-4d1c-8309-281d7a107a16'
-    - 'taxonomy_term:child_age:44aec405-f345-465f-9b06-70866c9f8da5'
     - 'taxonomy_term:child_age:670f8241-f5ab-4ab7-9440-c233857ee87b'
     - 'taxonomy_term:child_age:68e9248d-4f86-4e66-b8a8-baeb2e2a09b9'
     - 'taxonomy_term:child_age:96d4e260-9c9c-43d1-9b72-22efa38f0e7c'
@@ -1859,11 +1854,7 @@ display:
           admin_label: ''
           plugin_id: taxonomy_index_tid
           operator: or
-          value:
-            6436: 6436
-            6441: 6441
-            6421: 6421
-            6431: 6431
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -1916,7 +1907,6 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            166191: 166191
             43: 43
             44: 44
             45: 45
@@ -1971,6 +1961,63 @@ display:
           hierarchy: false
           limit: true
           error_message: false
+        field_child_age_target_id_1:
+          id: field_child_age_target_id_1
+          table: node__field_child_age
+          field: field_child_age_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            43: 43
+            44: 44
+            45: 45
+            46: 46
+            47: 47
+            48: 48
+            49: 49
+            50: 50
+            51: 51
+            52: 52
+            57: 57
+            58: 58
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: child_age
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
