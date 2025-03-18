@@ -263,6 +263,10 @@ figure.align-center {
   margin-right: 5px;
 }
 
+.view-display-id-category_block {
+  display: none;
+}
+
 /* Header top */
 .header-top {
   background-color: #27aae2;
@@ -334,7 +338,7 @@ img[alt="bebbo-hearts"] {
 }
 
 .sidebar .block {
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
   padding: 15px 0px 0px;
 }
 
