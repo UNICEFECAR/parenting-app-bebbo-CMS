@@ -1,16 +1,3 @@
-{% set isEmpty = false %}
-{% for row in rows %}
-	{% set node = row.content['#row']._entity %}
-
-	{% if node.field_related_video_articles|length == 0 and node.field_related_articles|length == 0 %}
-		{% set isEmpty = true %}
-	{% endif %}
-{% endfor %}
-
-{% if isEmpty %}
-	<h2 class="block-title">{{ 'Category'|t }}</h2>
-{% endif %}
-
 {% for row in rows %}
 	{% set node = row.content['#row']._entity %}
 	<div class="views-view-grid horizontal cols-3 clearfix">
