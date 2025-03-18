@@ -7,9 +7,10 @@
       var block2Empty = $('.views-element-container .view-related-views.view-display-id-block_2 .view-content').html().trim() === "";
 
       if (block1Empty && block2Empty) {
-        $('.view-display-id-category_block').show();
+        $('#block-pbtara-views-block-taxonomy-term-display-category-block').show();
       } else {
         console.log('Not empty');
+        $('#block-pbtara-views-block-taxonomy-term-display-category-block').hide();
       }
     }
   };
