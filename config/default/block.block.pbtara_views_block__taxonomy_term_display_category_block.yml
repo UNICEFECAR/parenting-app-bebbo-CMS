@@ -1,0 +1,33 @@
+uuid: e5f05808-7145-46db-bda3-dd51bacd64bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.taxonomy_term_display
+  module:
+    - node
+    - views
+  theme:
+    - pbtara
+id: pbtara_views_block__taxonomy_term_display_category_block
+theme: pbtara
+region: sidebar_second
+weight: -10
+provider: null
+plugin: 'views_block:taxonomy_term_display-category_block'
+settings:
+  id: 'views_block:taxonomy_term_display-category_block'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      article: article
+      video_article: video_article

@@ -12,7 +12,7 @@ dependencies:
 id: pbtara_exposedformcontent_searchpage_1
 theme: pbtara
 region: sidebar_second
-weight: 0
+weight: -2
 provider: null
 plugin: 'views_exposed_filter_block:content_search-page_1'
 settings:
