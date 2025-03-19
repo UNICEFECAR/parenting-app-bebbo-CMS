@@ -1,0 +1,129 @@
+# Schema for the configuration files of the csp module.
+
+csp.settings:
+  type: config_object
+  label: 'Content Security Policy Settings'
+  mapping:
+    report-only:
+      type: csp_policy
+      label: 'Report-Only Policy'
+    enforce:
+      type: csp_policy
+      label: 'Enforce Policy'
+
+csp_policy:
+  type: mapping
+  label: 'Policy'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable'
+    directives:
+      type: sequence
+      label: 'Directives'
+      sequence:
+        type: csp_directive.[%key]
+    reporting:
+      type: mapping
+      label: 'Reporting'
+      mapping:
+        plugin:
+          type: string
+          label: 'The Reporting Handler Plugin ID'
+        options:
+          type: csp_reporting_handler.[%parent.plugin]
+          label: 'Reporting Plugin Options'
+
+csp_directive_source_list:
+  type: mapping
+  mapping:
+    base:
+      type: string
+      label: 'Base'
+    flags:
+      type: sequence
+      label: 'Flags'
+      sequence:
+        type: string
+    sources:
+      type: sequence
+      label: 'Sources'
+      sequence:
+        type: string
+
+csp_directive.default-src:
+  type: csp_directive_source_list
+csp_directive.child-src:
+  type: csp_directive_source_list
+csp_directive.connect-src:
+  type: csp_directive_source_list
+csp_directive.font-src:
+  type: csp_directive_source_list
+csp_directive.frame-src:
+  type: csp_directive_source_list
+csp_directive.img-src:
+  type: csp_directive_source_list
+csp_directive.manifest-src:
+  type: csp_directive_source_list
+csp_directive.media-src:
+  type: csp_directive_source_list
+csp_directive.object-src:
+  type: csp_directive_source_list
+csp_directive.prefetch-src:
+  type: csp_directive_source_list
+csp_directive.script-src:
+  type: csp_directive_source_list
+csp_directive.script-src-attr:
+  type: csp_directive_source_list
+csp_directive.script-src-elem:
+  type: csp_directive_source_list
+csp_directive.style-src:
+  type: csp_directive_source_list
+csp_directive.style-src-attr:
+  type: csp_directive_source_list
+csp_directive.style-src-elem:
+  type: csp_directive_source_list
+csp_directive.webrtc:
+  type: string
+csp_directive.worker-src:
+  type: csp_directive_source_list
+csp_directive.base-uri:
+  type: csp_directive_source_list
+csp_directive.sandbox:
+  type: sequence
+  sequence:
+    type: string
+csp_directive.form-action:
+  type: csp_directive_source_list
+# frame-ancestors does not support unsafe flags
+# @see https://www.w3.org/TR/CSP/#grammardef-ancestor-source-list
+csp_directive.frame-ancestors:
+  type: csp_directive_source_list
+csp_directive.block-all-mixed-content:
+  type: boolean
+csp_directive.upgrade-insecure-requests:
+  type: boolean
+
+csp_reporting_handler.none:
+  type: mapping
+  label: 'None'
+csp_reporting_handler.sitelog:
+  type: mapping
+  label: 'Site Log'
+csp_reporting_handler.report-uri-com:
+  type: mapping
+  label: 'Report URI'
+  mapping:
+    subdomain:
+      type: string
+      label: 'Subdomain'
+    wizard:
+      type: boolean
+      label: 'Wizard'
+csp_reporting_handler.uri:
+  type: mapping
+  label: 'URI'
+  mapping:
+    uri:
+      type: uri
+      label: 'URI'

@@ -3,7 +3,7 @@
         'name' => 'acquia/blt-project',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'aa9860d609566c57c4ca41fe7b698fec1001078b',
+        'reference' => 'b93e2b450e3e0bc1423c9c05d84fa284957b77c8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'acquia/blt-project' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'aa9860d609566c57c4ca41fe7b698fec1001078b',
+            'reference' => 'b93e2b450e3e0bc1423c9c05d84fa284957b77c8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -579,6 +579,15 @@
             'replaced' => array(
                 0 => '10.1.5',
             ),
+        ),
+        'drupal/csp' => array(
+            'pretty_version' => '1.40.0',
+            'version' => '1.40.0.0',
+            'reference' => '8.x-1.40',
+            'type' => 'drupal-module',
+            'install_path' => __DIR__ . '/../../docroot/modules/contrib/csp',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'drupal/csv_serialization' => array(
             'pretty_version' => '4.0.0',

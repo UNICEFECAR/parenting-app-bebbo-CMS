@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * CSP module hooks.
+ */
+
+/**
+ * Implements hook_rebuild().
+ */
+function csp_rebuild() {
+  /** @var \Drupal\csp\LibraryPolicyBuilder $libraryPolicyBuilder */
+  $libraryPolicyBuilder = \Drupal::service('csp.library_policy_builder');
+  $libraryPolicyBuilder->getSources();
+}

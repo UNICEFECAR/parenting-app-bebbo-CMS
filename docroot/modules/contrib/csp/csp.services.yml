@@ -1,0 +1,51 @@
+services:
+  csp.nonce:
+    class: Drupal\csp\Nonce
+
+  csp.policy_helper:
+    class: Drupal\csp\PolicyHelper
+    arguments:
+      - '@csp.nonce'
+
+  csp.response_listener:
+    class: Drupal\csp\EventSubscriber\ResponseCspSubscriber
+    arguments:
+      - '@config.factory'
+      - '@event_dispatcher'
+      - '@csp.nonce'
+      - '@csp.library_policy_builder'
+      - '@plugin.manager.csp_reporting_handler'
+    tags:
+      - { name: event_subscriber }
+
+  csp.library_policy_builder:
+    class: Drupal\csp\LibraryPolicyBuilder
+    arguments:
+      - '@cache.default'
+      - '@module_handler'
+      - '@theme_handler'
+      - '@library.discovery'
+      - '@logger.channel.csp'
+
+  plugin.manager.csp_reporting_handler:
+    class: Drupal\csp\ReportingHandlerPluginManager
+    parent: default_plugin_manager
+
+  csp.core_csp_subscriber:
+    class: Drupal\csp\EventSubscriber\CoreCspSubscriber
+    arguments:
+      - '@library.dependency_resolver'
+      - '@module_handler'
+    tags:
+      - { name: event_subscriber }
+
+  csp.theme_hook_csp_subscriber:
+    class: Drupal\csp\EventSubscriber\ThemeHookCspSubscriber
+    arguments:
+      - '@theme.manager'
+    tags:
+      - { name: event_subscriber }
+
+  logger.channel.csp:
+    parent: logger.channel_base
+    arguments: ['csp']

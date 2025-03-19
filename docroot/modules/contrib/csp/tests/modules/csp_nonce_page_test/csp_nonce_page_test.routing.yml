@@ -1,0 +1,15 @@
+csp_nonce_page_test.test_page_no_nonce:
+  path: '/csp-test-page-no-nonce'
+  defaults:
+    _title: 'Test nonce page'
+    _controller: '\Drupal\csp_nonce_page_test\Controller\TestPageController::testNoNonce'
+  requirements:
+    _access: 'TRUE'
+
+csp_nonce_page_test.test_page_nonce:
+  path: '/csp-test-page-nonce'
+  defaults:
+    _title: 'Test nonce page'
+    _controller: '\Drupal\csp_nonce_page_test\Controller\TestPageController::testNonce'
+  requirements:
+    _access: 'TRUE'
