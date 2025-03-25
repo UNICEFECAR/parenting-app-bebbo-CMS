@@ -1,0 +1,249 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          tags:
+            previous: '‹ Önceki'
+            next: 'Sonraki ›'
+            first: '« İlk'
+            last: 'Son »'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        title:
+          label: Başlık
+          separator: ', '
+        item_count:
+          label: Öğeler
+  assigned:
+    display_title: Atandı
+    display_options:
+      menu:
+        title: Atandı
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      filters:
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        uid:
+          expose:
+            label: Sağlayıcı
+        title:
+          expose:
+            label: Başlık
+  closed:
+    display_title: Kapalı
+    display_options:
+      menu:
+        title: Kapalı
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+          separator: ', '
+        created:
+          label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      filters:
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        uid:
+          expose:
+            label: Sağlayıcı
+        title:
+          expose:
+            label: Başlık
+  completed:
+    display_title: Tamamlandı
+    display_options:
+      menu:
+        title: Tamamlandı
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+          separator: ', '
+        created:
+          label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      filters:
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        uid:
+          expose:
+            label: Sağlayıcı
+        title:
+          expose:
+            label: Başlık
+  pending:
+    display_title: Bekleyen
+    display_options:
+      menu:
+        title: Bekleyen
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+        tuid:
+          separator: ', '
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      filters:
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        uid:
+          expose:
+            label: Sağlayıcı
+        title:
+          expose:
+            label: Başlık
+  rejected:
+    display_title: Reddedildi
+    display_options:
+      menu:
+        title: Reddedildi
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+        created:
+          label: Oluşturulma
+          separator: ', '
+        tuid:
+          separator: ', '
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      filters:
+        source_language:
+          expose:
+            label: 'Kaynak dil'
+        uid:
+          expose:
+            label: Sağlayıcı
+        title:
+          expose:
+            label: Başlık
+  unassigned:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Toplu güncelleme'
+        status:
+          label: Durum
+        title:
+          label: Başlık
+          separator: ', '
+        source_language:
+          label: Kimden
+          separator: ', '
+        target_language:
+          label: Kime
+          separator: ', '
+        item_count:
+          label: Öğeler
+        loop_count:
+          separator: ', '
+        operations:
+          label: İşlemler

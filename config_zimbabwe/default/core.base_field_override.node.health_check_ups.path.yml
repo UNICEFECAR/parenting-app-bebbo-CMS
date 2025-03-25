@@ -1,0 +1,20 @@
+uuid: a060567a-5c65-4da3-b882-ff72b0ee12e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+  module:
+    - path
+id: node.health_check_ups.path
+field_name: path
+entity_type: node
+bundle: health_check_ups
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

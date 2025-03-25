@@ -1,0 +1,18 @@
+uuid: 044b238f-c09f-4e04-a916-2dbd3a57cfa6
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_membership
+id: group_content.country-group_membership.changed
+field_name: changed
+entity_type: group_content
+bundle: country-group_membership
+label: 'Changed on'
+description: 'The time that the group content was last edited.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

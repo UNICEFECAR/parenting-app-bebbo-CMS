@@ -1,0 +1,16 @@
+display:
+  default:
+    display_options:
+      fields:
+        name:
+          label: ব্যবহারকারী
+        group_roles:
+          label: ভূমিকা
+        changed:
+          label: আপডেটকৃত
+        dropbutton:
+          label: কার্যাবলী
+      arguments:
+        gid:
+          exception:
+            title: সমস্ত

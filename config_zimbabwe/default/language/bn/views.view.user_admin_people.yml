@@ -1,0 +1,40 @@
+label: ব্যবহারকারীবৃন্দ
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      title: ব্যবহারকারীবৃন্দ
+      fields:
+        name:
+          label: 'ব্যবহারকারীর নাম'
+        status:
+          label: স্ট্যাটাস
+          settings:
+            format_custom_false: নিষ্ক্রিয়
+            format_custom_true: সক্রিয়
+        roles_target_id:
+          label: ভূমিকা
+        created:
+          label: 'যতদিন ধরে সদস্য'
+        access:
+          label: 'সর্বশেষ ব্যবহার'
+        operations:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      filters:
+        status:
+          group_info:
+            label: স্ট্যাটাস
+            group_items:
+              1:
+                title: সক্রিয়
+              2:
+                title: নিষ্ক্রিয়
+  page_1:
+    display_options:
+      menu:
+        title: তালিকা
+      tab_options:
+        title: ব্যবহারকারীবৃন্দ

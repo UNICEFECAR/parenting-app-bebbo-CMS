@@ -1,0 +1,19 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        type:
+          label: Tип
+        name:
+          label: User
+        link:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      filters:
+        type:
+          expose:
+            label: Tип

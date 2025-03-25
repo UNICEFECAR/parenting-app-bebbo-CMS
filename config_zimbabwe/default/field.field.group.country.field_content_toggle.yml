@@ -1,0 +1,25 @@
+uuid: 1067f1ea-865a-4fe6-a6b9-b58bc3e2c999
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_content_toggle
+    - group.type.country
+  module:
+    - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_content_toggle
+field_name: field_content_toggle
+entity_type: group
+bundle: country
+label: 'Content toggle off'
+description: 'Select tools or sections that should be disabled in the app.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

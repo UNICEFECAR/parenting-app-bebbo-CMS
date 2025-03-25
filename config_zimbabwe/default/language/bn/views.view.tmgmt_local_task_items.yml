@@ -1,0 +1,16 @@
+display:
+  default:
+    display_options:
+      fields:
+        status:
+          label: স্ট্যাটাস
+        item_type:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী
+      arguments:
+        tltid:
+          exception:
+            title: সমস্ত
+  block_1:
+    display_title: ব্লক
