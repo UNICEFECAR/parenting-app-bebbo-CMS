@@ -51,20 +51,6 @@ dependencies:
     - node.type.survey
     - node.type.vaccinations
     - node.type.video_article
-    - taxonomy.vocabulary.child_age
-  content:
-    - 'taxonomy_term:child_age:04fd7356-7d87-48cc-90c8-c1e279d6c0e0'
-    - 'taxonomy_term:child_age:18f97ba2-6aaa-4bf9-b091-6bb14ececff4'
-    - 'taxonomy_term:child_age:1da80bce-47e0-4d1c-8309-281d7a107a16'
-    - 'taxonomy_term:child_age:670f8241-f5ab-4ab7-9440-c233857ee87b'
-    - 'taxonomy_term:child_age:68e9248d-4f86-4e66-b8a8-baeb2e2a09b9'
-    - 'taxonomy_term:child_age:96d4e260-9c9c-43d1-9b72-22efa38f0e7c'
-    - 'taxonomy_term:child_age:c47cbe38-eba4-4f60-9a83-ac210b677c27'
-    - 'taxonomy_term:child_age:d2de49df-f3ec-4c18-b8ee-f3da74a640dd'
-    - 'taxonomy_term:child_age:eea0f4de-3d5b-497b-aae0-c89714320ba5'
-    - 'taxonomy_term:child_age:f61ab0d4-4be0-4aaf-a659-310e26dd0f95'
-    - 'taxonomy_term:child_age:f63598f6-595e-4fa4-bb98-89ac751f0db9'
-    - 'taxonomy_term:child_age:f8ab9faf-82cd-410f-9cbf-b360ba9316a3'
   module:
     - contextual_range_filter
     - custom_serialization
@@ -74,7 +60,6 @@ dependencies:
     - pb_custom_standard_deviation
     - rest
     - serialization
-    - taxonomy
     - text
     - user
 id: articles
@@ -16112,63 +16097,6 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_child_age_target_id:
-          id: field_child_age_target_id
-          table: node__field_child_age
-          field: field_child_age_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: taxonomy_index_tid
-          operator: or
-          value:
-            43: 43
-            44: 44
-            45: 45
-            46: 46
-            47: 47
-            48: 48
-            49: 49
-            50: 50
-            51: 51
-            52: 52
-            57: 57
-            58: 58
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: child_age
-          type: select
-          hierarchy: true
-          limit: true
-          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -16270,7 +16198,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
