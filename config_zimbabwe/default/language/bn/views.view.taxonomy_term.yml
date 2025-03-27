@@ -1,8 +1,0 @@
-display:
-  default:
-    display_title: ডিফল্ট
-    display_options:
-      arguments:
-        tid:
-          exception:
-            title: সমস্ত

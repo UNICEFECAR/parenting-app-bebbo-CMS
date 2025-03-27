@@ -9,6 +9,7 @@ dependencies:
     - media.type.video
   module:
     - content_moderation
+    - entity_share_client
     - file
     - filter
     - media
@@ -39,6 +40,7 @@ permissions:
   - 'edit any image media'
   - 'edit any remote_video media'
   - 'edit any video media'
+  - entity_share_client_pull_content
   - 'manage mobile javascript'
   - 'search content'
   - 'use text format admin_full_html'

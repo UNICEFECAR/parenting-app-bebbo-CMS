@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
+    - field.field.node.article.field_meta_keywords
     - field.field.node.article.field_parent_gender
     - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
@@ -22,7 +23,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
-    - field.field.node.article.field_suggest_as_daily_reads
+    - field.field.node.article.field_type_of_article
     - node.type.article
   module:
     - text
@@ -175,7 +176,8 @@ content:
     region: content
 hidden:
   field_do_not_feature: true
+  field_meta_keywords: true
   field_pre_populated: true
   field_subcategory: true
-  field_suggest_as_daily_reads: true
+  field_type_of_article: true
   langcode: true

@@ -25,8 +25,8 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: keywords
-  langcode: sk
-  insert_new: 1
+  langcode: ro
+  insert_new: 0
   update_existing: 1
   update_non_existent: _keep
   skip_hash_check: false
@@ -44,22 +44,18 @@ custom_sources:
     value: Term_ID
     label: Term_ID
     machine_name: term_id
-  term_id1:
-    value: Term_id
-    label: Term_id
-    machine_name: term_id1
 mappings:
   -
     target: tid
     map:
-      value: term_id1
+      value: term_id
     settings: {  }
     unique:
-      value: '1'
+      value: 1
   -
     target: name
     map:
       value: term_name
     settings:
-      language: sk
+      language: ro
     unique: {  }

@@ -32,9 +32,7 @@ url:
     ro: ro
     ro-ro: ro-ro
     md-ro: md-ro
-    ar: ar
     sk: sk
-    tr: tr
   domains:
     en: ''
     sr: ''
@@ -62,7 +60,5 @@ url:
     ro: ''
     ro-ro: ''
     md-ro: ''
-    ar: ''
     sk: ''
-    tr: ''
 selected_langcode: site_default

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: content_child_development_age_periods
-label: 'Content - Child Dev'
+label: 'Content - Child Dev (EN)'
 channel_entity_type: node
 channel_bundle: child_development
 channel_langcode: en

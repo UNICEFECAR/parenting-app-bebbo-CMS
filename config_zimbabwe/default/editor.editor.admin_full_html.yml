@@ -119,7 +119,7 @@ settings:
         - '<oembed>'
         - '<iframe width height src allow title allowfullscreen>'
         - '<div id data-oembed-url class>'
-        - '<a hreflang>'
+        - '<a hreflang target>'
         - '<blockquote cite>'
         - '<ul type class>'
         - '<ol type>'
