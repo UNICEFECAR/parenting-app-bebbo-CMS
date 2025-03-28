@@ -1,0 +1,10 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: 'RU-Content type'
+      filters:
+        type:
+          expose:
+            label: 'RU-Content type'

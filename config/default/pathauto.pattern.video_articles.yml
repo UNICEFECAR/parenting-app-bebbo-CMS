@@ -1,22 +1,22 @@
-uuid: 7beabb67-80aa-4bd4-86d6-0870c25120b2
+uuid: b654e0a7-066e-4a2b-9407-6d53832d2775
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: games
-label: Games
+id: video_articles
+label: 'Video Articles'
 type: 'canonical_entities:node'
 pattern: '[node:title]'
 selection_criteria:
-  5b8e8825-ec6b-48a9-827a-82759d179df6:
+  5ada3112-1089-4210-9de0-86762b8967e3:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 5b8e8825-ec6b-48a9-827a-82759d179df6
+    uuid: 5ada3112-1089-4210-9de0-86762b8967e3
     context_mapping:
       node: node
     bundles:
-      activities: activities
+      video_article: video_article
 selection_logic: and
-weight: -9
+weight: -5
 relationships: {  }

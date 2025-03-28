@@ -3,18 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.activities
     - node.type.article
-    - node.type.child_development
-    - node.type.child_growth
-    - node.type.daily_homescreen_messages
-    - node.type.faq
-    - node.type.health_check_ups
-    - node.type.milestone
-    - node.type.page
-    - node.type.survey
-    - node.type.vaccinations
-    - node.type.video_article
     - taxonomy.vocabulary.activity_category
     - taxonomy.vocabulary.category
     - taxonomy.vocabulary.child_age
@@ -1324,9 +1313,10 @@ display:
           hide_alter_empty: true
           destination: true
       pager:
-        type: none
+        type: some
         options:
           offset: 0
+          items_per_page: 20
       access:
         type: perm
         options:
@@ -1857,6 +1847,9 @@ display:
         default: '0'
       filename: ''
       automatic_download: true
+      export_method: standard
+      export_batch_size: 10
+      export_limit: 20
       store_in_public_file_directory: false
       custom_redirect_path: false
       redirect_to_display: none
@@ -2404,19 +2397,7 @@ display:
           plugin_id: bundle
           operator: in
           value:
-            all: all
-            activities: activities
             article: article
-            page: page
-            child_development: child_development
-            child_growth: child_growth
-            daily_homescreen_messages: daily_homescreen_messages
-            faq: faq
-            health_check_ups: health_check_ups
-            milestone: milestone
-            survey: survey
-            vaccinations: vaccinations
-            video_article: video_article
           group: 1
           exposed: true
           expose:

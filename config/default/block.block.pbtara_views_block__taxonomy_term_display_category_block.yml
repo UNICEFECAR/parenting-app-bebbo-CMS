@@ -1,4 +1,4 @@
-uuid: e5f05808-7145-46db-bda3-dd51bacd64bf
+uuid: 268845ea-29b6-4fca-8855-38a3fedafef0
 langcode: en
 status: true
 dependencies:
@@ -17,10 +17,10 @@ provider: null
 plugin: 'views_block:taxonomy_term_display-category_block'
 settings:
   id: 'views_block:taxonomy_term_display-category_block'
-  label: Category
+  label: ''
   label_display: visible
   provider: views
-  views_label: Category
+  views_label: ''
   items_per_page: none
 visibility:
   'entity_bundle:node':

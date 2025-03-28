@@ -1,17 +1,22 @@
 _core:
   default_config_hash: yOPH6uEZYRHbg2OFP-bze0jGr06fI-Gr_66W-vA8Faw
 report-only:
-  enable: false
+  enable: true
   directives:
     default-src:
       base: self
     img-src:
       base: self
+    media-src:
+      base: self
+    object-src:
+      base: none
     script-src:
       base: self
+      flags:
+        - unsafe-hashes
+        - strict-dynamic
     script-src-attr:
-      base: self
-    script-src-elem:
       base: self
     style-src:
       base: self
@@ -26,8 +31,21 @@ report-only:
 enforce:
   enable: true
   directives:
+    default-src:
+      base: self
+    img-src:
+      base: self
     object-src:
-      base: none
+      base: self
+    script-src:
+      base: self
+      flags:
+        - unsafe-inline
+        - unsafe-eval
+    style-src:
+      base: self
+      flags:
+        - unsafe-inline
     frame-ancestors:
       base: self
   reporting:

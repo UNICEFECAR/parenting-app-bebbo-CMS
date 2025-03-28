@@ -10,7 +10,8 @@ display:
             offset_label: Offset
       exposed_form:
         options:
+          submit_button: RU-Apply
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Сортировать по'
           sort_asc_label: Asc
           sort_desc_label: Desc

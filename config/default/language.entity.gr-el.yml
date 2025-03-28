@@ -3,7 +3,7 @@ langcode: gr-el
 status: true
 dependencies: {  }
 id: gr-el
-label: Greek
+label: Ελληνικά
 direction: ltr
 weight: -8
 locked: false

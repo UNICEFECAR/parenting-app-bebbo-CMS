@@ -1,0 +1,48 @@
+display:
+  page_1:
+    display_options:
+      filters:
+        field_child_age_target_id:
+          expose:
+            label: 'Возраст ребенка'
+        type:
+          expose:
+            label: 'Тип контента'
+        field_content_category_target_id:
+          expose:
+            label: Категория
+      title: Советы
+      exposed_form:
+        options:
+          exposed_sorts_label: Сбросить
+          submit_button: Применить
+          reset_button_label: Сбросить
+          bef:
+            sort:
+              advanced:
+                combine_rewrite: "Changed Desc|RU-Newest\r\nChanged Asc|RU-Oldest"
+  page_3:
+    display_options:
+      title: Занятия
+      filters:
+        field_activity_category_target_id:
+          expose:
+            label: RU-Category
+        field_child_age_target_id:
+          expose:
+            label: 'RU-Child age'
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Сортировать по'
+          submit_button: RU-Apply
+          reset_button_label: RU-Reset
+          bef:
+            sort:
+              advanced:
+                combine_rewrite: "Changed Desc|RU-Newest\r\nChanged Asc|RU-Oldest"
+  page_2:
+    display_options:
+      filters:
+        field_content_category_target_id:
+          expose:
+            label: Категория
