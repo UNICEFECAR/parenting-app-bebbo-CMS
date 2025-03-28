@@ -8,7 +8,7 @@ display:
         title:
           label: Title
         type:
-          label: 'Content type'
+          label: 'RU-Content type'
           separator: ', '
         name:
           label: Author
@@ -29,7 +29,7 @@ display:
         options:
           submit_button: Filter
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Сортировать по'
           sort_asc_label: Asc
           sort_desc_label: Desc
       filters:
@@ -38,7 +38,7 @@ display:
             label: Title
         type:
           expose:
-            label: 'Content type'
+            label: 'RU-Content type'
         status:
           expose:
             label: Status

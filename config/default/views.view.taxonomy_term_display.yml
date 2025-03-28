@@ -288,6 +288,9 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      title: Category
+      defaults:
+        title: false
       display_description: ''
       rendering_language: '***LANGUAGE_language_interface***'
       display_extenders: {  }
@@ -303,6 +306,7 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      title: Category
       fields:
         tid:
           id: tid
@@ -511,6 +515,7 @@ display:
           separator: ''
           hide_empty: true
       defaults:
+        title: false
         style: false
         row: false
         fields: false

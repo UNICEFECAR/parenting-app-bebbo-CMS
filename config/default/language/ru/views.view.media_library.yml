@@ -15,9 +15,13 @@ display:
       exposed_form:
         options:
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Сортировать по'
           sort_asc_label: Asc
           sort_desc_label: Desc
+      sorts:
+        created:
+          expose:
+            label: RU-Newest
       filters:
         name:
           expose:
