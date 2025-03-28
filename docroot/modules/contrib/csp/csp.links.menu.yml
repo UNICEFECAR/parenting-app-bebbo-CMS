@@ -1,0 +1,6 @@
+csp.settings:
+  title: 'Content Security Policy'
+  parent: system.admin_config_system
+  description: 'Configure policy enforcement.'
+  route_name: csp.settings
+  weight: 0

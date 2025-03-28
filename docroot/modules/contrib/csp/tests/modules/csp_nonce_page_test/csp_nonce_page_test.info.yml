@@ -1,0 +1,9 @@
+name: 'CSP Nonce Test page'
+type: module
+description: 'Provides a test page for CSP Nonce automated tests.'
+package: Testing
+
+# Information added by Drupal.org packaging script on 2025-03-12
+version: '8.x-1.40'
+project: 'csp'
+datestamp: 1741745879

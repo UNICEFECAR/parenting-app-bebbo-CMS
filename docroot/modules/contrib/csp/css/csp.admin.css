@@ -1,0 +1,25 @@
+form.csp-settings .csp-directive-auto {
+  opacity: 0.8;
+  font-size: 75%;
+  font-style: italic;
+}
+form.csp-settings .csp-directive-auto::before {
+  content: "*";
+}
+form.csp-settings [data-drupal-selector$="reporting-handler"] .form-radios,
+form.csp-settings [data-drupal-selector$="directives"] .form-radios,
+form.csp-settings [data-drupal-selector$="directives"] .form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+form.csp-settings [data-drupal-selector$="reporting-handler"] .form-radios .form-item,
+form.csp-settings [data-drupal-selector$="directives"] .form-radios .form-item,
+form.csp-settings [data-drupal-selector$="directives"] .form-checkboxes .form-item {
+  margin-right: 3ex;
+}
+form.csp-settings [data-drupal-selector$="directives"] [data-drupal-selector$="-options"] {
+  margin-left: 2.5ex;
+}
+form.csp-settings [data-drupal-selector$="directives"] [data-drupal-selector$="-sources"][disabled] {
+  color: transparent;
+}
