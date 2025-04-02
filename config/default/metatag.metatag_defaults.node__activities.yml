@@ -1,0 +1,8 @@
+uuid: b16b2a34-9433-4b28-942e-2a380ab425bf
+langcode: en
+status: true
+dependencies: {  }
+id: node__activities
+label: 'Content: Games'
+tags:
+  keywords: '[node:field_meta_keywords]'

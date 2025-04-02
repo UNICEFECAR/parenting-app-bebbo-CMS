@@ -25,6 +25,7 @@
         "drupal/core-composer-scaffold": "10.1.5",
         "drupal/core-project-message": "10.1.5",
         "drupal/core-recommended": "10.1.5",
+        "drupal/csp": "^1.40",
         "drupal/date_popup": "^1.1",
         "drupal/entity": "^1.2",
         "drupal/entity_share": "^3.0",

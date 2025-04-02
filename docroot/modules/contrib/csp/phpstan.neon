@@ -1,0 +1,24 @@
+includes:
+  - phar://phpstan.phar/conf/bleedingEdge.neon
+parameters:
+  level: 1
+  fileExtensions:
+    - php
+    - module
+    - inc
+    - install
+  reportUnmatchedIgnoredErrors: false
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    - "#^Unsafe usage of new static#"
+    - "#Drupal calls should be avoided in classes, use dependency injection instead#"
+    - "#^Plugin definitions cannot be altered.#"
+    -
+      messages:
+        - '#Call to an undefined method .*::expects\(\)#'
+        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::.*\(\)#'
+      path: tests/*
+    # New MemoryBackend parameter is safe to ignore for 10.2 and prior
+    -
+      message: '#Class Drupal\\Core\\Cache\\MemoryBackend does not have a constructor and must be instantiated without any parameters\.#'
+      path: tests/src/Unit/LibraryPolicyBuilderTest.php

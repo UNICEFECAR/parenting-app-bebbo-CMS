@@ -1,0 +1,16 @@
+csp.settings:
+  path: '/admin/config/system/csp'
+  defaults:
+    _form: '\Drupal\csp\Form\CspSettingsForm'
+    _title: 'Content Security Policy'
+  requirements:
+    _permission: 'administer csp configuration'
+
+csp.reporturi:
+  path: '/report-uri/{type}'
+  defaults:
+    _controller: '\Drupal\csp\Controller\ReportUri::log'
+  requirements:
+    _access: 'TRUE'
+  options:
+    no_cache: 'TRUE'

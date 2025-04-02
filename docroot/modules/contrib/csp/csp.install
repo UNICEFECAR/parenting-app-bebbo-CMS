@@ -1,0 +1,181 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for csp.module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function csp_requirements($phase) {
+  $requirements = [];
+
+  if ($phase === 'runtime') {
+    $cspSettingsConfig = \Drupal::config('csp.settings');
+
+    $enabledPolicies = array_filter(['report-only', 'enforce'], function ($policyTypeKey) use ($cspSettingsConfig) {
+      return $cspSettingsConfig->get($policyTypeKey . '.enable');
+    });
+    if (empty($enabledPolicies)) {
+      $requirements['csp_enabled'] = [
+        'title' => 'Content Security Policy',
+        'value' => t('No Content Security Policy headers are currently enabled.'),
+        'description' => t(
+          'Enable a header via <a href=":csp-settings">the Content Security Policy settings</a>.',
+          [
+            ':csp-settings' => \Drupal::urlGenerator()
+              ->generateFromRoute('csp.settings'),
+          ]
+        ),
+        'severity' => REQUIREMENT_WARNING,
+      ];
+    }
+
+    // Warn if CSP is also enabled in Security Kit module configuration.
+    if (
+      \Drupal::moduleHandler()->moduleExists('seckit')
+      &&
+      \Drupal::config('seckit.settings')->get('seckit_xss.csp.checkbox')
+    ) {
+      $requirements['csp_seckit'] = [
+        'title' => 'Content Security Policy - Security Kit',
+        'value' => t('Enabling Content Security Policy in Security Kit is likely to cause policy conflicts.'),
+        'description' => t(
+          'Disable the Content Security Policy settings in <a href=":seckit-settings">Security Kit configuration</a>.',
+          [
+            ':seckit-settings' => \Drupal::urlGenerator()
+              ->generateFromRoute('seckit.settings'),
+          ]
+        ),
+        'severity' => REQUIREMENT_WARNING,
+      ];
+    }
+
+    $sitelogPolicies = array_filter(['report-only', 'enforce'], function ($policyTypeKey) use ($cspSettingsConfig) {
+      return $cspSettingsConfig->get($policyTypeKey . '.reporting.plugin') === 'sitelog';
+    });
+    if ($sitelogPolicies) {
+      $requirements['csp_sitelog'] = [
+        'title' => 'Content Security Policy Reporting',
+        'value' => t('Deprecated reporting handler'),
+        'description' => t('The Site Log reporting handler is deprecated in 1.x and will be removed in 2.x. Use the <a href=":reporting-module">Reporting API module</a> instead.',
+        [
+          ':reporting-module' => 'https://www.drupal.org/project/reporting',
+        ]),
+        'severity' => REQUIREMENT_WARNING,
+      ];
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Create module configuration.
+ */
+function csp_update_8001() {
+  \Drupal::configFactory()->getEditable('csp.settings')
+    ->set('enforce', FALSE)
+    ->save();
+}
+
+/**
+ * Set default reporting settings.
+ */
+function csp_update_8002() {
+  \Drupal::configFactory()->getEditable('csp.settings')
+    ->set('report.handler', 'csp-module')
+    ->save();
+}
+
+/**
+ * Update configuration format.
+ */
+function csp_update_8003() {
+  $config = \Drupal::configFactory()->getEditable('csp.settings');
+
+  $enabledPolicy = 'report-only';
+  $disabledPolicy = 'enforce';
+
+  if ($config->get('enforce')) {
+    $enabledPolicy = 'enforce';
+    $disabledPolicy = 'report-only';
+  }
+
+  $config
+    ->set($enabledPolicy, [
+      'enable' => TRUE,
+      'directives' => [
+        'script-src' => [
+          'base' => 'self',
+          'flags' => [
+            'unsafe-inline',
+          ],
+        ],
+        'style-src' => [
+          'base' => 'self',
+        ],
+      ],
+    ])
+    ->set($disabledPolicy, [
+      'enable' => FALSE,
+    ])
+    ->save();
+}
+
+/**
+ * Update configuration for Reporting Plugins.
+ */
+function csp_update_8101() {
+  $config = \Drupal::configFactory()->getEditable('csp.settings');
+
+  $pluginMap = [
+    '' => 'none',
+    'report-uri-com' => 'report-uri-com',
+    'csp-module' => 'sitelog',
+    'uri' => 'uri',
+  ];
+
+  $reportConfig = $config->get('report');
+  $reportConfig['plugin'] = $pluginMap[$reportConfig['handler']];
+  unset($reportConfig['handler']);
+
+  $config
+    ->set('report', $reportConfig)
+    ->save();
+}
+
+/**
+ * Update configuration with per-policy reporting settings.
+ */
+function csp_update_8102() {
+  $config = \Drupal::configFactory()->getEditable('csp.settings');
+
+  $reportingOptions = $config->get('report');
+  $config->clear('report');
+
+  foreach (['enforce', 'report-only'] as $policyType) {
+    if (!$config->get($policyType . '.enable')) {
+      continue;
+    }
+    $config->set($policyType . '.reporting', $reportingOptions);
+  }
+
+  $config->save();
+}
+
+/**
+ * Remove navigate-to directive.
+ */
+function csp_update_8103() {
+  // navigate-to was not implemented in browsers and has been removed.
+  // @see https://github.com/w3c/webappsec-csp/pull/564
+  $config = \Drupal::configFactory()->getEditable('csp.settings');
+
+  foreach (['enforce', 'report-only'] as $policyType) {
+    $config->clear($policyType . '.directives.navigate-to');
+  }
+
+  $config->save();
+}
