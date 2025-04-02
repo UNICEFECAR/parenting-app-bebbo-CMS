@@ -1,0 +1,758 @@
+blocks:
+  -
+    info: 'BLOCK 9'
+    langcode: en
+    uuid: a450e752-a8ab-4e0b-a05d-840dc8145324
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: "<div style=\"position: absolute; left: -9999rem;\">\r\n<a href=\"https://www.cafemajestic.com/portal/dumatoto-mahjong-ways.html\">dumatoto mahjong ways</a>\r\n<a href=\"https://www.cafemajestic.com/portal/kakek-zeus-gacor.html\">kakek zeus gacor</a>\r\n<a href=\"https://www.cafemajestic.com/portal/link-gacor-dumatoto.html\">link gacor dumatoto</a>\r\n<a href=\"https://www.cafemajestic.com/portal/mahjong-hitam-gacor.html\">mahjong hitam gacor</a>\r\n<a href=\"https://www.cafemajestic.com/portal/mahjong-ways-2.html\">mahjong ways 2</a>\r\n<a href=\"https://www.cafemajestic.com/portal/mahjong-ways-hitam.html\">mahjong ways hitam</a>\r\n<a href=\"https://www.cafemajestic.com/portal/maxwin-gates-olympus.html\">maxwin gates olympus</a>\r\n<a href=\"https://www.cafemajestic.com/portal/rtp-tertinggi-dumatoto.html\">rtp tertinggi dumatoto</a>\r\n<a href=\"https://www.cafemajestic.com/portal/situs-dumatoto-terpercaya.html\">situs dumatoto terpercaya</a>\r\n<a href=\"https://www.cafemajestic.com/portal/situs-mahjong-paling-gacor.html\">situs mahjong paling gacor</a>\r\n</div>"
+          summary: ''
+          format: plain_text
+  -
+    info: 'BLOCK 7 - BEBBO FAMILIES'
+    langcode: en
+    uuid: 010029c4-438b-424d-a845-19f2352b47c8
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="scroll-menu" id="bebbo_families"><h2>Bebbo is transforming parenting and expanding support for parents across the globe.</h2><p>Discover how Bebbo is making a change for parents in different countries:</p><div class="container"><div class="row"><div class="col-md-3"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="c47dd153-b5f9-4227-91de-403324b519e4">&nbsp;</drupal-media></div><div class="featured-bb-text"><h6>Serbia:&nbsp;<br>From Advice<br>to Reassurance</h6><div class="content-bb"><a href="https://www.unicef.org/serbia/en/stories/from-advice-to-reassurance">Read more...</a></div></div></div><div class="col-md-3"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="72ed87e1-c6a9-4c69-862d-dc4b01847708">&nbsp;</drupal-media></div><div class="featured-bb-text"><h6>Moldova:&nbsp;<br>Happy Bebbo Fest!</h6><div class="content-bb"><a href="https://www.unicef.org/moldova/en/stories/bebbo-fest-event-parents-and-children-marked-music-and-outdoor-activities">Read more...</a></div></div></div><div class="col-md-3"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="3b1ea029-94c8-45e8-9702-e8ffeb8c5023">&nbsp;</drupal-media></div><div class="featured-bb-text"><h6>Montenegro:&nbsp;<br>A Father''s Journey with Bebbo</h6><div class="content-bb"><a href="https://www.unicef.org/montenegro/en/stories/bojan-bebbo-reliable-teacher">Read more...</a></div></div></div><div class="col-md-3"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="da430250-fb2f-4afb-b95c-7730e8bf19de">&nbsp;</drupal-media></div><div class="featured-bb-text"><h6>Romania:&nbsp;<br>Bebbo, a Helping Hand<br>for Mothers</h6><div class="content-bb"><a href="https://www.unicef.org/romania/press-releases/mothers-make-80-romanian-users-bebbo-unicefs-free-parenting-app">Read more...</a></div></div></div></div></div></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'Footer logo - BEBBO'
+    langcode: en
+    uuid: 818b3d26-b81d-4ac7-a3ba-672971a60f60
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<drupal-media data-entity-type="media" data-entity-uuid="35c5204c-e015-4601-857e-96045f9fc6fc" data-align="center">&nbsp;</drupal-media>'
+          summary: ''
+          format: full_html
+  -
+    info: 'BLOCK 8 - BEBBO CONTACT'
+    langcode: en
+    uuid: 4c483be0-8646-4f5f-89ed-ac2d57ec85e4
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<p>Stay connected and never miss an update! <a href="https://slmls.mjt.lu/wgt/slmls/xxow/form?c=4b84a8a2">Subscribe to the Bebbo newsletter</a> for app features and news on how we''re shaping the future of parenting support.</p><drupal-media data-entity-type="media" data-entity-uuid="981efb53-bbb7-4976-924b-f9d199700f27" data-align="center">&nbsp;</drupal-media><p>Support the development and growth of Bebbo and become UNICEF''s partner in empowering millions of parents worldwide through innovation! For more information please contact <a href="mailto:admin@bebbo.app">admin@bebbo.app</a></p>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'BLOCK 6 - BEBBO FEATURES'
+    langcode: en
+    uuid: b24e81f4-764d-47d8-88d8-7fd8109637ba
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="scroll-menu" id="features"><h2>How does Bebbo help parents raise thriving children?</h2><p>The Bebbo App has a huge range of helpful features empowering parents to make the right decisions when it comes to the care and development of their child. Encouraging parents to engage daily with suggested articles and games that will help their little ones hit those key development milestones while growing healthy and happy.</p><p>&nbsp;</p><div><div class="container"><div class="row"><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="01cbf82a-d28f-48da-ad6d-2510bc9e3308" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Suggested Daily Reads</div><div class="content-bb">Every day the app will suggest a daily game and an article from a rich library of parenting advice written by experts, covering a large range of topics available in the app, such as baby weaning and early learning. All advice can be quickly saved as favorites and shared with other parents or friends.</div></div></div><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="03f1910d-4925-4722-bb5c-b14ab4c38ec2" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Parenting tips for playing with your children</div><div class="content-bb">Bebbo offers plenty of ideas on how to engage in playful interaction with children through games that will stimulate learning and development. Parents will be able to choose games that support the development of motor and socio-emotional skills, language, communication and cognition.</div></div></div><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="f6a528e2-8e04-4379-9de1-498e2548e627" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Child development tracker</div><div class="content-bb">This tool is easy-to-use and helps parents track their child’s progress in reaching the milestones recommended for his/her age. It will assist parents on how to support development through play.</div></div></div></div><div class="row"><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="7ed6f952-73e8-4c60-b498-d7b10f58daa1" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Child’s vaccinations</div><div class="content-bb">A handy vaccination record is available for parents to easily track and record your child’s vaccinations.</div></div></div><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="db1b171e-d440-447f-a678-ab643fe5404e" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Child’s health check-up</div><div class="content-bb">The health check-up tool allows parents to note down information from their child’s doctor visits, as well as setting reminders for doctor’s appointments.</div></div></div><div class="col-md-4"><div class="featured-bb-image"><drupal-media data-entity-type="media" data-entity-uuid="009d229b-7866-4adc-bbbc-7c13511d0b3c" data-align="center">&nbsp;</drupal-media></div><div class="featured-bb-text"><div class="head-text">Child’s growth tracker</div><div class="content-bb">This tool allows parents to track their child’s measurements such as height and weight.</div></div></div></div></div></div></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'BLOCK 5'
+    langcode: en
+    uuid: 40ce03fb-03dd-4387-9579-dd05d8daaa5f
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body: {  }
+  -
+    info: 'BLOCK 4 - ICONS (BEBBO)'
+    langcode: en
+    uuid: 59f17a94-d7e4-41b2-9fbe-c555157d02f8
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="img-wrapper"><div class="img-wrapper-sub"><div class="para-img-wrap"><drupal-media data-entity-type="media" data-entity-uuid="d87a0107-eb77-468f-9add-d8565df1cb68" data-align="center">&nbsp;</drupal-media><p>Health<br>and wellbeing</p></div><div class="para-img-wrap"><drupal-media data-entity-type="media" data-entity-uuid="7ef74cfd-a92a-42ca-8c0e-3bd7a367bc91" data-align="center">&nbsp;</drupal-media><p>Adequate<br>nutrition</p></div><div class="para-img-wrap"><drupal-media data-entity-type="media" data-entity-uuid="d5b1b6be-b68d-45a5-a5be-f1c6c41e347c" data-align="center">&nbsp;</drupal-media><p>Responsive<br>parenting</p></div></div><div class="img-wrapper-sub2"><div class="para-img-wrap"><drupal-media data-entity-type="media" data-entity-uuid="93fa6d59-d97c-41ce-819a-bb6ea4bbbab7" data-align="center">&nbsp;</drupal-media><p>Security<br>and safety</p></div><div class="para-img-wrap"><drupal-media data-entity-type="media" data-entity-uuid="a0af7cdb-ce89-47ad-b93f-4aba1fead6f0" data-align="center">&nbsp;</drupal-media><p>Early<br>learning</p></div></div></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'BLOCK 3 – WHY BEBBO?'
+    langcode: en
+    uuid: 56260c02-936f-42dd-bbb8-c4fe1f480add
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="scroll-menu" id="why-bebbo"><h2>Strong foundations are built in the early years</h2><p>Every child needs nurturing, good nutrition, good health and a stimulating and safe environment to develop to their full potential. To raise thriving children, parents need support.</p><p>The free app developed by UNICEF and national partners is designed to lend a helping hand to parents, with easy parenting tips on topics like breastfeeding, baby weaning, learning, playing and toys, child protection and much more. Bebbo provides parents with information based on studies and UNICEF’s years of expertise. Set of interactive tools help parents track their child''s development and health checkups.&nbsp;</p></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'BLOCK 2 - DOWNLOAD'
+    langcode: en
+    uuid: b790dcf1-50b4-4fa8-9e6e-bdb0da4f63be
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="block-download-doubl-heart scroll-menu" id="download"><drupal-media data-entity-type="media" data-entity-uuid="017fc30f-8d4c-4fe2-8ebb-9cfb347e44a1" data-align="center">&nbsp;</drupal-media></div><div class="block-download-text">Since its launch in 2021, UNICEF''s parenting app Bebbo has become one of the most trusted sources of advice for parents globally. Started in Europe and Central Asia and currently localized in 15 languages, Bebbo offers parents of young children expert advice and tools on young child development - from health and nutrition, care for the newborn to safety and parental wellbeing. The Bebbo app is a parenting innovation, <span>recognized as </span><a href="https://app.digitalpublicgoods.net/a/11084"><span>a Digital Public Good</span></a><span>, </span>available to parents online and offline. Stay tuned for more news about new countries launching Bebbo!</div><div>&nbsp;</div><div class="block-download-text"><p>Bebbo was honored with the Silver Award in the Technology for Good category at the Global Good Awards 2024, recognizing its positive impact. Additionally, the Bebbo parenting app has been named one of the top 100 innovations to watch in the <a href="https://hundred.org/en/reports/hundred-global-collection-2025">HundrED Global Collection for 2025</a>, underscoring its growing influence in parenting support for children’s education. UNICEF Kyrgyzstan received the prestigious <a href="https://shortyawards.com/9th-impact/becoming-better-parents-with-bebbo">GoldHonour Shorty Impact Award</a> for its partnership with the National Television to create a TV series for parents inspired by the Bebbo parenting app.&nbsp;&nbsp;</p><div class="block-download-doubl-heart scroll-menu" id="download"><drupal-media data-entity-type="media" data-entity-uuid="ec24fcd0-6a31-4737-b88f-8fc90f0e8c67" data-align="center">&nbsp;</drupal-media></div></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'BLOCK 1 - HOME'
+    langcode: en
+    uuid: 58dd1257-a277-4006-bd29-18a2dc7c2df9
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: '<div class="container"><div class="row"><div class="col-md-6 flx"><div class="pb-video-text-wap"><div class="pb-video-text"><h1>Download Bebbo today!</h1></div><div class="subtitle-video-text">It''s where smart parenting begins, offering a world of resources and support to parents and other caregivers for a young child''s development, growth, nutrition and much more.</div></div><div class="row"><br>&nbsp;</div><div class="row"><div class="block-download-googlelogo"><a href="https://play.google.com/store/apps/details?id=org.unicef.ecar.bebbo"><drupal-media data-entity-type="media" data-entity-uuid="a2635572-ce8f-44dc-bf31-54d9ea6f7898" data-align="center">&nbsp;</drupal-media></a></div><div class="block-download-applogo"><a href="https://apps.apple.com/us/app/bebbo/id1588918146"><drupal-media data-entity-type="media" data-entity-uuid="ec3eb406-b99d-475d-9f86-5bff23e3c2b9" data-align="center">&nbsp;</drupal-media></a></div></div></div><div class="col-md-6"><div class="pb-video"><iframe width="560" height="315" src="https://www.youtube.com/embed/ewU6rpxCxO8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" title="YouTube video player" allowfullscreen=""></iframe></div></div></div></div>'
+          summary: ''
+          format: admin_full_html
+  -
+    info: 'Kosovo Logo'
+    langcode: en
+    uuid: 89c9a297-e84c-4422-8c77-8568cb271855
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: "<div class=\"main-logo\"><a href=\"https://www.bebbo.app\">\r\n<drupal-media data-align=\"center\" data-entity-type=\"media\" data-entity-uuid=\"d0e21b2d-1ab3-4a26-92d8-d0b730c202b5\"></drupal-media>\r\n</a>Foleja - Bashkë me ju në prindërim</div>\r\n<a href=\"https://www.unicef.org\">\r\n<drupal-media data-align=\"center\" data-entity-type=\"media\" data-entity-uuid=\"3a9d0e6a-4418-4d30-9ec2-b361c08a7ed8\"></drupal-media>\r\n</a>\r\n\r\n<div class=\"navbar-toggle\">\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n</div>\r\n"
+          summary: ''
+          format: admin_full_html
+  -
+    info: Logo
+    langcode: en
+    uuid: 3e466a00-3228-4ee8-b5d3-40e30bb6fbd8
+    bundle: basic
+    revision_id: null
+    rev_id_current: null
+    fields:
+      body:
+        -
+          value: "<div class=\"header-un-menu\">\r\n<div class=\"header-un-logo\">\r\n<drupal-media data-align=\"center\" data-entity-type=\"media\" data-entity-uuid=\"202f163c-76cd-453f-af5d-dee6c17fa2fa\"></drupal-media>\r\n</div>\r\n\r\n<div class=\"main-logo\"><a href=\"https://www.bebbo.app\">\r\n<drupal-media data-align=\"center\" data-entity-type=\"media\" data-entity-uuid=\"9158919f-1a87-4850-aa42-429d41c865b1\"></drupal-media>\r\n</a>UNICEF’s Parenting App</div>\r\n\r\n<div class=\"navbar-toggle\">\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n\r\n<div class=\"icon-bar\">&nbsp;</div>\r\n</div>\r\n</div>\r\n"
+          summary: ''
+          format: admin_full_html
+menus:
+  -
+    menu_name: editorial-menu
+    title: 'Manage Content'
+    parent: null
+    uri: 'internal:/global-content-list'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: 66da6c66-6252-497a-b0d8-53ed20212dc7
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Content'
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    uri: 'internal:/node/add'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -47
+    langcode: en
+    uuid: 8bd8e166-b0b5-4070-8004-705946477f28
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Global Content'
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    uri: 'internal:/global-content-list'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: b4b73541-f9d7-4ca7-acc0-855c95556a4a
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Country Content'
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    uri: 'internal:/country-content-list'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: 51afa768-e69e-4e9e-8c3a-25187410c2bf
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Taxonomies'
+    parent: null
+    uri: 'internal:/admin/structure/taxonomy'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 6ffc3c54-07d8-4788-8e51-663b6737d818
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Country'
+    parent: null
+    uri: 'internal:/admin/group'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -48
+    langcode: en
+    uuid: 43d7c694-1ab4-446e-bd39-76009d2ed5dc
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Country'
+    parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
+    uri: 'internal:/group/add/country'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 71693b5d-55eb-4847-ab62-74f1d6dde7c8
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Country List'
+    parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
+    uri: 'internal:/admin/group'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: 926c5da5-45a7-4ab5-9031-a165f5fd6dce
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Language'
+    parent: null
+    uri: 'internal:/admin/config/regional/language/add'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -46
+    langcode: en
+    uuid: e4fbbe06-dedb-4497-81c0-42ed48a7389f
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Language'
+    parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
+    uri: 'internal:/admin/config/regional/language/add'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 51ef2a66-2df6-4dd5-baf4-a5987010ba30
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Language List'
+    parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
+    uri: 'internal:/admin/config/regional/language'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: 61e227a4-33cf-47c5-8ec6-ac318d970c63
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Users'
+    parent: null
+    uri: 'internal:/users'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -47
+    langcode: en
+    uuid: c659125b-835a-4622-847b-f5ba2bba7f4f
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Users'
+    parent: 'menu_link_content:c659125b-835a-4622-847b-f5ba2bba7f4f'
+    uri: 'internal:/admin/people/create'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 07634636-74b5-4e48-8e0a-0c6c14e6e719
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Group Users'
+    parent: 'menu_link_content:c659125b-835a-4622-847b-f5ba2bba7f4f'
+    uri: 'internal:/group/41/members'
+    link_title: null
+    description: null
+    enabled: false
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: d21fa9a6-0e5e-4bb4-9f05-2a0fb577498e
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'User List'
+    parent: 'menu_link_content:c659125b-835a-4622-847b-f5ba2bba7f4f'
+    uri: 'internal:/users'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -48
+    langcode: en
+    uuid: ea19dbd1-9f2e-4f1b-abe2-ed2e619cf43b
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: ' Manage Translations'
+    parent: null
+    uri: 'internal:/admin/tmgmt'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -45
+    langcode: en
+    uuid: 65004a8e-ba1f-43f8-a108-37d55d29aba7
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Media'
+    parent: null
+    uri: 'internal:/admin/content/media'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -44
+    langcode: en
+    uuid: bcf35cf7-73e2-4ea4-a568-dea9bee18661
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Media List'
+    parent: 'menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661'
+    uri: 'internal:/admin/content/media'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: 283a6bbe-7ab6-446f-97bc-ede852ba6338
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Media'
+    parent: 'menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661'
+    uri: 'internal:/media/add'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 6cff2259-4049-4ff5-a797-b9a4071156d0
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: Dashboard
+    parent: null
+    uri: 'internal:/profile'
+    link_title: ''
+    description: null
+    enabled: false
+    expanded: false
+    weight: -42
+    langcode: en
+    uuid: 68116ac7-63d6-4431-b647-487ddc88f231
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Country Users'
+    parent: null
+    uri: 'internal:/group/146/members'
+    link_title: null
+    description: null
+    enabled: true
+    expanded: false
+    weight: -43
+    langcode: en
+    uuid: 561521ca-3ac0-481f-ba4e-a31239456a45
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Translation Jobs'
+    parent: null
+    uri: 'internal:/admin/tmgmt/job_items'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -41
+    langcode: en
+    uuid: 61da3e38-12b5-4b43-928f-c929c9ebb814
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Google Analytics'
+    parent: null
+    uri: 'internal:/admin/config/system/google-analytics'
+    link_title: ''
+    description: null
+    enabled: false
+    expanded: false
+    weight: -40
+    langcode: en
+    uuid: 1dcbbdad-f6f1-4abc-87dd-febd30d97d1b
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: Dashboard
+    parent: null
+    uri: 'internal:/dashboard'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -39
+    langcode: en
+    uuid: 819297d2-c5d6-4915-9e17-4c881f438abd
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Reports'
+    parent: null
+    uri: 'route:<nolink>'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -38
+    langcode: en
+    uuid: 3c7e267a-6c10-4efd-8654-41d657c1ecf6
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Country Reports'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/country-reports'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: b79316ca-8c26-42f0-abdf-8f054c80e4ce
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Keyword link to content'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/keyword-link-to-content'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -48
+    langcode: en
+    uuid: 124e8726-a1d3-493e-a24f-7fb2a434f3be
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Keyword Not linked to content'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/keyword-notlink-to-content'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 5c33f0c2-a86c-4e11-b7cc-7ed35703795f
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Taxonomy Export'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/taxonomy-export/en'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -47
+    langcode: en
+    uuid: 74f2eb98-339f-434f-9f56-a2b5fa1f6d6e
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Users Reports'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/users-reports'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -45
+    langcode: en
+    uuid: d8eb3afe-9e45-437f-923f-1755ff030df8
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Taxonomy Export - Standard Deviation'
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    uri: 'internal:/taxonomy-export-standard-deviation/en'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -46
+    langcode: en
+    uuid: 1d96a1c4-d4e3-4e7e-939c-1029c8a974ca
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Manage Force Update'
+    parent: null
+    uri: 'route:<nolink>'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: 89b69e27-2acb-4528-aa42-134d864d2c4f
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Force Update Config'
+    parent: 'menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f'
+    uri: 'internal:/admin/config/parent-buddy/forcefull-update-check'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: 1957d201-3fc5-4b1c-a9dd-03b0f5f89f79
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Force Update List'
+    parent: 'menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f'
+    uri: 'internal:/force-update-check'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: d41a7dc9-f812-4d71-97e5-d68aa7caff46
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Import Taxonomy'
+    parent: null
+    uri: 'internal:/admin/structure/feeds'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 10
+    langcode: en
+    uuid: 2f932b25-2b85-4721-bc41-dba801403ba8
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Feeds Type'
+    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    uri: 'internal:/admin/structure/feeds'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 1
+    langcode: en
+    uuid: dda3433c-2fd2-4880-bdc6-9c0bd8f90d47
+    options: {  }
+  -
+    menu_name: editorial-menu
+    title: 'Add Feed'
+    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    uri: 'internal:/admin/content/feed'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 2
+    langcode: en
+    uuid: 6195c940-bdcf-483a-9bf2-ecbd96b99ddd
+    options: {  }
+  -
+    menu_name: main
+    title: 'About Us'
+    parent: null
+    uri: 'internal:/about-us'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -45
+    langcode: en
+    uuid: 7c08c104-94b0-405a-bc91-52fa41efde0e
+    options:
+      attributes:
+        target: _blank
+  -
+    menu_name: main
+    title: 'Privacy Policy'
+    parent: null
+    uri: 'internal:/privacy-policy'
+    link_title: ''
+    description: null
+    enabled: false
+    expanded: false
+    weight: -44
+    langcode: en
+    uuid: 75b0da68-01d9-4088-b965-3abb1df5bc39
+    options: {  }
+  -
+    menu_name: main
+    title: 'WHY BEBBO?'
+    parent: null
+    uri: 'internal:/#why-bebbo'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -48
+    langcode: en
+    uuid: b87411f5-92e8-49c5-818f-80dc015e1b3d
+    options: {  }
+  -
+    menu_name: main
+    title: Download
+    parent: null
+    uri: 'internal:/#download'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -49
+    langcode: en
+    uuid: 71c0abd6-7bf2-44be-b8c4-d3ce909e781c
+    options: {  }
+  -
+    menu_name: main
+    title: FEATURES
+    parent: null
+    uri: 'internal:/#features'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -47
+    langcode: en
+    uuid: cbc13f68-ef4d-4418-978b-92f1698a27c1
+    options: {  }
+  -
+    menu_name: main
+    title: Stories
+    parent: null
+    uri: 'internal:/#case_studies'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -46
+    langcode: en
+    uuid: 6e1eb80a-d00f-4ab8-9b07-1108630a6aad
+    options: {  }
+  -
+    menu_name: main
+    title: Home
+    parent: null
+    uri: 'internal:/'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: -50
+    langcode: en
+    uuid: 8237687b-9dcf-470e-bbd3-c4310f3b0ef0
+    options: {  }
+  -
+    menu_name: footer
+    title: 'Privacy Policy'
+    parent: null
+    uri: 'internal:/privacy-policy'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: 2d8e5c94-2010-4ae6-9be2-ecc3765080d2
+    options:
+      attributes:
+        target: _blank
+  -
+    menu_name: footer
+    title: 'Terms and conditions'
+    parent: null
+    uri: 'internal:/terms-and-conditions'
+    link_title: ''
+    description: null
+    enabled: true
+    expanded: false
+    weight: 0
+    langcode: en
+    uuid: 5cf60c6a-48c1-4763-9baa-a54e47cf5fb0
+    options:
+      attributes:
+        target: _blank

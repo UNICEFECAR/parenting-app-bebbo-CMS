@@ -1,0 +1,26 @@
+uuid: 29faaa14-c2c4-4cd9-882c-12905cfe3190
+langcode: en
+status: true
+dependencies:
+  config:
+    - rest.resource.custom_rest_resource
+  module:
+    - media
+    - pb_custom_form
+    - rest
+    - search
+    - system
+    - taxonomy
+_core:
+  default_config_hash: pq_mEIu_B4widZN7Ap81iCJSjShFFdcL0jEiCi8VrDk
+id: anonymous
+label: 'Anonymous user'
+weight: -10
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access taxonomy overview'
+  - 'manage mobile javascript'
+  - 'restful get custom_rest_resource'
+  - 'search content'
+  - 'view media'

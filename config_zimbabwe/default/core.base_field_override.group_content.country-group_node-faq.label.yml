@@ -1,0 +1,18 @@
+uuid: ca4b4239-2f69-457a-abe2-d5f550fba5f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.content_type.country-group_node-faq
+id: group_content.country-group_node-faq.label
+field_name: label
+entity_type: group_content
+bundle: country-group_node-faq
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
