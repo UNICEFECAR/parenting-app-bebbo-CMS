@@ -19,16 +19,16 @@ mode: media_library
 content:
   field_media_image:
     type: image
-    label: above
+    label: hidden
     settings:
       image_link: content
       image_style: content_1200xh_
+      image_loading:
+        attribute: lazy
       svg_attributes:
         width: null
         height: null
       svg_render_as_image: true
-      image_loading:
-        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content

@@ -1,0 +1,40 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Süzgeç
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          tags:
+            previous: '‹ önceki'
+            next: 'sonraki ›'
+            first: '« ilk'
+            last: 'son »'
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+      fields:
+        redirect_source__path:
+          label: Kimden
+          separator: ', '
+        created:
+          label: Oluşturulma
+      filters:
+        redirect_source__path:
+          expose:
+            label: Kimden
+        redirect_redirect__uri:
+          expose:
+            label: Kime
+        language:
+          expose:
+            label: 'Özgün dil'
+  page_1:
+    display_title: Sayfa

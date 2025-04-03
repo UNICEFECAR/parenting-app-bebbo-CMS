@@ -1,14 +1,15 @@
 display:
   default:
+    display_title: Базово
     display_options:
+      title: Медіа
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"
         langcode:
           expose:
             label: Мова
-      title: Медіа
   page:
     display_options:
       fields:
@@ -21,17 +22,15 @@ display:
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"
   widget_table:
     display_options:
       fields:
-        thumbnail__target_id:
-          label: Мініатюра
         name:
-          label: 'Назва (ім''я)'
+          label: "Назва (ім'я)"
         uid:
           label: Автор
       filters:
         name:
           expose:
-            label: 'Назва (ім''я)'
+            label: "Назва (ім'я)"

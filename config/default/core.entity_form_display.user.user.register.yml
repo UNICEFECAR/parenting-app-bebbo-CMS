@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.user.register
     - field.field.user.user.feeds_item
+    - field.field.user.user.field_receive_content_moderation
     - field.field.user.user.tmgmt_translation_skills
     - field.field.user.user.user_picture
   module:
@@ -18,6 +19,13 @@ content:
     weight: 0
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_receive_content_moderation:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
 hidden:
   contact: true

@@ -1,0 +1,25 @@
+uuid: 834600a3-c666-4029-bb3f-74b86166b344
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - pbtara
+id: pbtara_pagetitle
+theme: pbtara
+region: content
+weight: -10
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/homepage\r\n/node/66001\r\n/share\r\n/foleja"

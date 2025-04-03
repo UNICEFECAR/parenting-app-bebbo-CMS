@@ -1,56 +1,114 @@
-uuid: 61f51da1-22b1-49a9-963d-93cf4ce89d4f
+uuid: f51811f2-08be-41cf-9de7-07f0328dc625
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.full_html
   module:
-    - ckeditor
-_core:
-  default_config_hash: 967ijj7p6i7rwrYl7r08WQFeCY_c23YAh0h8u-w_CXM
+    - ckeditor5
 format: full_html
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
+    items:
+      - bold
+      - italic
+      - strikethrough
+      - superscript
+      - subscript
+      - removeFormat
+      - '|'
+      - link
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - blockQuote
+      - insertTable
+      - horizontalLine
+      - drupalMedia
+      - '|'
+      - heading
+      - '|'
+      - sourceEditing
+      - '|'
+      - code
+      - codeBlock
+  plugins:
+    ckeditor5_codeBlock:
+      languages:
         -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-            - Strike
-            - Superscript
-            - Subscript
-            - '-'
-            - RemoveFormat
+          label: 'Plain text'
+          language: plaintext
         -
-          name: Linking
-          items:
-            - DrupalLink
-            - DrupalUnlink
+          label: C
+          language: c
         -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
+          label: 'C#'
+          language: cs
         -
-          name: Media
-          items:
-            - Blockquote
-            - Table
-            - HorizontalRule
-            - DrupalMediaLibrary
+          label: C++
+          language: cpp
         -
-          name: 'Block Formatting'
-          items:
-            - Format
+          label: CSS
+          language: css
         -
-          name: Tools
-          items:
-            - ShowBlocks
-            - Source
-  plugins: {  }
+          label: Diff
+          language: diff
+        -
+          label: HTML
+          language: html
+        -
+          label: Java
+          language: java
+        -
+          label: JavaScript
+          language: javascript
+        -
+          label: PHP
+          language: php
+        -
+          label: Python
+          language: python
+        -
+          label: Ruby
+          language: ruby
+        -
+          label: TypeScript
+          language: typescript
+        -
+          label: XML
+          language: xml
+    ckeditor5_heading:
+      enabled_headings:
+        - heading1
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<img src alt data-entity-type data-entity-uuid data-align data-caption>'
+        - '<a hreflang>'
+        - '<blockquote cite>'
+        - '<ul type>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<drupal-media title>'
+    media_media:
+      allow_view_mode_override: true
 image_upload:
   status: true
   scheme: public

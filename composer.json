@@ -25,6 +25,7 @@
         "drupal/core-composer-scaffold": "10.1.5",
         "drupal/core-project-message": "10.1.5",
         "drupal/core-recommended": "10.1.5",
+        "drupal/csp": "^1.40",
         "drupal/date_popup": "^1.1",
         "drupal/entity": "^1.2",
         "drupal/entity_share": "^3.0",
@@ -35,11 +36,12 @@
         "drupal/filelog": "^2.1",
         "drupal/google_analytics": "^4.0",
         "drupal/group": "^1.3",
+        "drupal/gtm": "^1.9",
         "drupal/image_style_quality": "^1.4",
         "drupal/json_field": "^1.0@RC",
         "drupal/jsonapi_extras": "^3.24",
         "drupal/jsonapi_page_limit": "^1.1",
-        "drupal/lang_dropdown": "^2.0@beta",
+        "drupal/lang_dropdown": "2.1",
         "drupal/languagefield": "^1.7",
         "drupal/layout_builder_styles": "^2.0",
         "drupal/layout_custom_section_classes": "^1.0",
@@ -55,6 +57,7 @@
         "drupal/pathauto": "^1.13",
         "drupal/quickedit": "^1.0",
         "drupal/rdf": "^2.1",
+        "drupal/redirect": "^1.11",
         "drupal/restui": "^1.20",
         "drupal/seckit": "^2.0",
         "drupal/security_review": "^2.0",
@@ -64,6 +67,8 @@
         "drupal/svg_image": "^1.16",
         "drupal/symfony_mailer": "^1.4",
         "drupal/tamper": "^1.0@alpha",
+        "drupal/taxonomy_access_fix": "^4.0",
+        "drupal/taxonomy_permissions": "^1.0",
         "drupal/title_length": "^2.0@RC",
         "drupal/tmgmt": "^1.15",
         "drupal/tmgmt_deepl": "^2.1",
@@ -162,9 +167,9 @@
         "patches": {
             "drupal/core": {
                 "Updated By sortable issue": "https://www.drupal.org/files/issues/2018-12-28/node_revisions_issue-3021671-07.patch",
-                "TypeError: implode(): Argument must be of type array":"https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch",
+                "TypeError: implode(): Argument must be of type array": "https://www.drupal.org/files/issues/2023-04-12/3353778-implode_argument.patch",
                 "View vocabulery permission issue": "https://www.drupal.org/files/issues/2023-10-26/3114365-37.patch",
-                "fieldDefinitionUpdate  must be of type null given fixes":"https://www.drupal.org/files/issues/2019-12-24/2321071-39.patch",
+                "fieldDefinitionUpdate  must be of type null given fixes": "https://www.drupal.org/files/issues/2019-12-24/2321071-39.patch",
                 "view vocabulery issue fixes for non-existent permissions to a role is not allowed": "https://www.drupal.org/files/issues/2023-09-14/3358586-11.patch",
                 "Field translated field issue fixed": "https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch"
             },
@@ -175,24 +180,24 @@
                 "Added custom filter in source page like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch"
             },
             "drupal/group": {
-                "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch"
+                "Allow group admins to create user account and add to group": "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch"
             },
             "drupal/content_moderation": {
-                "Added translated draft status content into node_field table ":"patches/content_moderation/content_moderation_revision.patch"
+                "Added translated draft status content into node_field table ": "patches/content_moderation/content_moderation_revision.patch"
             },
             "drupal/content_moderation_status": {
-                "Fixed listing page status issue for status change req ":"patches/content_moderation/content_moderation_status.patch"
+                "Fixed listing page status issue for status change req ": "patches/content_moderation/content_moderation_status.patch"
             },
-             "drupal/date_popup": {
+            "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
             },
             "drupal/mobile_app_links": {
-				"Added UAT fields config changes Added UAT fields in ios form": "patches/mobile_app_links/ios_app_links.patch",
-				"Added UAT fields in ios form": "patches/mobile_app_links/ios_config.patch",
-				"Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
-				"Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
-				"Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_settings_ios_uat_field_config.patch",
-				"Created new path for android and ios Added KOSOVO details in JSON format/Added new uat fields in form": "patches/mobile_app_links/wellknown_controller.patch",
+                "Added UAT fields config changes Added UAT fields in ios form": "patches/mobile_app_links/ios_app_links.patch",
+                "Added UAT fields in ios form": "patches/mobile_app_links/ios_config.patch",
+                "Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
+                "Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
+                "Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_settings_ios_uat_field_config.patch",
+                "Created new path for android and ios Added KOSOVO details in JSON format/Added new uat fields in form": "patches/mobile_app_links/wellknown_controller.patch",
                 "Created new path for android and ios": "patches/mobile_app_links/android_ios_root_url.patch"
             },
             "drupal/content_moderation_notifications": {
@@ -202,7 +207,7 @@
                 "Call to a member function isAllowed": "https://www.drupal.org/files/issues/2022-11-23/3323324-3.patch"
             },
             "drupal/contextual_range_filter": {
-                "Drupal 10 compatible module contextual filter":"patches/upgrade_compatible/compatible_contextual_range_filter.patch"
+                "Drupal 10 compatible module contextual filter": "patches/upgrade_compatible/compatible_contextual_range_filter.patch"
             }
         }
     },

@@ -1,0 +1,24 @@
+uuid: 95b98748-1444-438a-8734-4c9e7b207cc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meta_keywords
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_meta_keywords
+field_name: field_meta_keywords
+entity_type: node
+bundle: article
+label: 'Meta keywords'
+description: 'You can write as many keywords here. They will be factored into <b>search logic</b> and used for <b>SEO</b> on web.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

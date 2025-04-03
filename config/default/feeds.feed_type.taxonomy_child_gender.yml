@@ -40,17 +40,14 @@ custom_sources:
     value: Term_ID
     label: Term_ID
     machine_name: term_id
-    type: csv
   term_name:
     value: Term_name
     label: Term_name
     machine_name: term_name
-    type: csv
   language_code:
     value: Language_code
     label: Language_code
     machine_name: language_code
-    type: csv
 mappings:
   -
     target: tid

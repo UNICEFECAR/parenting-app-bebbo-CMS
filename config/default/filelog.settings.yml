@@ -1,7 +1,7 @@
 _core:
   default_config_hash: uVSFqX1MwFixVjXjlh72ukQ8LKPgMKNi2raycY9vt3w
-enabled: true
-location: 'public://bulk_action'
+enabled: false
+location: bulk_action
 rotation:
   schedule: daily
   delete: false

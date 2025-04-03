@@ -1,0 +1,61 @@
+/**
+ * @file
+ * Styling for the Book module.
+ */
+
+ /* Book menu */
+ .book-navigation ul.menu {
+   border-top: 1px solid #bbb;
+   padding: 1em 0 1em 0;
+   list-style: none;
+ }
+.menu-book-item i {
+  padding-right: 4px;
+}
+
+ /* Book pager */
+ .book-navigation .book-pager {
+   margin: 0;
+   overflow: auto;
+   padding: 4px 0;
+   border-top: 1px solid #bbb;
+   border-bottom: 1px solid #bbb;
+ }
+ .book-pager-item {
+   display: inline-block;
+   list-style-type: none;
+   vertical-align: top;
+ }
+ .book-pager-item-previous {
+   text-align: left; /* LTR */
+   width: 45%;
+ }
+ [dir="rtl"] .book-pager-item-previous {
+   float: right;
+   text-align: right;
+ }
+ .book-pager-item-center {
+   text-align: center;
+   width: 8%;
+ }
+ .book-pager-item-next {
+   float: right; /* LTR */
+   text-align: right; /* LTR */
+   width: 45%;
+ }
+ [dir="rtl"] .book-pager-item-next {
+   float: left;
+   text-align: left;
+ }
+
+/* Book links */
+.book-add-child::before {
+  font-family: "tara";
+  content: "\e001";
+  padding-right: 4px;
+}
+.page-type-book .node-links-container {
+  border-top: 0;
+  margin: 0;
+  padding: 10px 0;
+}

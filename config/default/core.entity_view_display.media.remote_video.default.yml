@@ -9,7 +9,6 @@ dependencies:
     - media.type.remote_video
   module:
     - media
-    - video_embed_field
 _core:
   default_config_hash: gUaDZKMQD3lmLKWPn727X3JHVdKJ525g4EJCCcDVAqk
 id: media.remote_video.default
@@ -23,23 +22,15 @@ content:
     settings:
       max_width: 640
       max_height: 480
+      loading:
+        attribute: eager
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_video_embed_url:
-    type: video_embed_field_video
-    label: above
-    settings:
-      autoplay: false
-      responsive: true
-      width: 854
-      height: 480
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden:
   created: true
   feeds_item: true
+  field_video_embed_url: true
   langcode: true
   name: true
   thumbnail: true

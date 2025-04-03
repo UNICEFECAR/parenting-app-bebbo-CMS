@@ -1,0 +1,165 @@
+/* Node Content
+--------------------------------------*/
+/* Page title */
+.page-title-wrap {
+  position: relative;
+  margin: 0;
+}
+.page-title-wrap h1.page-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--bold-color);
+}
+/* common for all nodes */
+.node,
+.node-promoted,
+.node-sticky,
+.node-unpublished,
+.node-view-mode-full {
+  position: relative;
+}
+/* node in teaser view */
+.node-view-mode-teaser {
+  position: relative;
+  background-color: var(--light);
+  margin-bottom: 3rem;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+}
+.node-view-mode-teaser.node-sticky {
+  background: #ffffff;
+}
+/* node author and submitted details */
+.node-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.author-picture img {
+  width: auto;
+  height: 30px;
+  padding-right: 6px;
+  margin: 0;
+}
+.node-submitted-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.node-submitted-details i {
+  color: var(--color-primary);
+}
+.node-submitted-details a {
+  color: var(--text-color);
+}
+.node-tags a {
+  position: relative;
+}
+.node-tags a::before {
+  content: '#';
+  color: var(--color-primary);
+}
+.node-submitted-details i.fa-calendar,
+.node-submitted-details i.fa-th-large {
+  margin-left: 14px;
+}
+
+/* node taxonomy and links */
+.node-taxonomy-container,
+.node-links-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border);
+}
+.node-links-container {
+  border-bottom: 1px solid var(--border);
+}
+.term-title {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.term-title i {
+  font-size: 1.1em;
+  color: var(--color-primary);
+}
+.taxonomy-terms {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Node links */
+.node-links-container {
+  width: 100%;
+}
+.node-links-container .links.inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.node-readmore a {
+  border-bottom: 2px solid var(--bold-color);
+}
+ul.inline,
+ul.links.inline {
+  display: inline;
+  padding-left: 0;
+}
+ul.inline li {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  list-style-type: none;
+}
+.node-links-container li {
+  margin-right: 20px;
+  float: left;
+}
+.node-links-container li.node-readmore {
+  margin-left: 0;
+  float: right;
+}
+.node-links-container .comment-comments::before {
+  font-family: "tara";
+  content: "\e01e";
+  padding-right: 4px;
+}
+.node-links-container .comment-add::before {
+  font-family: "tara";
+  content: "\e003";
+  padding-right: 4px;
+}
+.node-readmore {
+  float: left;
+}
+li.node-readmore a {
+  padding: 6px 12px;
+  background: var(--color-primary);
+  color: #ffffff;
+  -webkit-transition: background 0.4s ease;
+  -moz-transition: background 0.4s ease;
+  transition: background 0.4s ease;
+}
+li.node-readmore a:hover {
+  background: var(--bold-color);
+  color: #ffffff;
+}
+.node-view-mode-teaser li.comment-add,
+.node-view-mode-teaser li.comment-forbidden {
+  text-align: right;
+}

@@ -1,0 +1,39 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Zoradiť podľa'
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
+      pager:
+        options:
+          tags:
+            previous: '‹ predchádzajúca'
+            next: 'nasledujúca ›'
+            first: '« prvá'
+            last: 'posledná »'
+          expose:
+            items_per_page_label: 'Položiek na stránku'
+            items_per_page_options_all_label: '- Všetko -'
+            offset_label: 'Zobraziť od'
+      fields:
+        redirect_bulk_form:
+          action_title: 'S výberom'
+        redirect_source__path:
+          label: Od
+          separator: ', '
+        created:
+          label: Vytvorené
+      filters:
+        redirect_source__path:
+          expose:
+            label: Od
+        redirect_redirect__uri:
+          expose:
+            label: Komu
+  page_1:
+    display_title: Stránka

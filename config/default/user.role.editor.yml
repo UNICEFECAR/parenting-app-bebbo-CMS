@@ -26,6 +26,7 @@ dependencies:
     - allowed_languages
     - content_moderation
     - content_translation
+    - file
     - filter
     - group
     - media
@@ -55,6 +56,7 @@ permissions:
   - 'create survey content'
   - 'create video media'
   - 'create video_article content'
+  - 'delete own files'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'
@@ -109,10 +111,12 @@ permissions:
   - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
   - 'use group_workflow transition publish_to_draft'
+  - 'use group_workflow transition published_to_published'
   - 'use group_workflow transition reject_to_draft'
   - 'use group_workflow transition require_modification_to_senior_editor_review'
   - 'use group_workflow transition require_modification_to_sme_review'
   - 'use group_workflow transition review_after_translation_to_draft'
+  - 'use group_workflow transition review_after_translation_to_review_after_translation'
   - 'use group_workflow transition review_after_translation_to_senior_editor_review'
   - 'use group_workflow transition review_after_translation_to_sme_review'
   - 'use text format full_html'

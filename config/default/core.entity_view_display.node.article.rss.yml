@@ -10,14 +10,20 @@ dependencies:
     - field.field.node.article.field_child_gender
     - field.field.node.article.field_content_category
     - field.field.node.article.field_cover_image
+    - field.field.node.article.field_do_not_feature
     - field.field.node.article.field_generic_content
     - field.field.node.article.field_keywords
     - field.field.node.article.field_licensed_content
     - field.field.node.article.field_mandatory_content
+    - field.field.node.article.field_meta_keywords
     - field.field.node.article.field_parent_gender
+    - field.field.node.article.field_pre_populated
     - field.field.node.article.field_premature_content
     - field.field.node.article.field_references_and_comments
     - field.field.node.article.field_related_articles
+    - field.field.node.article.field_related_video_articles
+    - field.field.node.article.field_subcategory
+    - field.field.node.article.field_type_of_article
     - node.type.article
   module:
     - user
@@ -43,12 +49,18 @@ hidden:
   field_child_gender: true
   field_content_category: true
   field_cover_image: true
+  field_do_not_feature: true
   field_generic_content: true
   field_keywords: true
   field_licensed_content: true
   field_mandatory_content: true
+  field_meta_keywords: true
   field_parent_gender: true
+  field_pre_populated: true
   field_premature_content: true
   field_references_and_comments: true
   field_related_articles: true
+  field_related_video_articles: true
+  field_subcategory: true
+  field_type_of_article: true
   langcode: true

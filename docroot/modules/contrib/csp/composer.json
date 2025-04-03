@@ -1,0 +1,17 @@
+{
+  "name": "drupal/csp",
+  "type": "drupal-module",
+  "description": "Provide Content-Security-Policy headers",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://www.drupal.org/project/csp",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/csp",
+    "source": "https://git.drupalcode.org/project/csp"
+  },
+  "require": {
+    "ext-json": "*",
+    "drupal/core": "^10.1.3 || ^11"
+  }
+}

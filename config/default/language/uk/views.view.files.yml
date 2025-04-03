@@ -1,13 +1,17 @@
 display:
   default:
+    display_title: Базово
     display_options:
       fields:
         filename:
-          label: 'Назва (ім''я)'
+          label: "Назва (ім'я)"
         filemime:
           label: 'Тип MIME'
         status:
           label: Стан
+      exposed_form:
+        options:
+          submit_button: Фільтр
       filters:
         filemime:
           expose:

@@ -1,0 +1,115 @@
+/* EU Cookie Compliance module */
+div#sliding-popup, div#sliding-popup .eu-cookie-withdraw-banner, .eu-cookie-withdraw-tab {
+  background-color: #ffffff;
+  box-shadow: 0 0 6px 2px var(--border);
+  left: 0;
+}
+#sliding-popup {
+  padding: 2rem;
+  max-width: 600px;
+}
+#sliding-popup .popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.eu-cookie-compliance-content {
+  max-width: 100%;
+}
+.eu-cookie-compliance-message {
+  float: none;
+  margin: 0;
+  max-width: 100%;
+}
+#sliding-popup div,
+#sliding-popup h2 {
+  color: var(--bold-color);
+}
+#sliding-popup h2 {
+  font-size: 1.2rem;
+}
+#sliding-popup p {
+  display: block;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+.eu-cookie-compliance-message button {
+  background-color: transparent;
+  color: var(--color-primary);
+  margin: 0;
+  padding: 0;
+}
+.eu-cookie-compliance-message button:hover {
+  background-color: transparent;
+  color: var(--bold-color);
+}
+.eu-cookie-compliance-buttons {
+  display: flex;
+  gap: 1rem;
+  float: none;
+  margin: 0;
+  max-width: 100%;
+}
+.eu-cookie-compliance-buttons .button {
+  background-color: transparent;
+  background-image: none;
+  color: var(--color-primary);
+  font-weight: 400;
+  margin: 0;
+  padding: 8px 1rem;
+  border: 2px solid var(--bold-color);
+  text-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+.eu-cookie-compliance-buttons .button:hover {
+  background-color: var(--bold-color);
+  color: #ffffff;
+}
+
+/* Clearing
+-------------------------------------------- */
+.clear {
+  clear: both;
+  width: 100%;
+}
+#last-section::before {
+  content: "";
+  display: table;
+  clear: both;
+}
+#last-section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#homepage-content-wrapper::before,
+#homepage-content-wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.page-title-wrap::before,
+.page-title-wrap::after,
+.node-content::before,
+.node-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.node-header::before,
+.node-header::after,
+.node-taxonomy-container::before,
+.node-taxonomy-container::after,
+.node-links-container::before,
+.node-links-container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#node-comment::before,
+#node-comment::after {
+  content: "";
+  display: table;
+  clear: both;
+}

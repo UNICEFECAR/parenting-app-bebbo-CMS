@@ -1,0 +1,23 @@
+uuid: 48ae74c1-65bf-4cad-a285-f853fad2aee9
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - pbtara
+id: pbtara_sitebranding
+theme: pbtara
+region: site_branding
+weight: 0
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: true
+visibility: {  }
