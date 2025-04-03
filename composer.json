@@ -25,6 +25,7 @@
         "drupal/core-composer-scaffold": "10.1.5",
         "drupal/core-project-message": "10.1.5",
         "drupal/core-recommended": "10.1.5",
+        "drupal/csp": "^2.1",
         "drupal/date_popup": "^1.1",
         "drupal/entity": "^1.2",
         "drupal/entity_share": "^3.0",
@@ -187,12 +188,12 @@
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
             },
             "drupal/mobile_app_links": {
-				"Added UAT fields config changes Added UAT fields in ios form": "patches/mobile_app_links/ios_app_links.patch",
-				"Added UAT fields in ios form": "patches/mobile_app_links/ios_config.patch",
-				"Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
-				"Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
-				"Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_settings_ios_uat_field_config.patch",
-				"Created new path for android and ios Added KOSOVO details in JSON format/Added new uat fields in form": "patches/mobile_app_links/wellknown_controller.patch",
+                "Added UAT fields config changes Added UAT fields in ios form": "patches/mobile_app_links/ios_app_links.patch",
+                "Added UAT fields in ios form": "patches/mobile_app_links/ios_config.patch",
+                "Added KOSOVO fields in android form": "patches/mobile_app_links/kosovo_android_config_form.patch",
+                "Added KOSOVO fields in android config fields": "patches/mobile_app_links/kosovo_config_install_android.patch",
+                "Added KOSOVO fields in ios config fields": "patches/mobile_app_links/kosovo_settings_ios_uat_field_config.patch",
+                "Created new path for android and ios Added KOSOVO details in JSON format/Added new uat fields in form": "patches/mobile_app_links/wellknown_controller.patch",
                 "Created new path for android and ios": "patches/mobile_app_links/android_ios_root_url.patch"
             },
             "drupal/content_moderation_notifications": {
@@ -202,7 +203,7 @@
                 "Call to a member function isAllowed": "https://www.drupal.org/files/issues/2022-11-23/3323324-3.patch"
             },
             "drupal/contextual_range_filter": {
-                "Drupal 10 compatible module contextual filter":"patches/upgrade_compatible/compatible_contextual_range_filter.patch"
+                "Drupal 10 compatible module contextual filter": "patches/upgrade_compatible/compatible_contextual_range_filter.patch"
             }
         }
     },

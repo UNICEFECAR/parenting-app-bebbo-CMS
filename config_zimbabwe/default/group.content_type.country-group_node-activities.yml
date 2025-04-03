@@ -1,0 +1,19 @@
+uuid: cbb8b7f5-a109-428e-aff6-1e9a80bf3103
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+    - node.type.activities
+  module:
+    - gnode
+    - node
+id: country-group_node-activities
+label: 'Country: Group node (Activities)'
+description: 'Adds <em class="placeholder">Activities</em> content to groups both publicly and privately.'
+group_type: country
+content_plugin: 'group_node:activities'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

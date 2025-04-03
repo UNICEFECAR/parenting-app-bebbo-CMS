@@ -1,0 +1,45 @@
+uuid: a1a3b35f-ec85-4f01-97e4-917ce56bd442
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_google
+name: google
+label: Google
+description: 'Google Translator service.'
+auto_accept: false
+weight: -9
+plugin: google
+settings:
+  url: ''
+  api_key: AIzaSyDnGgE55WSjAIqI6SPZ11hoDXu4BRnLE3E
+remote_languages_mappings:
+  en: en
+  ru: ru
+  sq: sq
+  al-sq: sq
+  by-be: be
+  by-ru: ru
+  bg-bg: bg
+  gr-el: el
+  xk-sq: sq
+  xk-rs: sr
+  kg-ky: ky
+  kg-ru: ru
+  md-ro: ro
+  me-cnr: bs
+  mk-mk: mk
+  mk-sq: mk
+  ro: ro
+  ro-ro: ro
+  sr: sr
+  rs-sr: sr
+  rs-en: en
+  sk: sk
+  tj-tg: tg
+  tj-ru: ru
+  tr: tr
+  uk: uk
+  uz-uz: uz
+  uz-ru: uz
+  ar: ar
