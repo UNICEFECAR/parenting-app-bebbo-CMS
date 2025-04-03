@@ -1,205 +1,60 @@
-<h1>Bebbo CMS - Drupal content management system</h1>
+# [Bebbo](https://bebbo.app/) CMS - Drupal content management system
 
-### Table of Contents
-
+## Table of Contents
 * [Introduction](#introduction)
-* [Requirements](#requirements)
 * [Installation](#installation)
-* [Contributed Modules](#contributed-modules)
-* [Custom Modules](#custom-modules)
-* [Theme](#theme)
-* [Custom Roles](#custom-roles)
-* [Menus](#menus)
-* [Configurations](#configurations)
+  * [Pre-requisites](#pre-requisites)
+  * [Configuration](#configuration)
+  * [Run the Application](#run-the-application)
 * [Maintainers](#maintainers)
+* [Community](#community)
 
 ## Introduction
+Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the content is added through the web interface and serves as REST APIs for a mobile app. This application assists editors in adding different types of content under various content types and taxonomies configured in Drupal CMS. Go through the [onboarding document](./ONBOARDING.md) before continuing with the Installation guidelines below.  
 
-Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the contents will be added through the web interface and served as REST APIs for mobile App. This application is used to assist the editors to add different types of contents under different types of content types and taxonomies that will be configured in Drupal CMS.
+For more information on setup and getting started, check out our [guidelines for contributors](./CONTRIBUTING.md).   
 
-[Bebbo website](https://bebbo.app/)
+## Installation  
 
-## Requirements
+### Pre-requisites
+Before installing the Bebbo CMS application, ensure that you have the following software installed on your development machine:  
+- **Install PHP**: Ensure PHP 8.2 is installed correctly and set up on your machine. You can follow the installation guide [here](https://www.php.net/manual/en/install.php).  
+- **Install composer**: [Composer Installation Guide](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).  
+- **Optional - global composer installation**: [Global Composer Setup](https://getcomposer.org/doc/00-intro.md#globally).  
+  If skipping, replace composer with PHP composer.phar for your setup.  
+- **Install Drush**: `composer global require drush/drush`  
 
-Make sure you have installed all of the following prerequisites on your development machine:
+### Configuration
+After installing all the pre-requisites, follow the steps below to set up the Bebbo CMS:  
+For Windows users, before proceeding to the next step, run the following command:  
+```
+git config --global core.longpaths true
+```
+Clone the repository from GitHub using the following command:  
+```
+git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
+```
+Download the database from the Acquia server and import it locally. If you don’t have access to Acquia, you can download the dump database [here](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).  
 
-1. Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-Optional - [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-If skipping, you may need to replace `composer` with `php composer.phar` for your setup.
-
-2. Install Drush: `composer global require drush/drush`
-
-## Installation
-
-1. Download Bebbo App from [git repo](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS)
-   
-   For example: `git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS`
-   
-3. Download the database from Acquia server and import the database into your local.If you don’t have access to Acquia, you can download the dump database from this [link](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
-4. Update the database details in settings.php file (docroot/sites/default/settings.php).
-5. Then run the application in your browser.
-
-## Contributed Modules
-
-The following contributed modules are installed as part of the profile:
-- acquia_purge
-- actions_permissions
-- admin_toolbar
-- admin_toolbar_links_access_filter
-- admin_toolbar_search
-- admin_toolbar_tools
-- allowed_languages
-- automated_cron
-- basic_auth
-- big_pipe
-- block
-- block_content
-- breakpoint
-- ckeditor
-- ckeditor_media_embed
-- color
-- config
-- config_ignore
-- config_translation
-- content_moderation
-- content_moderation_notifications
-- contextual
-- csv_serialization
-- date_popup
-- datetime
-- dynamic_page_cache
-- editor
-- entity
-- feeds
-- feeds_tamper
-- field
-- field_ui
-- file
-- filter
-- gnode
-- google_analytics
-- group
-- help
-- image
-- image_style_quality
-- json_field
-- lang_dropdown
-- language
-- languagefield
-- link
-- locale
-- media
-- media_library
-- memcache
-- menu_link_content
-- menu_per_role
-- menu_ui
-- migrate
-- migrate_drupal
-- migrate_plus
-- migrate_source_csv
-- migrate_tools
-- migrate_upgrade
-- node
-- options
-- page_cache
-- path
-- path_alias
-- purge
-- purge_ui
-- quickedit
-- rdf
-- rest
-- restui
-- search
-- seckit
-- serialization
-- shortcut
-- smtp
-- syslog
-- system
-- tamper
-- taxonomy
-- text
-- title_length
-- tmgmt
-- tmgmt_config
-- tmgmt_content
-- tmgmt_demo
-- tmgmt_file
-- tmgmt_language_combination
-- tmgmt_local
-- tmgmt_locale
-- tmgmt_memsource
-- toolbar
-- toolbar_menu
-- toolbar_menu_clean
-- tour
-- user
-- variationcache
-- video_embed_field
-- video_embed_media
-- view_custom_table
-- views_bulk_operations
-- views_data_export
-- workflows
-- content_translation
-- views
-
-## Custom Libraries
-
-- CKEDITOR
-
-## Custom Modules
-
-The following custom modules are installed as part of the profile:
-- custom_serialization
-- group_country_field
-- pb_custom_field
-- pb_custom_form
-- pb_custom_migrate
-- pb_custom_rest_api
-- pb_custom_standard_deviation
-
-## Theme
-
-The following themes are installed and enabled by the profile:
-- bartik
-- seven
-- stable
-- classy
-- claro
-
-## Custom Roles
-
-Globaladmin: This User handles all the country and country users, configures new languages and new country, Taxonomies data and offload a country.            
-Senior editor: Senior editors have access to create, update, publish and translate the content to their country language.
-SME: SME have access to updates and approve the content.
-Editor: Editor have access to create, update and translate the content to their country language
-Country admin: This user has access to create and cancel their country users and view their language content.
-
-All the users have a separate dashboard. Country admin and Senior editor have access to the country reports.
-
-## Menus
-
-Global content list - It shows all the published contents.
-Country content list - In this page the user will be able to see their allowed languages.
-Add content - Editor, global admin and senior editor have permission to create a new content.
-
-Manage Taxonomies - It shows all the available taxonomy terms
-Manage Media - In this page User can add and update the image related details
-Manage Country - Global admin can add any new country or update the already existing country and user details
-Manage Language - Create a new language or update an existing language. This have two options
-Manage Users  -  Global admin can add another global admin using the language
-Manage Translation - Users can send a content translation request to memsource using this menu option
-Google Analytics -  Global admin can add the analytics id
-Import Taxonomy - Users can import the taxonomy term values using this option .Based on the documentation, users can change the feed configuration according to their language
-Manage reports - user can see their reports based on their allowed language.
-
-## Configurations
-
-Installation profile assists in setting up a base instance. 
+Modify the database details in the **settings.php** file, which is located at:  
+```
+docroot/sites/default/settings.php
+``` 
+### Run the Application
+Launch the application in your browser to verify everything is set up correctly.
+1.  Select your Installation Profile (e.g., Standard).
+2.  Enter Database Details (username, password, database name).
+3.  Complete the Site Configuration (site name, admin account).
+4.  Once installation is complete, you'll see the Drupal homepage.
 
 ## Maintainers
+The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners (including DATAMATICS). It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.  
 
-Datamatics
+For ongoing maintenance, please reach out to the following maintainers:  
+- [Evrim Sahin](https://github.com/evrimm)
+- [Akhror Abduvaliev](https://github.com/Akhror)
+- [Saurabh Agarwal](https://github.com/saurabhEDU)
+- [Muhammed Osman](https://github.com/mhdosman)
+
+## Community
+Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
