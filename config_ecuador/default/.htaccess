@@ -27,4 +27,4 @@ RewriteEngine On
 
 # Redirect only the homepage
 RewriteCond %{REQUEST_URI} ^/$
-RewriteRule ^$ https://www.unicef.org/ecuador/wawamor
+RewriteRule ^$ https://www.unicef.org/ecuador/wawamor [R=302,L]
