@@ -41,7 +41,7 @@ class WellKnownController extends ControllerBase {
                   'package_name' => $android_package['package_name'], // Ensure this is just a string
                   'sha256_cert_fingerprints' => explode(PHP_EOL, $android_package['sha256_cert_fingerprints']), // This is now an array
               ];
-              $relation = ['delegate_permission/common.handle_all_urls'];
+              $relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
               $body[] = [
                   'relation' => $relation,
                   'target' => $target,
@@ -60,7 +60,7 @@ class WellKnownController extends ControllerBase {
         'package_name' => $kosovo_package_name,
         'sha256_cert_fingerprints' => explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),
     ];
-    $kosovo_relation = ['delegate_permission/common.handle_all_urls'];
+    $kosovo_relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
     $body[] = [
         'relation' => $kosovo_relation,
         'target' => $kosovo_target,

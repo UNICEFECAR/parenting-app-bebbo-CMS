@@ -8,6 +8,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 -        $item = [
 -          'relation' => [
 -            'delegate_permission/common.handle_all_urls',
+-            'delegate_permission/common.get_login_creds',
 -          ],
 -          'target' => [
 -            'namespace' => 'android_app',
@@ -16,7 +17,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 -          ],
 -        ];
 +           $target = ['namespace'=>'android_app','package_name'=>$package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
-+           $relation = ['delegate_permission/common.handle_all_urls'];
++           $relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
 +           $item[] = [
 +             'relation'=>$relation,
 +             'target'=>$target,
@@ -33,7 +34,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 +      throw new CacheableNotFoundHttpException($cacheMeta);
 +    }
 +    $kosovo_target = ['namespace'=>'android_app','package_name'=>$kosovo_package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),];
-+    $kosovo_relation = ['delegate_permission/common.handle_all_urls'];
++    $kosovo_relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
 +    $body[] = [
 +      'relation'=>$kosovo_relation,
 +      'target'=>$kosovo_target,
