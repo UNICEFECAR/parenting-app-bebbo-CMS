@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Download bebbo app</title>
+  <script>
+    const ua = navigator.userAgent
+    if (/android/i.test(ua)) {
+      location.replace('https://play.google.com/store/apps/details?id=org.unicef.ecar.bebbo')
+    } else if (/iphone|ipad|ipod/i.test(ua)) {
+      location.replace('https://apps.apple.com/us/app/bebbo/id1588918146')
+    } else {
+      location.replace('https://bebbo.app/#download')
+    }
+  </script>
+</head>
+<body>
+  <noscript>
+    <p>
+      JavaScript is required for automatic redirection.<br>
+      Please visit our <a href="https://bebbo.app/#download">landing page</a>.
+    </p>
+  </noscript>
+  <p style="display:none;" id="fallback-link">
+    If you are not redirected, please visit our <a href="https://bebbo.app/#download">landing page</a>.
+  </p>
+  <script>
+    // Show fallback link if redirection fails (e.g., script error)
+    setTimeout(function() {
+      document.getElementById('fallback-link').style.display = 'block';
+    }, 5000);
+  </script>
+</body>
+</html>
