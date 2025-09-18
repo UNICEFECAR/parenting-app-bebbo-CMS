@@ -4,11 +4,29 @@ status: true
 dependencies:
   config:
     - filter.format.admin_full_html
-    - media.type.image
-    - media.type.remote_video
-    - media.type.video
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
+    - taxonomy.vocabulary.chatbot_child_age
+    - taxonomy.vocabulary.chatbot_subcategory
+    - taxonomy.vocabulary.child_age
+    - taxonomy.vocabulary.child_gender
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+    - taxonomy.vocabulary.growth_introductory
+    - taxonomy.vocabulary.growth_period
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.parent_gender
+    - taxonomy.vocabulary.relationship_to_parent
+    - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.standard_deviation_category
+    - taxonomy.vocabulary.subcategory
+    - taxonomy.vocabulary.type_of_article
+    - taxonomy.vocabulary.type_of_support
   module:
+    - actions_permissions
     - content_moderation
+    - content_translation
     - entity_share_client
     - file
     - filter
@@ -33,16 +51,49 @@ permissions:
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
-  - 'create image media'
-  - 'create remote_video media'
-  - 'create video media'
+  - 'administer permissions'
   - 'delete own files'
-  - 'edit any image media'
-  - 'edit any remote_video media'
-  - 'edit any video media'
+  - 'edit terms in activity_category'
+  - 'edit terms in category'
+  - 'edit terms in chatbot_category'
+  - 'edit terms in chatbot_child_age'
+  - 'edit terms in chatbot_subcategory'
+  - 'edit terms in child_age'
+  - 'edit terms in child_gender'
+  - 'edit terms in daily_home_screen_message_catego'
+  - 'edit terms in growth_introductory'
+  - 'edit terms in growth_type'
+  - 'edit terms in keywords'
+  - 'edit terms in parent_gender'
+  - 'edit terms in relationship_to_parent'
+  - 'edit terms in standard_deviation'
+  - 'edit terms in standard_deviation_category'
+  - 'edit terms in subcategory'
+  - 'edit terms in type_of_article'
+  - 'edit terms in type_of_support'
   - entity_share_client_pull_content
+  - 'execute entity:publish_action taxonomy_term'
+  - 'execute entity:save_action taxonomy_term'
   - 'manage mobile javascript'
   - 'search content'
+  - 'translate activity_category taxonomy_term'
+  - 'translate category taxonomy_term'
+  - 'translate chatbot_category taxonomy_term'
+  - 'translate chatbot_child_age taxonomy_term'
+  - 'translate chatbot_subcategory taxonomy_term'
+  - 'translate child_age taxonomy_term'
+  - 'translate child_gender taxonomy_term'
+  - 'translate daily_home_screen_message_catego taxonomy_term'
+  - 'translate growth_introductory taxonomy_term'
+  - 'translate growth_period taxonomy_term'
+  - 'translate growth_type taxonomy_term'
+  - 'translate keywords taxonomy_term'
+  - 'translate parent_gender taxonomy_term'
+  - 'translate relationship_to_parent taxonomy_term'
+  - 'translate standard_deviation taxonomy_term'
+  - 'translate standard_deviation_category taxonomy_term'
+  - 'translate subcategory taxonomy_term'
+  - 'translate type_of_support taxonomy_term'
   - 'use text format admin_full_html'
   - 'view latest version'
   - 'view media'

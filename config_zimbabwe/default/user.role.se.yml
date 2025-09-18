@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - feeds.feed_type.taxonomy_age_period
+    - feeds.feed_type.taxonomy_age_period_language
     - filter.format.full_html
     - media.type.image
     - media.type.remote_video
@@ -25,6 +27,7 @@ dependencies:
     - allowed_languages
     - content_moderation
     - content_translation
+    - feeds
     - file
     - filter
     - group
@@ -52,7 +55,12 @@ permissions:
   - 'create survey content'
   - 'create video media'
   - 'create video_article content'
+  - 'delete any remote_video media'
+  - 'delete media'
   - 'delete own files'
+  - 'delete own image media'
+  - 'delete own remote_video media'
+  - 'delete own video media'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'
@@ -88,6 +96,18 @@ permissions:
   - 'execute pb_custom_field_publish_to_draft node'
   - 'execute pb_custom_field_publish_to_senioreditor node'
   - 'execute pb_custom_field_publish_to_sme node'
+  - 'revert activities revisions'
+  - 'revert article revisions'
+  - 'revert child_development revisions'
+  - 'revert child_growth revisions'
+  - 'revert daily_homescreen_messages revisions'
+  - 'revert faq revisions'
+  - 'revert health_check_ups revisions'
+  - 'revert milestone revisions'
+  - 'revert page revisions'
+  - 'revert survey revisions'
+  - 'revert vaccinations revisions'
+  - 'revert video_article revisions'
   - 'translate activities node'
   - 'translate all languages'
   - 'translate any entity'
@@ -105,9 +125,11 @@ permissions:
   - 'translate vaccinations node'
   - 'translate video media'
   - 'translate video_article node'
-  - 'update any media'
   - 'update content translations'
   - 'update media'
+  - 'update own taxonomy_age_period feeds'
+  - 'update own taxonomy_age_period_language feeds'
+  - 'update taxonomy_age_period feeds'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition create_new_draft'
   - 'use group_workflow transition draft_to_published'

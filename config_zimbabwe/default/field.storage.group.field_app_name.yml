@@ -12,11 +12,14 @@ type: list_string
 settings:
   allowed_values:
     -
+      value: reraiumtwana
+      label: 'Rerai Umtwana'
+    -
       value: Bebbo
       label: Bebbo
     -
-      value: Foleja
-      label: Foleja
+      value: zimbabwe
+      label: Zimbabwe
   allowed_values_function: ''
 module: options
 locked: false
