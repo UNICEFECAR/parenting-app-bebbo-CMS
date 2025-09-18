@@ -122,9 +122,6 @@
             "docroot/core": [
                 "type:drupal-core"
             ],
-            "docroot/sites/pb_ar.local.com/modules/contrib/{$name}": [
-                "drupal/access_policy"
-            ],
             "docroot/modules/contrib/{$name}": [
                 "type:drupal-module"
             ],

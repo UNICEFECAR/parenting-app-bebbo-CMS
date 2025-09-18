@@ -799,6 +799,13 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 
 if (file_exists('/var/www/site-php')) {
   require '/var/www/site-php/parentbuddy2/prod_pbecuador-settings.inc';
-} 
+}
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
+
+// Automatically generated include for settings managed by ddev.
+if (file_exists($app_root  . '/sites/default/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 'true') {
+  include $app_root . '/sites/default/settings.ddev.php';
+  $databases['default']['default']['database'] = 'ecuador_db';
+}
+
 $settings["config_sync_directory"] = '../config_ecuador/default';

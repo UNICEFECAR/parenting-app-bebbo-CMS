@@ -64,3 +64,27 @@ $sites['pc.bebbo.app'] = 'pacific_islands';
 $sites['ws.bebbo.app'] = 'somoa';
 $sites['wawamor.ec'] = 'ecuador';
 $sites['zw.bebbo.app'] = 'zimbabwe';
+
+// Staging setup
+$sites['bangla-stage.bebbo.app'] = 'bangladesh';
+$sites['tr-stage.bebbo.app'] = 'turkey';
+$sites['ec-stage.bebbo.app'] = 'ecuador';
+$sites['pc-stage.bebbo.app'] = 'pacific_islands';
+$sites['ws-stage.bebbo.app'] = 'somoa';
+$sites['zw-stage.bebbo.app'] = 'zimbabwe';
+
+// Dev setup
+$sites['bangla-dev.bebbo.app'] = 'bangladesh';
+$sites['tr-dev.bebbo.app'] = 'turkey';
+$sites['ec-dev.bebbo.app'] = 'ecuador';
+$sites['pc-dev.bebbo.app'] = 'pacific_islands';
+$sites['ws-dev.bebbo.app'] = 'somoa';
+$sites['zw-dev.bebbo.app'] = 'zimbabwe';
+
+// ddev local setup
+$sites['bangla.bebbo.app.ddev.site'] = 'bangladesh';
+$sites['tr.bebbo.app.ddev.site'] = 'turkey';
+$sites['ec.bebbo.app.ddev.site'] = 'ecuador';
+$sites['pc.bebbo.app.ddev.site'] = 'pacific_islands';
+$sites['ws.bebbo.app.ddev.site'] = 'somoa';
+$sites['zw.bebbo.app.ddev.site'] = 'zimbabwe';

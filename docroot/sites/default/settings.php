@@ -807,7 +807,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 /********** DEV *******************/
 if (file_exists('/var/www/site-php')) {
    require '/var/www/site-php/' . $_ENV['AH_SITE_GROUP'] . '/' . $_ENV['AH_SITE_GROUP'] . '-settings.inc';
-   
+
    // Memcached settings for Acquia Hosting
    if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
       require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
@@ -839,3 +839,10 @@ $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
 $settings["config_sync_directory"] = '../config/default';
 $settings['file_private_path'] = '/mnt/files/parentbuddy2.prod/sites/default/files-private';
 ini_set('memory_limit', '-1');
+// Automatically generated include for settings managed by ddev.
+$ddev_settings = __DIR__ . '/settings.ddev.php';
+if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
+  require $ddev_settings;
+  // Store private files in a writable directory inside the project.
+  $settings['file_private_path'] = $app_root . '/' . $site_path . '/files-private';
+}

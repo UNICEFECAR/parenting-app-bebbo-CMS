@@ -1,14 +1,17 @@
-diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_app_links/src/Controller/WellKnownController.php
---- a/mobile_app_links/src/Controller/WellKnownController.php
-+++ b/mobile_app_links/src/Controller/WellKnownController.php
-@@ -34,22 +34,29 @@
+diff --git a/src/Controller/WellKnownController.php b/src/Controller/WellKnownController.php
+index 053c3f2..c650f80 100644
+--- a/src/Controller/WellKnownController.php
++++ b/src/Controller/WellKnownController.php
+@@ -32,27 +32,46 @@ class WellKnownController extends ControllerBase {
+
+     $body = [];
      $android_packages = $config->get('android_packages');
++
      if (!empty($android_packages)) {
        foreach ($android_packages as $android_package) {
 -        $item = [
 -          'relation' => [
 -            'delegate_permission/common.handle_all_urls',
--            'delegate_permission/common.get_login_creds',
 -          ],
 -          'target' => [
 -            'namespace' => 'android_app',
@@ -16,35 +19,51 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 -            'sha256_cert_fingerprints' => explode(PHP_EOL, $android_package['sha256_cert_fingerprints']),
 -          ],
 -        ];
-+           $target = ['namespace'=>'android_app','package_name'=>$package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('sha256_cert_fingerprints')),];
-+           $relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
-+           $item[] = [
-+             'relation'=>$relation,
-+             'target'=>$target,
-+             ];
- 
-         $body[] = $item;
+-
+-        $body[] = $item;
++          if (is_array($android_package)) {
++              $target = [
++                  'namespace' => 'android_app',
++                  'package_name' => $android_package['package_name'], // Ensure this is just a string
++                  'sha256_cert_fingerprints' => explode(PHP_EOL, $android_package['sha256_cert_fingerprints']), // This is now an array
++              ];
++              $relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
++              $body[] = [
++                  'relation' => $relation,
++                  'target' => $target,
++              ];
++          }
        }
      }
--
+
 -    $response = new CacheableJsonResponse(json_encode($body, JSON_UNESCAPED_SLASHES), 200, [], TRUE);
 +    /* Kosovo Details */
 +    $kosovo_package_name = $config->get('kosovo_package_name');
 +    if (empty($kosovo_package_name)) {
-+      throw new CacheableNotFoundHttpException($cacheMeta);
++        throw new CacheableNotFoundHttpException($cacheMeta);
 +    }
-+    $kosovo_target = ['namespace'=>'android_app','package_name'=>$kosovo_package_name,'sha256_cert_fingerprints'=>explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),];
++    $kosovo_target = [
++        'namespace' => 'android_app',
++        'package_name' => $kosovo_package_name,
++        'sha256_cert_fingerprints' => explode(PHP_EOL, $config->get('kosovo_sha256_cert_fingerprints')),
++    ];
 +    $kosovo_relation = ['delegate_permission/common.handle_all_urls','delegate_permission/common.get_login_creds',];
 +    $body[] = [
-+      'relation'=>$kosovo_relation,
-+      'target'=>$kosovo_target,
++        'relation' => $kosovo_relation,
++        'target' => $kosovo_target,
 +    ];
-+ 
++
 +    $response = new CacheableJsonResponse(json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 200, [], TRUE);
      $response->addCacheableDependency($cacheMeta);
      return $response;
-   }
-@@ -72,7 +79,7 @@
+-  }
++ }
++
++
+
+   /**
+    * Page callback for apple-developer-merchantid-domain-association.txt file.
+@@ -72,7 +91,7 @@ class WellKnownController extends ControllerBase {
      if (empty($body)) {
        throw new CacheableNotFoundHttpException($cacheMeta);
      }
@@ -53,10 +72,10 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
      $response = new CacheableResponse($body, 200, ['Content-Type' => 'text/plain']);
      $response->addCacheableDependency($cacheMeta);
      return $response;
-@@ -120,15 +127,62 @@
+@@ -120,15 +139,62 @@ class WellKnownController extends ControllerBase {
        throw new CacheableNotFoundHttpException($cacheMeta);
      }
- 
+
 +      /* UAT app config details */
 +      $appID_Test = $config->get('appID_Test');
 +      if(!empty($appID_Test)){
@@ -81,7 +100,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 +                      ]],
 +          'paths' => explode(PHP_EOL, $config->get('paths'))
 +        ];
-+      
++
 +    	/* Kosovo app config details */
 +    	$kosovo_appID_Test = $config->get('kosovo_appID_Test');
 +    	if(!empty($kosovo_appID_Test)){
@@ -95,7 +114,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 +                'paths' => explode(PHP_EOL, $config->get('kosovo_paths_Test'))
 +              ];
 +    	}
-+    	
++
 +      $kosovo_appID = $config->get('kosovo_appID');
 +      if(!empty($kosovo_appID)){
 +          $kosovo_paths = explode(PHP_EOL, $config->get('kosovo_paths'));
@@ -108,7 +127,7 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 +            'paths' => explode(PHP_EOL, $config->get('kosovo_paths'))
 +          ];
 +      }
-+    
++
      $body = [
        'applinks' => [
          'apps' => [],
@@ -121,11 +140,11 @@ diff --git a/mobile_app_links/src/Controller/WellKnownController.php b/mobile_ap
 +        'details' => $prod_details,
        ],
      ];
- 
-@@ -141,7 +195,7 @@
+
+@@ -141,7 +207,7 @@ class WellKnownController extends ControllerBase {
        ];
      }
- 
+
 -    $response = new CacheableJsonResponse(json_encode($body, JSON_UNESCAPED_SLASHES), 200, [], TRUE);
 +    $response = new CacheableJsonResponse(json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 200, [], TRUE);
      $response->addCacheableDependency($cacheMeta);
