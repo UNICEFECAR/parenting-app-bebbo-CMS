@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - contact
-id: contact_form
-configuration:
-  email_subject:
-    value: '[{{ form }}] {{ subject }}'

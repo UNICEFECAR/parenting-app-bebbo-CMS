@@ -1,5 +1,0 @@
-phpmailer.settings:
-  title: 'PHPMailer'
-  route_name: phpmailer.settings
-  parent: system.admin_config_system
-  description: "Configure the PHPMailer module's settings."

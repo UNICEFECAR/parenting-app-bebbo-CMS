@@ -1,6 +1,0 @@
-# Channel menu items definition.
-entity.channel.collection:
-  title: 'Channels'
-  route_name: entity.channel.collection
-  description: 'List channels'
-  parent: entity_share.admin_config_page

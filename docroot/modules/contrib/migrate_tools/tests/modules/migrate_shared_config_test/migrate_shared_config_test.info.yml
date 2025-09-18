@@ -1,6 +1,0 @@
-name: Test module for migrate shared configuration
-type: module
-package: Testing
-dependencies:
-  - drupal:migrate
-  - migrate_tools:migrate_tools

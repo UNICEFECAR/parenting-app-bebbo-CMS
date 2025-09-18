@@ -1,5 +1,0 @@
-symfony_mailer.mailer_transport.collection:
-  title: 'Mailer'
-  parent: system.admin_config_system
-  description: 'Configure Mailer'
-  route_name: entity.mailer_policy.collection

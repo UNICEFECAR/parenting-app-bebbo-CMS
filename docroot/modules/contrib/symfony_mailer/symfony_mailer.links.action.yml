@@ -1,5 +1,0 @@
-symfony_mailer.mailer_policy.add:
-  route_name: entity.mailer_policy.add_form
-  title: 'Add policy'
-  appears_on:
-    - entity.mailer_policy.collection

@@ -1,5 +1,0 @@
-services:
-  layout_custom_section_classes.route_subscriber:
-    class: Drupal\layout_custom_section_classes\EventSubscriber\RouteSubscriber
-    tags:
-    - { name: 'event_subscriber' }
