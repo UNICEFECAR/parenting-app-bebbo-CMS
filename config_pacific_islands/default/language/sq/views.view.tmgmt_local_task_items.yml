@@ -1,17 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
       fields:
-        status:
-          label: Status
         item_type:
           label: Lloji
-        operations:
-          label: Operations
-      arguments:
-        tltid:
-          exception:
-            title: All

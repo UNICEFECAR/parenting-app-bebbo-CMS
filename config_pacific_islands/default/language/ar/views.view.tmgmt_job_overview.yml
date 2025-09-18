@@ -1,50 +1,42 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: Master
     display_options:
       exposed_form:
         options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
-          tags:
-            previous: '‹ السابقة'
-            next: 'التالية ›'
-            first: '« الأولى'
-            last: 'الأخيرة »'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       fields:
         state:
-          label: الحالة
-          separator: ', '
+          label: State
         label:
-          label: التسمية
+          label: Label
         source_language_1:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
+          label: To
         translator:
-          label: المزود
+          label: Provider
         tags_count:
-          label: وسوم
+          label: Tags
         changed:
-          label: 'تم التغير'
+          label: Changed
         operations:
           label: عمليات
       filters:
         state:
           expose:
-            label: الحالة
+            label: State
         translator:
           expose:
-            label: المزود
+            label: Provider
   page_1:
-    display_title: الصفحة
+    display_title: Page

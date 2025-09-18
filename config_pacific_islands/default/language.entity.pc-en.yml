@@ -1,0 +1,9 @@
+uuid: cf725391-4d1a-46f8-bedc-422c276a9887
+langcode: en
+status: true
+dependencies: {  }
+id: pc-en
+label: 'Pacific Islands - English'
+direction: ltr
+weight: 15
+locked: false

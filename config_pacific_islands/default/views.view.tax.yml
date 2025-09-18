@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - taxonomy.vocabulary.standard_deviation
+    - user.role.anonymous
+    - user.role.authenticated
   module:
     - custom_serialization
     - rest
@@ -362,6 +364,15 @@ display:
         type: none
         options:
           offset: 0
+      access:
+        type: role
+        options:
+          role:
+            anonymous: anonymous
+            authenticated: authenticated
+      cache:
+        type: none
+        options: {  }
       sorts: {  }
       arguments:
         langcode:
@@ -528,14 +539,18 @@ display:
       style:
         type: custom_serialization
         options:
-          uses_fields: false
           formats:
             json: json
       row:
         type: data_field
         options:
-          field_options: {  }
+          field_options:
+            vid:
+              alias: ''
+              raw_output: false
       defaults:
+        access: false
+        cache: false
         group_by: false
         fields: false
         sorts: false
@@ -544,15 +559,15 @@ display:
         filter_groups: false
       group_by: true
       display_description: ''
+      rendering_language: '***LANGUAGE_entity_default***'
       display_extenders: {  }
       path: api/taxonomies/%/%
       auth: {  }
     cache_metadata:
       max-age: -1
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
         - url
-        - user.permissions
+        - user.roles
       tags: {  }

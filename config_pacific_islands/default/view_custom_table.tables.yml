@@ -1,6 +1,6 @@
 forcefull_check_update_api:
   table_name: forcefull_check_update_api
-  table_database: default
+  table_database: prod_pb_pacific_islands
   description: ''
-  column_relations: 'a:1:{s:2:"id";s:4:"node";}'
-  created_by: '1'
+  column_relations: 'a:0:{}'
+  created_by: '11'

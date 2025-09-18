@@ -1,0 +1,13 @@
+uuid: 77261e48-9ac8-40e8-874e-b63558d14576
+langcode: en
+status: true
+dependencies: {  }
+id: production_connection
+label: 'Production Connection'
+url: 'https://www.bebbo.app'
+auth:
+  pid: basic_auth
+  uuid: e154e309-0d57-4e0b-bb18-3fcda09b2ef4
+  data:
+    credential_provider: entity_share
+    storage_key: e154e309-0d57-4e0b-bb18-3fcda09b2ef4

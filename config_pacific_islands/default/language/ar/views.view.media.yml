@@ -1,65 +1,56 @@
-label: ميديا
+label: Media
 display:
   default:
     display_title: الافتراضي
     display_options:
-      title: ميديا
+      title: Media
       fields:
         thumbnail__target_id:
-          label: 'النسخة المصغرة'
-          separator: ', '
-        name:
-          separator: ', '
+          label: Thumbnail
         bundle:
           label: النوع
-          separator: ', '
         uid:
           label: المؤلف
-          separator: ', '
         status:
           label: الحالة
           settings:
-            format_custom_false: 'غير منشور'
-            format_custom_true: منشور
-          separator: ', '
+            format_custom_false: Unpublished
+            format_custom_true: Published
         changed:
-          label: التحديث
-          separator: ', '
+          label: Updated
         operations:
           label: عمليات
       pager:
         options:
           tags:
-            next: 'التالي ›'
-            previous: '‹ السابق'
+            next: 'Next ›'
+            previous: '‹ Previous'
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       filters:
         bundle:
           expose:
             label: النوع
         status:
-          expose:
-            label: صحيح
           group_info:
             group_items:
               1:
-                title: منشور
+                title: Published
               2:
-                title: 'غير منشور'
+                title: Unpublished
         langcode:
           expose:
             label: اللغة
   media_page_list:
-    display_title: ميديا
+    display_title: Media
     display_options:
       menu:
-        title: ميديا
+        title: Media

@@ -1,57 +1,18 @@
-label: 'Moderovaný obsah'
 display:
   default:
     display_title: Predvolené
     display_options:
-      title: 'Moderovaný obsah'
       fields:
         title:
           label: Názov
-          separator: ', '
-        type:
-          label: 'Typ obsahu'
-          separator: ', '
         name:
           label: Autor
-          separator: ', '
-        moderation_state:
-          label: 'Stav moderácie'
-          separator: ', '
-        changed:
-          label: Aktualizované
-          separator: ', '
         operations:
           label: Operácie
-      pager:
-        options:
-          tags:
-            next: Ďalej
-            previous: '‹ Predchádzajúci'
-            first: '« Prvý'
-            last: Koniec
-          expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
-      exposed_form:
-        options:
-          submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Zoradiť podľa'
-          sort_asc_label: Vzostupne
-          sort_desc_label: Zostupne
       filters:
         title:
           expose:
             label: Názov
-        type:
-          expose:
-            label: 'Typ obsahu'
-        moderation_state:
-          expose:
-            label: 'Stav moderácie'
         langcode:
           expose:
             label: Jazyk
-  moderated_content:
-    display_title: 'Moderovaný obsah'

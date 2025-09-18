@@ -1,32 +1,14 @@
+label: 'Custom block library'
+description: 'Find and manage custom blocks.'
 display:
   default:
-    display_title: Default
     display_options:
-      fields:
-        info:
-          separator: ', '
-        type:
-          separator: ', '
-        changed:
-          label: Updated
-        operations:
-          label: Operations
-      pager:
-        options:
-          tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
-      exposed_form:
-        options:
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+      title: 'Custom block library'
+      empty:
+        area_text_custom:
+          content: 'There are no custom blocks available.'
   page_1:
     display_options:
       menu:
-        title: Блоки
+        title: Blocks
+        description: 'Create and edit block content.'

@@ -1,56 +1,52 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: Master
     display_options:
       exposed_form:
         options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
           tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
+            previous: '‹ Previous'
+            next: 'Next ›'
       fields:
         state:
-          label: الحالة
+          label: State
         label:
-          label: التسمية
+          label: Label
         type:
           label: النوع
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        word_count:
-          label: كلمة
-          separator: ', '
+          label: To
         tags_count:
-          label: وسوم
-          separator: ', '
+          label: Tags
         changed:
-          label: 'تم التغير'
-          separator: ', '
+          label: Changed
         operations:
           label: عمليات
       filters:
         state:
           expose:
-            label: الحالات
+            label: States
           group_info:
-            label: الحالة
+            label: State
         job_type:
           group_info:
             group_items:
               1:
-                title: طبيعي
+                title: Normal
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
   page_1:
-    display_title: الصفحة
+    display_title: Page

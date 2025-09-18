@@ -1,42 +1,36 @@
+label: 'Custom block library'
+description: 'Find and manage custom blocks.'
 display:
   default:
     display_title: الافتراضي
     display_options:
+      title: 'Custom block library'
       fields:
-        info:
-          label: 'وصف الصندوق'
-          separator: ', '
-        type:
-          label: 'نوع الصندوق'
-          separator: ', '
         changed:
-          label: التحديث
+          label: Updated
         operations:
           label: عمليات
       pager:
         options:
           tags:
-            next: 'التالي ›'
-            previous: '‹ السابق'
+            next: 'Next ›'
+            previous: '‹ Previous'
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       exposed_form:
         options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      filters:
-        info:
-          expose:
-            label: 'وصف الصندوق'
-        type:
-          expose:
-            label: 'نوع الصندوق'
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      empty:
+        area_text_custom:
+          content: 'There are no custom blocks available.'
   page_1:
-    display_title: الصفحة
+    display_title: Page
     display_options:
       menu:
-        title: الصناديق
+        title: Blocks
+        description: 'Create and edit block content.'

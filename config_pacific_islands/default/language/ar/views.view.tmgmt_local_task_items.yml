@@ -1,37 +1,32 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: Master
     display_options:
       exposed_form:
         options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
           tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
+            previous: '‹ Previous'
+            next: 'Next ›'
       fields:
         status:
           label: الحالة
         label:
-          label: التسمية
+          label: Label
         item_type:
           label: النوع
-          separator: ', '
-        word_count:
-          separator: ', '
         operations:
           label: عمليات
       arguments:
         tltid:
           exception:
-            title: الكل
-  block_1:
-    display_title: الصندوق
+            title: All

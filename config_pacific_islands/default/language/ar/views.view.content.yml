@@ -1,65 +1,60 @@
-label: المحتوى
-description: 'إيجاد وإدارة المحتوى'
+label: Content
 display:
   default:
     display_title: الافتراضي
     display_options:
-      title: المحتوى
+      title: Content
       fields:
         title:
           label: العنوان
         type:
-          label: 'نوع المحتوى'
-          separator: ', '
+          label: 'Content type'
         name:
           label: المؤلف
         status:
           label: الحالة
           settings:
-            format_custom_false: 'غير منشور'
-            format_custom_true: منشور
+            format_custom_false: Unpublished
+            format_custom_true: Published
         changed:
-          label: التحديث
+          label: Updated
         operations:
           label: عمليات
       pager:
         options:
           tags:
-            next: 'التالي ›'
-            previous: '‹ السابق'
+            next: 'Next ›'
+            previous: '‹ Previous'
       exposed_form:
         options:
           submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-      empty:
-        area_text_custom:
-          content: 'لا يوجد محتوى.'
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       filters:
         title:
           expose:
             label: العنوان
         type:
           expose:
-            label: 'نوع المحتوى'
+            label: 'Content type'
         status:
           expose:
             label: الحالة
           group_info:
             group_items:
               1:
-                title: منشور
+                title: Published
               2:
-                title: 'غير منشور'
+                title: Unpublished
         langcode:
           expose:
             label: اللغة
   page_1:
-    display_title: الصفحة
+    display_title: Page
     display_options:
       menu:
-        title: المحتوى
+        title: Content
       tab_options:
-        title: المحتوى
+        title: Content

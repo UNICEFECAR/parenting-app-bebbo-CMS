@@ -20,6 +20,7 @@ dependencies:
     - node.type.vaccinations
     - node.type.video_article
     - taxonomy.vocabulary.daily_home_screen_message_catego
+    - workflows.workflow.editorial
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
@@ -33,6 +34,7 @@ dependencies:
     - node
     - system
     - tmgmt
+    - tmgmt_local
     - toolbar_menu
 id: editor
 label: Editor
@@ -41,9 +43,14 @@ is_admin: null
 permissions:
   - 'accept translation jobs'
   - 'access content'
+  - 'access content overview'
   - 'access group overview'
   - 'access media overview'
+  - 'administer allowed languages'
+  - 'administer group'
+  - 'administer translation tasks'
   - 'bypass group access'
+  - 'bypass node access'
   - 'create activities content'
   - 'create article content'
   - 'create content translations'
@@ -84,7 +91,16 @@ permissions:
   - 'edit own vaccinations content'
   - 'edit own video media'
   - 'edit own video_article content'
+  - 'execute node_assign_owner_action node'
   - 'execute pb_custom_field_assign_action node'
+  - 'execute pb_custom_field_change_to_archive node'
+  - 'execute pb_custom_field_change_to_publish node'
+  - 'execute pb_custom_field_change_to_senior_editor node'
+  - 'execute pb_custom_field_change_to_sme node'
+  - 'execute pb_custom_field_publish_to_draft node'
+  - 'execute pb_custom_field_publish_to_senioreditor node'
+  - 'execute pb_custom_field_publish_to_sme node'
+  - 'provide translation services'
   - 'translate activities node'
   - 'translate all languages'
   - 'translate any entity'
@@ -106,24 +122,42 @@ permissions:
   - 'update any media'
   - 'update content translations'
   - 'update media'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
+  - 'use group_workflow transition _sme_review_to_require_modification'
   - 'use group_workflow transition archive_to_draft'
+  - 'use group_workflow transition archive_to_review_after_translation'
   - 'use group_workflow transition create_new_draft'
+  - 'use group_workflow transition draft_to_published'
+  - 'use group_workflow transition draft_to_review_after_translation'
   - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
+  - 'use group_workflow transition publish_to_archive'
   - 'use group_workflow transition publish_to_draft'
   - 'use group_workflow transition published_to_published'
+  - 'use group_workflow transition published_to_review_after_translation'
   - 'use group_workflow transition reject_to_draft'
+  - 'use group_workflow transition require_modification_to_published'
+  - 'use group_workflow transition require_modification_to_review_after_translation'
   - 'use group_workflow transition require_modification_to_senior_editor_review'
   - 'use group_workflow transition require_modification_to_sme_review'
   - 'use group_workflow transition review_after_translation_to_draft'
   - 'use group_workflow transition review_after_translation_to_review_after_translation'
   - 'use group_workflow transition review_after_translation_to_senior_editor_review'
   - 'use group_workflow transition review_after_translation_to_sme_review'
+  - 'use group_workflow transition senior_editor_review_to_published'
+  - 'use group_workflow transition senior_editor_review_to_reject'
+  - 'use group_workflow transition senior_editor_review_to_review_after_translation'
+  - 'use group_workflow transition sme_review_to_review_after_translation'
+  - 'use group_workflow transition sme_review_to_senior_editor_review'
+  - 'use group_workflow transition sme_review_to_sme_review'
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'
   - 'view any unpublished content'
-  - 'view article revisions'
   - 'view child_development revisions'
   - 'view child_growth revisions'
   - 'view daily_homescreen_messages revisions'

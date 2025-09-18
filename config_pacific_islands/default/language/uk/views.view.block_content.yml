@@ -1,7 +1,5 @@
 display:
-  default:
-    display_title: Базово
+  page_1:
     display_options:
-      fields:
-        operations:
-          label: Операції
+      menu:
+        title: Блоки

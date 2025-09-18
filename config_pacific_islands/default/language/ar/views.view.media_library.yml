@@ -2,31 +2,30 @@ display:
   default:
     display_title: الافتراضي
     display_options:
-      title: ميديا
+      title: Media
       fields:
         media_bulk_form:
-          action_title: إجراء
+          action_title: Action
       pager:
         options:
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       exposed_form:
         options:
-          submit_button: 'عمل تصفية'
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       filters:
         status:
           group_info:
-            label: منشور
+            label: Published
             group_items:
               1:
-                title: منشور
+                title: Published
               2:
-                title: 'غير منشور'
+                title: Unpublished
         name:
           expose:
             label: الاسم
@@ -34,54 +33,52 @@ display:
           expose:
             label: اللغة
   page:
-    display_title: الصفحة
+    display_title: Page
     display_options:
       fields:
         media_bulk_form:
-          action_title: إجراء
-        name:
-          separator: ', '
+          action_title: Action
         edit_media:
           text: تحرير
         delete_media:
           text: حذف
   widget:
-    display_title: ودجة
+    display_title: Widget
     display_options:
       arguments:
         bundle:
           exception:
-            title: الكل
+            title: All
       filters:
         name:
           expose:
             label: الاسم
       header:
         display_link_grid:
-          label: شبكة
+          label: Grid
         display_link_table:
-          label: جدول
+          label: Table
   widget_table:
     display_options:
       fields:
         thumbnail__target_id:
-          label: 'النسخة المصغرة'
+          label: Thumbnail
         name:
           label: الاسم
         uid:
           label: المؤلف
         changed:
-          label: التحديث
+          label: Updated
       arguments:
         bundle:
           exception:
-            title: الكل
+            title: All
       filters:
         name:
           expose:
             label: الاسم
       header:
         display_link_grid:
-          label: شبكة
+          label: Grid
         display_link_table:
-          label: جدول
+          label: Table

@@ -5,19 +5,20 @@ display:
       pager:
         options:
           tags:
-            next: 'التالي ›'
-            previous: '‹ السابق'
+            next: 'Next ›'
+            previous: '‹ Previous'
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       exposed_form:
         options:
-          submit_button: تطبيق
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
-  feed_1:
-    display_title: التلقيمة
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      empty:
+        title:
+          title: 'Welcome to [site:name]'
   page_1:
-    display_title: الصفحة
+    display_title: Page

@@ -1,15 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
-        status:
-          label: Status
-        label:
-          label: Label
         item_type:
           label: Tип
-        operations:
-          label: Operations

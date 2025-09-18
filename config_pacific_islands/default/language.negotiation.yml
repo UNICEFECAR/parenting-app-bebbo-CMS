@@ -35,6 +35,8 @@ url:
     ar: ar
     sk: sk
     tr: tr
+    ws-en: ws-en
+    pc-en: pc-en
   domains:
     en: ''
     sr: ''
@@ -65,4 +67,6 @@ url:
     ar: ''
     sk: ''
     tr: ''
+    ws-en: ''
+    pc-en: ''
 selected_langcode: site_default

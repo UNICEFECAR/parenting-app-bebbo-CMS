@@ -70,6 +70,7 @@ dependencies:
     - taxonomy.vocabulary.relationship_to_parent
     - taxonomy.vocabulary.standard_deviation
     - taxonomy.vocabulary.type_of_support
+    - workflows.workflow.editorial
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
@@ -500,6 +501,11 @@ permissions:
   - 'update taxonomy_type_of_support feeds'
   - 'update taxonomy_type_of_support_languag feeds'
   - 'update user_import feeds'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
   - 'use group_workflow transition _sme_review_to_require_modification'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition archive_to_review_after_translation'

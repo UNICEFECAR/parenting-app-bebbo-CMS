@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
+    - field.field.node.article.field_type_of_article
     - node.type.article
     - workflows.workflow.group_workflow
   module:
@@ -176,6 +177,16 @@ content:
     weight: 4
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_type_of_article:
+    type: entity_reference_autocomplete
+    weight: 28
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   langcode:
     type: language_select

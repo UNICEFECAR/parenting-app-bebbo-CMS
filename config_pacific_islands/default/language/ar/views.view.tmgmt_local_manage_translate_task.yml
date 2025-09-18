@@ -1,159 +1,112 @@
 display:
   default:
-    display_title: الرئيسي
+    display_title: Master
     display_options:
       exposed_form:
         options:
           submit_button: انتقاء
-          reset_button_label: 'إعادة الضبط'
-          exposed_sorts_label: 'الترتيب حسب'
-          sort_asc_label: تصاعدي
-          sort_desc_label: تنازلي
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       pager:
         options:
           tags:
-            previous: '‹ السابق'
-            next: 'التالي ›'
+            previous: '‹ Previous'
+            next: 'Next ›'
           expose:
-            items_per_page_options_all_label: '- الكل -'
-            offset_label: الإزاحة
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
       fields:
         title:
           label: العنوان
-          separator: ', '
-        item_count:
-          label: أخبار
   assigned:
     display_options:
       fields:
         status:
           label: الحالة
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات
       filters:
         uid:
           expose:
-            label: المزود
+            label: Provider
         title:
           expose:
             label: العنوان
   closed:
-    display_title: مغلق
+    display_title: Closed
     display_options:
       menu:
-        title: مغلق
+        title: Closed
       fields:
         status:
           label: الحالة
-          separator: ', '
         created:
           label: الإنشاء
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات
       filters:
         uid:
           expose:
-            label: المزود
+            label: Provider
         title:
           expose:
             label: العنوان
   completed:
-    display_title: 'تم الإنهاء'
+    display_title: Completed
     display_options:
       menu:
-        title: 'تم الإنهاء'
+        title: Completed
       fields:
         status:
           label: الحالة
-          separator: ', '
         created:
           label: الإنشاء
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات
       filters:
         uid:
           expose:
-            label: المزود
+            label: Provider
         title:
           expose:
             label: العنوان
   pending:
-    display_title: معلّق
     display_options:
-      menu:
-        title: معلّق
       fields:
         status:
           label: الحالة
-        tuid:
-          separator: ', '
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات
       filters:
         uid:
           expose:
-            label: المزود
+            label: Provider
         title:
           expose:
             label: العنوان
@@ -164,28 +117,18 @@ display:
           label: الحالة
         created:
           label: الإنشاء
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات
       filters:
         uid:
           expose:
-            label: المزود
+            label: Provider
         title:
           expose:
             label: العنوان
@@ -196,16 +139,9 @@ display:
           label: الحالة
         title:
           label: العنوان
-          separator: ', '
         source_language:
-          label: من
-          separator: ', '
+          label: From
         target_language:
-          label: إلى
-          separator: ', '
-        item_count:
-          label: أخبار
-        loop_count:
-          separator: ', '
+          label: To
         operations:
           label: عمليات

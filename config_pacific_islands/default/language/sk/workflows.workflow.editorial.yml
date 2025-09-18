@@ -1,4 +1,3 @@
-label: Editoriál
 type_settings:
   states:
     archived:
@@ -10,10 +9,6 @@ type_settings:
   transitions:
     archive:
       label: Archivovať
-    archived_draft:
-      label: 'Obnoviť do návrhu'
-    archived_published:
-      label: Obnoviť
     create_new_draft:
       label: 'Vytvoriť nový návrh'
     publish:
