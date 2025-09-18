@@ -12,11 +12,17 @@ type: list_string
 settings:
   allowed_values:
     -
+      value: BebboPacific
+      label: 'Bebbo Pacific'
+    -
       value: Bebbo
       label: Bebbo
     -
       value: Foleja
       label: Foleja
+    -
+      value: FATU
+      label: FATU
   allowed_values_function: ''
 module: options
 locked: false

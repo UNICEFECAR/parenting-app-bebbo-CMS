@@ -100,6 +100,7 @@ module:
   serialization: 0
   shortcut: 0
   smtp: 0
+  structure_sync: 0
   svg_image: 0
   syslog: 0
   system: 0

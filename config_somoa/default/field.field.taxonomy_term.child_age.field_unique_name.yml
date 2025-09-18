@@ -1,0 +1,19 @@
+uuid: bd098da3-f545-4b4a-bd39-630a7214630b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unique_name
+    - taxonomy.vocabulary.child_age
+id: taxonomy_term.child_age.field_unique_name
+field_name: field_unique_name
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Unique name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

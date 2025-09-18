@@ -1,9 +1,9 @@
 uuid: 61300128-3d2f-42c6-aa18-c4418a0988ef
-langcode: en
+langcode: ws-sm
 status: true
 dependencies: {  }
 id: ws-sm
 label: Samoan
 direction: ltr
-weight: 14
+weight: -7
 locked: false

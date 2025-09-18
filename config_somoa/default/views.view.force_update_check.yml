@@ -373,13 +373,17 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Enable
+                title: ''
                 operator: '='
-                value: '1'
+                value: ''
               2:
-                title: Disable
+                title: ''
                 operator: '='
-                value: '0'
+                value: ''
+              3:
+                title: ''
+                operator: '='
+                value: ''
         countries_id:
           id: countries_id
           table: forcefull_check_update_api
@@ -394,7 +398,7 @@ display:
           exposed: true
           expose:
             operator_id: countries_id_op
-            label: 'Country Id'
+            label: 'Countries id'
             description: ''
             use_operator: false
             operator: countries_id_op
@@ -426,6 +430,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: table
         options:
@@ -434,20 +442,13 @@ display:
           default_row_class: true
           columns:
             id: id
-            countries_id: countries_id
             created_at: created_at
             flag_status: flag_status
             uuid: uuid
+            country_id: country_id
           default: '-1'
           info:
             id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            countries_id:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -469,6 +470,13 @@ display:
               empty_column: false
               responsive: ''
             uuid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            country_id:
               sortable: false
               default_sort_order: asc
               align: ''

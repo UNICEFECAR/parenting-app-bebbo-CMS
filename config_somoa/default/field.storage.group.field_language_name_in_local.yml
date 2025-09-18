@@ -1,0 +1,21 @@
+uuid: e76584ba-a8d9-401a-b4af-7008b01dda80
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group.field_language_name_in_local
+field_name: field_language_name_in_local
+entity_type: group
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

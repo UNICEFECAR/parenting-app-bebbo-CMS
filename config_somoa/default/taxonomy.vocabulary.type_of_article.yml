@@ -1,0 +1,8 @@
+uuid: 9c35b0b5-6941-46b9-8265-36aa01f200a0
+langcode: en
+status: true
+dependencies: {  }
+name: 'Type of Article'
+vid: type_of_article
+description: 'Helps define where the article will be displayed.'
+weight: 0

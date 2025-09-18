@@ -1,27 +1,24 @@
-uuid: 3b44056f-299e-4fb7-bda5-de3988b31053
+uuid: e8124e39-8825-43e7-bcdd-9d7c20ccedea
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.group.field_app_name
+    - field.storage.group.field_language_name_in_local
     - group.type.country
   module:
-    - options
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
     excluded: false
-id: group.country.field_app_name
-field_name: field_app_name
+id: group.country.field_language_name_in_local
+field_name: field_language_name_in_local
 entity_type: group
 bundle: country
-label: 'App name'
+label: 'Language Name in Local'
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    value: BebboPacific
+default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: list_string
+field_type: string

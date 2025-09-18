@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: lBXDpdDPXQtrfTJQhr6MjRJJEEyYSoRJ0acdvHLsWeA
 id: en
-label: English
+label: 'Global English'
 direction: ltr
-weight: -15
+weight: -10
 locked: false

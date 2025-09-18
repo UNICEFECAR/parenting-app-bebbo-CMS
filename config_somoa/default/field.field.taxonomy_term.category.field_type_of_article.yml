@@ -1,0 +1,34 @@
+uuid: 80a959b5-83bb-4d11-bf58-6d7c0bb4f538
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_type_of_article
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.type_of_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.category.field_type_of_article
+field_name: field_type_of_article
+entity_type: taxonomy_term
+bundle: category
+label: 'Type of Article'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      type_of_article: type_of_article
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

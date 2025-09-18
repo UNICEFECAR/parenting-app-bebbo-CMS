@@ -314,6 +314,8 @@ permissions:
   - 'execute pb_custom_field_publish_to_draft node'
   - 'execute pb_custom_field_publish_to_senioreditor node'
   - 'execute pb_custom_field_publish_to_sme node'
+  - 'execute user_add_role_action user'
+  - 'execute user_remove_role_action user'
   - 'forcefull update check'
   - 'import content_health_check_up_language feeds'
   - 'import content_homescreen_messages feeds'
