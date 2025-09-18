@@ -5,4 +5,4 @@ dependencies: {  }
 name: 'Type of Support'
 vid: type_of_support
 description: 'Type of support required to implement an Activity'
-weight: 0
+weight: 8

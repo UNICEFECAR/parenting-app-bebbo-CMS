@@ -5,6 +5,9 @@ display:
         name:
           expose:
             label: Emri
+        langcode:
+          expose:
+            label: Gjuha
   widget:
     display_options:
       filters:

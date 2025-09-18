@@ -9,6 +9,8 @@ display:
             first: '« first'
             last: 'last »'
       fields:
+        label:
+          label: التسمية
         type:
           label: النوع
         tags_count:
@@ -22,5 +24,7 @@ display:
   checkout:
     display_options:
       fields:
+        label:
+          label: التسمية
         type:
           label: النوع

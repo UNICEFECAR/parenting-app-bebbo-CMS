@@ -2,10 +2,7 @@ uuid: e585918e-d466-4cbc-9e6f-3aed49da970e
 langcode: en
 status: true
 dependencies:
-  content:
-    - 'block_content:basic:89c9a297-e84c-4422-8c77-8568cb271855'
   module:
-    - block_content
     - system
     - user
   theme:
@@ -13,7 +10,7 @@ dependencies:
 id: kosovologo
 theme: claro
 region: header
-weight: 0
+weight: -9
 provider: null
 plugin: 'block_content:89c9a297-e84c-4422-8c77-8568cb271855'
 settings:

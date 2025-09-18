@@ -26,9 +26,9 @@ processor_configuration:
   values:
     vid: keywords
   langcode: bn
-  insert_new: 1
-  update_existing: 1
-  update_non_existent: 'entity:unpublish_action:taxonomy_term'
+  insert_new: 0
+  update_existing: 2
+  update_non_existent: _keep
   skip_hash_check: false
   authorize: false
   revision: false

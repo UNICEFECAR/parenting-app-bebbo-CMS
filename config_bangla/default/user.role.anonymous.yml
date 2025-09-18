@@ -4,21 +4,8 @@ status: true
 dependencies:
   config:
     - rest.resource.custom_rest_resource
-    - taxonomy.vocabulary.activity_category
-    - taxonomy.vocabulary.category
-    - taxonomy.vocabulary.chatbot_category
-    - taxonomy.vocabulary.chatbot_subcategory
-    - taxonomy.vocabulary.child_age
-    - taxonomy.vocabulary.child_gender
-    - taxonomy.vocabulary.growth_introductory
-    - taxonomy.vocabulary.growth_period
-    - taxonomy.vocabulary.growth_type
-    - taxonomy.vocabulary.keywords
-    - taxonomy.vocabulary.parent_gender
-    - taxonomy.vocabulary.relationship_to_parent
-    - taxonomy.vocabulary.standard_deviation
-    - taxonomy.vocabulary.type_of_support
   module:
+    - group
     - media
     - pb_custom_form
     - rest
@@ -33,21 +20,9 @@ weight: -10
 is_admin: false
 permissions:
   - 'access content'
+  - 'access group overview'
+  - 'access taxonomy overview'
   - 'manage mobile javascript'
   - 'restful get custom_rest_resource'
   - 'search content'
   - 'view media'
-  - 'view vocabulary activity_category'
-  - 'view vocabulary category'
-  - 'view vocabulary chatbot_category'
-  - 'view vocabulary chatbot_subcategory'
-  - 'view vocabulary child_age'
-  - 'view vocabulary child_gender'
-  - 'view vocabulary growth_introductory'
-  - 'view vocabulary growth_period'
-  - 'view vocabulary growth_type'
-  - 'view vocabulary keywords'
-  - 'view vocabulary parent_gender'
-  - 'view vocabulary relationship_to_parent'
-  - 'view vocabulary standard_deviation'
-  - 'view vocabulary type_of_support'

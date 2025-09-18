@@ -7,3 +7,7 @@ display:
       exposed_form:
         options:
           submit_button: Фильтр
+      filters:
+        langcode:
+          expose:
+            label: Язык

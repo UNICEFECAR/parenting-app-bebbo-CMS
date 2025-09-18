@@ -5,4 +5,4 @@ dependencies: {  }
 name: 'Daily Home Screen Message Category'
 vid: daily_home_screen_message_catego
 description: 'Daily messages for parents '
-weight: 0
+weight: -2

@@ -5,4 +5,4 @@ dependencies: {  }
 name: 'Domain of Activity'
 vid: activity_category
 description: '4 Child development domains linked to Activities'
-weight: 0
+weight: -3

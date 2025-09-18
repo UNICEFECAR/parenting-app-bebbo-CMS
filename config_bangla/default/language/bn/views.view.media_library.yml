@@ -6,6 +6,9 @@ display:
         name:
           expose:
             label: নাম
+        langcode:
+          expose:
+            label: ভাষা
   widget:
     display_options:
       filters:

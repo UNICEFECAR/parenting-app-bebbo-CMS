@@ -5,6 +5,9 @@ display:
         name:
           expose:
             label: Название
+        langcode:
+          expose:
+            label: Язык
   widget:
     display_options:
       filters:

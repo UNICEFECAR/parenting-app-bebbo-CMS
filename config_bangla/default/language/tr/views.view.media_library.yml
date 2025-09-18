@@ -6,6 +6,9 @@ display:
         name:
           expose:
             label: İsim
+        langcode:
+          expose:
+            label: Dil
   widget:
     display_options:
       filters:

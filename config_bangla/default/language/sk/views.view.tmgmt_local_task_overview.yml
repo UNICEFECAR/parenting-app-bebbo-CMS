@@ -1,37 +1,80 @@
 display:
+  default:
+    display_options:
+      fields:
+        title:
+          label: Označenie
   closed:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   completed:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   eligible:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   my_tasks:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   pending:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   rejected:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
+      filters:
+        title:
+          expose:
+            label: Označenie
   unassigned:
     display_options:
       fields:
+        title:
+          label: Označenie
         operations:
           label: Operácie
       tab_options:

@@ -4,38 +4,79 @@ display:
       exposed_form:
         options:
           submit_button: Филтрирај
+      fields:
+        title:
+          label: Ознака
   closed:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   completed:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   eligible:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   my_tasks:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   pending:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   rejected:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције
+      filters:
+        title:
+          expose:
+            label: Ознака
   unassigned:
     display_options:
       fields:
+        title:
+          label: Ознака
         operations:
           label: Операције

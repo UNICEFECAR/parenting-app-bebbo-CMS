@@ -4,6 +4,8 @@ display:
       fields:
         state:
           label: Статус
+        label:
+          label: Ознака
         operations:
           label: Операције
       filters:

@@ -4,6 +4,8 @@ display:
       fields:
         status:
           label: Status
+        label:
+          label: التسمية
         item_type:
           label: النوع
         operations:

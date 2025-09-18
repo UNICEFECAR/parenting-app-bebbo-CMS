@@ -13,3 +13,6 @@ display:
         bundle:
           expose:
             label: Lloji
+        langcode:
+          expose:
+            label: Gjuha

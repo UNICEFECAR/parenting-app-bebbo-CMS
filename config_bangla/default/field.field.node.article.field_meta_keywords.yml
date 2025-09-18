@@ -15,7 +15,7 @@ field_name: field_meta_keywords
 entity_type: node
 bundle: article
 label: 'Meta keywords'
-description: ''
+description: 'You can write as many keywords here. They will be factored into <b>search logic</b> and used for <b>SEO</b> on web.'
 required: false
 translatable: true
 default_value: {  }

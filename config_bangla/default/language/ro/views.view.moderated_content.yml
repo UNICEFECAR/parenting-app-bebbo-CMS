@@ -7,3 +7,7 @@ display:
       exposed_form:
         options:
           submit_button: Filtru
+      filters:
+        langcode:
+          expose:
+            label: Limba

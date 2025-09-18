@@ -6,6 +6,9 @@ display:
         name:
           expose:
             label: Názov
+        langcode:
+          expose:
+            label: Jazyk
   widget:
     display_options:
       filters:

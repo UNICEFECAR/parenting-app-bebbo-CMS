@@ -2,6 +2,8 @@ display:
   default:
     display_options:
       fields:
+        label:
+          label: Označenie
         type:
           label: Typ
         operations:

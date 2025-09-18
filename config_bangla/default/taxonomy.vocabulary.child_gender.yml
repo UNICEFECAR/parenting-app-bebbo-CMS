@@ -5,4 +5,4 @@ dependencies: {  }
 name: "Child's Gender"
 vid: child_gender
 description: "Child's gender - male, female"
-weight: 0
+weight: -4

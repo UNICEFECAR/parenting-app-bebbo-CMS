@@ -23,6 +23,7 @@ module:
   content_moderation_notifications: 0
   contextual: 0
   csv_serialization: 0
+  custom_article: 0
   custom_serialization: 0
   date_popup: 0
   datetime: 0
@@ -55,6 +56,7 @@ module:
   jsonapi_extras: 0
   lang_dropdown: 0
   language: 0
+  language_custom_field: 0
   languagefield: 0
   layout_builder: 0
   layout_builder_styles: 0
@@ -133,6 +135,7 @@ module:
   views_data_export: 0
   views_ui: 0
   workflows: 0
+  pathauto: 1
   content_translation: 10
   views: 10
   contextual_range_filter: 11

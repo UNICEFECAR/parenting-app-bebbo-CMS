@@ -9,6 +9,8 @@ display:
             first: '« first'
             last: 'last »'
       fields:
+        label:
+          label: التسمية
         target_language:
           label: To
         tags_count:

@@ -4,38 +4,79 @@ display:
       exposed_form:
         options:
           submit_button: Süzgeç
+      fields:
+        title:
+          label: Etiket
   closed:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   completed:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   eligible:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   my_tasks:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   pending:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   rejected:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler
+      filters:
+        title:
+          expose:
+            label: Etiket
   unassigned:
     display_options:
       fields:
+        title:
+          label: Etiket
         operations:
           label: İşlemler

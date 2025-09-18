@@ -6,12 +6,17 @@ dependencies:
     - field.storage.node.field_keywords
     - node.type.article
     - taxonomy.vocabulary.keywords
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.article.field_keywords
 field_name: field_keywords
 entity_type: node
 bundle: article
 label: Keywords
-description: 'Type a character to choose from existing keywords or type your own text, upon saving the content the keyword will be created newly'
+description: 'These keywords are predefined and will be used for <b>search suggestions</b> in the app. '
 required: false
 translatable: true
 default_value: {  }
@@ -24,6 +29,6 @@ settings:
     sort:
       field: name
       direction: asc
-    auto_create: true
+    auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

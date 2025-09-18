@@ -12,7 +12,7 @@ dependencies:
 id: mainnavigation
 theme: claro
 region: header
-weight: -14
+weight: -15
 provider: null
 plugin: 'system_menu_block:main'
 settings:

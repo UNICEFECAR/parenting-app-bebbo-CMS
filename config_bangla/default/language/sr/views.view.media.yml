@@ -13,3 +13,6 @@ display:
         bundle:
           expose:
             label: Tип
+        langcode:
+          expose:
+            label: Језик

@@ -5,4 +5,4 @@ dependencies: {  }
 name: Subcategory
 vid: subcategory
 description: 'Thematic subcategories related to all articles'
-weight: 0
+weight: 6

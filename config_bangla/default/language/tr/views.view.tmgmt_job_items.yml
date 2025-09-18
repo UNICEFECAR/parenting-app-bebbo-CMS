@@ -4,6 +4,8 @@ display:
       fields:
         state:
           label: Eyalet
+        label:
+          label: Etiket
         type:
           label: Tip
         operations:
@@ -11,5 +13,7 @@ display:
   checkout:
     display_options:
       fields:
+        label:
+          label: Etiket
         type:
           label: Tip

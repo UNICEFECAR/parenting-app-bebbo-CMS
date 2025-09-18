@@ -5,3 +5,7 @@ display:
       fields:
         operations:
           label: Operácie
+      filters:
+        langcode:
+          expose:
+            label: Jazyk

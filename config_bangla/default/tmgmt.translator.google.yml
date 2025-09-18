@@ -12,9 +12,10 @@ weight: -10
 plugin: google
 settings:
   url: ''
-  api_key: AIzaSyDzFu9iYpZd6R3CC9r6mKrpSudKFcUyt8c
+  api_key: AIzaSyDp7kHmIH_Lp1zSQNUui6tjWk9bT04nGI0
 remote_languages_mappings:
   en: en
+  bn: bn
   ru: ru
   sq: sq
   al-sq: sq
@@ -45,4 +46,3 @@ remote_languages_mappings:
   ar: ar
   gr-arb: ar
   gr-fa: fa
-  bn: bn

@@ -4,38 +4,79 @@ display:
       exposed_form:
         options:
           submit_button: Filtru
+      fields:
+        title:
+          label: Etichetă
   closed:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   completed:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   eligible:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   my_tasks:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   pending:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   rejected:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni
+      filters:
+        title:
+          expose:
+            label: Etichetă
   unassigned:
     display_options:
       fields:
+        title:
+          label: Etichetă
         operations:
           label: Operațiuni

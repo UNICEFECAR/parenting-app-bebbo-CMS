@@ -10,6 +10,7 @@ dependencies:
   module:
     - content_moderation
     - filter
+    - group
     - media
     - node
     - pb_custom_form
@@ -27,6 +28,7 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access content overview'
+  - 'access group overview'
   - 'access shortcuts'
   - 'access taxonomy overview'
   - 'access toolbar'

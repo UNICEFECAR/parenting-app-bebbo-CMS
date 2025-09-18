@@ -10,6 +10,14 @@ dependencies:
     - field.storage.group.field_country_sponsor_logo
     - field.storage.group.field_language
     - field.storage.group.field_unicef_logo
+    - user.role.administrator
+    - user.role.anonymous
+    - user.role.authenticated
+    - user.role.editor
+    - user.role.global_admin
+    - user.role.reviewer
+    - user.role.se
+    - user.role.sme
   module:
     - custom_serialization
     - group
@@ -628,9 +636,17 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            anonymous: anonymous
+            authenticated: authenticated
+            global_admin: global_admin
+            reviewer: reviewer
+            editor: editor
+            sme: sme
+            se: se
+            administrator: administrator
       cache:
         type: none
         options: {  }
@@ -734,7 +750,7 @@ display:
         - request_format
         - url
         - url.query_args
-        - user.permissions
+        - user.roles
       tags:
         - 'config:field.storage.group.field_app_name'
         - 'config:field.storage.group.field_content_toggle'
@@ -798,7 +814,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user.permissions
+        - user.roles
       tags:
         - 'config:field.storage.group.field_app_name'
         - 'config:field.storage.group.field_content_toggle'
@@ -807,3 +823,197 @@ display:
         - 'config:field.storage.group.field_country_sponsor_logo'
         - 'config:field.storage.group.field_language'
         - 'config:field.storage.group.field_unicef_logo'
+  rest_export_2:
+    id: rest_export_2
+    display_title: 'REST export 2'
+    display_plugin: rest_export
+    position: 2
+    display_options:
+      fields:
+        id:
+          id: id
+          table: groups_field_data
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: group
+          entity_field: id
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        label:
+          id: label
+          table: groups_field_data
+          field: label
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: null
+          entity_field: label
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      arguments: {  }
+      filters: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: serializer
+        options:
+          formats:
+            json: json
+      row:
+        type: data_field
+        options:
+          field_options:
+            id:
+              alias: ''
+              raw_output: false
+            label:
+              alias: ''
+              raw_output: false
+            field_country_email:
+              alias: ''
+              raw_output: false
+            field_country_national_partner:
+              alias: ''
+              raw_output: false
+            field_country_sponsor_logo:
+              alias: ''
+              raw_output: false
+            field_unicef_logo:
+              alias: ''
+              raw_output: false
+            field_language:
+              alias: ''
+              raw_output: false
+            field_content_toggle:
+              alias: ''
+              raw_output: false
+            field_app_name:
+              alias: ''
+              raw_output: false
+      defaults:
+        fields: false
+        arguments: false
+        filters: false
+        filter_groups: false
+      display_extenders: {  }
+      path: test-group
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - user.roles
+      tags: {  }

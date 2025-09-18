@@ -13,3 +13,6 @@ display:
         bundle:
           expose:
             label: Tip
+        langcode:
+          expose:
+            label: Limba

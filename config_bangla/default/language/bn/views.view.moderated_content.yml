@@ -8,3 +8,7 @@ display:
       exposed_form:
         options:
           submit_button: ফিল্টার
+      filters:
+        langcode:
+          expose:
+            label: ভাষা

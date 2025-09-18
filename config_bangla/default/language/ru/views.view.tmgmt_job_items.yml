@@ -2,6 +2,8 @@ display:
   default:
     display_options:
       fields:
+        label:
+          label: Метка
         type:
           label: Тип
         operations:
@@ -9,5 +11,7 @@ display:
   checkout:
     display_options:
       fields:
+        label:
+          label: Метка
         type:
           label: Тип

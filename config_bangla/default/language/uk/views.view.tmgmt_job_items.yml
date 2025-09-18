@@ -1,0 +1,11 @@
+display:
+  default:
+    display_options:
+      fields:
+        label:
+          label: Мітка
+  checkout:
+    display_options:
+      fields:
+        label:
+          label: Мітка

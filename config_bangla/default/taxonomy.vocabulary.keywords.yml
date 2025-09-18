@@ -5,4 +5,4 @@ dependencies: {  }
 name: Keywords
 vid: keywords
 description: 'Distinct words/terms characteristic for a content of a given article '
-weight: 0
+weight: 1

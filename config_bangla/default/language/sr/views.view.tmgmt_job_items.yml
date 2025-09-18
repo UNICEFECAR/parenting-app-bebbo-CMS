@@ -4,6 +4,8 @@ display:
       fields:
         state:
           label: Статус
+        label:
+          label: Ознака
         type:
           label: Tип
         operations:
@@ -11,5 +13,7 @@ display:
   checkout:
     display_options:
       fields:
+        label:
+          label: Ознака
         type:
           label: Tип

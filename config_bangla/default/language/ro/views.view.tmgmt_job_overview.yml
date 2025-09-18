@@ -2,5 +2,7 @@ display:
   default:
     display_options:
       fields:
+        label:
+          label: Etichetă
         operations:
           label: Operațiuni

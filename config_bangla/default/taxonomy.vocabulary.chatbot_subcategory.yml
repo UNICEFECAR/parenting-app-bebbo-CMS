@@ -5,4 +5,4 @@ dependencies: {  }
 name: 'Chatbot Subcategory'
 vid: chatbot_subcategory
 description: 'Used in FQA content type for the purpose of chatbot'
-weight: 0
+weight: -6

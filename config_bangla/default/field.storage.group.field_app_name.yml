@@ -12,12 +12,6 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: Bebbo
-      label: Bebbo
-    -
-      value: Foleja
-      label: Foleja
-    -
       value: Babuni
       label: Babuni
   allowed_values_function: ''
