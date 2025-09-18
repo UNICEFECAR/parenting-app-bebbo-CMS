@@ -6,11 +6,8 @@ display:
     display_options:
       title: Dosyalar
       fields:
-        fid:
-          label: Fid
         filename:
           label: İsim
-          separator: ', '
         filemime:
           label: 'MIME tipi'
         filesize:

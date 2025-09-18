@@ -5,9 +5,6 @@ display:
     display_title: Varsayılan
     display_options:
       title: 'Güncel içerik'
-      fields:
-        changed:
-          separator: ', '
       exposed_form:
         options:
           submit_button: Uygula

@@ -27,9 +27,6 @@ display:
           label: Etiket
         item_type:
           label: Tip
-          separator: ', '
-        word_count:
-          separator: ', '
         operations:
           label: İşlemler
       arguments:

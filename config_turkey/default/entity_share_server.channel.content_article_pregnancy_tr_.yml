@@ -1,0 +1,18 @@
+uuid: fce89ab8-9efd-4f03-abc4-ae441728507e
+langcode: en
+status: true
+dependencies: {  }
+id: content_article_pregnancy_tr_
+label: 'Content - Article Pregnancy (TR)'
+channel_entity_type: node
+channel_bundle: article
+channel_langcode: tr
+channel_filters: null
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles:
+  administrator: administrator
+authorized_users: {  }

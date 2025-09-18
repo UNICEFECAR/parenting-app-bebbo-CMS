@@ -1,0 +1,24 @@
+uuid: d027c30f-5f41-4592-8414-51cc9eb1f6c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meta_keywords
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_meta_keywords
+field_name: field_meta_keywords
+entity_type: node
+bundle: article
+label: 'Meta keywords'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

@@ -26,7 +26,7 @@ id: media.image.field_media_image
 field_name: field_media_image
 entity_type: media
 bundle: image
-label: Image
+label: Görsel
 description: 'Upload an image of dimensions 1600 in width for best results'
 required: true
 translatable: true

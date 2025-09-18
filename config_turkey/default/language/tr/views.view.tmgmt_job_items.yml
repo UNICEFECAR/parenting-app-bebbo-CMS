@@ -27,11 +27,8 @@ display:
           label: Etiket
         type:
           label: Tip
-        word_count:
-          separator: ', '
         tags_count:
           label: Etiketler
-          separator: ', '
         changed:
           label: Değişti
         operations:
@@ -48,8 +45,5 @@ display:
           label: Etiket
         type:
           label: Tip
-        word_count:
-          separator: ', '
         changed:
           label: Değişti
-          separator: ', '

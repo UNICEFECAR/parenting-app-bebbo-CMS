@@ -6,6 +6,11 @@ dependencies:
     - field.storage.node.field_keywords
     - node.type.article
     - taxonomy.vocabulary.keywords
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.article.field_keywords
 field_name: field_keywords
 entity_type: node
@@ -24,6 +29,6 @@ settings:
     sort:
       field: name
       direction: asc
-    auto_create: true
+    auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

@@ -7,25 +7,19 @@ display:
       fields:
         thumbnail__target_id:
           label: 'Küçük resim'
-          separator: ', '
         name:
           label: 'Medya adı'
-          separator: ', '
         bundle:
           label: Tip
-          separator: ', '
         uid:
           label: Yazar
-          separator: ', '
         status:
           label: Durum
           settings:
             format_custom_false: 'Yayında değil'
             format_custom_true: Yayında
-          separator: ', '
         changed:
           label: Güncellendi
-          separator: ', '
         operations:
           label: İşlemler
       pager:

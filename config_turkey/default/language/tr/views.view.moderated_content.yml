@@ -8,19 +8,14 @@ display:
       fields:
         title:
           label: Başlık
-          separator: ', '
         type:
           label: 'İçerik türü'
-          separator: ', '
         name:
           label: Yazar
-          separator: ', '
         moderation_state:
           label: 'Denetim durumu'
-          separator: ', '
         changed:
           label: Güncellendi
-          separator: ', '
         operations:
           label: İşlemler
       pager:

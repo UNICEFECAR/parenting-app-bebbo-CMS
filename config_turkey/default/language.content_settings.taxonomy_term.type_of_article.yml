@@ -1,0 +1,18 @@
+uuid: fed30a66-9a00-4559-a232-ae1ac2e425a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.type_of_article
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: false
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.type_of_article
+target_entity_type_id: taxonomy_term
+target_bundle: type_of_article
+default_langcode: site_default
+language_alterable: false

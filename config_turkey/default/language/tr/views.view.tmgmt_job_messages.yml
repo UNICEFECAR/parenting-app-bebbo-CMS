@@ -27,7 +27,6 @@ display:
           label: Öğe
         name:
           label: İsim
-          separator: ', '
       title: İletiler
       arguments:
         tjid:

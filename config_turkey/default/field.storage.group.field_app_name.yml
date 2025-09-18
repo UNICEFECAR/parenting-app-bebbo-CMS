@@ -17,6 +17,12 @@ settings:
     -
       value: Foleja
       label: Foleja
+    -
+      value: Babuni
+      label: Babuni
+    -
+      value: merhababebek
+      label: 'Merhaba Bebek'
   allowed_values_function: ''
 module: options
 locked: false

@@ -29,18 +29,12 @@ display:
           label: Tip
         source_language:
           label: Kimden
-          separator: ', '
         target_language:
           label: Kime
-          separator: ', '
-        word_count:
-          separator: ', '
         tags_count:
           label: Etiketler
-          separator: ', '
         changed:
           label: Değişti
-          separator: ', '
         operations:
           label: İşlemler
       filters:
@@ -52,5 +46,8 @@ display:
         source_language:
           expose:
             label: 'Kaynak dil'
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
   page_1:
     display_title: Sayfa

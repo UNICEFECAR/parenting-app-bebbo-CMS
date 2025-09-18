@@ -5,7 +5,7 @@ dependencies: {  }
 id: node__page
 label: 'Content: Basic page'
 tags:
-  abstract: "UNICEF’s parenting app Bebbo helps you answer questions about raising children, kid's nutrition and much more. Find out more and download it here."
-  description: 'UNICEF’s parenting app Bebbo helps you answer questions about raising children, kids nutrition, early learning, health and wellbeing. Find out more and download it here.'
-  keywords: "nutrition, early learning, health, wellbeing, Bebbo, parenting app, parent app, baby weaning, breast pump, nappy rash, baby milestone cards, learning toys for toddlers, early learning goals, baby weaning recipes, baby feeding bottle, feeding pillow, baby milestone blanket, colic calm, milk allergy in babies, child protection and safeguarding, parenting,  parenting tips, child development, parenting advice, parenting games, kid's vaccinations, growth tracker, raising children"
+  abstract: "UNICEF’s parenting app Merhaba Bebek helps you answer questions about raising children, kid's nutrition and much more. Find out more and download it here."
+  description: 'UNICEF’s parenting app Merhaba Bebek helps you answer questions about raising children, kids nutrition, early learning, health and wellbeing. Find out more and download it here.'
+  keywords: "nutrition, early learning, health, wellbeing, Merhaba Bebek, parenting app, parent app, baby weaning, breast pump, nappy rash, baby milestone cards, learning toys for toddlers, early learning goals, baby weaning recipes, baby feeding bottle, feeding pillow, baby milestone blanket, colic calm, milk allergy in babies, child protection and safeguarding, parenting,  parenting tips, child development, parenting advice, parenting games, kid's vaccinations, growth tracker, raising children"
   title: '[node:title] | [site:name]'

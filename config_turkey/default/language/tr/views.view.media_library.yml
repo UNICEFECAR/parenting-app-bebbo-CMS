@@ -8,9 +8,6 @@ display:
           action_title: Eylem
       pager:
         options:
-          tags:
-            next: ››
-            previous: ‹‹
           expose:
             items_per_page_label: 'Sayfa başına öğe sayısı'
             items_per_page_options_all_label: '- Tümü -'
@@ -53,8 +50,6 @@ display:
       fields:
         media_bulk_form:
           action_title: Eylem
-        name:
-          separator: ', '
         edit_media:
           text: Düzenle
         delete_media:

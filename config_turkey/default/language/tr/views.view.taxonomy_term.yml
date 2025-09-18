@@ -6,9 +6,6 @@ display:
     display_options:
       pager:
         options:
-          tags:
-            next: ››
-            previous: ‹‹
           expose:
             items_per_page_label: 'Sayfa başına öğe sayısı'
             items_per_page_options_all_label: '- Tümü -'
@@ -24,7 +21,6 @@ display:
         tid:
           exception:
             title: Tümü
-          title: '{{ arguments.tid }}'
   feed_1:
     display_title: Akış
   page_1:

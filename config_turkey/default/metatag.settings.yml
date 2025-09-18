@@ -2,6 +2,9 @@ _core:
   default_config_hash: tKLBW2GXZVLFXqS9QgLyfTuxCLc1u_quKPQLtCia-Bw
 entity_type_groups:
   node:
+    article:
+      basic: basic
+      advanced: advanced
     page:
       basic: basic
       advanced: advanced

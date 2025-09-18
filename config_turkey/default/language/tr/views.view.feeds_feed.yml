@@ -26,18 +26,12 @@ display:
           label: 'Toplu güncelleme'
         title:
           label: Başlık
-          separator: ', '
         type:
           label: Tip
-          separator: ', '
         name:
           label: Yazar
-          separator: ', '
         changed:
           label: Güncellendi
-          separator: ', '
-        imported:
-          separator: ', '
         operations:
           label: İşlemler
       filters:

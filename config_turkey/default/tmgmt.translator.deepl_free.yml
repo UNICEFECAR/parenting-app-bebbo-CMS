@@ -8,7 +8,7 @@ name: deepl_free
 label: 'DeepL API Free'
 description: 'DeepL API Free Translator service.'
 auto_accept: false
-weight: null
+weight: -6
 plugin: deepl_free
 settings:
   url: 'https://api-free.deepl.com/v2/translate'

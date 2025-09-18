@@ -1,10 +1,10 @@
 _core:
   default_config_hash: V9UurX2GPT05NWKG9f2GWQqFG2TRG8vczidwjpy7Woo
-first_day: 0
+first_day: 1
 country:
-  default: RS
+  default: TR
 timezone:
-  default: Europe/Belgrade
+  default: Europe/Istanbul
   user:
     configurable: true
     default: 0
