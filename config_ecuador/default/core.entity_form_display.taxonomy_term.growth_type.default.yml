@@ -13,6 +13,14 @@ targetEntityType: taxonomy_term
 bundle: growth_type
 mode: default
 content:
+  field_unique_name:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 1
@@ -30,13 +38,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 4
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -49,4 +57,3 @@ content:
 hidden:
   description: true
   feeds_item: true
-  field_unique_name: true

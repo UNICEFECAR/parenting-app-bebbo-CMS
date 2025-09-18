@@ -1,0 +1,13 @@
+uuid: 5af6d8f7-7053-474a-b066-a7d28b0ce5bc
+langcode: en
+status: true
+dependencies: {  }
+id: prod
+label: Prod
+url: 'https://bebbo.app'
+auth:
+  pid: anonymous
+  uuid: 773eb0c4-773f-4978-91e8-677f9932643f
+  data:
+    credential_provider: entity_share
+    storage_key: 773eb0c4-773f-4978-91e8-677f9932643f

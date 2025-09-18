@@ -9,8 +9,10 @@ dependencies:
     - media.type.video
   module:
     - content_moderation
+    - field_ui
     - file
     - filter
+    - group
     - media
     - node
     - pb_custom_form
@@ -32,6 +34,7 @@ permissions:
   - 'access taxonomy overview'
   - 'access toolbar'
   - 'access user profiles'
+  - 'administer group fields'
   - 'create image media'
   - 'create remote_video media'
   - 'create video media'

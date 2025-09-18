@@ -23,6 +23,9 @@ settings:
     -
       value: Vaccination
       label: Vaccination
+    -
+      value: Pregnancy
+      label: Pregnancy
   allowed_values_function: ''
 module: options
 locked: false

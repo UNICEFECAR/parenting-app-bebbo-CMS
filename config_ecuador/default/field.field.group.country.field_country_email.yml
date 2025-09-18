@@ -20,7 +20,7 @@ required: true
 translatable: false
 default_value:
   -
-    value: admin@bebbo.app
+    value: contacto@wawamor.ec
 default_value_callback: ''
 settings: {  }
 field_type: email

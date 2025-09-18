@@ -1,0 +1,88 @@
+label: 'Nodos de grupo'
+description: 'Enumera todos los nodos que se han añadido a un grupo.'
+display:
+  default:
+    display_title: Máster
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Restablecer
+          exposed_sorts_label: 'Ordenar por'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« Primero'
+            last: 'Último »'
+          expose:
+            items_per_page_label: 'Elementos por página'
+            items_per_page_options_all_label: '- Todo -'
+            offset_label: Desplazamiento
+      fields:
+        title:
+          label: Título
+          separator: ', '
+        type:
+          label: 'Tipo de contenido'
+          separator: ', '
+        status:
+          label: Estado
+          settings:
+            format_custom_true: Publicado
+            format_custom_false: 'Sin publicar'
+          separator: ', '
+        changed:
+          label: Actualizado
+          separator: ', '
+        view_group_content:
+          admin_label: 'Ver enlace de relación'
+          label: 'Enlace al contenido del Grupo'
+          text: 'Ver relación'
+        edit_group_content:
+          admin_label: 'Editar enlace de relación'
+          label: 'Enlace para editar el contenido del Grupo'
+          text: 'Editar relación'
+        delete_group_content:
+          admin_label: 'Borrar el enlace de relación'
+          label: 'Enlace para eliminar el contenido del Grupo'
+          text: 'Eliminar relación'
+        edit_node:
+          admin_label: 'Editar enlace de nodo'
+          text: 'Editar nodo'
+        delete_node:
+          admin_label: 'Borrar enlace de nodo'
+          label: 'Enlace para eliminar Contenido'
+          text: 'Eliminar nodo'
+        dropbutton:
+          label: Operaciones
+      filters:
+        status:
+          expose:
+            label: 'Estado de publicación'
+          group_info:
+            label: 'Estado de publicación'
+            group_items:
+              1:
+                title: Publicado
+              2:
+                title: 'Sin publicar'
+        type:
+          expose:
+            label: Tipo
+      empty:
+        area_text_custom:
+          content: 'No hay contenido disponible.'
+      arguments:
+        gid:
+          exception:
+            title: Todo(s)
+      title: Nodos
+  page_1:
+    display_title: Página
+    display_options:
+      menu:
+        title: Nodos

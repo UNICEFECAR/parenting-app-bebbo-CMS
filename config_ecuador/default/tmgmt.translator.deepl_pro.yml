@@ -8,12 +8,12 @@ name: deepl_pro
 label: 'DeepL API Pro'
 description: 'DeepL API Pro Translator service.'
 auto_accept: false
-weight: null
+weight: -10
 plugin: deepl_pro
 settings:
   url: 'https://api.deepl.com/v2/translate'
   url_usage: 'https://api.deepl.com/v2/usage'
-  auth_key: bb450b3f-8d87-44df-95bc-57441939bab2
+  auth_key: e4d6e528-f2f7-429a-9ba0-a437311332fc
   tag_handling: '0'
   non_splitting_tags: ''
   splitting_tags: ''
@@ -24,31 +24,5 @@ settings:
   outline_detection: 0
 remote_languages_mappings:
   en: EN
-  ru: RU
-  sq: ''
-  al-sq: ''
-  by-be: ''
-  by-ru: ''
-  bg-bg: BG
-  gr-el: ''
-  xk-sq: ''
-  xk-rs: ''
-  kg-ky: ''
-  kg-ru: ''
-  md-ro: ''
-  me-cnr: ''
-  mk-sq: ''
-  mk-mk: ''
-  ro: RO
-  ro-ro: ''
-  sr: ''
-  rs-en: ''
-  rs-sr: ''
-  sk: SK
-  tj-ru: ''
-  tj-tg: ''
-  tr: TR
-  uk: UK
-  uz-ru: ''
-  uz-uz: ''
-  ar: ''
+  es: ES
+  ec-es: ES

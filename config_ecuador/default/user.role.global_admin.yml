@@ -259,6 +259,7 @@ permissions:
   - 'delete taxonomy_standard_deviation_cate feeds'
   - 'delete taxonomy_type_of_support feeds'
   - 'delete taxonomy_type_of_support_languag feeds'
+  - 'delete terms in keywords'
   - 'delete user_import feeds'
   - 'edit any activities content'
   - 'edit any article content'

@@ -1,0 +1,9 @@
+uuid: ba95aa9e-b6f2-427d-93f0-2fcf132b4bad
+langcode: ec-es
+status: true
+dependencies: {  }
+id: ec-es
+label: Ecuador-Spanish
+direction: ltr
+weight: 17
+locked: false
