@@ -1,0 +1,6 @@
+services:
+  logger.filelog:
+    class: Psr\Log\NullLogger
+    arguments: []
+    tags:
+      - { name: logger }
