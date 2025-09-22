@@ -1190,6 +1190,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: null
           id: 0
@@ -1260,7 +1261,6 @@ display:
             query_param: childAge
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1297,7 +1297,6 @@ display:
             query_param: childGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2574,7 +2573,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2611,7 +2609,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3605,7 +3602,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -4318,7 +4314,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -5777,7 +5772,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -6964,7 +6958,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -6999,7 +6992,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7038,7 +7030,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7705,7 +7696,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -8327,7 +8317,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -9661,7 +9650,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -11222,7 +11210,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -12788,7 +12775,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -14230,7 +14216,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15601,7 +15586,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15636,7 +15620,6 @@ display:
             query_param: childAge
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15673,7 +15656,6 @@ display:
             query_param: childGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15710,7 +15692,6 @@ display:
             query_param: parentGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15747,7 +15728,6 @@ display:
             query_param: category
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15784,7 +15764,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15823,7 +15802,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -17184,7 +17162,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: ''
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -18619,7 +18596,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -18656,7 +18632,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -19062,7 +19037,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -19099,7 +19073,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -20568,7 +20541,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -20605,7 +20577,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -21291,7 +21262,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -22155,7 +22125,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -22192,7 +22161,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -22716,7 +22684,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -23631,7 +23598,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -23666,7 +23632,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -24506,7 +24471,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -25343,7 +25307,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
