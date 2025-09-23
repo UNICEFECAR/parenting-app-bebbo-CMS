@@ -1,0 +1,101 @@
+name: Acquia CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'acquia-main'
+  pull_request:
+    branches:
+      - 'feature/**'
+      - 'acquia-main'
+  workflow_dispatch:
+
+jobs:
+  # -------------------------------
+  # 1. CI Checks (runs on PR + push)
+  # -------------------------------
+  ci-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Composer install
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # Optional: add code checks
+      # - name: Run PHPCS
+      #   run: ./vendor/bin/phpcs -p -s
+      # - name: Run PHPLint
+      #   run: ./vendor/bin/phplint
+
+  # -------------------------------
+  # 2. Deploy to Acquia Dev (feature/*)
+  # -------------------------------
+  deploy-dev:
+    needs: ci-checks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Acquia CLI
+        run: |
+          curl -fsSL https://github.com/acquia/cli/releases/latest/download/acli.phar -o acli
+          chmod +x acli
+          sudo mv acli /usr/local/bin/acli
+
+      - name: Authenticate with Acquia
+        run: |
+          acli auth:login \
+            --key-id "${{ secrets.ACQUIA_API_KEY_ID }}" \
+            --key-secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
+
+      - name: Push branch to Acquia Dev
+        run: |
+          git remote add acquia "${{ secrets.ACQUIA_REPO }}"
+          git push acquia HEAD:refs/heads/dev
+
+      - name: Clear cache after deploy
+        run: |
+          acli remote:drush @parentbuddy2.dev cr
+
+  # -------------------------------
+  # 3. Deploy to Acquia Stage (acquia-main)
+  # -------------------------------
+  deploy-stage:
+    needs: ci-checks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/acquia-main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Acquia CLI
+        run: |
+          curl -fsSL https://github.com/acquia/cli/releases/latest/download/acli.phar -o acli
+          chmod +x acli
+          sudo mv acli /usr/local/bin/acli
+
+      - name: Authenticate with Acquia
+        run: |
+          acli auth:login \
+            --key-id "${{ secrets.ACQUIA_API_KEY_ID }}" \
+            --key-secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
+
+      - name: Push code to Acquia Stage
+        run: |
+          git remote add acquia "${{ secrets.ACQUIA_REPO }}"
+          git push acquia acquia-main:refs/heads/stage
+
+      - name: Import config + clear cache
+        run: |
+          acli remote:drush @parentbuddy2.test cim -y
+          acli remote:drush @parentbuddy2.test cr
