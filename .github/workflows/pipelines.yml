@@ -55,8 +55,8 @@ jobs:
       - name: Authenticate with Acquia
         run: |
           acli auth:login \
-            --key-id "${{ secrets.ACQUIA_API_KEY_ID }}" \
-            --key-secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
+            --key "${{ secrets.ACQUIA_API_KEY_ID }}" \
+            --secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
 
       - name: Push branch to Acquia Dev
         run: |
