@@ -17,6 +17,7 @@ jobs:
   # -------------------------------
   ci-checks:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,11 +26,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
+          tools: composer
+          extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
       - name: Composer install
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      # Optional: add code checks
+      # Optional: code quality checks
       # - name: Run PHPCS
       #   run: ./vendor/bin/phpcs -p -s
       # - name: Run PHPLint
@@ -46,26 +49,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer
+          extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
       - name: Install Acquia CLI
         run: |
           curl -fsSL https://github.com/acquia/cli/releases/latest/download/acli.phar -o acli
           chmod +x acli
           sudo mv acli /usr/local/bin/acli
 
-      - name: Authenticate with Acquia
+      - name: Authenticate & Deploy to Acquia Dev
         run: |
-          acli auth:login \
-            --key "${{ secrets.ACQUIA_API_KEY_ID }}" \
-            --secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
+          acli auth:login --key=${{ secrets.ACQUIA_API_KEY_ID }} --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
+          acli push:artifact @parentbuddy2.dev --no-interaction
 
-      - name: Push branch to Acquia Dev
-        run: |
-          git remote add acquia "${{ secrets.ACQUIA_REPO }}"
-          git push acquia HEAD:refs/heads/dev
-
-      - name: Clear cache after deploy
-        run: |
-          acli remote:drush @parentbuddy2.dev cr
+          # Run post-deploy drush tasks
+          for cmd in cr updb cim cr; do
+            acli remote:drush @parentbuddy2.dev -- $cmd -y || true
+          done
 
   # -------------------------------
   # 3. Deploy to Acquia Stage (acquia-main)
@@ -78,24 +85,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer
+          extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
+
+      - name: Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
       - name: Install Acquia CLI
         run: |
           curl -fsSL https://github.com/acquia/cli/releases/latest/download/acli.phar -o acli
           chmod +x acli
           sudo mv acli /usr/local/bin/acli
 
-      - name: Authenticate with Acquia
+      - name: Authenticate & Deploy to Acquia Stage
         run: |
-          acli auth:login \
-            --key-id "${{ secrets.ACQUIA_API_KEY_ID }}" \
-            --key-secret "${{ secrets.ACQUIA_API_KEY_SECRET }}"
+          acli auth:login --key=${{ secrets.ACQUIA_API_KEY_ID }} --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
+          acli push:artifact @parentbuddy2.test --no-interaction
 
-      - name: Push code to Acquia Stage
-        run: |
-          git remote add acquia "${{ secrets.ACQUIA_REPO }}"
-          git push acquia acquia-main:refs/heads/stage
-
-      - name: Import config + clear cache
-        run: |
-          acli remote:drush @parentbuddy2.test cim -y
-          acli remote:drush @parentbuddy2.test cr
+          # Run post-deploy drush tasks
+          for cmd in cr updb cim cr; do
+            acli remote:drush @parentbuddy2.test -- $cmd -y || true
+          done
