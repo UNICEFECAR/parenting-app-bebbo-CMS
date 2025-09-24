@@ -31,12 +31,6 @@ jobs:
       - name: Composer install
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      # Optional: code quality checks
-      # - name: Run PHPCS
-      #   run: ./vendor/bin/phpcs -p -s
-      # - name: Run PHPLint
-      #   run: ./vendor/bin/phplint
-
   # -------------------------------
   # 2. Deploy to Acquia Dev (feature/*)
   # -------------------------------
@@ -45,8 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -54,8 +47,7 @@ jobs:
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
+      - run: composer install --no-dev --optimize-autoloader
 
       - name: Install Acquia CLI
         run: |
@@ -63,26 +55,18 @@ jobs:
           chmod +x acli
           sudo mv acli /usr/local/bin/acli
 
-      - name: Setup SSH key for Acquia Git
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.ACQUIA_SSH_PRIVATE_KEY }}
-
-      - name: Add Acquia host to known_hosts
-        run: ssh-keyscan -H ${{ secrets.ACQUIA_SSH_KNOWN_HOSTS }} >> ~/.ssh/known_hosts
-
-      - name: Set Git author info for Acquia commit
+      - name: Authenticate with Acquia
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions+bebbo@unicef.org"
+          acli auth:login \
+            --key=${{ secrets.ACQUIA_API_KEY_ID }} \
+            --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
 
-
-      - name: Authenticate & Deploy to Acquia Dev
+      - name: Deploy feature branch build to Dev
         run: |
-          acli auth:login --key=${{ secrets.ACQUIA_API_KEY_ID }} --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
-          acli push:artifact @parentbuddy2.dev --no-interaction
+          echo "Deploying branch ${GITHUB_REF_NAME} to Dev"
+          acli push:artifact @parentbuddy2.dev --branch=${GITHUB_REF_NAME} --no-interaction
 
-          # Run post-deploy drush tasks
+          # Post-deploy Drush tasks
           for cmd in cr updb cim cr; do
             acli remote:drush @parentbuddy2.dev -- $cmd -y || true
           done
@@ -95,8 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/acquia-main'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -104,8 +87,7 @@ jobs:
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
+      - run: composer install --no-dev --optimize-autoloader
 
       - name: Install Acquia CLI
         run: |
@@ -113,25 +95,18 @@ jobs:
           chmod +x acli
           sudo mv acli /usr/local/bin/acli
 
-      - name: Setup SSH key for Acquia Git
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.ACQUIA_SSH_PRIVATE_KEY }}
-
-      - name: Add Acquia host to known_hosts
-        run: ssh-keyscan -H ${{ secrets.ACQUIA_SSH_KNOWN_HOSTS }} >> ~/.ssh/known_hosts
-
-      - name: Set Git author info for Acquia commit
+      - name: Authenticate with Acquia
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions+bebbo@unicef.org"
+          acli auth:login \
+            --key=${{ secrets.ACQUIA_API_KEY_ID }} \
+            --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
 
-      - name: Authenticate & Deploy to Acquia Stage
+      - name: Deploy acquia-main build to Stage
         run: |
-          acli auth:login --key=${{ secrets.ACQUIA_API_KEY_ID }} --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
-          acli push:artifact @parentbuddy2.test --no-interaction
+          echo "Deploying acquia-main to Stage"
+          acli push:artifact @parentbuddy2.test --branch=acquia-main --no-interaction
 
-          # Run post-deploy drush tasks
+          # Post-deploy Drush tasks
           for cmd in cr updb cim cr; do
             acli remote:drush @parentbuddy2.test -- $cmd -y || true
           done
