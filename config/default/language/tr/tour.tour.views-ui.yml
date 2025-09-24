@@ -22,7 +22,7 @@ tips:
     label: 'Süzgeç eylemleri'
     body: 'Süzgeçleri ekleyin, düzenleyin veya silin.'
   views-ui-sorts:
-    label: 'Sıralama Kriteri'
+    label: 'Sıralama Ölçütü'
     body: 'Sonuçların çıktı sıralamasını denetleyin. Yapılandırmak için etkin bir sıralama kuralına tıklayın'
   views-ui-sorts-operations:
     label: 'Sıralama eylemleri'

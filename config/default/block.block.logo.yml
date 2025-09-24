@@ -6,7 +6,7 @@ dependencies:
     - 'block_content:basic:3e466a00-3228-4ee8-b5d3-40e30bb6fbd8'
   module:
     - block_content
-    - system
+    - language
     - user
   theme:
     - claro
@@ -25,11 +25,6 @@ settings:
   info: ''
   view_mode: full
 visibility:
-  request_path:
-    id: request_path
-    negate: false
-    context_mapping: {  }
-    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions"
   user_role:
     id: user_role
     negate: false
@@ -37,3 +32,10 @@ visibility:
       user: '@user.current_user_context:current_user'
     roles:
       anonymous: anonymous
+  language:
+    id: language
+    negate: false
+    context_mapping:
+      language: '@language.current_language_context:language_interface'
+    langcodes:
+      en: en

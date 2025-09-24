@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
+    - field.field.node.article.field_type_of_article
     - node.type.article
   module:
     - text
@@ -191,6 +192,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 7
+    region: content
+  field_type_of_article:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 21
     region: content
   links:
     settings: {  }

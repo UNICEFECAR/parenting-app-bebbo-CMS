@@ -6,3 +6,4 @@ name: Keywords
 vid: keywords
 description: 'Distinct words/terms characteristic for a content of a given article '
 weight: 1
+new_revision: false

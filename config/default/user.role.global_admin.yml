@@ -3,11 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.node.page.full
     - feeds.feed_type.content_health_check_up_language
     - feeds.feed_type.content_homescreen_messages
     - feeds.feed_type.content_vaccination_languages
     - feeds.feed_type.media_image_import
     - feeds.feed_type.media_remote_video
+    - feeds.feed_type.taxonomy_age_period
+    - feeds.feed_type.taxonomy_age_period_language
     - feeds.feed_type.taxonomy_categories
     - feeds.feed_type.taxonomy_categories_serbia_serbi
     - feeds.feed_type.taxonomy_charbot_child_age
@@ -54,6 +57,7 @@ dependencies:
     - node.type.survey
     - node.type.vaccinations
     - node.type.video_article
+    - rest.resource.custom_rest_resource
     - taxonomy.vocabulary.activity_category
     - taxonomy.vocabulary.category
     - taxonomy.vocabulary.chatbot_category
@@ -69,22 +73,34 @@ dependencies:
     - taxonomy.vocabulary.parent_gender
     - taxonomy.vocabulary.relationship_to_parent
     - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.standard_deviation_category
+    - taxonomy.vocabulary.subcategory
+    - taxonomy.vocabulary.type_of_article
     - taxonomy.vocabulary.type_of_support
+    - workflows.workflow.editorial
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
-    - allowed_languages
+    - config
     - content_moderation
     - content_translation
+    - entity_share
+    - entity_share_client
+    - entity_share_server
     - feeds
     - feeds_tamper
     - file
     - filter
     - group
+    - help
     - language
+    - layout_builder
+    - layout_builder_styles
     - media
     - node
+    - pathauto
     - pb_custom_form
+    - rest
     - system
     - taxonomy
     - tmgmt
@@ -101,22 +117,33 @@ permissions:
   - 'access content overview'
   - 'access feed overview'
   - 'access group overview'
+  - 'access help pages'
   - 'access media overview'
   - 'access site in maintenance mode'
+  - 'access site reports'
   - 'access taxonomy overview'
   - 'access toolbar'
-  - 'access user profiles'
-  - 'administer allowed languages'
   - 'administer content translation'
+  - 'administer content types'
   - 'administer feeds'
   - 'administer feeds_tamper'
   - 'administer languages'
+  - 'administer menu'
+  - 'administer modules'
   - 'administer nodes'
-  - 'administer permissions'
+  - 'administer pathauto'
+  - 'administer rest resources'
+  - 'administer site configuration'
+  - 'administer software updates'
+  - 'administer themes'
   - 'administer tmgmt'
-  - 'administer users'
+  - 'administer toolbar menu'
+  - administer_channel_entity
+  - administer_import_config_entity
+  - administer_import_status_entities
+  - administer_remote_entity
+  - 'bulk update aliases'
   - 'bypass group access'
-  - 'bypass node access'
   - 'clear content_health_check_up_language feeds'
   - 'clear content_homescreen_messages feeds'
   - 'clear content_vaccination_languages feeds'
@@ -152,26 +179,21 @@ permissions:
   - 'clear taxonomy_type_of_support feeds'
   - 'clear taxonomy_type_of_support_languag feeds'
   - 'clear user_import feeds'
-  - 'create activities content'
-  - 'create article content'
-  - 'create child_development content'
-  - 'create child_growth content'
+  - 'configure all page node layout overrides'
+  - 'configure any layout'
+  - 'configure editable page node layout overrides'
+  - 'create and edit custom blocks'
   - 'create content translations'
   - 'create content_health_check_up_language feeds'
   - 'create content_homescreen_messages feeds'
   - 'create content_vaccination_languages feeds'
   - 'create country group'
-  - 'create daily_homescreen_messages content'
-  - 'create faq content'
-  - 'create health_check_ups content'
   - 'create image media'
-  - 'create media'
   - 'create media_image_import feeds'
   - 'create media_remote_video feeds'
-  - 'create milestone content'
-  - 'create page content'
   - 'create remote_video media'
-  - 'create survey content'
+  - 'create taxonomy_age_period feeds'
+  - 'create taxonomy_age_period_language feeds'
   - 'create taxonomy_categories feeds'
   - 'create taxonomy_categories_serbia_serbi feeds'
   - 'create taxonomy_charbot_child_age feeds'
@@ -201,28 +223,9 @@ permissions:
   - 'create taxonomy_standard_deviation_cate feeds'
   - 'create taxonomy_type_of_support feeds'
   - 'create taxonomy_type_of_support_languag feeds'
-  - 'create terms in activity_category'
-  - 'create terms in category'
-  - 'create terms in chatbot_category'
-  - 'create terms in chatbot_child_age'
-  - 'create terms in chatbot_subcategory'
-  - 'create terms in child_age'
-  - 'create terms in child_gender'
-  - 'create terms in daily_home_screen_message_catego'
-  - 'create terms in growth_introductory'
-  - 'create terms in growth_period'
-  - 'create terms in growth_type'
-  - 'create terms in keywords'
-  - 'create terms in parent_gender'
-  - 'create terms in relationship_to_parent'
-  - 'create terms in standard_deviation'
-  - 'create terms in type_of_support'
   - 'create translation jobs'
   - 'create user_import feeds'
-  - 'create vaccinations content'
   - 'create video media'
-  - 'create video_article content'
-  - 'delete any media'
   - 'delete content_health_check_up_language feeds'
   - 'delete content_homescreen_messages feeds'
   - 'delete content_vaccination_languages feeds'
@@ -260,21 +263,9 @@ permissions:
   - 'delete taxonomy_type_of_support feeds'
   - 'delete taxonomy_type_of_support_languag feeds'
   - 'delete user_import feeds'
-  - 'edit any activities content'
-  - 'edit any article content'
-  - 'edit any child_development content'
-  - 'edit any child_growth content'
-  - 'edit any daily_homescreen_messages content'
-  - 'edit any faq content'
-  - 'edit any health_check_ups content'
   - 'edit any image media'
-  - 'edit any milestone content'
-  - 'edit any page content'
   - 'edit any remote_video media'
-  - 'edit any survey content'
-  - 'edit any vaccinations content'
   - 'edit any video media'
-  - 'edit any video_article content'
   - 'edit own activities content'
   - 'edit own article content'
   - 'edit own child_development content'
@@ -305,7 +296,13 @@ permissions:
   - 'edit terms in parent_gender'
   - 'edit terms in relationship_to_parent'
   - 'edit terms in standard_deviation'
+  - 'edit terms in standard_deviation_category'
+  - 'edit terms in subcategory'
+  - 'edit terms in type_of_article'
   - 'edit terms in type_of_support'
+  - entity_share_access_config_pages
+  - entity_share_client_display_errors
+  - entity_share_server_access_channels
   - 'execute pb_custom_field_assign_action node'
   - 'execute pb_custom_field_change_to_archive node'
   - 'execute pb_custom_field_change_to_publish node'
@@ -314,7 +311,9 @@ permissions:
   - 'execute pb_custom_field_publish_to_draft node'
   - 'execute pb_custom_field_publish_to_senioreditor node'
   - 'execute pb_custom_field_publish_to_sme node'
+  - 'export configuration'
   - 'forcefull update check'
+  - 'import configuration'
   - 'import content_health_check_up_language feeds'
   - 'import content_homescreen_messages feeds'
   - 'import content_vaccination_languages feeds'
@@ -350,6 +349,9 @@ permissions:
   - 'import taxonomy_type_of_support feeds'
   - 'import taxonomy_type_of_support_languag feeds'
   - 'import user_import feeds'
+  - 'manage layout builder style groups'
+  - 'manage layout builder styles'
+  - 'restful get custom_rest_resource'
   - 'schedule_import content_health_check_up_language feeds'
   - 'schedule_import content_homescreen_messages feeds'
   - 'schedule_import content_vaccination_languages feeds'
@@ -386,6 +388,7 @@ permissions:
   - 'schedule_import taxonomy_type_of_support_languag feeds'
   - 'schedule_import user_import feeds'
   - 'submit translation jobs'
+  - 'synchronize configuration'
   - 'tamper content_health_check_up_language'
   - 'tamper content_homescreen_messages'
   - 'tamper content_vaccination_languages'
@@ -421,7 +424,6 @@ permissions:
   - 'tamper taxonomy_type_of_support'
   - 'tamper taxonomy_type_of_support_languag'
   - 'tamper user_import'
-  - 'translate all languages'
   - 'translate any entity'
   - 'translate daily_homescreen_messages node'
   - 'translate image media'
@@ -462,7 +464,6 @@ permissions:
   - 'unlock taxonomy_type_of_support feeds'
   - 'unlock taxonomy_type_of_support_languag feeds'
   - 'unlock user_import feeds'
-  - 'update any media'
   - 'update content translations'
   - 'update content_health_check_up_language feeds'
   - 'update content_homescreen_messages feeds'
@@ -500,6 +501,11 @@ permissions:
   - 'update taxonomy_type_of_support feeds'
   - 'update taxonomy_type_of_support_languag feeds'
   - 'update user_import feeds'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
   - 'use group_workflow transition _sme_review_to_require_modification'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition archive_to_review_after_translation'
@@ -545,9 +551,48 @@ permissions:
   - 'view media_image_import feeds'
   - 'view media_remote_video feeds'
   - 'view milestone revisions'
+  - 'view own content_health_check_up_language feeds'
+  - 'view own content_homescreen_messages feeds'
+  - 'view own content_vaccination_languages feeds'
+  - 'view own media_image_import feeds'
+  - 'view own media_remote_video feeds'
+  - 'view own taxonomy_age_period feeds'
+  - 'view own taxonomy_age_period_language feeds'
+  - 'view own taxonomy_categories feeds'
+  - 'view own taxonomy_categories_serbia_serbi feeds'
+  - 'view own taxonomy_charbot_child_age feeds'
+  - 'view own taxonomy_charbot_child_age_langu feeds'
+  - 'view own taxonomy_chatbot_category feeds'
+  - 'view own taxonomy_chatbot_category_langua feeds'
+  - 'view own taxonomy_chatbot_subcategory feeds'
+  - 'view own taxonomy_chatbot_subcategory_lan feeds'
+  - 'view own taxonomy_child_age feeds'
+  - 'view own taxonomy_child_age_serbia_serbia feeds'
+  - 'view own taxonomy_child_gender feeds'
+  - 'view own taxonomy_child_gender_serbia_ser feeds'
+  - 'view own taxonomy_domain feeds'
+  - 'view own taxonomy_domain_language feeds'
+  - 'view own taxonomy_growth_introductory feeds'
+  - 'view own taxonomy_growth_introductory_lan feeds'
+  - 'view own taxonomy_growth_period feeds'
+  - 'view own taxonomy_growth_period_serbia_se feeds'
+  - 'view own taxonomy_growth_type feeds'
+  - 'view own taxonomy_growth_type_language feeds'
+  - 'view own taxonomy_keywords feeds'
+  - 'view own taxonomy_keywords_serbia_serbian feeds'
+  - 'view own taxonomy_parents_gender feeds'
+  - 'view own taxonomy_parents_gender_serbia_s feeds'
+  - 'view own taxonomy_relationship_to_child_l feeds'
+  - 'view own taxonomy_standard_deviation feeds'
+  - 'view own taxonomy_standard_deviation_cate feeds'
+  - 'view own taxonomy_type_of_support feeds'
+  - 'view own taxonomy_type_of_support_languag feeds'
   - 'view own unpublished media'
+  - 'view own user_import feeds'
   - 'view page revisions'
   - 'view survey revisions'
+  - 'view taxonomy_age_period feeds'
+  - 'view taxonomy_age_period_language feeds'
   - 'view taxonomy_categories feeds'
   - 'view taxonomy_categories_serbia_serbi feeds'
   - 'view taxonomy_charbot_child_age feeds'

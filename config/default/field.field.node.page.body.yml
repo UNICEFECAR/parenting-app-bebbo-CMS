@@ -4,9 +4,16 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
+    - filter.format.admin_full_html
+    - filter.format.full_html
+    - filter.format.plain_text
     - node.type.page
   module:
     - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 _core:
   default_config_hash: KgVkxLl_K3E3lvN6CEoWQIDT0V8J4Mv-fVYrAIc7-FE
 id: node.page.body
@@ -22,5 +29,8 @@ default_value_callback: ''
 settings:
   display_summary: true
   required_summary: false
-  allowed_formats: {  }
+  allowed_formats:
+    - full_html
+    - plain_text
+    - admin_full_html
 field_type: text_with_summary

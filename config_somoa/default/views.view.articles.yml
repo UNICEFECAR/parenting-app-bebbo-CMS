@@ -1222,6 +1222,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -1265,7 +1266,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -1278,7 +1279,6 @@ display:
             query_param: childAge
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1295,6 +1295,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
         field_child_gender_target_id:
           id: field_child_gender_target_id
           table: node__field_child_gender
@@ -1302,7 +1303,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -1315,7 +1316,6 @@ display:
             query_param: childGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -1332,6 +1332,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
       filters:
         status:
           id: status
@@ -2592,7 +2593,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -2629,7 +2629,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -3623,7 +3622,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -4336,7 +4334,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -5795,7 +5792,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -6982,7 +6978,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7017,7 +7012,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7056,7 +7050,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -7723,7 +7716,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -8345,7 +8337,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -9679,7 +9670,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -11240,7 +11230,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -12806,7 +12795,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -14248,7 +14236,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15808,7 +15795,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15830,7 +15816,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -15843,7 +15829,6 @@ display:
             query_param: childAge
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15860,6 +15845,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
         field_child_gender_target_id:
           id: field_child_gender_target_id
           table: node__field_child_gender
@@ -15867,7 +15853,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -15880,7 +15866,6 @@ display:
             query_param: childGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15897,6 +15882,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
         field_parent_gender_target_id:
           id: field_parent_gender_target_id
           table: node__field_parent_gender
@@ -15904,7 +15890,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -15917,7 +15903,6 @@ display:
             query_param: parentGender
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15934,6 +15919,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
         field_content_category_target_id:
           id: field_content_category_target_id
           table: node__field_content_category
@@ -15941,7 +15927,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -15954,7 +15940,6 @@ display:
             query_param: category
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -15971,6 +15956,7 @@ display:
           validate_options: {  }
           break_phrase: true
           not: false
+          target_entity_type_id: taxonomy_term
         field_pre_populated_value:
           id: field_pre_populated_value
           table: node__field_pre_populated
@@ -15991,7 +15977,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -16030,7 +16015,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -16055,7 +16039,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -16068,7 +16052,6 @@ display:
             query_param: typeArticle
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -16085,6 +16068,7 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
+          target_entity_type_id: taxonomy_term
       filters:
         status:
           id: status
@@ -16270,7 +16254,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -17489,7 +17472,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: ''
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -18924,7 +18906,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -18961,7 +18942,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -19367,7 +19347,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -19404,7 +19383,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -20873,7 +20851,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -20910,7 +20887,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -21596,7 +21572,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -22460,7 +22435,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -22497,7 +22471,6 @@ display:
             query_param: datetime
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -23021,7 +22994,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -23936,7 +23908,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -23971,7 +23942,6 @@ display:
             query_param: pre_populated
             fallback: all
             multiple: and
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -24811,7 +24781,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -25648,7 +25617,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true

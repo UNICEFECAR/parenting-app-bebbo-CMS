@@ -80,6 +80,7 @@ dependencies:
     - feeds_tamper
     - filter
     - group
+    - help
     - language
     - media
     - node
@@ -100,6 +101,7 @@ permissions:
   - 'access content overview'
   - 'access feed overview'
   - 'access group overview'
+  - 'access help pages'
   - 'access media overview'
   - 'access site in maintenance mode'
   - 'access taxonomy overview'

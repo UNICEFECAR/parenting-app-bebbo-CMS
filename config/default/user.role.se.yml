@@ -19,6 +19,7 @@ dependencies:
     - node.type.survey
     - node.type.vaccinations
     - node.type.video_article
+    - workflows.workflow.editorial
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
@@ -88,6 +89,18 @@ permissions:
   - 'execute pb_custom_field_publish_to_draft node'
   - 'execute pb_custom_field_publish_to_senioreditor node'
   - 'execute pb_custom_field_publish_to_sme node'
+  - 'revert activities revisions'
+  - 'revert article revisions'
+  - 'revert child_development revisions'
+  - 'revert child_growth revisions'
+  - 'revert daily_homescreen_messages revisions'
+  - 'revert faq revisions'
+  - 'revert health_check_ups revisions'
+  - 'revert milestone revisions'
+  - 'revert page revisions'
+  - 'revert survey revisions'
+  - 'revert vaccinations revisions'
+  - 'revert video_article revisions'
   - 'translate activities node'
   - 'translate all languages'
   - 'translate any entity'
@@ -108,6 +121,9 @@ permissions:
   - 'update any media'
   - 'update content translations'
   - 'update media'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition publish'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition create_new_draft'
   - 'use group_workflow transition draft_to_published'

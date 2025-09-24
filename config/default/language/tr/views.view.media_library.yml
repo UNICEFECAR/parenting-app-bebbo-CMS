@@ -17,14 +17,24 @@ display:
             offset_label: 'Başlangıç değeri'
       exposed_form:
         options:
+          submit_button: 'Filtreleri uygula'
           reset_button_label: Sıfırla
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Ortam yok.'
       sorts:
         created:
           expose:
             label: 'Önce en yeniler'
+        name:
+          expose:
+            label: 'Ad (A-Z)'
+        name_1:
+          expose:
+            label: 'Ad (Z-A)'
       filters:
         status:
           expose:
@@ -60,7 +70,7 @@ display:
         delete_media:
           text: Sil
   widget:
-    display_title: 'Arayüz kontrolu (widget)'
+    display_title: 'Arayüz kontrolü (widget)'
     display_options:
       arguments:
         bundle:
@@ -79,13 +89,13 @@ display:
     display_options:
       fields:
         thumbnail__target_id:
-          label: 'Küçük resim'
+          label: 'Küçük görsel'
         name:
           label: İsim
         uid:
           label: Yazar
         changed:
-          label: Güncellendi
+          label: Güncellenme
       arguments:
         bundle:
           exception:

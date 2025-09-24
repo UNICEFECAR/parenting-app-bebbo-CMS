@@ -2,6 +2,26 @@ uuid: bc78f560-1ac4-480a-90ab-38c181f1a881
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.storage.taxonomy_term.field_sd4neg
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
+    - taxonomy.vocabulary.chatbot_child_age
+    - taxonomy.vocabulary.chatbot_subcategory
+    - taxonomy.vocabulary.child_age
+    - taxonomy.vocabulary.child_gender
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+    - taxonomy.vocabulary.growth_introductory
+    - taxonomy.vocabulary.growth_period
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.parent_gender
+    - taxonomy.vocabulary.relationship_to_parent
+    - taxonomy.vocabulary.standard_deviation_category
+    - taxonomy.vocabulary.subcategory
+    - taxonomy.vocabulary.type_of_article
+    - taxonomy.vocabulary.type_of_support
   module:
     - csv_serialization
     - rest
@@ -205,12 +225,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_sd4neg:
+          id: field_sd4neg
+          table: taxonomy_term__field_sd4neg
+          field: field_sd4neg
+          plugin_id: field
       pager:
         type: full
         options:
           offset: 0
-          pagination_heading_level: h4
-          items_per_page: 10
+          items_per_page: 1000
           total_pages: null
           id: 0
           tags:
@@ -227,6 +251,7 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -270,7 +295,25 @@ display:
           entity_field: vid
           plugin_id: bundle
           operator: in
-          value: {  }
+          value:
+            growth_period: growth_period
+            category: category
+            chatbot_category: chatbot_category
+            chatbot_child_age: chatbot_child_age
+            chatbot_subcategory: chatbot_subcategory
+            child_age: child_age
+            child_gender: child_gender
+            daily_home_screen_message_catego: daily_home_screen_message_catego
+            activity_category: activity_category
+            growth_introductory: growth_introductory
+            growth_type: growth_type
+            keywords: keywords
+            parent_gender: parent_gender
+            relationship_to_parent: relationship_to_parent
+            standard_deviation_category: standard_deviation_category
+            subcategory: subcategory
+            type_of_article: type_of_article
+            type_of_support: type_of_support
           group: 1
           exposed: true
           expose:
@@ -294,7 +337,7 @@ display:
               sme: '0'
               se: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -360,13 +403,271 @@ display:
         - url
         - url.query_args
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.taxonomy_term.field_sd4neg'
   data_export_1:
     id: data_export_1
     display_title: 'Data export'
     display_plugin: data_export
     position: 2
     display_options:
+      fields:
+        tid:
+          id: tid
+          table: taxonomy_term_field_data
+          field: tid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: tid
+          plugin_id: field
+          label: 'Term ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+        langcode:
+          id: langcode
+          table: taxonomy_term_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: langcode
+          plugin_id: field
+          label: 'Original language'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: language
+          settings:
+            link_to_entity: false
+            native_language: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 1000
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+          pagination_heading_level: h4
+      arguments:
+        langcode:
+          id: langcode
+          table: taxonomy_term_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: langcode
+          plugin_id: language
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: raw
+          default_argument_options:
+            index: 1
+            use_alias: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
       style:
         type: data_export
         options:
@@ -381,8 +682,70 @@ display:
             encoding: utf8
             utf8_bom: '0'
             use_serializer_encode_only: false
+      row:
+        type: data_field
+        options:
+          field_options:
+            tid:
+              alias: id
+              raw_output: true
+            name:
+              alias: name
+              raw_output: true
+            field_unique_name:
+              alias: child_gender
+              raw_output: true
+            field_growth_type:
+              alias: growth_type
+              raw_output: true
+            langcode:
+              alias: langcode
+              raw_output: true
+            field_sd0:
+              alias: sd0
+              raw_output: true
+            field_sd1:
+              alias: sd1
+              raw_output: true
+            field_sd2:
+              alias: sd2
+              raw_output: true
+            field_sd3:
+              alias: sd3
+              raw_output: true
+            field_sd4:
+              alias: sd4
+              raw_output: true
+            field_sd1neg:
+              alias: sd1neg
+              raw_output: true
+            field_sd2neg:
+              alias: sd2neg
+              raw_output: true
+            field_sd3neg:
+              alias: sd3neg
+              raw_output: true
+            field_sd4neg:
+              alias: sd4neg
+              raw_output: true
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      defaults:
+        query: false
+        group_by: false
+        relationships: false
+        fields: false
+        arguments: false
+      relationships: {  }
+      group_by: true
       display_extenders: {  }
-      path: taxonomy-data-export
+      path: taxonomy-data-export/%
       displays:
         page_1: page_1
         default: '0'
@@ -399,6 +762,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - url.query_args
         - user.permissions
       tags: {  }
   page_1:
@@ -407,8 +771,248 @@ display:
     display_plugin: page
     position: 1
     display_options:
+      fields:
+        tid:
+          id: tid
+          table: taxonomy_term_field_revision
+          field: tid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: tid
+          plugin_id: field
+          label: 'Term ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+          label: Name
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+        langcode:
+          id: langcode
+          table: taxonomy_term_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: langcode
+          plugin_id: field
+          label: 'Original language'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: language
+          settings:
+            link_to_entity: false
+            native_language: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      arguments:
+        langcode:
+          id: langcode
+          table: taxonomy_term_field_data
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: langcode
+          plugin_id: language
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: raw
+          default_argument_options:
+            index: 1
+            use_alias: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+      defaults:
+        relationships: false
+        fields: false
+        arguments: false
+      relationships: {  }
       display_extenders: {  }
-      path: taxonomy-export
+      path: taxonomy-export/%
     cache_metadata:
       max-age: -1
       contexts:

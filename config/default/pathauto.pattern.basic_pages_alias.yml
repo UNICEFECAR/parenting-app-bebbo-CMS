@@ -1,0 +1,22 @@
+uuid: 1d8c0fcf-5ee7-485c-ad7b-c5a0aa729bbb
+langcode: en
+status: false
+dependencies:
+  module:
+    - node
+id: basic_pages_alias
+label: 'Basic pages alias'
+type: 'canonical_entities:node'
+pattern: '[node:title]'
+selection_criteria:
+  5143a803-316f-4bc7-868d-943827c57545:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 5143a803-316f-4bc7-868d-943827c57545
+    context_mapping:
+      node: node
+    bundles:
+      page: page
+selection_logic: and
+weight: -5
+relationships: {  }
