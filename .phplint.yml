@@ -1,0 +1,14 @@
+path: ./
+jobs: 10
+cache: build/phplint.cache
+extensions:
+  - php
+exclude:
+  - vendor
+  - tests
+  - node_modules
+  - docroot/core
+  - docroot/modules/contrib
+  - docroot/themes/contrib
+  - docroot/profiles
+warning: false
