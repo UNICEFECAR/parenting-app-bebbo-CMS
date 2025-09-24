@@ -14,7 +14,7 @@ _core:
 name: Article
 type: article
 description: 'Articles grouped in thematic categories providing information and advise for parents'
-help: ''
+help: null
 new_revision: true
 preview_mode: 0
 display_submitted: true

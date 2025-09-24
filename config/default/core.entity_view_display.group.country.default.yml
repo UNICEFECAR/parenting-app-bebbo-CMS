@@ -10,6 +10,7 @@ dependencies:
     - field.field.group.country.field_country_national_partner
     - field.field.group.country.field_country_sponsor_logo
     - field.field.group.country.field_language
+    - field.field.group.country.field_language_name_in_local
     - field.field.group.country.field_make_available_for_mobile
     - field.field.group.country.field_master_language
     - field.field.group.country.field_unicef_logo
@@ -76,6 +77,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_language_name_in_local:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
     region: content
   field_make_available_for_mobile:
     type: boolean

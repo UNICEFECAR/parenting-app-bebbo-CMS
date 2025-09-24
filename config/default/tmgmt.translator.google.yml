@@ -8,11 +8,11 @@ name: google
 label: Google
 description: 'Google Translator service.'
 auto_accept: false
-weight: null
+weight: -9
 plugin: google
 settings:
   url: ''
-  api_key: AIzaSyDzFu9iYpZd6R3CC9r6mKrpSudKFcUyt8c
+  api_key: AIzaSyAeJJXyKYyJAdxGwBCS664qH8bow87Irko
 remote_languages_mappings:
   en: en
   ru: ru
@@ -28,20 +28,18 @@ remote_languages_mappings:
   kg-ru: ru
   md-ro: ro
   me-cnr: bs
-  mk-sq: mk
   mk-mk: mk
+  mk-sq: sq
   ro: ro
   ro-ro: ro
   sr: sr
-  rs-en: en
   rs-sr: sr
+  rs-en: en
   sk: sk
-  tj-ru: ru
   tj-tg: tg
-  tr: tr
+  tj-ru: ru
   uk: uk
-  uz-ru: uz
   uz-uz: uz
-  ar: ar
-  gr-arb: ar
-  gr-fa: fa
+  uz-ru: uz
+  uz-kaa: uz
+  tr: tr

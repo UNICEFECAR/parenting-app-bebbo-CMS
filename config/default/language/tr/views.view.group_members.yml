@@ -28,7 +28,7 @@ display:
           label: Roller
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
           separator: ', '
         created:
           label: Katıldı

@@ -10,7 +10,7 @@ display:
           label: Başlık
           separator: ', '
         type:
-          label: 'İçerik türü'
+          label: 'İçerik tipi'
           separator: ', '
         name:
           label: Yazar
@@ -19,7 +19,7 @@ display:
           label: 'Denetim durumu'
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
           separator: ', '
         operations:
           label: İşlemler
@@ -41,13 +41,16 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Denetlenen içerik yok. Burada yalnızca taslaklar gibi bekleyen içerik sürümleri listelenir.'
       filters:
         title:
           expose:
             label: Başlık
         type:
           expose:
-            label: 'İçerik türü'
+            label: 'İçerik tipi'
         moderation_state:
           expose:
             label: 'Denetim durumu'

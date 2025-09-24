@@ -6,3 +6,4 @@ name: Category
 vid: category
 description: 'Thematic categories related to all articles'
 weight: -9
+new_revision: false

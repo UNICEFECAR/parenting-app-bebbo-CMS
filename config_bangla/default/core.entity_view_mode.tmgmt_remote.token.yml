@@ -6,5 +6,6 @@ dependencies:
     - tmgmt
 id: tmgmt_remote.token
 label: Token
+description: ''
 targetEntityType: tmgmt_remote
 cache: true

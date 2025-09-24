@@ -6,7 +6,7 @@ display:
       title: Medya
       fields:
         thumbnail__target_id:
-          label: 'Küçük resim'
+          label: 'Küçük görsel'
           separator: ', '
         name:
           label: 'Medya adı'
@@ -24,7 +24,7 @@ display:
             format_custom_true: Yayında
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
           separator: ', '
         operations:
           label: İşlemler
@@ -46,6 +46,9 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Ortam yok.'
       filters:
         name:
           expose:

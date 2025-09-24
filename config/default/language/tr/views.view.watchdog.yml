@@ -1,4 +1,4 @@
-label: Bekçi
+label: Watchdog
 description: 'Son günlük iletileri'
 display:
   default:
@@ -11,7 +11,7 @@ display:
         wid:
           label: WID
         severity:
-          label: 'Önem seviyesi'
+          label: 'Önem derecesi'
         type:
           label: Tip
         timestamp:
@@ -51,6 +51,6 @@ display:
             label: Tip
         severity:
           expose:
-            label: 'Önem seviyesi'
+            label: 'Önem derecesi'
   page:
     display_title: Sayfa

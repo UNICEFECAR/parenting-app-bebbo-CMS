@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.article.field_related_articles
     - field.field.node.article.field_related_video_articles
     - field.field.node.article.field_subcategory
+    - field.field.node.article.field_type_of_article
     - node.type.article
   module:
     - text
@@ -178,4 +179,5 @@ hidden:
   field_meta_keywords: true
   field_pre_populated: true
   field_subcategory: true
+  field_type_of_article: true
   langcode: true

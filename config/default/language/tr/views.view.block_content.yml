@@ -1,3 +1,4 @@
+description: 'İçerik bloklarını bulun ve yönetin.'
 display:
   default:
     display_title: Varsayılan
@@ -10,7 +11,7 @@ display:
           label: 'Blok tipi'
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
         operations:
           label: İşlemler
       pager:
@@ -29,6 +30,9 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Kullanılabilir içerik bloğu yok.'
       filters:
         info:
           expose:

@@ -6,3 +6,4 @@ name: 'Growth Type'
 vid: growth_type
 description: 'Weight for height/ length; Weight for age'
 weight: 0
+new_revision: false

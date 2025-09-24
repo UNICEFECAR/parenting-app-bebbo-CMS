@@ -6,5 +6,6 @@ dependencies:
     - tmgmt
 id: tmgmt_message.token
 label: Token
+description: ''
 targetEntityType: tmgmt_message
 cache: true
