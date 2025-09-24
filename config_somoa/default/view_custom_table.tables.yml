@@ -1,3 +1,4 @@
+langcode: en
 forcefull_check_update_api:
   table_name: forcefull_check_update_api
   table_database: default

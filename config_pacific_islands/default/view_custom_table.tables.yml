@@ -1,6 +1,7 @@
+langcode: en
 forcefull_check_update_api:
   table_name: forcefull_check_update_api
-  table_database: prod_pb_pacific_islands
+  table_database: pacific_islands_db
   description: ''
   column_relations: 'a:0:{}'
   created_by: '11'
