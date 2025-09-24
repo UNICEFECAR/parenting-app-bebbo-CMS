@@ -36,6 +36,7 @@ bin/*
 tmp
 reports
 /travis_wait*
+build*
 
 # OS X
 .DS_Store
