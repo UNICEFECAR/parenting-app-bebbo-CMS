@@ -121,7 +121,7 @@ class CustomSerializer extends Serializer {
             }
           }
           $embedded_images = [];
-          $languages_all = [];
+          // $languages_all = [];
           foreach ($rendered_data as $key => $values) {
             /* Replace special charater into normal. */
             if ($key === "title") {
@@ -228,8 +228,7 @@ class CustomSerializer extends Serializer {
 
             if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
               $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
-              $Countryname = $rendered_data['Countryname'] ?? 'Unknown';
-
+              // $Countryname = $rendered_data['Countryname'] ?? 'Unknown';
               // Langcode en.
               $existing_data_en = \Drupal::database()->select('custom_language_data', 'cld')
                 ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
@@ -239,7 +238,7 @@ class CustomSerializer extends Serializer {
 
               $langcode_en = 'en';
               $language_en = \Drupal::languageManager()->getLanguage($langcode_en);
-              $original_language_en = \Drupal::languageManager()->setConfigOverrideLanguage($language_en);
+              \Drupal::languageManager()->setConfigOverrideLanguage($language_en);
               $languages_en = ConfigurableLanguage::load($langcode_en);
 
               if ($languages_en) {
@@ -264,7 +263,7 @@ class CustomSerializer extends Serializer {
 
               $langcode_ru = 'ru';
               $language_ru = \Drupal::languageManager()->getLanguage($langcode_ru);
-              $original_language_ru = \Drupal::languageManager()->setConfigOverrideLanguage($language_ru);
+              \Drupal::languageManager()->setConfigOverrideLanguage($language_ru);
               $language_ru = ConfigurableLanguage::load($langcode_ru);
 
               if ($language_ru) {
@@ -306,9 +305,7 @@ class CustomSerializer extends Serializer {
               unset($rendered_data['published']);
             }
             if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {
-              $langcodes = $display_name = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
               $groups = Group::load($rendered_data['CountryID']);
-              $master_languages = $groups->get('field_master_language')->getValue();
               $country_languages = $groups->get('field_language')->getValue();
               $rendered_data['languages'] = [];
 
@@ -318,22 +315,10 @@ class CustomSerializer extends Serializer {
                 if ($langcode) {
                   $language = \Drupal::languageManager()->getLanguage($langcode);
 
-                  $original_language = \Drupal::languageManager()->setConfigOverrideLanguage($language);
+                  \Drupal::languageManager()->setConfigOverrideLanguage($language);
                   $languages = ConfigurableLanguage::load($langcode);
 
                   $view_weight = $languages->get('weight') ?? 0;
-                  if ($languages) {
-                    // Retrieve the display name (label) of the language.
-                    if ($languages->label()) {
-                      $display_name = $languages->label();
-                    }
-                    else {
-                      $display_name = $rendered_data['name'];
-                    }
-                  }
-                  else {
-                    $display_name = $rendered_data['name'];
-                  }
 
                   // Fetch the existing data from the database.
                   $existing_data_all = \Drupal::database()->select('custom_language_data', 'cld')
@@ -349,7 +334,8 @@ class CustomSerializer extends Serializer {
                     $custom_locale_all = $existing_data_all['custom_locale'];
                     $custom_luxon_all = $existing_data_all['custom_luxon'];
                     $custom_plural_all = $existing_data_all['custom_plural'];
-                    $custom_language_name_local = !empty($existing_data_all['custom_language_name_local']) ? $existing_data_all['custom_language_name_local'] : '';
+                    $custom_language_name_local = !empty($existing_data_all['custom_language_name_local']) ?
+                      $existing_data_all['custom_language_name_local'] : '';
                   }
 
                   // Add the language data to the array.
@@ -422,7 +408,9 @@ class CustomSerializer extends Serializer {
           else {
             $query_params = \Drupal::request()->query->all();
             if (isset($query_params['pregnancy']) && $query_params['pregnancy'] == 'true') {
-              // pregnancy,Week by Week (if above condition gets true we are removing it from term array to display pregnancy in  child age taxo)
+              // pregnancy,Week by Week (if above condition
+              // gets true we are removing it
+              // from term array to display pregnancy in child age taxo)
               $term_name_arr = [];
             }
             else {
@@ -662,7 +650,7 @@ class CustomSerializer extends Serializer {
 
                 if ($response === FALSE) {
                   // cURL error occurred.
-                  $error_message = curl_error($ch);
+                  curl_error($ch);
                   // Handle the error, log it, etc.
                   $urls = 'cURL error';
                 }
@@ -675,7 +663,7 @@ class CustomSerializer extends Serializer {
 
                   if ($data === NULL) {
                     // JSON decoding error occurred.
-                    $json_error = json_last_error_msg();
+                    json_last_error_msg();
                     // Handle the error, log it, etc.
                     $urls = 'Vimeo error';
                   }
@@ -901,7 +889,7 @@ class CustomSerializer extends Serializer {
   }
 
   /**
-   *
+   * Removes item.
    */
   public function removeItemsByKeyValue($request_uri, $data, $key, $tid) {
 

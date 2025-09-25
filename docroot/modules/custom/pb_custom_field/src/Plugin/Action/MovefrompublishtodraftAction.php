@@ -8,7 +8,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation;
 
 /**
  * Action description.
@@ -51,8 +50,8 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
-  $uid = \Drupal::currentUser()->id();
+  public function execute(?ContentEntityInterface $entity = NULL) {
+    $uid = \Drupal::currentUser()->id();
     $user = User::load($uid);
     // $groups = array();
     $grp_membership_service = \Drupal::service('group.membership_loader');
@@ -74,8 +73,8 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
     $archive_node = Node::load($nid);
-    $ids = array_column($list, '0');
-    $all_ids = implode(',', $ids);
+
+    array_column($list, '0');
     $node_lang_archive = $archive_node->getTranslation($current_language);
     $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state !== 'draft' && empty($grps)) {
@@ -117,7 +116,7 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
         $this->countryRestrict = $this->countryRestrict + 1;
 
       }
-      
+
     }
     else {
       $this->nonAssigned = $this->nonAssigned + 1;
@@ -147,27 +146,27 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase {
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        // drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');.
         \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        // drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');.
         \Drupal::messenger()->addError($error_message);
       }
     }
-    // if ($this->initial == 1) {
-    //   /* Please add the entity */
-    //   $message = 'Content Bulk updated into published' . $uid . " content id - " . $all_ids;
-    //   \Drupal::logger('Content Bulk updated')->info($message);
+    // If ($this->initial == 1) {
+    // /* Please add the entity */
+    // $message = 'Content Bulk updated into published' .
+    // $uid . " content id - " . $all_ids;
+    // \Drupal::logger('Content Bulk updated')->info($message);
     // }
-
     return $this->t("Total content selected");
   }
 
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     if ($object->getEntityType() === 'node') {
       $access = $object->access('update', $account, TRUE)
         ->andIf($object->status->access('edit', $account, TRUE));

@@ -2,11 +2,14 @@
 
 namespace Drupal\pb_custom_form\EventSubscriber;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
+use Drupal\Core\Path\CurrentPathStack;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountProxy;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,6 +44,34 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
   protected $currentUser;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The current path service.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $pathCurrent;
+
+  /**
+   * The path alias manager service.
+   *
+   * @var \Drupal\path_alias\AliasManagerInterface
+   */
+  protected $pathAliasManager;
+
+  /**
+   * The page cache kill switch service.
+   *
+   * @var \Drupal\Core\PageCache\ResponsePolicy\KillSwitch
+   */
+  protected $pageCacheKillSwitch;
+
+  /**
    * Construct method.
    *
    * @inheritDoc
@@ -49,10 +80,18 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     CurrentRouteMatch $route_match,
     LanguageManager $language_manager,
     AccountProxy $current_user,
+    EntityTypeManagerInterface $entity_type_manager,
+    CurrentPathStack $path_current,
+    AliasManagerInterface $path_alias_manager,
+    KillSwitch $page_cache_kill_switch,
   ) {
     $this->routeMatch = $route_match;
     $this->languageManager = $language_manager;
     $this->currentUser = $current_user;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->pathCurrent = $path_current;
+    $this->pathAliasManager = $path_alias_manager;
+    $this->pageCacheKillSwitch = $page_cache_kill_switch;
   }
 
   /**
@@ -62,7 +101,11 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     return new static(
       $container->get('current_route_match'),
       $container->get('language_manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('entity_type.manager'),
+      $container->get('path.current'),
+      $container->get('path_alias.manager'),
+      $container->get('page_cache_kill_switch')
     );
   }
 
@@ -80,9 +123,16 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
   public function nodeViewRedirect(RequestEvent $event) {
     $node = $this->routeMatch->getParameter('node');
     global $base_url;
-    $current_path = \Drupal::service('path.current')->getPath();
-    $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    $landingPages = ['/homepage', '/about-us', '/terms-and-conditions', '/privacy-policy', '/foleja', '/foleja-about-us', '/foleja-privacy-policy'];
+    $current_path = $this->pathCurrent->getPath();
+    $internal = $this->pathAliasManager->getAliasByPath($current_path);
+    $landingPages = ['/homepage',
+      '/about-us',
+      '/terms-and-conditions',
+      '/privacy-policy',
+      '/foleja',
+      '/foleja-about-us',
+      '/foleja-privacy-policy',
+    ];
     if (!$this->isNodeRoute()) {
       return;
     }
@@ -123,11 +173,10 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     ];
 
     if (is_numeric($node)) {
-      $node = Node::load($node);
+      $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
     if ($node instanceof NodeInterface) {
-      $current_lang = \Drupal::languageManager()->getCurrentLanguage()->getId();
-      ;
+      $current_lang = $this->languageManager->getCurrentLanguage()->getId();
       if ($current_lang == 'en') {
         $path = $base_url . '/';
         $event->setResponse(new RedirectResponse($path));
@@ -143,7 +192,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
         }
 
       }
-      \Drupal::service('page_cache_kill_switch')->trigger();
+      $this->pageCacheKillSwitch->trigger();
 
     }
   }

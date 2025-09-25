@@ -77,12 +77,16 @@ class CustomStandardDeviation extends Serializer {
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
           foreach ($rendered_data as $key => $values) {
-            // If (($key === 'growth_type' && $values === "6461") || ($key === 'growth_type' && $values === "606") || ($key === 'growth_type' && $values === "6891")) {.
+            // If (($key === 'growth_type' && $values === "6461") ||
+            // ($key === 'growth_type' && $values === "606") ||
+            // ($key === 'growth_type' && $values === "6891")) {.
             if (($key === 'custom_growth_type' && $values === "height_for_weight")) {
               $weight_for_height[] = $rendered_data;
             }
 
-            // If (($key === 'growth_type' && $values === "32786") || ($key === 'growth_type' && $values === "601") || ($key === 'growth_type' && $values === "25466")) {.
+            // If (($key === 'growth_type' && $values === "32786") ||
+            // ($key === 'growth_type' && $values === "601") ||
+            // ($key === 'growth_type' && $values === "25466")) {.
             if (($key === 'custom_growth_type' && $values === "height_for_age")) {
               $height_for_age[] = $rendered_data;
             }
@@ -96,29 +100,41 @@ class CustomStandardDeviation extends Serializer {
 
         for ($i = 0; $i < count($weight_for_height); $i++) {
           if (isset($weight_for_height[$i]['child_age'])) {
-            $sorted_weight_for_height = $this->sortChildAgeID($weight_for_height[$i]['child_age']);
-            // \Drupal::logger('pb_custom_standard_deviation')->notice('weight_for_height=> <pre><code>' . $sorted_weight_for_height . '</code></pre>');.
-            // if ($sorted_weight_for_height === "43,44,45,46" || $sorted_weight_for_height === "466,471,476,481" || $sorted_weight_for_height === "596,601,606,611") {
+            $sorted_weight_for_height = $this->sortChildAgeId($weight_for_height[$i]['child_age']);
+            // \Drupal::logger('pb_custom_standard_deviation')->
+            // notice('weight_for_height=> <pre><code>' .
+            // $sorted_weight_for_height . '</code></pre>');.
+            // if ($sorted_weight_for_height === "43,44,45,46" ||
+            // $sorted_weight_for_height === "466,471,476,481" ||
+            // $sorted_weight_for_height === "596,601,606,611") {
             if ($sorted_weight_for_height === "1st_month,2nd_month,3_4_months,5_6_months") {
               $child_1[] = $weight_for_height[$i];
             }
 
-            // If ($sorted_weight_for_height === "47" || $sorted_weight_for_height === "486" || $sorted_weight_for_height === "616") {.
+            // If ($sorted_weight_for_height === "47" ||
+            // $sorted_weight_for_height === "486" ||
+            // $sorted_weight_for_height === "616") {.
             if ($sorted_weight_for_height === "7_9_months") {
               $child_2[] = $weight_for_height[$i];
             }
 
-            // If ($sorted_weight_for_height === "48" || $sorted_weight_for_height === "491" || $sorted_weight_for_height === "621") {.
+            // If ($sorted_weight_for_height === "48" ||
+            // $sorted_weight_for_height === "491" ||
+            // $sorted_weight_for_height === "621") {.
             if ($sorted_weight_for_height === "10_12_months") {
               $child_3[] = $weight_for_height[$i];
             }
 
-            // If ($sorted_weight_for_height === "49,50" || $sorted_weight_for_height === "496,501" || $sorted_weight_for_height === "626,631") {.
+            // If ($sorted_weight_for_height === "49,50" ||
+            // $sorted_weight_for_height === "496,501" ||
+            // $sorted_weight_for_height === "626,631") {.
             if ($sorted_weight_for_height === "13_18_months,19_24_months") {
               $child_4[] = $weight_for_height[$i];
             }
 
-            // If ($sorted_weight_for_height === "51,52,57,58" || $sorted_weight_for_height === "506,511,516,521" || $sorted_weight_for_height === "636,641,646,651") {.
+            // If ($sorted_weight_for_height === "51,52,57,58" ||
+            // $sorted_weight_for_height === "506,511,516,521" ||
+            // $sorted_weight_for_height === "636,641,646,651") {.
             if ($sorted_weight_for_height === "25_36_months,37_48_months,49_60_months,61_72_months") {
               $child_5[] = $weight_for_height[$i];
             }
@@ -161,29 +177,41 @@ class CustomStandardDeviation extends Serializer {
         $child_5 = [];
         for ($i = 0; $i <= count($height_for_age); $i++) {
           if (isset($height_for_age[$i]['child_age'])) {
-            $sorted_height_for_age = $this->sortChildAgeID($height_for_age[$i]['child_age']);
-            // \Drupal::logger('pb_custom_standard_deviation')->notice('height_for_age => <pre><code>' . $sorted_height_for_age . '</code></pre>');
-            // if ($sorted_height_for_age === "43,44,45,46" || $sorted_height_for_age === "466,471,476,481" || $sorted_height_for_age === "596,601,606,611") {
+            $sorted_height_for_age = $this->sortChildAgeId($height_for_age[$i]['child_age']);
+            // \Drupal::logger('pb_custom_standard_deviation')
+            // ->notice('height_for_age => <pre><code>' .
+            // $sorted_height_for_age . '</code></pre>');
+            // if ($sorted_height_for_age === "43,44,45,46" ||
+            // $sorted_height_for_age === "466,471,476,481" ||
+            // $sorted_height_for_age === "596,601,606,611") {
             if ($sorted_height_for_age === "1st_month,2nd_month,3_4_months,5_6_months") {
               $child_1[] = $height_for_age[$i];
             }
 
-            // If ($sorted_height_for_age === "47" || $sorted_height_for_age === "486" || $sorted_height_for_age === "616") {.
+            // If ($sorted_height_for_age === "47" ||
+            // $sorted_height_for_age === "486" ||
+            // $sorted_height_for_age === "616") {.
             if ($sorted_height_for_age === "7_9_months") {
               $child_2[] = $height_for_age[$i];
             }
 
-            // If ($sorted_height_for_age === "48" || $sorted_height_for_age === "491" || $sorted_height_for_age === "621") {.
+            // If ($sorted_height_for_age === "48" ||
+            // $sorted_height_for_age === "491" ||
+            // $sorted_height_for_age === "621") {.
             if ($sorted_height_for_age === "10_12_months") {
               $child_3[] = $height_for_age[$i];
             }
 
-            // If ($sorted_height_for_age === "49,50" || $sorted_height_for_age === "496,501" || $sorted_height_for_age === "626,631") {.
+            // If ($sorted_height_for_age === "49,50" ||
+            // $sorted_height_for_age === "496,501" ||
+            // $sorted_height_for_age === "626,631") {.
             if ($sorted_height_for_age === "13_18_months,19_24_months") {
               $child_4[] = $height_for_age[$i];
             }
 
-            // If ($sorted_height_for_age === "51,52,57,58" || $sorted_height_for_age === "506,511,516,521" || $sorted_height_for_age === "636,641,646,651") {.
+            // If ($sorted_height_for_age === "51,52,57,58" ||
+            // $sorted_height_for_age === "506,511,516,521" ||
+            // $sorted_height_for_age === "636,641,646,651") {.
             if ($sorted_height_for_age === "25_36_months,37_48_months,49_60_months,61_72_months") {
               $child_5[] = $height_for_age[$i];
             }
@@ -288,8 +316,7 @@ class CustomStandardDeviation extends Serializer {
   /**
    * To sort child age id.
    */
-  public function sortChildAgeID($child_age_id) {
-    $child_sorted_arr = [];
+  public function sortChildAgeId($child_age_id) {
     $child_age_arr = explode(',', $child_age_id);
     sort($child_age_arr);
     foreach ($child_age_arr as $key => $value) {
@@ -297,7 +324,7 @@ class CustomStandardDeviation extends Serializer {
     }
     // $child_arr_length = count($child_age_arr);
     // for ($x = 0; $x < $child_arr_length; $x++) {
-    //   array_push($child_sorted_arr, $child_age_arr[$x]);
+    // array_push($child_sorted_arr, $child_age_arr[$x]);
     // }
     // $child_sorted_arr = $child_age_arr;
     $child_age = implode(',', $child_age_arr);

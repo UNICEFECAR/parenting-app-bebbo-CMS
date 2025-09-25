@@ -11,7 +11,6 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
-use Symfony\Component\HttpFoundation;
 use Drupal\node\Entity\Node;
 
 /*
@@ -181,7 +180,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
+  public function execute(?ContentEntityInterface $entity = NULL) {
     $context = $this->context;
     $total_selected = $context['selected_count'];
     $langoption = $this->configuration['language_option'];
@@ -238,11 +237,11 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
 
     if ($total_selected == $this->processItem) {
       if (!empty($message)) {
-        // drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');.
         \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        // drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');.
         \Drupal::messenger()->addError($error_message);
       }
     }
@@ -252,7 +251,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     if ($object->getEntityType() === 'node') {
       $access = $object->access('update', $account, TRUE)
         ->andIf($object->status->access('edit', $account, TRUE));

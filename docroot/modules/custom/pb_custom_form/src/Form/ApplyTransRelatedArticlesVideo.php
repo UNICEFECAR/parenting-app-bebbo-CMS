@@ -19,7 +19,7 @@ use Drupal\pb_custom_form\ApplyNodeTranslations;
 class ApplyTransRelatedArticlesVideo extends FormBase {
 
   /**
-   *
+   * Get form ID.
    */
   public function getFormId() {
     return 'apply_trans_related_articles_video';
@@ -54,7 +54,7 @@ class ApplyTransRelatedArticlesVideo extends FormBase {
   }
 
   /**
-   *
+   * Submit the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     ApplyNodeTranslations::initiateBatchProcessing($form_state->getValue('content_types'));

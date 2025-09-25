@@ -50,7 +50,7 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
+  public function execute(?ContentEntityInterface $entity = NULL) {
     $uid = \Drupal::currentUser()->id();
     $user = User::load($uid);
     // $groups = array();
@@ -156,11 +156,11 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        // drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');.
         \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        // drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');.
         \Drupal::messenger()->addError($error_message);
       }
     }
@@ -175,7 +175,7 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     if ($object->getEntityType() === 'node') {
       $access = $object->access('update', $account, TRUE)
         ->andIf($object->status->access('edit', $account, TRUE));

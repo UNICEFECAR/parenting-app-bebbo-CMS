@@ -10,7 +10,7 @@ use Drupal\node\Entity\Node;
 class ApplyNodeTranslations {
 
   /**
-   *
+   * Initializes batch processing.
    */
   public static function initiateBatchProcessing($type) {
     $items = self::getNodeIdsForBatch($type);
@@ -120,7 +120,8 @@ class ApplyNodeTranslations {
       $context['results']['items'][] = $items[$context['sandbox']['progress']];
 
       // Results are passed to the finished callback.
-      // $context['results']['items'][] = $items[$context['sandbox']['progress']];.
+      // $context['results']['items'][] =
+      // $items[$context['sandbox']['progress']];.
     }
 
     // When progress equals max, finished is '1' which means completed. Any

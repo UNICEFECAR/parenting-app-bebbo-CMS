@@ -8,7 +8,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation;
 
 /* use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
@@ -54,7 +53,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
-  public function execute(ContentEntityInterface $entity = NULL) {
+  public function execute(?ContentEntityInterface $entity = NULL) {
 
     $uid = \Drupal::currentUser()->id();
     $user = User::load($uid);
@@ -78,8 +77,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
     $archive_node = Node::load($nid);
-    $ids = array_column($list, '0');
-    $all_ids = implode(',', $ids);
+    array_column($list, '0');
     $node_lang_archive = $archive_node->getTranslation($current_language);
     $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state !== 'senior_editor_review' && empty($grps)) {
@@ -121,7 +119,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
         $this->countryRestrict = $this->countryRestrict + 1;
 
       }
-      
+
     }
     else {
       $this->nonAssigned = $this->nonAssigned + 1;
@@ -151,15 +149,14 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
     /* $message.="Please visit Country content page to view.";*/
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        // drupal_set_message($message, 'status');
+        // drupal_set_message($message, 'status');.
         \Drupal::messenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        // drupal_set_message($error_message, 'error');
+        // drupal_set_message($error_message, 'error');.
         \Drupal::messenger()->addError($error_message);
       }
     }
-   
 
     return $this->t("Total content selected");
   }
@@ -167,7 +164,7 @@ class ChangedToSeniorEditorAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     if ($object->getEntityType() === 'node') {
       $access = $object->access('update', $account, TRUE)
         ->andIf($object->status->access('edit', $account, TRUE));
