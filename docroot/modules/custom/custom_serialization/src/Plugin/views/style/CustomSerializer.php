@@ -4,6 +4,13 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Path\CurrentPathStack;
+use Symfony\Component\Serializer\SerializerInterface;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
 use Drupal\image\Entity\ImageStyle;
@@ -27,13 +34,133 @@ use Symfony\Component\HttpFoundation\Response;
 class CustomSerializer extends Serializer {
 
   /**
+   * The current path service.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPath;
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The group membership loader.
+   *
+   * @var \Drupal\group\GroupMembershipLoaderInterface
+   */
+  protected $groupMembershipLoader;
+
+  /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
+   * The logger service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    SerializerInterface $serializer,
+    array $serializer_formats,
+    array $serializer_format_providers,
+    CurrentPathStack $current_path,
+    RequestStack $request_stack,
+    Connection $database,
+    LanguageManagerInterface $language_manager,
+    EntityTypeManagerInterface $entity_type_manager,
+  ) {
+    parent::__construct(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $serializer,
+      $serializer_formats,
+      $serializer_format_providers
+    );
+    $this->currentPath = $current_path;
+    $this->requestStack = $request_stack;
+    $this->database = $database;
+    $this->languageManager = $language_manager;
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('serializer'),
+      $container->getParameter('serializer.formats'),
+      $container->getParameter('serializer.format_providers'),
+      $container->get('path.current'),
+      $container->get('request_stack'),
+      $container->get('database'),
+      $container->get('language_manager'),
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function render() {
     /* Gives request path e.x (api/articles/en/1) */
-    $request_uri = \Drupal::service('path.current')->getPath();
+    $request_uri = $this->currentPath->getPath();
     $request = explode('/', $request_uri);
-    $request_path = \Drupal::request()->getSchemeAndHttpHost();
+    $request_path = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
 
     /* Validating request params to response error code. */
     if (strpos($request_uri, "api/country-groups") !== FALSE) {
@@ -105,12 +232,12 @@ class CustomSerializer extends Serializer {
           }
           /* Add unique field to Basic page API. */
           if (strpos($request_uri, "basic-pages") !== FALSE && $rendered_data['type'] === "Basic page") {
-            $query = \Drupal::database()->select('node_field_data');
+            $query = $this->database->select('node_field_data');
             $query->condition('nid', $rendered_data['id']);
             $query->condition('langcode', "en");
             $query->fields('node_field_data');
             $result = $query->execute()->fetchAll();
-            if (!empty($result) && isset($result)) {
+            if (!empty($result)) {
               $basic_title = $result[0]->title;
               $basic_page = strtolower($basic_title);
               $basic_page = str_replace(' ', '_', $basic_page);
@@ -220,7 +347,7 @@ class CustomSerializer extends Serializer {
                   $vocabulary_name = $formatted_data[1];
                   $vocabulary_machine_name = $formatted_data[0];
                   $taxonomy_data = $this->customTaxonomyFieldFormatter($request_uri, $key, $vocabulary_name, $vocabulary_machine_name, $language_code);
-                  /* \Drupal::logger('custom_serialization')->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
+                  /* $this->logger->notice('<pre><code>' . print_r($taxonomy_data, TRUE) . '</code></pre>'); */
                   $field_formatter[$formatted_data[0]] = $taxonomy_data;
                 }
               }
@@ -230,15 +357,15 @@ class CustomSerializer extends Serializer {
               $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
               // $Countryname = $rendered_data['Countryname'] ?? 'Unknown';
               // Langcode en.
-              $existing_data_en = \Drupal::database()->select('custom_language_data', 'cld')
+              $existing_data_en = $this->database->select('custom_language_data', 'cld')
                 ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
                 ->condition('langcode', 'en')
                 ->execute()
                 ->fetchAssoc();
 
               $langcode_en = 'en';
-              $language_en = \Drupal::languageManager()->getLanguage($langcode_en);
-              \Drupal::languageManager()->setConfigOverrideLanguage($language_en);
+              $language_en = $this->languageManager->getLanguage($langcode_en);
+              $this->languageManager->setConfigOverrideLanguage($language_en);
               $languages_en = ConfigurableLanguage::load($langcode_en);
 
               if ($languages_en) {
@@ -255,15 +382,15 @@ class CustomSerializer extends Serializer {
               }
 
               // Langcode ru.
-              $existing_data_ru = \Drupal::database()->select('custom_language_data', 'cld')
+              $existing_data_ru = $this->database->select('custom_language_data', 'cld')
                 ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
                 ->condition('langcode', 'ru')
                 ->execute()
                 ->fetchAssoc();
 
               $langcode_ru = 'ru';
-              $language_ru = \Drupal::languageManager()->getLanguage($langcode_ru);
-              \Drupal::languageManager()->setConfigOverrideLanguage($language_ru);
+              $language_ru = $this->languageManager->getLanguage($langcode_ru);
+              $this->languageManager->setConfigOverrideLanguage($language_ru);
               $language_ru = ConfigurableLanguage::load($langcode_ru);
 
               if ($language_ru) {
@@ -313,15 +440,15 @@ class CustomSerializer extends Serializer {
                 $langcode = $val['value'];
 
                 if ($langcode) {
-                  $language = \Drupal::languageManager()->getLanguage($langcode);
+                  $language = $this->languageManager->getLanguage($langcode);
 
-                  \Drupal::languageManager()->setConfigOverrideLanguage($language);
+                  $this->languageManager->setConfigOverrideLanguage($language);
                   $languages = ConfigurableLanguage::load($langcode);
 
                   $view_weight = $languages->get('weight') ?? 0;
 
                   // Fetch the existing data from the database.
-                  $existing_data_all = \Drupal::database()->select('custom_language_data', 'cld')
+                  $existing_data_all = $this->database->select('custom_language_data', 'cld')
                     ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
                     ->condition('langcode', $langcode)
                     ->execute()
@@ -329,6 +456,7 @@ class CustomSerializer extends Serializer {
 
                   // Initialize variables.
                   $custom_locale_all = $custom_luxon_all = $custom_plural_all = '';
+                  $custom_language_name_local = '';
 
                   if (!empty($existing_data_all)) {
                     $custom_locale_all = $existing_data_all['custom_locale'];
@@ -406,7 +534,7 @@ class CustomSerializer extends Serializer {
             $term_name_arr = ['Pregnancy'];
           }
           else {
-            $query_params = \Drupal::request()->query->all();
+            $query_params = $this->requestStack->getCurrentRequest()->query->all();
             if (isset($query_params['pregnancy']) && $query_params['pregnancy'] == 'true') {
               // pregnancy,Week by Week (if above condition
               // gets true we are removing it
@@ -419,7 +547,7 @@ class CustomSerializer extends Serializer {
             }
           }
           foreach ($term_name_arr as $val) {
-            $term_values = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $val]);
+            $term_values = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties(['name' => $val]);
             foreach ($term_values as $term_value) {
               if ($term_value) {
                 // Use ->id() to get the term ID.
@@ -515,6 +643,7 @@ class CustomSerializer extends Serializer {
         }
         else {
           $groups = Group::loadMultiple();
+          $gids = [];
           foreach ($groups as $group) {
             $id = $group->get('id')->getString();
             $gids[] = $id;
@@ -529,14 +658,14 @@ class CustomSerializer extends Serializer {
       }
       else {
         /* Get all enabled languages. */
-        $languages = \Drupal::languageManager()->getLanguages();
+        $languages = $this->languageManager->getLanguages();
         $languages = json_encode($languages);
         $languages = json_decode($languages, TRUE);
         $languages_arr = [];
         foreach ($languages as $lang_code => $lang_name) {
           $languages_arr[] = $lang_code;
         }
-        if (isset($languages_arr) && !empty($languages_arr)) {
+        if (!empty($languages_arr)) {
           if (!in_array($request[3], $languages_arr)) {
             $respons_arr['status'] = 400;
             $respons_arr['message'] = "Request language is wrong";
@@ -576,12 +705,12 @@ class CustomSerializer extends Serializer {
       $media_data = [];
       $media_entity = Media::load($values);
       $media_type = $media_entity->bundle();
-      $base_url = \Drupal::request()->getSchemeAndHttpHost();
+      $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
       if ($media_type === 'image') {
         $mid = $media_entity->get('field_media_image')->target_id;
         if (!empty($mid)) {
           $mname = $media_entity->get('name')->value;
-          $query = \Drupal::database()->select('media__field_media_image');
+          $query = $this->database->select('media__field_media_image');
           $query->condition('entity_id', $values);
           $query->condition('langcode', $language_code);
           $query->fields('media__field_media_image');
@@ -597,10 +726,11 @@ class CustomSerializer extends Serializer {
            *
            * @var object
            */
-          $query = \Drupal::database()->select('file_managed');
+          $query = $this->database->select('file_managed');
           $query->condition('fid', $mid);
           $query->fields('file_managed');
           $result22 = $query->execute()->fetchAll();
+          $uri = '';
           if (!empty($result22)) {
             $uri = $result22[0]->uri;
           }
@@ -625,6 +755,7 @@ class CustomSerializer extends Serializer {
 
         if ($key == "cover_image") {
           $tid = $media_entity->get('thumbnail')->target_id;
+          $urls = '';
           if (!empty($tid)) {
             if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
               // Get the value of the oEmbed video field.
@@ -722,6 +853,7 @@ class CustomSerializer extends Serializer {
 
         if ($key == "cover_image") {
           $tid = $media_entity->get('thumbnail')->target_id;
+          $thumbnail_url = '';
           if (!empty($tid)) {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
@@ -736,6 +868,7 @@ class CustomSerializer extends Serializer {
       return $media_data;
     }
     else {
+      $media_data = [];
       if ($key == "cover_image" || $key == "country_flag" || $key == "country_sponsor_logo" || $key == "country_national_partner") {
         $media_data = [
           'url'  => '',
@@ -770,7 +903,7 @@ class CustomSerializer extends Serializer {
     /* Taxonomies Field formatter. */
     if (strpos($request_uri, "taxonomies") !== FALSE) {
       $term_data = [];
-      $tax_query = \Drupal::database()->select('taxonomy_term_field_data');
+      $tax_query = $this->database->select('taxonomy_term_field_data');
       $tax_query->condition('vid', $vocabulary_machine_name);
       $tax_query->condition('langcode', $language_code);
       $tax_query->condition('status', 1);
@@ -781,7 +914,7 @@ class CustomSerializer extends Serializer {
       $tax_result = $tax_query->execute()->fetchAll();
       for ($tax = 0; $tax < count($tax_result); $tax++) {
         if ($vocabulary_machine_name === "growth_period") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -789,7 +922,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "child_age") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $age_bracket = $term_obj->get('field_age_bracket')->getValue();
           $ageBracket = [];
           foreach ($age_bracket as $agevalue) {
@@ -813,7 +946,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "growth_introductory") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -823,7 +956,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "standard_deviation") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $sd0 = (float) $term_obj->get('field_sd0')->value;
           $sd1 = (float) $term_obj->get('field_sd1')->value;
           $sd2 = (float) $term_obj->get('field_sd2')->value;
@@ -852,7 +985,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "chatbot_subcategory") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -861,7 +994,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "category") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -870,7 +1003,7 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
-          $term_obj = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,

@@ -6,8 +6,15 @@ use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\node\Entity\Node;
-use Drupal\user\Entity\User;
+use Drupal\user\UserStorageInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\group\GroupMembershipLoaderInterface;
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\node\NodeStorageInterface;
 
 /**
  * Action description.
@@ -20,27 +27,87 @@ use Drupal\user\Entity\User;
  *
  * )
  */
-class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
+class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase implements ContainerFactoryPluginInterface {
 
   use StringTranslationTrait;
+
+  /**
+   * The group membership loader.
+   *
+   * @var \Drupal\group\GroupMembershipLoaderInterface
+   */
+  protected $groupMembershipLoader;
+
+  /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * The logger service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The user storage.
+   *
+   * @var \Drupal\user\UserStorageInterface
+   */
+  protected $userStorage;
+
+  /**
+   * The node storage.
+   *
+   * @var \Drupal\node\NodeStorageInterface
+   */
+  protected $nodeStorage;
+
   /**
    * Get the total translated count.
    *
    * @var int
    */
   public $assigned = 0;
+
   /**
    * Get the total non translated count.
    *
    * @var int
    */
   public $nonAssigned = 0;
+
   /**
    * Get the total non translated count.
    *
    * @var int
    */
   public $countryRestrict = 0;
+
   /**
    * Get the total items processed.
    *
@@ -49,13 +116,70 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
   public $processItem = 0;
 
   /**
+   * Constructs a new MovefrompublishtosmeAction object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
+   *   The group membership loader.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger factory service.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\user\UserStorageInterface $user_storage
+   *   The user storage.
+   * @param \Drupal\node\NodeStorageInterface $node_storage
+   *   The node storage.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, GroupMembershipLoaderInterface $group_membership_loader, TimeInterface $time, MessengerInterface $messenger, LoggerChannelFactoryInterface $logger_factory, RequestStack $request_stack, AccountInterface $current_user, UserStorageInterface $user_storage, NodeStorageInterface $node_storage) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->groupMembershipLoader = $group_membership_loader;
+    $this->time = $time;
+    $this->messenger = $messenger;
+    $this->logger = $logger_factory->get('bulk_action');
+    $this->requestStack = $request_stack;
+    $this->currentUser = $current_user;
+    $this->userStorage = $user_storage;
+    $this->nodeStorage = $node_storage;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('group.membership_loader'),
+      $container->get('datetime.time'),
+      $container->get('messenger'),
+      $container->get('logger.factory'),
+      $container->get('request_stack'),
+      $container->get('current_user'),
+      $container->get('entity_type.manager')->getStorage('user'),
+      $container->get('entity_type.manager')->getStorage('node')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function execute(?ContentEntityInterface $entity = NULL) {
-    $uid = \Drupal::currentUser()->id();
-    $user = User::load($uid);
+    $uid = $this->currentUser->id();
+    $user = $this->userStorage->load($uid);
     // $groups = array();
-    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grp_membership_service = $this->groupMembershipLoader;
     $grps = $grp_membership_service->loadByUser($user);
     if (!empty($grps)) {
       foreach ($grps as $grp) {
@@ -65,7 +189,6 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
       $grp_country_new_array = array_column($grp_country_language, 'value');
     }
 
-    $this->initial = $this->initial + 1;
     $this->processItem = $this->processItem + 1;
     $list = $this->context['list'];
     $list_count = count($list);
@@ -73,35 +196,35 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
     $error_message = "";
     $current_language = $entity->get('langcode')->value;
     $nid = $entity->get('nid')->getString();
-    $archive_node = Node::load($nid);
+    $archive_node = $this->nodeStorage->load($nid);
     $ids = array_column($list, '0');
     $all_ids = implode(',', $ids);
     $node_lang_archive = $archive_node->getTranslation($current_language);
     $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state == 'published' && empty($grps)) {
       /* Change status from publish to archive. */
-      $uid = \Drupal::currentUser()->id();
+      $uid = $this->currentUser->id();
       $node_lang_archive->set('moderation_state', 'archive');
       $node_lang_archive->set('uid', $uid);
       $node_lang_archive->set('content_translation_source', $current_language);
-      $node_lang_archive->set('changed', time());
-      $node_lang_archive->set('created', time());
+      $node_lang_archive->set('changed', $this->time->getRequestTime());
+      $node_lang_archive->set('created', $this->time->getRequestTime());
 
       $node_lang_archive->setNewRevision(TRUE);
       $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
-      $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+      $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
       $node_lang_archive->setRevisionTranslationAffected(NULL);
       $node_lang_archive->save();
       $archive_node->save();
       /* Change status from publish to sme_review. */
-      $draft_node = Node::load($nid);
+      $draft_node = $this->nodeStorage->load($nid);
       $node_lang_draft = $draft_node->getTranslation($current_language);
       $node_lang_draft->set('moderation_state', 'sme_review');
       $node_lang_draft->set('uid', $uid);
       $node_lang_draft->set('content_translation_source', $current_language);
-      $node_lang_draft->set('changed', time());
-      $node_lang_draft->set('created', time());
+      $node_lang_draft->set('changed', $this->time->getRequestTime());
+      $node_lang_draft->set('created', $this->time->getRequestTime());
       $node_lang_draft->save();
       $draft_node->save();
       $this->assigned = $this->assigned + 1;
@@ -109,28 +232,28 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
     elseif ($current_state == 'published' && !empty($grps)) {
       if (in_array($current_language, $grp_country_new_array)) {
         /* Change status from publish to archive. */
-        $uid = \Drupal::currentUser()->id();
+        $uid = $this->currentUser->id();
         $node_lang_archive->set('moderation_state', 'archive');
         $node_lang_archive->set('uid', $uid);
         $node_lang_archive->set('content_translation_source', $current_language);
-        $node_lang_archive->set('changed', time());
-        $node_lang_archive->set('created', time());
+        $node_lang_archive->set('changed', $this->time->getRequestTime());
+        $node_lang_archive->set('created', $this->time->getRequestTime());
 
         $node_lang_archive->setNewRevision(TRUE);
         $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
-        $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+        $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
         $node_lang_archive->setRevisionTranslationAffected(NULL);
         $node_lang_archive->save();
         $archive_node->save();
         /* Change status from publish to sme_review. */
-        $draft_node = Node::load($nid);
+        $draft_node = $this->nodeStorage->load($nid);
         $node_lang_draft = $draft_node->getTranslation($current_language);
         $node_lang_draft->set('moderation_state', 'sme_review');
         $node_lang_draft->set('uid', $uid);
         $node_lang_draft->set('content_translation_source', $current_language);
-        $node_lang_draft->set('changed', time());
-        $node_lang_draft->set('created', time());
+        $node_lang_draft->set('changed', $this->time->getRequestTime());
+        $node_lang_draft->set('created', $this->time->getRequestTime());
         $node_lang_draft->save();
         $draft_node->save();
         $this->assigned = $this->assigned + 1;
@@ -159,17 +282,17 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase {
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
         // drupal_set_message($message, 'status');.
-        \Drupal::messenger()->addStatus($message);
+        $this->messenger->addStatus($message);
       }
       if (!empty($error_message)) {
         // drupal_set_message($error_message, 'error');.
-        \Drupal::messenger()->addError($error_message);
+        $this->messenger->addError($error_message);
       }
     }
-    if ($this->initial == 1) {
+    if ($this->processItem == 1) {
       /* Please add the entity */
       $message = 'Content Bulk updated from archieve to SME Review by' . $uid . " content id - " . $all_ids;
-      \Drupal::logger('Content Bulk updated')->info($message);
+      $this->logger->info($message);
     }
 
     return $this->t("Total content selected");

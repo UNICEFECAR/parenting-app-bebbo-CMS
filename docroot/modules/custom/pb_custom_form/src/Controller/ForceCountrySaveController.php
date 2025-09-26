@@ -66,7 +66,7 @@ class ForceCountrySaveController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('database'),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
@@ -97,7 +97,7 @@ class ForceCountrySaveController extends ControllerBase {
     )->execute();
     drupal_flush_all_caches();
     $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-    my_goto($path);
+    pb_custom_field_my_goto($path);
 
     // $build = [
     // '#markup' => 'insert seccefully',

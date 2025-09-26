@@ -5,6 +5,7 @@ namespace Drupal\custom_article\Commands;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A Drush commandfile for updating article nodes.
@@ -27,29 +28,26 @@ class CustomArticleUpdate extends DrushCommands {
 
   /**
    * Constructs a new CustomArticleUpdate command.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    */
-  public function __construct() {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, Connection $database) {
     parent::__construct();
+    $this->entityTypeManager = $entity_type_manager;
+    $this->database = $database;
   }
 
   /**
-   * Get the entity type manager service.
+   * {@inheritdoc}
    */
-  protected function getEntityTypeManager(): EntityTypeManagerInterface {
-    if (!isset($this->entityTypeManager)) {
-      $this->entityTypeManager = \Drupal::entityTypeManager();
-    }
-    return $this->entityTypeManager;
-  }
-
-  /**
-   * Get the database connection service.
-   */
-  protected function getDatabase(): Connection {
-    if (!isset($this->database)) {
-      $this->database = \Drupal::database();
-    }
-    return $this->database;
+  public static function create(ContainerInterface $container): self {
+    return new self(
+      $container->get('entity_type.manager'),
+      $container->get('database')
+    );
   }
 
   /**
@@ -63,7 +61,7 @@ class CustomArticleUpdate extends DrushCommands {
     $target_field = 'field_do_not_feature';
 
     // Fetch all article node IDs.
-    $query = $this->getDatabase()->select('node_field_data', 'nfd')
+    $query = $this->database->select('node_field_data', 'nfd')
       ->fields('nfd', ['nid'])
       ->condition('nfd.type', 'article')
       ->condition('nfd.default_langcode', 1)
@@ -78,7 +76,7 @@ class CustomArticleUpdate extends DrushCommands {
       return;
     }
 
-    $node_storage = $this->getEntityTypeManager()->getStorage('node');
+    $node_storage = $this->entityTypeManager->getStorage('node');
     /** @var \Drupal\node\NodeInterface[] $nodes */
     $nodes = $node_storage->loadMultiple($nids);
 

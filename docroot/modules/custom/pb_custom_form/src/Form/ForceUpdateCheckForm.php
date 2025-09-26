@@ -74,7 +74,7 @@ class ForceUpdateCheckForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('database'),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
@@ -150,13 +150,13 @@ class ForceUpdateCheckForm extends FormBase {
       )->execute();
       drupal_flush_all_caches();
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-      my_goto($path);
+      pb_custom_field_my_goto($path);
       // drupal_set_message(t('data inserted successfully'), 'status', TRUE);.
       $this->messenger()->addStatus('data inserted successfully');
     }
     else {
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-      my_goto($path);
+      pb_custom_field_my_goto($path);
       // drupal_set_message(t('Please Select Country And Flag'),
       // 'warning', TRUE);.
       $this->messenger()->addWarning('Please Select Country And Flag');

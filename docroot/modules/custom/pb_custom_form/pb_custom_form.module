@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
@@ -304,12 +305,14 @@ function pb_custom_form_group_country_save($form, FormStateInterface $form_state
   $field_make_available_for_mobile = $field_make_available_for_mobiles['value'];
   if ($field_make_available_for_mobile == 1) {
     $country_language = $form_state->getValue('field_language');
+    $country_languages_arry = [];
     if (!empty($country_language)) {
       foreach ($country_language as $value) {
         $country_languages_arry[] = $value['value'];
       }
     }
-    $resultss = db_select('node_field_data', 't')
+    $langcodess = [];
+    $resultss = \Drupal::database()->select('node_field_data', 't')
       ->fields('t')
       ->condition('langcode', $country_languages_arry, 'IN')
       ->execute()
@@ -333,7 +336,6 @@ function pb_custom_form_group_country_save($form, FormStateInterface $form_state
       'finished' => '\Drupal\pb_custom_form\ChangeNodeStatus::offLoadCountryProcessFinishedCallback',
     ];
     batch_set($batch);
-
   }
 
 }
@@ -347,13 +349,24 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
     $nid = $variables['row']->_entity->nid->value;
     $vid = \Drupal::entityTypeManager()->getStorage('node')
       ->getLatestRevisionId($nid);
-    $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($vid);
+    $storage = \Drupal::entityTypeManager()->getStorage('node');
+    if ($storage instanceof RevisionableStorageInterface) {
+      $node = $storage->loadRevision($vid);
+    }
+    else {
+      $node = NULL;
+    }
     if ($node instanceof NodeInterface) {
       $storage = \Drupal::entityTypeManager()
         ->getStorage($node->getEntityTypeId());
       $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
         $langcode);
-      $revisionNode = $storage->loadRevision($revision_id);
+      if ($storage instanceof RevisionableStorageInterface) {
+        $revisionNode = $storage->loadRevision($revision_id);
+      }
+      else {
+        $revisionNode = NULL;
+      }
       $revisionTransNode = $revisionNode->getTranslation($langcode);
       $uid = $revisionTransNode->revision_uid->target_id;
       $objUser = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
@@ -371,7 +384,13 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
       $nid = $variables['row']->_entity->nid->value;
       $vid = \Drupal::entityTypeManager()->getStorage('node')
         ->getLatestRevisionId($nid);
-      $node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($vid);
+      $storage_node = \Drupal::entityTypeManager()->getStorage('node');
+      if ($storage_node instanceof RevisionableStorageInterface) {
+        $node = $storage_node->loadRevision($vid);
+      }
+      else {
+        $node = NULL;
+      }
 
       $field_language = $variables['row']->node_field_data_langcode;
 
@@ -387,7 +406,12 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
               ->getStorage($node->getEntityTypeId());
             $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
               $field_language);
-            $revisionNode = $storage->loadRevision($revision_id);
+            if ($storage instanceof RevisionableStorageInterface) {
+              $revisionNode = $storage->loadRevision($revision_id);
+            }
+            else {
+              $revisionNode = NULL;
+            }
             if ($revisionNode instanceof ContentEntityInterface) {
               $info = $moderation_information->getAffectedRevisionTranslation($revisionNode);
               if ($info instanceof ContentEntityInterface) {

@@ -12,6 +12,7 @@ use Drupal\group\Entity\Group;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\node\Entity\Node;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /*
 use Drupal\group\Entity;
@@ -32,20 +33,71 @@ use Drupal\Core\Url;
  * )
  */
 class AssigncontentAction extends ViewsBulkOperationsActionBase {
-
   use StringTranslationTrait;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
+   * The group membership loader service.
+   *
+   * @var \Drupal\group\MembershipLoaderInterface
+   */
+  protected $groupMembershipLoader;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * The logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
   /**
    * Get the total translated count.
    *
    * @var int
    */
   public $assigned = 0;
+
   /**
    * Get the total non translated count.
    *
    * @var int
    */
   public $nonAssigned = 0;
+
   /**
    * Get the total items processed.
    *
@@ -56,9 +108,40 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
   /**
    * {@inheritdoc}
    */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $current_user, $group_membership_loader, $language_manager, $messenger, $logger, $request_stack, $time) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->currentUser = $current_user;
+    $this->groupMembershipLoader = $group_membership_loader;
+    $this->languageManager = $language_manager;
+    $this->messenger = $messenger;
+    $this->logger = $logger;
+    $this->requestStack = $request_stack;
+    $this->time = $time;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_user'),
+      $container->get('group.membership_loader'),
+      $container->get('language_manager'),
+      $container->get('messenger'),
+      $container->get('logger.factory')->get('bulk_action'),
+      $container->get('request_stack'),
+      $container->get('datetime.time')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    /* get the logged in user details */
-    $currentAccount = \Drupal::currentUser();
+    $currentAccount = $this->currentUser;
     $cur_user_roles = $currentAccount->getRoles();
     $authorized_roles = ['se', 'sme', 'editor', 'reviewer'];
 
@@ -73,20 +156,20 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
     $language_options = [];
     /* Check the user roles */
     if (count(array_intersect($cur_user_roles, $authorized_roles)) != 0) {
-      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grp_membership_service = $this->groupMembershipLoader;
       $grps = $grp_membership_service->loadByUser($currentAccount);
 
       if (!empty($grps)) {
+        $groups = [];
         $country_list = [];
         foreach ($grps as $grp) {
           $groups = $grp->getGroup();
           $country_list[$groups->id()] = $groups->label();
         }
         $languages = $groups->get('field_language')->getString();
-        $language_arr = explode(",", $languages);
         $language_arr = array_map('trim', explode(',', $languages));
         $language_options = [];
-        foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+        foreach ($this->languageManager->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
           if (in_array($langcode, $language_arr)) {
             $language_options[$langcode] = $language->getName();
           }
@@ -137,9 +220,8 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
       /* load group */
       $groups = Group::load($value);
       $languages = $groups->get('field_language')->getString();
-      $language_arr = explode(",", $languages);
       $language_arr = array_map('trim', explode(',', $languages));
-      foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+      foreach ($this->languageManager->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
         if (in_array($langcode, $language_arr)) {
           $language_options[$langcode] = $language->getName();
         }
@@ -188,15 +270,15 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
     $this->processItem = $this->processItem + 1;
     $message = "";
     $error_message = "";
+    $log = [];
     if (!empty($langoption) && !empty($countryoption)) {
       $current_language = $entity->get('langcode')->value;
       $nid = $entity->get('nid')->getString();
       $node = Node::load($nid);
-      $uid = \Drupal::currentUser()->id();
-      $uname = \Drupal::currentUser()->getDisplayName();
+      $uid = $this->currentUser->id();
+      $uname = $this->currentUser->getDisplayName();
       if (!$node->hasTranslation($langoption)) {
         $node_lang = $node->getTranslation($current_language);
-        /* $node->setRevisionTranslationAffected(FALSE); */
         $node_es = $node->addTranslation($langoption, $node_lang->toArray());
         $node_es->set('moderation_state', 'draft');
         $node_es->set('langcode', $langoption);
@@ -204,10 +286,9 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
         $node_es->set('content_translation_source', $current_language);
         $node_es->set('changed', time());
         $node_es->set('created', time());
-        /* Set new Revision */
         $node_es->setNewRevision(TRUE);
         $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
-        $node_es->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+        $node_es->setRevisionCreationTime($this->time->getRequestTime());
         $node_es->setRevisionUserId($uid);
         $node_es->save();
         $node->save();
@@ -221,7 +302,7 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
       $log["nid"] = $nid;
       $log["uid"] = $uid;
       $log["desitination_language"] = $langoption;
-      $current_uri = \Drupal::request()->getRequestUri();
+      $current_uri = $this->requestStack->getCurrentRequest()->getRequestUri();
       $log["requested_url"] = $current_uri;
       if ($this->assigned > 0) {
         $message = $this->t("Content assigned to country ( @assigned ) <br/>", ['@assigned' => $this->assigned]);
@@ -233,16 +314,14 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
       }
     }
     $logs = json_encode($log);
-    \Drupal::logger('bulk_action')->info($logs);
+    $this->logger->info($logs);
 
     if ($total_selected == $this->processItem) {
       if (!empty($message)) {
-        // drupal_set_message($message, 'status');.
-        \Drupal::messenger()->addStatus($message);
+        $this->messenger->addStatus($message);
       }
       if (!empty($error_message)) {
-        // drupal_set_message($error_message, 'error');.
-        \Drupal::messenger()->addError($error_message);
+        $this->messenger->addError($error_message);
       }
     }
     return $this->t("Total content selected");

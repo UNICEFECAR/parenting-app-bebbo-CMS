@@ -5,6 +5,7 @@ namespace Drupal\custom_article\Commands;
 use Drush\Commands\DrushCommands;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides Drush commands for copying and updating meta keywords on nodes.
@@ -20,19 +21,22 @@ class CopyKeyword extends DrushCommands {
 
   /**
    * Constructs a new CopyKeyword object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct() {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct();
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
-   * Get the entity type manager service.
+   * {@inheritdoc}
    */
-  protected function getEntityTypeManager(): EntityTypeManagerInterface {
-    if (!isset($this->entityTypeManager)) {
-      $this->entityTypeManager = \Drupal::entityTypeManager();
-    }
-    return $this->entityTypeManager;
+  public static function create(ContainerInterface $container): self {
+    return new self(
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
@@ -47,7 +51,7 @@ class CopyKeyword extends DrushCommands {
    * @aliases copy-keyword
    */
   public function metaKeywordsUpdate(string $node_type, int $offset = 0): void {
-    $query = $this->getEntityTypeManager()->getStorage('node')->getQuery()
+    $query = $this->entityTypeManager->getStorage('node')->getQuery()
       ->accessCheck(TRUE)
       ->condition('type', $node_type)
       ->sort('nid', 'ASC')
@@ -60,8 +64,8 @@ class CopyKeyword extends DrushCommands {
       return;
     }
 
-    $node_storage = $this->getEntityTypeManager()->getStorage('node');
-    $term_storage = $this->getEntityTypeManager()->getStorage('taxonomy_term');
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $term_storage = $this->entityTypeManager->getStorage('taxonomy_term');
 
     foreach ($nids as $nid) {
       /** @var \Drupal\node\NodeInterface $node */

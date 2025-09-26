@@ -54,7 +54,7 @@ function pb_custom_form_update_70010() {
     'default' => '',
     'description' => 'Store current user uuid',
   ];
-  db_add_field('forcefull_check_update_api', 'uuid', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'uuid', $spec);
 }
 
 /**
@@ -67,7 +67,7 @@ function pb_custom_form_update_70011() {
     'default' => '',
     'description' => 'Store created at',
   ];
-  db_add_field('forcefull_check_update_api', 'created_at', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'created_at', $spec);
 }
 
 /**
@@ -80,7 +80,7 @@ function pb_custom_form_update_70012() {
     'default' => '',
     'description' => 'Store country id',
   ];
-  db_add_field('forcefull_check_update_api', 'countries_id', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'countries_id', $spec);
 }
 
 /**
@@ -93,7 +93,7 @@ function pb_custom_form_update_70013() {
     'default' => '',
     'description' => 'Store flag status',
   ];
-  db_add_field('forcefull_check_update_api', 'flag_status', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'flag_status', $spec);
 }
 
 /**

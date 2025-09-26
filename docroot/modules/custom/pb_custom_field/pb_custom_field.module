@@ -9,7 +9,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\block\Entity\Block;
 use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -54,8 +53,8 @@ function pb_custom_field_allowed_languages_form_media_library_add_form_oembed_al
     /* check the bypass content access*/
     foreach ($roles as $rval) {
       if ($rval != "authenticated") {
-        $roles_permissions = user_role_permissions([$rval]);
-        if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
           $bypass_access = TRUE;
         }
       }
@@ -97,8 +96,8 @@ function pb_custom_field_allowed_languages_form_media_library_add_form_upload_al
     /* check the bypass content access*/
     foreach ($roles as $rval) {
       if ($rval != "authenticated") {
-        $roles_permissions = user_role_permissions([$rval]);
-        if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
           $bypass_access = TRUE;
         }
       }
@@ -167,6 +166,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
         $alexist_option = $form['allowed_languages']['languages']['#options'];
         $master_languages = $groups->get('field_master_language')->getValue();
         $country_languages = $groups->get('field_language')->getValue();
+        $languages = [];
         foreach ($master_languages as $mlangval) {
           $languages[] = $mlangval['value'];
         }
@@ -276,9 +276,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       $value = $group->get('label')->getString();
       $id = $group->get('id')->getString();
 
-      if (isset($value)) {
-        $options[$id] = $value;
-      }
+      $options[$id] = $value;
     }
     if (isset($form['gtitle'])) {
       $form['gtitle']['#type'] = 'select';
@@ -373,8 +371,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $bypass_access = FALSE;
     foreach ($roles as $rval) {
       if ($rval != "authenticated") {
-        $roles_permissions = user_role_permissions([$rval]);
-        if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
           $bypass_access = TRUE;
         }
       }
@@ -429,8 +427,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $bypass_access = FALSE;
     foreach ($roles as $rval) {
       if ($rval != "authenticated") {
-        $roles_permissions = user_role_permissions([$rval]);
-        if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
           $bypass_access = TRUE;
         }
       }
@@ -603,8 +601,8 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     $bypass_access = FALSE;
     foreach ($roles as $rval) {
       if ($rval != "authenticated") {
-        $roles_permissions = user_role_permissions([$rval]);
-        if (in_array('bypass node access', $roles_permissions[$rval])) {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
           $bypass_access = TRUE;
         }
       }
@@ -774,6 +772,7 @@ function pb_custom_field_views_pre_view(ViewExecutable $view, $display_id, array
   if ($view->id() == 'global_content_listing' && $display_id == 'page_4' || $view->id() == 'global_content_listing' && $display_id == 'data_export_1') {
     $filters = $view->display_handler->getOption('filters');
     $langcodes = \Drupal::languageManager()->getLanguages();
+    $langarry = [];
     foreach ($langcodes as $key => $value) {
       $id = $key;
       $langarry[$id] = $key;
@@ -851,7 +850,7 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
   if ($route_name == 'entity.media.canonical' && !in_array("global_admin", $roles) && !in_array("administrator", $roles)) {
     unset($data['tabs'][0]['media.tasks:entity.media.delete_form']);
     $media_id = \Drupal::routeMatch()->getParameter('media')->Id();
-    $entity = Drupal::entityManager()->getStorage('media')->load($media_id);
+    $entity = \Drupal::entityTypeManager()->getStorage('media')->load($media_id);
     $media_type = $entity->bundle();
     if ($media_type != "image") {
       unset($data['tabs'][0]['content_translation.local_tasks:entity.media.content_translation_overview']);
@@ -891,8 +890,10 @@ function pb_custom_field_user_update_function($form, FormStateInterface $form_st
       elseif ($group_role['target_id'] == "country-senior_editor") {
         $new_role = "se";
       }
-      $user->addRole($new_role);
-      $user->save();
+      if (isset($new_role)) {
+        $user->addRole($new_role);
+        $user->save();
+      }
     }
   }
 }
@@ -939,7 +940,9 @@ function pb_custom_field_redirect_to_add_member_page($form, FormStateInterface $
   }
 
   $query = \Drupal::database()->select('group_content_field_data');
-  $query->condition('entity_id', $nid);
+  if (isset($nid)) {
+    $query->condition('entity_id', $nid);
+  }
   $query->orderBy('id', 'DESC');
   $query->range(0, 1);
   $query->fields('group_content_field_data');
@@ -947,18 +950,23 @@ function pb_custom_field_redirect_to_add_member_page($form, FormStateInterface $
   if (!empty($result)) {
     $group_content_id = $result[0]->id;
   }
+  else {
+    $group_content_id = NULL;
+  }
 
-  if (!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {
+  if (!empty($groups) && isset($groups[0]) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles) && $group_content_id) {
     $url = url::fromUserInput('/group/' . $groups[0]->id() . '/content/' . $group_content_id . '/edit');
     $form_state->setRedirectUrl($url);
   }
 
-  if (in_array("global_admin", $user_roles)) {
-    if (Drupal::service('path.current')->getPath() != "/admin/people/create") {
+  if (in_array("global_admin", $user_roles) && $group_content_id) {
+    if (\Drupal::service('path.current')->getPath() != "/admin/people/create") {
       $request_uri = \Drupal::service('path.current')->getPath();
       $request = explode('/', $request_uri);
-      $url = url::fromUserInput('/group/' . $request[2] . '/content/' . $group_content_id . '/edit');
-      $form_state->setRedirectUrl($url);
+      if (isset($request[2])) {
+        $url = url::fromUserInput('/group/' . $request[2] . '/content/' . $group_content_id . '/edit');
+        $form_state->setRedirectUrl($url);
+      }
     }
   }
 }
@@ -1005,6 +1013,7 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
     }
   }
 
+  $user_roles = \Drupal::currentUser()->getRoles();
   if ($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
     if (isset($operations['edit'])) {
       unset($operations['edit']);
@@ -1205,8 +1214,8 @@ function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $
   /* Check the bypass content access. */
   foreach ($roles as $rval) {
     if ($rval != "authenticated") {
-      $roles_permissions = user_role_permissions([$rval]);
-      if (in_array('bypass node access', $roles_permissions[$rval])) {
+      $role = Role::load($rval);
+      if ($role && in_array('bypass node access', $role->getPermissions())) {
         $bypass_access = TRUE;
       }
     }
@@ -1250,8 +1259,8 @@ function pb_custom_field_user_media_access_validation_chk(&$form, FormStateInter
   /* check the bypass content access*/
   foreach ($roles as $rval) {
     if ($rval != "authenticated") {
-      $roles_permissions = user_role_permissions([$rval]);
-      if (in_array('bypass node access', $roles_permissions[$rval])) {
+      $role = Role::load($rval);
+      if ($role && in_array('bypass node access', $role->getPermissions())) {
         $bypass_access = TRUE;
       }
     }
@@ -1529,7 +1538,12 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     }
     $message = '<html><body>' . $data['params']['message'] . '</body></html>';
     $subject_old = $data['params']['subject'];
-    $subject = str_replace("[language]", $translation[0], $subject_old);
+    if (isset($translation[0])) {
+      $subject = str_replace("[language]", $translation[0], $subject_old);
+    }
+    else {
+      $subject = $subject_old;
+    }
 
     $logged_in = \Drupal::currentUser()->isAuthenticated();
     if ($logged_in != 1) {
@@ -1539,7 +1553,9 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
       $nid_with_link = $base_url . "/" . $node_language . "/node/" . $nid . "/edit";
     }
     $body_old = str_replace("[node_id]", $nid, $message);
-    $body_old = str_replace("[language]", $translation[0], $body_old);
+    if (isset($translation[0])) {
+      $body_old = str_replace("[language]", $translation[0], $body_old);
+    }
     $body = str_replace("[link]", $nid_with_link, $body_old);
     // Get master value from settings form.
     $config = \Drupal::config('pb_custom_form.adminsettings');
@@ -1661,8 +1677,7 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       }
 
       // Get country name from country id.
-      if (in_array($country_id, $id)) {
-
+      if (isset($id) && in_array($country_id, $id)) {
         $country_label = array_keys($id, $country_id);
         $country_label = $country_label[0];
       }
@@ -1720,8 +1735,10 @@ function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
         elseif ($value === "country-senior_editor") {
           $role = "se";
         }
-        $user->removeRole($role);
-        $user->save();
+        if (isset($role)) {
+          $user->removeRole($role);
+          $user->save();
+        }
       }
     }
   }

@@ -4,6 +4,9 @@ namespace Drupal\pb_custom_standard_deviation\Plugin\views\style;
 
 use Drupal\rest\Plugin\views\style\Serializer;
 use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Path\CurrentPathStack;
+use Drupal\Core\Language\LanguageManagerInterface;
 
 /**
  * The style plugin for serialized output formats.
@@ -20,11 +23,49 @@ use Drupal\taxonomy\Entity\Term;
 class CustomStandardDeviation extends Serializer {
 
   /**
+   * The current path service.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPath;
+
+  /**
+   * The language manager service.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $serializer, array $serializer_formats, array $serializer_format_providers, CurrentPathStack $current_path, LanguageManagerInterface $language_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer, $serializer_formats, $serializer_format_providers);
+    $this->currentPath = $current_path;
+    $this->languageManager = $language_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('serializer'),
+      $container->getParameter('serializer.formats'),
+      $container->getParameter('serializer.format_providers'),
+      $container->get('path.current'),
+      $container->get('language_manager')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function render() {
-
-    $request_uri = \Drupal::service('path.current')->getPath(); /* Gives request path e.x (api/articles/en/1) */
+    $request_uri = $this->currentPath->getPath();
     $request = explode('/', $request_uri);
 
     // Get the view results.
@@ -44,7 +85,6 @@ class CustomStandardDeviation extends Serializer {
 
     // Pass the modified rows to the parent serializer.
     $this->view->result = $rows;
-
     /* Validating request params to response error code */
     $validate_params_res = $this->checkRequestParams($request_uri);
     if (empty($validate_params_res)) {
@@ -290,23 +330,20 @@ class CustomStandardDeviation extends Serializer {
    * To check request params is correct.
    */
   public function checkRequestParams($request_uri) {
-
     $request = explode('/', $request_uri);
-
     if (isset($request[3]) && !empty($request[3])) {
       /* Get all enabled languages. */
-      $languages = \Drupal::languageManager()->getLanguages();
+      $languages = $this->languageManager->getLanguages();
       $languages = json_encode($languages);
       $languages = json_decode($languages, TRUE);
       $languages_arr = [];
       foreach ($languages as $lang_code => $lang_name) {
         $languages_arr[] = $lang_code;
       }
-      if (isset($languages_arr) && !empty($languages_arr)) {
+      if (!empty($languages_arr)) {
         if (!in_array($request[3], $languages_arr)) {
           $respons_arr['status'] = 400;
           $respons_arr['message'] = "Request language is wrong";
-
           return $respons_arr;
         }
       }

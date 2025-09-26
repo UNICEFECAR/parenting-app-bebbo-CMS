@@ -98,7 +98,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('current_route_match'),
       $container->get('language_manager'),
       $container->get('current_user'),

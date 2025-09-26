@@ -161,7 +161,7 @@ class ApplyNodeTranslations {
    * Get all nodes from specific content type.
    */
   public static function getNodeIdsForBatch($type) {
-    $nids = db_select('node', 'n')
+    $nids = \Drupal::database()->select('node', 'n')
       ->fields('n', ['nid'])
       ->condition('type', $type, '=')
       ->execute()

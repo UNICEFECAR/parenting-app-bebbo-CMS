@@ -46,7 +46,7 @@ class CopyTranslatedField extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static(
+    return new self(
       $container->get('entity_type.manager'),
       $container->get('entity_field.manager')
     );
