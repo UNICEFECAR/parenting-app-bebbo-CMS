@@ -3,7 +3,6 @@
 namespace Drupal\pb_custom_field;
 
 use Drupal\node\Entity\Node;
-use Drupal\user\Entity\User;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
@@ -48,30 +47,30 @@ class AssigncontentStatus {
         $node_es->revision_log = 'content assigned from Assign Content to Country option from ' . $current_language . ' by ' . $uname;
         $node_es->setRevisionCreationTime(\Drupal::time()->getRequestTime());
         $node_es->setRevisionUserId($uid);
-        //$node_es->save();
-		$results_save = $node->save();
-		
-		$success_msg++;
+        // $node_es->save();
+        $node->save();
+
+        $success_msg++;
       }
       else {
         $same_status_error++;
       }
-	  $results[] = 1;
+      $results[] = 1;
     }
-	
+
     if ($success_msg > 0) {
-      $Succ_message = "Content assigned to country (" . $success_msg . ") <br/>";
-      // drupal_set_message(t($Succ_message), 'status');
-      \Drupal::messenger()->addStatus($Succ_message);
+      $succ_message = "Content assigned to country (" . $success_msg . ") <br/>";
+      // drupal_set_message(t($Succ_message), 'status');.
+      \Drupal::messenger()->addStatus($succ_message);
     }
     if ($same_status_error > 0) {
       $msg = "Content already exists in country (" . $same_status_error . ")<br/>";
-      // drupal_set_message(t($msg), 'error');
+      // drupal_set_message(t($msg), 'error');.
       \Drupal::messenger()->addError($msg);
     }
     $context['message'] = $message;
-	$context['results'] = $results;
-	
+    $context['results'] = $results;
+
   }
 
   /**
@@ -88,8 +87,8 @@ class AssigncontentStatus {
     }
     else {
       $message = t('Finished with an error.');
-	  // drupal_set_message($message);
-    \Drupal::messenger()->addMessage($message);
+      // drupal_set_message($message);
+      \Drupal::messenger()->addMessage($message);
     }
   }
 

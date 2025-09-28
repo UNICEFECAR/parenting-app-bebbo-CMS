@@ -4,7 +4,6 @@ module:
   acquia_purge: 0
   actions_permissions: 0
   admin_toolbar: 0
-  admin_toolbar_links_access_filter: 0
   admin_toolbar_search: 0
   admin_toolbar_tools: 0
   allowed_languages: 0
@@ -59,6 +58,7 @@ module:
   language_custom_field: 0
   languagefield: 0
   layout_builder: 0
+  layout_builder_expose_all_field_blocks: 0
   layout_builder_styles: 0
   layout_discovery: 0
   link: 0

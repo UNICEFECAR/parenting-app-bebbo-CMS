@@ -20,6 +20,7 @@ dependencies:
     - node.type.vaccinations
     - node.type.video_article
     - taxonomy.vocabulary.daily_home_screen_message_catego
+    - workflows.workflow.editorial
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
@@ -106,6 +107,8 @@ permissions:
   - 'update any media'
   - 'update content translations'
   - 'update media'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition create_new_draft'
   - 'use group_workflow transition archive_to_draft'
   - 'use group_workflow transition create_new_draft'
   - 'use group_workflow transition draft_to_senior_editor_review'

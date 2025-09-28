@@ -8,6 +8,7 @@ tips:
     body: '<p>Sistem tarafından dili izlemek için kullanıldığından, dilin sitedeki kodunu değiştiremezsiniz.</p>'
   language-edit-label:
     label: 'Dil adı'
+    body: '<p>Dilin İngilizce adı site genelinde tüm kullanıcılar için kullanılır. Gömülü dillerin adları Arayüz Çeviri modülü ile, gömülü ve özel dillerin adları Çeviri Yapılandırma modülü ile çevrilebilir.</p>'
   language-edit-direction:
     label: 'Dil yönü'
     body: '<p>Dilin yazım yönünü "Soldan Sağa" ya da "Sağdan Sola" olarak seçin.</p><p>Her temanın "Sağdan Sola" yazımı desteklemediğini unutmayın ve temayı denemeden kullanmayın.</p>'

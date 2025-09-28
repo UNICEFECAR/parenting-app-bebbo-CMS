@@ -20,8 +20,6 @@ display:
           settings:
             format_custom_false: Geçici
             format_custom_true: Kalıcı
-        created:
-          label: 'Yüklenme tarihi'
         changed:
           label: 'Değiştirilme tarihi'
         count:

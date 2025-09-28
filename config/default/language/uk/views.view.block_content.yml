@@ -5,3 +5,7 @@ display:
       fields:
         operations:
           label: Операції
+  page_1:
+    display_options:
+      menu:
+        title: Блоки

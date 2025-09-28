@@ -45,7 +45,7 @@ function pb_custom_form_schema() {
 }
 
 /**
- *
+ * Updates from 70010.
  */
 function pb_custom_form_update_70010() {
   $spec = [
@@ -54,11 +54,11 @@ function pb_custom_form_update_70010() {
     'default' => '',
     'description' => 'Store current user uuid',
   ];
-  db_add_field('forcefull_check_update_api', 'uuid', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'uuid', $spec);
 }
 
 /**
- *
+ * Updates from 70011.
  */
 function pb_custom_form_update_70011() {
   $spec = [
@@ -67,11 +67,11 @@ function pb_custom_form_update_70011() {
     'default' => '',
     'description' => 'Store created at',
   ];
-  db_add_field('forcefull_check_update_api', 'created_at', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'created_at', $spec);
 }
 
 /**
- *
+ * Updates from 70012.
  */
 function pb_custom_form_update_70012() {
   $spec = [
@@ -80,11 +80,11 @@ function pb_custom_form_update_70012() {
     'default' => '',
     'description' => 'Store country id',
   ];
-  db_add_field('forcefull_check_update_api', 'countries_id', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'countries_id', $spec);
 }
 
 /**
- *
+ * Updates from 70013.
  */
 function pb_custom_form_update_70013() {
   $spec = [
@@ -93,11 +93,11 @@ function pb_custom_form_update_70013() {
     'default' => '',
     'description' => 'Store flag status',
   ];
-  db_add_field('forcefull_check_update_api', 'flag_status', $spec);
+  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'flag_status', $spec);
 }
 
 /**
- *
+ * Updates from 70014.
  */
 function pb_custom_form_update_70014() {
   return Database::getConnection()
@@ -107,7 +107,7 @@ function pb_custom_form_update_70014() {
 }
 
 /**
- *
+ * Updates from 70015.
  */
 function pb_custom_form_update_70015() {
   return Database::getConnection()
@@ -117,7 +117,7 @@ function pb_custom_form_update_70015() {
 }
 
 /**
- *
+ * Updates from 70016.
  */
 function pb_custom_form_update_70016() {
   return Database::getConnection()

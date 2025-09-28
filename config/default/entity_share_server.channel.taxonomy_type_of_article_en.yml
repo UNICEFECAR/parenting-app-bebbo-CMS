@@ -1,0 +1,22 @@
+uuid: 971044a6-aacf-4e78-8472-d1be068d7785
+langcode: en
+status: true
+dependencies: {  }
+id: taxonomy_type_of_article_en
+label: 'Taxonomy - Type of Article (EN)'
+channel_entity_type: taxonomy_term
+channel_bundle: type_of_article
+channel_langcode: und
+channel_filters: null
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles:
+  administrator: administrator
+authorized_users:
+  7c481cc7-f8a4-4662-b577-793b9170df9e: 7c481cc7-f8a4-4662-b577-793b9170df9e
+  06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115
+  a00d5049-ab3f-4fc3-8cf0-67ce7cd5494a: a00d5049-ab3f-4fc3-8cf0-67ce7cd5494a
+  215fa804-8b79-42be-a955-fa5df74e48ed: 215fa804-8b79-42be-a955-fa5df74e48ed

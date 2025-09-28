@@ -6,5 +6,6 @@ dependencies:
     - tmgmt_local
 id: tmgmt_local_task.token
 label: Token
+description: ''
 targetEntityType: tmgmt_local_task
 cache: true

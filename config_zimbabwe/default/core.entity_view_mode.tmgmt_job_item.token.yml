@@ -6,5 +6,6 @@ dependencies:
     - tmgmt
 id: tmgmt_job_item.token
 label: Token
+description: ''
 targetEntityType: tmgmt_job_item
 cache: true

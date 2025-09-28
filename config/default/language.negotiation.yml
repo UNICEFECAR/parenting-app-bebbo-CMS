@@ -32,9 +32,9 @@ url:
     ro: ro
     ro-ro: ro-ro
     md-ro: md-ro
-    ar: ar
     sk: sk
     tr: tr
+    uz-kaa: uz-kaa
   domains:
     en: ''
     sr: ''
@@ -62,7 +62,7 @@ url:
     ro: ''
     ro-ro: ''
     md-ro: ''
-    ar: ''
     sk: ''
     tr: ''
+    uz-kaa: ''
 selected_langcode: site_default

@@ -34,7 +34,7 @@ display:
           label: Yazar
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
           separator: ', '
         imported:
           separator: ', '

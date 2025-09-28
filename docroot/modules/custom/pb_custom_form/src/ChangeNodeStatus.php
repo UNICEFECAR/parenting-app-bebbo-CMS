@@ -25,21 +25,26 @@ class ChangeNodeStatus {
     $message = 'Changing Status...';
     $results = [];
     foreach ($langcodess as $key => $nidss) {
+      $node = NULL;
       foreach ($nidss as $nid) {
         $node = Node::load($key);
-        $node_lang_archive = $node->getTranslation($nid);
-        $uid = \Drupal::currentUser()->id();
-        $node_lang_archive->setNewRevision(TRUE);
-        $node_lang_archive->revision_log = 'Content changed to “Archive” through Country Offload';
-        $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-        $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
-        $node_lang_archive->save();
-        $node_lang_archive->set('moderation_state', 'archive');
-        $node_lang_archive->save();
-        $node->save();
+        if ($node) {
+          $node_lang_archive = $node->getTranslation($nid);
+          $uid = \Drupal::currentUser()->id();
+          $node_lang_archive->setNewRevision(TRUE);
+          $node_lang_archive->revision_log = 'Content changed to Archive through Country Offload';
+          $node_lang_archive->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+          $node_lang_archive->setRevisionUserId($uid);
+          $node_lang_archive->setRevisionTranslationAffected(NULL);
+          $node_lang_archive->save();
+          $node_lang_archive->set('moderation_state', 'archive');
+          $node_lang_archive->save();
+          $node->save();
+        }
       }
-      $results[] = $node->save();
+      if ($node) {
+        $results[] = $node->save();
+      }
     }
     $context['message'] = $message;
     $context['results'] = $results;

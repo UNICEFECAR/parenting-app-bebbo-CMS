@@ -13,7 +13,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\node\NodeInterface;
 
 /**
- * hook_form_alter.
+ * Hook_form_alter.
  */
 function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
   // Check if the form ID is  language_admin_edit_form.

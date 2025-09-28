@@ -6,3 +6,4 @@ name: "Parent's Gender"
 vid: parent_gender
 description: 'Gender of a parent or a caregiver using the app, tagging category'
 weight: 2
+new_revision: false

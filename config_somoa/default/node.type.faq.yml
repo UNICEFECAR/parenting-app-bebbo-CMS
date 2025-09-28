@@ -12,7 +12,7 @@ third_party_settings:
 name: FAQ
 type: faq
 description: 'Short responses to questions featured through the Chatbot '
-help: ''
+help: null
 new_revision: true
 preview_mode: 0
 display_submitted: true

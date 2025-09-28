@@ -22,6 +22,9 @@ display:
           exposed_sorts_label: 'Sıralama anahtarı'
           sort_asc_label: Artan
           sort_desc_label: Azalan
+      empty:
+        title:
+          title: 'Hoş geldiniz!'
   feed_1:
     display_title: Akış
   page_1:

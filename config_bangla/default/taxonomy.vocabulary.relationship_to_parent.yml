@@ -6,3 +6,4 @@ name: 'Relationship to Child'
 vid: relationship_to_parent
 description: 'Relationship to Child'
 weight: 3
+new_revision: false
