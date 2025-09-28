@@ -12,7 +12,7 @@ third_party_settings:
 name: 'Child Growth - Age Periods'
 type: child_growth
 description: 'Growth scenario corresponding to measures of weight and height/length in relation to WHO Growth charts '
-help: ''
+help: null
 new_revision: true
 preview_mode: 0
 display_submitted: true

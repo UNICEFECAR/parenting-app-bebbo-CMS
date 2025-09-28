@@ -1,48 +1,35 @@
-uuid: 02f3e033-f338-498e-95ac-cf856e3cdf4b
 langcode: en
-status: false
+status: true
 dependencies:
-  config:
-    - field.storage.taxonomy_term.field_child_gender
-    - field.storage.taxonomy_term.field_growth_type
-    - field.storage.taxonomy_term.field_sd0
-    - field.storage.taxonomy_term.field_sd1
-    - field.storage.taxonomy_term.field_sd1neg
-    - field.storage.taxonomy_term.field_sd2
-    - field.storage.taxonomy_term.field_sd2neg
-    - field.storage.taxonomy_term.field_sd3
-    - field.storage.taxonomy_term.field_sd3neg
-    - field.storage.taxonomy_term.field_sd4
-    - field.storage.taxonomy_term.field_sd4neg
-    - taxonomy.vocabulary.standard_deviation
   module:
-    - taxonomy
-    - user
-id: standard_deviation_page
-label: 'Standard Deviation'
+    - entity_share_client
+id: entity_share_client_entity_import_status
+label: entity_share_client_entity_import_status
 module: views
-description: ''
+description: 'List entity import statuses '
 tag: ''
-base_table: taxonomy_term_field_data
-base_field: tid
+base_table: entity_import_status
+base_field: id
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
-      title: 'Standard Deviation'
+      title: 'Entity import statuses'
       fields:
-        field_growth_type:
-          id: field_growth_type
-          table: taxonomy_term__field_growth_type
-          field: field_growth_type
+        id:
+          id: id
+          table: entity_import_status
+          field: id
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: id
           plugin_id: field
-          label: 'Growth Type'
+          label: ID
           exclude: false
           alter:
             alter_text: false
@@ -83,11 +70,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
+          click_sort_column: value
+          type: number_integer
           settings:
-            link: true
-          group_column: target_id
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -97,17 +85,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        name:
-          id: name
-          table: taxonomy_term_field_data
-          field: name
+        entity_uuid:
+          id: entity_uuid
+          table: entity_import_status
+          field: entity_uuid
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: term_name
-          label: Length/Day
+          entity_type: entity_import_status
+          entity_field: entity_uuid
+          plugin_id: field
+          label: 'Entity UUID'
           exclude: false
           alter:
             alter_text: false
@@ -127,8 +115,8 @@ display:
             target: ''
             nl2br: false
             max_length: 0
-            word_boundary: false
-            ellipsis: false
+            word_boundary: true
+            ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
@@ -151,7 +139,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -162,79 +150,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          convert_spaces: false
-        field_child_gender:
-          id: field_child_gender
-          table: taxonomy_term__field_child_gender
-          field: field_child_gender
+        entity_id:
+          id: entity_id
+          table: entity_import_status
+          field: entity_id
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_id
           plugin_id: field
-          label: 'Child Gender'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_sd0:
-          id: field_sd0
-          table: taxonomy_term__field_sd0
-          field: field_sd0
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: SD0
+          label: 'Entity ID'
           exclude: false
           alter:
             alter_text: false
@@ -276,12 +202,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: string
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -292,15 +215,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd1:
-          id: field_sd1
-          table: taxonomy_term__field_sd1
-          field: field_sd1
+        langcode:
+          id: langcode
+          table: entity_import_status
+          field: langcode
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
-          label: SD1
+          entity_type: entity_import_status
+          entity_field: langcode
+          plugin_id: field_language
+          label: Language
           exclude: false
           alter:
             alter_text: false
@@ -342,12 +267,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: language
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
+            native_language: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -358,15 +281,67 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd2:
-          id: field_sd2
-          table: taxonomy_term__field_sd2
-          field: field_sd2
+        entity_label:
+          id: entity_label
+          table: entity_import_status
+          field: entity_label
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          plugin_id: entity_share_client_entity_label
+          label: 'Link to entity'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        entity_type_id:
+          id: entity_type_id
+          table: entity_import_status
+          field: entity_type_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_type_id
           plugin_id: field
-          label: SD2
+          label: 'Entity type'
           exclude: false
           alter:
             alter_text: false
@@ -408,12 +383,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: string
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -424,15 +396,68 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd3:
-          id: field_sd3
-          table: taxonomy_term__field_sd3
-          field: field_sd3
+        entity_bundle:
+          id: entity_bundle
+          table: entity_import_status
+          field: entity_bundle
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_bundle
+          plugin_id: entity_share_client_entity_bundle
+          label: Bundle
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        remote_website:
+          id: remote_website
+          table: entity_import_status
+          field: remote_website
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: remote_website
           plugin_id: field
-          label: SD3
+          label: Remote
           exclude: false
           alter:
             alter_text: false
@@ -474,12 +499,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: string
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -490,15 +512,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd4:
-          id: field_sd4
-          table: taxonomy_term__field_sd4
-          field: field_sd4
+        channel_id:
+          id: channel_id
+          table: entity_import_status
+          field: channel_id
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: channel_id
           plugin_id: field
-          label: SD4
+          label: Channel
           exclude: false
           alter:
             alter_text: false
@@ -540,12 +564,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: string
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -556,15 +577,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd1neg:
-          id: field_sd1neg
-          table: taxonomy_term__field_sd1neg
-          field: field_sd1neg
+        last_import:
+          id: last_import
+          table: entity_import_status
+          field: last_import
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: last_import
           plugin_id: field
-          label: SD1neg
+          label: 'Last import'
           exclude: false
           alter:
             alter_text: false
@@ -606,12 +629,21 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: timestamp
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
+            tooltip:
+              date_format: long
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
+              description: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -622,15 +654,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd2neg:
-          id: field_sd2neg
-          table: taxonomy_term__field_sd2neg
-          field: field_sd2neg
+        policy:
+          id: policy
+          table: entity_import_status
+          field: policy
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: entity_import_status
+          entity_field: policy
           plugin_id: field
-          label: SD2neg
+          label: Policy
           exclude: false
           alter:
             alter_text: false
@@ -672,12 +706,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_decimal
+          type: string
           settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -688,15 +719,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_sd3neg:
-          id: field_sd3neg
-          table: taxonomy_term__field_sd3neg
-          field: field_sd3neg
+        operations:
+          id: operations
+          table: entity_import_status
+          field: operations
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
-          label: SD3neg
+          entity_type: null
+          entity_field: null
+          plugin_id: entity_operations
+          label: Operations
           exclude: false
           alter:
             alter_text: false
@@ -737,93 +770,12 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_sd4neg:
-          id: field_sd4neg
-          table: taxonomy_term__field_sd4neg
-          field: field_sd4neg
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: SD4neg
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            decimal_separator: .
-            scale: 2
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          destination: false
       pager:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 50
           total_pages: null
           id: 0
@@ -838,53 +790,463 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: perm
-        options:
-          perm: 'access content'
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
-      empty: {  }
-      sorts: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No import status found for the current filter values.'
+            format: basic_html
+          tokenize: false
+      sorts:
+        last_import:
+          id: last_import
+          table: entity_import_status
+          field: last_import
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: last_import
+          plugin_id: date
+          order: DESC
+          expose:
+            label: 'Last import'
+            field_identifier: last_import
+          exposed: true
+          granularity: second
+        channel_id:
+          id: channel_id
+          table: entity_import_status
+          field: channel_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: channel_id
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: Channel
+            field_identifier: channel_id
+          exposed: true
+        entity_type_id:
+          id: entity_type_id
+          table: entity_import_status
+          field: entity_type_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_type_id
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: 'Entity type'
+            field_identifier: entity_type_id
+          exposed: true
+        langcode:
+          id: langcode
+          table: entity_import_status
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: langcode
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: Language
+            field_identifier: langcode
+          exposed: true
       arguments: {  }
       filters:
-        status:
-          id: status
-          table: taxonomy_term_field_data
-          field: status
-          entity_type: taxonomy_term
-          entity_field: status
-          plugin_id: boolean
-          value: '1'
+        remote_website:
+          id: remote_website
+          table: entity_import_status
+          field: remote_website
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: remote_website
+          plugin_id: in_operator
+          operator: in
+          value: {  }
           group: 1
+          exposed: true
           expose:
-            operator: ''
+            operator_id: remote_website_op
+            label: Remote
+            description: ''
+            use_operator: false
+            operator: remote_website_op
             operator_limit_selection: false
             operator_list: {  }
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
-          entity_type: taxonomy_term
-          entity_field: vid
-          plugin_id: bundle
+            identifier: remote_website
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        channel_id:
+          id: channel_id
+          table: entity_import_status
+          field: channel_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: channel_id
+          plugin_id: string
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: channel_id_op
+            label: Channel
+            description: ''
+            use_operator: false
+            operator: channel_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: channel_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            placeholder: ''
+            reduce: 0
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        entity_type_id:
+          id: entity_type_id
+          table: entity_import_status
+          field: entity_type_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_type_id
+          plugin_id: in_operator
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: entity_type_id_op
+            label: 'Entity type'
+            description: ''
+            use_operator: false
+            operator: entity_type_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: entity_type_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        entity_bundle:
+          id: entity_bundle
+          table: entity_import_status
+          field: entity_bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_bundle
+          plugin_id: in_operator
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: entity_bundle_op
+            label: 'Entity bundle'
+            description: ''
+            use_operator: false
+            operator: entity_bundle_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: entity_bundle
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        langcode:
+          id: langcode
+          table: entity_import_status
+          field: langcode
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: langcode
+          plugin_id: language
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: langcode_op
+            label: 'Original language'
+            description: ''
+            use_operator: false
+            operator: langcode_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: langcode
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        entity_id:
+          id: entity_id
+          table: entity_import_status
+          field: entity_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: entity_id
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: entity_id_op
+            label: 'Entity ID'
+            description: ''
+            use_operator: false
+            operator: entity_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: entity_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        last_import:
+          id: last_import
+          table: entity_import_status
+          field: last_import
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: last_import
+          plugin_id: date
+          operator: '>='
           value:
-            standard_deviation: standard_deviation
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
           expose:
+            operator_id: last_import_op
+            label: 'Imported since'
+            description: ''
+            use_operator: false
+            operator: last_import_op
             operator_limit_selection: false
             operator_list: {  }
+            identifier: last_import
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        policy:
+          id: policy
+          table: entity_import_status
+          field: policy
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: entity_import_status
+          entity_field: policy
+          plugin_id: in_operator
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: policy_op
+            label: Policy
+            description: ''
+            use_operator: false
+            operator: policy_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: policy
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: table
       row:
@@ -906,20 +1268,11 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
-        - user.permissions
-      tags:
-        - 'config:field.storage.taxonomy_term.field_child_gender'
-        - 'config:field.storage.taxonomy_term.field_growth_type'
-        - 'config:field.storage.taxonomy_term.field_sd0'
-        - 'config:field.storage.taxonomy_term.field_sd1'
-        - 'config:field.storage.taxonomy_term.field_sd1neg'
-        - 'config:field.storage.taxonomy_term.field_sd2'
-        - 'config:field.storage.taxonomy_term.field_sd2neg'
-        - 'config:field.storage.taxonomy_term.field_sd3'
-        - 'config:field.storage.taxonomy_term.field_sd3neg'
-        - 'config:field.storage.taxonomy_term.field_sd4'
-        - 'config:field.storage.taxonomy_term.field_sd4neg'
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
+      tags: {  }
   page_1:
     id: page_1
     display_title: Page
@@ -927,23 +1280,14 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: standard-deviation
+      path: admin/content/entity_share/import_status
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
-        - user.permissions
-      tags:
-        - 'config:field.storage.taxonomy_term.field_child_gender'
-        - 'config:field.storage.taxonomy_term.field_growth_type'
-        - 'config:field.storage.taxonomy_term.field_sd0'
-        - 'config:field.storage.taxonomy_term.field_sd1'
-        - 'config:field.storage.taxonomy_term.field_sd1neg'
-        - 'config:field.storage.taxonomy_term.field_sd2'
-        - 'config:field.storage.taxonomy_term.field_sd2neg'
-        - 'config:field.storage.taxonomy_term.field_sd3'
-        - 'config:field.storage.taxonomy_term.field_sd3neg'
-        - 'config:field.storage.taxonomy_term.field_sd4'
-        - 'config:field.storage.taxonomy_term.field_sd4neg'
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
+      tags: {  }

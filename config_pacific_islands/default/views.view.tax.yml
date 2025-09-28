@@ -110,6 +110,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -151,7 +152,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -396,7 +396,6 @@ display:
           default_argument_options:
             index: 2
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
@@ -432,7 +431,6 @@ display:
           default_argument_options:
             index: 3
             use_alias: false
-          default_argument_skip_url: false
           summary_options:
             base_path: ''
             count: true
