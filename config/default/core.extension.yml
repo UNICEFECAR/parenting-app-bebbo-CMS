@@ -4,7 +4,6 @@ module:
   acquia_purge: 0
   actions_permissions: 0
   admin_toolbar: 0
-  admin_toolbar_links_access_filter: 0
   admin_toolbar_search: 0
   admin_toolbar_tools: 0
   allowed_languages: 0
@@ -57,6 +56,7 @@ module:
   language_custom_field: 0
   languagefield: 0
   layout_builder: 0
+  layout_builder_expose_all_field_blocks: 0
   layout_builder_styles: 0
   layout_discovery: 0
   link: 0
@@ -89,6 +89,7 @@ module:
   pb_custom_standard_deviation: 0
   phpass: 0
   purge: 0
+  purge_queuer_coretags: 0
   purge_ui: 0
   quickedit: 0
   rdf: 0
@@ -99,6 +100,7 @@ module:
   serialization: 0
   shortcut: 0
   smtp: 0
+  structure_sync: 0
   svg_image: 0
   syslog: 0
   system: 0
@@ -131,6 +133,7 @@ module:
   views_data_export: 0
   views_ui: 0
   workflows: 0
+  pathauto: 1
   content_translation: 10
   views: 10
   contextual_range_filter: 11

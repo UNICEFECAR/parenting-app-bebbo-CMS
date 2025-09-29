@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: content_health_check_ups
-label: 'Content - Health Check-ups'
+label: 'Content - Health Check-ups (EN)'
 channel_entity_type: node
 channel_bundle: health_check_ups
 channel_langcode: en

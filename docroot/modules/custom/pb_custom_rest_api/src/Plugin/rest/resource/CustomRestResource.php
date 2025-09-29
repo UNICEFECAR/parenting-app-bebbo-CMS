@@ -4,6 +4,7 @@ namespace Drupal\pb_custom_rest_api\Plugin\rest\resource;
 
 use Drupal\rest\Plugin\ResourceBase;
 use Drupal\rest\ResourceResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Custom Rest Resource.
@@ -19,14 +20,29 @@ use Drupal\rest\ResourceResponse;
 class CustomRestResource extends ResourceBase {
 
   /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->database = $container->get('database');
+    return $instance;
+  }
+
+  /**
    * Responds to GET requests.
    *
    * @return \Drupal\rest\ResourceResponse
    *   The HTTP response object.
    */
   public function get($country = NULL) {
-    $database = \Drupal::database();
-    $query = $database->query("SELECT * FROM {forcefull_check_update_api} WHERE countries_id = $country ORDER BY id DESC LIMIT 1");
+    $query = $this->database->query("SELECT * FROM {forcefull_check_update_api} WHERE countries_id = $country ORDER BY id DESC LIMIT 1");
     $result = $query->fetchAll();
     if (!empty($result)) {
       $response_array['status'] = 200;

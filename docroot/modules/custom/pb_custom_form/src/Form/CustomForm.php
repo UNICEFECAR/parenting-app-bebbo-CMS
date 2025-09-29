@@ -45,6 +45,7 @@ class CustomForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $groups = Group::loadMultiple();
+    $coutry_group = [];
     foreach ($groups as $group) {
       $id = $group->get('id')->getString();
       $label = $group->get('label')->getString();
@@ -107,7 +108,7 @@ class CustomForm extends FormBase {
     /* $updated_at = $date->getTimestamp(); */
     $country_val = $form['country_select']['#options'][$country_id];
     $path = $base_url . '/forcefull-update-check?flag=' . $flag . '&&country_id=' . $country_id . '&&country_name=' . $country_val;
-    my_goto($path);
+    pb_custom_field_my_goto($path);
   }
 
 }

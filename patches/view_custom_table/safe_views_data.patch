@@ -1,0 +1,15 @@
+--- view_custom_table.module	2025-09-22 00:00:00.000000000 +0530
++++ view_custom_table.module.new	2025-09-22 00:05:00.000000000 +0530
+@@ -67,7 +67,11 @@
+ 
+   if (!empty($all_custom_tables)) {
+     foreach ($all_custom_tables as $table_name => $custom_table) {
+-      if (array_key_exists('column_relations', $custom_table)) {
++      if (!is_array($custom_table)) {
++        // Ignore malformed configuration entries.
++        continue;
++      }
++      if (array_key_exists('column_relations', $custom_table)) {
+         $table_relations = unserialize($custom_table['column_relations'], ['allowed_classes' => FALSE]);
+         $table_display_name = ucfirst($table_name);
+         $table_display_name = str_replace('_', ' ', $table_display_name);

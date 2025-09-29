@@ -5,7 +5,6 @@ namespace Drupal\pb_custom_field;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 
-
 /**
  * Parses and verifies the doc comments for files.
  *
@@ -33,7 +32,7 @@ class ChangeintoSeniorEditorActionStatus {
     $success_msg = 0;
     $country_error = 0;
     $same_status_error = 0;
-     
+
     if (!empty($grps)) {
       foreach ($grps as $grp) {
         $groups = $grp->getGroup();
@@ -43,64 +42,67 @@ class ChangeintoSeniorEditorActionStatus {
     }
     foreach ($n_language as $key => $langs) {
       $draft_node = Node::load($key);
-      foreach ($langs as $lang) {  
-      $node_lang_draft = $draft_node->getTranslation($lang);
-      $current_state = $node_lang_draft->moderation_state->value;
+      foreach ($langs as $lang) {
+        $node_lang_draft = $draft_node->getTranslation($lang);
+        $current_state = $node_lang_draft->moderation_state->value;
 
-      if($current_state !== 'senior_editor_review' && empty($grps)){
-        $node_lang_draft->set('moderation_state', 'senior_editor_review');
-        $node_lang_draft->set('uid', $uid);
-        $node_lang_draft->set('content_translation_source', $lang);
-        $node_lang_draft->set('changed', time());
-        $node_lang_draft->set('created', time());
+        if ($current_state !== 'senior_editor_review' && empty($grps)) {
+          $node_lang_draft->set('moderation_state', 'senior_editor_review');
+          $node_lang_draft->set('uid', $uid);
+          $node_lang_draft->set('content_translation_source', $lang);
+          $node_lang_draft->set('changed', time());
+          $node_lang_draft->set('created', time());
 
-        $node_lang_draft->setNewRevision(TRUE);
-        $node_lang_draft->revision_log = 'Content Changed Into Senior Editor Review';
-        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-        $node_lang_draft->setRevisionUserId($uid);
-        $node_lang_draft->setRevisionTranslationAffected(NULL);
-        $node_lang_draft->save();
-        $success_msg++;
-      }elseif($current_state !== 'senior_editor_review' && !empty($grps)){
-        if (in_array($lang, $grp_country_new_array)) {
-        $node_lang_draft->set('moderation_state', 'senior_editor_review');
-        $node_lang_draft->set('uid', $uid);
-        $node_lang_draft->set('content_translation_source', $lang);
-        $node_lang_draft->set('changed', time());
-        $node_lang_draft->set('created', time());
+          $node_lang_draft->setNewRevision(TRUE);
+          $node_lang_draft->revision_log = 'Content Changed Into Senior Editor Review';
+          $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+          $node_lang_draft->setRevisionUserId($uid);
+          $node_lang_draft->setRevisionTranslationAffected(NULL);
+          $node_lang_draft->save();
+          $success_msg++;
+        }
+        elseif ($current_state !== 'senior_editor_review' && !empty($grps)) {
+          if (in_array($lang, $grp_country_new_array)) {
+            $node_lang_draft->set('moderation_state', 'senior_editor_review');
+            $node_lang_draft->set('uid', $uid);
+            $node_lang_draft->set('content_translation_source', $lang);
+            $node_lang_draft->set('changed', time());
+            $node_lang_draft->set('created', time());
 
-        $node_lang_draft->setNewRevision(TRUE);
-        $node_lang_draft->revision_log = 'Content changed into Senior Editor Review';
-        $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-        $node_lang_draft->setRevisionUserId($uid);
-        $node_lang_draft->setRevisionTranslationAffected(NULL);
-        $node_lang_draft->save();
-        $success_msg++;
-      }else{
-        $country_error++;
+            $node_lang_draft->setNewRevision(TRUE);
+            $node_lang_draft->revision_log = 'Content changed into Senior Editor Review';
+            $node_lang_draft->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+            $node_lang_draft->setRevisionUserId($uid);
+            $node_lang_draft->setRevisionTranslationAffected(NULL);
+            $node_lang_draft->save();
+            $success_msg++;
+          }
+          else {
+            $country_error++;
+          }
+        }
+        else {
+          $same_status_error++;
+        }
       }
-    }else{
-        $same_status_error++;
-      }
-    }
-     
+
       $results[] = $draft_node->save();
     }
-    if($success_msg > 0){
-      $Succ_message = "Content changed into Senior Editor Review state successfully (" . $success_msg . ")";
-      // drupal_set_message(t($Succ_message), 'status');
-      \Drupal::messenger()->addStatus($Succ_message);
+    if ($success_msg > 0) {
+      $succ_message = "Content changed into Senior Editor Review state successfully (" . $success_msg . ")";
+      // drupal_set_message(t($succ_message), 'status');.
+      \Drupal::messenger()->addStatus($succ_message);
     }
-    if($same_status_error > 0){
+    if ($same_status_error > 0) {
       $msg = "Selected content is already in Senior Editor Review state (" . $same_status_error . ")";
-        // drupal_set_message(t($msg), 'error');
-        \Drupal::messenger()->addError($msg);
+      // drupal_set_message(t($msg), 'error');.
+      \Drupal::messenger()->addError($msg);
     }
-    if($country_error > 0){
+    if ($country_error > 0) {
       $country_msg = "This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization. (" . $country_error . ")";
-        // drupal_set_message(t($country_msg), 'error');
-        \Drupal::messenger()->addError($country_msg);
-    }   
+      // drupal_set_message(t($country_msg), 'error');.
+      \Drupal::messenger()->addError($country_msg);
+    }
     $context['message'] = $message;
     $context['results'] = $results;
   }
@@ -119,10 +121,10 @@ class ChangeintoSeniorEditorActionStatus {
     }
     else {
       $message = t('Finished with an error.');
-	  //  drupal_set_message($message);
-     \Drupal::messenger()->addMessage($message);
+      // drupal_set_message($message);
+      \Drupal::messenger()->addMessage($message);
     }
-   
+
   }
 
 }

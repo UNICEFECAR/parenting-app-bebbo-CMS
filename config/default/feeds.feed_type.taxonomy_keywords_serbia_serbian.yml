@@ -25,9 +25,9 @@ processor: 'entity:taxonomy_term'
 processor_configuration:
   values:
     vid: keywords
-  langcode: xk-rs
+  langcode: uz-kaa
   insert_new: 0
-  update_existing: 1
+  update_existing: 2
   update_non_existent: _keep
   skip_hash_check: false
   authorize: false
@@ -57,5 +57,5 @@ mappings:
     map:
       value: term_name
     settings:
-      language: xk-rs
+      language: uz-kaa
     unique: {  }

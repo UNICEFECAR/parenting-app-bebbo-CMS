@@ -13,7 +13,7 @@ plugin: deepl_free
 settings:
   url: 'https://api-free.deepl.com/v2/translate'
   url_usage: 'https://api-free.deepl.com/v2/usage'
-  auth_key: '3d2d4e16-0236-d19e-9ac9-ddc8d81f7215:fx'
+  auth_key: ''
   tag_handling: '0'
   non_splitting_tags: ''
   splitting_tags: ''

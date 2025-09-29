@@ -6,5 +6,6 @@ dependencies:
     - feeds
 id: feeds_subscription.token
 label: Token
+description: ''
 targetEntityType: feeds_subscription
 cache: true

@@ -9,7 +9,7 @@ display:
         title:
           label: Başlık
         type:
-          label: 'İçerik türü'
+          label: 'İçerik tipi'
           separator: ', '
         name:
           label: Yazar
@@ -19,7 +19,7 @@ display:
             format_custom_false: 'Yayında değil'
             format_custom_true: Yayında
         changed:
-          label: Güncellendi
+          label: Güncellenme
         operations:
           label: İşlemler
       pager:
@@ -45,7 +45,7 @@ display:
             label: Başlık
         type:
           expose:
-            label: 'İçerik türü'
+            label: 'İçerik tipi'
         status:
           expose:
             label: Durum

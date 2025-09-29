@@ -25,7 +25,7 @@ display:
           label: Başlık
           separator: ', '
         type:
-          label: 'İçerik türü'
+          label: 'İçerik tipi'
           separator: ', '
         status:
           label: Durum
@@ -34,7 +34,7 @@ display:
             format_custom_false: 'Yayında değil'
           separator: ', '
         changed:
-          label: Güncellendi
+          label: Güncellenme
           separator: ', '
         edit_node:
           text: 'Düğümü düzenle'

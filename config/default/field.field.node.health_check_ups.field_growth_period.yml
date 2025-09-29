@@ -6,6 +6,11 @@ dependencies:
     - field.storage.node.field_growth_period
     - node.type.health_check_ups
     - taxonomy.vocabulary.growth_period
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
 id: node.health_check_ups.field_growth_period
 field_name: field_growth_period
 entity_type: node

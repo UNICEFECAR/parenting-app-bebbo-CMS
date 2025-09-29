@@ -12,7 +12,7 @@ weight: null
 plugin: google
 settings:
   url: ''
-  api_key: AIzaSyDzFu9iYpZd6R3CC9r6mKrpSudKFcUyt8c
+  api_key: ''
 remote_languages_mappings:
   en: en
   ru: ru
