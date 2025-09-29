@@ -13,7 +13,7 @@ plugin: deepl_pro
 settings:
   url: 'https://api.deepl.com/v2/translate'
   url_usage: 'https://api.deepl.com/v2/usage'
-  auth_key: bb450b3f-8d87-44df-95bc-57441939bab2
+  auth_key: ''
   tag_handling: '0'
   non_splitting_tags: ''
   splitting_tags: ''
