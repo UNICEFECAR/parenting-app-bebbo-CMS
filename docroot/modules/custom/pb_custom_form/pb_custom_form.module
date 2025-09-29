@@ -205,7 +205,7 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     }
     /* $form['#attached']['js'][] = drupal_get_path('module', 'pb_custom_field') . '/js/homepage.js'; */
     $form['#attached']['library'][] = 'pb_custom_field/mylib';
-    $form['actions']['submit']['#submit'][] = 'group_country_save';
+    $form['actions']['submit']['#submit'][] = 'pb_custom_form_group_country_save';
   }
   if (strpos($form_id, 'edit_form') !== FALSE && strpos($form_id, 'node') !== FALSE) {
     $form['#validate'][] = 'pb_custom_form_node_validate';

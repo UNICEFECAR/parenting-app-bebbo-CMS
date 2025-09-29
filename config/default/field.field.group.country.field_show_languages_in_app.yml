@@ -1,0 +1,21 @@
+uuid: 84dd61d3-1d03-43f6-864a-d5fdaea2f3f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_show_languages_in_app
+    - group.type.country
+id: group.country.field_show_languages_in_app
+field_name: field_show_languages_in_app
+entity_type: group
+bundle: country
+label: 'Show Languages in App'
+description: "Select which languages should be visible in the mobile app API. Unchecked languages can still be edited but won't appear in the app."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Show in App'
+  off_label: 'Hide from App'
+field_type: boolean

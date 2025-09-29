@@ -1,0 +1,124 @@
+<?php
+
+/**
+ * @file
+ * Language Visibility Control module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\group\Entity\Group;
+
+/**
+ * Implements hook_form_alter().
+ */
+function language_visibility_control_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Alter the country group form to add language visibility controls.
+  if ($form_id === 'group_country_edit_form' || $form_id === 'group_country_add_form') {
+    // Get the group entity.
+    $group = $form_state->getFormObject()->getEntity();
+
+    // Add JavaScript to dynamically update visibility options.
+    $form['#attached']['library'][] = 'language_visibility_control/admin';
+
+    // Modify the existing language field to add visibility controls.
+    if (isset($form['field_language'])) {
+      // Add description to the language field.
+      $form['field_language']['widget']['#description'] = t('Select languages for this country. Use the "Language Visibility" section below to control which languages appear in the mobile app.');
+
+      // Add language visibility fieldset.
+      $form['language_visibility'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Language Visibility in Mobile App'),
+        '#description' => t('Control which of the selected languages above should appear in the mobile app API. Languages not checked here can still be edited by users but will not be visible in the mobile app.'),
+        '#weight' => $form['field_language']['#weight'] + 1,
+        '#tree' => TRUE,
+        '#states' => [
+          'visible' => [
+            ':input[name="field_language"]' => ['!value' => ''],
+          ],
+        ],
+      ];
+
+      // Get currently selected languages.
+      $current_languages = [];
+      if ($group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+        $language_values = $group->get('field_language')->getValue();
+        foreach ($language_values as $lang_value) {
+          $current_languages[] = $lang_value['value'];
+        }
+      }
+
+      // Get currently visible languages from the new field.
+      $visible_languages = [];
+      if ($group->hasField('field_language_visibility_in_app') && !$group->get('field_language_visibility_in_app')->isEmpty()) {
+        $visible_values = $group->get('field_language_visibility_in_app')->getValue();
+        foreach ($visible_values as $value) {
+          if (!empty($value['value'])) {
+            $visible_languages[] = $value['value'];
+          }
+        }
+      }
+
+      // Add checkboxes for each currently selected language.
+      $all_languages = \Drupal::languageManager()->getLanguages();
+      foreach ($current_languages as $langcode) {
+        if (isset($all_languages[$langcode])) {
+          $language_name = $all_languages[$langcode]->getName();
+          $form['language_visibility'][$langcode] = [
+            '#type' => 'checkbox',
+            '#title' => t('@language (@code)', [
+              '@language' => $language_name,
+              '@code' => $langcode,
+            ]),
+            '#default_value' => in_array($langcode, $visible_languages),
+            '#description' => t('Show this language in the mobile app API'),
+          ];
+        }
+      }
+
+      // Add help text if no languages are selected.
+      if (empty($current_languages)) {
+        $form['language_visibility']['help'] = [
+          '#type' => 'markup',
+          '#markup' => '<p><em>' . t('Select languages above to configure their visibility in the mobile app.') . '</em></p>',
+        ];
+      }
+
+      // Add custom submit handler.
+      $form['actions']['submit']['#submit'][] = 'language_visibility_control_group_form_submit';
+    }
+  }
+}
+
+/**
+ * Custom submit handler for group forms.
+ */
+function language_visibility_control_group_form_submit($form, FormStateInterface $form_state) {
+  $group = $form_state->getFormObject()->getEntity();
+  $language_visibility = $form_state->getValue('language_visibility');
+  if ($language_visibility && $group->hasField('field_language_visibility_in_app')) {
+    $visible_languages = [];
+    foreach ($language_visibility as $langcode => $visible) {
+      if ($visible) {
+        $visible_languages[] = ['value' => $langcode];
+      }
+    }
+    $group->set('field_language_visibility_in_app', $visible_languages);
+    $group->save();
+  }
+}
+
+/**
+ * Helper function to filter languages based on visibility settings.
+ *
+ * This function is called from the custom serializer.
+ */
+function language_visibility_control_filter_languages($languages, $group_id) {
+  $group = Group::load($group_id);
+  if (!$group) {
+    return $languages;
+  }
+
+  $service = \Drupal::service('language_visibility_control.service');
+  return $service->filterLanguageDataForApi($languages, $group);
+}

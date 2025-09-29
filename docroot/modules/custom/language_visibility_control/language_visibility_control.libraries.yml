@@ -1,0 +1,7 @@
+admin:
+  version: 1.x
+  js:
+    js/admin.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
