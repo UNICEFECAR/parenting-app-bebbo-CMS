@@ -2,7 +2,7 @@ services:
   language_visibility_control.service:
     class: Drupal\language_visibility_control\LanguageVisibilityService
     arguments: ['@entity_type.manager', '@language_manager']
-    
+
   language_visibility_control.api_response_subscriber:
     class: Drupal\language_visibility_control\EventSubscriber\ApiResponseSubscriber
     arguments: ['@language_visibility_control.service']

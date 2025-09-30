@@ -39,6 +39,16 @@ class GroupPermissionsMergeService {
   }
 
   /**
+   * Gets the target roles that should be processed by this module.
+   *
+   * @return array
+   *   Array of target role machine names.
+   */
+  public static function getTargetRoles() {
+    return ['editor', 'se', 'sme'];
+  }
+
+  /**
    * Gets merged permissions for a user across all their group memberships.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
@@ -48,26 +58,40 @@ class GroupPermissionsMergeService {
    *   Array of merged permissions.
    */
   public function getMergedPermissions(AccountInterface $account) {
-    $user_roles = $account->getRoles();
-    $target_roles = ['editor', 'se', 'sme'];
+    try {
+      // Early return if user doesn't have target roles.
+      if (!array_intersect($account->getRoles(), self::getTargetRoles())) {
+        return [];
+      }
 
-    if (!array_intersect($user_roles, $target_roles)) {
-      return [];
-    }
+      $memberships = $this->membershipLoader->loadByUser($account);
+      if (empty($memberships)) {
+        return [];
+      }
 
-    $memberships = $this->membershipLoader->loadByUser($account);
-    $merged_permissions = [];
+      $merged_permissions = [];
 
-    foreach ($memberships as $membership) {
-      $group_roles = $membership->getRoles();
+      foreach ($memberships as $membership) {
+        $group = $membership->getGroup();
+        if (!$group) {
+          continue;
+        }
 
-      foreach ($group_roles as $group_role) {
-        $role_permissions = $group_role->getPermissions();
+        // Extract permissions from all valid roles.
+        $role_permissions = array_reduce($membership->getRoles(), function ($carry, $role) {
+          return ($role && is_array($role->getPermissions()))
+            ? array_merge($carry, $role->getPermissions())
+            : $carry;
+        }, []);
+
         $merged_permissions = array_merge($merged_permissions, $role_permissions);
       }
-    }
 
-    return array_unique($merged_permissions);
+      return array_unique(array_filter($merged_permissions));
+    }
+    catch (\Exception $e) {
+      return [];
+    }
   }
 
   /**
@@ -84,38 +108,48 @@ class GroupPermissionsMergeService {
    *   TRUE if user has access, FALSE otherwise.
    */
   public function hasNodeAccess(AccountInterface $account, $node, $operation) {
-    $user_roles = $account->getRoles();
-    $target_roles = ['editor', 'se', 'sme'];
+    try {
+      // Early returns for validation.
+      if (!array_intersect($account->getRoles(), self::getTargetRoles()) ||
+          !in_array($operation, ['view', 'update'])) {
+        return FALSE;
+      }
 
-    if (!array_intersect($user_roles, $target_roles)) {
-      return FALSE;
-    }
+      $memberships = $this->membershipLoader->loadByUser($account);
+      if (empty($memberships)) {
+        return FALSE;
+      }
 
-    $memberships = $this->membershipLoader->loadByUser($account);
-    $group_content_storage = $this->entityTypeManager->getStorage('group_content');
+      $group_content_storage = $this->entityTypeManager->getStorage('group_content');
+      $node_bundle = $node->bundle();
 
-    foreach ($memberships as $membership) {
-      $group = $membership->getGroup();
-      $group_roles = $membership->getRoles();
+      foreach ($memberships as $membership) {
+        $group = $membership->getGroup();
+        if (!$group) {
+          continue;
+        }
 
-      // Check if the node belongs to this group.
-      $group_contents = $group_content_storage->loadByProperties([
-        'gid' => $group->id(),
-        'entity_id' => $node->id(),
-        'type' => 'country-group_node-' . $node->bundle(),
-      ]);
+        // Check if node belongs to this group.
+        $group_contents = $group_content_storage->loadByProperties([
+          'gid' => $group->id(),
+          'entity_id' => $node->id(),
+          'type' => 'country-group_node-' . $node_bundle,
+        ]);
 
-      if (!empty($group_contents)) {
-        // Check if user has the required permission in any of their group.
-        foreach ($group_roles as $group_role) {
-          if ($this->hasRequiredPermission($group_role, $node->bundle(), $operation)) {
-            return TRUE;
-          }
+        // Check permissions if node belongs to group.
+        if (!empty($group_contents) &&
+            array_reduce($membership->getRoles(), function ($carry, $role) use ($node_bundle, $operation) {
+              return $carry || $this->hasRequiredPermission($role, $node_bundle, $operation);
+            }, FALSE)) {
+          return TRUE;
         }
       }
-    }
 
-    return FALSE;
+      return FALSE;
+    }
+    catch (\Exception $e) {
+      return FALSE;
+    }
   }
 
   /**
@@ -132,33 +166,34 @@ class GroupPermissionsMergeService {
    *   TRUE if the role has the required permission.
    */
   protected function hasRequiredPermission($group_role, $bundle, $operation) {
-    $permissions = $group_role->getPermissions();
-
-    $required_permissions = [];
-    switch ($operation) {
-      case 'view':
-        $required_permissions = [
-          'view unpublished group_node:' . $bundle . ' entity',
-          'view latest version',
-        ];
-        break;
-
-      case 'update':
-        $required_permissions = [
-          'update any group_node:' . $bundle . ' entity',
-          'update own group_node:' . $bundle . ' entity',
-        ];
-        break;
-
-      case 'delete':
-        $required_permissions = [
-          'delete any group_node:' . $bundle . ' entity',
-          'delete own group_node:' . $bundle . ' entity',
-        ];
-        break;
+    if (!$group_role || empty($bundle) || empty($operation)) {
+      return FALSE;
     }
 
-    return !empty(array_intersect($required_permissions, $permissions));
+    $permissions = $group_role->getPermissions();
+    if (!is_array($permissions)) {
+      return FALSE;
+    }
+
+    // Define permission patterns for each operation.
+    $permission_patterns = [
+      'view' => [
+        'view unpublished group_node:' . $bundle . ' entity',
+        'view latest version',
+        'view group_node:' . $bundle . ' entity',
+      ],
+      'update' => [
+        'update any group_node:' . $bundle . ' entity',
+        'update own group_node:' . $bundle . ' entity',
+      ],
+      'delete' => [
+        'delete any group_node:' . $bundle . ' entity',
+        'delete own group_node:' . $bundle . ' entity',
+      ],
+    ];
+
+    return isset($permission_patterns[$operation]) &&
+           !empty(array_intersect($permission_patterns[$operation], $permissions));
   }
 
   /**
@@ -179,6 +214,32 @@ class GroupPermissionsMergeService {
     });
 
     return $workflow_permissions;
+  }
+
+  /**
+   * Checks if a user can perform a specific workflow transition.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param string $transition_id
+   *   The workflow transition ID.
+   * @param \Drupal\node\NodeInterface $node
+   *   The node entity (optional).
+   *
+   * @return bool
+   *   TRUE if user can perform the transition, FALSE otherwise.
+   */
+  public function canPerformWorkflowTransition(AccountInterface $account, $transition_id, $node = NULL) {
+    // Early return if user doesn't have target roles.
+    if (!array_intersect($account->getRoles(), self::getTargetRoles())) {
+      return FALSE;
+    }
+
+    $workflow_permissions = $this->getWorkflowTransitionPermissions($account);
+    $required_permission = 'use group_workflow transition ' . $transition_id;
+    $has_permission = in_array($required_permission, $workflow_permissions);
+
+    return $has_permission || ($node && $this->hasNodeAccess($account, $node, 'update') && $has_permission);
   }
 
 }

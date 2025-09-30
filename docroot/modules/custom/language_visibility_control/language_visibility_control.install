@@ -18,7 +18,6 @@ function language_visibility_control_install() {
       'field_name' => 'field_language_visibility_in_app',
       'entity_type' => 'group',
       'type' => 'string',
-    // Multiple values for multiple languages.
       'cardinality' => -1,
       'settings' => [
         'max_length' => 32,
