@@ -32,6 +32,12 @@ use Symfony\Component\HttpFoundation\Response;
  * )
  */
 class CustomSerializer extends Serializer {
+  /**
+   * The language visibility control service.
+   *
+   * @var \Drupal\language_visibility_control\Service\LanguageVisibilityControlService|null
+   */
+  protected $languageVisibilityService;
 
   /**
    * The current path service.
@@ -118,6 +124,7 @@ class CustomSerializer extends Serializer {
     Connection $database,
     LanguageManagerInterface $language_manager,
     EntityTypeManagerInterface $entity_type_manager,
+    $language_visibility_service = NULL,
   ) {
     parent::__construct(
       $configuration,
@@ -132,6 +139,7 @@ class CustomSerializer extends Serializer {
     $this->database = $database;
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->languageVisibilityService = $language_visibility_service;
   }
 
   /**
@@ -149,7 +157,8 @@ class CustomSerializer extends Serializer {
       $container->get('request_stack'),
       $container->get('database'),
       $container->get('language_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->has('language_visibility_control.service') ? $container->get('language_visibility_control.service') : NULL
     );
   }
 
@@ -440,10 +449,22 @@ class CustomSerializer extends Serializer {
                 $langcode = $val['value'];
 
                 if ($langcode) {
-                  $language = $this->languageManager->getLanguage($langcode);
+                  // Check if the language still exists (not disabled)
+                  try {
+                    $language = $this->languageManager->getLanguage($langcode);
+                  }
+                  catch (\Exception $e) {
+                    // Language doesn't exist, skip it.
+                    continue;
+                  }
 
                   $this->languageManager->setConfigOverrideLanguage($language);
                   $languages = ConfigurableLanguage::load($langcode);
+
+                  // Skip if ConfigurableLanguage entity doesn't exist.
+                  if (!$languages) {
+                    continue;
+                  }
 
                   $view_weight = $languages->get('weight') ?? 0;
 
@@ -478,6 +499,11 @@ class CustomSerializer extends Serializer {
                     'view_weight' => $view_weight,
                   ];
                 }
+              }
+
+              // Apply language visibility filtering if the service exists.
+              if ($this->languageVisibilityService) {
+                $rendered_data['languages'] = $this->languageVisibilityService->filterLanguageDataForApi($rendered_data['languages'], $groups);
               }
 
               // Reorder the array to place the preferred language code first.
@@ -669,6 +695,32 @@ class CustomSerializer extends Serializer {
           if (!in_array($request[3], $languages_arr)) {
             $respons_arr['status'] = 400;
             $respons_arr['message'] = "Request language is wrong";
+
+            return $respons_arr;
+          }
+        }
+
+        // Check if language is visible in mobile app for any country group.
+        if ($this->languageVisibilityService) {
+          $requested_language = $request[3];
+          $is_language_visible = FALSE;
+
+          // Check all country groups to see if this language is visible in any.
+          $language_visibility_service = $this->languageVisibilityService;
+          $groups = Group::loadMultiple();
+          foreach ($groups as $group) {
+            if ($group->bundle() === 'country') {
+              $visible_languages = $language_visibility_service->getVisibleLanguages($group);
+              if (in_array($requested_language, $visible_languages)) {
+                $is_language_visible = TRUE;
+                break;
+              }
+            }
+          }
+
+          if (!$is_language_visible) {
+            $respons_arr['status'] = 403;
+            $respons_arr['message'] = "Language not available";
 
             return $respons_arr;
           }

@@ -1,0 +1,4 @@
+services:
+  group_permissions_merge.service:
+    class: Drupal\group_permissions_merge\GroupPermissionsMergeService
+    arguments: ['@group.membership_loader', '@entity_type.manager']

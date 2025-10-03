@@ -1,13 +1,6 @@
 display:
   default:
     display_options:
-      pager:
-        options:
-          tags:
-            previous: '‹ previous'
-            next: 'next ›'
-            first: '« first'
-            last: 'last »'
       fields:
         label:
           label: التسمية
@@ -17,3 +10,10 @@ display:
           label: Tags
         operations:
           label: عمليات
+      pager:
+        options:
+          tags:
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
