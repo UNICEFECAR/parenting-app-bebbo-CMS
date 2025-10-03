@@ -126,7 +126,6 @@
               if (selectedLanguages.indexOf(langcode) === -1) {
                 $formItem.hide();
                 $checkbox.prop('checked', false);
-                // Also hide the description for this language
                 $fieldset.find('[data-drupal-selector*="' + langcode + '-description"]').hide();
               }
             }
@@ -137,14 +136,25 @@
       /**
        * Creates a new language checkbox element.
        */
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
       function createLanguageCheckbox(langcode, $fieldset) {
         var languageName = getLanguageName(langcode) || langcode;
+        var escLangcode = escapeHtml(langcode);
+        var escLanguageName = escapeHtml(languageName);
 
-        var checkboxHtml = '<div class="form-item form-type-checkbox form-item-language-visibility-' + langcode + '">' +
-          '<input type="checkbox" id="edit-language-visibility-' + langcode + '" ' +
-          'name="language_visibility[' + langcode + ']" value="1" class="form-checkbox">' +
-          '<label class="option" for="edit-language-visibility-' + langcode + '">' +
-          languageName + ' (' + langcode + ')' +
+        var checkboxHtml = '<div class="form-item form-type-checkbox form-item-language-visibility-' + escLangcode + '">' +
+          '<input type="checkbox" id="edit-language-visibility-' + escLangcode + '" ' +
+          'name="language_visibility[' + escLangcode + ']" value="1" class="form-checkbox">' +
+          '<label class="option" for="edit-language-visibility-' + escLangcode + '">' +
+          escLanguageName + ' (' + escLangcode + ')' +
           '</label>' +
           '</div>';
 

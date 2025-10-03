@@ -1,6 +1,5 @@
-diff --git a/mobile_app_links/mobile_app_links.routing.yml b/mobile_app_links/mobile_app_links.routing.yml
---- a/mobile_app_links/mobile_app_links.routing.yml
-+++ b/mobile_app_links/mobile_app_links.routing.yml
+--- mobile_app_links.routing.yml.orig	2025-10-06 13:19:09.642997814 +0530
++++ mobile_app_links.routing.yml	2025-10-06 13:19:32.537084939 +0530
 @@ -48,6 +48,16 @@
      # Android app asset links should be accessible by everyone.
      _access: 'TRUE'
@@ -18,21 +17,18 @@ diff --git a/mobile_app_links/mobile_app_links.routing.yml b/mobile_app_links/mo
  mobile_app_links.well_known_apple_dev_id_link:
    path: '/.well-known/apple-developer-domain-association.txt'
    defaults:
-@@ -73,6 +83,17 @@
-   defaults:
-     _controller: '\Drupal\mobile_app_links\Controller\WellKnownController::appleAppSiteAssociation'
-     _title: ''
-+    _disable_route_normalizer: 'TRUE'
-+  requirements:
-+    # iOS app site association should be accessible by everyone.
-+    _access: 'TRUE'
-+
+@@ -73,6 +83,16 @@
+   requirements:
+     # iOS app site association should be accessible by everyone.
+     _access: 'TRUE'
 +
 +mobile_app_links.root_apple_app_site_association:
 +  path: '/apple-app-site-association'
 +  defaults:
 +    _controller: '\Drupal\mobile_app_links\Controller\WellKnownController::appleAppSiteAssociation'
 +    _title: ''
-     _disable_route_normalizer: 'TRUE'
-   requirements:
-     # iOS app site association should be accessible by everyone.
++    _disable_route_normalizer: 'TRUE'
++  requirements:
++    # iOS app site association should be accessible by everyone.
++    _access: 'TRUE'
+ 

@@ -1,0 +1,13 @@
+diff --git a/src/Form/GoogleAnalyticsAdminSettingsForm.php b/src/Form/GoogleAnalyticsAdminSettingsForm.php
+index 1234567..abcdefg 100644
+--- a/src/Form/GoogleAnalyticsAdminSettingsForm.php
++++ b/src/Form/GoogleAnalyticsAdminSettingsForm.php
+@@ -866,7 +866,7 @@ class GoogleAnalyticsAdminSettingsForm extends ConfigFormBase {
+     $value_tokens = is_string($value) ? \Drupal::token()->scan($value) : $value;
+ 
+     foreach ($value_tokens as $tokens) {
+-      if (array_filter($tokens, 'static::containsForbiddenToken')) {
++      if (array_filter($tokens, [static::class, 'containsForbiddenToken'])) {
+         $invalid_tokens = array_merge($invalid_tokens, array_values($tokens));
+       }
+     }
