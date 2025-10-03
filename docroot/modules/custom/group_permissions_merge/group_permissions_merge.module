@@ -1,0 +1,163 @@
+<?php
+
+/**
+ * @file
+ * Group Permissions Merge module.
+ */
+
+use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\group\Entity\GroupInterface;
+use Drupal\group\Entity\GroupContentInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\group_permissions_merge\GroupPermissionsMergeService;
+
+/**
+ * Implements hook_group_permission_alter().
+ */
+function group_permissions_merge_group_permission_alter(array &$permissions, GroupInterface $group, AccountInterface $account) {
+  // Only process for users with editor, senior editor, or SME roles.
+  $user_roles = $account->getRoles();
+  $target_roles = GroupPermissionsMergeService::getTargetRoles();
+
+  if (!array_intersect($user_roles, $target_roles)) {
+    return;
+  }
+
+  // Get all groups the user belongs to.
+  $group_membership_loader = \Drupal::service('group.membership_loader');
+  $memberships = $group_membership_loader->loadByUser($account);
+
+  $merged_permissions = [];
+
+  foreach ($memberships as $membership) {
+    $group_roles = $membership->getRoles();
+
+    // Flatten permissions from all roles.
+    $role_permissions = array_reduce($group_roles, function ($carry, $role) {
+      return array_merge($carry, $role->getPermissions());
+    }, []);
+
+    $merged_permissions = array_merge($merged_permissions, $role_permissions);
+  }
+
+  // Merge with existing permissions and remove duplicates.
+  $permissions = array_unique(array_merge($permissions, $merged_permissions));
+}
+
+/**
+ * Implements hook_entity_access().
+ */
+function group_permissions_merge_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  try {
+    // Only handle node entities for multi-country access.
+    if ($entity->getEntityTypeId() !== 'node') {
+      return AccessResult::neutral();
+    }
+
+    return \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $entity, $operation)
+      ? AccessResult::allowed()->addCacheContexts(['user.group_permissions'])
+      : AccessResult::neutral();
+  }
+  catch (\Exception $e) {
+    return AccessResult::neutral();
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function group_permissions_merge_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  try {
+    // Early return for unsupported operations.
+    if (!in_array($op, ['view', 'update'])) {
+      return AccessResult::neutral();
+    }
+
+    return \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $node, $op)
+      ? AccessResult::allowed()->addCacheContexts(['user.group_permissions'])
+      : AccessResult::neutral();
+  }
+  catch (\Exception $e) {
+    return AccessResult::neutral();
+  }
+}
+
+/**
+ * Implements hook_group_content_update().
+ */
+function group_permissions_merge_group_content_update(GroupContentInterface $group_content) {
+  // Sync user allowed_languages when group membership changes.
+  if ($group_content->getContentPlugin()->getPluginId() === 'group_membership') {
+    _group_permissions_merge_sync_user_languages($group_content->getEntity());
+  }
+}
+
+/**
+ * Implements hook_group_content_delete().
+ */
+function group_permissions_merge_group_content_delete(GroupContentInterface $group_content) {
+  // Sync user allowed_languages when group membership is removed.
+  if ($group_content->getContentPlugin()->getPluginId() === 'group_membership') {
+    _group_permissions_merge_sync_user_languages($group_content->getEntity());
+  }
+}
+
+/**
+ * Helper function to sync user's allowed_languages field with group.
+ */
+function _group_permissions_merge_sync_user_languages(AccountInterface $user) {
+  try {
+    // Only sync for users with editor, senior editor, or SME roles.
+    $user_roles = $user->getRoles();
+    $target_roles = GroupPermissionsMergeService::getTargetRoles();
+
+    if (!array_intersect($user_roles, $target_roles)) {
+      return;
+    }
+
+    if (!$user->hasField('allowed_languages')) {
+      return;
+    }
+
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $memberships = $membership_loader->loadByUser($user);
+
+    if (empty($memberships)) {
+      return;
+    }
+
+    $group_languages = [];
+    foreach ($memberships as $membership) {
+      $group = $membership->getGroup();
+      if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+        $languages = $group->get('field_language')->getValue();
+        // Extract language values and filter.
+        $lang_values = array_filter(array_column($languages, 'value'));
+        $group_languages = array_unique(array_merge($group_languages, $lang_values));
+      }
+    }
+
+    // Get current user languages.
+    $current_langs = $user->get('allowed_languages')->getValue();
+    $current_langcodes = array_column($current_langs, 'target_id');
+
+    // Check if sync is needed.
+    $missing_languages = array_diff($group_languages, $current_langcodes);
+
+    if (!empty($missing_languages)) {
+      // Combine existing and missing languages.
+      $all_langcodes = array_unique(array_filter(array_merge($current_langcodes, $missing_languages)));
+
+      $unique_languages = array_map(function ($langcode) {
+        return ['target_id' => $langcode];
+      }, $all_langcodes);
+
+      $user->set('allowed_languages', $unique_languages);
+      $user->save();
+    }
+  }
+  catch (\Exception $e) {
+  }
+}

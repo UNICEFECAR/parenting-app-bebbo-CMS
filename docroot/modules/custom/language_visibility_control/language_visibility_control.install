@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for Language Visibility Control.
+ */
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_install().
+ */
+function language_visibility_control_install() {
+  // Create the field storage for language visibility in mobile app.
+  if (!FieldStorageConfig::loadByName('group', 'field_language_visibility_in_app')) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_language_visibility_in_app',
+      'entity_type' => 'group',
+      'type' => 'string',
+      'cardinality' => -1,
+      'settings' => [
+        'max_length' => 32,
+      ],
+    ])->save();
+  }
+
+  // Attach the field to the country group bundle if not already attached.
+  if (!FieldConfig::loadByName('group', 'country', 'field_language_visibility_in_app')) {
+    FieldConfig::create([
+      'field_name' => 'field_language_visibility_in_app',
+      'entity_type' => 'group',
+      'bundle' => 'country',
+      'label' => 'Language Visibility in Mobile App',
+      'description' => 'Languages visible in the mobile app for this country.',
+      'required' => FALSE,
+      'settings' => [],
+    ])->save();
+  }
+}

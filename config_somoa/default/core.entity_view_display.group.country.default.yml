@@ -11,6 +11,7 @@ dependencies:
     - field.field.group.country.field_country_sponsor_logo
     - field.field.group.country.field_language
     - field.field.group.country.field_language_name_in_local
+    - field.field.group.country.field_language_visibility_in_app
     - field.field.group.country.field_make_available_for_mobile
     - field.field.group.country.field_master_language
     - field.field.group.country.field_unicef_logo
@@ -100,7 +101,7 @@ content:
     type: languagefield_default
     label: above
     settings:
-      link_to_entity: false
+      link_to_entity: 0
       format:
         name: name
     third_party_settings: {  }
@@ -126,5 +127,6 @@ content:
 hidden:
   changed: true
   created: true
+  field_language_visibility_in_app: true
   langcode: true
   uid: true

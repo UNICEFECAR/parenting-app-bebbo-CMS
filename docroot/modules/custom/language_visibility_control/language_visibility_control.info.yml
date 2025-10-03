@@ -1,0 +1,8 @@
+name: Language Visibility Control
+type: module
+description: 'Controls when languages appear in the mobile app API without preventing editors from working on them'
+core_version_requirement: ^10 || ^11
+package: Custom
+dependencies:
+  - group:group
+  - drupal:language

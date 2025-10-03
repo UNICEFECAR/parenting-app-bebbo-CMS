@@ -7,4 +7,7 @@ ignored_config_entities:
   - mobile_app_links.ios
   - pb_custom_form.mobile_app_share_link_form
   - smtp.settings
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
   - tmgmt.translator.memsource
