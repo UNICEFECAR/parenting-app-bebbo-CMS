@@ -1,0 +1,5 @@
+pb_custom_redirects.add:
+  route_name: 'pb_custom_redirects.add'
+  title: 'Add redirect'
+  appears_on:
+    - pb_custom_redirects.list
