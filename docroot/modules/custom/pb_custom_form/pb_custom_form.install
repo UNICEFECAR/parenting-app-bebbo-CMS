@@ -2,40 +2,51 @@
 
 /**
  * @file
- * Force update check api schema.
+ * Install, schema, and update hooks for pb_custom_form module.
  */
 
-use Drupal\Core\Database\Database;
+use Drupal\Core\Database\Connection;
 
 /**
  * Implements hook_schema().
  */
-function pb_custom_form_schema() {
+function pb_custom_form_schema(): array {
   $schema['forcefull_check_update_api'] = [
-    'description' => 'Stores value in custom table',
+    'description' => 'Stores values for forceful API update checks.',
     'fields' => [
       'id' => [
         'type' => 'serial',
         'not null' => TRUE,
-        'description' => 'Primary Key: Unique id for forcefull_check_update_api',
+        'description' => 'Primary key: Unique ID for forcefull_check_update_api.',
       ],
-      'flag' => [
-        'type' => 'int',
+      // Fields added and retained after updates.
+      'uuid' => [
+        'type' => 'varchar',
+        'length' => 255,
         'not null' => TRUE,
-        'default' => 0,
-        'description' => 'Store flag of force update',
+        'default' => '',
+        'description' => 'User UUID who triggered the update.',
       ],
-      'country_id' => [
-        'type' => 'int',
+      'created_at' => [
+        'type' => 'varchar',
+        'length' => 255,
         'not null' => TRUE,
-        'default' => 0,
-        'description' => 'Store country id',
+        'default' => '',
+        'description' => 'Record creation timestamp.',
       ],
-      'updated_at' => [
-        'type' => 'int',
+      'countries_id' => [
+        'type' => 'varchar',
+        'length' => 255,
         'not null' => TRUE,
-        'default' => 0,
-        'description' => 'Store current date and time',
+        'default' => '',
+        'description' => 'Associated country ID.',
+      ],
+      'flag_status' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Status flag of the force update.',
       ],
     ],
     'primary key' => ['id'],
@@ -45,83 +56,87 @@ function pb_custom_form_schema() {
 }
 
 /**
- * Updates from 70010.
+ * Helper to get database connection.
  */
-function pb_custom_form_update_70010() {
+function _pb_custom_form_db(): Connection {
+  return \Drupal::service('database');
+}
+
+/**
+ * Update #70010: Add uuid column.
+ */
+function pb_custom_form_update_70010(): void {
   $spec = [
     'type' => 'varchar',
     'length' => 255,
     'default' => '',
-    'description' => 'Store current user uuid',
+    'description' => 'User UUID who triggered the update.',
   ];
-  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'uuid', $spec);
+  _pb_custom_form_db()->schema()->addField('forcefull_check_update_api', 'uuid', $spec);
 }
 
 /**
- * Updates from 70011.
+ * Update #70011: Add created_at column.
  */
-function pb_custom_form_update_70011() {
+function pb_custom_form_update_70011(): void {
   $spec = [
     'type' => 'varchar',
     'length' => 255,
     'default' => '',
-    'description' => 'Store created at',
+    'description' => 'Record creation timestamp.',
   ];
-  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'created_at', $spec);
+  _pb_custom_form_db()->schema()->addField('forcefull_check_update_api', 'created_at', $spec);
 }
 
 /**
- * Updates from 70012.
+ * Update #70012: Add countries_id column.
  */
-function pb_custom_form_update_70012() {
+function pb_custom_form_update_70012(): void {
   $spec = [
     'type' => 'varchar',
     'length' => 255,
     'default' => '',
-    'description' => 'Store country id',
+    'description' => 'Associated country ID.',
   ];
-  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'countries_id', $spec);
+  _pb_custom_form_db()->schema()->addField('forcefull_check_update_api', 'countries_id', $spec);
 }
 
 /**
- * Updates from 70013.
+ * Update #70013: Add flag_status column.
  */
-function pb_custom_form_update_70013() {
+function pb_custom_form_update_70013(): void {
   $spec = [
     'type' => 'varchar',
     'length' => 255,
     'default' => '',
-    'description' => 'Store flag status',
+    'description' => 'Status flag of the force update.',
   ];
-  \Drupal::database()->schema()->addField('forcefull_check_update_api', 'flag_status', $spec);
+  _pb_custom_form_db()->schema()->addField('forcefull_check_update_api', 'flag_status', $spec);
 }
 
 /**
- * Updates from 70014.
+ * Update #70014: Drop obsolete flag column.
  */
-function pb_custom_form_update_70014() {
-  return Database::getConnection()
-    ->schema()
-    ->dropField('forcefull_check_update_api', 'flag');
-
+function pb_custom_form_update_70014(): void {
+  if (_pb_custom_form_db()->schema()->fieldExists('forcefull_check_update_api', 'flag')) {
+    _pb_custom_form_db()->schema()->dropField('forcefull_check_update_api', 'flag');
+  }
 }
 
 /**
- * Updates from 70015.
+ * Update #70015: Drop obsolete country_id column.
  */
-function pb_custom_form_update_70015() {
-  return Database::getConnection()
-    ->schema()
-    ->dropField('forcefull_check_update_api', 'country_id');
-
+function pb_custom_form_update_70015(): void {
+  if (_pb_custom_form_db()->schema()->fieldExists('forcefull_check_update_api', 'country_id')) {
+    _pb_custom_form_db()->schema()->dropField('forcefull_check_update_api', 'country_id');
+  }
 }
 
 /**
- * Updates from 70016.
+ * Update #70016: Drop obsolete updated_at column.
  */
-function pb_custom_form_update_70016() {
-  return Database::getConnection()
-    ->schema()
-    ->dropField('forcefull_check_update_api', 'updated_at');
-
+function pb_custom_form_update_70016(): void {
+  if (_pb_custom_form_db()->schema()->fieldExists('forcefull_check_update_api', 'updated_at')) {
+    _pb_custom_form_db()->schema()->dropField('forcefull_check_update_api', 'updated_at');
+  }
 }
