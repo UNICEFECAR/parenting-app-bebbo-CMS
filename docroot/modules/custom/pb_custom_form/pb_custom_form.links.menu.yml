@@ -27,3 +27,9 @@ pb_custom_form.apply_trans_related_articles_video:
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Apply related articles and video articles in English content to all translations'
   weight: 104
+pb_custom_form.redirect_management:
+  title: 'Redirect Management'
+  route_name: pb_custom_form.redirect_management
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Manage language redirects and landing pages'
+  weight: 105

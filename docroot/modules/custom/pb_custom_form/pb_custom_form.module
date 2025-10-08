@@ -216,7 +216,7 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     // Attach the AJAX behavior to the 'field_subject_area'.
     if (isset($form['field_type_of_article'])) {
       $form['field_type_of_article']['widget']['#ajax'] = [
-        'callback' => 'custom_article_filter_categories',
+        'callback' => 'pb_custom_form_custom_article_filter_categories',
         'wrapper' => 'category-wrapper',
         'event' => 'change',
       ];

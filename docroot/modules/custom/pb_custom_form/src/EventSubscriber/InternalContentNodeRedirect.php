@@ -2,8 +2,10 @@
 
 namespace Drupal\pb_custom_form\EventSubscriber;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManager;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\path_alias\AliasManagerInterface;
@@ -72,6 +74,20 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
   protected $pageCacheKillSwitch;
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The logger factory.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $loggerFactory;
+
+  /**
    * Construct method.
    *
    * @inheritDoc
@@ -84,6 +100,8 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     CurrentPathStack $path_current,
     AliasManagerInterface $path_alias_manager,
     KillSwitch $page_cache_kill_switch,
+    ConfigFactoryInterface $config_factory,
+    LoggerChannelFactoryInterface $logger_factory,
   ) {
     $this->routeMatch = $route_match;
     $this->languageManager = $language_manager;
@@ -92,6 +110,8 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     $this->pathCurrent = $path_current;
     $this->pathAliasManager = $path_alias_manager;
     $this->pageCacheKillSwitch = $page_cache_kill_switch;
+    $this->configFactory = $config_factory;
+    $this->loggerFactory = $logger_factory;
   }
 
   /**
@@ -105,7 +125,9 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
       $container->get('entity_type.manager'),
       $container->get('path.current'),
       $container->get('path_alias.manager'),
-      $container->get('page_cache_kill_switch')
+      $container->get('page_cache_kill_switch'),
+      $container->get('config.factory'),
+      $container->get('logger.factory')
     );
   }
 
@@ -125,52 +147,25 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     global $base_url;
     $current_path = $this->pathCurrent->getPath();
     $internal = $this->pathAliasManager->getAliasByPath($current_path);
-    $landingPages = ['/homepage',
-      '/about-us',
-      '/terms-and-conditions',
-      '/privacy-policy',
-      '/foleja',
-      '/foleja-about-us',
-      '/foleja-privacy-policy',
-    ];
+
+    // Get landing pages from configuration.
+    $landing_pages_config = $this->configFactory->get('pb_custom_form.landing_pages');
+    $landing_pages = $this->parseLandingPages($landing_pages_config->get('landing_pages'));
+
     if (!$this->isNodeRoute()) {
       return;
     }
 
-    if (in_array($internal, $landingPages)) {
+    if (in_array($internal, $landing_pages)) {
       return;
     }
     if (!$this->currentUser->isAnonymous()) {
       return;
     }
 
-    $redirect_urls = [
-      'ru'     => 'https://www.unicef.org/eca/ru/bebbo-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%BB%D1%8F-%D1%80%D0%BE%D0%B4%D0%B8%D1%82%D0%B5%D0%BB%D0%B5%D0%B9',
-      'sq'     => 'https://www.unicef.org/albania/sq/bebbo-app-partneri-juaj-n%C3%AB-prind%C3%ABrim',
-      'al-sq'  => 'https://www.unicef.org/albania/sq/bebbo-app-partneri-juaj-n%C3%AB-prind%C3%ABrim',
-      'by-be'  => 'https://www.unicef.by/bebbo-belarus/',
-      'by-ru'  => 'https://www.unicef.by/bebbo-belarus/',
-      'bg-bg'  => 'https://www.unicef.org/bulgaria/%D0%BD%D0%BE%D0%B2%D0%BE%D1%82%D0%BE-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B5%D0%B1%D0%B1%D0%BE',
-      'gr-el'  => 'https://www.unicef.org/greece/%CE%B3%CE%BD%CF%89%CF%81%CE%AF%CF%83%CF%84%CE%B5-%CF%84%CE%BF-%CE%B2ebbo',
-      'xk-sq'  => 'https://www.bebbo.app/xk-sq/foleja',
-      'xk-rs'  => 'https://www.bebbo.app/xk-rs/foleja',
-      'kg-ky'  => 'https://www.unicef.org/kyrgyzstan/ky/%D0%B6%D0%B0%D2%A3%D1%8B-%D0%B1%D0%B5%D0%B1%D0%B1%D0%BE-%D1%82%D0%B8%D1%80%D0%BA%D0%B5%D0%BC%D0%B5%D1%81%D0%B8',
-      'kg-ru'  => 'https://www.unicef.org/kyrgyzstan/ru/%D0%BD%D0%BE%D0%B2%D0%BE%D0%B5-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B1%D0%B5%D0%B1%D0%B1%D0%BE',
-      'me-cnr' => 'https://www.unicef.org/montenegro/price/bebbo-aplikacija-pouzdane-informacije-za-roditelje',
-      'mk-mk'  => 'https://www.unicef.org/northmacedonia/mk/soop%C5%A1teni%D1%98a/unicef-%D1%98a-pretstavi-aplikaci%D1%98ata-bebbo-za-poddr%C5%A1ka-na-roditelite-i-staratelite-na-deca',
-      'mk-sq'  => 'https://www.unicef.org/northmacedonia/sq/deklarata-shtypi/unicef-e-shpalosi-aplikacionin-p%C3%ABr-prind%C3%ABrim-bebbo-p%C3%ABr-mb%C3%ABshtetje-t%C3%AB-prind%C3%ABrve-dhe',
-      'md-ro'  => 'https://www.bebbo.app/ro-ro/homepage',
-      'ro'     => 'https://www.bebbo.app/ro-ro/homepage',
-      'ro-ro'  => 'https://www.bebbo.app/ro-ro/homepage',
-      'sr'     => 'https://www.unicef.org/serbia/bebbo-vas-saputnik-u-roditeljstvu',
-      'rs-en'  => 'https://www.unicef.org/serbia/en/bebbo-app-your-partner-in-parenthood',
-      'rs-sr'  => 'https://www.unicef.org/serbia/bebbo-vas-saputnik-u-roditeljstvu',
-      'tj-ru'  => 'https://bebbo.tj/tj/%d0%b0%d1%81%d0%be%d1%81%d3%a3/',
-      'tj-tg'  => 'https://bebbo.tj/',
-      'uk'     => 'https://www.unicef.org/ukraine/press-releases/unicef-launches-bebbo-mobile-app-help-parents-care-children-during-war',
-      'uz-ru'  => 'https://www.unicef.org/uzbekistan/new-parenting-app-launched',
-      'uz-uz'  => 'https://www.unicef.org/uzbekistan/uz/new-parenting-app-launched',
-    ];
+    // Get redirect URLs from configuration.
+    $redirect_config = $this->configFactory->get('pb_custom_form.language_redirects');
+    $redirect_urls = $this->parseRedirectUrls($redirect_config->get('redirect_urls'));
 
     if (is_numeric($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
@@ -205,6 +200,52 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    */
   protected function isNodeRoute() {
     return strpos($this->routeMatch->getRouteName(), 'entity.node.canonical') === 0;
+  }
+
+  /**
+   * Parse landing pages from configuration text.
+   *
+   * @param string|null $landing_pages_text
+   *   The landing pages configuration text.
+   *
+   * @return array
+   *   An array of landing page paths.
+   */
+  protected function parseLandingPages($landing_pages_text) {
+    if (empty($landing_pages_text)) {
+      return [];
+    }
+    return array_filter(array_map('trim', explode("\n", $landing_pages_text)));
+  }
+
+  /**
+   * Parse redirect URLs from configuration text.
+   *
+   * @param string|null $redirect_urls_text
+   *   The redirect URLs configuration text.
+   *
+   * @return array
+   *   An array of language code => redirect URL mappings.
+   */
+  protected function parseRedirectUrls($redirect_urls_text) {
+    $redirect_urls = [];
+
+    if (empty($redirect_urls_text)) {
+      return $redirect_urls;
+    }
+
+    $lines = array_filter(array_map('trim', explode("\n", $redirect_urls_text)));
+
+    foreach ($lines as $line) {
+      if (strpos($line, '|') !== FALSE) {
+        [$language_code, $redirect_url] = array_map('trim', explode('|', $line, 2));
+        if (!empty($language_code) && !empty($redirect_url)) {
+          $redirect_urls[$language_code] = $redirect_url;
+        }
+      }
+    }
+
+    return $redirect_urls;
   }
 
 }

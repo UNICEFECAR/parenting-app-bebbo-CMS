@@ -668,6 +668,19 @@ menus:
     options: {  }
   -
     menu_name: editorial-menu
+    title: 'Redirect Management'
+    parent: null
+    uri: 'internal:/admin/config/parent-buddy/redirect-management'
+    link_title: ''
+    description: 'Manage language redirects and landing pages'
+    enabled: true
+    expanded: false
+    weight: -43
+    langcode: en
+    uuid: 9f8e2c4a-1b5d-4e8f-a9c3-7d6e5f4a8b2c
+    options: {  }
+  -
+    menu_name: editorial-menu
     title: Dashboard
     parent: null
     uri: 'internal:/profile'
