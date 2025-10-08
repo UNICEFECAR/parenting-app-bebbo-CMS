@@ -1,0 +1,15 @@
+pb_custom_form.language_redirects:
+  type: config_object
+  label: 'Language Redirect URLs'
+  mapping:
+    redirect_urls:
+      type: text
+      label: 'Language redirect URLs configuration'
+
+pb_custom_form.landing_pages:
+  type: config_object
+  label: 'Landing Pages Configuration'
+  mapping:
+    landing_pages:
+      type: text
+      label: 'Landing pages that bypass redirects'

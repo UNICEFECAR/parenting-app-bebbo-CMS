@@ -87,3 +87,13 @@ pb_custom_form.apply_trans_related_articles_video:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
+
+pb_custom_form.redirect_management:
+  path: '/admin/config/parent-buddy/redirect-management'
+  defaults:
+    _form: 'Drupal\pb_custom_form\Form\RedirectManagementForm'
+    _title: 'Redirect Management'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
