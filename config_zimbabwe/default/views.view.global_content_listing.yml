@@ -2236,7 +2236,7 @@ display:
       displays:
         page_4: page_4
         default: '0'
-      filename: ''
+      filename: 'global_content_listing-[date:custom:Y-m-d_H-i].csv'
       automatic_download: true
       export_method: batch
       export_batch_size: 100
