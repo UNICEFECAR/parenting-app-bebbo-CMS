@@ -341,13 +341,13 @@ display:
       pager:
         type: full
         options:
+          pagination_heading_level: h4
           items_per_page: 50
           tags:
             next: 'Next ›'
             previous: '‹ Previous'
             first: '« First'
             last: 'Last »'
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -2991,8 +2991,10 @@ display:
       displays:
         page_5: page_5
         default: '0'
-      filename: ''
+      filename: 'country_reports-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
+      export_method: batch
+      export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
       redirect_to_display: none

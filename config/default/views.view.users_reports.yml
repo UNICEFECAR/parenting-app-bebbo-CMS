@@ -1315,8 +1315,8 @@ display:
             link_to_entity: 0
             format:
               name: name
-              iso: 0
-              name_native: 0
+              iso: '0'
+              name_native: '0'
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1979,6 +1979,9 @@ display:
       displays:
         page_2: page_2
         default: '0'
+      filename: 'users_reports-[date:custom:Y-m-d_H-i].csv'
+      export_method: batch
+      export_batch_size: 100
     cache_metadata:
       max-age: -1
       contexts:
@@ -2414,8 +2417,8 @@ display:
             link_to_entity: 0
             format:
               name: name
-              iso: 0
-              name_native: 0
+              iso: '0'
+              name_native: '0'
           group_column: value
           group_columns: {  }
           group_rows: true

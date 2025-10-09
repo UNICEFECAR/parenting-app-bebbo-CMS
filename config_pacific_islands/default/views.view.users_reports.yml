@@ -1979,6 +1979,9 @@ display:
       displays:
         page_2: page_2
         default: '0'
+      filename: 'users_reports-[date:custom:Y-m-d_H-i].csv'
+      export_method: batch
+      export_batch_size: 100
     cache_metadata:
       max-age: -1
       contexts:
