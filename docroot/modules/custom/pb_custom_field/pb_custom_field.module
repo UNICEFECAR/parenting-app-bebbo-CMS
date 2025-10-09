@@ -553,7 +553,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
               // assigned to your country to allow for further editing
               // and contextualization.');
             }
-            $form['#validate'][] = 'user_access_validation_chk';
+            $form['#validate'][] = 'pb_custom_field_user_access_validation_chk';
             $form['actions']['delete']['#access'] = FALSE;
             $form['actions']['delete']['#disabled'] = TRUE;
           }
@@ -589,7 +589,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
             }
           }
           $form['langcode']['widget'][0]['value']['#options'] = $language_options;
-          $form['#validate'][] = 'user_access_validation_chk';
+          $form['#validate'][] = 'pb_custom_field_user_access_validation_chk';
         }
       }
     }
