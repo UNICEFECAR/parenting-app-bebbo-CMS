@@ -800,7 +800,7 @@ display:
         default: '0'
         page_2: '0'
         page_3: '0'
-      filename: keyword-link-to-content.csv
+      filename: 'keyword-link-to-content-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
       export_method: batch
       export_batch_size: 100
@@ -1031,7 +1031,7 @@ display:
         default: '0'
         page_1: '0'
         page_3: '0'
-      filename: keyword-notlink-to-content.csv
+      filename: 'keyword-notlink-to-content-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
       export_method: batch
       export_batch_size: 100
@@ -1377,7 +1377,7 @@ display:
         default: '0'
         page_1: '0'
         page_2: '0'
-      filename: keyword-term-english.csv
+      filename: 'keyword_term_english-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
       export_method: batch
       export_batch_size: 100
@@ -1824,7 +1824,7 @@ display:
         page_2: '0'
         page_3: '0'
         page_4: '0'
-      filename: keyword-link-to-content-group.csv
+      filename: 'keyword-link-to-content-group-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
       export_method: batch
       export_batch_size: 100

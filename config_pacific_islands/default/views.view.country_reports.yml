@@ -3121,7 +3121,7 @@ display:
       displays:
         page_5: page_5
         default: '0'
-      filename: ''
+      filename: 'country_reports-[date:custom:Y-m-d_H-i].csv'
       automatic_download: false
       export_method: batch
       export_batch_size: 100
