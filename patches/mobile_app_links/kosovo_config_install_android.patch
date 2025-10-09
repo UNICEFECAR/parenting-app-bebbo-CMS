@@ -1,9 +1,0 @@
-diff --git a/mobile_app_links/config/install/mobile_app_links.android_packages.yml b/mobile_app_links/config/install/mobile_app_links.android_packages.yml
---- a/mobile_app_links/config/install/mobile_app_links.android_packages.yml	
-+++ b/mobile_app_links/config/install/mobile_app_links.android_packages.yml	
-@@ -2,3 +2,5 @@
-   -
-     package_name: ''
-     sha256_cert_fingerprints: ''
-+    kosovo_package_name: ''
-+    kosovo_sha256_cert_fingerprints: ''
