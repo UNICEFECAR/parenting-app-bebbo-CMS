@@ -179,7 +179,8 @@
                 "Added custom filter in source page like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch"
             },
             "drupal/group": {
-                "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch"
+                "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch",
+                "Fix Entity type doesn't exists": "patches/group/group_fix.patch"
             },
             "drupal/content_moderation": {
                 "Added translated draft status content into node_field table ":"patches/content_moderation/content_moderation_revision.patch"
