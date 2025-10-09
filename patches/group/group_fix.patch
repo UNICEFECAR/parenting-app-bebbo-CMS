@@ -1,0 +1,47 @@
+--- docroot/modules/contrib/group/group.orig.module	2025-10-09 13:09:44.985634638 +0530
++++ docroot/modules/contrib/group/group.module	2025-10-09 13:18:59.773769107 +0530
+@@ -14,12 +14,13 @@
+ use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Field\FieldDefinitionInterface;
+ use Drupal\Core\Field\FieldItemListInterface;
++use Drupal\group\Query\EntityQueryAlter;
++use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Render\Element;
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\group\Entity\GroupContent;
+-use Drupal\group\QueryAccess\EntityQueryAlter;
+ use Drupal\user\RoleInterface;
+ use Drupal\views\Plugin\views\query\QueryPluginBase;
+ use Drupal\views\Plugin\views\query\Sql;
+@@ -241,15 +242,22 @@
+  * Implements hook_query_TAG_alter().
+  */
+ function group_query_entity_query_alter(SelectInterface $query) {
++  // Get the entity type ID from the query metadata.
+   $entity_type_id = $query->getMetaData('entity_type');
+-  if ($query->hasTag($entity_type_id . '_access')) {
+-    $entity_type_manager = \Drupal::entityTypeManager();
+-    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+-
+-    \Drupal::service('class_resolver')
+-      ->getInstanceFromDefinition(EntityQueryAlter::class)
+-      ->alter($query, $entity_type);
++
++  // Skip if entity type is empty.
++  if (empty($entity_type_id)) {
++    return;
++  }
++
++  // Skip if the entity type doesn't exist.
++  try {
++    \Drupal::entityTypeManager()->getDefinition($entity_type_id);
+   }
++  catch (PluginNotFoundException $e) {
++    return;
++  }
++
+ }
+ 
+ /**
