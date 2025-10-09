@@ -1,10 +1,11 @@
 android_packages:
-  org-unicef-ecar-merhababebek_0:
-    package_name: org.unicef.ecar.merhababebek
+  org-unicef-ecar-bebbo_0:
+    package_name: org.unicef.ecar.bebbo
     sha256_cert_fingerprints: |-
-      D9:F6:B3:39:B7:04:3C:47:E4:44:A4:D6:51:F7:75:45:C6:E3:4D:85:40:64:1E:75:37:DB:88:08:DD:BD:84:F8
-      0E:65:84:79:11:30:4B:B7:3F:58:8E:A7:49:09:81:C5:6C:4F:94:27:AA:93:2B:7B:51:7E:21:17:B1:3A:DC:62
-kosovo_package_name: org.unicef.ecar.merhababebak
-kosovo_sha256_cert_fingerprints: |-
-  D9:F6:B3:39:B7:04:3C:47:E4:44:A4:D6:51:F7:75:45:C6:E3:4D:85:40:64:1E:75:37:DB:88:08:DD:BD:84:F8
-  0E:65:84:79:11:30:4B:B7:3F:58:8E:A7:49:09:81:C5:6C:4F:94:27:AA:93:2B:7B:51:7E:21:17:B1:3A:DC:62
+      E9:86:8E:0C:2B:18:8B:BC:0A:0F:48:FD:B9:80:C6:C7:CA:39:46:48:7A:02:72:08:01:0F:75:7D:77:91:31:8A
+      D0:70:8D:36:BC:3F:39:65:83:07:0E:6C:3E:49:8D:3B:50:A3:8A:40:3A:8C:49:F9:87:83:85:D7:3E:ED:30:F4
+  org-unicef-kosovo-foleja_1:
+    package_name: org.unicef.kosovo.foleja
+    sha256_cert_fingerprints: |-
+      81:12:50:B8:09:73:89:C1:68:72:44:F8:ED:63:03:23:52:BD:CF:C6:A0:04:71:26:45:DB:36:32:CA:04:8B:08
+      BC:7F:EB:C8:1A:90:38:E3:1C:6A:06:7B:CF:74:69:EA:CB:4F:8B:F0:EF:CF:37:DB:CC:18:DC:F6:38:24:6B:85
