@@ -63,7 +63,7 @@ pb_custom_form.kosovo_pb_mobile:
 pb_custom_form.content:
   path: '/forcefull-check'
   defaults:
-    _controller: '\Drupal\pb_custom_form\Controller\ForceCountrySaveController::content' 
+    _controller: '\Drupal\pb_custom_form\Controller\ForceCountrySaveController::content'
     _title: 'Forcefull check form save method'
   requirements:
     _permission: 'access content'
@@ -97,3 +97,11 @@ pb_custom_form.redirect_management:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
+
+pb_custom_form.csv_export:
+  path: '/admin/content/entity_share/pull/export/csv'
+  defaults:
+    _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::download'
+    _title: 'Entity Share Pull CSV Export'
+  requirements:
+    _permission: 'administer entity share client'
