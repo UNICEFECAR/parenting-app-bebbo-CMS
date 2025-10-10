@@ -62,6 +62,7 @@ function group_country_field_views_query_alter(ViewExecutable $view, QueryPlugin
     }
     if (!empty($groups)) {
       $title = $groups[0]->label();
+      // @phpstan-ignore-next-line
       foreach ($query->where as &$condition_group) {
         foreach ($condition_group['conditions'] as &$condition) {
           if ($condition['field'] == "groups_field_data_group_content_field_data.label") {

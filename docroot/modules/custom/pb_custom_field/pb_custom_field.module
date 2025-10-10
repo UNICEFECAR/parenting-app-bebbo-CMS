@@ -521,6 +521,7 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
         $chk_type = '';
         if (($form_object instanceof EntityFormInterface)) {
           $node = $form_object->getEntity();
+          /** @var \Drupal\node\NodeInterface $node */
           $ntype = $node->getType();
           $ntype = str_replace("_", "-", $ntype);
           $chk_type = "node-" . $ntype . "-edit-form";
@@ -658,6 +659,7 @@ function pb_custom_field_link_alter(&$variables) {
           'menu_name' => 'editorial-menu',
         ]);
       $entity = reset($menu_link_parents);
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
       if ($entity) {
         $entity->set('link', $group_url);
         $entity->save();
@@ -671,6 +673,7 @@ function pb_custom_field_link_alter(&$variables) {
           'menu_name' => 'quick-links',
         ]);
       $entity = reset($menu_link_parents);
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
       if ($entity) {
         $entity->set('link', $group_url);
         $entity->save();
@@ -687,6 +690,7 @@ function pb_custom_field_link_alter(&$variables) {
           'menu_name' => 'quick-links',
         ]);
       $entity = reset($menu_link_members);
+      /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
       if ($entity) {
         $entity->set('link', $add_group_members_url);
         $entity->save();
@@ -935,8 +939,11 @@ function pb_custom_field_redirect_to_add_member_page($form, FormStateInterface $
     $groups[] = $grp->getGroup();
   }
   /* $uids = $form_state->getValue('uid'); */
-  if ($form_state->getFormObject() instanceof EntityFormInterface) {
-    $nid = $form_state->getformObject()->getEntity()->id();
+  $form_object = $form_state->getFormObject();
+  $nid = NULL;
+  if ($form_object instanceof EntityFormInterface) {
+    $entity = $form_object->getEntity();
+    $nid = $entity->id();
   }
 
   $query = \Drupal::database()->select('group_content_field_data');
@@ -1041,6 +1048,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
     $gid = $groups[0]->id();
     if ($view->id() == 'users_list') {
       // Traverse through the 'where' part of the query.
+      // @phpstan-ignore-next-line
       foreach ($query->where as &$condition_group) {
         foreach ($condition_group['conditions'] as &$condition) {
 
@@ -1065,7 +1073,9 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       $orGroup1 = $db_query->condition('nd.field_keywords_target_id', $path_args[3], 'IN');
       $results = $orGroup1->distinct()->execute()->fetchAll();
       // node_field_data.nid.
+      // @phpstan-ignore-next-line
       if ($query->where[0]['conditions'][0]['value']) {
+        // @phpstan-ignore-next-line
         unset($query->where[0]['conditions'][0]);
       }
       $ids = [];
@@ -1074,12 +1084,14 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
           $ids[] = $id->entity_id;
         }
         $query->setGroupOperator('OR');
+        // @phpstan-ignore-next-line
         $query->addWhere(1, 'node_field_data.nid', $ids, 'IN');
       }
     }
   }
   if ($view->id() == 'taxonomy_export' && $view->current_display == 'page_1' || $view->id() == 'taxonomy_export' && $view->current_display == 'data_export_1') {
     // $query->addWhere(1,'taxonomy_term_field_data.vid', 'keywords', '=');
+    // @phpstan-ignore-next-line
     $query->addWhere(2, 'taxonomy_term_field_data.langcode', 'en', '=');
   }
 
@@ -1090,6 +1102,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
       if (!empty($user_lang)) {
         $query->setGroupOperator('AND');
+        // @phpstan-ignore-next-line
         $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
       }
     }
@@ -1102,6 +1115,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
       $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
       if (!empty($user_lang)) {
         $query->setGroupOperator('AND');
+        // @phpstan-ignore-next-line
         $query->addWhere(1, 'tmgmt_job.target_language', $user_lang, 'IN');
       }
     }
@@ -1110,6 +1124,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
   date_default_timezone_set('Asia/Kolkata');
   if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
     if (isset($query->where['2'])) {
+      // @phpstan-ignore-next-line
       foreach ($query->where['2'] as &$condition_group) {
         if (is_array($condition_group)) {
           foreach ($condition_group as &$condition) {
@@ -1151,15 +1166,19 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
         $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
         if (!empty($user_lang)) {
           $query->setGroupOperator('AND');
+          // @phpstan-ignore-next-line
           $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
         }
       }
-
+      // @phpstan-ignore-next-line
       foreach ($query->orderby as $key => $condition) {
         if ($condition['field'] == 'tmgmt_job_item.item_id') {
+          // @phpstan-ignore-next-line
           $order_val = $query->orderby[$key]['direction'];
           // Delete orderby which exist sort by id.
+          // @phpstan-ignore-next-line
           $query->orderby = [];
+          // @phpstan-ignore-next-line
           $query->orderby[] = [
             'field' => 'tmgmt_job_itemitem_id',
             'direction' => $order_val,
@@ -1169,9 +1188,13 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
     }
 
     if ($view->id() == 'tmgmt_job_items' && $view->current_display == 'submitted') {
+      // @phpstan-ignore-next-line
       $query->distinct = TRUE;
+      // @phpstan-ignore-next-line
       $query->addField('', 'tmgmt_job_item.changed', '');
+      // @phpstan-ignore-next-line
       $query->addField('', 'tmgmt_job_item.item_id', '', ['function' => 'groupby']);
+      // @phpstan-ignore-next-line
       $query->addGroupBy('tmgmt_job_item.item_id');
     }
 
@@ -1183,6 +1206,7 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
         $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
         if (!empty($user_lang)) {
           $query->setGroupOperator('AND');
+          // @phpstan-ignore-next-line
           $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
         }
       }
@@ -1657,10 +1681,13 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
     }
 
     foreach ($results as $result) {
-
+      // @phpstan-ignore-next-line
       $forcefull_check_update_api_uuid = $result->forcefull_check_update_api_uuid;
+      // @phpstan-ignore-next-line
       $country_id = $result->forcefull_check_update_api_countries_id;
+      // @phpstan-ignore-next-line
       $flag = $result->forcefull_check_update_api_flag_status;
+      // @phpstan-ignore-next-line
       $created_at = $result->forcefull_check_update_api_created_at;
       // Get user name from uuid.
       $database = \Drupal::database();
@@ -1698,11 +1725,15 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       else {
         $flag_txt = 'Disable';
       }
-
+      // @phpstan-ignore-next-line
       $result->forcefull_check_update_api_countries_id = $country_label;
+      // @phpstan-ignore-next-line
       $result->forcefull_check_update_api_uuid = $user_name;
+      // @phpstan-ignore-next-line
       $result->forcefull_check_update_api_created_at = $dateee;
+      // @phpstan-ignore-next-line
       $result->forcefull_check_update_api_flag_status = $flag_txt;
+      // @phpstan-ignore-next-line
       $result->id = $country_id;
     }
   }
@@ -1716,37 +1747,40 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
  */
 function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
   /* Remove user role */
-  $entity = $form_state->getFormObject()->getEntity()->toArray();
-  $uid = $entity['entity_id'][0]['target_id'];
-  $user_roles = $entity['group_roles'];
-  $user = User::load($uid);
-  if (!empty($user_roles)) {
-    foreach ($user_roles as $user_role) {
-      foreach ($user_role as $value) {
-        if ($value === "country-admin") {
-          $role = "reviewer";
-        }
-        elseif ($value === "country-sme") {
-          $role = "sme";
-        }
-        elseif ($value === "country-editor") {
-          $role = "editor";
-        }
-        elseif ($value === "country-senior_editor") {
-          $role = "se";
-        }
-        if (isset($role)) {
-          $user->removeRole($role);
-          $user->save();
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    $entity = $form_object->getEntity()->toArray();
+    $uid = $entity['entity_id'][0]['target_id'];
+    $user_roles = $entity['group_roles'];
+    $user = User::load($uid);
+    if (!empty($user_roles)) {
+      foreach ($user_roles as $user_role) {
+        foreach ($user_role as $value) {
+          if ($value === "country-admin") {
+            $role = "reviewer";
+          }
+          elseif ($value === "country-sme") {
+            $role = "sme";
+          }
+          elseif ($value === "country-editor") {
+            $role = "editor";
+          }
+          elseif ($value === "country-senior_editor") {
+            $role = "se";
+          }
+          if (isset($role)) {
+            $user->removeRole($role);
+            $user->save();
+          }
         }
       }
     }
-  }
-  else {
-    $user_roles = $user->getRoles();
-    foreach ($user_roles as $user_role) {
-      $user->removeRole($user_role);
-      $user->save();
+    else {
+      $user_roles = $user->getRoles();
+      foreach ($user_roles as $user_role) {
+        $user->removeRole($user_role);
+        $user->save();
+      }
     }
   }
 }

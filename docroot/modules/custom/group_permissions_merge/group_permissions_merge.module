@@ -116,7 +116,7 @@ function _group_permissions_merge_sync_user_languages(AccountInterface $user) {
     if (!array_intersect($user_roles, $target_roles)) {
       return;
     }
-
+    /** @var \Drupal\user\UserInterface $user */
     if (!$user->hasField('allowed_languages')) {
       return;
     }

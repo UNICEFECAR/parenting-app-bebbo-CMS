@@ -5,9 +5,10 @@
  * Language Visibility Control module.
  */
 
+use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\group\Entity\Group;
+use Drupal\Core\Entity\ContentEntityFormInterface;
 
 /**
  * Implements hook_form_alter().
@@ -15,82 +16,87 @@ use Drupal\group\Entity\Group;
 function language_visibility_control_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Alter the country group form to add language visibility controls.
   if ($form_id === 'group_country_edit_form' || $form_id === 'group_country_add_form') {
-    $group = $form_state->getFormObject()->getEntity();
+    $form_object = $form_state->getFormObject();
+    $group = NULL;
+    if ($form_object instanceof ContentEntityFormInterface) {
+      $group = $form_object->getEntity();
+    }
+    if ($group) {
+      // Attach JS behavior and language data.
+      $form['#attached']['library'][] = 'language_visibility_control/admin';
 
-    // Attach JS behavior and language data.
-    $form['#attached']['library'][] = 'language_visibility_control/admin';
+      // Load and prepare language options for JS.
+      $all_languages = \Drupal::languageManager()->getLanguages();
+      $language_options = array_map(function ($language) {
+        return $language->getName();
+      }, $all_languages);
 
-    // Load and prepare language options for JS.
-    $all_languages = \Drupal::languageManager()->getLanguages();
-    $language_options = array_map(function ($language) {
-      return $language->getName();
-    }, $all_languages);
+      $form['#attached']['drupalSettings']['languageVisibilityControl']['availableLanguages'] = $language_options;
 
-    $form['#attached']['drupalSettings']['languageVisibilityControl']['availableLanguages'] = $language_options;
+      // Always add the language visibility fieldset.
+      $form['language_visibility'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Language Visibility in Mobile App'),
+        '#weight' => 50,
+        '#tree' => TRUE,
+        '#prefix' => '<div id="language-visibility-wrapper">',
+        '#suffix' => '</div>',
+        '#attributes' => [
+          'data-drupal-selector' => 'edit-language-visibility',
+        ],
+      ];
 
-    // Always add the language visibility fieldset.
-    $form['language_visibility'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Language Visibility in Mobile App'),
-      '#weight' => 50,
-      '#tree' => TRUE,
-      '#prefix' => '<div id="language-visibility-wrapper">',
-      '#suffix' => '</div>',
-      '#attributes' => [
-        'data-drupal-selector' => 'edit-language-visibility',
-      ],
-    ];
+      // Always add the fieldset description as a separate element.
+      $form['language_visibility']['fieldset_description'] = [
+        '#type' => 'markup',
+        '#markup' => '<div class="language-visibility-description">Control which of the selected languages above should appear in the mobile app API. Languages not checked here can still be edited by users but will not be visible in the mobile app.</div>',
+        '#weight' => -90,
+        '#attributes' => [],
+      ];
 
-    // Always add the fieldset description as a separate element.
-    $form['language_visibility']['fieldset_description'] = [
-      '#type' => 'markup',
-      '#markup' => '<div class="language-visibility-description">Control which of the selected languages above should appear in the mobile app API. Languages not checked here can still be edited by users but will not be visible in the mobile app.</div>',
-      '#weight' => -90,
-      '#attributes' => [],
-    ];
+      // Modify the existing language field to add visibility controls.
+      if (isset($form['field_language'])) {
+        // Add description to the language field.
+        $form['field_language']['widget']['#description'] = t('Select languages for this country. Use the "Language Visibility" section below to control which languages appear in the mobile app.');
 
-    // Modify the existing language field to add visibility controls.
-    if (isset($form['field_language'])) {
-      // Add description to the language field.
-      $form['field_language']['widget']['#description'] = t('Select languages for this country. Use the "Language Visibility" section below to control which languages appear in the mobile app.');
+        // Update the fieldset weight to be relative to the language field.
+        $form['language_visibility']['#weight'] = $form['field_language']['#weight'] + 1;
 
-      // Update the fieldset weight to be relative to the language field.
-      $form['language_visibility']['#weight'] = $form['field_language']['#weight'] + 1;
+        // Get currently selected languages.
+        $current_languages = _language_visibility_control_get_selected_languages($form_state, $group);
 
-      // Get currently selected languages.
-      $current_languages = _language_visibility_control_get_selected_languages($form_state, $group);
+        // Get currently visible languages.
+        $visible_languages = _language_visibility_control_get_visible_languages($form_state, $group);
 
-      // Get currently visible languages.
-      $visible_languages = _language_visibility_control_get_visible_languages($form_state, $group);
+        // Add checkboxes only for currently selected languages.
+        foreach (array_unique($current_languages) as $langcode) {
+          if (isset($all_languages[$langcode])) {
+            $language_name = $all_languages[$langcode]->getName();
+            $form['language_visibility'][$langcode] = [
+              '#type' => 'checkbox',
+              '#title' => t('@language (@code)', [
+                '@language' => $language_name,
+                '@code' => $langcode,
+              ]),
+              '#default_value' => in_array($langcode, $visible_languages),
+            ];
+          }
+        }
 
-      // Add checkboxes only for currently selected languages.
-      foreach (array_unique($current_languages) as $langcode) {
-        if (isset($all_languages[$langcode])) {
-          $language_name = $all_languages[$langcode]->getName();
-          $form['language_visibility'][$langcode] = [
-            '#type' => 'checkbox',
-            '#title' => t('@language (@code)', [
-              '@language' => $language_name,
-              '@code' => $langcode,
-            ]),
-            '#default_value' => in_array($langcode, $visible_languages),
+        // Add help text if no languages are selected.
+        if (empty($current_languages)) {
+          $form['language_visibility']['help'] = [
+            '#type' => 'markup',
+            '#markup' => '<p><em>' . t('Select languages above to configure their visibility in the mobile app.') . '</em></p>',
           ];
         }
+
+        // Add custom validation and submit handlers.
+        $form['#validate'][] = 'language_visibility_control_group_form_validate';
+
+        // Add submit handler BEFORE the main entity save.
+        array_unshift($form['actions']['submit']['#submit'], 'language_visibility_control_group_form_submit');
       }
-
-      // Add help text if no languages are selected.
-      if (empty($current_languages)) {
-        $form['language_visibility']['help'] = [
-          '#type' => 'markup',
-          '#markup' => '<p><em>' . t('Select languages above to configure their visibility in the mobile app.') . '</em></p>',
-        ];
-      }
-
-      // Add custom validation and submit handlers.
-      $form['#validate'][] = 'language_visibility_control_group_form_validate';
-
-      // Add submit handler BEFORE the main entity save.
-      array_unshift($form['actions']['submit']['#submit'], 'language_visibility_control_group_form_submit');
     }
   }
 }
@@ -131,7 +137,15 @@ function language_visibility_control_group_form_submit($form, FormStateInterface
     }
 
     // Get selected languages to validate against.
-    $group = $form_state->getFormObject()->getEntity();
+    $form_object = $form_state->getFormObject();
+    $group = NULL;
+    if ($form_object instanceof ContentEntityFormInterface) {
+      $group = $form_object->getEntity();
+    }
+    if (!$group) {
+      return;
+    }
+    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
     $selected_country_langcodes = _language_visibility_control_get_selected_languages($form_state, $group);
 
     // Filter visible languages to only include selected ones.

@@ -244,6 +244,7 @@
     "require-dev": {
         "drupal/coder": "^8.3",
         "drush/drush": "^12.5.1",
+        "mglaman/drupal-check": "^1.5",
         "mglaman/phpstan-drupal": "^1.1",
         "overtrue/phplint": "^9.0",
         "phpstan/extension-installer": "^1.3",
