@@ -36,7 +36,7 @@
 
           if (selectedLanguages.length === 0) {
             // Hide all checkboxes but keep help messages and descriptions visible
-            $visibilityFieldset.find('.form-item').each(function() {
+            $visibilityFieldset.find('.form-item').each(function () {
               var $item = $(this);
               if (!$item.find('.language-visibility-help').length &&
                   !$item.find('em').length &&
@@ -86,7 +86,7 @@
         $fieldset.find('.language-visibility-checkbox-description').show();
 
         // First, hide all existing checkboxes but keep help messages and descriptions visible
-        $fieldset.find('.form-item').each(function() {
+        $fieldset.find('.form-item').each(function () {
           var $item = $(this);
           if (!$item.find('.language-visibility-help').length &&
               !$item.find('em').length &&
@@ -125,7 +125,7 @@
 
               if (selectedLanguages.indexOf(langcode) === -1) {
                 $formItem.hide();
-                $checkbox.prop('checked', false);
+                $checkbox.prop('checked', FALSE);
                 // Also hide the description for this language
                 $fieldset.find('[data-drupal-selector*="' + langcode + '-description"]').hide();
               }
@@ -151,8 +151,6 @@
         $fieldset.append(checkboxHtml);
       }
 
-
-
       /**
        * Gets language name from Drupal settings.
        */
@@ -163,13 +161,13 @@
       }
 
       // Initial update on page load
-      setTimeout(function() {
+      setTimeout(function () {
         updateVisibilityOptions();
       }, 100);
 
       // Also update when the form is rebuilt (AJAX)
       $(document).on('ajaxComplete', function () {
-        setTimeout(function() {
+        setTimeout(function () {
           updateVisibilityOptions();
         }, 100);
       });

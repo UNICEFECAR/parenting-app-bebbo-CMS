@@ -3,3 +3,5 @@ description: Define's a custom serialization
 package: Custom
 type: module
 core_version_requirement: ^9.2 || ^10 || ^11
+dependencies:
+  - language_visibility_control:language_visibility_control

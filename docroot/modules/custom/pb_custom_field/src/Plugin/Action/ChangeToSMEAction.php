@@ -37,7 +37,7 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
   /**
    * The group membership loader service.
    *
-   * @var \Drupal\group\MembershipLoaderInterface
+   * @var \Drupal\group\GroupMembershipLoaderInterface
    */
   protected $groupMembershipLoader;
 
