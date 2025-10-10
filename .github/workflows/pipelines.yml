@@ -34,8 +34,8 @@ jobs:
       - name: Run PHPCS
         run: ./vendor/bin/phpcs
 
-      - name: Run PHPStan
-        run: ./vendor/bin/phpstan
+      - name: Run Drupal Check
+        run: ./vendor/bin/drupal-check docroot/modules/custom
 
       - name: Run PHPlint
         run: ./vendor/bin/phplint
