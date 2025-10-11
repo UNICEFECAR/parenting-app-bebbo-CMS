@@ -142,7 +142,7 @@ function language_custom_field_preprocess_node(array &$variables) {
  */
 function language_custom_field_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   // Check if the node has a body field and a summary.
-  if ($node->hasField('body') && !$node->body->isEmpty()) {
+  if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
     $body_field = $node->get('body')->getValue();
 
     if (!empty($body_field[0]['summary'])) {

@@ -4,20 +4,22 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Database\Connection;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Path\CurrentPathStack;
-use Symfony\Component\Serializer\SerializerInterface;
 use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
-use Drupal\image\Entity\ImageStyle;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\media\Entity\Media;
+use Drupal\taxonomy\TermInterface;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\rest\Plugin\views\style\Serializer;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\language\Entity\ConfigurableLanguage;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\language_visibility_control\LanguageVisibilityService;
 
 /**
  * The style plugin for serialized output formats.
@@ -35,7 +37,7 @@ class CustomSerializer extends Serializer {
   /**
    * The language visibility control service.
    *
-   * @var \Drupal\language_visibility_control\Service\LanguageVisibilityControlService|null
+   * @var \Drupal\language_visibility_control\LanguageVisibilityService
    */
   protected $languageVisibilityService;
 
@@ -124,7 +126,7 @@ class CustomSerializer extends Serializer {
     Connection $database,
     LanguageManagerInterface $language_manager,
     EntityTypeManagerInterface $entity_type_manager,
-    $language_visibility_service = NULL,
+    LanguageVisibilityService $language_visibility_service,
   ) {
     parent::__construct(
       $configuration,
@@ -158,7 +160,7 @@ class CustomSerializer extends Serializer {
       $container->get('database'),
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
-      $container->has('language_visibility_control.service') ? $container->get('language_visibility_control.service') : NULL
+      $container->get('language_visibility_control.service')
     );
   }
 
@@ -616,7 +618,7 @@ class CustomSerializer extends Serializer {
         $rows['data'] = $data;
         unset($this->view->row_index);
         /* Json output. */
-        if ((empty($this->view->live_preview))) {
+        if ((empty($this->view->live_preview)) && method_exists($this->displayHandler, 'getContentType')) {
           $content_type = $this->displayHandler->getContentType();
         }
         else {
@@ -771,7 +773,8 @@ class CustomSerializer extends Serializer {
             $malt = $result[0]->field_media_image_alt;
           }
           else {
-            $malt = $media_entity->get('field_media_image')->alt;
+            $malt_field = $media_entity->get('field_media_image')->getValue();
+            $malt = $malt_field[0]['alt'] ?? '';
           }
           /**
            * Get the File Details.
@@ -967,6 +970,7 @@ class CustomSerializer extends Serializer {
       for ($tax = 0; $tax < count($tax_result); $tax++) {
         if ($vocabulary_machine_name === "growth_period") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -975,6 +979,7 @@ class CustomSerializer extends Serializer {
         }
         elseif ($vocabulary_machine_name === "child_age") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $age_bracket = $term_obj->get('field_age_bracket')->getValue();
           $ageBracket = [];
           foreach ($age_bracket as $agevalue) {
@@ -999,6 +1004,7 @@ class CustomSerializer extends Serializer {
         }
         elseif ($vocabulary_machine_name === "growth_introductory") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -1009,6 +1015,7 @@ class CustomSerializer extends Serializer {
         }
         elseif ($vocabulary_machine_name === "standard_deviation") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $sd0 = (float) $term_obj->get('field_sd0')->value;
           $sd1 = (float) $term_obj->get('field_sd1')->value;
           $sd2 = (float) $term_obj->get('field_sd2')->value;
@@ -1038,6 +1045,7 @@ class CustomSerializer extends Serializer {
         }
         elseif ($vocabulary_machine_name === "chatbot_subcategory") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
@@ -1047,15 +1055,21 @@ class CustomSerializer extends Serializer {
         }
         elseif ($vocabulary_machine_name === "category") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
+          $field_type_of_article_entity = $term_obj->get('field_type_of_article')->entity ?? NULL;
+          $field_type_of_article = $field_type_of_article_entity instanceof TermInterface
+          ? ($field_type_of_article_entity->get('name')->value ?? '')
+          : '';
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,
             'unique_name' => $term_obj->get('field_unique_name')->value,
-            'field_type_of_article' => $term_obj->get('field_type_of_article')->entity->name->value,
+            'field_type_of_article' => $field_type_of_article,
           ];
         }
         elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
           $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
+          /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
             'id' => (int) $tax_result[$tax]->tid,
             'name' => $tax_result[$tax]->name,

@@ -35,9 +35,9 @@ class ApplyNodeTranslations {
    * Process callback for the batch set in the TriggerBatchForm form.
    *
    * @param array $items
-   *   The items import form.
-   * @param array|\DrushBatchContext $context
-   *   The batch context.
+   *   The items to process.
+   * @param array $context
+   *   Reference to the batch context array.
    */
   public static function operationCallback(array $items, &$context) {
     // Context sandbox is empty on initial load. Here we take care of things

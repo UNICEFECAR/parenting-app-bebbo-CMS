@@ -140,6 +140,7 @@ function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase 
       // Look for the condition related to 'Child Age' and remove it from the
       // query. Assuming 'field_child_age' is the machine name of the 'Child
       // Age' field.
+      // @phpstan-ignore-next-line
       foreach ($query->where as &$where) {
         if (!empty($where['conditions'])) {
           foreach ($where['conditions'] as &$condition) {
@@ -649,10 +650,11 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
   if ($variables['field']->field == 'revision_uid') {
     $langcode = $variables['row']->node_field_data_langcode;
     $nid = $variables['row']->_entity->nid->value;
-    $vid = \Drupal::entityTypeManager()->getStorage('node')
-      ->getLatestRevisionId($nid);
     $storage = \Drupal::entityTypeManager()->getStorage('node');
+    /** @var \Drupal\node\NodeStorageInterface $storage */
+    $vid = $storage->getLatestRevisionId($nid);
     if ($storage instanceof RevisionableStorageInterface) {
+      /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
       $node = $storage->loadRevision($vid);
     }
     else {
@@ -661,16 +663,20 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
     if ($node instanceof NodeInterface) {
       $storage = \Drupal::entityTypeManager()
         ->getStorage($node->getEntityTypeId());
+      /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
       $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
         $langcode);
       if ($storage instanceof RevisionableStorageInterface) {
+        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
         $revisionNode = $storage->loadRevision($revision_id);
       }
       else {
         $revisionNode = NULL;
       }
+      /** @var \Drupal\Core\Entity\TranslatableInterface $revisionNode */
       $revisionTransNode = $revisionNode->getTranslation($langcode);
-      $uid = $revisionTransNode->revision_uid->target_id;
+      /** @var \Drupal\node\NodeInterface $revisionTransNode */
+      $uid = $revisionTransNode->get('revision_uid')->target_id ?? NULL;
       $objUser = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
       $variables['output'] = $objUser->name->value;
     }
@@ -683,18 +689,20 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
     // Get the row entity (in this case, assuming a node).
     if (isset($variables['row']->_entity) && $variables['row']->_entity instanceof NodeInterface) {
       // $node = $variables['row']->_entity;
-      $nid = $variables['row']->_entity->nid->value;
-      $vid = \Drupal::entityTypeManager()->getStorage('node')
-        ->getLatestRevisionId($nid);
+      $nid = $variables['row']->_entity->id();
       $storage_node = \Drupal::entityTypeManager()->getStorage('node');
+      /** @var \Drupal\node\NodeStorageInterface $storage_node */
+      $vid = $storage_node->getLatestRevisionId($nid);
+
       if ($storage_node instanceof RevisionableStorageInterface) {
+        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage_node */
         $node = $storage_node->loadRevision($vid);
       }
       else {
         $node = NULL;
       }
 
-      $field_language = $variables['row']->node_field_data_langcode;
+      $field_language = $variables['row']->{'node_field_data_langcode'} ?? NULL;
 
       // Get the moderation information service.
       $moderation_information = \Drupal::service('content_moderation.moderation_information');
@@ -703,12 +711,15 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
       if ($moderation_information->isModeratedEntity($node)) {
 
         if ($variables['field']->field == 'moderation_state') {
+          /** @var \Drupal\node\NodeInterface $node */
           if ($node->hasField('moderation_state')) {
             $storage = \Drupal::entityTypeManager()
               ->getStorage($node->getEntityTypeId());
+            /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
             $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
               $field_language);
             if ($storage instanceof RevisionableStorageInterface) {
+              /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
               $revisionNode = $storage->loadRevision($revision_id);
             }
             else {
@@ -744,22 +755,26 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
 function pb_custom_form_views_post_execute(ViewExecutable $view) {
   // For chil growth api.
   if ($view->id() == 'articles') {
-    $display_name = $view->getDisplay()->display['id'];
-    switch ($display_name) {
+    $display = $view->getDisplay()->display['id'];
+    $dedupe = function (array $rows, string $field_name) {
+      $seen = [];
+      $result = [];
+      foreach ($rows as $row) {
+        // ✅ Safe dynamic access
+        $id = $row->{$field_name} ?? NULL;
+        if ($id && !in_array($id, $seen, TRUE)) {
+          $seen[] = $id;
+          $result[] = $row;
+        }
+      }
+      return $result;
+    };
+    switch ($display) {
       // Child Growth Pinned Content API.
       case 'rest_export_18':
         // Milestone Related Content API.
       case 'rest_export_20':
-        $arrNids = [];
-        $new_result = [];
-        foreach ($view->result as $row) {
-          $id = $row->node_field_data_node__field_related_articles_nid;
-          if (!in_array($id, $arrNids)) {
-            $arrNids[] = $id;
-            $new_result[] = $row;
-          }
-        }
-        $view->result = $new_result;
+        $view->result = $dedupe($view->result, 'node_field_data_node__field_related_articles_nid');
         break;
 
       // Health Check-Ups Pinned Content API.
@@ -769,31 +784,13 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
         // FAQ Updated Pinned Content API
         // api/updated-pinned-contents/en/faq.
       case 'rest_export_21':
-        $arrNids = [];
-        $new_result = [];
-        foreach ($view->result as $row) {
-          $id = $row->node_field_data_node__field_pinned_article_nid;
-          if (!in_array($id, $arrNids)) {
-            $arrNids[] = $id;
-            $new_result[] = $row;
-          }
-        }
-        $view->result = $new_result;
+        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_nid');
         break;
 
       // Child Development Girl Pinned Content API
       // api/pinned-contents/en/child_development/41.
       case 'rest_export_16':
-        $arrNids = [];
-        $new_result = [];
-        foreach ($view->result as $row) {
-          $id = $row->node_field_data_node__field_pinned_article_for_girl_nid;
-          if (!in_array($id, $arrNids)) {
-            $arrNids[] = $id;
-            $new_result[] = $row;
-          }
-        }
-        $view->result = $new_result;
+        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_for_girl_nid');
         break;
 
       // Vaccinations Pinned Content API.
@@ -804,16 +801,7 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
       // Child Development Boy Pinned Content API
       // api/pinned-contents/en/child_development/40.
       case 'rest_export_19':
-        $arrNids = [];
-        $new_result = [];
-        foreach ($view->result as $row) {
-          $id = $row->node_field_data_node__field_pinned_article_for_boy_nid;
-          if (!in_array($id, $arrNids)) {
-            $arrNids[] = $id;
-            $new_result[] = $row;
-          }
-        }
-        $view->result = $new_result;
+        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_for_boy_nid');
         break;
 
       // Case 'rest_export_2': // Article API.

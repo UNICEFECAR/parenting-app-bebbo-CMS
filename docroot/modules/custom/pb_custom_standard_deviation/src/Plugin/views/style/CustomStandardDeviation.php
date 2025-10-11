@@ -7,6 +7,7 @@ use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * The style plugin for serialized output formats.
@@ -72,10 +73,13 @@ class CustomStandardDeviation extends Serializer {
     $rows = $this->view->result;
     // Add field_unique_name to each row by child_growth_id.
     foreach ($rows as &$row) {
-      if (!empty($row->_entity) && $row->_entity->hasField('field_growth_type')) {
-        $growth_type_tid = $row->_entity->get('field_growth_type')->target_id ?? NULL;
+      $row_entity = $row->_entity;
+      /** @var \Drupal\node\NodeInterface $row_entity */
+      if ($row_entity instanceof NodeInterface && $row_entity->hasField('field_growth_type')) {
+        $growth_type_tid = $row_entity->get('field_growth_type')->target_id ?? NULL;
         if ($growth_type_tid) {
           $term = Term::load($growth_type_tid);
+          // @phpstan-ignore-next-line
           $row->custom_growth_type = ($term && $term->hasField('field_unique_name'))
           ? trim($term->get('field_unique_name')->value)
           : NULL;
