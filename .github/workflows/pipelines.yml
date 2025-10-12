@@ -31,10 +31,10 @@ jobs:
       - name: Composer install
         run: |
           composer validate --no-check-all --ansi
-          composer install --no-dev --optimize-autoloader
+          composer install --prefer-dist --no-progress --no-interaction
 
       - name: Run PHPCS
-        run: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,yml
+        run: ./vendor/bin/phpcs
 
       - name: Run Drupal Check
         run: ./vendor/bin/drupal-check -d docroot/modules/custom
@@ -60,7 +60,7 @@ jobs:
 
       - run: |
           composer validate --no-check-all --ansi
-          composer install --no-dev --optimize-autoloader
+          composer install --prefer-dist --no-progress --no-interaction
 
       - name: Install Acquia CLI
         run: |
@@ -115,7 +115,7 @@ jobs:
 
       - run: |
           composer validate --no-check-all --ansi
-          composer install --no-dev --optimize-autoloader
+          composer install --prefer-dist --no-progress --no-interaction
 
       - name: Install Acquia CLI
         run: |
