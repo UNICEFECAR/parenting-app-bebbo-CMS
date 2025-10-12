@@ -232,9 +232,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "post-drupal-scaffold-cmd": [
-            "patch -p2 -d docroot < patches/htaccess.patch"
-        ],
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
         ],

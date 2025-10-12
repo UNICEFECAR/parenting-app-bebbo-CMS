@@ -88,11 +88,6 @@ jobs:
           echo "Deploying branch ${GITHUB_REF_NAME} to Dev"
           acli push:artifact @parentbuddy2.dev --no-interaction
 
-          # Run post-deploy drush tasks
-          for cmd in cr updb cim cr; do
-            acli remote:drush @parentbuddy2.dev -- $cmd -y || true
-          done
-
   # -------------------------------
   # 3. Deploy to Acquia Stage (acquia-main)
   # -------------------------------
@@ -140,8 +135,3 @@ jobs:
         run: |
           echo "Deploying acquia-main to Stage"
           acli push:artifact @parentbuddy2.test --no-interaction
-
-          # Run post-deploy drush tasks
-          for cmd in cr updb cim cr; do
-            acli remote:drush @parentbuddy2.test -- $cmd -y || true
-          done
