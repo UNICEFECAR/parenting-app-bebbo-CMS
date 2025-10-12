@@ -1,0 +1,44 @@
+uuid: 51a72931-144a-42c8-b775-68f30205d732
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_microsoft
+name: microsoft
+label: Microsoft
+description: 'Microsoft Translator service.'
+auto_accept: false
+weight: null
+plugin: microsoft
+settings:
+  api_key: ''
+remote_languages_mappings:
+  en: en
+  ru: ru
+  sq: sq
+  al-sq: sq
+  by-be: be
+  by-ru: ru
+  bg-bg: bg
+  gr-el: el
+  xk-sq: sq
+  xk-rs: sr-Cyrl
+  kg-ky: ky
+  kg-ru: ru
+  md-ro: ro
+  me-cnr: ba
+  mk-mk: mk
+  mk-sq: sq
+  ro: ro
+  ro-ro: ro
+  sr: sr-Latn
+  rs-sr: sr-Cyrl
+  rs-en: en
+  sk: sk
+  tj-tg: prs
+  tj-ru: ru
+  uk: uk
+  uz-uz: uz
+  uz-ru: ru
+  uz-kaa: uz
+  tr: tr
