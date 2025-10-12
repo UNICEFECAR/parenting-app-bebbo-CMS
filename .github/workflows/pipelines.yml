@@ -29,13 +29,15 @@ jobs:
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
       - name: Composer install
-        run: composer install --prefer-dist --no-progress --no-interaction
+        run: |
+          composer validate --no-check-all --ansi
+          composer install --no-dev --optimize-autoloader
 
       - name: Run PHPCS
-        run: ./vendor/bin/phpcs
+        run: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,yml
 
       - name: Run Drupal Check
-        run: ./vendor/bin/drupal-check docroot/modules/custom
+        run: ./vendor/bin/drupal-check -d docroot/modules/custom
 
       - name: Run PHPlint
         run: ./vendor/bin/phplint
@@ -56,7 +58,9 @@ jobs:
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
-      - run: composer install --no-dev --optimize-autoloader
+      - run: |
+          composer validate --no-check-all --ansi
+          composer install --no-dev --optimize-autoloader
 
       - name: Install Acquia CLI
         run: |
@@ -83,10 +87,15 @@ jobs:
             --key=${{ secrets.ACQUIA_API_KEY_ID }} \
             --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
 
+      - name: Ensure clean git state
+        run: |
+          git reset --hard
+          git clean -fd
+
       - name: Deploy feature branch build to Dev
         run: |
           echo "Deploying branch ${GITHUB_REF_NAME} to Dev"
-          acli push:artifact @parentbuddy2.dev --no-interaction
+          acli push:artifact @parentbuddy2.dev --no-interaction -vvv
 
   # -------------------------------
   # 3. Deploy to Acquia Stage (acquia-main)
@@ -104,7 +113,9 @@ jobs:
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
-      - run: composer install --no-dev --optimize-autoloader
+      - run: |
+          composer validate --no-check-all --ansi
+          composer install --no-dev --optimize-autoloader
 
       - name: Install Acquia CLI
         run: |
@@ -130,6 +141,11 @@ jobs:
           acli auth:login \
             --key=${{ secrets.ACQUIA_API_KEY_ID }} \
             --secret=${{ secrets.ACQUIA_API_KEY_SECRET }}
+
+      - name: Ensure clean git state
+        run: |
+          git reset --hard
+          git clean -fd
 
       - name: Deploy acquia-main build to Stage
         run: |
