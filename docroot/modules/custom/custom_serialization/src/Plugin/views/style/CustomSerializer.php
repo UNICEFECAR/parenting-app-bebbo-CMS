@@ -1105,10 +1105,19 @@ class CustomSerializer extends Serializer {
     }
 
     if (strpos($request_uri, "/api/articles") !== FALSE) {
+      $pregnancy_tid = $this->entityTypeManager->getStorage('taxonomy_term')
+        ->getQuery()
+        ->condition('vid', 'child_age')
+        ->condition('name', 'pregnancy')
+        ->accessCheck(FALSE)
+        ->range(0, 1)
+        ->execute();
+
+      $pregnancy_tid = $pregnancy_tid ? reset($pregnancy_tid) : NULL;
       foreach ($data as $k => $val) {
         if (in_array($tid, $val[$key])) {
           // Ignore removal if tid is 166191 (Pregnancy).
-          if ($tid == 166191) {
+          if ($tid == $pregnancy_tid) {
             continue;
           }
           // Find the key of the value to remove.
