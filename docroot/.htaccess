@@ -60,6 +60,15 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # 🔒 Block common WordPress-related and PHP attack URIs early
+  RewriteCond %{REQUEST_URI} "(wp-|wordpress/wp-admin|wp-admin|wp-includes|wp-content|xmlrpc\.php|wp-trackback\.php|wp-login\.php|wp-comments-post\.php|wp-cron\.php|wlwmanifest\.xml|setup-config\.php|info\.php|test\.php|moon\.php|shell\.php|updates\.php|sitemap\.xml)" [NC]
+  RewriteRule .* - [F,L]
+
+  # Redirect only homepage for wawamor.ec
+  RewriteCond %{HTTP_HOST} ^(www\.)?wawamor\.ec$ [NC]
+  RewriteCond %{REQUEST_URI} ^/$
+  RewriteRule ^$ https://www.unicef.org/ecuador/wawamor [R=302,L]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
