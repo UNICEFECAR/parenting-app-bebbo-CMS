@@ -14,6 +14,7 @@ use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * AJAX callback to filter Subcategory options.
@@ -215,6 +216,13 @@ function pb_custom_form_query_tmgmt_entity_get_translatable_entities_alter($quer
  * Implements hook_form_alter().
  */
 function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add CSV Download button to Entity Share Pull form.
+  if ($form_id == 'entity_share_client_pull_form') {
+    pb_custom_form_add_csv_download_button($form, $form_state);
+
+    // Add after_build callback to ensure button is added after AJAX rebuilds.
+    $form['#after_build'][] = 'pb_custom_form_entity_share_after_build';
+  }
   // Adding custom validation for the welcome page type field.
   if ($form_id == 'group_country_edit_form') {
     // Make readonly if offload country is enabled.
@@ -807,6 +815,156 @@ function pb_custom_form_views_post_execute(ViewExecutable $view) {
       // Case 'rest_export_2': // Article API.
       default:
     }
+  }
+}
+
+/**
+ * Adds CSV Download button to Entity Share Pull form.
+ */
+function pb_custom_form_add_csv_download_button(&$form, FormStateInterface $form_state) {
+  // Add CSV Download button to the actions section if it exists.
+  if (isset($form['channel_wrapper']['entities_wrapper']['actions_bottom'])) {
+    $form['channel_wrapper']['entities_wrapper']['actions_bottom']['csv_download'] = [
+      '#type' => 'submit',
+      '#value' => t('CSV Download'),
+      '#submit' => ['pb_custom_form_csv_download_redirect'],
+      '#button_type' => 'primary',
+      '#limit_validation_errors' => [],
+      '#validate' => [],
+    ];
+  }
+
+  // Also add to top actions if they exist.
+  if (isset($form['channel_wrapper']['entities_wrapper']['actions_top'])) {
+    $form['channel_wrapper']['entities_wrapper']['actions_top']['csv_download'] = [
+      '#type' => 'submit',
+      '#value' => t('CSV Download'),
+      '#submit' => ['pb_custom_form_csv_download_redirect'],
+      '#button_type' => 'primary',
+      '#limit_validation_errors' => [],
+      '#validate' => [],
+    ];
+  }
+}
+
+/**
+ * After build callback for Entity Share Pull form.
+ */
+function pb_custom_form_entity_share_after_build($form, FormStateInterface $form_state) {
+  // Ensure CSV download button is added after AJAX rebuilds.
+  pb_custom_form_add_csv_download_button($form, $form_state);
+  return $form;
+}
+
+/**
+ * Submit handler for CSV download redirect.
+ */
+function pb_custom_form_csv_download_redirect($form, FormStateInterface $form_state) {
+  $route_name = 'pb_custom_form.csv_export';
+
+  // Get current form values to pass as query parameters
+  // The entity_share client form may nest elements in wrappers or use
+  // different keys. Try multiple strategies to retrieve values.
+  $remote_id = NULL;
+  $channel_id = NULL;
+  $import_config_id = NULL;
+
+  // Preferred direct keys.
+  if ($val = $form_state->getValue('remote')) {
+    $remote_id = $val;
+  }
+  if ($val = $form_state->getValue('channel')) {
+    $channel_id = $val;
+  }
+  if ($val = $form_state->getValue('import_config')) {
+    $import_config_id = $val;
+  }
+
+  // Sometimes the form nests values under wrappers, try common nested keys.
+  if (empty($remote_id) && $form_state->hasValue(['channel_wrapper', 'remote'])) {
+    $remote_id = $form_state->getValue(['channel_wrapper', 'remote']);
+  }
+  if (empty($channel_id) && $form_state->hasValue(['channel_wrapper', 'channel'])) {
+    $channel_id = $form_state->getValue(['channel_wrapper', 'channel']);
+  }
+
+  // Another nesting pattern: entities_wrapper -> remote/channel.
+  if (empty($remote_id) && $form_state->hasValue(['channel_wrapper', 'entities_wrapper', 'remote'])) {
+    $remote_id = $form_state->getValue(['channel_wrapper', 'entities_wrapper', 'remote']);
+  }
+  if (empty($channel_id) && $form_state->hasValue(['channel_wrapper', 'entities_wrapper', 'channel'])) {
+    $channel_id = $form_state->getValue(['channel_wrapper', 'entities_wrapper', 'channel']);
+  }
+
+  // Fallback to user input (for AJAX forms that don't store in getValues()).
+  if (empty($remote_id) || empty($channel_id)) {
+    $user_input = $form_state->getUserInput();
+    if (empty($remote_id) && !empty($user_input['remote'])) {
+      $remote_id = $user_input['remote'];
+    }
+    if (empty($channel_id) && !empty($user_input['channel'])) {
+      $channel_id = $user_input['channel'];
+    }
+    if (empty($import_config_id) && !empty($user_input['import_config'])) {
+      $import_config_id = $user_input['import_config'];
+    }
+  }
+
+  // Fallback to request query parameters (used when AJAX put values in URL).
+  if (empty($remote_id) || empty($channel_id)) {
+    $request = \Drupal::request();
+    if (empty($remote_id)) {
+      $remote_id = $request->query->get('remote');
+    }
+    if (empty($channel_id)) {
+      $channel_id = $request->query->get('channel');
+    }
+    if (empty($import_config_id)) {
+      $import_config_id = $request->query->get('import_config');
+    }
+  }
+
+  // Validate required parameters.
+  if (empty($channel_id) || empty($remote_id)) {
+    \Drupal::logger('pb_custom_form')->warning('CSV export requested but channel or remote not set. remote=@remote channel=@channel form_values=@values user_input=@input', [
+      '@remote' => $remote_id,
+      '@channel' => $channel_id,
+      '@values' => json_encode($form_state->getValues()),
+      '@input' => json_encode($form_state->getUserInput()),
+    ]);
+    \Drupal::messenger()->addError(t('Channel and Remote website are required for CSV export. Remote: @remote, Channel: @channel', [
+      '@remote' => $remote_id ?: 'empty',
+      '@channel' => $channel_id ?: 'empty',
+    ]));
+    return;
+  }
+
+  try {
+    // Ensure the route exists before attempting to build a URL for it.
+    \Drupal::service('router.route_provider')->getRouteByName($route_name);
+
+    $query_params = [
+      'remote' => $remote_id,
+      'channel' => $channel_id,
+    ];
+
+    if (!empty($import_config_id)) {
+      $query_params['import_config'] = $import_config_id;
+    }
+
+    $url = Url::fromRoute($route_name, [], [
+      'query' => $query_params,
+    ]);
+    $form_state->setRedirectUrl($url);
+  }
+  catch (RouteNotFoundException $e) {
+    // Log the problem and show a friendly message instead of throwing an
+    // exception which would break the page.
+    \Drupal::logger('pb_custom_form')->error('CSV export route not found: @msg', ['@msg' => $e->getMessage()]);
+    \Drupal::messenger()->addError(t('CSV export is currently unavailable. Please contact an administrator.'));
+    // Redirect back to the current page to avoid the exception interrupting the
+    // user's workflow.
+    $form_state->setRedirect('<current>');
   }
 }
 
