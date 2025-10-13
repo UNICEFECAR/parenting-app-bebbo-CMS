@@ -10,6 +10,7 @@ display:
       exposed_form:
         options:
           submit_button: Фільтр
+          reset_button_label: Reset
       filters:
         type:
           expose:

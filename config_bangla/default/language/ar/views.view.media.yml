@@ -20,6 +20,7 @@ display:
       exposed_form:
         options:
           submit_button: انتقاء
+          reset_button_label: Reset
       filters:
         bundle:
           expose:

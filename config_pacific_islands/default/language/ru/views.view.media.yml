@@ -1,6 +1,7 @@
 label: Media
 display:
   default:
+    display_title: Default
     display_options:
       title: Media
       fields:
@@ -8,10 +9,19 @@ display:
           label: Thumbnail
         bundle:
           label: Тип
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         bundle:
           expose:
             label: Тип
+        langcode:
+          expose:
+            label: Language
   media_page_list:
     display_title: Media
     display_options:

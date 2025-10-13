@@ -4,6 +4,7 @@ display:
       exposed_form:
         options:
           submit_button: انتقاء
+          reset_button_label: Reset
       fields:
         title:
           label: Title
@@ -16,6 +17,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -34,8 +37,12 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Created
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -51,8 +58,12 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Created
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -70,6 +81,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -85,8 +98,12 @@ display:
       fields:
         status:
           label: Status
+        created:
+          label: Created
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -104,6 +121,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:

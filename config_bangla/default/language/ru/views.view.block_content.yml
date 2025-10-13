@@ -2,11 +2,15 @@ label: 'Custom block library'
 description: 'Find and manage custom blocks.'
 display:
   default:
+    display_title: Default
     display_options:
       title: 'Custom block library'
       fields:
         operations:
           label: Операции
+      exposed_form:
+        options:
+          reset_button_label: Reset
       empty:
         area_text_custom:
           content: 'There are no custom blocks available.'

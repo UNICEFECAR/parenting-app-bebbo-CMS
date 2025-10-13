@@ -4,3 +4,5 @@ display:
       fields:
         item_type:
           label: Tип
+        operations:
+          label: Operations

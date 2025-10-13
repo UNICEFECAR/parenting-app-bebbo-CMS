@@ -4,6 +4,8 @@ display:
       fields:
         type:
           label: Tип
+        operations:
+          label: Operations
   checkout:
     display_options:
       fields:

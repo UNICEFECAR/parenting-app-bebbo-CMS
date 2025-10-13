@@ -8,8 +8,12 @@ display:
           separator: ', '
         filemime:
           label: MIME-тип
+        filesize:
+          label: Size
         status:
           label: Status
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       pager:
         options:
           tags:

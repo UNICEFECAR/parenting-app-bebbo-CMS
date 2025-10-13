@@ -1,5 +1,6 @@
 display:
   default:
+    display_title: Default
     display_options:
       fields:
         type:
@@ -9,6 +10,7 @@ display:
       exposed_form:
         options:
           submit_button: Filtri
+          reset_button_label: Reset
       filters:
         type:
           expose:

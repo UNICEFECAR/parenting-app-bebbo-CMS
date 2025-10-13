@@ -15,6 +15,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -35,6 +37,8 @@ display:
           label: Krijuar
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -52,6 +56,8 @@ display:
           label: Krijuar
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -67,6 +73,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -84,6 +92,8 @@ display:
           label: Krijuar
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -99,6 +109,8 @@ display:
           label: Status
         title:
           label: Title
+        source_language:
+          label: From
         target_language:
           label: To
         operations:

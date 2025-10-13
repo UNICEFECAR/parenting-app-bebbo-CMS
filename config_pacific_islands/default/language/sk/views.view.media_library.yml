@@ -5,6 +5,9 @@ display:
       fields:
         media_bulk_form:
           action_title: Action
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         name:
           expose:

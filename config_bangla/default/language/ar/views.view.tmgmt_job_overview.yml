@@ -4,6 +4,8 @@ display:
       fields:
         label:
           label: التسمية
+        source_language_1:
+          label: From
         target_language:
           label: To
         tags_count:
@@ -17,3 +19,6 @@ display:
             previous: '‹ previous'
             first: '« first'
             last: 'last »'
+      exposed_form:
+        options:
+          reset_button_label: Reset

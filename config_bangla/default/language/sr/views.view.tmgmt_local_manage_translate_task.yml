@@ -12,11 +12,15 @@ display:
   closed:
     display_options:
       fields:
+        created:
+          label: Created
         operations:
           label: Операције
   completed:
     display_options:
       fields:
+        created:
+          label: Created
         operations:
           label: Операције
   pending:
@@ -27,6 +31,8 @@ display:
   rejected:
     display_options:
       fields:
+        created:
+          label: Created
         operations:
           label: Операције
   unassigned:

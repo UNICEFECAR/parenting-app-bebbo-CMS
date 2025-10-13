@@ -4,5 +4,12 @@ display:
       fields:
         label:
           label: Метка
+        source_language_1:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
+      exposed_form:
+        options:
+          reset_button_label: Reset

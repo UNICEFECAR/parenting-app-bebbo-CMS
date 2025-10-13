@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         state:
           label: Eyalet
@@ -10,6 +13,10 @@ display:
           label: Tip
         operations:
           label: İşlemler
+      arguments:
+        tjid:
+          exception:
+            title: All
   checkout:
     display_options:
       fields:

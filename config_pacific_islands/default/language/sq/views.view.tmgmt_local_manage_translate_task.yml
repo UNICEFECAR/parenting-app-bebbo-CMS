@@ -1,16 +1,67 @@
 display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+  assigned:
+    display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
   closed:
     display_options:
       fields:
         created:
           label: Krijuar
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
   completed:
     display_options:
       fields:
         created:
           label: Krijuar
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
+  pending:
+    display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
   rejected:
     display_options:
       fields:
         created:
           label: Krijuar
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
+  unassigned:
+    display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations

@@ -10,3 +10,7 @@ display:
           text: 'Edit member'
         dropbutton:
           label: কার্যাবলী
+      arguments:
+        gid:
+          exception:
+            title: All

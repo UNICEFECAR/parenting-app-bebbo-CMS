@@ -4,33 +4,64 @@ display:
       exposed_form:
         options:
           submit_button: Süzgeç
+          reset_button_label: Reset
   assigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
   closed:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
   completed:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
   pending:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
   rejected:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
   unassigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler

@@ -1,6 +1,10 @@
 display:
   default:
+    display_title: Default
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         name:
           expose:
@@ -8,8 +12,17 @@ display:
         langcode:
           expose:
             label: Язык
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
   widget:
     display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:
@@ -19,6 +32,10 @@ display:
       fields:
         name:
           label: Название
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:

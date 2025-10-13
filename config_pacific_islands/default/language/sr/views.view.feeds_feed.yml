@@ -4,6 +4,8 @@ display:
       fields:
         type:
           label: Tип
+        operations:
+          label: Operations
       filters:
         type:
           expose:

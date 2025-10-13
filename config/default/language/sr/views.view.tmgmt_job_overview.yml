@@ -1,9 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
         state:
           label: State
@@ -13,6 +10,9 @@ display:
           label: Provider
         operations:
           label: Operations
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
       filters:
         state:
           expose:

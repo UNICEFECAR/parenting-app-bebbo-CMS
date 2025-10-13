@@ -1,10 +1,19 @@
 display:
   default:
+    display_title: Default
     display_options:
       fields:
         bundle:
           label: Tип
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
       filters:
         bundle:
           expose:
             label: Tип
+        langcode:
+          expose:
+            label: Language

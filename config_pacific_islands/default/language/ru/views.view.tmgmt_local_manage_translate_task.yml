@@ -1,6 +1,19 @@
 display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
   assigned:
     display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         source_language:
           expose:
@@ -10,6 +23,12 @@ display:
       fields:
         created:
           label: Создано
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         source_language:
           expose:
@@ -19,12 +38,25 @@ display:
       fields:
         created:
           label: Создано
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         source_language:
           expose:
             label: 'Source language'
   pending:
     display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         source_language:
           expose:
@@ -34,7 +66,22 @@ display:
       fields:
         created:
           label: Создано
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         source_language:
           expose:
             label: 'Source language'
+  unassigned:
+    display_options:
+      fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations

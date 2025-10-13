@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         group_roles:
           label: Roller
@@ -12,3 +15,7 @@ display:
           text: 'Edit member'
         dropbutton:
           label: İşlemler
+      arguments:
+        gid:
+          exception:
+            title: All

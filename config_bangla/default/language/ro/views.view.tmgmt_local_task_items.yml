@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         label:
           label: Etichetă
@@ -8,3 +11,7 @@ display:
           label: Tip
         operations:
           label: Operațiuni
+      arguments:
+        tltid:
+          exception:
+            title: All

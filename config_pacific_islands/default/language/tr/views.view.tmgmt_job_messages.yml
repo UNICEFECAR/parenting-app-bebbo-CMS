@@ -1,8 +1,15 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         created:
           label: Oluşturulma
         name:
           label: İsim
+      arguments:
+        tjid:
+          exception:
+            title: All

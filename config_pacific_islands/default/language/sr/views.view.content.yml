@@ -1,0 +1,14 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+      filters:
+        langcode:
+          expose:
+            label: Language

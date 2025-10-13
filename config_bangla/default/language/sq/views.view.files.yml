@@ -1,9 +1,21 @@
 display:
   default:
+    display_title: Default
     display_options:
       fields:
         filename:
           label: Emri
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
           submit_button: Filtri
+          reset_button_label: Reset
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

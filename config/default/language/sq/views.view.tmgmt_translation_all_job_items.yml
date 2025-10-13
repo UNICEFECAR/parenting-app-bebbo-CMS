@@ -7,6 +7,8 @@ display:
       fields:
         type:
           label: Lloji
+        source_language:
+          label: From
         target_language:
           label: To
         tags_count:
