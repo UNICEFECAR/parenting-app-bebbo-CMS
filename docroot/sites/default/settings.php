@@ -812,6 +812,11 @@ if (file_exists('/var/www/site-php')) {
    if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
       require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
    }
+
+   // Change tx_isolation from REPEATABLE READ to READ COMMITTED.
+  $databases['default']['default']['init_commands'] = [
+    'isolation_level' => "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED",
+  ];
 }
 $apikeys = "";
 if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
@@ -855,6 +860,13 @@ if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
   // Store private files in a writable directory inside the project.
   $settings['file_private_path'] = $app_root . '/' . $site_path . '/files-private';
+
+  /**
+   * Enforce Drupal-recommended MySQL transaction isolation level.
+   */
+  if (isset($databases['default']['default'])) {
+    $databases['default']['default']['isolation_level'] = 'READ COMMITTED';
+  }
 }
 
 // State cache flag not set.
@@ -864,5 +876,7 @@ $settings['state_cache'] = TRUE;
  * Enforce Drupal-recommended MySQL transaction isolation level.
  */
 if (isset($databases['default']['default'])) {
-  $databases['default']['default']['isolation_level'] = 'READ COMMITTED';
+  $databases['default']['default']['init_commands'] = [
+    'isolation_level' => "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED",
+  ];
 }
