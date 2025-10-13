@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         view_group_content:
           text: 'Manage member'
@@ -10,3 +13,7 @@ display:
           text: 'Edit member'
         dropbutton:
           label: Operațiuni
+      arguments:
+        gid:
+          exception:
+            title: All

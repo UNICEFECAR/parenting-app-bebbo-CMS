@@ -1,6 +1,10 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       fields:
         title:
           label: Označenie
@@ -9,6 +13,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -20,6 +28,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -31,6 +43,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -42,6 +58,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -53,6 +73,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -64,6 +88,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       filters:
@@ -75,6 +103,10 @@ display:
       fields:
         title:
           label: Označenie
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operácie
       tab_options:

@@ -1,9 +1,17 @@
 display:
   default:
+    display_title: Default
     display_options:
       fields:
         filemime:
           label: 'MIME тип'
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: Filter
       filters:
         filemime:
           expose:

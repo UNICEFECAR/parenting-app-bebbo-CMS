@@ -5,8 +5,16 @@ display:
       fields:
         filename:
           label: Názov
+        filesize:
+          label: Size
         status:
           label: Stav
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         status:
           expose:

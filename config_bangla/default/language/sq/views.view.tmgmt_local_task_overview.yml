@@ -4,38 +4,67 @@ display:
       exposed_form:
         options:
           submit_button: Filtri
+          reset_button_label: Reset
   closed:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   completed:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   eligible:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   my_tasks:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   pending:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   rejected:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet
   unassigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operacionet

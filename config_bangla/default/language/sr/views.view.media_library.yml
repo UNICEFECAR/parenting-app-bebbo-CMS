@@ -1,5 +1,6 @@
 display:
   default:
+    display_title: Default
     display_options:
       filters:
         name:
@@ -8,6 +9,11 @@ display:
         langcode:
           expose:
             label: Језик
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
   widget:
     display_options:
       filters:

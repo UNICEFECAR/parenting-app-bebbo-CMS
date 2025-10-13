@@ -7,8 +7,12 @@ display:
           label: Name
         filemime:
           label: 'MIME тип'
+        filesize:
+          label: Size
         status:
           label: Status
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
           submit_button: Filter

@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         state:
           label: Стан
@@ -8,6 +11,10 @@ display:
           label: Мітка
         type:
           label: Тип
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -17,3 +24,6 @@ display:
         source_language:
           expose:
             label: 'Вихідна мова'
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

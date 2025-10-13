@@ -8,3 +8,4 @@ display:
       exposed_form:
         options:
           submit_button: Süzgeç
+          reset_button_label: Reset

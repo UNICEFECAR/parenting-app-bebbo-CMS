@@ -1,6 +1,10 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       fields:
         title:
           label: Názov
@@ -11,6 +15,8 @@ display:
           label: Stav
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -31,6 +37,8 @@ display:
           label: Vytvorené
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -48,6 +56,8 @@ display:
           label: Vytvorené
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -63,6 +73,8 @@ display:
           label: Stav
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -80,6 +92,8 @@ display:
           label: Vytvorené
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -95,6 +109,8 @@ display:
           label: Stav
         title:
           label: Názov
+        source_language:
+          label: From
         target_language:
           label: To
         operations:

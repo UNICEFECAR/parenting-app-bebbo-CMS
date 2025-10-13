@@ -8,3 +8,7 @@ display:
         type:
           expose:
             label: টাইপ
+      arguments:
+        gid:
+          exception:
+            title: All

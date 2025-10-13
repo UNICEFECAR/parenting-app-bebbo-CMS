@@ -14,6 +14,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -29,6 +31,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -42,6 +46,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -55,6 +61,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -68,6 +76,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -81,6 +91,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -94,6 +106,8 @@ display:
       fields:
         status:
           label: Status
+        source_language:
+          label: From
         target_language:
           label: To
         operations:

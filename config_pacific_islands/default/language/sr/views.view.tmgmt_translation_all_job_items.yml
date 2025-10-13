@@ -4,6 +4,8 @@ display:
       fields:
         type:
           label: Tип
+        operations:
+          label: Operations
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

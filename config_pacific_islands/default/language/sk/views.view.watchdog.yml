@@ -9,6 +9,10 @@ display:
           label: User
         link:
           label: Operácie
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         type:
           expose:

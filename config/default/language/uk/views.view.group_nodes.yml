@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         title:
           label: Заголовок
@@ -14,3 +17,7 @@ display:
         type:
           expose:
             label: Тип
+      arguments:
+        gid:
+          exception:
+            title: All

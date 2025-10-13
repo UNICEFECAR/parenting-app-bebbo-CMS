@@ -6,8 +6,15 @@ display:
           label: Eyalet
         label:
           label: Etiket
+        source_language_1:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         state:
           expose:

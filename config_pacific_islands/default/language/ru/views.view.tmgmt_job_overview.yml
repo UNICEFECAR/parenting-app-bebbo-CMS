@@ -1,6 +1,16 @@
 display:
   default:
     display_options:
+      fields:
+        source_language_1:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         source_language:
           expose:

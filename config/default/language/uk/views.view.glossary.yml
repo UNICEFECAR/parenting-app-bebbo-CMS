@@ -7,3 +7,6 @@ display:
           label: Заголовок
         name:
           label: Автор
+      exposed_form:
+        options:
+          reset_button_label: Reset

@@ -14,7 +14,6 @@ dependencies:
     - field.field.group.country.field_language_visibility_in_app
     - field.field.group.country.field_make_available_for_mobile
     - field.field.group.country.field_master_language
-
     - field.field.group.country.field_unicef_logo
     - group.type.country
   module:
@@ -124,6 +123,5 @@ content:
 hidden:
   field_language_name_in_local: true
   field_language_visibility_in_app: true
-
   path: true
   uid: true

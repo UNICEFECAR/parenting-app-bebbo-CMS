@@ -4,6 +4,7 @@ display:
       exposed_form:
         options:
           submit_button: Süzgeç
+          reset_button_label: Reset
       fields:
         title:
           label: Etiket
@@ -12,6 +13,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -23,6 +28,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -34,6 +43,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -45,6 +58,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -56,6 +73,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -67,6 +88,10 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler
       filters:
@@ -78,5 +103,9 @@ display:
       fields:
         title:
           label: Etiket
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: İşlemler

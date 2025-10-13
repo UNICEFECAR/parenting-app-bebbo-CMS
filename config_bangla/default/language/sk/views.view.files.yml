@@ -5,3 +5,17 @@ display:
       fields:
         filename:
           label: Názov
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

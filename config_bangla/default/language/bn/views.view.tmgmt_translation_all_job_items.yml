@@ -4,6 +4,8 @@ display:
       fields:
         type:
           label: টাইপ
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
       empty:

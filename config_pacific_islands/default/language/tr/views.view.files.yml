@@ -7,11 +7,16 @@ display:
           label: İsim
         filemime:
           label: 'MIME tipi'
+        filesize:
+          label: Size
         status:
           label: Durum
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
           submit_button: Süzgeç
+          reset_button_label: Reset
       filters:
         filemime:
           expose:
@@ -24,3 +29,7 @@ display:
       fields:
         type:
           label: 'Varlık tipi'
+      arguments:
+        fid:
+          exception:
+            title: All

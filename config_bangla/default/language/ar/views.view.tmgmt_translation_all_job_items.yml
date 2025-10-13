@@ -1,11 +1,16 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         label:
           label: التسمية
         type:
           label: النوع
+        source_language:
+          label: From
         target_language:
           label: To
         tags_count:

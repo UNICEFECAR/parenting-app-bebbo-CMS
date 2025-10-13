@@ -4,6 +4,7 @@ display:
       exposed_form:
         options:
           submit_button: انتقاء
+          reset_button_label: Reset
       fields:
         title:
           label: التسمية
@@ -20,6 +21,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -42,6 +45,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -62,6 +67,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -82,6 +89,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -102,6 +111,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -122,6 +133,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:
@@ -142,6 +155,8 @@ display:
           label: Status
         title:
           label: التسمية
+        source_language:
+          label: From
         target_language:
           label: To
         item_count:

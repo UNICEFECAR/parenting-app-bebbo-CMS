@@ -24,6 +24,7 @@ display:
           label: 'Dátum zmeny'
         count:
           label: 'Použité v'
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       pager:
         options:
           tags:

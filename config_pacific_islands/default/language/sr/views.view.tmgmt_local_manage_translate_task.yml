@@ -1,16 +1,42 @@
 display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+  assigned:
+    display_options:
+      fields:
+        operations:
+          label: Operations
   closed:
     display_options:
       fields:
         created:
           label: Направљено
+        operations:
+          label: Operations
   completed:
     display_options:
       fields:
         created:
           label: Направљено
+        operations:
+          label: Operations
+  pending:
+    display_options:
+      fields:
+        operations:
+          label: Operations
   rejected:
     display_options:
       fields:
         created:
           label: Направљено
+        operations:
+          label: Operations
+  unassigned:
+    display_options:
+      fields:
+        operations:
+          label: Operations

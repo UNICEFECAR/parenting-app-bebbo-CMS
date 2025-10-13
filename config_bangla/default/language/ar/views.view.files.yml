@@ -9,9 +9,12 @@ display:
           label: Size
         status:
           label: Status
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
           submit_button: انتقاء
+          reset_button_label: Reset
       filters:
         filename:
           expose:

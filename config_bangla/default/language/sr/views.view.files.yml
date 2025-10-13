@@ -1,9 +1,14 @@
 display:
   default:
+    display_title: Default
     display_options:
       fields:
         filename:
           label: Име
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
           submit_button: Филтрирај

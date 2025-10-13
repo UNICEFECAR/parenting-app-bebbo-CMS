@@ -848,11 +848,21 @@ $config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSL
 
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
 $settings['file_private_path'] = '/mnt/files/parentbuddy2.prod/sites/default/files-private';
-ini_set('memory_limit', '-1');
+// ini_set('memory_limit', '-1');
 // Automatically generated include for settings managed by ddev.
 $ddev_settings = __DIR__ . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
   // Store private files in a writable directory inside the project.
   $settings['file_private_path'] = $app_root . '/' . $site_path . '/files-private';
+}
+
+// State cache flag not set.
+$settings['state_cache'] = TRUE;
+
+/**
+ * Enforce Drupal-recommended MySQL transaction isolation level.
+ */
+if (isset($databases['default']['default'])) {
+  $databases['default']['default']['isolation_level'] = 'READ COMMITTED';
 }

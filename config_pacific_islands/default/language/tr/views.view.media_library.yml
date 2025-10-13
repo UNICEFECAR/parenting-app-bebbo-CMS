@@ -3,6 +3,9 @@ display:
     display_title: Varsayılan
     display_options:
       title: Medya
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         name:
           expose:
@@ -19,6 +22,10 @@ display:
           text: Sil
   widget:
     display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:
@@ -30,6 +37,10 @@ display:
           label: İsim
         uid:
           label: Yazar
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:

@@ -1,6 +1,13 @@
 display:
   default:
+    display_title: Default
     display_options:
+      fields:
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
       filters:
         roles_target_id:
           expose:

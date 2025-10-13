@@ -1,8 +1,21 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         group_roles:
           label: Ролі
+        view_group_content:
+          text: 'Manage member'
+        edit_group_content:
+          text: 'Assign roles'
+        edit_user:
+          text: 'Edit member'
         dropbutton:
           label: Операції
+      arguments:
+        gid:
+          exception:
+            title: All
