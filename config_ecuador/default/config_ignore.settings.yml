@@ -13,3 +13,4 @@ ignored_config_entities:
   - tmgmt.translator.deepl_pro
   - tmgmt.translator.google
   - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft

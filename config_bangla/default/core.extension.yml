@@ -124,6 +124,7 @@ module:
   tmgmt_local: 0
   tmgmt_locale: 0
   tmgmt_memsource: 0
+  tmgmt_microsoft: 0
   token: 0
   toolbar: 0
   toolbar_menu: 0
