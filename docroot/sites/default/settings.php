@@ -833,17 +833,20 @@ if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
 if(file_exists($apikeys)){
   require $apikeys;
 }
+$settings["config_sync_directory"] = '../config/default';
+
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username');
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password');
 // TMGMT Google Translator API key from environment variable.
 $config['tmgmt.translator.google']['settings']['api_key'] = getenv('GOOGLE_TRANSLATE_KEY') ?: '';
-// DeepL free API key
+// DeepL free API key.
 $config['tmgmt.translator.deepl_free']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_FREE') ?: '';
-// DeepL pro API key
+// DeepL pro API key.
 $config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_PRO') ?: '';
+// Microsoft translator API key.
+$config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSLATE_KEY') ?: '';
 
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
-$settings["config_sync_directory"] = '../config/default';
 $settings['file_private_path'] = '/mnt/files/parentbuddy2.prod/sites/default/files-private';
 ini_set('memory_limit', '-1');
 // Automatically generated include for settings managed by ddev.
