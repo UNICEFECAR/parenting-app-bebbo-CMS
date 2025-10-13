@@ -50,13 +50,13 @@ jQuery(document).ready(function () {
 
 
 jQuery(document).ready(function () {
-  var clickTimer = NULL;
+  var clickTimer = null;
   var clickDelay = 10; // Milliseconds delay for double-click emulation
 
   jQuery("#block-mainnavigation .menu-item").on('click', 'a', function () {
     var clickedElement = jQuery(this);
 
-    if (clickTimer === NULL) {
+    if (clickTimer === null) {
       // First click
       clickTimer = setTimeout(function () {
         // Single click action
@@ -64,12 +64,12 @@ jQuery(document).ready(function () {
         jQuery('#block-mainnavigation li a.is-active').removeClass("is-active");
         jQuery('#block-mainnavigation .menu-item').find('a[href="' + id + '"]').addClass('is-active');
 
-        clickTimer = NULL; // Reset the timer
+        clickTimer = null; // Reset the timer
       }, clickDelay);
     } else {
       // Second click (double click)
       clearTimeout(clickTimer);
-      clickTimer = NULL;
+      clickTimer = null;
 
       // Double click action
       // Put your double-click behavior here
