@@ -1,3 +1,11 @@
 display:
   default:
     display_title: Varsayılan
+    display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      arguments:
+        tid:
+          exception:
+            title: All

@@ -7,8 +7,12 @@ display:
           label: الاسم
         filemime:
           label: 'MIME type'
+        filesize:
+          label: Size
         status:
           label: الحالة
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       pager:
         options:
           tags:

@@ -1,6 +1,10 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       filters:
         status:
           expose:
@@ -10,6 +14,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -25,6 +31,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -38,6 +46,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -51,6 +61,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -64,6 +76,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -77,6 +91,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:
@@ -90,6 +106,8 @@ display:
       fields:
         status:
           label: Stav
+        source_language:
+          label: From
         target_language:
           label: To
         operations:

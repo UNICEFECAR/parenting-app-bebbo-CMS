@@ -9,8 +9,17 @@ display:
         langcode:
           expose:
             label: ভাষা
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
   widget:
     display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:
@@ -20,6 +29,10 @@ display:
       fields:
         name:
           label: নাম
+      arguments:
+        bundle:
+          exception:
+            title: All
       filters:
         name:
           expose:

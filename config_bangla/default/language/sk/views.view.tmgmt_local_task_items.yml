@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         label:
           label: Označenie
@@ -8,3 +11,7 @@ display:
           label: Typ
         operations:
           label: Operácie
+      arguments:
+        tltid:
+          exception:
+            title: All

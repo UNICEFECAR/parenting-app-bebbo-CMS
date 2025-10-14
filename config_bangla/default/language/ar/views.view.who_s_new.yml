@@ -4,6 +4,9 @@ display:
     display_title: الافتراضي
     display_options:
       title: "Who's new"
+      exposed_form:
+        options:
+          reset_button_label: Reset
   block_1:
     display_title: "Who's new"
     display_options:

@@ -6,3 +6,7 @@ display:
           label: টাইপ
         operations:
           label: কার্যাবলী
+      arguments:
+        tltid:
+          exception:
+            title: All

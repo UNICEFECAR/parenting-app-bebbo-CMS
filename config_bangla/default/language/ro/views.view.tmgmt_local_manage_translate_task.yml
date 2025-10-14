@@ -4,33 +4,64 @@ display:
       exposed_form:
         options:
           submit_button: Filtru
+          reset_button_label: Reset
   assigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni
   closed:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni
   completed:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni
   pending:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni
   rejected:
     display_options:
       fields:
+        created:
+          label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni
   unassigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Operațiuni

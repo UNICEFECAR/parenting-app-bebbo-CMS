@@ -1,8 +1,15 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         item_type:
           label: Lloji
         operations:
           label: Operacionet
+      arguments:
+        tltid:
+          exception:
+            title: All

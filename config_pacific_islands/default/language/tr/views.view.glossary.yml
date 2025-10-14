@@ -7,3 +7,6 @@ display:
           label: Başlık
         name:
           label: Yazar
+      exposed_form:
+        options:
+          reset_button_label: Reset

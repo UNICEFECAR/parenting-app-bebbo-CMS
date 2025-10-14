@@ -4,9 +4,14 @@ display:
       exposed_form:
         options:
           submit_button: Фильтр
+          reset_button_label: Reset
   assigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
   closed:
@@ -14,6 +19,10 @@ display:
       fields:
         created:
           label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
   completed:
@@ -21,11 +30,19 @@ display:
       fields:
         created:
           label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
   pending:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
   rejected:
@@ -33,10 +50,18 @@ display:
       fields:
         created:
           label: Created
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции
   unassigned:
     display_options:
       fields:
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операции

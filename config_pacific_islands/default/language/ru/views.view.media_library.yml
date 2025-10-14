@@ -1,9 +1,32 @@
 display:
   default:
+    display_title: Default
     display_options:
       title: Media
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      filters:
+        langcode:
+          expose:
+            label: Language
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
   widget_table:
     display_options:
       fields:
         thumbnail__target_id:
           label: Thumbnail
+      arguments:
+        bundle:
+          exception:
+            title: All

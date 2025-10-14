@@ -4,6 +4,7 @@ display:
       exposed_form:
         options:
           submit_button: Фільтр
+          reset_button_label: Reset
       fields:
         title:
           label: Заголовок
@@ -14,6 +15,10 @@ display:
           label: Стан
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -32,6 +37,10 @@ display:
           label: Створено
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -50,6 +59,10 @@ display:
           label: Створено
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -66,6 +79,10 @@ display:
           label: Стан
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -84,6 +101,10 @@ display:
           label: Створено
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -100,5 +121,9 @@ display:
           label: Стан
         title:
           label: Заголовок
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції

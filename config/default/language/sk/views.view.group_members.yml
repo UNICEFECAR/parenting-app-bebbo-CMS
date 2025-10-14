@@ -34,6 +34,12 @@ display:
         created:
           label: 'Členom od'
           separator: ', '
+        view_group_content:
+          text: 'Manage member'
+        edit_group_content:
+          text: 'Assign roles'
+        edit_user:
+          text: 'Edit member'
         dropbutton:
           label: Operácie
       arguments:

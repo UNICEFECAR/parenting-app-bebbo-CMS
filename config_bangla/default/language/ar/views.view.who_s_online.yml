@@ -3,6 +3,9 @@ display:
     display_title: الافتراضي
     display_options:
       title: "Who's online"
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         access:
           expose:

@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         label:
           label: Метка
@@ -8,6 +11,10 @@ display:
           label: Тип
         operations:
           label: Операции
+      arguments:
+        tjid:
+          exception:
+            title: All
   checkout:
     display_options:
       fields:

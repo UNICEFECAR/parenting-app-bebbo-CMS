@@ -4,3 +4,7 @@ display:
       fields:
         name:
           label: নাম
+      arguments:
+        tjid:
+          exception:
+            title: All

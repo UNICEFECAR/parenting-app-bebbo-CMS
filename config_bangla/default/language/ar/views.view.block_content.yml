@@ -10,6 +10,9 @@ display:
           label: Updated
         operations:
           label: عمليات
+      exposed_form:
+        options:
+          reset_button_label: Reset
       empty:
         area_text_custom:
           content: 'There are no custom blocks available.'

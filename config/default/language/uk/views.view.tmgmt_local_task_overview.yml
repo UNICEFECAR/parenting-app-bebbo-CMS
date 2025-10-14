@@ -4,6 +4,7 @@ display:
       exposed_form:
         options:
           submit_button: Фільтр
+          reset_button_label: Reset
       fields:
         title:
           label: Мітка
@@ -18,6 +19,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -37,6 +42,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -56,6 +65,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -75,6 +88,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -94,6 +111,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -113,6 +134,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:
@@ -132,6 +157,10 @@ display:
           label: Стан
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
         operations:
           label: Операції
       filters:

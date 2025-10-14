@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      fields:
+        dropbutton:
+          label: Operations
       filters:
         type:
           expose:

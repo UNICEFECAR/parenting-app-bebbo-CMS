@@ -48,8 +48,6 @@ module:
   help: 0
   image: 0
   image_style_quality: 0
-  json_field: 0
-  json_field_widget: 0
   jsonapi: 0
   jsonapi_extras: 0
   lang_dropdown: 0
@@ -58,7 +56,6 @@ module:
   language_visibility_control: 0
   languagefield: 0
   layout_builder: 0
-  layout_builder_expose_all_field_blocks: 0
   layout_builder_styles: 0
   layout_discovery: 0
   link: 0
@@ -91,6 +88,8 @@ module:
   pb_custom_standard_deviation: 0
   phpass: 0
   purge: 0
+  purge_processor_cron: 0
+  purge_processor_lateruntime: 0
   purge_queuer_coretags: 0
   purge_ui: 0
   quickedit: 0
@@ -127,7 +126,6 @@ module:
   toolbar: 0
   toolbar_menu: 0
   toolbar_menu_clean: 0
-  tour: 0
   update: 0
   user: 0
   variationcache: 0

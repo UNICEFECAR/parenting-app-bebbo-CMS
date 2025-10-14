@@ -1,9 +1,14 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         type:
           label: Lloji
+        operations:
+          label: Operations
       filters:
         type:
           expose:

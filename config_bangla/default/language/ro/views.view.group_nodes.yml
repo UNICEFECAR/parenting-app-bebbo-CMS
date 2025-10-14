@@ -1,6 +1,9 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       fields:
         dropbutton:
           label: Operațiuni
@@ -8,3 +11,7 @@ display:
         type:
           expose:
             label: Tip
+      arguments:
+        gid:
+          exception:
+            title: All

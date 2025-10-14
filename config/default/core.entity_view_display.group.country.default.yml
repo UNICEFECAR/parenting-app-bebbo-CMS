@@ -14,7 +14,6 @@ dependencies:
     - field.field.group.country.field_language_visibility_in_app
     - field.field.group.country.field_make_available_for_mobile
     - field.field.group.country.field_master_language
-
     - field.field.group.country.field_unicef_logo
     - group.type.country
   module:
@@ -100,7 +99,6 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-
   field_unicef_logo:
     type: entity_reference_entity_view
     label: above

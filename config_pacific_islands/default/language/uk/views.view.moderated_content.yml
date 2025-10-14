@@ -1,0 +1,15 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      fields:
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      filters:
+        langcode:
+          expose:
+            label: Language

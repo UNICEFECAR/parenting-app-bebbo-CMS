@@ -7,30 +7,42 @@ display:
   assigned:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
   closed:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
   completed:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
   pending:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
   rejected:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী
   unassigned:
     display_options:
       fields:
+        target_language:
+          label: To
         operations:
           label: কার্যাবলী

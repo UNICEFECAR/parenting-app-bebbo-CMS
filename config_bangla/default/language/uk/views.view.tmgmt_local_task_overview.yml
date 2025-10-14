@@ -1,6 +1,10 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
       fields:
         title:
           label: Мітка
@@ -9,6 +13,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -18,6 +28,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -27,6 +43,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -36,6 +58,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -45,6 +73,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -54,6 +88,12 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations
       filters:
         title:
           expose:
@@ -63,3 +103,9 @@ display:
       fields:
         title:
           label: Мітка
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: Operations

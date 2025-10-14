@@ -1,7 +1,28 @@
 display:
   default:
+    display_title: Master
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
       filters:
         langcode:
           expose:
             label: Мова
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
+  widget_table:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All

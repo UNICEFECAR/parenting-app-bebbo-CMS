@@ -1,0 +1,19 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      fields:
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

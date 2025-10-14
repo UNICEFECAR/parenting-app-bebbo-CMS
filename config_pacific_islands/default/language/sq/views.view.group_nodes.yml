@@ -1,7 +1,17 @@
 display:
   default:
     display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      fields:
+        dropbutton:
+          label: Operations
       filters:
         type:
           expose:
             label: Lloji
+      arguments:
+        gid:
+          exception:
+            title: All
