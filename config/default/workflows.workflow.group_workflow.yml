@@ -184,6 +184,12 @@ type_settings:
         - review_after_translation
       to: sme_review
       weight: 11
+    senior_editor_review_to_draft:
+      label: 'Senior Editor Review to Draft'
+      from:
+        - senior_editor_review
+      to: draft
+      weight: 7
     senior_editor_review_to_published:
       label: 'Senior Editor Review to Published'
       from:
@@ -202,6 +208,12 @@ type_settings:
         - senior_editor_review
       to: review_after_translation
       weight: 17
+    senior_editor_review_to_sme_review:
+      label: 'Senior Editor Review to SME Review'
+      from:
+        - senior_editor_review
+      to: sme_review
+      weight: 9
     sme_review_to_review_after_translation:
       label: 'SME Review to Review_after_Translation'
       from:
