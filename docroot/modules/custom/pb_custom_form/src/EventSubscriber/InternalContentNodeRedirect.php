@@ -135,7 +135,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[KernelEvents::REQUEST][] = ['nodeViewRedirect'];
+    $events[KernelEvents::REQUEST][] = ['nodeViewRedirect', 30];
     return $events;
   }
 
@@ -147,6 +147,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     global $base_url;
     $current_path = $this->pathCurrent->getPath();
     $internal = $this->pathAliasManager->getAliasByPath($current_path);
+    $current_lang = $this->languageManager->getCurrentLanguage()->getId();
 
     // Get landing pages from configuration.
     $landing_pages_config = $this->configFactory->get('pb_custom_form.landing_pages');
@@ -165,13 +166,13 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
 
     // Get redirect URLs from configuration.
     $redirect_config = $this->configFactory->get('pb_custom_form.language_redirects');
-    $redirect_urls = $this->parseRedirectUrls($redirect_config->get('redirect_urls'));
+    $redirect_urls_raw = $redirect_config->get('redirect_urls');
+    $redirect_urls = $this->parseRedirectUrls($redirect_urls_raw);
 
     if (is_numeric($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
     if ($node instanceof NodeInterface) {
-      $current_lang = $this->languageManager->getCurrentLanguage()->getId();
       if ($current_lang == 'en') {
         $path = $base_url . '/';
         $event->setResponse(new RedirectResponse($path));
@@ -185,10 +186,8 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
           $path = $base_url . '/';
           $event->setResponse(new RedirectResponse($path));
         }
-
       }
       $this->pageCacheKillSwitch->trigger();
-
     }
   }
 
@@ -199,7 +198,16 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    *   TRUE if node entity route, FALSE otherwise.
    */
   protected function isNodeRoute() {
-    return strpos($this->routeMatch->getRouteName(), 'entity.node.canonical') === 0;
+    $route_name = $this->routeMatch->getRouteName();
+    $node = $this->routeMatch->getParameter('node');
+
+    // Check if we have a node parameter (which indicates a node route)
+    // or if the route name contains node canonical.
+    return ($node !== NULL) ||
+           ($route_name && (
+             strpos($route_name, 'entity.node.canonical') === 0 ||
+             strpos($route_name, 'node.') === 0
+           ));
   }
 
   /**

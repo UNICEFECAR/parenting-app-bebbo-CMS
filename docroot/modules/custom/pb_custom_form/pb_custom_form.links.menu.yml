@@ -33,3 +33,9 @@ pb_custom_form.redirect_management:
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Manage language redirects and landing pages'
   weight: 105
+pb_custom_form.redirect_management_editorial:
+  title: 'Redirect Management'
+  route_name: pb_custom_form.redirect_management
+  menu_name: editorial-menu
+  description: 'Manage language redirects and landing pages'
+  weight: 10

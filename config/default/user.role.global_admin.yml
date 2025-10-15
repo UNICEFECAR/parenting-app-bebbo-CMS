@@ -100,6 +100,7 @@ dependencies:
     - node
     - pathauto
     - pb_custom_form
+    - redirect
     - rest
     - system
     - taxonomy
@@ -132,6 +133,7 @@ permissions:
   - 'administer modules'
   - 'administer nodes'
   - 'administer pathauto'
+  - 'administer redirect settings'
   - 'administer rest resources'
   - 'administer site configuration'
   - 'administer software updates'
@@ -351,6 +353,7 @@ permissions:
   - 'import user_import feeds'
   - 'manage layout builder style groups'
   - 'manage layout builder styles'
+  - 'manage redirect settings'
   - 'restful get custom_rest_resource'
   - 'schedule_import content_health_check_up_language feeds'
   - 'schedule_import content_homescreen_messages feeds'

@@ -3,6 +3,8 @@
 /**
  * @file
  * Group Permissions Merge module.
+ *
+ * Provides multi-country access functionality for users.
  */
 
 use Drupal\node\NodeInterface;
@@ -12,6 +14,9 @@ use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupContentInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\group_permissions_merge\GroupPermissionsMergeService;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
 
 /**
  * Implements hook_group_permission_alter().
@@ -56,9 +61,39 @@ function group_permissions_merge_entity_access(EntityInterface $entity, $operati
       return AccessResult::neutral();
     }
 
-    return \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $entity, $operation)
-      ? AccessResult::allowed()->addCacheContexts(['user.group_permissions'])
-      : AccessResult::neutral();
+    // Check if user has target roles.
+    if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
+      return AccessResult::neutral();
+    }
+
+    if ($operation === 'view') {
+      $membership_loader = \Drupal::service('group.membership_loader');
+      $memberships = $membership_loader->loadByUser($account);
+
+      if (!empty($memberships)) {
+        // Check if this node belongs to any group.
+        $group_content_storage = \Drupal::entityTypeManager()->getStorage('group_content');
+        $node_group_contents = $group_content_storage->loadByProperties([
+          'entity_id' => $entity->id(),
+        ]);
+
+        if (!empty($node_group_contents)) {
+          return AccessResult::allowed()
+            ->addCacheContexts(['user.group_permissions', 'user.roles'])
+            ->addCacheTags(['group_list', 'group_content_list']);
+        }
+      }
+    }
+
+    $has_access = \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $entity, $operation);
+
+    if ($has_access) {
+      return AccessResult::allowed()
+        ->addCacheContexts(['user.group_permissions', 'user.roles'])
+        ->addCacheTags(['group_list', 'group_content_list']);
+    }
+
+    return AccessResult::neutral();
   }
   catch (\Exception $e) {
     return AccessResult::neutral();
@@ -75,9 +110,20 @@ function group_permissions_merge_node_access(NodeInterface $node, $op, AccountIn
       return AccessResult::neutral();
     }
 
-    return \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $node, $op)
-      ? AccessResult::allowed()->addCacheContexts(['user.group_permissions'])
-      : AccessResult::neutral();
+    // Check if user has target roles.
+    if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
+      return AccessResult::neutral();
+    }
+
+    $has_access = \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $node, $op);
+
+    if ($has_access) {
+      return AccessResult::allowed()
+        ->addCacheContexts(['user.group_permissions', 'user.roles'])
+        ->addCacheTags(['group_list', 'group_content_list']);
+    }
+
+    return AccessResult::neutral();
   }
   catch (\Exception $e) {
     return AccessResult::neutral();
@@ -101,6 +147,38 @@ function group_permissions_merge_group_content_delete(GroupContentInterface $gro
   // Sync user allowed_languages when group membership is removed.
   if ($group_content->getContentPlugin()->getPluginId() === 'group_membership') {
     _group_permissions_merge_sync_user_languages($group_content->getEntity());
+  }
+}
+
+/**
+ * Helper function to get all languages from user's groups.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $user
+ *   The user account.
+ *
+ * @return array
+ *   Array of language codes from all user's groups.
+ */
+function _group_permissions_merge_get_user_group_languages(AccountInterface $user) {
+  $group_languages = [];
+
+  try {
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $memberships = $membership_loader->loadByUser($user);
+
+    foreach ($memberships as $membership) {
+      $group = $membership->getGroup();
+      if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+        $languages = $group->get('field_language')->getValue();
+        $lang_values = array_filter(array_column($languages, 'value'));
+        $group_languages = array_merge($group_languages, $lang_values);
+      }
+    }
+
+    return array_unique($group_languages);
+  }
+  catch (\Exception $e) {
+    return [];
   }
 }
 
@@ -159,5 +237,166 @@ function _group_permissions_merge_sync_user_languages(AccountInterface $user) {
     }
   }
   catch (\Exception $e) {
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function group_permissions_merge_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  $account = \Drupal::currentUser();
+
+  // Only process for users with target roles.
+  if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
+    return;
+  }
+
+  // Specifically target the country_content_listing view.
+  if ($view->id() !== 'country_content_listing') {
+    return;
+  }
+
+  // Get user's group memberships.
+  $membership_loader = \Drupal::service('group.membership_loader');
+  $memberships = $membership_loader->loadByUser($account);
+
+  if (empty($memberships)) {
+    return;
+  }
+
+  // Remove or modify the allowed_languages filter for multi-country users.
+  $filters = &$query->where;
+  foreach ($filters as &$filter_group) {
+    if (isset($filter_group['conditions'])) {
+      foreach ($filter_group['conditions'] as $condition_key => $condition) {
+        // Remove allowed_languages restrictions for multi-country users.
+        if (isset($condition['field']) && strpos($condition['field'], 'allowed_languages') !== FALSE) {
+          unset($filter_group['conditions'][$condition_key]);
+        }
+      }
+    }
+  }
+
+  // Get all group IDs the user belongs to.
+  $user_group_ids = [];
+  foreach ($memberships as $membership) {
+    $user_group_ids[] = $membership->getGroup()->id();
+  }
+  if ($user_group_ids) {
+    // Ensure the group_content relationship exists.
+    if ($query instanceof Sql) {
+      if (!isset($query->relationships['group_content'])) {
+        $configuration = [
+          'type' => 'LEFT',
+          'table' => 'group_content_field_data',
+          'field' => 'entity_id',
+          'left_table' => 'node_field_data',
+          'left_field' => 'nid',
+          'operator' => '=',
+        ];
+
+        $join = \Drupal::service('plugin.manager.views.join')->createInstance('standard', $configuration);
+        $query->addRelationship('group_content_multi_country', $join, 'node_field_data');
+
+        // Add condition to include nodes from user's groups.
+        $query->addWhere(0, 'group_content_multi_country.gid', $user_group_ids, 'IN');
+      }
+    }
+    else {
+      // The query plugin isn't the SQL plugin.
+      \Drupal::logger('group_permissions_merge')->debug('Views query plugin is not SQL; skipped adding relationship for multi-country group filter.');
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_execute().
+ */
+function group_permissions_merge_views_pre_execute(ViewExecutable $view) {
+  $account = \Drupal::currentUser();
+
+  // Only process for users with target roles and specific views.
+  if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles()) ||
+      $view->id() !== 'country_content_listing') {
+    return;
+  }
+
+  // Ensure user's allowed_languages are synced before the view executes.
+  $user_entity = \Drupal::entityTypeManager()->getStorage('user')->load($account->id());
+  if ($user_entity) {
+    // Check if user's allowed_languages are empty or need updating.
+    $current_langs = $user_entity->get('allowed_languages')->getValue();
+    if (empty($current_langs)) {
+      _group_permissions_merge_sync_user_languages($user_entity);
+      // Reload user after sync.
+      $user_entity = \Drupal::entityTypeManager()->getStorage('user')->load($account->id());
+    }
+  }
+
+  // Get user's group memberships.
+  $membership_loader = \Drupal::service('group.membership_loader');
+  $memberships = $membership_loader->loadByUser($account);
+
+  if (count($memberships) <= 1) {
+    // Single country user, no need to modify.
+    return;
+  }
+
+  $filters = &$view->filter;
+  if (isset($filters['allowed_languages'])) {
+    // Get all languages from user's groups.
+    $user_languages = [];
+    foreach ($memberships as $membership) {
+      $group = $membership->getGroup();
+      if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+        $languages = $group->get('field_language')->getValue();
+        $lang_values = array_filter(array_column($languages, 'value'));
+        $user_languages = array_merge($user_languages, $lang_values);
+      }
+    }
+
+    // Also include user's current allowed_languages.
+    if ($user_entity && $user_entity->hasField('allowed_languages')) {
+      $current_langs = $user_entity->get('allowed_languages')->getValue();
+      $current_langcodes = array_column($current_langs, 'target_id');
+      $user_languages = array_merge($user_languages, $current_langcodes);
+    }
+
+    $user_languages = array_unique(array_filter($user_languages));
+
+    if (!empty($user_languages)) {
+      $filters['allowed_languages']->value = $user_languages;
+      $filters['allowed_languages']->operator = 'in';
+    }
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function group_permissions_merge_user_login($account) {
+  // Check if user has target roles and empty allowed_languages.
+  if (array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
+    if ($account->hasField('allowed_languages')) {
+      $current_langs = $account->get('allowed_languages')->getValue();
+      if (empty($current_langs)) {
+        // Sync languages on login if they're empty.
+        _group_permissions_merge_sync_user_languages($account);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function group_permissions_merge_module_implements_alter(&$implementations, $hook) {
+  // Ensure our access hooks run after Group module's hooks.
+  if (in_array($hook, ['entity_access', 'node_access', 'views_query_alter', 'views_pre_execute', 'user_login'])) {
+    if (isset($implementations['group_permissions_merge'])) {
+      $group = $implementations['group_permissions_merge'];
+      unset($implementations['group_permissions_merge']);
+      $implementations['group_permissions_merge'] = $group;
+    }
   }
 }

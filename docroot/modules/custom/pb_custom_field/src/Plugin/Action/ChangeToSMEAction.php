@@ -132,14 +132,18 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
     $user = User::load($uid);
     $grp_membership_service = $this->groupMembershipLoader;
     $grps = $grp_membership_service->loadByUser($user);
-    $groups = [];
     $grp_country_new_array = [];
     if (!empty($grps)) {
+      // Collect languages from ALL groups the user belongs to.
       foreach ($grps as $grp) {
-        $groups = $grp->getGroup();
+        $group = $grp->getGroup();
+        if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+          $grp_country_language = $group->get('field_language')->getValue();
+          $group_languages = array_column($grp_country_language, 'value');
+          $grp_country_new_array = array_merge($grp_country_new_array, $group_languages);
+        }
       }
-      $grp_country_language = $groups->get('field_language')->getValue();
-      $grp_country_new_array = array_column($grp_country_language, 'value');
+      $grp_country_new_array = array_unique($grp_country_new_array);
     }
     $this->processItem = $this->processItem + 1;
     $list = $this->context['list'];

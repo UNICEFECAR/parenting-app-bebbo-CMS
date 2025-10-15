@@ -120,27 +120,33 @@ class GroupPermissionsMergeService {
         return FALSE;
       }
 
+      // First, find which group owns this node.
       $group_content_storage = $this->entityTypeManager->getStorage('group_content');
       $node_bundle = $node->bundle();
 
+      $node_group_contents = $group_content_storage->loadByProperties([
+        'entity_id' => $node->id(),
+        'type' => 'country-group_node-' . $node_bundle,
+      ]);
+
+      if (empty($node_group_contents)) {
+        return FALSE;
+      }
+
+      // Now check if user has access through ANY of their group memberships
+      // This allows cross-country access for users in multiple groups.
       foreach ($memberships as $membership) {
         $group = $membership->getGroup();
         if (!$group) {
           continue;
         }
 
-        // Check if node belongs to this group.
-        $group_contents = $group_content_storage->loadByProperties([
-          'gid' => $group->id(),
-          'entity_id' => $node->id(),
-          'type' => 'country-group_node-' . $node_bundle,
-        ]);
+        // Check if user has the required permission in ANY group.
+        $has_permission = array_reduce($membership->getRoles(), function ($carry, $role) use ($node_bundle, $operation) {
+          return $carry || $this->hasRequiredPermission($role, $node_bundle, $operation);
+        }, FALSE);
 
-        // Check permissions if node belongs to group.
-        if (!empty($group_contents) &&
-            array_reduce($membership->getRoles(), function ($carry, $role) use ($node_bundle, $operation) {
-              return $carry || $this->hasRequiredPermission($role, $node_bundle, $operation);
-            }, FALSE)) {
+        if ($has_permission) {
           return TRUE;
         }
       }
@@ -214,6 +220,48 @@ class GroupPermissionsMergeService {
     });
 
     return $workflow_permissions;
+  }
+
+  /**
+   * Checks if a user can perform specific workflow transitions.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param string $from_state
+   *   The current moderation state.
+   * @param string $to_state
+   *   The target moderation state.
+   *
+   * @return bool
+   *   TRUE if the user can perform this transition.
+   */
+  public function canPerformStateTransition(AccountInterface $account, $from_state, $to_state) {
+    $user_roles = $account->getRoles();
+
+    // Define allowed transitions per role based on acceptance criteria.
+    $allowed_transitions = [
+      'editor' => [
+        'review_after_translation' => ['draft'],
+      ],
+      'sme' => [
+        'sme_review' => ['senior_editor_review'],
+      ],
+      'se' => [
+        'senior_editor_review' => ['review_after_translation', 'draft', 'sme_review', 'published'],
+      ],
+    ];
+
+    // Check if user has any of the target roles.
+    foreach (['editor', 'sme', 'se'] as $role) {
+      if (in_array($role, $user_roles)) {
+        if (isset($allowed_transitions[$role][$from_state]) &&
+            in_array($to_state, $allowed_transitions[$role][$from_state])) {
+          return TRUE;
+        }
+      }
+    }
+
+    return FALSE;
   }
 
   /**
