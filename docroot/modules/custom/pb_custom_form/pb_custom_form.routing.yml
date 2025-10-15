@@ -94,7 +94,7 @@ pb_custom_form.redirect_management:
     _form: 'Drupal\pb_custom_form\Form\RedirectManagementForm'
     _title: 'Redirect Management'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'manage redirect settings'
   options:
     _admin_route: TRUE
 

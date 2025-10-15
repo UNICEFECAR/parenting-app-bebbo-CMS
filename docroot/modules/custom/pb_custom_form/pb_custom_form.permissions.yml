@@ -4,3 +4,6 @@ manage mobile javascript:
 forcefull update check:
   title: 'Forcefull update check'
   description: 'access forcefull update check api config'
+manage redirect settings:
+  title: 'Manage redirect settings'
+  description: 'Access redirect management configuration'

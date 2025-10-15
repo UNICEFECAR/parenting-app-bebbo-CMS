@@ -5,6 +5,7 @@ dependencies:
   module:
     - content_moderation
     - node
+    - pb_custom_form
     - system
     - toolbar_menu
 id: reviewer
@@ -13,6 +14,7 @@ weight: -6
 is_admin: null
 permissions:
   - 'access content'
+  - 'manage redirect settings'
   - 'view any unpublished content'
   - 'view editorial_menu in toolbar'
   - 'view latest version'

@@ -17,6 +17,7 @@ permissions:
   - 'administer group'
   - 'administer members'
   - 'create group_membership entity'
+  - 'manage redirect settings'
   - 'update any group_membership entity'
   - 'update own group_membership content'
   - 'view group_membership content'

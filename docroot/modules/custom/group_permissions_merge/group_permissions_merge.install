@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function group_permissions_merge_install() {
+  // Set module weight higher than Group module to ensure our hooks run after.
+  try {
+    $extension_config = \Drupal::configFactory()->getEditable('core.extension');
+    $modules = $extension_config->get('module');
+
+    if (isset($modules['group'])) {
+      $group_weight = $modules['group'];
+      $modules['group_permissions_merge'] = $group_weight + 1;
+      $extension_config->set('module', $modules)->save();
+    }
+  }
+  catch (\Exception $e) {
+    // Silently fail if unable to set module weight.
+  }
+}
