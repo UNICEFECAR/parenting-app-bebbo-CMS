@@ -7,6 +7,9 @@
  * Provides multi-country access functionality for users.
  */
 
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\user\Entity\Role;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -217,7 +220,23 @@ function _group_permissions_merge_sync_user_languages(AccountInterface $user) {
       }
     }
 
-    // Get current user languages.
+    // For multi-country users.
+    if (count($memberships) > 1) {
+      $unique_languages = array_map(function ($langcode) {
+        return ['target_id' => $langcode];
+      }, $group_languages);
+
+      $user->set('allowed_languages', $unique_languages);
+      $user->save();
+
+      // Clear any cached allowed languages for this user.
+      if (\Drupal::hasService('allowed_languages.allowed_languages_manager')) {
+        \Drupal::service('cache.default')->delete('allowed_languages:' . $user->id());
+      }
+      return;
+    }
+
+    // Single country user - only add missing languages.
     $current_langs = $user->get('allowed_languages')->getValue();
     $current_langcodes = array_column($current_langs, 'target_id');
 
@@ -234,6 +253,11 @@ function _group_permissions_merge_sync_user_languages(AccountInterface $user) {
 
       $user->set('allowed_languages', $unique_languages);
       $user->save();
+
+      // Clear any cached allowed languages for this user.
+      if (\Drupal::hasService('allowed_languages.allowed_languages_manager')) {
+        \Drupal::service('cache.default')->delete('allowed_languages:' . $user->id());
+      }
     }
   }
   catch (\Exception $e) {
@@ -301,10 +325,6 @@ function group_permissions_merge_views_query_alter(ViewExecutable $view, QueryPl
         // Add condition to include nodes from user's groups.
         $query->addWhere(0, 'group_content_multi_country.gid', $user_group_ids, 'IN');
       }
-    }
-    else {
-      // The query plugin isn't the SQL plugin.
-      \Drupal::logger('group_permissions_merge')->debug('Views query plugin is not SQL; skipped adding relationship for multi-country group filter.');
     }
   }
 }
@@ -388,15 +408,152 @@ function group_permissions_merge_user_login($account) {
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function group_permissions_merge_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  try {
+    // Override pb_custom_field validation for multi-country users.
+    $user = \Drupal::currentUser();
+    $user_roles = $user->getRoles();
+
+    // Only process for target roles.
+    if (!array_intersect($user_roles, GroupPermissionsMergeService::getTargetRoles())) {
+      return;
+    }
+
+    // Check if user has multiple group memberships.
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $memberships = $membership_loader->loadByUser($user);
+
+    if (count($memberships) <= 1) {
+      // Single country user, no need to override.
+      return;
+    }
+
+    // For node forms, we need to intercept the validation.
+    $route_match = \Drupal::routeMatch();
+    if ($route_match->getRouteName() == "node.add" ||
+        $route_match->getRouteName() == "entity.node.edit_form" ||
+        $form_id == "content-moderation-entity-moderation-form") {
+
+      // Store multi-country user info in form state for later use.
+      $form_state->set('group_permissions_merge_multi_country_user', $user->id());
+
+      // Collect all languages from all groups for this user.
+      $all_group_languages = [];
+      foreach ($memberships as $membership) {
+        $group = $membership->getGroup();
+        if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+          $country_languages = $group->get('field_language')->getValue();
+          foreach ($country_languages as $mlangval) {
+            if (!empty($mlangval['value'])) {
+              $all_group_languages[] = $mlangval['value'];
+            }
+          }
+        }
+      }
+      $all_group_languages = array_unique(array_filter($all_group_languages));
+      $form_state->set('group_permissions_merge_allowed_languages', $all_group_languages);
+
+      // Add our pre-validation that runs before pb_custom_field validation.
+      if (!empty($all_group_languages)) {
+        array_unshift($form['#validate'], 'group_permissions_merge_pre_validation');
+      }
+    }
+  }
+  catch (\Exception $e) {
+    return;
+  }
+}
+
+/**
+ * Custom validation that runs before pb_custom_field validation.
+ */
+function group_permissions_merge_pre_validation(&$form, FormStateInterface $form_state) {
+  try {
+    // Check if this is a multi-country user.
+    $multi_country_user_id = $form_state->get('group_permissions_merge_multi_country_user');
+    $allowed_languages = $form_state->get('group_permissions_merge_allowed_languages');
+
+    if (!$multi_country_user_id || !is_array($allowed_languages) || empty($allowed_languages)) {
+      // Not a multi-country user, let original validation handle it.
+      return;
+    }
+
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $bypass_access = FALSE;
+
+    // Check for bypass node access permission.
+    foreach ($roles as $rval) {
+      if ($rval != "authenticated") {
+        $role = Role::load($rval);
+        if ($role && in_array('bypass node access', $role->getPermissions())) {
+          $bypass_access = TRUE;
+          break;
+        }
+      }
+    }
+
+    // If user has bypass access, allow everything.
+    if ($bypass_access) {
+      $form_state->set('group_permissions_merge_bypass_original', TRUE);
+      return;
+    }
+
+    // Get the form language.
+    $form_language = $form_state->get('langcode');
+
+    // If no form language is set, try to get it from the node.
+    if (empty($form_language)) {
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        $entity = $form_object->getEntity();
+        if ($entity && method_exists($entity, 'language')) {
+          $form_language = $entity->language()->getId();
+        }
+      }
+    }
+
+    // Check if form language is allowed for multi-country user.
+    if (!empty($form_language) && is_array($allowed_languages)) {
+      if (in_array($form_language, $allowed_languages)) {
+        // User has access to this language, bypass original validation.
+        $form_state->set('group_permissions_merge_bypass_original', TRUE);
+      }
+      else {
+        // User doesn't have access, show error and bypass original validation.
+        $form_state->setErrorByName('', 'This content belongs to Master content and cannot be edited. It has to be assigned to your country to allow for further editing and contextualization.');
+        $form_state->set('group_permissions_merge_bypass_original', TRUE);
+      }
+    }
+  }
+  catch (\Exception $e) {
+    // If anything goes wrong, let the original validation handle it.
+    return;
+  }
+}
+
+/**
  * Implements hook_module_implements_alter().
  */
 function group_permissions_merge_module_implements_alter(&$implementations, $hook) {
-  // Ensure our access hooks run after Group module's hooks.
-  if (in_array($hook, ['entity_access', 'node_access', 'views_query_alter', 'views_pre_execute', 'user_login'])) {
+  // Ensure our hooks run after pb_custom_field and Group module's hooks.
+  if (in_array($hook, [
+    'form_alter', 'entity_access', 'node_access',
+    'views_query_alter', 'views_pre_execute', 'user_login',
+  ])) {
     if (isset($implementations['group_permissions_merge'])) {
       $group = $implementations['group_permissions_merge'];
       unset($implementations['group_permissions_merge']);
       $implementations['group_permissions_merge'] = $group;
     }
+  }
+
+  // Specifically for form_alter, ensure we run after pb_custom_field.
+  if ($hook === 'form_alter' && isset($implementations['pb_custom_field']) && isset($implementations['group_permissions_merge'])) {
+    $group_permissions_merge = $implementations['group_permissions_merge'];
+    unset($implementations['group_permissions_merge']);
+    $implementations['group_permissions_merge'] = $group_permissions_merge;
   }
 }
