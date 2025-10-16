@@ -95,114 +95,6 @@ class GroupPermissionsMergeService {
   }
 
   /**
-   * Checks if a user has access to a node through any of their group.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account.
-   * @param \Drupal\node\NodeInterface $node
-   *   The node to check access for.
-   * @param string $operation
-   *   The operation (view, update, delete).
-   *
-   * @return bool
-   *   TRUE if user has access, FALSE otherwise.
-   */
-  public function hasNodeAccess(AccountInterface $account, $node, $operation) {
-    try {
-      // Early returns for validation.
-      if (!array_intersect($account->getRoles(), self::getTargetRoles()) ||
-          !in_array($operation, ['view', 'update'])) {
-        return FALSE;
-      }
-
-      $memberships = $this->membershipLoader->loadByUser($account);
-      if (empty($memberships)) {
-        return FALSE;
-      }
-
-      // First, find which group owns this node.
-      $group_content_storage = $this->entityTypeManager->getStorage('group_content');
-      $node_bundle = $node->bundle();
-
-      $node_group_contents = $group_content_storage->loadByProperties([
-        'entity_id' => $node->id(),
-        'type' => 'country-group_node-' . $node_bundle,
-      ]);
-
-      if (empty($node_group_contents)) {
-        return FALSE;
-      }
-
-      // Now check if user has access through ANY of their group memberships
-      // This allows cross-country access for users in multiple groups.
-      foreach ($memberships as $membership) {
-        $group = $membership->getGroup();
-        if (!$group) {
-          continue;
-        }
-
-        // Check if user has the required permission in ANY group.
-        $has_permission = array_reduce($membership->getRoles(), function ($carry, $role) use ($node_bundle, $operation) {
-          return $carry || $this->hasRequiredPermission($role, $node_bundle, $operation);
-        }, FALSE);
-
-        if ($has_permission) {
-          return TRUE;
-        }
-      }
-
-      return FALSE;
-    }
-    catch (\Exception $e) {
-      return FALSE;
-    }
-  }
-
-  /**
-   * Checks if a group role has the required permission for an operation.
-   *
-   * @param \Drupal\group\Entity\GroupRoleInterface $group_role
-   *   The group role.
-   * @param string $bundle
-   *   The node bundle.
-   * @param string $operation
-   *   The operation.
-   *
-   * @return bool
-   *   TRUE if the role has the required permission.
-   */
-  protected function hasRequiredPermission($group_role, $bundle, $operation) {
-    if (!$group_role || empty($bundle) || empty($operation)) {
-      return FALSE;
-    }
-
-    $permissions = $group_role->getPermissions();
-    if (!is_array($permissions)) {
-      return FALSE;
-    }
-
-    // Define permission patterns for each operation.
-    $permission_patterns = [
-      'view' => [
-        'view unpublished group_node:' . $bundle . ' entity',
-        'view latest version',
-        'view group_node:' . $bundle . ' entity',
-      ],
-      'update' => [
-        'update any group_node:' . $bundle . ' entity',
-        'update own group_node:' . $bundle . ' entity',
-      ],
-      'delete' => [
-        'delete any group_node:' . $bundle . ' entity',
-        'delete own group_node:' . $bundle . ' entity',
-      ],
-    ];
-
-    return isset($permission_patterns[$operation]) &&
-           !empty(array_intersect($permission_patterns[$operation], $permissions));
-  }
-
-  /**
    * Gets all workflow transition permissions for a user across all groups.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
@@ -287,7 +179,7 @@ class GroupPermissionsMergeService {
     $required_permission = 'use group_workflow transition ' . $transition_id;
     $has_permission = in_array($required_permission, $workflow_permissions);
 
-    return $has_permission || ($node && $this->hasNodeAccess($account, $node, 'update') && $has_permission);
+    return $has_permission;
   }
 
 }

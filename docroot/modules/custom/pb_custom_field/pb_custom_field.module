@@ -27,6 +27,59 @@ use Drupal\file\Entity\File;
 use Drupal\Core\Access\AccessResult;
 
 /**
+ * Helper function to get user's primary group.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $user
+ *   The user account.
+ *
+ * @return \Drupal\group\Entity\GroupInterface|null
+ *   The user's primary group or NULL if none found.
+ */
+function _pb_custom_field_get_user_primary_group(?AccountInterface $user = NULL) {
+  if (!$user) {
+    $user = \Drupal::currentUser();
+  }
+
+  try {
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+
+    if (!empty($grps)) {
+      foreach ($grps as $grp) {
+        return $grp->getGroup();
+      }
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('pb_custom_field')->error('Error loading user group: @message', ['@message' => $e->getMessage()]);
+  }
+
+  return NULL;
+}
+
+/**
+ * Helper function to get user's group languages.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $user
+ *   The user account.
+ * @param string $field_name
+ *   The field name to get languages.
+ *
+ * @return array
+ *   Array of language codes.
+ */
+function _pb_custom_field_get_user_group_languages(?AccountInterface $user = NULL, $field_name = 'field_language') {
+  $group = _pb_custom_field_get_user_primary_group($user);
+
+  if (!$group || !$group->hasField($field_name) || $group->get($field_name)->isEmpty()) {
+    return [];
+  }
+
+  $languages = $group->get($field_name)->getValue();
+  return array_filter(array_column($languages, 'value'));
+}
+
+/**
  * {@inheritdoc}
  */
 function pb_custom_field_allowed_values_function(FieldStorageConfig $definition, $cacheable, $entity = NULL) {
@@ -48,31 +101,10 @@ function pb_custom_field_allowed_values_function(FieldStorageConfig $definition,
 function pb_custom_field_allowed_languages_form_media_library_add_form_oembed_alter(array &$form, FormStateInterface $form_state) {
   if (isset($form['media'][0]['fields']['langcode']['widget'])) {
     $user = \Drupal::currentUser();
-    $roles = $user->getRoles();
-    $bypass_access = FALSE;
-    /* check the bypass content access*/
-    foreach ($roles as $rval) {
-      if ($rval != "authenticated") {
-        $role = Role::load($rval);
-        if ($role && in_array('bypass node access', $role->getPermissions())) {
-          $bypass_access = TRUE;
-        }
-      }
-    }
-    if (!$bypass_access) {
-      $groups = [];
-      $grp_membership_service = \Drupal::service('group.membership_loader');
-      $grps = $grp_membership_service->loadByUser($user);
-      foreach ($grps as $grp) {
-        $groups = $grp->getGroup();
-      }
-      if (!empty($groups)) {
-        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
-        $country_languages = $groups->get('field_language')->getValue();
-        $clanguage = [];
-        foreach ($country_languages as $mlangval) {
-          $clanguage[] = $mlangval['value'];
-        }
+
+    if (!$user->hasPermission('bypass node access')) {
+      $clanguage = _pb_custom_field_get_user_group_languages($user);
+      if (!empty($clanguage)) {
         $language_options = [];
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
           if (in_array($langcode, $clanguage)) {
@@ -91,31 +123,10 @@ function pb_custom_field_allowed_languages_form_media_library_add_form_oembed_al
 function pb_custom_field_allowed_languages_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state) {
   if (isset($form['media'][0]['fields']['langcode']['widget'])) {
     $user = \Drupal::currentUser();
-    $roles = $user->getRoles();
-    $bypass_access = FALSE;
-    /* check the bypass content access*/
-    foreach ($roles as $rval) {
-      if ($rval != "authenticated") {
-        $role = Role::load($rval);
-        if ($role && in_array('bypass node access', $role->getPermissions())) {
-          $bypass_access = TRUE;
-        }
-      }
-    }
-    if (!$bypass_access) {
-      $groups = [];
-      $grp_membership_service = \Drupal::service('group.membership_loader');
-      $grps = $grp_membership_service->loadByUser($user);
-      foreach ($grps as $grp) {
-        $groups = $grp->getGroup();
-      }
-      if (!empty($groups)) {
-        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
-        $country_languages = $groups->get('field_language')->getValue();
-        $clanguage = [];
-        foreach ($country_languages as $mlangval) {
-          $clanguage[] = $mlangval['value'];
-        }
+
+    if (!$user->hasPermission('bypass node access')) {
+      $clanguage = _pb_custom_field_get_user_group_languages($user);
+      if (!empty($clanguage)) {
         $language_options = [];
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
           if (in_array($langcode, $clanguage)) {
@@ -1231,10 +1242,28 @@ function pb_custom_field_views_pre_execute($view) {
  * Validation for all node and add image media form.
  */
 function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $form_state) {
-  // Check if group_permissions_merge module has set a bypass flag.
+  // Check if group_permissions_merge module.
   if ($form_state->get('group_permissions_merge_bypass_original')) {
-    // Skip original validation for multi-country users.
-    return;
+    // Validate that this bypass is legitimate.
+    $user = \Drupal::currentUser();
+    $editorial_roles = ['editor', 'sme', 'se'];
+
+    if (array_intersect($user->getRoles(), $editorial_roles)) {
+      $membership_loader = \Drupal::service('group.membership_loader');
+      $memberships = $membership_loader->loadByUser($user);
+
+      if (count($memberships) > 1) {
+        // Legitimate multi-country user - allow bypass.
+        \Drupal::logger('pb_custom_field')->info('Multi-country validation bypass for user @uid with @count group memberships', [
+          '@uid' => $user->id(),
+          '@count' => count($memberships),
+        ]);
+        return;
+      }
+    }
+
+    // Invalid bypass attempt - log and continue with normal validation.
+    \Drupal::logger('pb_custom_field')->warning('Invalid bypass attempt by user @uid', ['@uid' => $user->id()]);
   }
 
   /* Check the user validation.*/
@@ -1782,12 +1811,98 @@ function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
       }
     }
     else {
+      // Only remove specific editorial roles.
+      $editorial_roles_to_remove = ['reviewer', 'sme', 'editor', 'se'];
       $user_roles = $user->getRoles();
-      foreach ($user_roles as $user_role) {
-        $user->removeRole($user_role);
+      $roles_to_remove = array_intersect($user_roles, $editorial_roles_to_remove);
+
+      if (!empty($roles_to_remove)) {
+        foreach ($roles_to_remove as $role_to_remove) {
+          $user->removeRole($role_to_remove);
+        }
+        // Save once after all role removals.
         $user->save();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_entity_access().
+ *
+ * Provides proper group-based access control for multi-country editors.
+ */
+function pb_custom_field_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  try {
+    // Only handle nodes.
+    if ($entity->getEntityTypeId() !== 'node') {
+      return AccessResult::neutral();
+    }
+
+    // Allow admins with full bypass permission to proceed.
+    if ($account->hasPermission('bypass node access')) {
+      return AccessResult::allowed()->cachePerPermissions();
+    }
+
+    // Only intervene for update/edit operations for editorial roles.
+    if (!in_array($operation, ['update', 'delete'])) {
+      return AccessResult::neutral();
+    }
+
+    // Only apply this logic to editorial roles.
+    $editorial_roles = ['editor', 'sme', 'se', 'reviewer'];
+    $user_roles = $account->getRoles();
+    if (!array_intersect($user_roles, $editorial_roles)) {
+      return AccessResult::neutral();
+    }
+
+    // Load group_content entities that reference this node.
+    $group_contents = \Drupal::entityTypeManager()
+      ->getStorage('group_content')
+      ->loadByProperties([
+        'entity_id' => $entity->id(),
+      ]);
+
+    if (!empty($group_contents)) {
+      // Node belongs to one or more groups - check if user is member of any.
+      $membership_loader = \Drupal::service('group.membership_loader');
+      $user_memberships = $membership_loader->loadByUser($account);
+
+      if (!empty($user_memberships)) {
+        foreach ($group_contents as $group_content) {
+          if (method_exists($group_content, 'getGroup') && ($group = $group_content->getGroup())) {
+            foreach ($user_memberships as $membership) {
+              if ($membership->getGroup()->id() === $group->id()) {
+                // User is a member of the group.
+                $node_type = $entity->bundle();
+                $permission_to_check = ($operation === 'update') ?
+                  "update any group_node:{$node_type} entity" :
+                  "delete any group_node:{$node_type} entity";
+
+                // Check if user has the required group permission.
+                if ($group->hasPermission($permission_to_check, $account)) {
+                  return AccessResult::allowed()->cachePerUser()->addCacheTags(['group_list', 'group_content_list']);
+                }
+              }
+            }
+          }
+        }
+        // Node belongs to groups but user is not member of any - forbid.
+        return AccessResult::forbidden()->cachePerUser();
+      }
+      else {
+        // User has no group memberships but node belongs to groups - forbid.
+        return AccessResult::forbidden()->cachePerUser();
+      }
+    }
+
+    // Node isn't in any group - let normal node access checks run.
+    return AccessResult::neutral();
+  }
+  catch (\Exception $e) {
+    // Log error and fall back to neutral to avoid breaking the site.
+    \Drupal::logger('pb_custom_field')->error('Error in entity access hook: @message', ['@message' => $e->getMessage()]);
+    return AccessResult::neutral();
   }
 }
 

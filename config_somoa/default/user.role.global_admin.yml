@@ -354,6 +354,7 @@ permissions:
   - 'import taxonomy_type_of_support feeds'
   - 'import taxonomy_type_of_support_languag feeds'
   - 'import user_import feeds'
+  - 'manage redirect settings'
   - 'schedule_import content_health_check_up_language feeds'
   - 'schedule_import content_homescreen_messages feeds'
   - 'schedule_import content_vaccination_languages feeds'

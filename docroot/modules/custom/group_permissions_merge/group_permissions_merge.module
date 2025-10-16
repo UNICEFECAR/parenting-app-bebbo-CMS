@@ -10,12 +10,9 @@
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\user\Entity\Role;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupContentInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\group_permissions_merge\GroupPermissionsMergeService;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -52,85 +49,6 @@ function group_permissions_merge_group_permission_alter(array &$permissions, Gro
 
   // Merge with existing permissions and remove duplicates.
   $permissions = array_unique(array_merge($permissions, $merged_permissions));
-}
-
-/**
- * Implements hook_entity_access().
- */
-function group_permissions_merge_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  try {
-    // Only handle node entities for multi-country access.
-    if ($entity->getEntityTypeId() !== 'node') {
-      return AccessResult::neutral();
-    }
-
-    // Check if user has target roles.
-    if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
-      return AccessResult::neutral();
-    }
-
-    if ($operation === 'view') {
-      $membership_loader = \Drupal::service('group.membership_loader');
-      $memberships = $membership_loader->loadByUser($account);
-
-      if (!empty($memberships)) {
-        // Check if this node belongs to any group.
-        $group_content_storage = \Drupal::entityTypeManager()->getStorage('group_content');
-        $node_group_contents = $group_content_storage->loadByProperties([
-          'entity_id' => $entity->id(),
-        ]);
-
-        if (!empty($node_group_contents)) {
-          return AccessResult::allowed()
-            ->addCacheContexts(['user.group_permissions', 'user.roles'])
-            ->addCacheTags(['group_list', 'group_content_list']);
-        }
-      }
-    }
-
-    $has_access = \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $entity, $operation);
-
-    if ($has_access) {
-      return AccessResult::allowed()
-        ->addCacheContexts(['user.group_permissions', 'user.roles'])
-        ->addCacheTags(['group_list', 'group_content_list']);
-    }
-
-    return AccessResult::neutral();
-  }
-  catch (\Exception $e) {
-    return AccessResult::neutral();
-  }
-}
-
-/**
- * Implements hook_node_access().
- */
-function group_permissions_merge_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  try {
-    // Early return for unsupported operations.
-    if (!in_array($op, ['view', 'update'])) {
-      return AccessResult::neutral();
-    }
-
-    // Check if user has target roles.
-    if (!array_intersect($account->getRoles(), GroupPermissionsMergeService::getTargetRoles())) {
-      return AccessResult::neutral();
-    }
-
-    $has_access = \Drupal::service('group_permissions_merge.service')->hasNodeAccess($account, $node, $op);
-
-    if ($has_access) {
-      return AccessResult::allowed()
-        ->addCacheContexts(['user.group_permissions', 'user.roles'])
-        ->addCacheTags(['group_list', 'group_content_list']);
-    }
-
-    return AccessResult::neutral();
-  }
-  catch (\Exception $e) {
-    return AccessResult::neutral();
-  }
 }
 
 /**
@@ -540,8 +458,7 @@ function group_permissions_merge_pre_validation(&$form, FormStateInterface $form
 function group_permissions_merge_module_implements_alter(&$implementations, $hook) {
   // Ensure our hooks run after pb_custom_field and Group module's hooks.
   if (in_array($hook, [
-    'form_alter', 'entity_access', 'node_access',
-    'views_query_alter', 'views_pre_execute', 'user_login',
+    'form_alter', 'views_query_alter', 'views_pre_execute', 'user_login',
   ])) {
     if (isset($implementations['group_permissions_merge'])) {
       $group = $implementations['group_permissions_merge'];

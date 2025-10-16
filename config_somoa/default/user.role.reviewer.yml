@@ -16,6 +16,7 @@ dependencies:
     - group
     - media
     - node
+    - pb_custom_form
     - system
     - tmgmt
     - toolbar_menu
@@ -38,6 +39,7 @@ permissions:
   - 'edit own remote_video media'
   - 'edit own video media'
   - 'execute pb_custom_field_assign_action node'
+  - 'manage redirect settings'
   - 'translate all languages'
   - 'translate any entity'
   - 'translate image media'
