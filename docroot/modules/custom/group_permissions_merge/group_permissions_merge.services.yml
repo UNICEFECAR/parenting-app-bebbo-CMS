@@ -2,3 +2,9 @@ services:
   group_permissions_merge.service:
     class: Drupal\group_permissions_merge\GroupPermissionsMergeService
     arguments: ['@group.membership_loader', '@entity_type.manager']
+
+  group_permissions_merge.allowed_languages_manager_decorator:
+    class: Drupal\group_permissions_merge\AllowedLanguagesManagerDecorator
+    decorates: allowed_languages.allowed_languages_manager
+    arguments: ['@group_permissions_merge.allowed_languages_manager_decorator.inner', '@group.membership_loader', '@current_user']
+    public: false

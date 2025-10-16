@@ -1231,6 +1231,12 @@ function pb_custom_field_views_pre_execute($view) {
  * Validation for all node and add image media form.
  */
 function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $form_state) {
+  // Check if group_permissions_merge module has set a bypass flag.
+  if ($form_state->get('group_permissions_merge_bypass_original')) {
+    // Skip original validation for multi-country users.
+    return;
+  }
+
   /* Check the user validation.*/
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
