@@ -804,6 +804,9 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  *
  * @link https://docs.acquia.com/blt/
  */
+
+$settings["config_sync_directory"] = '../config/default';
+
 /********** DEV *******************/
 if (file_exists('/var/www/site-php')) {
    require '/var/www/site-php/' . $_ENV['AH_SITE_GROUP'] . '/' . $_ENV['AH_SITE_GROUP'] . '-settings.inc';
@@ -812,11 +815,6 @@ if (file_exists('/var/www/site-php')) {
    if (file_exists(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php')) {
       require(DRUPAL_ROOT . '/sites/default/cloud-memcache-d8+.php');
    }
-
-   // Change tx_isolation from REPEATABLE READ to READ COMMITTED.
-  $databases['default']['default']['init_commands'] = [
-    'isolation_level' => "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED",
-  ];
 }
 $apikeys = "";
 if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
@@ -838,7 +836,6 @@ if (isset($_ENV['AH_SITE_ENVIRONMENT'])){
 if(file_exists($apikeys)){
   require $apikeys;
 }
-$settings["config_sync_directory"] = '../config/default';
 
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username');
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password');
@@ -877,6 +874,6 @@ $settings['state_cache'] = TRUE;
  */
 if (isset($databases['default']['default'])) {
   $databases['default']['default']['init_commands'] = [
-    'isolation_level' => "SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED",
+    'isolation_level' => "SET GLOBAL transaction_isolation='READ-COMMITTED';",
   ];
 }

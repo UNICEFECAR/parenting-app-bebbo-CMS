@@ -808,3 +808,15 @@ if (file_exists($app_root  . '/sites/default/settings.ddev.php') && getenv('IS_D
 }
 
 $settings["config_sync_directory"] = '../config_bangla/default';
+
+// State cache flag not set.
+$settings['state_cache'] = TRUE;
+
+/**
+ * Enforce Drupal-recommended MySQL transaction isolation level.
+ */
+if (isset($databases['default']['default'])) {
+  $databases['default']['default']['init_commands'] = [
+    'isolation_level' => "SET GLOBAL transaction_isolation='READ-COMMITTED';",
+  ];
+}
