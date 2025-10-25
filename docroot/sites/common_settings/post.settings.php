@@ -6,6 +6,7 @@
  * Includes config post.settings.php (runs last).
  */
 
+ini_set('memory_limit', '-1');
 // Helper to read env consistently on Acquia/CLI.
 $ah_group = getenv('AH_SITE_GROUP') ?: ($_ENV['AH_SITE_GROUP'] ?? null);
 $ah_env   = getenv('AH_SITE_ENVIRONMENT') ?: ($_ENV['AH_SITE_ENVIRONMENT'] ?? null);
