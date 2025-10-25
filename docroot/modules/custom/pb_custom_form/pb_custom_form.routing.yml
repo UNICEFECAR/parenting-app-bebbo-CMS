@@ -104,7 +104,7 @@ pb_custom_form.csv_export:
     _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::download'
     _title: 'Entity Share Pull CSV Export'
   requirements:
-    _permission: 'administer entity share client'
+    _permission: 'entity_share_client_pull_content'
 
 pb_custom_form.csv_export_batch:
   path: '/admin/content/entity_share/pull/export/csv/batch'
@@ -112,7 +112,7 @@ pb_custom_form.csv_export_batch:
     _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::downloadBatch'
     _title: 'Entity Share Pull CSV Export (Batch)'
   requirements:
-    _permission: 'administer entity share client'
+    _permission: 'entity_share_client_pull_content'
 
 pb_custom_form.csv_export_download:
   path: '/admin/content/entity_share/pull/export/csv/download'
@@ -120,4 +120,4 @@ pb_custom_form.csv_export_download:
     _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::downloadCompleted'
     _title: 'Download CSV Export'
   requirements:
-    _permission: 'administer entity share client'
+    _permission: 'entity_share_client_pull_content'
