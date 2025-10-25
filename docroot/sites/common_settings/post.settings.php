@@ -64,7 +64,7 @@ $settings['config_sync_directory'] = '../config/default';
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
 
-$config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSLATE_KEY') ?: '';
+// $config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.google']['settings']['api_key'] = getenv('GOOGLE_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.deepl_free']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_FREE') ?: '';
 // $config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_PRO') ?: '';
