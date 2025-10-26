@@ -5,7 +5,6 @@
  * It contains custom field module.
  */
 
-use Drupal\tmgmt\Entity\JobItem;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -430,22 +429,29 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
     // Collect items for sorting if needed.
     $items_data = [];
     if (isset($form['items']['#options'])) {
+      $job_item_ids = array_map('intval', array_keys($form['items']['#options']));
+      $node_map = [];
+      if (!empty($job_item_ids)) {
+        $connection = \Drupal::database();
+        $results = $connection->select('tmgmt_job_item', 'ji')
+          ->fields('ji', ['id', 'item_id'])
+          ->condition('ji.id', $job_item_ids, 'IN')
+          ->condition('ji.plugin', 'content')
+          ->condition('ji.item_type', 'node')
+          ->execute()
+          ->fetchAllKeyed(0, 1);
+        foreach ($results as $jid => $item_id) {
+          $node_map[(int) $jid] = (int) $item_id;
+        }
+      }
+
+      // Build lightweight array for sorting.
       foreach ($form['items']['#options'] as $job_item_id => $row) {
-        // Load the job item to get the entity ID.
-        $job_item = JobItem::load($job_item_id);
-        if ($job_item && $job_item->getPlugin() === 'content' && $job_item->getItemType() === 'node') {
-          $entity_id = $job_item->getItemId();
-          $items_data[$job_item_id] = [
-            'entity_id' => $entity_id,
-            'row' => $row,
-          ];
-        }
-        else {
-          $items_data[$job_item_id] = [
-            'entity_id' => 0,
-            'row' => $row,
-          ];
-        }
+        $jid = (int) $job_item_id;
+        $items_data[$job_item_id] = [
+          'entity_id' => $node_map[$jid] ?? 0,
+          'row' => $row,
+        ];
       }
 
       // Sort items if Node ID sorting is requested.
@@ -457,29 +463,12 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
         });
       }
 
-      // Rebuild the options with Node ID column.
-      $form['items']['#options'] = [];
-      foreach ($items_data as $job_item_id => $item_data) {
-        if ($item_data['entity_id'] > 0) {
-          // Prepend Node ID as the first column.
-          $form['items']['#options'][$job_item_id] = array_merge(
-            [[
-              'data' => [
-                '#type' => 'link',
-                '#title' => $item_data['entity_id'],
-                '#url' => Url::fromRoute('entity.node.edit_form', ['node' => $item_data['entity_id']]),
-                '#attributes' => ['target' => '_blank'],
-              ],
-            ],
-            ],
-            $item_data['row']
-          );
-        }
-        else {
-          // For non-node items, add empty cell.
-          $form['items']['#options'][$job_item_id] = array_merge(['-'], $item_data['row']);
-        }
+      // Rebuild options preserving job_item ids as keys.
+      $new_options = [];
+      foreach ($items_data as $job_item_id => $data) {
+        $new_options[$job_item_id] = $data['row'];
       }
+      $form['items']['#options'] = $new_options;
     }
   }
 }

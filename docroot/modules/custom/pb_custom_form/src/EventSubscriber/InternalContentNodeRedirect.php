@@ -135,7 +135,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    $events[KernelEvents::REQUEST][] = ['nodeViewRedirect'];
+    $events[KernelEvents::REQUEST][] = ['nodeViewRedirect', 30];
     return $events;
   }
 
@@ -143,16 +143,24 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public function nodeViewRedirect(RequestEvent $event) {
+    $request = $event->getRequest();
     $node = $this->routeMatch->getParameter('node');
-    global $base_url;
+
+    $host = $request->getHost();
+    $scheme = $request->getScheme();
+    $port = $request->getPort();
+    $port_suffix = ($port && $port != 80 && $port != 443) ? ':' . $port : '';
+    $current_base_url = $scheme . '://' . $host . $port_suffix;
+
     $current_path = $this->pathCurrent->getPath();
     $internal = $this->pathAliasManager->getAliasByPath($current_path);
+    $current_lang = $this->languageManager->getCurrentLanguage()->getId();
 
     // Get landing pages from configuration.
     $landing_pages_config = $this->configFactory->get('pb_custom_form.landing_pages');
     $landing_pages = $this->parseLandingPages($landing_pages_config->get('landing_pages'));
 
-    if (!$this->isNodeRoute()) {
+    if (!$this->isNodeRoute($request)) {
       return;
     }
 
@@ -165,15 +173,15 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
 
     // Get redirect URLs from configuration.
     $redirect_config = $this->configFactory->get('pb_custom_form.language_redirects');
-    $redirect_urls = $this->parseRedirectUrls($redirect_config->get('redirect_urls'));
+    $redirect_urls_raw = $redirect_config->get('redirect_urls');
+    $redirect_urls = $this->parseRedirectUrls($redirect_urls_raw);
 
     if (is_numeric($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
     if ($node instanceof NodeInterface) {
-      $current_lang = $this->languageManager->getCurrentLanguage()->getId();
       if ($current_lang == 'en') {
-        $path = $base_url . '/';
+        $path = $current_base_url . '/';
         $event->setResponse(new RedirectResponse($path));
       }
       else {
@@ -182,24 +190,51 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
           $event->setResponse(new TrustedRedirectResponse($path));
         }
         else {
-          $path = $base_url . '/';
+          $path = $current_base_url . '/';
           $event->setResponse(new RedirectResponse($path));
         }
-
       }
       $this->pageCacheKillSwitch->trigger();
-
     }
   }
 
   /**
    * Check if current route is a node route.
    *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The current request object.
+   *
    * @return bool
    *   TRUE if node entity route, FALSE otherwise.
    */
-  protected function isNodeRoute() {
-    return strpos($this->routeMatch->getRouteName(), 'entity.node.canonical') === 0;
+  protected function isNodeRoute($request = NULL) {
+    $route_name = $this->routeMatch->getRouteName();
+    $node = $this->routeMatch->getParameter('node');
+
+    // Check if we have a node parameter (which indicates a node route)
+    // or if the route name contains node canonical.
+    $is_node_route = ($node !== NULL) ||
+           ($route_name && (
+             strpos($route_name, 'entity.node.canonical') === 0 ||
+             strpos($route_name, 'node.') === 0
+           ));
+
+    // Additional check for subsites - also check the path pattern.
+    if (!$is_node_route && $request) {
+      $path = $request->getPathInfo();
+      if (preg_match('/^\/node\/\d+/', $path)) {
+        $is_node_route = TRUE;
+      }
+      // Also check if we're on a path that could be a node alias.
+      elseif ($path !== '/' && !preg_match('/^\/admin/', $path) && !preg_match('/^\/user/', $path)) {
+        $path_internal = $this->pathAliasManager->getPathByAlias($path);
+        if (preg_match('/^\/node\/\d+/', $path_internal)) {
+          $is_node_route = TRUE;
+        }
+      }
+    }
+
+    return $is_node_route;
   }
 
   /**

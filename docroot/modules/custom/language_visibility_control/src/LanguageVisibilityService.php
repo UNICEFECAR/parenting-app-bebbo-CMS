@@ -146,6 +146,9 @@ class LanguageVisibilityService {
     elseif (is_array($language) && isset($language['code'])) {
       return $language['code'];
     }
+    elseif (is_array($language) && isset($language['languageCode'])) {
+      return $language['languageCode'];
+    }
     elseif (is_string($language)) {
       return $language;
     }

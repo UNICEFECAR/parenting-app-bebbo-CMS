@@ -2,21 +2,22 @@
 
 namespace Drupal\pb_custom_form\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Drupal\Component\Serialization\Json;
+use Drupal\Core\Batch\BatchBuilder;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Controller\ControllerBase;
 use Drupal\entity_share\EntityShareUtility;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\entity_share_client\Service\RemoteManagerInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Batch\BatchBuilder;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Drupal\entity_share_client\Service\FormHelperInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\entity_share_client\Service\RemoteManagerInterface;
 
 /**
  * Provides CSV export for Entity Share data.
@@ -73,6 +74,13 @@ class CsvExportController extends ControllerBase {
   protected $tempStoreFactory;
 
   /**
+   * The form helper.
+   *
+   * @var \Drupal\entity_share_client\Service\FormHelperInterface
+   */
+  protected $formHelper;
+
+  /**
    * Constructs a CsvExportController object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -89,8 +97,10 @@ class CsvExportController extends ControllerBase {
    *   The file system service.
    * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The private temp store factory.
+   * @param \Drupal\entity_share_client\Service\FormHelperInterface $form_helper
+   *   The form helper service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, RemoteManagerInterface $remote_manager, LoggerChannelFactoryInterface $logger_factory, MessengerInterface $messenger, RequestStack $request_stack, FileSystemInterface $file_system, PrivateTempStoreFactory $temp_store_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RemoteManagerInterface $remote_manager, LoggerChannelFactoryInterface $logger_factory, MessengerInterface $messenger, RequestStack $request_stack, FileSystemInterface $file_system, PrivateTempStoreFactory $temp_store_factory, FormHelperInterface $form_helper) {
     $this->entityTypeManager = $entity_type_manager;
     $this->remoteManager = $remote_manager;
     // Get a logger channel specific to this module.
@@ -99,6 +109,7 @@ class CsvExportController extends ControllerBase {
     $this->requestStack = $request_stack;
     $this->fileSystem = $file_system;
     $this->tempStoreFactory = $temp_store_factory;
+    $this->formHelper = $form_helper;
   }
 
   /**
@@ -112,7 +123,8 @@ class CsvExportController extends ControllerBase {
       $container->get('messenger'),
       $container->get('request_stack'),
       $container->get('file_system'),
-      $container->get('tempstore.private')
+      $container->get('tempstore.private'),
+      $container->get('entity_share_client.form_helper'),
     );
   }
 
@@ -361,7 +373,18 @@ class CsvExportController extends ControllerBase {
       }
 
       $json = ['data' => $all_data];
-
+      try {
+        $channel_base_url = strtok($channel_url, '?');
+        $entities_options = $this->formHelper->buildEntitiesOptions($json['data'], $selected_remote, $channel_id, $channel_base_url);
+      }
+      catch (\Exception $api_exception) {
+        $this->logger->error('CSV Export: API request failed on page @page: @error', [
+          '@page' => $page_number,
+          '@error' => $api_exception->getMessage(),
+        ]);
+        $this->messenger->addError($this->t('Failed to fetch data from remote API: @message', ['@message' => $api_exception->getMessage()]));
+        return $this->redirect('entity_share_client.admin_content_pull_form');
+      }
       // Define specific headers as requested.
       $headers = [
         'Remote ID',
@@ -478,8 +501,8 @@ class CsvExportController extends ControllerBase {
           // If we can't check for local entity, that's okay.
         }
 
-        // Format synchronization status based on whether entity exists locally.
-        if (!empty($local_entity_id)) {
+        // Format synchronization status.
+        if ($entities_options[$item['id']]['status']['class'] == 'entity-share-up-to-date') {
           $status_text = 'Entities synchronized';
         }
         else {

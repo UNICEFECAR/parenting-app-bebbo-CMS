@@ -5,6 +5,10 @@
  * It contains custom field module.
  */
 
+use Drupal\node\NodeInterface;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\group_permissions_merge\GroupPermissionsMergeService;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\block\Entity\Block;
 use Drupal\group\Entity\Group;
@@ -25,6 +29,59 @@ use Drupal\Core\Database\Database;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Access\AccessResult;
+
+/**
+ * Helper function to get user's primary group.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $user
+ *   The user account.
+ *
+ * @return \Drupal\group\Entity\GroupInterface|null
+ *   The user's primary group or NULL if none found.
+ */
+function _pb_custom_field_get_user_primary_group(?AccountInterface $user = NULL) {
+  if (!$user) {
+    $user = \Drupal::currentUser();
+  }
+
+  try {
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+
+    if (!empty($grps)) {
+      foreach ($grps as $grp) {
+        return $grp->getGroup();
+      }
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('pb_custom_field')->error('Error loading user group: @message', ['@message' => $e->getMessage()]);
+  }
+
+  return NULL;
+}
+
+/**
+ * Helper function to get user's group languages.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $user
+ *   The user account.
+ * @param string $field_name
+ *   The field name to get languages.
+ *
+ * @return array
+ *   Array of language codes.
+ */
+function _pb_custom_field_get_user_group_languages(?AccountInterface $user = NULL, $field_name = 'field_language') {
+  $group = _pb_custom_field_get_user_primary_group($user);
+
+  if (!$group || !$group->hasField($field_name) || $group->get($field_name)->isEmpty()) {
+    return [];
+  }
+
+  $languages = $group->get($field_name)->getValue();
+  return array_filter(array_column($languages, 'value'));
+}
 
 /**
  * {@inheritdoc}
@@ -48,31 +105,10 @@ function pb_custom_field_allowed_values_function(FieldStorageConfig $definition,
 function pb_custom_field_allowed_languages_form_media_library_add_form_oembed_alter(array &$form, FormStateInterface $form_state) {
   if (isset($form['media'][0]['fields']['langcode']['widget'])) {
     $user = \Drupal::currentUser();
-    $roles = $user->getRoles();
-    $bypass_access = FALSE;
-    /* check the bypass content access*/
-    foreach ($roles as $rval) {
-      if ($rval != "authenticated") {
-        $role = Role::load($rval);
-        if ($role && in_array('bypass node access', $role->getPermissions())) {
-          $bypass_access = TRUE;
-        }
-      }
-    }
-    if (!$bypass_access) {
-      $groups = [];
-      $grp_membership_service = \Drupal::service('group.membership_loader');
-      $grps = $grp_membership_service->loadByUser($user);
-      foreach ($grps as $grp) {
-        $groups = $grp->getGroup();
-      }
-      if (!empty($groups)) {
-        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
-        $country_languages = $groups->get('field_language')->getValue();
-        $clanguage = [];
-        foreach ($country_languages as $mlangval) {
-          $clanguage[] = $mlangval['value'];
-        }
+
+    if (!$user->hasPermission('bypass node access')) {
+      $clanguage = _pb_custom_field_get_user_group_languages($user);
+      if (!empty($clanguage)) {
         $language_options = [];
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
           if (in_array($langcode, $clanguage)) {
@@ -91,31 +127,10 @@ function pb_custom_field_allowed_languages_form_media_library_add_form_oembed_al
 function pb_custom_field_allowed_languages_form_media_library_add_form_upload_alter(array &$form, FormStateInterface $form_state) {
   if (isset($form['media'][0]['fields']['langcode']['widget'])) {
     $user = \Drupal::currentUser();
-    $roles = $user->getRoles();
-    $bypass_access = FALSE;
-    /* check the bypass content access*/
-    foreach ($roles as $rval) {
-      if ($rval != "authenticated") {
-        $role = Role::load($rval);
-        if ($role && in_array('bypass node access', $role->getPermissions())) {
-          $bypass_access = TRUE;
-        }
-      }
-    }
-    if (!$bypass_access) {
-      $groups = [];
-      $grp_membership_service = \Drupal::service('group.membership_loader');
-      $grps = $grp_membership_service->loadByUser($user);
-      foreach ($grps as $grp) {
-        $groups = $grp->getGroup();
-      }
-      if (!empty($groups)) {
-        /* $alexist_option = $form['media'][0]['fields']['langcode']['widget'][0]['value']['#options']; */
-        $country_languages = $groups->get('field_language')->getValue();
-        $clanguage = [];
-        foreach ($country_languages as $mlangval) {
-          $clanguage[] = $mlangval['value'];
-        }
+
+    if (!$user->hasPermission('bypass node access')) {
+      $clanguage = _pb_custom_field_get_user_group_languages($user);
+      if (!empty($clanguage)) {
         $language_options = [];
         foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
           if (in_array($langcode, $clanguage)) {
@@ -555,6 +570,14 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
               // and contextualization.');
             }
             $form['#validate'][] = 'pb_custom_field_user_access_validation_chk';
+
+            if ($user->hasPermission('bypass node access')) {
+              $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
+              if (array_intersect($user->getRoles(), $trusted_roles)) {
+                $form['#validate'][] = 'pb_custom_field_country_restriction_validation';
+              }
+            }
+
             $form['actions']['delete']['#access'] = FALSE;
             $form['actions']['delete']['#disabled'] = TRUE;
           }
@@ -577,19 +600,46 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
         $grp_membership_service = \Drupal::service('group.membership_loader');
         $grps = $grp_membership_service->loadByUser($currentAccount);
         if (!empty($grps)) {
-          foreach ($grps as $grp) {
-            $groups = $grp->getGroup();
-          }
-          $languages = $groups->get('field_language')->getString();
-          $language_arr = explode(",", $languages);
-          $language_arr = array_map('trim', explode(',', $languages));
-          $language_options = [];
-          foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
-            if (in_array($langcode, $language_arr)) {
-              $language_options[$langcode] = $language->getName();
+          // Get user's individual language profile first.
+          $user_assigned_languages = [];
+          $user_entity = User::load($currentAccount->id());
+
+          if ($user_entity && $user_entity->hasField('allowed_languages')) {
+            $user_languages = $user_entity->get('allowed_languages')->getValue();
+            foreach ($user_languages as $lang) {
+              if (!empty($lang['value'])) {
+                $user_assigned_languages[] = $lang['value'];
+              }
             }
           }
-          $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+
+          // If user has no individual language assignment.
+          if (empty($user_assigned_languages)) {
+            foreach ($grps as $grp) {
+              $group = $grp->getGroup();
+              if ($group && $group->hasField('field_language')) {
+                $group_languages = $group->get('field_language')->getValue();
+                foreach ($group_languages as $lang_val) {
+                  if (!empty($lang_val['value'])) {
+                    $user_assigned_languages[] = $lang_val['value'];
+                  }
+                }
+              }
+            }
+          }
+
+          // Remove duplicates and filter language options.
+          $user_assigned_languages = array_unique($user_assigned_languages);
+          if (!empty($user_assigned_languages)) {
+            $language_options = [];
+            foreach (\Drupal::languageManager()->getLanguages(LanguageInterface::STATE_CONFIGURABLE) as $langcode => $language) {
+              if (in_array($langcode, $user_assigned_languages)) {
+                $language_options[$langcode] = $language->getName();
+              }
+            }
+            $form['langcode']['widget'][0]['value']['#options'] = $language_options;
+          }
+
           $form['#validate'][] = 'pb_custom_field_user_access_validation_chk';
         }
       }
@@ -706,13 +756,23 @@ function pb_custom_field_link_alter(&$variables) {
 function pb_custom_field_preprocess_menu(&$variables) {
   $user = \Drupal::currentUser();
   $roles = \Drupal::currentUser()->getRoles();
-  $grp_membership_service = \Drupal::service('group.membership_loader');
-  $grps = $grp_membership_service->loadByUser($user);
-  if (empty($grps) && !in_array("global_admin", $roles) && !in_array("administrator", $roles)) {
-    if (isset($variables['menu_name']) && $variables['menu_name'] === 'editorial-menu') {
-      foreach ($variables['items'] as $key => $item) {
-        // Remove menu item.
-        unset($variables['items'][$key]);
+
+  // Define roles that should have access to editorial menu.
+  $editorial_roles = array_merge(
+    GroupPermissionsMergeService::getTargetRoles(),
+    ['global_admin', 'administrator']
+  );
+
+  if (!array_intersect($roles, $editorial_roles)) {
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($user);
+
+    if (empty($grps)) {
+      if (isset($variables['menu_name']) && $variables['menu_name'] === 'editorial-menu') {
+        foreach ($variables['items'] as $key => $item) {
+          // Remove menu item.
+          unset($variables['items'][$key]);
+        }
       }
     }
   }
@@ -1021,12 +1081,75 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
   }
 
   $user_roles = \Drupal::currentUser()->getRoles();
-  if ($entity->getEntityTypeId() == "node" && \Drupal::service('path.current')->getPath() == "/global-content-list" && in_array('reviewer', $user_roles)) {
-    if (isset($operations['edit'])) {
-      unset($operations['edit']);
+  $current_user = \Drupal::currentUser();
+
+  // Enhanced edit button control for content moderation workflow.
+  if ($entity->getEntityTypeId() == "node") {
+    $current_path = \Drupal::service('path.current')->getPath();
+
+    // For global content list - reviewers can't edit.
+    if ($current_path == "/global-content-list" && in_array('reviewer', $user_roles)) {
+      if (isset($operations['edit'])) {
+        unset($operations['edit']);
+      }
+      if (isset($operations['delete'])) {
+        unset($operations['delete']);
+      }
     }
-    if (isset($operations['delete'])) {
-      unset($operations['delete']);
+
+    // For country content list and dashboard.
+    if (in_array($current_path, ["/country-content-list", "/dashboard"])) {
+      // Check if content has moderation state.
+      if ($entity instanceof FieldableEntityInterface &&
+          $entity->hasField('moderation_state') &&
+          !$entity->get('moderation_state')->isEmpty()) {
+        $moderation_state = $entity->get('moderation_state')->value;
+
+        // Get trusted roles.
+        $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
+        $is_trusted_user = array_intersect($user_roles, $trusted_roles);
+
+        // Rules for edit button visibility:
+        // 1. Administrators and global_admin can always edit
+        // 2. Senior editors (se) can edit content in any state
+        // 3. Other trusted users cannot edit content under senior editor review
+        // 4. Reviewers follow standard group-based access.
+        if (!in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+
+          // For content under senior editor review.
+          if ($moderation_state === 'senior_editor_review') {
+            // Only senior editors can edit content in senior editor review.
+            if (!in_array('se', $user_roles)) {
+              if (isset($operations['edit'])) {
+                unset($operations['edit']);
+              }
+            }
+          }
+
+          // For content under SME review.
+          elseif ($moderation_state === 'sme_review') {
+            // Only SMEs and senior editors can edit content in SME review.
+            if (!in_array('sme', $user_roles) && !in_array('se', $user_roles)) {
+              if (isset($operations['edit'])) {
+                unset($operations['edit']);
+              }
+            }
+          }
+
+          // For published content.
+          elseif ($moderation_state === 'published') {
+            if ($is_trusted_user && $current_user->hasPermission('bypass node access')) {
+              // For trusted users with bypass access, check country assignment.
+              $access_result = _pb_custom_field_check_country_access($entity, $current_user);
+              if ($access_result->isForbidden()) {
+                if (isset($operations['edit'])) {
+                  unset($operations['edit']);
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -1043,6 +1166,50 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
 
   foreach ($grps as $grp) {
     $groups[] = $grp->getGroup();
+  }
+
+  // Enhanced filtering for country content listing.
+  if ($view->id() == 'country_content_listing' && !in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+    $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
+    $is_trusted_user = array_intersect($user_roles, $trusted_roles);
+
+    if ($is_trusted_user && $user->hasPermission('bypass node access')) {
+      if (!empty($grps)) {
+        $user_group_ids = [];
+        foreach ($grps as $grp) {
+          $group = $grp->getGroup();
+          if ($group) {
+            $user_group_ids[] = $group->id();
+          }
+        }
+
+        // Add condition to filter by user's assigned countries.
+        if (count($user_group_ids) > 0) {
+          // Check if the relationship already exists.
+          if (!isset($query->relationships['group_content_field_data'])) {
+            // Create the join configuration.
+            $configuration = [
+              'type' => 'LEFT',
+              'table' => 'group_content_field_data',
+              'field' => 'entity_id',
+              'left_table' => 'node_field_data',
+              'left_field' => 'nid',
+              'operator' => '=',
+            ];
+
+            if ($query instanceof Sql) {
+              $join = \Drupal::service('plugin.manager.views.join')->createInstance('standard', $configuration);
+              $query->addRelationship('group_content_field_data', $join, 'node_field_data');
+            }
+          }
+
+          // Add the where condition (only for SQL queries)
+          if ($query instanceof Sql) {
+            $query->addWhere(0, 'group_content_field_data.gid', $user_group_ids, 'IN');
+          }
+        }
+      }
+    }
   }
   if (!empty($groups) && $groups[0]->bundle() == "country" && in_array('reviewer', $user_roles)) {
     $gid = $groups[0]->id();
@@ -1231,11 +1398,86 @@ function pb_custom_field_views_pre_execute($view) {
  * Validation for all node and add image media form.
  */
 function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $form_state) {
-  /* Check the user validation.*/
   $user = \Drupal::currentUser();
   $roles = $user->getRoles();
+
+  // Get trusted roles from service.
+  $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
+  $is_trusted_user = array_intersect($roles, $trusted_roles);
+
+  // For trusted users with bypass access, we still need country validation.
+  if ($is_trusted_user) {
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      $entity = $form_object->getEntity();
+
+      // Check if this is a node edit form.
+      if ($entity->getEntityTypeId() === 'node' && !$entity->isNew()) {
+        // Get the node's group (country)
+        $node_group = NULL;
+        if (method_exists($entity, 'getGroup')) {
+          $node_group = $entity->getGroup();
+        }
+
+        // If no group found via method, try field.
+        if (!$node_group && $entity instanceof FieldableEntityInterface && $entity->hasField('field_group_audience')) {
+          $group_refs = $entity->get('field_group_audience')->getValue();
+          if (!empty($group_refs)) {
+            $group_id = $group_refs[0]['target_id'];
+            $node_group = Group::load($group_id);
+          }
+        }
+
+        if ($node_group) {
+          // Check if user is member of this node's country.
+          $membership_loader = \Drupal::service('group.membership_loader');
+          $user_memberships = $membership_loader->loadByUser($user);
+
+          $user_group_ids = [];
+          foreach ($user_memberships as $membership) {
+            $user_group_ids[] = $membership->getGroup()->id();
+          }
+
+          // If user is not a member of the node's country, block access.
+          if (!in_array($node_group->id(), $user_group_ids)) {
+            $country_name = $node_group->label();
+            $form_state->setErrorByName('', "You cannot edit content from {$country_name} as you are not assigned to that country.");
+            \Drupal::logger('pb_custom_field')->warning('User @uid attempted to edit node @nid from unassigned country @country', [
+              '@uid' => $user->id(),
+              '@nid' => $entity->id(),
+              '@country' => $country_name,
+            ]);
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  // Check if group_permissions_merge module set bypass flag.
+  if ($form_state->get('group_permissions_merge_bypass_original')) {
+    // Validate that this bypass is legitimate.
+    $editorial_roles = GroupPermissionsMergeService::getTrustedRoles();
+
+    if (array_intersect($user->getRoles(), $editorial_roles)) {
+      $membership_loader = \Drupal::service('group.membership_loader');
+      $memberships = $membership_loader->loadByUser($user);
+
+      if (count($memberships) > 1) {
+        \Drupal::logger('pb_custom_field')->info('Multi-country validation bypass for user @uid with @count group memberships', [
+          '@uid' => $user->id(),
+          '@count' => count($memberships),
+        ]);
+        return;
+      }
+    }
+
+    // Invalid bypass attempt - log and continue with normal validation.
+    \Drupal::logger('pb_custom_field')->warning('Invalid bypass attempt by user @uid', ['@uid' => $user->id()]);
+  }
+
+  // Original validation logic for non-bypass users.
   $bypass_access = FALSE;
-  /* Check the bypass content access. */
   foreach ($roles as $rval) {
     if ($rval != "authenticated") {
       $role = Role::load($rval);
@@ -1245,10 +1487,6 @@ function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $
     }
   }
 
-  /* global admin have bypass node access other user doesn't have
-   * check the country user have this language permission
-   * if they dont have access show the error message
-   */
   if (!$bypass_access) {
     $groups = [];
     $grp_membership_service = \Drupal::service('group.membership_loader');
@@ -1776,12 +2014,130 @@ function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
       }
     }
     else {
+      // Only remove specific editorial roles.
+      $editorial_roles_to_remove = GroupPermissionsMergeService::getTargetRoles();
       $user_roles = $user->getRoles();
-      foreach ($user_roles as $user_role) {
-        $user->removeRole($user_role);
+      $roles_to_remove = array_intersect($user_roles, $editorial_roles_to_remove);
+
+      if (!empty($roles_to_remove)) {
+        foreach ($roles_to_remove as $role_to_remove) {
+          $user->removeRole($role_to_remove);
+        }
+        // Save once after all role removals.
         $user->save();
       }
     }
+  }
+}
+
+/**
+ * Validation handler for country restrictions on node edit forms.
+ */
+function pb_custom_field_country_restriction_validation(&$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  if (!($form_object instanceof EntityFormInterface)) {
+    return;
+  }
+
+  $node = $form_object->getEntity();
+  if ($node->getEntityTypeId() !== 'node' || $node->isNew()) {
+    return;
+  }
+
+  $user = \Drupal::currentUser();
+
+  // Check if user can access this node's country.
+  $result = _pb_custom_field_check_country_access($node, $user);
+
+  if ($result->isForbidden()) {
+    // Get the node's country name for the error message.
+    $country_name = 'an unassigned country';
+    $group_contents = \Drupal::entityTypeManager()
+      ->getStorage('group_content')
+      ->loadByProperties(['entity_id' => $node->id()]);
+
+    if (!empty($group_contents)) {
+      foreach ($group_contents as $group_content) {
+        if (method_exists($group_content, 'getGroup')) {
+          $group = $group_content->getGroup();
+          if ($group) {
+            $country_name = $group->label();
+            break;
+          }
+        }
+      }
+    }
+
+    $form_state->setErrorByName('', "You cannot edit content from {$country_name} as you are not assigned to that country.");
+
+    \Drupal::logger('pb_custom_field')->warning('User @uid blocked from editing node @nid from unassigned country @country', [
+      '@uid' => $user->id(),
+      '@nid' => $node->id(),
+      '@country' => $country_name,
+    ]);
+  }
+}
+
+/**
+ * Helper function to check if trusted user can access content.
+ */
+function _pb_custom_field_check_country_access(NodeInterface $node, AccountInterface $account) {
+  try {
+    // Get user's group memberships.
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $user_memberships = $membership_loader->loadByUser($account);
+
+    if (empty($user_memberships)) {
+      return AccessResult::forbidden()->cachePerUser();
+    }
+
+    $user_group_ids = [];
+    foreach ($user_memberships as $membership) {
+      $group = $membership->getGroup();
+      if ($group) {
+        $user_group_ids[] = $group->id();
+      }
+    }
+
+    // Check if node belongs to any of user's groups.
+    $group_contents = \Drupal::entityTypeManager()
+      ->getStorage('group_content')
+      ->loadByProperties([
+        'entity_id' => $node->id(),
+      ]);
+
+    if (empty($group_contents)) {
+      return AccessResult::forbidden()->cachePerUser();
+    }
+
+    foreach ($group_contents as $group_content) {
+      // Try different ways to get the group ID.
+      $node_group_id = NULL;
+      if (method_exists($group_content, 'getGroup')) {
+        $group = $group_content->getGroup();
+        if ($group) {
+          $node_group_id = $group->id();
+        }
+      }
+
+      // Fallback to direct field access.
+      if (!$node_group_id && $group_content instanceof FieldableEntityInterface && $group_content->hasField('gid')) {
+        $node_group_id = $group_content->get('gid')->value;
+      }
+
+      if ($node_group_id && in_array($node_group_id, $user_group_ids)) {
+        // User is assigned to the node's country - allow access.
+        return AccessResult::allowed()->cachePerUser()->addCacheTags(['group_list', 'group_content_list']);
+      }
+    }
+
+    // Node belongs to groups but user is not assigned to any of them - deny.
+    return AccessResult::forbidden()->cachePerUser();
+
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('pb_custom_field')->error('Error in country access check: @message', ['@message' => $e->getMessage()]);
+    return AccessResult::neutral();
   }
 }
 
