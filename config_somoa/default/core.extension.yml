@@ -48,6 +48,8 @@ module:
   help: 0
   image: 0
   image_style_quality: 0
+  imageapi_optimize: 0
+  imageapi_optimize_gd: 0
   jsonapi: 0
   jsonapi_extras: 0
   lang_dropdown: 0
@@ -135,6 +137,7 @@ module:
   views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0
+  webp: 0
   workflows: 0
   content_translation: 10
   views: 10
