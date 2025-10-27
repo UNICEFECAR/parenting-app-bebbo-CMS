@@ -135,13 +135,9 @@ class CustomStandardDeviation extends Serializer {
       $this->view->row_index = $row_index;
       $render = $this->view->rowPlugin->render($row_result);
       // Ensure custom_growth_type present.
-      if (!isset($render['custom_growth_type'])) {
-        $render['custom_growth_type'] = $row_result->custom_growth_type ?? NULL;
-      }
+      $render['custom_growth_type'] = $row_result->custom_growth_type ?? NULL;
       // Ensure standard_deviation present.
-      if (!isset($render['standard_deviation'])) {
-        $render['standard_deviation'] = $row_result->standard_deviation ?? NULL;
-      }
+      $render['standard_deviation'] = $row_result->standard_deviation ?? NULL;
 
       // Normalize to plain array.
       $render = json_decode(json_encode($render), TRUE);
