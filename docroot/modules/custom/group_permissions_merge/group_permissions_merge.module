@@ -7,6 +7,7 @@
  * Provides multi-country access functionality for users.
  */
 
+use Drupal\user\UserInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
@@ -73,7 +74,18 @@ function group_permissions_merge_group_content_update(GroupContentInterface $gro
 function group_permissions_merge_group_content_delete(GroupContentInterface $group_content) {
   // Sync user allowed_languages when group membership is removed.
   if ($group_content->getContentPlugin()->getPluginId() === 'group_membership') {
-    _group_permissions_merge_sync_user_languages($group_content->getEntity());
+    $user = $group_content->getEntity();
+
+    // Check if user still has other group memberships before syncing languages.
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $remaining_memberships = $membership_loader->loadByUser($user);
+
+    // Only sync languages if user still has group memberships.
+    if (!empty($remaining_memberships)) {
+      _group_permissions_merge_sync_user_languages($user);
+    }
+    else {
+    }
   }
 }
 
@@ -238,7 +250,7 @@ function group_permissions_merge_views_query_alter(ViewExecutable $view, QueryPl
   if ($user_group_ids) {
     // Ensure the group_content relationship exists.
     if ($query instanceof Sql) {
-      if (!isset($query->relationships['group_content'])) {
+      if (!isset($query->relationships['group_content']) && !isset($query->relationships['group_content_field_data'])) {
         $configuration = [
           'type' => 'LEFT',
           'table' => 'group_content_field_data',
@@ -291,8 +303,8 @@ function group_permissions_merge_views_pre_execute(ViewExecutable $view) {
   $membership_loader = \Drupal::service('group.membership_loader');
   $memberships = $membership_loader->loadByUser($account);
 
-  if (count($memberships) <= 1) {
-    // Single country user, no need to modify.
+  // Process both single and multi-country users.
+  if (empty($memberships)) {
     return;
   }
 
@@ -336,6 +348,43 @@ function group_permissions_merge_user_login($account) {
       if (empty($current_langs)) {
         // Sync languages on login if they're empty.
         _group_permissions_merge_sync_user_languages($account);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function group_permissions_merge_entity_presave(EntityInterface $entity) {
+  // Prevent inappropriate role removal for multi-country users.
+  if ($entity->getEntityTypeId() === 'user' && !$entity->isNew()) {
+    // Ensure we're working with a User entity.
+    if (!($entity instanceof UserInterface)) {
+      return;
+    }
+
+    /** @var \Drupal\user\UserInterface $entity */
+    $original_roles = [];
+    if (isset($entity->original) && $entity->original instanceof UserInterface) {
+      $original_roles = $entity->original->getRoles();
+    }
+    $new_roles = $entity->getRoles();
+
+    // Check if any target roles are being removed.
+    $target_roles = GroupPermissionsMergeService::getTargetRoles();
+    $removed_roles = array_diff(array_intersect($original_roles, $target_roles), $new_roles);
+
+    if (!empty($removed_roles)) {
+      // Check if user still has group memberships.
+      $membership_loader = \Drupal::service('group.membership_loader');
+      $memberships = $membership_loader->loadByUser($entity);
+
+      if (!empty($memberships)) {
+        // User still has group memberships, restore the removed roles.
+        foreach ($removed_roles as $role) {
+          $entity->addRole($role);
+        }
       }
     }
   }
