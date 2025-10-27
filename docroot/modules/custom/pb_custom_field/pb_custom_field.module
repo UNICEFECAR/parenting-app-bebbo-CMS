@@ -1148,7 +1148,38 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
             return;
           }
 
-          // If trusted user has access, ensure edit button is present.
+          // Role-specific edit button logic for trusted users.
+          if (in_array('sme', $user_roles) && !in_array('se', $user_roles)) {
+            $moderation_state = NULL;
+            if ($entity instanceof FieldableEntityInterface &&
+                $entity->hasField('moderation_state') &&
+                !$entity->get('moderation_state')->isEmpty()) {
+              $moderation_state = $entity->get('moderation_state')->value;
+            }
+
+            if ($moderation_state !== 'sme_review') {
+              if (isset($operations['edit'])) {
+                unset($operations['edit']);
+              }
+              return;
+            }
+          }
+          elseif (in_array('editor', $user_roles) && !in_array('se', $user_roles) && !in_array('sme', $user_roles)) {
+            $moderation_state = NULL;
+            if ($entity instanceof FieldableEntityInterface &&
+                $entity->hasField('moderation_state') &&
+                !$entity->get('moderation_state')->isEmpty()) {
+              $moderation_state = $entity->get('moderation_state')->value;
+            }
+
+            if (!in_array($moderation_state, ['draft', 'review_after_translation'])) {
+              if (isset($operations['edit'])) {
+                unset($operations['edit']);
+              }
+              return;
+            }
+          }
+
           if (!isset($operations['edit'])) {
             $operations['edit'] = [
               'title' => t('Edit'),
@@ -1298,6 +1329,46 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
           elseif (!empty($user_languages)) {
             // Fallback: just filter by language if no groups have content.
             $query->addWhere(0, 'node_field_data.langcode', $user_languages, 'IN');
+          }
+
+          // Add moderation state filtering based on user role.
+          if ($query instanceof Sql) {
+            // Add join to content moderation state table.
+            $moderation_configuration = [
+              'type' => 'LEFT',
+              'table' => 'content_moderation_state_field_data',
+              'field' => 'content_entity_id',
+              'left_table' => 'node_field_data',
+              'left_field' => 'nid',
+              'operator' => '=',
+              'extra' => [
+                [
+                  'field' => 'content_entity_type_id',
+                  'value' => 'node',
+                ],
+                [
+                  'field' => 'langcode',
+                  'left_field' => 'langcode',
+                ],
+              ],
+            ];
+
+            if (!isset($query->relationships['content_moderation_state_field_data'])) {
+              $moderation_join = \Drupal::service('plugin.manager.views.join')->createInstance('standard', $moderation_configuration);
+              $query->addRelationship('content_moderation_state_field_data', $moderation_join, 'node_field_data');
+            }
+
+            // Filter by moderation state based on user role.
+            if (in_array('sme', $user_roles) && !in_array('se', $user_roles)) {
+              // SME users should only see content in sme_review state.
+              $query->addWhere(0, 'content_moderation_state_field_data.moderation_state', 'sme_review', '=');
+            }
+            elseif (in_array('editor', $user_roles) && !in_array('se', $user_roles) && !in_array('sme', $user_roles)) {
+              $query->addWhere(0, 'content_moderation_state_field_data.moderation_state', [
+                'draft', 'review_after_translation',
+              ],
+                'IN');
+            }
           }
         }
       }
