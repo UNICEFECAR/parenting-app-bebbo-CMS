@@ -41,7 +41,6 @@ permissions:
   - 'accept translation jobs'
   - 'access media overview'
   - 'bypass group access'
-  - 'bypass node access'
   - 'create activities content'
   - 'create article content'
   - 'create content translations'

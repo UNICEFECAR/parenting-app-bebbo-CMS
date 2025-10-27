@@ -1099,22 +1099,79 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
 
     // For country content list and dashboard.
     if (in_array($current_path, ["/country-content-list", "/dashboard"])) {
-      // Check if content has moderation state.
+
+      // Get trusted roles.
+      $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
+      $is_trusted_user = array_intersect($user_roles, $trusted_roles);
+
+      // For non-admin users, check access permissions.
+      if (!in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+
+        // Check access for all trusted users (regardless of moderation state)
+        if ($is_trusted_user) {
+          $has_access = FALSE;
+
+          // First try group-based access.
+          $access_result = _pb_custom_field_check_country_access($entity, $current_user);
+          if ($access_result->isAllowed()) {
+            $has_access = TRUE;
+          }
+
+          // Check language-based access for unassigned content.
+          if (!$has_access) {
+            $membership_loader = \Drupal::service('group.membership_loader');
+            $user_memberships = $membership_loader->loadByUser($current_user);
+            $user_languages = [];
+
+            foreach ($user_memberships as $membership) {
+              $group = $membership->getGroup();
+              if ($group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+                $group_languages = $group->get('field_language')->getValue();
+                foreach ($group_languages as $lang) {
+                  if (!empty($lang['value'])) {
+                    $user_languages[] = $lang['value'];
+                  }
+                }
+              }
+            }
+
+            // Check if content is in user's allowed languages.
+            if (!empty($user_languages) && in_array($entity->language()->getId(), $user_languages)) {
+              $has_access = TRUE;
+            }
+          }
+
+          if (!$has_access) {
+            if (isset($operations['edit'])) {
+              unset($operations['edit']);
+            }
+            return;
+          }
+
+          // If trusted user has access, ensure edit button is present.
+          if (!isset($operations['edit'])) {
+            $operations['edit'] = [
+              'title' => t('Edit'),
+              'url' => $entity->toUrl('edit-form'),
+              'weight' => 10,
+            ];
+          }
+        }
+      }
+
+      // Check if content has moderation state for additional workflow rules.
       if ($entity instanceof FieldableEntityInterface &&
           $entity->hasField('moderation_state') &&
           !$entity->get('moderation_state')->isEmpty()) {
         $moderation_state = $entity->get('moderation_state')->value;
 
-        // Get trusted roles.
-        $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
-        $is_trusted_user = array_intersect($user_roles, $trusted_roles);
-
-        // Rules for edit button visibility:
-        // 1. Administrators and global_admin can always edit
-        // 2. Senior editors (se) can edit content in any state
-        // 3. Other trusted users cannot edit content under senior editor review
-        // 4. Reviewers follow standard group-based access.
+        // Additional moderation state-specific rules for non-admin users.
         if (!in_array('administrator', $user_roles) && !in_array('global_admin', $user_roles)) {
+
+          // Handling for senior editors.
+          if (in_array('se', $user_roles)) {
+            return;
+          }
 
           // For content under senior editor review.
           if ($moderation_state === 'senior_editor_review') {
@@ -1132,19 +1189,6 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
             if (!in_array('sme', $user_roles) && !in_array('se', $user_roles)) {
               if (isset($operations['edit'])) {
                 unset($operations['edit']);
-              }
-            }
-          }
-
-          // For published content.
-          elseif ($moderation_state === 'published') {
-            if ($is_trusted_user && $current_user->hasPermission('bypass node access')) {
-              // For trusted users with bypass access, check country assignment.
-              $access_result = _pb_custom_field_check_country_access($entity, $current_user);
-              if ($access_result->isForbidden()) {
-                if (isset($operations['edit'])) {
-                  unset($operations['edit']);
-                }
               }
             }
           }
@@ -1173,39 +1217,87 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
     $trusted_roles = GroupPermissionsMergeService::getTrustedRoles();
     $is_trusted_user = array_intersect($user_roles, $trusted_roles);
 
-    if ($is_trusted_user && $user->hasPermission('bypass node access')) {
+    // Apply filtering for trusted users.
+    if ($is_trusted_user) {
       if (!empty($grps)) {
         $user_group_ids = [];
+        $user_languages = [];
+
         foreach ($grps as $grp) {
           $group = $grp->getGroup();
           if ($group) {
             $user_group_ids[] = $group->id();
+
+            // Get languages from this group.
+            if ($group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+              $group_languages = $group->get('field_language')->getValue();
+              foreach ($group_languages as $lang) {
+                if (!empty($lang['value'])) {
+                  $user_languages[] = $lang['value'];
+                }
+              }
+            }
           }
         }
 
-        // Add condition to filter by user's assigned countries.
-        if (count($user_group_ids) > 0) {
-          // Check if the relationship already exists.
-          if (!isset($query->relationships['group_content_field_data'])) {
-            // Create the join configuration.
-            $configuration = [
-              'type' => 'LEFT',
-              'table' => 'group_content_field_data',
-              'field' => 'entity_id',
-              'left_table' => 'node_field_data',
-              'left_field' => 'nid',
-              'operator' => '=',
-            ];
+        $user_languages = array_unique($user_languages);
 
-            if ($query instanceof Sql) {
-              $join = \Drupal::service('plugin.manager.views.join')->createInstance('standard', $configuration);
-              $query->addRelationship('group_content_field_data', $join, 'node_field_data');
+        if ($query instanceof Sql) {
+          // Create the join configuration for group content.
+          $configuration = [
+            'type' => 'LEFT',
+            'table' => 'group_content_field_data',
+            'field' => 'entity_id',
+            'left_table' => 'node_field_data',
+            'left_field' => 'nid',
+            'operator' => '=',
+          ];
+
+          if (!isset($query->relationships['group_content_field_data'])) {
+            $join = \Drupal::service('plugin.manager.views.join')->createInstance('standard', $configuration);
+            $query->addRelationship('group_content_field_data', $join, 'node_field_data');
+          }
+
+          // Modify published status filter for trusted users.
+          $filters = &$query->where;
+          foreach ($filters as &$filter_group) {
+            if (isset($filter_group['conditions'])) {
+              foreach ($filter_group['conditions'] as $condition_key => $condition) {
+                if (isset($condition['field']) &&
+                    (strpos($condition['field'], 'node_field_data.status') !== FALSE ||
+                     strpos($condition['field'], '.status') !== FALSE) &&
+                    isset($condition['value']) && $condition['value'] == 1) {
+
+                  $filter_group['conditions'][$condition_key]['value'] = [0, 1];
+                  $filter_group['conditions'][$condition_key]['operator'] = 'IN';
+                }
+              }
             }
           }
 
-          // Add the where condition (only for SQL queries)
-          if ($query instanceof Sql) {
-            $query->addWhere(0, 'group_content_field_data.gid', $user_group_ids, 'IN');
+          // Instead of restricting to only group-assigned content,
+          // show content that either:
+          // 1. Belongs to user's groups, OR
+          // 2. Is in user's allowed languages (for unassigned content)
+          if (count($user_group_ids) > 0 && !empty($user_languages)) {
+            // Create an OR condition group.
+            $or_condition = $query->getConnection()->condition('OR');
+
+            // Condition 1: Content assigned to user's groups.
+            $or_condition->condition('group_content_field_data.gid', $user_group_ids, 'IN');
+
+            // Condition 2: Content in user's languages (for unassigned content)
+            $and_condition = $query->getConnection()->condition('AND');
+            $and_condition->isNull('group_content_field_data.gid');
+            $and_condition->condition('node_field_data.langcode', $user_languages, 'IN');
+
+            $or_condition->condition($and_condition);
+
+            $query->addWhere(0, $or_condition);
+          }
+          elseif (!empty($user_languages)) {
+            // Fallback: just filter by language if no groups have content.
+            $query->addWhere(0, 'node_field_data.langcode', $user_languages, 'IN');
           }
         }
       }
@@ -1984,16 +2076,33 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
  * Form submit handler.
  */
 function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
-  /* Remove user role */
+  /* Remove user role - but only if user is not member of other country groups */
   $form_object = $form_state->getFormObject();
   if ($form_object instanceof EntityFormInterface) {
     $entity = $form_object->getEntity()->toArray();
     $uid = $entity['entity_id'][0]['target_id'];
     $user_roles = $entity['group_roles'];
     $user = User::load($uid);
+
+    // Check if user still has memberships in other country groups.
+    $membership_loader = \Drupal::service('group.membership_loader');
+    $remaining_memberships = $membership_loader->loadByUser($user);
+
+    // If user still has other group memberships, don't remove roles.
+    if (!empty($remaining_memberships)) {
+      // Sync user's allowed languages based on remaining groups.
+      if (\Drupal::moduleHandler()->moduleExists('group_permissions_merge')) {
+        _group_permissions_merge_sync_user_languages($user);
+      }
+
+      return;
+    }
+
+    // User has no remaining group memberships, proceed with role removal.
     if (!empty($user_roles)) {
       foreach ($user_roles as $user_role) {
         foreach ($user_role as $value) {
+          $role = NULL;
           if ($value === "country-admin") {
             $role = "reviewer";
           }
@@ -2008,16 +2117,16 @@ function pb_custom_field_form_submit($form, FormStateInterface $form_state) {
           }
           if (isset($role)) {
             $user->removeRole($role);
-            $user->save();
           }
         }
       }
+      $user->save();
     }
     else {
       // Only remove specific editorial roles.
       $editorial_roles_to_remove = GroupPermissionsMergeService::getTargetRoles();
-      $user_roles = $user->getRoles();
-      $roles_to_remove = array_intersect($user_roles, $editorial_roles_to_remove);
+      $current_user_roles = $user->getRoles();
+      $roles_to_remove = array_intersect($current_user_roles, $editorial_roles_to_remove);
 
       if (!empty($roles_to_remove)) {
         foreach ($roles_to_remove as $role_to_remove) {
