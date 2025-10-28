@@ -67,6 +67,11 @@ class ApiResponseSubscriber implements EventSubscriberInterface {
     // Filter languages for each country group.
     foreach ($data['data'] as &$country_data) {
       if (isset($country_data['CountryID']) && isset($country_data['languages'])) {
+        // Skip language visibility filtering for "Rest of the World".
+        if ($country_data['CountryID'] == '126') {
+          continue;
+        }
+
         $group = Group::load($country_data['CountryID']);
         if ($group) {
           $country_data['languages'] = $this->languageVisibilityService->filterLanguageDataForApi(

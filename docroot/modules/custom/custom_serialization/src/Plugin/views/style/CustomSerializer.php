@@ -366,8 +366,8 @@ class CustomSerializer extends Serializer {
 
             if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
               $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
-              // $Countryname = $rendered_data['Countryname'] ?? 'Unknown';
-              // Langcode en.
+
+              // Get English language data.
               $existing_data_en = $this->database->select('custom_language_data', 'cld')
                 ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
                 ->condition('langcode', 'en')
@@ -392,7 +392,7 @@ class CustomSerializer extends Serializer {
                 $custom_plural_en = $existing_data_en['custom_plural'];
               }
 
-              // Langcode ru.
+              // Get Russian language data.
               $existing_data_ru = $this->database->select('custom_language_data', 'cld')
                 ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
                 ->condition('langcode', 'ru')
@@ -416,6 +416,8 @@ class CustomSerializer extends Serializer {
                 $custom_luxon_ru = $existing_data_ru['custom_luxon'];
                 $custom_plural_ru = $existing_data_ru['custom_plural'];
               }
+
+              // Set up "Rest of the World" entry.
               $rendered_data['name'] = 'Rest of the world';
               $rendered_data['displayName'] = 'Rest of the world';
               $rendered_data['languages'] = [
@@ -442,6 +444,7 @@ class CustomSerializer extends Serializer {
               unset($rendered_data['field_country_national_partner']);
               unset($rendered_data['published']);
             }
+            // Handle all other countries.
             if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {
               $groups = Group::load($rendered_data['CountryID']);
               $country_languages = $groups->get('field_language')->getValue();
