@@ -434,8 +434,8 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
       if (!empty($job_item_ids)) {
         $connection = \Drupal::database();
         $results = $connection->select('tmgmt_job_item', 'ji')
-          ->fields('ji', ['id', 'item_id'])
-          ->condition('ji.id', $job_item_ids, 'IN')
+          ->fields('ji', ['tjiid', 'item_id'])
+          ->condition('ji.tjiid', $job_item_ids, 'IN')
           ->condition('ji.plugin', 'content')
           ->condition('ji.item_type', 'node')
           ->execute()
