@@ -1,8 +1,20 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index 4031da475..70af9cd79 100644
+index 4031da475..d147cc431 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
-@@ -60,6 +60,15 @@ AddEncoding gzip svgz
+@@ -22,6 +22,11 @@ DirectoryIndex index.php index.html index.htm
+ AddType image/svg+xml svg svgz
+ AddEncoding gzip svgz
+ 
++# Add modern image MIME types (so browsers render .webp)
++<IfModule mod_mime.c>
++  AddType image/webp .webp
++</IfModule>
++
+ # Most of the following PHP settings cannot be changed at runtime. See
+ # sites/default/default.settings.php and
+ # Drupal\Core\DrupalKernel::bootEnvironment() for settings that can be
+@@ -60,6 +65,15 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
