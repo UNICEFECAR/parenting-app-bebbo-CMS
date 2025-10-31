@@ -313,7 +313,7 @@ class CustomSerializer extends Serializer {
                     $embedded_images[] = $image->getAttribute('src');
                   }
                 }
-                $rendered_data['embedded_images'] = $embedded_images;
+                $rendered_data['embedded_images'] = $this->processEmbeddedImages($embedded_images);
               }
               else {
                 $rendered_data[$key] = $body_summary;
@@ -790,6 +790,7 @@ class CustomSerializer extends Serializer {
             $uri = $result22[0]->uri;
           }
           $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
+          $url = $this->getWebpUrl($url);
 
         }
         $media_data = [
@@ -879,6 +880,7 @@ class CustomSerializer extends Serializer {
               }
             }
           }
+          $urls = $this->getWebpUrl($urls);
           $media_data = [
             'url'  => $urls,
             'name' => $mname,
@@ -913,6 +915,7 @@ class CustomSerializer extends Serializer {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
           }
+          $thumbnail_url = $this->getWebpUrl($thumbnail_url);
           $media_data = [
             'url'  => $thumbnail_url,
             'name' => $mname,
@@ -1085,6 +1088,50 @@ class CustomSerializer extends Serializer {
       }
       return $term_data;
     }
+  }
+
+  /**
+   * Convert image URL to WebP format.
+   */
+  public function getWebpUrl($url) {
+    if (empty($url)) {
+      return $url;
+    }
+
+    $webp_url = preg_replace('/\.(jpg|jpeg|png)(\?.*)?$/i', '.webp$2', $url);
+    return $webp_url;
+
+  }
+
+  /**
+   * Convert embedded image URLs to WebP format and make them relative.
+   */
+  public function processEmbeddedImages($embedded_images) {
+    $processed_images = [];
+    $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+
+    foreach ($embedded_images as $image_url) {
+      // Check if this is a direct file URL.
+      if (preg_match('#/sites/default/files/(.+)#', $image_url, $matches)) {
+        // Extract the file path and convert to proper URI format.
+        $file_path = $matches[1];
+        $uri = 'public://' . $file_path;
+
+        // Generate the proper image style URL.
+        $styled_url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
+        $webp_url = $this->getWebpUrl($styled_url);
+      }
+      else {
+        $webp_url = $this->getWebpUrl($image_url);
+      }
+
+      if (strpos($webp_url, $base_url) === 0) {
+        $webp_url = substr($webp_url, strlen($base_url));
+      }
+      $processed_images[] = $webp_url;
+    }
+    return $processed_images;
+
   }
 
   /**
