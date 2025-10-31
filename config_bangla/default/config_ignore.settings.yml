@@ -2,6 +2,7 @@ _core:
   default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
 mode: simple
 ignored_config_entities:
+  - 'entity_share_client.remote*'
   - google_analytics.settings
   - mobile_app_links.android_packages
   - mobile_app_links.ios
