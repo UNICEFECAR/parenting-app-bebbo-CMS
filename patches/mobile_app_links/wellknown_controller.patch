@@ -16,13 +16,13 @@ index 989665c..8bd2e36 100644
            }
 +          if (!$components_json) {
 +            $details_components = [
-+              '/' => $applink['paths'] ? explode(PHP_EOL, $applink['paths']) : '',
++              '/' => $applink['paths'] ? $applink['paths'] : '',
 +              'comment' => "Matches any URL whose path starts with URL_PATH and instructs the system not to open it as a universal link",
 +            ];
 +          }
            $details[] = array_filter([
              'appID' => $appID,
-+            'components' => !$components_json ? $details_components : $components_json,
++            'components' => !$components_json ? [$details_components] : $components_json,
              'paths' => $applink['paths'] ? explode(PHP_EOL, $applink['paths']) : '',
              'appIDs' => $applink['appIDs'],
 -            'components' => $components_json ?? '',
