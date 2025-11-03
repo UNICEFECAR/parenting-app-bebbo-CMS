@@ -1111,27 +1111,16 @@ class CustomSerializer extends Serializer {
    */
   public function processEmbeddedImages($embedded_images) {
     $processed_images = [];
-    $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
-
     foreach ($embedded_images as $image_url) {
       // Check if this is a direct file URL.
       if (preg_match('#/sites/default/files/(.+)#', $image_url, $matches)) {
         // Extract the file path and convert to proper URI format.
         $file_path = $matches[1];
-        $uri = 'public://' . $file_path;
-
-        // Generate the proper image style URL.
-        $styled_url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
-        $webp_url = $this->getWebpUrl($styled_url);
+        $processed_images[] = '/sites/default/files/' . $file_path;
       }
       else {
-        $webp_url = $this->getWebpUrl($image_url);
+        $processed_images[] = $image_url;
       }
-
-      if (strpos($webp_url, $base_url) === 0) {
-        $webp_url = substr($webp_url, strlen($base_url));
-      }
-      $processed_images[] = $webp_url;
     }
     return $processed_images;
 
