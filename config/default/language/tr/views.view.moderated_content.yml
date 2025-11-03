@@ -51,7 +51,7 @@ display:
         type:
           expose:
             label: 'İçerik tipi'
-        moderation_state:
+        moderation_state_1:
           expose:
             label: 'Denetim durumu'
         langcode:

@@ -59,18 +59,5 @@ type_settings:
         - published
       to: published
       weight: 1
-  entity_types:
-    node:
-      - article
-      - faq
-      - milestone
-      - page
-      - activities
-      - child_development
-      - child_growth
-      - daily_homescreen_messages
-      - health_check_ups
-      - survey
-      - vaccinations
-      - video_article
+  entity_types: {  }
   default_moderation_state: draft

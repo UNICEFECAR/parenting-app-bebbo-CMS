@@ -51,7 +51,7 @@ display:
         type:
           expose:
             label: 'Tipo de contenido'
-        moderation_state:
+        moderation_state_1:
           expose:
             label: 'Estado de moderación'
         langcode:

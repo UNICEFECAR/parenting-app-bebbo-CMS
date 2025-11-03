@@ -5,7 +5,6 @@ namespace Drupal\pb_custom_form\EventSubscriber;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManager;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\path_alias\AliasManagerInterface;
@@ -81,13 +80,6 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
-   * The logger factory.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
-   */
-  protected $loggerFactory;
-
-  /**
    * Construct method.
    *
    * @inheritDoc
@@ -101,7 +93,6 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     AliasManagerInterface $path_alias_manager,
     KillSwitch $page_cache_kill_switch,
     ConfigFactoryInterface $config_factory,
-    LoggerChannelFactoryInterface $logger_factory,
   ) {
     $this->routeMatch = $route_match;
     $this->languageManager = $language_manager;
@@ -111,7 +102,6 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
     $this->pathAliasManager = $path_alias_manager;
     $this->pageCacheKillSwitch = $page_cache_kill_switch;
     $this->configFactory = $config_factory;
-    $this->loggerFactory = $logger_factory;
   }
 
   /**
@@ -126,8 +116,7 @@ class InternalContentNodeRedirect implements EventSubscriberInterface {
       $container->get('path.current'),
       $container->get('path_alias.manager'),
       $container->get('page_cache_kill_switch'),
-      $container->get('config.factory'),
-      $container->get('logger.factory')
+      $container->get('config.factory')
     );
   }
 
