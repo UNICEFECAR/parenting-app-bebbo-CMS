@@ -67,12 +67,24 @@ class RedirectManagementForm extends ConfigFormBase {
       ],
       '#empty' => $this->t('No redirects configured.'),
     ];
+    $redirects_table = $form_state->getValue(['language_redirects', 'redirects_table']);
+    if (!$redirects_table) {
+      $redirects_table = [];
+      foreach ($existing_redirects as $lang_code => $url) {
+        $redirects_table[] = [
+          'language_code' => $lang_code,
+          'redirect_url' => $url,
+        ];
+      }
+      while (count($redirects_table) < $num_redirects) {
+        $redirects_table[] = ['language_code' => '', 'redirect_url' => ''];
+      }
+    }
 
     // Add existing redirects and new rows.
-    $redirect_keys = array_keys($existing_redirects);
     for ($i = 0; $i < $num_redirects; $i++) {
-      $language_code = $redirect_keys[$i] ?? '';
-      $redirect_url = $existing_redirects[$language_code] ?? '';
+      $language_code = $redirects_table[$i]['language_code'] ?? '';
+      $redirect_url = $redirects_table[$i]['redirect_url'] ?? '';
 
       $form['language_redirects']['redirects_table'][$i]['language_code'] = [
         '#type' => 'textfield',
@@ -140,10 +152,20 @@ class RedirectManagementForm extends ConfigFormBase {
       ],
       '#empty' => $this->t('No landing pages configured.'),
     ];
+    $pages_table = $form_state->getValue(['landing_pages', 'pages_table']);
+    if (!$pages_table) {
+      $pages_table = [];
+      foreach ($existing_pages as $page_path) {
+        $pages_table[] = ['page_path' => $page_path];
+      }
+      while (count($pages_table) < $num_pages) {
+        $pages_table[] = ['page_path' => ''];
+      }
+    }
 
     // Add existing pages and new rows.
     for ($i = 0; $i < $num_pages; $i++) {
-      $page_path = $existing_pages[$i] ?? '';
+      $page_path = $pages_table[$i]['page_path'] ?? '';
 
       $form['landing_pages']['pages_table'][$i]['page_path'] = [
         '#type' => 'textfield',
@@ -203,10 +225,26 @@ class RedirectManagementForm extends ConfigFormBase {
    * Submit handler to remove a redirect row.
    */
   public function removeRedirectRow(array &$form, FormStateInterface $form_state) {
-    $num_redirects = $form_state->get('num_redirects');
-    if ($num_redirects > 1) {
-      $form_state->set('num_redirects', $num_redirects - 1);
+    $triggering_element = $form_state->getTriggeringElement();
+    $button_name = $triggering_element['#name'];
+
+    if (preg_match('/remove_redirect_(\d+)/', $button_name, $matches)) {
+      $row_to_remove = (int) $matches[1];
+
+      $user_input = $form_state->getUserInput();
+      $current_redirects = $user_input['language_redirects']['redirects_table'] ?? [];
+      unset($current_redirects[$row_to_remove]);
+      $current_redirects = array_values($current_redirects);
+      $form_state->setValue(['language_redirects', 'redirects_table'], $current_redirects);
+      $user_input['language_redirects']['redirects_table'] = $current_redirects;
+      $form_state->setUserInput($user_input);
+
+      $num_redirects = $form_state->get('num_redirects');
+      if ($num_redirects > 1) {
+        $form_state->set('num_redirects', $num_redirects - 1);
+      }
     }
+
     $form_state->setRebuild();
   }
 
@@ -223,10 +261,30 @@ class RedirectManagementForm extends ConfigFormBase {
    * Submit handler to remove a landing page row.
    */
   public function removePageRow(array &$form, FormStateInterface $form_state) {
-    $num_pages = $form_state->get('num_pages');
-    if ($num_pages > 1) {
-      $form_state->set('num_pages', $num_pages - 1);
+    $triggering_element = $form_state->getTriggeringElement();
+    $button_name = $triggering_element['#name'];
+
+    if (preg_match('/remove_page_(\d+)/', $button_name, $matches)) {
+      $row_to_remove = (int) $matches[1];
+
+      // Get current user input from the form.
+      $user_input = $form_state->getUserInput();
+      $current_pages = $user_input['landing_pages']['pages_table'] ?? [];
+
+      // Remove the specific row.
+      unset($current_pages[$row_to_remove]);
+      $current_pages = array_values($current_pages);
+
+      $form_state->setValue(['landing_pages', 'pages_table'], $current_pages);
+      $user_input['landing_pages']['pages_table'] = $current_pages;
+      $form_state->setUserInput($user_input);
+
+      $num_pages = $form_state->get('num_pages');
+      if ($num_pages > 1) {
+        $form_state->set('num_pages', $num_pages - 1);
+      }
     }
+
     $form_state->setRebuild();
   }
 

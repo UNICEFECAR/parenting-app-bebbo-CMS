@@ -143,6 +143,25 @@ class CsvExportController extends ControllerBase {
     $remote_id = $request->query->get('remote');
     $import_config_id = $request->query->get('import_config');
 
+    // If remote_id is empty but there's only one remote configured.
+    if (empty($remote_id)) {
+      try {
+        $remote_storage = $this->entityTypeManager->getStorage('remote');
+        $remotes = $remote_storage->loadMultiple();
+        if (count($remotes) === 1) {
+          $remote_id = array_keys($remotes)[0];
+          $this->logger->info('Auto-selected single remote @remote for CSV export', [
+            '@remote' => $remote_id,
+          ]);
+        }
+      }
+      catch (\Exception $e) {
+        $this->logger->error('Failed to auto-select remote: @error', [
+          '@error' => $e->getMessage(),
+        ]);
+      }
+    }
+
     if (empty($channel_id) || empty($remote_id)) {
       $this->messenger()->addError($this->t('Channel and Remote website are required for CSV export.'));
       return $this->redirect('entity_share_client.admin_content_pull_form');
@@ -253,6 +272,25 @@ class CsvExportController extends ControllerBase {
     $channel_id = $request->query->get('channel');
     $remote_id = $request->query->get('remote');
     $import_config_id = $request->query->get('import_config');
+
+    // If remote_id is empty but there's only one remote configured.
+    if (empty($remote_id)) {
+      try {
+        $remote_storage = $this->entityTypeManager->getStorage('remote');
+        $remotes = $remote_storage->loadMultiple();
+        if (count($remotes) === 1) {
+          $remote_id = array_keys($remotes)[0];
+          $this->logger->info('Auto-selected single remote @remote for CSV export', [
+            '@remote' => $remote_id,
+          ]);
+        }
+      }
+      catch (\Exception $e) {
+        $this->logger->error('Failed to auto-select remote: @error', [
+          '@error' => $e->getMessage(),
+        ]);
+      }
+    }
 
     if (empty($channel_id) || empty($remote_id)) {
       $this->messenger()->addError($this->t('Channel and Remote website are required for CSV export.'));
@@ -389,6 +427,8 @@ class CsvExportController extends ControllerBase {
       $headers = [
         'Remote ID',
         'Local ID',
+        'Remote Link',
+        'Local Link',
         'Label',
         'Type',
         'Bundle',
@@ -518,14 +558,19 @@ class CsvExportController extends ControllerBase {
         elseif (strpos($type, 'user') !== FALSE) {
           $entity_path = '/user/';
         }
+        $local_base = $request->getSchemeAndHttpHost();
 
         // Local lookup performed above; continue building CSV row.
         // Build the row.
         $row = [
-        // Remote ID as URL or UUID fallback.
-          !empty($local_id) ? $remote_base . $entity_path . $local_id : $remote_uuid,
+        // Remote ID - The numeric ID from the remote system.
+          $local_id ?: $remote_uuid,
         // Local ID (empty if not imported yet)
           $local_entity_id ?: 'Not imported',
+        // Remote Link - Remote ID as URL or UUID fallback.
+          !empty($local_id) ? $remote_base . $entity_path . $local_id : $remote_uuid,
+        // Local Link - Local URL if entity exists locally.
+          !empty($local_entity_id) ? $local_base . $entity_path . $local_entity_id : 'Not imported',
         // Label.
           $title,
         // Type.
@@ -865,6 +910,8 @@ class CsvExportController extends ControllerBase {
     $headers = [
       'Remote ID',
       'Local ID',
+      'Remote Link',
+      'Local Link',
       'Label',
       'Type',
       'Bundle',
@@ -1011,10 +1058,14 @@ class CsvExportController extends ControllerBase {
 
     // Build the row.
     return [
-      // Remote ID as URL or UUID fallback.
-      !empty($local_id) ? $export_params['remote_base'] . $entity_path . $local_id : $remote_uuid,
+      // Remote ID - The numeric ID from the remote system.
+      $local_id ?: $remote_uuid,
       // Local ID (empty if not imported yet)
       $local_entity_id ?: 'Not imported',
+      // Remote Link - Remote ID as URL or UUID fallback.
+      !empty($local_id) ? $export_params['remote_base'] . $entity_path . $local_id : $remote_uuid,
+      // Local Link - Local URL if entity exists locally.
+      !empty($local_entity_id) ? $export_params['local_base'] . $entity_path . $local_entity_id : 'Not imported',
       // Label.
       $title,
       // Type.
