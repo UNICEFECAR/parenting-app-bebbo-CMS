@@ -913,6 +913,25 @@ function pb_custom_form_csv_download_redirect($form, FormStateInterface $form_st
     }
   }
 
+  // If remote_id is empty but there's only one remote configured.
+  if (empty($remote_id)) {
+    try {
+      $remote_storage = \Drupal::entityTypeManager()->getStorage('remote');
+      $remotes = $remote_storage->loadMultiple();
+      if (count($remotes) === 1) {
+        $remote_id = array_keys($remotes)[0];
+        \Drupal::logger('pb_custom_form')->info('Auto-selected single remote @remote for CSV export', [
+          '@remote' => $remote_id,
+        ]);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('pb_custom_form')->error('Failed to auto-select remote: @error', [
+        '@error' => $e->getMessage(),
+      ]);
+    }
+  }
+
   // Validate required parameters.
   if (empty($channel_id) || empty($remote_id)) {
     \Drupal::logger('pb_custom_form')->warning('CSV export requested but channel or remote not set. remote=@remote channel=@channel form_values=@values user_input=@input', [
@@ -964,4 +983,85 @@ function pb_custom_form_csv_download_redirect($form, FormStateInterface $form_st
  */
 function pb_custom_form_page_attachments_alter(&$page) {
   $page['#attached']['library'][] = 'pb_custom_form/bootstrap';
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function pb_custom_form_preprocess_page(&$variables) {
+  // Ensure TMGMT local tasks are always visible on TMGMT pages.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if (strpos($route_name, 'tmgmt.') === 0) {
+    $variables['#cache']['contexts'][] = 'route';
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function pb_custom_form_menu_local_tasks_alter(&$data, $route_name) {
+  // Add TMGMT local tasks to source overview pages.
+  if (in_array($route_name, ['tmgmt.source_overview', 'tmgmt.source_overview_default'])) {
+    // Manually build the local tasks for TMGMT pages.
+    $data['tabs'][0]['tmgmt.job_items'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Job Items'),
+        'url' => Url::fromRoute('view.tmgmt_translation_all_job_items.page_1'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 5,
+    ];
+
+    $data['tabs'][0]['tmgmt.jobs'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Jobs'),
+        'url' => Url::fromRoute('view.tmgmt_job_overview.page_1'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 10,
+    ];
+
+    $data['tabs'][0]['tmgmt.sources'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Sources'),
+        'url' => Url::fromRoute('tmgmt.source_overview_default'),
+      ],
+      '#active' => TRUE,
+      '#weight' => 15,
+    ];
+
+    $data['tabs'][0]['tmgmt.cart'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Cart'),
+        'url' => Url::fromRoute('tmgmt.cart'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 20,
+    ];
+
+    $data['tabs'][0]['tmgmt.translators'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Providers'),
+        'url' => Url::fromRoute('entity.tmgmt_translator.collection'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 90,
+    ];
+
+    $data['tabs'][0]['tmgmt.settings'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Settings'),
+        'url' => Url::fromRoute('tmgmt.settings'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 100,
+    ];
+  }
 }

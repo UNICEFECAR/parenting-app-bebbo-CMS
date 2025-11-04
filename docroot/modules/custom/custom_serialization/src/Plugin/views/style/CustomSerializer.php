@@ -298,6 +298,7 @@ class CustomSerializer extends Serializer {
 
               /* Remove div Image label tag */
               $body_summary = str_replace("<div class=\"field__label visually-hidden\">Image</div>", '', $body_summary);
+              $body_summary = html_entity_decode($body_summary, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
               /* Embedded images. */
               if ($rendered_data['type'] == "Article" || $rendered_data['type'] == "Games" || $rendered_data['type'] == "Basic page" || $rendered_data['type'] == "Video Article") {

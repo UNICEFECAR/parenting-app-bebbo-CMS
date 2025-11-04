@@ -136,7 +136,6 @@ permissions:
   - 'use group_workflow transition review_after_translation_to_sme_review'
   - 'use group_workflow transition senior_editor_review_to_published'
   - 'use group_workflow transition senior_editor_review_to_reject'
-  - 'use group_workflow transition senior_editor_review_to_review_after_translation'
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'

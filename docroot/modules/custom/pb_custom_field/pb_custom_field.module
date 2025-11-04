@@ -1205,7 +1205,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
               if (isset($operations['edit'])) {
                 unset($operations['edit']);
               }
+              if (isset($operations['translate'])) {
+                unset($operations['translate']);
+              }
               return;
+            }
+            if (isset($operations['translate'])) {
+              unset($operations['translate']);
             }
           }
           elseif (in_array('editor', $user_roles)) {
@@ -1221,6 +1227,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
               if (isset($operations['edit'])) {
                 unset($operations['edit']);
               }
+              if (!isset($operations['translate']) && \Drupal::service('content_translation.manager')->isEnabled($entity->getEntityTypeId(), $entity->bundle())) {
+                $operations['translate'] = [
+                  'title' => t('Translate'),
+                  'url' => $entity->toUrl('drupal:content-translation-overview'),
+                  'weight' => 15,
+                ];
+              }
               return;
             }
           }
@@ -1230,6 +1243,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
               'title' => t('Edit'),
               'url' => $entity->toUrl('edit-form'),
               'weight' => 10,
+            ];
+          }
+          if (!isset($operations['translate']) && \Drupal::service('content_translation.manager')->isEnabled($entity->getEntityTypeId(), $entity->bundle()) && !in_array('sme', $user_roles)) {
+            $operations['translate'] = [
+              'title' => t('Translate'),
+              'url' => $entity->toUrl('drupal:content-translation-overview'),
+              'weight' => 15,
             ];
           }
         }
@@ -1256,6 +1276,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
               if (isset($operations['edit'])) {
                 unset($operations['edit']);
               }
+              if (!isset($operations['translate']) && \Drupal::service('content_translation.manager')->isEnabled($entity->getEntityTypeId(), $entity->bundle()) && !in_array('sme', $user_roles)) {
+                $operations['translate'] = [
+                  'title' => t('Translate'),
+                  'url' => $entity->toUrl('drupal:content-translation-overview'),
+                  'weight' => 15,
+                ];
+              }
             }
           }
 
@@ -1265,6 +1292,13 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
             if (!in_array('sme', $user_roles) && !in_array('se', $user_roles)) {
               if (isset($operations['edit'])) {
                 unset($operations['edit']);
+              }
+              if (!isset($operations['translate']) && \Drupal::service('content_translation.manager')->isEnabled($entity->getEntityTypeId(), $entity->bundle()) && !in_array('sme', $user_roles)) {
+                $operations['translate'] = [
+                  'title' => t('Translate'),
+                  'url' => $entity->toUrl('drupal:content-translation-overview'),
+                  'weight' => 15,
+                ];
               }
             }
           }
