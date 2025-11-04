@@ -322,7 +322,7 @@ class CustomSerializer extends Serializer {
             }
             /* Custom image & video formattter.To check media image field exist  */
             if (in_array($key, $media_fields)) {
-              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code);
+              $media_formatted_data = $this->customMediaFormatter($key, $values, $language_code, $request_uri);
               $rendered_data[$key] = $media_formatted_data;
             }
             /* Custom array formatter.To check mulitple field.  */
@@ -756,7 +756,7 @@ class CustomSerializer extends Serializer {
   /**
    * To get media files details from db.
    */
-  public function customMediaFormatter($key, $values, $language_code) {
+  public function customMediaFormatter($key, $values, $language_code, $request_uri = '') {
 
     if (!empty($values)) {
       $url = $mname = $malt = '';
@@ -794,7 +794,9 @@ class CustomSerializer extends Serializer {
             $uri = $result22[0]->uri;
           }
           $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
-          $url = $this->getWebpUrl($url);
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $url = $this->getWebpUrl($url);
+          }
 
         }
         $media_data = [
@@ -884,7 +886,9 @@ class CustomSerializer extends Serializer {
               }
             }
           }
-          $urls = $this->getWebpUrl($urls);
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $urls = $this->getWebpUrl($urls);
+          }
           $media_data = [
             'url'  => $urls,
             'name' => $mname,
@@ -919,7 +923,9 @@ class CustomSerializer extends Serializer {
             $thumbnail = File::load($tid);
             $thumbnail_url = $thumbnail->createFileUrl();
           }
-          $thumbnail_url = $this->getWebpUrl($thumbnail_url);
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $thumbnail_url = $this->getWebpUrl($thumbnail_url);
+          }
           $media_data = [
             'url'  => $thumbnail_url,
             'name' => $mname,
