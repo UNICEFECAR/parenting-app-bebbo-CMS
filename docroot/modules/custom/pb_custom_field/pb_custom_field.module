@@ -1191,6 +1191,7 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
               'published',
               'reject',
               'review_after_translation',
+              'sme_review',
             ];
 
             if (!in_array($moderation_state, $allowed_se_states)) {

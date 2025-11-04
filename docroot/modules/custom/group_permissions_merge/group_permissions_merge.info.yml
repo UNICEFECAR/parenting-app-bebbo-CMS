@@ -1,7 +1,0 @@
-name: Group Permissions Merge
-type: module
-description: 'Merges permissions from multiple groups for multi-country users'
-core_version_requirement: ^10 || ^11
-package: Custom
-dependencies:
-  - group:group
