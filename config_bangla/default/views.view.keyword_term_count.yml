@@ -787,7 +787,7 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
+            utf8_bom: '1'
             use_serializer_encode_only: false
       defaults:
         fields: false
@@ -1172,7 +1172,7 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
+            utf8_bom: '1'
             use_serializer_encode_only: false
       defaults:
         fields: false
@@ -1519,7 +1519,7 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
+            utf8_bom: '1'
             use_serializer_encode_only: false
       defaults:
         fields: false
@@ -1950,7 +1950,7 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
+            utf8_bom: '1'
             use_serializer_encode_only: false
       query:
         type: views_query

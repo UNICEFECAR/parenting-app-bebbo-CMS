@@ -2486,7 +2486,7 @@ display:
             strip_tags: true
             trim: true
             encoding: utf8
-            utf8_bom: '0'
+            utf8_bom: '1'
             use_serializer_encode_only: false
       defaults:
         relationships: false
