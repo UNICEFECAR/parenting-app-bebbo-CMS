@@ -801,12 +801,12 @@ display:
         page_2: '0'
         page_3: '0'
       filename: 'keyword-link-to-content-[date:custom:Y-m-d_H-i].csv'
-      automatic_download: false
+      automatic_download: true
       export_method: batch
       export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_1
       include_query_params: false
     cache_metadata:
       max-age: -1
@@ -1186,12 +1186,12 @@ display:
         page_1: '0'
         page_3: '0'
       filename: 'keyword-notlink-to-content-[date:custom:Y-m-d_H-i].csv'
-      automatic_download: false
+      automatic_download: true
       export_method: batch
       export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_2
       include_query_params: false
     cache_metadata:
       max-age: -1
@@ -1533,12 +1533,12 @@ display:
         page_1: '0'
         page_2: '0'
       filename: 'keyword_term_english-[date:custom:Y-m-d_H-i].csv'
-      automatic_download: false
+      automatic_download: true
       export_method: batch
       export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_3
       include_query_params: false
     cache_metadata:
       max-age: -1
@@ -1980,12 +1980,12 @@ display:
         page_3: '0'
         page_4: '0'
       filename: 'keyword-link-to-content-group-[date:custom:Y-m-d_H-i].csv'
-      automatic_download: false
+      automatic_download: true
       export_method: batch
       export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_5
       include_query_params: false
     cache_metadata:
       max-age: -1
