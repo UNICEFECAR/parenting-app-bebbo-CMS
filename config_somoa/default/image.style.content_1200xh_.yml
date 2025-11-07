@@ -13,4 +13,4 @@ effects:
       width: 1200
       height: null
       upscale: false
-pipeline: pipeline_prod_default
+pipeline: webp_compression

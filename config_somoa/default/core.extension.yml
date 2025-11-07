@@ -39,6 +39,7 @@ module:
   field: 0
   field_ui: 0
   file: 0
+  file_mdm: 0
   filelog: 0
   filter: 0
   gnode: 0
@@ -46,9 +47,9 @@ module:
   group_country_field: 0
   help: 0
   image: 0
-  image_style_quality: 0
   imageapi_optimize: 0
-  imageapi_optimize_gd: 0
+  imageapi_optimize_binaries: 0
+  imagemagick: 0
   jsonapi: 0
   jsonapi_extras: 0
   lang_dropdown: 0
@@ -103,6 +104,7 @@ module:
   serialization: 0
   shortcut: 0
   smtp: 0
+  sophron: 0
   structure_sync: 0
   svg_image: 0
   syslog: 0
