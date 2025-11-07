@@ -62,10 +62,11 @@ $sites['ec.bebbo.app'] = 'ecuador';
 $sites['merhababebek.app'] = 'turkey';
 $sites['pc.bebbo.app'] = 'pacific_islands';
 $sites['ws.bebbo.app'] = 'somoa';
-$sites['rerai.umntwana.app'] = 'somoa';
 $sites['wawamor.ec'] = 'ecuador';
 $sites['zw.bebbo.app'] = 'zimbabwe';
-$sites['bebbopacific.app'] = 'zimbabwe';
+$sites['bebbopacific.app'] = 'somoa';
+$sites['umntwana.app'] = 'zimbabwe';
+$sites['rerai.umntwana.app'] = 'zimbabwe';
 
 // Staging setup
 $sites['bangla-stage.bebbo.app'] = 'bangladesh';
