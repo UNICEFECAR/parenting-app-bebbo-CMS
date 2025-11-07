@@ -406,10 +406,11 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
       ] + $request->query->all(),
     ]);
 
-    // Add Node ID as the first column with sortable link.
+    // Modify the items table if it exists.
     if (isset($form['items']['#header'])) {
-      $form['items']['#header'] = array_merge(
-        [[
+      $header = $form['items']['#header'];
+      $new_header = [
+        'node_id' => [
           'data' => [
             '#type' => 'link',
             '#title' => t('Node ID'),
@@ -421,54 +422,78 @@ function pb_custom_form_form_alter(&$form, FormStateInterface $form_state, $form
             ],
           ],
         ],
-        ],
-        $form['items']['#header']
-      );
-    }
+      ];
 
-    // Collect items for sorting if needed.
-    $items_data = [];
-    if (isset($form['items']['#options'])) {
-      $job_item_ids = array_map('intval', array_keys($form['items']['#options']));
-      $node_map = [];
-      if (!empty($job_item_ids)) {
-        $connection = \Drupal::database();
-        $results = $connection->select('tmgmt_job_item', 'ji')
-          ->fields('ji', ['tjiid', 'item_id'])
-          ->condition('ji.tjiid', $job_item_ids, 'IN')
-          ->condition('ji.plugin', 'content')
-          ->condition('ji.item_type', 'node')
-          ->execute()
-          ->fetchAllKeyed(0, 1);
-        foreach ($results as $jid => $item_id) {
-          $node_map[(int) $jid] = (int) $item_id;
+      // Add the rest of the headers.
+      foreach ($header as $key => $column) {
+        $new_header[$key] = $column;
+      }
+      $form['items']['#header'] = $new_header;
+
+      // Add Node ID data to each row if items exist.
+      if (isset($form['items']['#options']) && !empty($form['items']['#options'])) {
+        $job_item_ids = array_map('intval', array_keys($form['items']['#options']));
+        $node_map = [];
+        if (!empty($job_item_ids)) {
+          $connection = \Drupal::database();
+          $results = $connection->select('tmgmt_job_item', 'ji')
+            ->fields('ji', ['tjiid', 'item_id'])
+            ->condition('ji.tjiid', $job_item_ids, 'IN')
+            ->condition('ji.plugin', 'content')
+            ->condition('ji.item_type', 'node')
+            ->execute()
+            ->fetchAllKeyed(0, 1);
+          foreach ($results as $jid => $item_id) {
+            $node_map[(int) $jid] = (int) $item_id;
+          }
         }
-      }
 
-      // Build lightweight array for sorting.
-      foreach ($form['items']['#options'] as $job_item_id => $row) {
-        $jid = (int) $job_item_id;
-        $items_data[$job_item_id] = [
-          'entity_id' => $node_map[$jid] ?? 0,
-          'row' => $row,
-        ];
-      }
+        // Collect items for sorting.
+        $items_data = [];
+        foreach ($form['items']['#options'] as $job_item_id => $row) {
+          $jid = (int) $job_item_id;
+          $items_data[$job_item_id] = [
+            'entity_id' => $node_map[$jid] ?? 0,
+            'row' => $row,
+          ];
+        }
 
-      // Sort items if Node ID sorting is requested.
-      if ($current_order === 'node_id') {
-        uasort($items_data, function ($a, $b) use ($current_sort) {
-          $a_val = (int) $a['entity_id'];
-          $b_val = (int) $b['entity_id'];
-          return $current_sort === 'asc' ? $a_val <=> $b_val : $b_val <=> $a_val;
-        });
-      }
+        // Sort items if Node ID sorting is requested.
+        if ($current_order === 'node_id') {
+          uasort($items_data, function ($a, $b) use ($current_sort) {
+            $a_val = (int) $a['entity_id'];
+            $b_val = (int) $b['entity_id'];
+            return $current_sort === 'asc' ? $a_val <=> $b_val : $b_val <=> $a_val;
+          });
+        }
 
-      // Rebuild options preserving job_item ids as keys.
-      $new_options = [];
-      foreach ($items_data as $job_item_id => $data) {
-        $new_options[$job_item_id] = $data['row'];
+        // Rebuild options with Node ID data.
+        $new_options = [];
+        foreach ($items_data as $job_item_id => $data) {
+          $entity_id = $data['entity_id'];
+          $row = $data['row'];
+
+          // Create new row with Node ID first.
+          $new_row = [
+            'node_id' => [
+              'data' => [
+                '#type' => 'link',
+                '#title' => $entity_id ?: 'N/A',
+                '#url' => $entity_id ? Url::fromRoute('entity.node.edit_form', ['node' => $entity_id]) : Url::fromRoute('<current>'),
+                '#attributes' => $entity_id ? ['target' => '_blank'] : ['class' => ['disabled']],
+              ],
+            ],
+          ];
+
+          // Add the rest of the row data.
+          foreach ($row as $key => $value) {
+            $new_row[$key] = $value;
+          }
+
+          $new_options[$job_item_id] = $new_row;
+        }
+        $form['items']['#options'] = $new_options;
       }
-      $form['items']['#options'] = $new_options;
     }
   }
 }
