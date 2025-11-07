@@ -217,9 +217,8 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase impleme
       $node_lang_archive->revision_log = 'Content changed  into Draft State';
       $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
+      $node_lang_archive->setRevisionTranslationAffected(TRUE);
       $node_lang_archive->save();
-      $archive_node->save();
       $this->assigned = $this->assigned + 1;
     }
     elseif ($current_state !== 'draft' && !empty($grps)) {
@@ -235,9 +234,8 @@ class MovefrompublishtodraftAction extends ViewsBulkOperationsActionBase impleme
         $node_lang_archive->revision_log = 'Content changed  into Draft State';
         $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->setRevisionTranslationAffected(TRUE);
         $node_lang_archive->save();
-        $archive_node->save();
         $this->assigned = $this->assigned + 1;
       }
       else {

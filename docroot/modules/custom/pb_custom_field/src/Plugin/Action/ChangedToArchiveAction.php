@@ -221,9 +221,8 @@ class ChangedToArchiveAction extends ViewsBulkOperationsActionBase implements Co
       $node_lang_archive->revision_log = 'Content changed  into archive State';
       $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
+      $node_lang_archive->setRevisionTranslationAffected(TRUE);
       $node_lang_archive->save();
-      $archive_node->save();
       $this->assigned = $this->assigned + 1;
     }
     elseif ($current_state !== 'archive' && !empty($grps)) {
@@ -239,9 +238,8 @@ class ChangedToArchiveAction extends ViewsBulkOperationsActionBase implements Co
         $node_lang_archive->revision_log = 'Content changed  into Archive State';
         $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->setRevisionTranslationAffected(TRUE);
         $node_lang_archive->save();
-        $archive_node->save();
         $this->assigned = $this->assigned + 1;
       }
       else {
