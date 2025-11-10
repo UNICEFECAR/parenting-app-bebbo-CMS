@@ -3122,12 +3122,12 @@ display:
         page_5: page_5
         default: '0'
       filename: 'country_reports-[date:custom:Y-m-d_H-i].csv'
-      automatic_download: false
+      automatic_download: true
       export_method: batch
       export_batch_size: 100
       store_in_public_file_directory: false
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_5
       include_query_params: false
     cache_metadata:
       max-age: -1

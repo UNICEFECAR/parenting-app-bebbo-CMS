@@ -191,9 +191,8 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
       $node_lang_archive->revision_log = 'Content changed  from "Published" to "Archive" and than "Senior Editor Review"';
       $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
+      $node_lang_archive->setRevisionTranslationAffected(TRUE);
       $node_lang_archive->save();
-      $archive_node->save();
       /* Change status from publish to senior_editor_review. */
       $draft_node = $this->entityTypeManager->getStorage('node')->load($nid);
       $node_lang_draft = $draft_node->getTranslation($current_language);
@@ -203,7 +202,6 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
       $node_lang_draft->set('changed', time());
       $node_lang_draft->set('created', time());
       $node_lang_draft->save();
-      $draft_node->save();
       $this->assigned = $this->assigned + 1;
     }
     elseif ($current_state == 'published' && !empty($grps)) {
@@ -220,9 +218,8 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
         $node_lang_archive->revision_log = 'Content changed  from "Published" to "Archive" and than "Senior Editor Review"';
         $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->setRevisionTranslationAffected(TRUE);
         $node_lang_archive->save();
-        $archive_node->save();
         /* Change status from publish to senior_editor_review. */
         $draft_node = $this->entityTypeManager->getStorage('node')->load($nid);
         $node_lang_draft = $draft_node->getTranslation($current_language);
@@ -232,7 +229,6 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
         $node_lang_draft->set('changed', time());
         $node_lang_draft->set('created', time());
         $node_lang_draft->save();
-        $draft_node->save();
         $this->assigned = $this->assigned + 1;
       }
       else {

@@ -2787,9 +2787,9 @@ display:
         page_4: page_4
         default: '0'
       filename: ''
-      automatic_download: false
+      automatic_download: true
       store_in_public_file_directory: false
-      custom_redirect_path: false
+      custom_redirect_path: page_4
       redirect_to_display: none
       include_query_params: false
     cache_metadata:

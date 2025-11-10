@@ -220,9 +220,8 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase implement
       $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
       $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
+      $node_lang_archive->setRevisionTranslationAffected(TRUE);
       $node_lang_archive->save();
-      $archive_node->save();
       /* Change status from publish to sme_review. */
       $draft_node = $this->nodeStorage->load($nid);
       $node_lang_draft = $draft_node->getTranslation($current_language);
@@ -232,7 +231,6 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase implement
       $node_lang_draft->set('changed', $this->time->getRequestTime());
       $node_lang_draft->set('created', $this->time->getRequestTime());
       $node_lang_draft->save();
-      $draft_node->save();
       $this->assigned = $this->assigned + 1;
     }
     elseif ($current_state == 'published' && !empty($grps)) {
@@ -249,9 +247,8 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase implement
         $node_lang_archive->revision_log = 'Content changed  from “Published” to “Archive” and than “SME Review”';
         $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->setRevisionTranslationAffected(TRUE);
         $node_lang_archive->save();
-        $archive_node->save();
         /* Change status from publish to sme_review. */
         $draft_node = $this->nodeStorage->load($nid);
         $node_lang_draft = $draft_node->getTranslation($current_language);
@@ -261,7 +258,6 @@ class MovefrompublishtosmeAction extends ViewsBulkOperationsActionBase implement
         $node_lang_draft->set('changed', $this->time->getRequestTime());
         $node_lang_draft->set('created', $this->time->getRequestTime());
         $node_lang_draft->save();
-        $draft_node->save();
         $this->assigned = $this->assigned + 1;
       }
       else {

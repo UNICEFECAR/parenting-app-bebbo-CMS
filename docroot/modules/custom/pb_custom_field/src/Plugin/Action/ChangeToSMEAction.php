@@ -8,7 +8,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /* use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
@@ -95,42 +94,73 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
   public $processItem = 0;
 
   /**
-   * {@inheritdoc}
+   * Get the current user service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, $current_user, $group_membership_loader, $messenger, $logger, $request_stack, $time) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentUser = $current_user;
-    $this->groupMembershipLoader = $group_membership_loader;
-    $this->messenger = $messenger;
-    $this->logger = $logger;
-    $this->requestStack = $request_stack;
-    $this->time = $time;
+  protected function getCurrentUser() {
+    if (!$this->currentUser) {
+      $this->currentUser = \Drupal::currentUser();
+    }
+    return $this->currentUser;
   }
 
   /**
-   * {@inheritdoc}
+   * Get the group membership loader service.
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new self(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('current_user'),
-      $container->get('group.membership_loader'),
-      $container->get('messenger'),
-      $container->get('logger.factory')->get('bulk_action'),
-      $container->get('request_stack'),
-      $container->get('datetime.time')
-    );
+  protected function getGroupMembershipLoader() {
+    if (!$this->groupMembershipLoader) {
+      $this->groupMembershipLoader = \Drupal::service('group.membership_loader');
+    }
+    return $this->groupMembershipLoader;
+  }
+
+  /**
+   * Get the messenger service.
+   */
+  protected function getMessenger() {
+    if (!$this->messenger) {
+      $this->messenger = \Drupal::messenger();
+    }
+    return $this->messenger;
+  }
+
+  /**
+   * Get the logger service.
+   */
+  protected function getLogger() {
+    if (!$this->logger) {
+      $this->logger = \Drupal::logger('bulk_action');
+    }
+    return $this->logger;
+  }
+
+  /**
+   * Get the request stack service.
+   */
+  protected function getRequestStack() {
+    if (!$this->requestStack) {
+      $this->requestStack = \Drupal::service('request_stack');
+    }
+    return $this->requestStack;
+  }
+
+  /**
+   * Get the time service.
+   */
+  protected function getTime() {
+    if (!$this->time) {
+      $this->time = \Drupal::service('datetime.time');
+    }
+    return $this->time;
   }
 
   /**
    * {@inheritdoc}
    */
   public function execute(?ContentEntityInterface $entity = NULL) {
-    $uid = $this->currentUser->id();
+    $current_user = $this->getCurrentUser();
+    $uid = $current_user->id();
     $user = User::load($uid);
-    $grp_membership_service = $this->groupMembershipLoader;
+    $grp_membership_service = $this->getGroupMembershipLoader();
     $grps = $grp_membership_service->loadByUser($user);
     $grp_country_new_array = [];
     if (!empty($grps)) {
@@ -158,34 +188,34 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
     $node_lang_archive = $archive_node->getTranslation($current_language);
     $current_state = $node_lang_archive->moderation_state->value;
     if ($current_state !== 'sme_review' && empty($grps)) {
-      $uid = $this->currentUser->id();
+      $uid = $current_user->id();
       $node_lang_archive->set('moderation_state', 'sme_review');
       $node_lang_archive->set('uid', $uid);
       $node_lang_archive->set('content_translation_source', $current_language);
       $node_lang_archive->set('changed', time());
       $node_lang_archive->setNewRevision(TRUE);
-      $node_lang_archive->revision_log = 'Content changed  into SME Review State';
-      $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
+      $node_lang_archive->revision_log = 'Content changed into SME Review State';
+      $node_lang_archive->setRevisionCreationTime($this->getTime()->getRequestTime());
       $node_lang_archive->setRevisionUserId($uid);
-      $node_lang_archive->setRevisionTranslationAffected(NULL);
+      $node_lang_archive->setRevisionTranslationAffected(TRUE);
+      // Only save once - saving the translation saves the parent node.
       $node_lang_archive->save();
-      $archive_node->save();
       $this->assigned = $this->assigned + 1;
     }
     elseif ($current_state !== 'sme_review' && !empty($grps)) {
       if (in_array($current_language, $grp_country_new_array)) {
-        $uid = $this->currentUser->id();
+        $uid = $current_user->id();
         $node_lang_archive->set('moderation_state', 'sme_review');
         $node_lang_archive->set('uid', $uid);
         $node_lang_archive->set('content_translation_source', $current_language);
         $node_lang_archive->set('changed', time());
         $node_lang_archive->setNewRevision(TRUE);
-        $node_lang_archive->revision_log = 'Content changed  into SME Review State';
-        $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
+        $node_lang_archive->revision_log = 'Content changed into SME Review State';
+        $node_lang_archive->setRevisionCreationTime($this->getTime()->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
-        $node_lang_archive->setRevisionTranslationAffected(NULL);
+        $node_lang_archive->setRevisionTranslationAffected(TRUE);
+        // Only save once - saving the translation saves the parent node.
         $node_lang_archive->save();
-        $archive_node->save();
         $this->assigned = $this->assigned + 1;
       }
       else {
@@ -198,7 +228,7 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
     $log["source_language"] = $current_language;
     $log["nid"] = $nid;
     $log["uid"] = $uid;
-    $current_uri = $this->requestStack->getCurrentRequest()->getRequestUri();
+    $current_uri = $this->getRequestStack()->getCurrentRequest()->getRequestUri();
     $log["requested_url"] = $current_uri;
     if ($this->nonAssigned > 0) {
       $error_message = $this->t("Selected content is already in SME Review state ( @nonassigned ) <br/>", ['@nonassigned' => $this->nonAssigned]);
@@ -213,13 +243,13 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
       $log["status"] = $error_message;
     }
     $logs = json_encode($log);
-    $this->logger->info($logs);
+    $this->getLogger()->info($logs);
     if ($list_count == $this->processItem) {
       if (!empty($message)) {
-        $this->messenger->addStatus($message);
+        $this->getMessenger()->addStatus($message);
       }
       if (!empty($error_message)) {
-        $this->messenger->addError($error_message);
+        $this->getMessenger()->addError($error_message);
       }
     }
     return $this->t("Total content selected");
