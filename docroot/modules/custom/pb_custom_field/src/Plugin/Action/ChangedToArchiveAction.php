@@ -235,7 +235,7 @@ class ChangedToArchiveAction extends ViewsBulkOperationsActionBase implements Co
         $node_lang_archive->set('changed', time());
 
         $node_lang_archive->setNewRevision(TRUE);
-        $node_lang_archive->revision_log = 'Content changed  into Archive State';
+        $node_lang_archive->revision_log = 'Content changed into Archive State';
         $node_lang_archive->setRevisionCreationTime($this->time->getRequestTime());
         $node_lang_archive->setRevisionUserId($uid);
         $node_lang_archive->setRevisionTranslationAffected(TRUE);
