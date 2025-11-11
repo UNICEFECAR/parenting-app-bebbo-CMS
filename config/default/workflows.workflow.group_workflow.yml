@@ -51,12 +51,12 @@ type_settings:
       label: 'Senior Editor Review'
       weight: -2
       published: false
-      default_revision: false
+      default_revision: true
     sme_review:
       label: 'SME Review'
       weight: -3
       published: false
-      default_revision: false
+      default_revision: true
   transitions:
     _sme_review_to_require_modification:
       label: ' SME Review to Require Modification'
