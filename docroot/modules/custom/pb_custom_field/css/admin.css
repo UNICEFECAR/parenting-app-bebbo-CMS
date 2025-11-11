@@ -744,6 +744,10 @@ font-family: "Nunito",Helvetica,Arial,Lucida,sans-serif;
   background-color: transparent !important;
 }
 
+/* For Breadcrumb */
+.breadcrumb__list .breadcrumb__item:nth-child(n+3) {
+  display: none;
+}
 
 /*Homepage css end*/
 

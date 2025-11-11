@@ -43,7 +43,7 @@ pb_custom_form.pb_mobile:
     param1: ''
     param2: ''
     param3: ''
-    _title: 'Bebbo'
+    _title_callback: '\Drupal\pb_custom_form\Controller\PbMobile::getDynamicTitle'
   requirements:
     _permission: 'manage mobile javascript'
 
