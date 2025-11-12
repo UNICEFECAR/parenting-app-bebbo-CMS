@@ -2789,8 +2789,8 @@ display:
       filename: ''
       automatic_download: true
       store_in_public_file_directory: false
-      custom_redirect_path: page_4
-      redirect_to_display: none
+      custom_redirect_path: false
+      redirect_to_display: page_4
       include_query_params: false
     cache_metadata:
       max-age: -1
