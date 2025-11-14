@@ -1456,6 +1456,37 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
+ * Implements hook_views_post_execute().
+ *
+ * Replace nodes with their latest revisions for authenticated users.
+ */
+function pb_custom_field_views_post_execute(ViewExecutable $view) {
+  // Only for country_content_listing view and authenticated users.
+  if ($view->id() !== 'country_content_listing') {
+    return;
+  }
+
+  $user = \Drupal::currentUser();
+  if (!$user->isAuthenticated()) {
+    return;
+  }
+
+  // Load the latest revision for each node in the results.
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $node_storage = $entity_type_manager->getStorage('node');
+
+  foreach ($view->result as $row) {
+    if (isset($row->nid) && isset($row->_entity)) {
+      // Load the latest revision.
+      $latest_revision = $node_storage->getLatestRevisionId($row->nid);
+      if ($latest_revision) {
+        $row->_entity = $node_storage->loadRevision($latest_revision);
+      }
+    }
+  }
+}
+
+/**
  * View query alter for cross-country content access.
  */
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
