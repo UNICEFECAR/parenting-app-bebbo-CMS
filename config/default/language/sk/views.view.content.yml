@@ -27,8 +27,8 @@ display:
           tags:
             next: Ďalej
             previous: '‹ Predchádzajúci'
-            first: '« Prvý'
-            last: Koniec
+            first: «
+            last: »
       exposed_form:
         options:
           submit_button: Filter

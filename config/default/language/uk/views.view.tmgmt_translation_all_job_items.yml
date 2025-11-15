@@ -1,9 +1,24 @@
 display:
   default:
+    display_title: Головне
     display_options:
       exposed_form:
         options:
           reset_button_label: Reset
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
+          tags:
+            previous: '‹ Попередня'
+            next: 'Наступна ›'
+            first: '« Перша'
+            last: 'Остання »'
       fields:
         state:
           label: Стан
@@ -13,8 +28,16 @@ display:
           label: Тип
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        word_count:
+          separator: ', '
+        tags_count:
+          separator: ', '
+        changed:
+          separator: ', '
         operations:
           label: Операції
       filters:

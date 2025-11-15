@@ -178,6 +178,7 @@
         },
         "patches": {
             "drupal/core": {
+                "Fix moderation issue for translation": "patches/content_moderation/content_moderation_revision.patch",
                 "Field translated field issue fixed": "https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch"
             },
             "drupal/view_custom_table": {
@@ -193,12 +194,6 @@
             "drupal/group": {
                 "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch",
                 "Fix Entity type doesn't exists": "patches/group/group_fix.patch"
-            },
-            "drupal/content_moderation": {
-                "Added translated draft status content into node_field table ":"patches/content_moderation/content_moderation_revision.patch"
-            },
-            "drupal/content_moderation_status": {
-                "Fixed listing page status issue for status change req ":"patches/content_moderation/content_moderation_status.patch"
             },
              "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"

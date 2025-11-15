@@ -5,3 +5,9 @@ display:
       exposed_form:
         options:
           reset_button_label: Reset
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+  block_1:
+    display_options:
+      block_category: Користувач

@@ -1,24 +1,48 @@
 display:
   default:
+    display_title: Головне
     display_options:
       exposed_form:
         options:
           submit_button: Фільтр
           reset_button_label: Reset
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+      pager:
+        options:
+          tags:
+            previous: '‹ Попередня'
+            next: 'Наступна ›'
+            first: '« Перша'
+            last: 'Остання »'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
       fields:
         title:
           label: Заголовок
+          separator: ', '
   assigned:
     display_options:
       fields:
         status:
           label: Стан
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -33,14 +57,23 @@ display:
       fields:
         status:
           label: Стан
+          separator: ', '
         created:
           label: Створено
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -55,14 +88,23 @@ display:
       fields:
         status:
           label: Стан
+          separator: ', '
         created:
           label: Створено
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -77,12 +119,19 @@ display:
       fields:
         status:
           label: Стан
+        tuid:
+          separator: ', '
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -99,12 +148,20 @@ display:
           label: Стан
         created:
           label: Створено
+          separator: ', '
+        tuid:
+          separator: ', '
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -121,9 +178,14 @@ display:
           label: Стан
         title:
           label: Заголовок
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        loop_count:
+          separator: ', '
         operations:
           label: Операції

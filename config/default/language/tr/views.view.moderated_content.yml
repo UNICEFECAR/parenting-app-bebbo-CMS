@@ -1,9 +1,19 @@
-label: 'Denetlenen içerik'
-description: 'İçeriği bulun ve denetleyin.'
 display:
   default:
-    display_title: Varsayılan
     display_options:
+      filters:
+        moderation_state_1:
+          expose:
+            label: 'Denetim durumu'
+        title:
+          expose:
+            label: Başlık
+        type:
+          expose:
+            label: 'İçerik tipi'
+        langcode:
+          expose:
+            label: Dil
       title: 'Denetlenen içerik'
       fields:
         title:
@@ -44,18 +54,8 @@ display:
       empty:
         area_text_custom:
           content: 'Denetlenen içerik yok. Burada yalnızca taslaklar gibi bekleyen içerik sürümleri listelenir.'
-      filters:
-        title:
-          expose:
-            label: Başlık
-        type:
-          expose:
-            label: 'İçerik tipi'
-        moderation_state_1:
-          expose:
-            label: 'Denetim durumu'
-        langcode:
-          expose:
-            label: Dil
+    display_title: Varsayılan
   moderated_content:
     display_title: 'Denetlenen içerik'
+label: 'Denetlenen içerik'
+description: 'İçeriği bulun ve denetleyin.'

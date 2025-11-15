@@ -2169,6 +2169,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           destination: true
+      cache:
+        type: none
+        options: {  }
       arguments: {  }
       filters:
         nid:
@@ -2927,6 +2930,7 @@ display:
           replica: false
           query_tags: {  }
       defaults:
+        cache: false
         query: false
         title: false
         group_by: false

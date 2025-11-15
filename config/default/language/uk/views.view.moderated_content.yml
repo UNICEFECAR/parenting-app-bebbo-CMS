@@ -1,20 +1,48 @@
+label: 'Ухвалювані матеріали'
 display:
   default:
     display_title: Базово
     display_options:
+      title: 'Ухвалювані матеріали'
       fields:
         title:
           label: Заголовок
+          separator: ', '
         type:
           label: 'Тип матеріалів'
+          separator: ', '
         name:
           label: Автор
+          separator: ', '
+        moderation_state:
+          label: 'Стан модерації'
+          separator: ', '
+        changed:
+          label: Оновлено
+          separator: ', '
         operations:
           label: Операції
+      pager:
+        options:
+          tags:
+            next: 'Наступна ›'
+            previous: '‹ Попередня'
+            first: '« Перша'
+            last: 'Остання »'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
       exposed_form:
         options:
           submit_button: Фільтр
           reset_button_label: Reset
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+      empty:
+        area_text_custom:
+          content: 'Модеровані матеріали відсутні. Тут перелічено лише ті версії матеріалів, що очікують на розгляд, наприклад чернетки.'
       filters:
         title:
           expose:
@@ -25,3 +53,5 @@ display:
         langcode:
           expose:
             label: Мова
+  moderated_content:
+    display_title: 'Ухвалювані матеріали'

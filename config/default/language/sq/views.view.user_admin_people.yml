@@ -7,6 +7,8 @@ display:
           label: Username
         status:
           label: Status
+          settings:
+            format_custom_true: Active
         roles_target_id:
           label: Roles
         operations:
@@ -19,3 +21,10 @@ display:
         status:
           group_info:
             label: Status
+            group_items:
+              1:
+                title: Active
+  page_1:
+    display_options:
+      menu:
+        title: List

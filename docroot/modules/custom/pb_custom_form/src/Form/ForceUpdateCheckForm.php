@@ -150,13 +150,13 @@ class ForceUpdateCheckForm extends FormBase {
       )->execute();
       drupal_flush_all_caches();
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-      pb_custom_field_my_goto($path);
+      pb_custom_form_my_goto($path);
       // drupal_set_message(t('data inserted successfully'), 'status', TRUE);.
       $this->messenger()->addStatus('data inserted successfully');
     }
     else {
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-      pb_custom_field_my_goto($path);
+      pb_custom_form_my_goto($path);
       // drupal_set_message(t('Please Select Country And Flag'),
       // 'warning', TRUE);.
       $this->messenger()->addWarning('Please Select Country And Flag');

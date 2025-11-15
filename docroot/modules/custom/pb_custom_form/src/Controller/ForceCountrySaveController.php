@@ -97,7 +97,7 @@ class ForceCountrySaveController extends ControllerBase {
     )->execute();
     drupal_flush_all_caches();
     $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
-    pb_custom_field_my_goto($path);
+    pb_custom_form_my_goto($path);
 
     // $build = [
     // '#markup' => 'insert seccefully',

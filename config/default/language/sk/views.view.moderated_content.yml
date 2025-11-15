@@ -1,8 +1,19 @@
-label: 'Moderovaný obsah'
 display:
   default:
-    display_title: Predvolené
     display_options:
+      filters:
+        moderation_state_1:
+          expose:
+            label: 'Stav moderácie'
+        title:
+          expose:
+            label: Názov
+        type:
+          expose:
+            label: 'Typ obsahu'
+        langcode:
+          expose:
+            label: Jazyk
       title: 'Moderovaný obsah'
       fields:
         title:
@@ -27,12 +38,12 @@ display:
           tags:
             next: Ďalej
             previous: '‹ Predchádzajúci'
-            first: '« Prvý'
-            last: Koniec
+            first: «
+            last: »
           expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
+            items_per_page_label: 'Položky na stránku'
+            items_per_page_options_all_label: '- Všetky -'
+            offset_label: Ofset
       exposed_form:
         options:
           submit_button: Filter
@@ -40,18 +51,7 @@ display:
           exposed_sorts_label: 'Zoradiť podľa'
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
-      filters:
-        title:
-          expose:
-            label: Názov
-        type:
-          expose:
-            label: 'Typ obsahu'
-        moderation_state_1:
-          expose:
-            label: 'Stav moderácie'
-        langcode:
-          expose:
-            label: Jazyk
+    display_title: Predvolené
   moderated_content:
     display_title: 'Moderovaný obsah'
+label: 'Moderovaný obsah'
