@@ -108,7 +108,7 @@ class CustomForm extends FormBase {
     /* $updated_at = $date->getTimestamp(); */
     $country_val = $form['country_select']['#options'][$country_id];
     $path = $base_url . '/forcefull-update-check?flag=' . $flag . '&&country_id=' . $country_id . '&&country_name=' . $country_val;
-    pb_custom_field_my_goto($path);
+    pb_custom_form_my_goto($path);
   }
 
 }

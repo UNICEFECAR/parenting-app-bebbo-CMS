@@ -12,14 +12,14 @@ display:
       pager:
         options:
           expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
+            items_per_page_label: 'Položky na stránku'
+            items_per_page_options_all_label: '- Všetky -'
+            offset_label: Ofset
           tags:
             previous: '‹ Predchádzajúci'
             next: Ďalej
-            first: '« Prvý'
-            last: Koniec
+            first: «
+            last: »
       fields:
         tmgmt_local_task_bulk_form:
           label: 'Hromadná aktualizácia'

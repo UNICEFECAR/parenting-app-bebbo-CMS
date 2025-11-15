@@ -26,7 +26,7 @@ type_settings:
       label: Archived
       weight: 2
       published: false
-      default_revision: true
+      default_revision: false
     draft:
       label: Draft
       weight: -4
@@ -41,7 +41,7 @@ type_settings:
       label: 'Require Modification'
       weight: 0
       published: false
-      default_revision: true
+      default_revision: false
     review_after_translation:
       label: Review_after_translation
       weight: 3

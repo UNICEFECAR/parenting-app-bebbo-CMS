@@ -8,7 +8,7 @@ display:
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_desc_label: Descendent
       pager:
         options:
           expose:

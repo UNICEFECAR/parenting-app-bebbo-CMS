@@ -5,14 +5,15 @@
  * It contains custom field module.
  */
 
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\RevisionableStorageInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\NodeInterface;
-use Drupal\Core\Url;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
-use Drupal\views\ViewExecutable;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -1089,4 +1090,13 @@ function pb_custom_form_menu_local_tasks_alter(&$data, $route_name) {
       '#weight' => 100,
     ];
   }
+}
+
+/**
+ * For redirect page.
+ */
+function pb_custom_form_my_goto($path) {
+  $response = new RedirectResponse($path);
+  $response->send();
+  return $response;
 }

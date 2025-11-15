@@ -22,3 +22,7 @@ display:
         roles_target_id:
           expose:
             label: Улога
+  page_1:
+    display_options:
+      menu:
+        title: List

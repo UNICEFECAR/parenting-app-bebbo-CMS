@@ -1,12 +1,34 @@
 display:
   default:
+    display_title: Головне
     display_options:
       exposed_form:
         options:
           reset_button_label: Reset
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+      pager:
+        options:
+          tags:
+            first: '« Перша'
+            last: 'Остання »'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
       fields:
+        name:
+          label: Користувач
+          separator: ', '
         group_roles:
           label: Ролі
+          separator: ', '
+        changed:
+          label: Оновлено
+          separator: ', '
+        created:
+          separator: ', '
         view_group_content:
           text: 'Manage member'
         edit_group_content:

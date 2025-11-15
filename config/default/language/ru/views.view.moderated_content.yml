@@ -1,8 +1,19 @@
-label: 'Moderated content'
 display:
   default:
-    display_title: Default
     display_options:
+      filters:
+        moderation_state_1:
+          expose:
+            label: 'Moderation state'
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: 'Content type'
+        langcode:
+          expose:
+            label: Language
       title: 'Moderated content'
       fields:
         title:
@@ -43,18 +54,7 @@ display:
       empty:
         area_text_custom:
           content: 'No moderated content available. Only pending versions of content, such as drafts, are listed here.'
-      filters:
-        title:
-          expose:
-            label: Title
-        type:
-          expose:
-            label: 'Content type'
-        moderation_state_1:
-          expose:
-            label: 'Moderation state'
-        langcode:
-          expose:
-            label: Language
+    display_title: Default
   moderated_content:
     display_title: 'Moderated content'
+label: 'Moderated content'

@@ -15,9 +15,9 @@ display:
             next: ››
             previous: ‹‹
           expose:
-            items_per_page_label: 'Položiek na stránku'
-            items_per_page_options_all_label: '- Všetko -'
-            offset_label: 'Zobraziť od'
+            items_per_page_label: 'Položky na stránku'
+            items_per_page_options_all_label: '- Všetky -'
+            offset_label: Ofset
       exposed_form:
         options:
           submit_button: Použiť

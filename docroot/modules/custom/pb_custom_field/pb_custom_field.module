@@ -23,7 +23,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
 use Drupal\Core\Language\LanguageManager;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Database\Database;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
@@ -100,44 +99,6 @@ function pb_custom_field_user_update(EntityInterface $entity) {
   $uid = $entity->id();
   $cache_backend->delete('pb_custom_field:user_groups:' . $uid);
   $cache_backend->delete('pb_custom_field:user_languages:' . $uid);
-}
-
-/**
- * Implements hook_ENTITY_TYPE_insert() for group_content.
- *
- * Clear user caches when group membership changes.
- */
-function pb_custom_field_group_content_insert(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() === 'group_content' && $entity instanceof FieldableEntityInterface) {
-    $cache_backend = \Drupal::cache();
-    // Clear cache for the user being added to the group.
-    if ($entity->hasField('entity_id') && !$entity->get('entity_id')->isEmpty()) {
-      $uid = $entity->get('entity_id')->target_id;
-      if ($uid) {
-        $cache_backend->delete('pb_custom_field:user_groups:' . $uid);
-        $cache_backend->delete('pb_custom_field:user_languages:' . $uid);
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_delete() for group_content.
- *
- * Clear user caches when group membership is removed.
- */
-function pb_custom_field_group_content_delete(EntityInterface $entity) {
-  if ($entity->getEntityTypeId() === 'group_content' && $entity instanceof FieldableEntityInterface) {
-    $cache_backend = \Drupal::cache();
-    // Clear cache for the user being removed from the group.
-    if ($entity->hasField('entity_id') && !$entity->get('entity_id')->isEmpty()) {
-      $uid = $entity->get('entity_id')->target_id;
-      if ($uid) {
-        $cache_backend->delete('pb_custom_field:user_groups:' . $uid);
-        $cache_backend->delete('pb_custom_field:user_languages:' . $uid);
-      }
-    }
-  }
 }
 
 /**
@@ -348,27 +309,6 @@ function pb_custom_field_preprocess_page(&$variables) {
  * Implements Group Content List Page - Country Field - dropdown option.
  */
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  // Early return for non-relevant forms to improve performance.
-  $relevant_form_patterns = [
-    'group_content_',
-    'user_',
-    'views-exposed-form-',
-    'media-',
-    'node_',
-    'content-moderation-',
-  ];
-
-  $is_relevant = FALSE;
-  foreach ($relevant_form_patterns as $pattern) {
-    if (strpos($form_id, $pattern) !== FALSE || (isset($form['#id']) && strpos($form['#id'], $pattern) !== FALSE)) {
-      $is_relevant = TRUE;
-      break;
-    }
-  }
-
-  if (!$is_relevant) {
-    return;
-  }
 
   /* To modify label changes in member remove*/
   if ($form_id == "group_content_country-group_membership_delete_form") {
@@ -699,8 +639,6 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
     }
   }
 
-  /* $chk_mandatory_ctype = ['activities', 'child-development', 'child-growth',
-  'faq', 'milestone', 'page']; */
   $form_details = ["node_activities_edit_form", "node_faq_edit_form", "node_milestone_edit_form",
     "node_page_edit_form", "node_child-development_edit_form", "node_child-growth_edit_form",
     "node_activities_form", "node_faq_form", "node_milestone_form", "node_page_form",
@@ -1101,10 +1039,6 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
  * {@inheritdoc}
  */
 function pb_custom_field_user_update_function($form, FormStateInterface $form_state) {
-  /* $currentUser = \Drupal::currentUser();
-  $node = $form_state->getFormObject();
-  $entity = $node->getEntity();
-   */
   $uid = $form_state->getValue('entity_id')[0]['target_id'];
   $user = User::load($uid);
   $roles = $user->getRoles();
@@ -1154,7 +1088,6 @@ function pb_custom_field_group_user_validate($form, FormStateInterface $form_sta
     return TRUE;
   }
   else {
-    // drupal_set_message(t('User already added in country.'), 'error');.
     \Drupal::messenger()->addError('User already added in country.');
     $form_state->setRebuild();
   }
@@ -1166,7 +1099,6 @@ function pb_custom_field_group_user_validate($form, FormStateInterface $form_sta
 function pb_custom_field_redirect_to_add_member_page($form, FormStateInterface $form_state) {
   $user = \Drupal::currentUser();
   $user_roles = $user->getRoles();
-  /* $uid = $user->id(); */
   $groups = [];
   $grp_membership_service = \Drupal::service('group.membership_loader');
   $grps = $grp_membership_service->loadByUser($user);
@@ -1456,53 +1388,12 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
- * Implements hook_views_post_execute().
- *
- * Replace nodes with their latest revisions for authenticated users.
- */
-function pb_custom_field_views_post_execute(ViewExecutable $view) {
-  // Only for country_content_listing view and authenticated users.
-  if ($view->id() !== 'country_content_listing') {
-    return;
-  }
-
-  $user = \Drupal::currentUser();
-  if (!$user->isAuthenticated()) {
-    return;
-  }
-
-  // Load the latest revision for each node in the results.
-  $entity_type_manager = \Drupal::entityTypeManager();
-  $node_storage = $entity_type_manager->getStorage('node');
-
-  foreach ($view->result as $row) {
-    if (isset($row->nid) && isset($row->_entity)) {
-      // Load the latest revision.
-      $latest_revision = $node_storage->getLatestRevisionId($row->nid);
-      if ($latest_revision) {
-        $row->_entity = $node_storage->loadRevision($latest_revision);
-      }
-    }
-  }
-}
-
-/**
  * View query alter for cross-country content access.
  */
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   $user = \Drupal::currentUser();
 
   $user_roles = $user->getRoles();
-
-  // Skip for admins.
-  if (in_array('administrator', $user_roles) || in_array('global_admin', $user_roles)) {
-    return;
-  }
-
-  // Only process country content listing view.
-  if ($view->id() !== 'country_content_listing') {
-    return;
-  }
 
   // Only process for target roles.
   $target_roles = _pb_custom_field_get_target_roles();
@@ -1512,10 +1403,6 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
 
   // Get user's group memberships (cached).
   $grps = _pb_custom_field_get_user_groups_cached($user);
-
-  if (empty($grps)) {
-    return;
-  }
 
   // Get user's allowed languages (cached).
   $user_languages = _pb_custom_field_get_user_allowed_languages($user);
@@ -1718,20 +1605,7 @@ function pb_custom_field_views_pre_execute($view) {
  */
 function pb_custom_field_user_access_validation_chk(&$form, FormStateInterface $form_state) {
   $current_user = \Drupal::currentUser();
-  // $roles = $current_user->getRoles();
-  // $bypass_access = FALSE;
-  // foreach ($roles as $rval) {
-  // if ($rval != "authenticated") {
-  // $role = Role::load($rval);
-  // if ($role && in_array('bypass node access', $role->getPermissions())) {
-  // $bypass_access = TRUE;
-  // break;
-  // }
-  // }
-  // }
-  // If ($bypass_access) {
-  // return;
-  // }.
+
   $grps = _pb_custom_field_get_user_groups_cached($current_user);
 
   if (empty($grps)) {
@@ -1952,16 +1826,6 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
           }
           elseif ($user_role == "global_admin") {
             $form['account']['roles']['#access'] = FALSE;
-
-            // Foreach ($roles as $role) {
-            // if ($role->id() == "authenticated"
-            // || $role->id() == "administrator") {
-            // unset($form['account']['roles']['#options'][$role->id()]);
-            // }
-            // if ($role->id() != "global_admin") {
-            // unset($form['account']['roles']['#options'][$role->id()]);
-            // }
-            // }
           }
         }
       }
@@ -2049,7 +1913,6 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
   if ($data['notification']) {
     $notification_label = $data['notification']->label;
   }
-  // $notification_label = end($notification_array);
   // For the master country users mail.
   if ($notification_label == "Master : Senior Editor Publish" || $notification_label == "Master :  Any state to Review_after_translation") {
     $nid = $data['params']['context']['entity']->nid[0]->value;
@@ -2198,20 +2061,10 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
 }
 
 /**
- * For redirect page.
- */
-function pb_custom_field_my_goto($path) {
-  $response = new RedirectResponse($path);
-  $response->send();
-  return $response;
-}
-
-/**
  * For alter forcefull update check view.
  */
 function pb_custom_field_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'force_update_check') {
-    // $view->element['#attached']['library'][] = 'pb_custom_field/mylib';
     $results = $view->result;
     $groups = Group::loadMultiple();
     foreach ($groups as $group) {
