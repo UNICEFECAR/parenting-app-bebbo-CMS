@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - 'feature/**'
+      - 'bug/**'
+      - 'hotfix/**'
       - 'acquia-main'
   pull_request:
     branches:
       - 'feature/**'
+      - 'bug/**'
+      - 'hotfix/**'
       - 'acquia-main'
   workflow_dispatch:
 

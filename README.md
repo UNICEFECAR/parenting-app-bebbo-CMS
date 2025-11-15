@@ -1,201 +1,120 @@
-# parenting-app-bebbo-CMS
+# [Bebbo](https://bebbo.app/) CMS - Drupal content management system
 
-#CONTENTS OF THIS FILE
+## Table of Contents
+* [Introduction](#introduction)
+* [Installation](#installation)
+  * [Pre-requisites](#pre-requisites)
+  * [Configuration](#configuration)
+  * [Run the Application](#run-the-application)
+* [CI/CD Security Practices](#cicd-security-practices)
+* [Branching Strategy](#branching-strategy)
+* [Maintainers](#maintainers)
+* [Community](#community)
 
-Introduction
-Requirements
-Installation
-Configuration
-Maintainers
+## Introduction
+Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the content is added through the web interface and serves as REST APIs for a mobile app. This application assists editors in adding different types of content under various content types and taxonomies configured in Drupal CMS. Go through the [onboarding document](./docs/ONBOARDING.md) before continuing with the Installation guidelines below.
 
-# Introduction
-
-Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the contents will be added through the web interface and served as REST APIs for mobile App. This application is used to assist the editors to add different types of contents under different types of content types and taxonomies that will be configured in Drupal CMS.
-
-[![Build Status](https://bebbo.app/)
-
-# Requirements
-
-Make sure you have installed all of the following prerequisites on your development machine:
-
-1. Install [composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-Optional - [Global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-If skipping, you may need to replace `composer` with `php composer.phar` for your setup.
-
-2. Install Drush
-```    composer global require drush/drush
-```
+For more information on setup and getting started, check out our [guidelines for contributors](./docs/CONTRIBUTING.md).
 
 ## Installation
 
-1. Download Bebbo App from git repo 
-   https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
-   Ex: git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
-2. Download the Database from Acquia server and import the database into your local.
-3. Update the database details in settings.php file ( docroot/sites/default/settings. php).
-4. Then run the application in your browser.
+### Pre-requisites
+Before installing the Bebbo CMS application, ensure that you have the following software installed on your development machine:
 
+- **DDEV with PHP 8.3 runtime**: The recommended local environment is [DDEV](https://docs.ddev.com/en/stable/) running PHP 8.3. Install DDEV following the official instructions for your platform, making sure PHP 8.3 is selected in `.ddev/config.yaml` (or via `ddev config global --php-version 8.3`).
+  - **Windows**: Requires Windows 10/11 Pro, [WSL2](https://learn.microsoft.com/windows/wsl/install), [Docker Desktop](https://www.docker.com/products/docker-desktop/), [mkcert](https://github.com/FiloSottile/mkcert) and the [DDEV Windows prerequisites](https://docs.ddev.com/en/stable/users/install/ddev-installation/#windows). Install mkcert via Chocolatey (`choco install mkcert`) and trust certificates with `mkcert -install`.
+  - **macOS**: Install [Homebrew](https://brew.sh/), [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or [Colima](https://docs.ddev.com/en/stable/users/install/docker-installation/#colima) on Apple Silicon), and mkcert (`brew install mkcert nss && mkcert -install`). Follow the [macOS DDEV guide](https://docs.ddev.com/en/stable/users/install/ddev-installation/#macos).
+  - **Linux (Ubuntu/Debian)**: Install Docker Engine, Docker Compose, mkcert, and inotify tools per the [Linux setup guide](https://docs.ddev.com/en/stable/users/install/ddev-installation/#linux). For Ubuntu you can run `sudo apt install mkcert libnss3-tools` and then `mkcert -install`. Ensure your user is added to the `docker` group.
+- **Composer**: [Composer Installation Guide](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx). If you skip the global install, run Composer via `php composer.phar`.
+- **Drush** (CLI helper): `composer global require drush/drush`.
+- **Git**: Required to clone this repository.
 
-### Contributed Modules
+### Configuration
+After installing all the pre-requisites, follow the steps below to set up the Bebbo CMS:
+For Windows users, before proceeding to the next step, run the following command:
+```
+git config --global core.longpaths true
+```
+1. Clone the repository from GitHub:
+   ```
+   git clone https://github.com/UNICEFECAR/parenting-app-bebbo-CMS
+   cd parenting-app-bebbo-CMS
+   ```
+2. Start the existing DDEV environment (the `.ddev` directory is already committed):
+   ```
+   ddev start
+   ```
+   If you need to confirm URLs or container details, run `ddev describe`.
+3. Install Composer dependencies inside the container:
+   ```
+   ddev composer install
+   ```
+4. Download the database from the Acquia server and import it locally.
+   ```
+   ddev import-db --src=/path/to/bebbo.sql.gz
+   ```
+5. Import public files if required:
+   ```
+   ddev import-files --src=/path/to/files.tar.gz
+   ```
+6. Review or adjust database credentials and other overrides in `docroot/sites/default/settings.php` or a `settings.local.php` include if your environment requires it (DDEV auto-injects settings via `settings.ddev.php`).
+7. If DDEV fails to start, inspect the container logs with:
+   ```
+   ddev logs
+   ```
 
-The following contributed modules are installed as part of the profile
-- acquia_purge
-- actions_permissions
-- admin_toolbar
-- admin_toolbar_links_access_filter
-- admin_toolbar_search
-- admin_toolbar_tools
-- allowed_languages
-- automated_cron
-- basic_auth
-- big_pipe
-- block
-- block_content
-- breakpoint
-- ckeditor
-- ckeditor_media_embed
-- color
-- config
-- config_ignore
-- config_translation
-- content_moderation
-- content_moderation_notifications
-- contextual
-- csv_serialization
-- date_popup
-- datetime
-- dynamic_page_cache
-- editor
-- entity
-- feeds
-- feeds_tamper
-- field
-- field_ui
-- file
-- filter
-- gnode
-- google_analytics
-- group
-- help
-- image
-- image_style_quality
-- json_field
-- lang_dropdown
-- language
-- languagefield
-- link
-- locale
-- media
-- media_library
-- memcache
-- menu_link_content
-- menu_per_role
-- menu_ui
-- migrate
-- migrate_drupal
-- migrate_plus
-- migrate_source_csv
-- migrate_tools
-- migrate_upgrade
-- node
-- options
-- page_cache
-- path
-- path_alias
-- purge
-- purge_ui
-- quickedit
-- rdf
-- rest
-- restui
-- search
-- seckit
-- serialization
-- shortcut
-- smtp
-- syslog
-- system
-- tamper
-- taxonomy
-- text
-- title_length
-- tmgmt
-- tmgmt_config
-- tmgmt_content
-- tmgmt_demo
-- tmgmt_file
-- tmgmt_language_combination
-- tmgmt_local
-- tmgmt_locale
-- tmgmt_memsource
-- toolbar
-- toolbar_menu
-- toolbar_menu_clean
-- tour
-- user
-- variationcache
-- video_embed_field
-- video_embed_media
-- view_custom_table
-- views_bulk_operations
-- views_data_export
-- workflows
-- content_translation
-- views
+### Run the Application
+Launch the application in your browser to verify everything is set up correctly.
+1. Start the container stack (`ddev start`) and open the site with `ddev launch`.
+2. You can also list the site links with `ddev describe`. If running the installer from scratch, follow the standard Drupal steps (choose profile, enter DB credentials, etc.). When using the shared database dump this step is already completed—log in via `ddev drush uli`.
+3. Complete any post-install configuration and confirm the Drupal homepage loads without errors. If you encounter startup issues, review logs via `ddev logs`.
 
-### Custom Libraries
+## CI/CD Security Practices
+The automated pipeline defined in [.github/workflows/pipelines.yml](.github/workflows/pipelines.yml) enforces several security measures that contributors should be aware of:
 
-- CKEDITOR
+- **Credentials isolation**: Acquia API keys, SSH keys, and host fingerprints are consumed exclusively via encrypted GitHub Secrets (`ACQUIA_API_KEY_ID`, `ACQUIA_API_KEY_SECRET`, `ACQUIA_SSH_PRIVATE_KEY`, `ACQUIA_SSH_KNOWN_HOSTS`). Secrets are injected only into the relevant deploy jobs.
+- **Hardening SSH connectivity**: The workflow provisions SSH access using `webfactory/ssh-agent` with the private key from secrets and explicitly pins the Acquia Git host fingerprint via `ssh-keyscan` before any remote interaction.
+- **Clean build environments**: Every job starts from a fresh `ubuntu-latest` runner, pins PHP 8.3 via `shivammathur/setup-php`, and performs `git reset --hard` / `git clean -fd` prior to artifact pushes to avoid leaking untracked files.
+- **Dependency and code integrity checks**: `composer validate`, `composer install --no-interaction`, PHPCS, `drupal-check`, and `phplint` run on each push/PR to catch tampered dependencies or insecure code patterns before deployment.
+- **Scoped deployments**: Deploy jobs only run for specific branch patterns (feature/* to Dev, `acquia-main` to Stage) after CI checks pass (`needs: ci-checks`) ensuring only vetted code can reach Acquia environments.
+- **Auditable automation account**: Git author identity for automated commits to Acquia Git is consistently set to `github-actions+bebbo@unicef.org`, making bot activity traceable in repository history.
 
-### Custom Modules
+## Branching Strategy
+Follow these guidelines to keep work streams predictable and in sync with the Acquia environments:
 
-The following Custom modules are installed as part of the profile
-- custom_serialization
-- group_country_field
-- pb_custom_field
-- pb_custom_form
-- pb_custom_migrate
-- pb_custom_rest_api
-- pb_custom_standard_deviation
+1. **Create branches from issues**
+   - Open the relevant GitHub issue and use the “Create a branch” shortcut in the bottom-right panel.
+   - Set **Branch Source** to `acquia-main`.
+   - Use a descriptive name matching the work type:
+     - `feature/<short-description>` for new features/enhancements.
+     - `bug/<short-description>` for defects discovered during testing.
+     - `hotfix/<short-description>` for urgent fixes targeting production/UAT.
+2. **Fork and develop**
+   - Fork the repo, fetch the newly created branch, and push commits to your fork.
+   - Keep your fork in sync by regularly pulling from `upstream` `acquia-main` (and rebasing your working branch) to minimize conflicts.
+3. **Commit hygiene**
+   - Write meaningful commit messages using the convention `BEBBOAPPDR#<ticket-no> : <short description>`.
+   - Squash/fixup locally if you created noisy commits before opening a PR.
+4. **Pull requests per branch type**
+   - **Feature branches**: open a PR from your fork’s `feature/*` branch back to the same `feature/*` branch in the canonical repo. Reviews happen there and, once approved, the CI pipeline deploys to Acquia Dev.
+   - **Bug branches**: follow the same flow as features, ensuring the PR references the bug issue and includes any regression tests or reproduction steps.
+   - **Hotfix branches**: coordinate with the release owner. Hotfix PRs target `acquia-main` directly once validation on a staging environment is complete.
+5. **Promotion to acquia-main**
+   - After a feature/bug branch passes QA on Acquia Dev and is ready for UAT, open a PR into `acquia-main`. This will trigger the Stage deployment after CI passes.
+6. **Release readiness**
+   - Before any merge to `acquia-main`, pull the latest changes from upstream and resolve conflicts locally.
+   - Verify CI (linting/tests) succeeds. Only approved, green PRs are merged.
 
-### Theme
+![Branching strategy diagram](docs/BranchingStrategy.png)
 
-The theme is installed and enabled by the profile.
-- bartik
-- seven
-- stable
-- classy
-- claro
+## Maintainers
+The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners (including DATAMATICS). It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.
 
-### Custom Roles
+For ongoing maintenance, please reach out to the following maintainers:
+- [Evrim Sahin](https://github.com/evrimm)
+- [Akhror Abduvaliev](https://github.com/Akhror)
+- [Saurabh Agarwal](https://github.com/saurabhEDU)
+- [Muhammed Osman](https://github.com/mhdosman)
 
-Globaladmin : This User handles all the country and country users, configures new languages and new country , Taxonomies data and offload a country.            
-senior editor :   Senior editors have access to create , update , publish and translate the content to their country language.
-Sme : SME have access to updates and approve the content.
-Editor : Editor have access to create , update and translate the content to their country language
-country admin : This user has access to create and cancel their country users and view their language content.
-
-All the users have a separate Dashboard. Country admin and Senior editor have access the country reports.
-
-## Menus
-
-Global Content List - It shows all the published contents
-Country Content List - In this page the user is able to see their allowed languages list.
-Add Content - Editor , Globaladmin and Senioreditor have permission to create new content.
-
-Manage Taxonomies - It shows all the available taxonomy terms
-Manage Media - In this page User can add and update the image related details
-Manage Country - Global admin can add any new country or update the already existing country and user details.
-Manage Language - Create a new language or update an existing language. This have two options
-Manage Users  -  Global admin can add another global admin using the language.
-Manage Translation - Users can send a content translation request to memsource using this menu option.
-Google Analytics -  Global admin can add the analytics id .
-Import Taxonomy - Users can import the taxonomy term values using this option .Based on the documentation, users can change the feed configuration according to their language.
-Manage reports - user can see their reports based on their allowed language
-
-Configurations
-
-Installation profile assists in setting up a base instance. 
-
-Maintainers
-Datamatics
+## Community
+Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
