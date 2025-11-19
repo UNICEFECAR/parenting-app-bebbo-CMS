@@ -52,7 +52,7 @@ jobs:
   deploy-dev:
     needs: ci-checks
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/bug/'))
     steps:
       - uses: actions/checkout@v3
 
