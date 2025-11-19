@@ -6,7 +6,6 @@
  */
 
 use Drupal\node\NodeInterface;
-use Drupal\views\Plugin\views\query\Sql;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\block\Entity\Block;
@@ -1403,14 +1402,6 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
 
   // Get user's group memberships (cached).
   $grps = _pb_custom_field_get_user_groups_cached($user);
-
-  // Get user's allowed languages (cached).
-  $user_languages = _pb_custom_field_get_user_allowed_languages($user);
-
-  // Simple language-based filtering for cross-country access.
-  if (!empty($user_languages) && $query instanceof Sql) {
-    $query->addWhere(0, 'node_field_data.langcode', $user_languages, 'IN');
-  }
 
   $groups = [];
   foreach ($grps as $grp) {
