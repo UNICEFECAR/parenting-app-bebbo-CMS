@@ -6,13 +6,14 @@
   * [Pre-requisites](#pre-requisites)
   * [Configuration](#configuration)
   * [Run the Application](#run-the-application)
+  * [Local Configuration Management](#local-configuration-management)
 * [CI/CD Security Practices](#cicd-security-practices)
 * [Branching Strategy](#branching-strategy)
 * [Maintainers](#maintainers)
 * [Community](#community)
 
 ## Introduction
-Parent Buddy CMS application is a headless implementation of Drupal 8 CMS where the content is added through the web interface and serves as REST APIs for a mobile app. This application assists editors in adding different types of content under various content types and taxonomies configured in Drupal CMS. Go through the [onboarding document](./docs/ONBOARDING.md) before continuing with the Installation guidelines below.
+Parent Buddy CMS application is a headless implementation of Drupal 10 CMS where the content is added through the web interface and serves as REST APIs for a mobile app. This application assists editors in adding different types of content under various content types and taxonomies configured in Drupal CMS. Go through the [onboarding document](./docs/ONBOARDING.md) before continuing with the Installation guidelines below.
 
 For more information on setup and getting started, check out our [guidelines for contributors](./docs/CONTRIBUTING.md).
 
@@ -49,7 +50,7 @@ git config --global core.longpaths true
    ```
    ddev composer install
    ```
-4. Download the database from the Acquia server and import it locally.
+4. Download the database from the Acquia server and import it locally. If you don’t have access to Acquia, you can download the dump database [here](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
    ```
    ddev import-db --src=/path/to/bebbo.sql.gz
    ```
@@ -69,6 +70,30 @@ Launch the application in your browser to verify everything is set up correctly.
 2. You can also list the site links with `ddev describe`. If running the installer from scratch, follow the standard Drupal steps (choose profile, enter DB credentials, etc.). When using the shared database dump this step is already completed—log in via `ddev drush uli`.
 3. Complete any post-install configuration and confirm the Drupal homepage loads without errors. If you encounter startup issues, review logs via `ddev logs`.
 
+### Local Configuration Management
+
+All configuration synchronization is managed locally using Drush commands.
+#### Check Pending Configuration Changes
+Shows differences between the active configuration (database) and the configuration files in the sync directory.
+```
+ddev drush config:status
+```
+
+#### Import Configuration (YAML → Database)
+
+Use this when you need to apply configuration from config/default into your local database:
+```
+ddev drush cim -y
+ddev drush cr
+```
+#### Export Configuration (Database → YAML)
+
+Use this when you make changes through the Drupal UI and need to update the configuration files:
+```
+ddev drush cex -y
+ddev drush cr
+```
+
 ## CI/CD Security Practices
 The automated pipeline defined in [.github/workflows/pipelines.yml](.github/workflows/pipelines.yml) enforces several security measures that contributors should be aware of:
 
@@ -76,7 +101,7 @@ The automated pipeline defined in [.github/workflows/pipelines.yml](.github/work
 - **Hardening SSH connectivity**: The workflow provisions SSH access using `webfactory/ssh-agent` with the private key from secrets and explicitly pins the Acquia Git host fingerprint via `ssh-keyscan` before any remote interaction.
 - **Clean build environments**: Every job starts from a fresh `ubuntu-latest` runner, pins PHP 8.3 via `shivammathur/setup-php`, and performs `git reset --hard` / `git clean -fd` prior to artifact pushes to avoid leaking untracked files.
 - **Dependency and code integrity checks**: `composer validate`, `composer install --no-interaction`, PHPCS, `drupal-check`, and `phplint` run on each push/PR to catch tampered dependencies or insecure code patterns before deployment.
-- **Scoped deployments**: Deploy jobs only run for specific branch patterns (feature/* to Dev, `acquia-main` to Stage) after CI checks pass (`needs: ci-checks`) ensuring only vetted code can reach Acquia environments.
+- **Scoped deployments**: Deploy jobs only run for specific branch patterns (feature/* to Dev, `main` to Stage) after CI checks pass (`needs: ci-checks`) ensuring only vetted code can reach Acquia environments.
 - **Auditable automation account**: Git author identity for automated commits to Acquia Git is consistently set to `github-actions+bebbo@unicef.org`, making bot activity traceable in repository history.
 
 ## Branching Strategy
@@ -84,25 +109,25 @@ Follow these guidelines to keep work streams predictable and in sync with the Ac
 
 1. **Create branches from issues**
    - Open the relevant GitHub issue and use the “Create a branch” shortcut in the bottom-right panel.
-   - Set **Branch Source** to `acquia-main`.
+   - Set **Branch Source** to `main`.
    - Use a descriptive name matching the work type:
      - `feature/<short-description>` for new features/enhancements.
      - `bug/<short-description>` for defects discovered during testing.
      - `hotfix/<short-description>` for urgent fixes targeting production/UAT.
 2. **Fork and develop**
    - Fork the repo, fetch the newly created branch, and push commits to your fork.
-   - Keep your fork in sync by regularly pulling from `upstream` `acquia-main` (and rebasing your working branch) to minimize conflicts.
+   - Keep your fork in sync by regularly pulling from `upstream` `main` (and rebasing your working branch) to minimize conflicts.
 3. **Commit hygiene**
    - Write meaningful commit messages using the convention `BEBBOAPPDR#<ticket-no> : <short description>`.
    - Squash/fixup locally if you created noisy commits before opening a PR.
 4. **Pull requests per branch type**
    - **Feature branches**: open a PR from your fork’s `feature/*` branch back to the same `feature/*` branch in the canonical repo. Reviews happen there and, once approved, the CI pipeline deploys to Acquia Dev.
    - **Bug branches**: follow the same flow as features, ensuring the PR references the bug issue and includes any regression tests or reproduction steps.
-   - **Hotfix branches**: coordinate with the release owner. Hotfix PRs target `acquia-main` directly once validation on a staging environment is complete.
-5. **Promotion to acquia-main**
-   - After a feature/bug branch passes QA on Acquia Dev and is ready for UAT, open a PR into `acquia-main`. This will trigger the Stage deployment after CI passes.
+   - **Hotfix branches**: coordinate with the release owner. Hotfix PRs target `main` directly once validation on a staging environment is complete.
+5. **Promotion to main**
+   - After a feature/bug branch passes QA on Acquia Dev and is ready for UAT, open a PR into `main`. This will trigger the Stage deployment after CI passes.
 6. **Release readiness**
-   - Before any merge to `acquia-main`, pull the latest changes from upstream and resolve conflicts locally.
+   - Before any merge to `main`, pull the latest changes from upstream and resolve conflicts locally.
    - Verify CI (linting/tests) succeeds. Only approved, green PRs are merged.
 
 ![Branching strategy diagram](docs/BranchingStrategy.png)
@@ -112,9 +137,8 @@ The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and 
 
 For ongoing maintenance, please reach out to the following maintainers:
 - [Evrim Sahin](https://github.com/evrimm)
-- [Akhror Abduvaliev](https://github.com/Akhror)
 - [Saurabh Agarwal](https://github.com/saurabhEDU)
-- [Muhammed Osman](https://github.com/mhdosman)
+- [Neha Ruparel](https://github.com/neharuparel)
 
 ## Community
 Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
