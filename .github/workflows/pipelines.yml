@@ -6,13 +6,13 @@ on:
       - 'feature/**'
       - 'bug/**'
       - 'hotfix/**'
-      - 'acquia-main'
+      - 'main'
   pull_request:
     branches:
       - 'feature/**'
       - 'bug/**'
       - 'hotfix/**'
-      - 'acquia-main'
+      - 'main'
   workflow_dispatch:
 
 jobs:
@@ -102,12 +102,12 @@ jobs:
           acli push:artifact @parentbuddy2.dev --no-interaction -vvv
 
   # -------------------------------
-  # 3. Deploy to Acquia Stage (acquia-main)
+  # 3. Deploy to Acquia Stage (main)
   # -------------------------------
   deploy-stage:
     needs: ci-checks
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/acquia-main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
 
@@ -151,7 +151,7 @@ jobs:
           git reset --hard
           git clean -fd
 
-      - name: Deploy acquia-main build to Stage
+      - name: Deploy main build to Stage
         run: |
-          echo "Deploying acquia-main to Stage"
+          echo "Deploying main to Stage"
           acli push:artifact @parentbuddy2.test --no-interaction
