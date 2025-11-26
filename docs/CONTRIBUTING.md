@@ -51,7 +51,7 @@ out.
 
 ## **Setting up your environment**
 
-Follow the steps mentioned [here](../README.md#installation).
+Follow the steps mentioned [here](./../README.md#installation).
 
 Feel free to reach out if you have any questions or need assistance during the setup process!
 
