@@ -23,7 +23,7 @@ that you follow these steps in order:
   the codebase clean and consistent.
 - Pull request checklist - helpful tips and guidelines to make sure your
   pull request gets reviewed and merged quickly.
-- Reporting an issue - find out how to submit bug reports or feature requests, 
+- Reporting an issue - find out how to submit bug reports or feature requests,
   so they're addressed effectively.
 - Review process and approval workflow
 - Contributed modules
@@ -33,7 +33,7 @@ that you follow these steps in order:
 - Custom roles
 - Menus
 - Configurations.
-  
+
 ## **Code of conduct**
 
 Please make sure to read and observe the [code of conduct](CODE_OF_CONDUCT.md).
@@ -41,8 +41,8 @@ Please make sure to read and observe the [code of conduct](CODE_OF_CONDUCT.md).
 ## **How to contribute**
 
 If you would like to contribute to the CMS, start by searching through
-our [open issues](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/issues?q=is%3Aissue+is%3Aopen+) 
-or [pull requests](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/pulls) 
+our [open issues](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/issues?q=is%3Aissue+is%3Aopen+)
+or [pull requests](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/pulls)
 to see if someone else has raised a similar idea or question.
 
 If you don't see your idea listed and you think it fits into the goal of
@@ -51,43 +51,7 @@ out.
 
 ## **Setting up your environment**
 
-Follow these steps to set up your development environment for
-contributing to Unicef Bebbo CMS:
-
-1.  **Fork the Repository**   
-      Click the \"Fork\" button at the top right of the repository page to create a copy in your GitHub account.
-
-2.  **Clone Your Fork**
-    - For Windows users, run the following command: `git config --global core.longpaths true`
-    - Open your terminal and run: `git clone https://github.com/YOUR_USERNAME/parenting-app-bebbo-CMS.git`
-
-3.  **Add Upstream Remote**
-      Set the original repository as a remote upstream to easily sync changes.
-
-      `git remote add upstream https://github.com/UNICEFECAR/parenting-app-bebbo-CMS.git`
-
-4.  **Install Dependencies**
-    - In your root directory, navigate to the project: `cd parenting-app-bebbo-CMS`
-    - Ensure you have the required software installed on your development machine:
-    - **PHP:** Make sure PHP 8.2 is installed and configured. For installation, you can follow [this guide](https://www.php.net/manual/en/install.php).
-    - **Composer:** Install Composer by following the instructions [here](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
-    - **Drush:** Install Drush as a project dependency, navigate to your Drupal project\'s root directory and execute:
-
-      `composer require drush/drush`.
-
-5.  **Database Setup**
-    - If you don\'t have access to the Acquia server, you can download a
-      [dump database](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
-    - Import the downloaded database into your local environment.
-    - Modify database details in the settings.php file, which is located
-      at: `docroot/sites/default/settings.php`
-
-6.  **Run the Application**
-    Launch the application in your browser to verify everything is set up correctly.
-    1.  Select your Installation Profile (e.g., Standard).
-    2.  Enter Database Details (username, password, database name).
-    3.  Complete the Site Configuration (site name, admin account).
-    4.  Once installation is complete, you'll see the Drupal homepage.
+Follow the steps mentioned [here](../README.md#installation).
 
 Feel free to reach out if you have any questions or need assistance during the setup process!
 
@@ -122,7 +86,7 @@ Below are extensive steps you can follow to easily open a pull request.
 
 - To open a pull request, go to the original repository on GitHub. You will see a notification for your recently pushed branch.
   Click on "Compare & pull request."
-  
+
 - Create a pull request (PR) against the \"dev\" branch of the original repository.
   The title of your PR should describe your changes, for example, \"Adding new distribution to the application.\"
   In the PR description, provide additional information about the changes, and their purpose.
@@ -170,7 +134,7 @@ efficient, and impactful.
 
 4. **Label the Issue (Optional)**
 
-    Add appropriate labels like \"bug,\" \"enhancement,\" or \"design\" to categorize the issue. 
+    Add appropriate labels like \"bug,\" \"enhancement,\" or \"design\" to categorize the issue.
     Otherwise, maintainers will label it during triage.
 
 5.  **Stay Engaged:** Be responsive to follow-up questions or requests for additional information from maintainers.

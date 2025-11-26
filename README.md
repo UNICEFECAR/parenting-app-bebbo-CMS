@@ -50,7 +50,7 @@ git config --global core.longpaths true
    ```
    ddev composer install
    ```
-4. Download the database from the Acquia server and import it locally. If you don’t have access to Acquia, you can download the dump database [here](https://drive.google.com/file/d/1mha-fwtKjb7931MFCEcAXVNOQt_IJ7Ce/view).
+4. Download the database from the Acquia server and import it locally. If you don’t have access to Acquia, you can download the dump database [here](https://drive.google.com/file/d/1SuBFYpNYARkHceyPoiLBWaa7zBAZfYsz/view).
    ```
    ddev import-db --src=/path/to/bebbo.sql.gz
    ```
