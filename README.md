@@ -63,6 +63,51 @@ git config --global core.longpaths true
    ```
    ddev logs
    ```
+### Multisite Setup
+
+Under .ddev/mysql create a file name init-databases.sql
+
+Copy the below content in init-databases.sql  file
+
+```
+
+-- Create multisite databases and grant privileges to the default DDEV user 'db'
+
+CREATE DATABASE IF NOT EXISTS bangladesh_db;
+GRANT ALL PRIVILEGES ON bangladesh_db.* TO 'db'@'%';
+
+CREATE DATABASE IF NOT EXISTS turkey_db;
+GRANT ALL PRIVILEGES ON turkey_db.* TO 'db'@'%';
+
+CREATE DATABASE IF NOT EXISTS ecuador_db;
+GRANT ALL PRIVILEGES ON ecuador_db.* TO 'db'@'%';
+
+CREATE DATABASE IF NOT EXISTS pacific_islands_db;
+GRANT ALL PRIVILEGES ON pacific_islands_db.* TO 'db'@'%';
+
+CREATE DATABASE IF NOT EXISTS somoa_db;
+GRANT ALL PRIVILEGES ON somoa_db.* TO 'db'@'%';
+
+CREATE DATABASE IF NOT EXISTS zimbabwe_db;
+GRANT ALL PRIVILEGES ON zimbabwe_db.* TO 'db'@'%';
+
+FLUSH PRIVILEGES;
+```
+
+After copying the above content to file run below command
+```
+ddev mysql -uroot -proot < .ddev/mysql/init-databases.sql
+```
+Check mysql all the databases are be created or not.
+```
+ddev drush sql:query "show databases"
+```
+Using `ddev describe` , you find all the list of sites.
+
+Download the databases from acquia cloud and import them to corresponding multi-site databases using below command.
+```
+ddev import-db --database=<multi-site-dbname> --file=<path-to-database.sql.gz>
+```
 
 ### Run the Application
 Launch the application in your browser to verify everything is set up correctly.
