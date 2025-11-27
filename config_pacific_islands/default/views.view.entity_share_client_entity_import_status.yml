@@ -1,9 +1,10 @@
-uuid: f8e8d54e-fc10-403e-91bf-43f827d3cddb
+uuid: null
 langcode: en
 status: true
 dependencies:
   module:
     - entity_share_client
+    - user
 id: entity_share_client_entity_import_status
 label: entity_share_client_entity_import_status
 module: views
@@ -802,8 +803,9 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'administer site configuration'
       cache:
         type: tag
         options: {  }
@@ -1273,6 +1275,7 @@ display:
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
+        - user.permissions
       tags: {  }
   page_1:
     id: page_1
@@ -1291,4 +1294,5 @@ display:
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
+        - user.permissions
       tags: {  }
