@@ -70,7 +70,7 @@
         "drupal/redirect": "^1.12",
         "drupal/restui": "^1.20",
         "drupal/seckit": "^2.0",
-        "drupal/security_review": "^2.0",
+        "drupal/security_review": "^3.1",
         "drupal/shield": "^1.2.0",
         "drupal/smtp": "^1.0",
         "drupal/stage_file_proxy": "^3.1",
