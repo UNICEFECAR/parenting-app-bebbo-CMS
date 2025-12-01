@@ -30,7 +30,6 @@
 
                 var style = document.createElement('style');
                 style.id = 'language-visibility-control-inline-css';
-                style.type = 'text/css';
                 if (style.styleSheet) {
                     style.styleSheet.cssText = css;
                 } else {

@@ -9,6 +9,7 @@ use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityFormInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_form_alter().
@@ -117,6 +118,16 @@ function language_visibility_control_group_form_validate($form, FormStateInterfa
  * Custom submit handler for group forms.
  */
 function language_visibility_control_group_form_submit($form, FormStateInterface $form_state) {
+  // Get the group entity.
+  $form_object = $form_state->getFormObject();
+  $group = NULL;
+  if ($form_object instanceof ContentEntityFormInterface) {
+    $group = $form_object->getEntity();
+  }
+  if (!$group || !($group instanceof ContentEntityInterface) || !$group->hasField('field_language_visibility_in_app')) {
+    return;
+  }
+
   // Prefer structured values from Form API when available.
   $language_visibility = $form_state->getValue('language_visibility');
   // Fall back to raw user input.
@@ -127,37 +138,41 @@ function language_visibility_control_group_form_submit($form, FormStateInterface
     }
   }
 
-  if (!empty($language_visibility)) {
-    $visible_langcodes = [];
+  // Get selected languages to validate against.
+  $selected_country_langcodes = _language_visibility_control_get_selected_languages($form_state, $group);
+
+  // Process language visibility data.
+  $visible_langcodes = [];
+  if (!empty($language_visibility) && is_array($language_visibility)) {
     foreach ($language_visibility as $langcode => $visible) {
+      // Skip non-language keys (help text, descriptions, etc.).
+      if (!is_string($langcode) ||
+          $langcode === 'help' ||
+          $langcode === 'fieldset_description' ||
+          str_ends_with($langcode, '_description')) {
+        continue;
+      }
+
       // Accept truthy values: '1', 1, 'on', true.
-      if (is_string($langcode) && ($visible === 1 || $visible === '1' || $visible === 'on' || $visible === TRUE)) {
+      if ($visible === 1 || $visible === '1' || $visible === 'on' || $visible === TRUE) {
         $visible_langcodes[] = $langcode;
       }
     }
+  }
 
-    // Get selected languages to validate against.
-    $form_object = $form_state->getFormObject();
-    $group = NULL;
-    if ($form_object instanceof ContentEntityFormInterface) {
-      $group = $form_object->getEntity();
-    }
-    if (!$group) {
-      return;
-    }
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
-    $selected_country_langcodes = _language_visibility_control_get_selected_languages($form_state, $group);
+  // Filter visible languages to only include selected ones.
+  $valid_visible_langcodes = array_values(array_intersect($visible_langcodes, $selected_country_langcodes));
 
-    // Filter visible languages to only include selected ones.
-    $valid_visible_langcodes = array_values(array_intersect($visible_langcodes, $selected_country_langcodes));
-
-    if ($group && $group->hasField('field_language_visibility_in_app') && !empty($valid_visible_langcodes)) {
-      $visible_languages = array_map(function ($code) {
-        return ['value' => $code];
-      }, $valid_visible_langcodes);
-
-      $group->set('field_language_visibility_in_app', $visible_languages);
-    }
+  // Always set the field, even if empty (to clear unchecked languages).
+  if (!empty($valid_visible_langcodes)) {
+    $visible_languages = array_map(function ($code) {
+      return ['value' => $code];
+    }, $valid_visible_langcodes);
+    $group->set('field_language_visibility_in_app', $visible_languages);
+  }
+  else {
+    // Clear the field when no languages are visible.
+    $group->set('field_language_visibility_in_app', []);
   }
 }
 
@@ -204,7 +219,7 @@ function _language_visibility_control_get_selected_languages($form_state, $group
   }
 
   // Fallback to entity values if no user input.
-  if (empty($current_languages) && $group && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
+  if (empty($current_languages) && $group && ($group instanceof ContentEntityInterface) && $group->hasField('field_language') && !$group->get('field_language')->isEmpty()) {
     $current_languages = array_filter(array_column($group->get('field_language')->getValue(), 'value'));
   }
 
@@ -229,7 +244,7 @@ function _language_visibility_control_get_visible_languages($form_state, $group)
     }, ARRAY_FILTER_USE_BOTH));
   }
   // Fallback to entity values.
-  elseif ($group && $group->hasField('field_language_visibility_in_app') && !$group->get('field_language_visibility_in_app')->isEmpty()) {
+  elseif ($group && ($group instanceof ContentEntityInterface) && $group->hasField('field_language_visibility_in_app') && !$group->get('field_language_visibility_in_app')->isEmpty()) {
     $visible_languages = array_filter(array_column($group->get('field_language_visibility_in_app')->getValue(), 'value'));
   }
 
