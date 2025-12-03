@@ -116,34 +116,11 @@
                 $fieldset.find('.language-visibility-description').show();
                 $fieldset.find('.language-visibility-checkbox-description').show();
 
-                // First, hide all existing checkboxes but keep help messages and descriptions visible
-                $fieldset.find('.form-item').each(function () {
-                    var $item = $(this);
-                    if (!$item.find('.language-visibility-help').length &&
-                        !$item.find('em').length &&
-                        !$item.find('.language-visibility-description').length &&
-                        !$item.find('.language-visibility-checkbox-description').length) {
-                        $item.hide();
-                    } else {
-                        $item.show();
-                    }
-                });
-
-                // For each selected language, show or create a checkbox and its description
+                // Build a map of which languages should be visible
+                var languagesToShow = {};
                 selectedLanguages.forEach(function (langcode) {
-                    var $existingCheckbox = $fieldset.find('input[name="language_visibility[' + langcode + ']"]');
-
-                    if ($existingCheckbox.length > 0) {
-                        // Show existing checkbox and its description
-                        $existingCheckbox.closest('.form-item').show();
-                        $fieldset.find('[data-drupal-selector*="' + langcode + '-description"]').show();
-                    } else {
-                        // Create new checkbox dynamically
-                        createLanguageCheckbox(langcode, $fieldset);
-                    }
+                    languagesToShow[langcode] = true;
                 });
-
-                // Uncheck and hide checkboxes for unselected languages
                 $fieldset.find('input[type="checkbox"]').each(function () {
                     var $checkbox = $(this);
                     var nameAttr = $checkbox.attr('name');
@@ -154,15 +131,24 @@
                             var langcode = matches[1];
                             var $formItem = $checkbox.closest('.form-item');
 
-                            if (selectedLanguages.indexOf(langcode) === -1) {
+                            if (languagesToShow[langcode]) {
+                                $formItem.show();
+                                $fieldset.find('[data-drupal-selector*="' + langcode + '-description"]').show();
+                                delete languagesToShow[langcode];
+                            } else {
                                 $formItem.hide();
                                 $checkbox.prop('checked', false);
-                                // Also hide the description for this language
                                 $fieldset.find('[data-drupal-selector*="' + langcode + '-description"]').hide();
                             }
                         }
                     }
                 });
+
+                for (var langcode in languagesToShow) {
+                    if (languagesToShow.hasOwnProperty(langcode)) {
+                        createLanguageCheckbox(langcode, $fieldset);
+                    }
+                }
             }
 
             /**
