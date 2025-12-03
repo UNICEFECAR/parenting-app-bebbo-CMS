@@ -5,6 +5,7 @@
  * Language Visibility Control module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Form\FormStateInterface;
@@ -119,11 +120,12 @@ function language_visibility_control_group_form_validate($form, FormStateInterfa
 function language_visibility_control_group_form_submit($form, FormStateInterface $form_state) {
   // Get the group entity.
   $form_object = $form_state->getFormObject();
-  $group = NULL;
-  if ($form_object instanceof ContentEntityFormInterface) {
-    $group = $form_object->getEntity();
+  if (!$form_object instanceof ContentEntityFormInterface) {
+    return;
   }
-  if (!$group || !$group->hasField('field_language_visibility_in_app')) {
+
+  $group = $form_object->getEntity();
+  if (!$group instanceof ContentEntityInterface || !$group->hasField('field_language_visibility_in_app')) {
     return;
   }
 
