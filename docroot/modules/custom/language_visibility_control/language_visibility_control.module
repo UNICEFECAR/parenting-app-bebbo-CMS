@@ -5,6 +5,7 @@
  * Language Visibility Control module.
  */
 
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\group\Entity\Group;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Form\FormStateInterface;
@@ -117,6 +118,17 @@ function language_visibility_control_group_form_validate($form, FormStateInterfa
  * Custom submit handler for group forms.
  */
 function language_visibility_control_group_form_submit($form, FormStateInterface $form_state) {
+  // Get the group entity.
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof ContentEntityFormInterface) {
+    return;
+  }
+
+  $group = $form_object->getEntity();
+  if (!$group instanceof ContentEntityInterface || !$group->hasField('field_language_visibility_in_app')) {
+    return;
+  }
+
   // Prefer structured values from Form API when available.
   $language_visibility = $form_state->getValue('language_visibility');
   // Fall back to raw user input.
@@ -127,37 +139,32 @@ function language_visibility_control_group_form_submit($form, FormStateInterface
     }
   }
 
+  // Process language visibility (even if empty to handle unchecking all).
+  $visible_langcodes = [];
   if (!empty($language_visibility)) {
-    $visible_langcodes = [];
     foreach ($language_visibility as $langcode => $visible) {
       // Accept truthy values: '1', 1, 'on', true.
       if (is_string($langcode) && ($visible === 1 || $visible === '1' || $visible === 'on' || $visible === TRUE)) {
         $visible_langcodes[] = $langcode;
       }
     }
+  }
 
-    // Get selected languages to validate against.
-    $form_object = $form_state->getFormObject();
-    $group = NULL;
-    if ($form_object instanceof ContentEntityFormInterface) {
-      $group = $form_object->getEntity();
-    }
-    if (!$group) {
-      return;
-    }
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $group */
-    $selected_country_langcodes = _language_visibility_control_get_selected_languages($form_state, $group);
+  // Get selected languages to validate against.
+  $selected_country_langcodes = _language_visibility_control_get_selected_languages($form_state, $group);
 
-    // Filter visible languages to only include selected ones.
-    $valid_visible_langcodes = array_values(array_intersect($visible_langcodes, $selected_country_langcodes));
+  // Filter visible languages to only include selected ones.
+  $valid_visible_langcodes = array_values(array_intersect($visible_langcodes, $selected_country_langcodes));
 
-    if ($group && $group->hasField('field_language_visibility_in_app') && !empty($valid_visible_langcodes)) {
-      $visible_languages = array_map(function ($code) {
-        return ['value' => $code];
-      }, $valid_visible_langcodes);
-
-      $group->set('field_language_visibility_in_app', $visible_languages);
-    }
+  // Always set the field value (even if empty array).
+  if (empty($valid_visible_langcodes)) {
+    $group->set('field_language_visibility_in_app', []);
+  }
+  else {
+    $visible_languages = array_map(function ($code) {
+      return ['value' => $code];
+    }, $valid_visible_langcodes);
+    $group->set('field_language_visibility_in_app', $visible_languages);
   }
 }
 
