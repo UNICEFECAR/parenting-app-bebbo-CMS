@@ -5,6 +5,7 @@
  * It contains custom field module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
@@ -127,7 +128,6 @@ function pb_custom_form_get_subcategory_options($category_id) {
 function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   // Check if it's your specific view and display.
   if ($view->id() == 'articles' && $view->current_display == 'rest_export_2') {
-
     // Retrieve the contextual filter value.
     // Adjust index based on your view's configuration.
     // Retrieve all query parameters from the URL.
@@ -149,18 +149,35 @@ function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase 
             $field_condition = 'node__field_child_age.field_child_age_target_id IN(:node__field_child_age_field_child_age_target_id[])';
             if (isset($condition['field']) && $condition['field'] == $field_condition) {
 
-              $terms = \Drupal::service('entity_type.manager')
-                ->getStorage('taxonomy_term')->loadByProperties([
-                  'name' => 'Pregnancy',
-                  'vid' => 'child_age',
-                ]);
-              // Check if the term exists and return its name.
-              if ($terms) {
-                // Get the first term if there are multiple results.
-                $term = reset($terms);
-                $tid_pregnancy = (int) $term->id();
-                $condition['value'][':node__field_child_age_field_child_age_target_id[]'][] = $tid_pregnancy;
+              // Use Drupal Cache API for performance - cache the term ID across
+              // requests to avoid repeated database queries.
+              $cid = 'pb_custom_form:pregnancy_term_id';
+              $cache = \Drupal::cache()->get($cid);
 
+              if ($cache) {
+                $tid_pregnancy = $cache->data;
+              }
+              else {
+                // Cache miss - load the term and cache it.
+                $terms = \Drupal::service('entity_type.manager')
+                  ->getStorage('taxonomy_term')->loadByProperties([
+                    'name' => 'Pregnancy',
+                    'vid' => 'child_age',
+                  ]);
+
+                if ($terms) {
+                  $term = reset($terms);
+                  $tid_pregnancy = (int) $term->id();
+
+                  // Cache permanently with taxonomy term cache tags for
+                  // automatic invalidation when terms change.
+                  \Drupal::cache()->set($cid, $tid_pregnancy, Cache::PERMANENT, ['taxonomy_term_list:child_age']);
+                }
+              }
+
+              // Add the pregnancy term ID to the condition if found.
+              if (isset($tid_pregnancy)) {
+                $condition['value'][':node__field_child_age_field_child_age_target_id[]'][] = $tid_pregnancy;
               }
             }
           }
