@@ -1,0 +1,8 @@
+services:
+  custom_serialization.media_cache:
+    class: Drupal\custom_serialization\Service\MediaCacheService
+    arguments: ['@cache.default']
+
+  custom_serialization.vimeo_thumbnail_cache:
+    class: Drupal\custom_serialization\Service\VimeoThumbnailCacheService
+    arguments: ['@cache.data']
