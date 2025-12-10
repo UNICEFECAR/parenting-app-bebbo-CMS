@@ -212,6 +212,9 @@
             },
             "webflo/drupal-finder": {
                 "Uncaught TypeError fix": "patches/drupal_finder/drupal-finder-fix-start-path.patch"
+            },
+            "drupal/webp": {
+                "Do not regenerate webp": "https://www.drupal.org/files/issues/2024-07-12/webp-stampede-prevention-3177103-32.patch"
             }
         }
     },
