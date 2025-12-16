@@ -4,7 +4,7 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
-use Drupal\file\FileInterface;
+use Drupal\file\Entity\File;
 use Drupal\group\Entity\Group;
 use Drupal\media\Entity\Media;
 use Drupal\taxonomy\TermInterface;
@@ -112,20 +112,6 @@ class CustomSerializer extends Serializer {
   protected $messenger;
 
   /**
-   * The media cache service.
-   *
-   * @var \Drupal\custom_serialization\Service\MediaCacheService
-   */
-  protected $mediaCacheService;
-
-  /**
-   * The Vimeo thumbnail cache service.
-   *
-   * @var \Drupal\custom_serialization\Service\VimeoThumbnailCacheService
-   */
-  protected $vimeoThumbnailCacheService;
-
-  /**
    * {@inheritdoc}
    */
   public function __construct(
@@ -141,8 +127,6 @@ class CustomSerializer extends Serializer {
     LanguageManagerInterface $language_manager,
     EntityTypeManagerInterface $entity_type_manager,
     LanguageVisibilityService $language_visibility_service,
-    $media_cache_service = NULL,
-    $vimeo_thumbnail_cache_service = NULL,
   ) {
     parent::__construct(
       $configuration,
@@ -158,8 +142,6 @@ class CustomSerializer extends Serializer {
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->languageVisibilityService = $language_visibility_service;
-    $this->mediaCacheService = $media_cache_service;
-    $this->vimeoThumbnailCacheService = $vimeo_thumbnail_cache_service;
   }
 
   /**
@@ -178,9 +160,7 @@ class CustomSerializer extends Serializer {
       $container->get('database'),
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
-      $container->get('language_visibility_control.service'),
-      $container->get('custom_serialization.media_cache'),
-      $container->get('custom_serialization.vimeo_thumbnail_cache')
+      $container->get('language_visibility_control.service')
     );
   }
 
@@ -774,20 +754,186 @@ class CustomSerializer extends Serializer {
   }
 
   /**
-   * To get media files details with caching.
+   * To get media files details from db.
    */
   public function customMediaFormatter($key, $values, $language_code, $request_uri = '') {
 
     if (!empty($values)) {
-      // Use cache service if available, otherwise fall back.
-      if ($this->mediaCacheService) {
-        return $this->mediaCacheService->getMediaData($values, $language_code, function () use ($key, $values, $language_code, $request_uri) {
-          return $this->processMediaEntity($key, $values, $language_code, $request_uri);
-        });
+      $url = $mname = $malt = '';
+      $media_data = [];
+      $media_entity = Media::load($values);
+      $media_type = $media_entity->bundle();
+      $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+      if ($media_type === 'image') {
+        $mid = $media_entity->get('field_media_image')->target_id;
+        if (!empty($mid)) {
+          $mname = $media_entity->get('name')->value;
+          $query = $this->database->select('media__field_media_image');
+          $query->condition('entity_id', $values);
+          $query->condition('langcode', $language_code);
+          $query->fields('media__field_media_image');
+          $result = $query->execute()->fetchAll();
+          if (!empty($result)) {
+            $malt = $result[0]->field_media_image_alt;
+          }
+          else {
+            $malt_field = $media_entity->get('field_media_image')->getValue();
+            $malt = $malt_field[0]['alt'] ?? '';
+          }
+          /**
+           * Get the File Details.
+           *
+           * @var object
+           */
+          $query = $this->database->select('file_managed');
+          $query->condition('fid', $mid);
+          $query->fields('file_managed');
+          $result22 = $query->execute()->fetchAll();
+          $uri = '';
+          if (!empty($result22)) {
+            $uri = $result22[0]->uri;
+          }
+          $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $url = $this->getWebpUrl($url);
+          }
+
+        }
+        $media_data = [
+          'url'  => $url,
+          'name' => $mname,
+          'alt'  => $malt,
+        ];
       }
-      else {
-        return $this->processMediaEntity($key, $values, $language_code, $request_uri);
+      elseif ($media_type === "remote_video") {
+        $url = $media_entity->get('field_media_oembed_video')->value;
+        $mname = $media_entity->get('name')->value;
+        $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
+        $media_data = [
+          'url'  => $url,
+          'name' => $mname,
+          'site'  => $site,
+        ];
+
+        if ($key == "cover_image") {
+          $tid = $media_entity->get('thumbnail')->target_id;
+          $urls = '';
+          if (!empty($tid)) {
+            if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
+              // Get the value of the oEmbed video field.
+              $oembed_value = $media_entity->get('field_media_oembed_video')->value;
+
+              // Parse the oEmbed URL to extract the Vimeo video ID.
+              $parsed_url = parse_url($oembed_value);
+              if (isset($parsed_url['path'])) {
+                // Extract the Vimeo video ID from the path.
+                $path_segments = explode('/', $parsed_url['path']);
+                $vimeo_video_id = end($path_segments);
+                $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
+
+                // Initialize cURL session.
+                $ch = curl_init();
+
+                // Set cURL options.
+                curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+                // Execute the cURL request.
+                $response = curl_exec($ch);
+
+                if ($response === FALSE) {
+                  // cURL error occurred.
+                  curl_error($ch);
+                  // Handle the error, log it, etc.
+                  $urls = 'cURL error';
+                }
+                else {
+                  // Close cURL session.
+                  curl_close($ch);
+
+                  // Decode the JSON response into an associative array.
+                  $data = json_decode($response, TRUE);
+
+                  if ($data === NULL) {
+                    // JSON decoding error occurred.
+                    json_last_error_msg();
+                    // Handle the error, log it, etc.
+                    $urls = 'Vimeo error';
+                  }
+                  else {
+                    // Extract the thumbnail URL from the response data.
+                    $urls = $data['thumbnail_url'] ?? NULL;
+                  }
+                }
+              }
+              else {
+                // Vimeo video ID not found in the oEmbed URL
+                // Handle the error, log it, etc.
+                $urls = 'Vimeo ID not found';
+              }
+
+            }
+            else {
+              $thumbnail = File::load($tid);
+              $thumbnail_url = $thumbnail->createFileUrl();
+              if (strpos($thumbnail_url, $base_url) !== FALSE) {
+                // Base URL is present in the thumbnail URL.
+                $urls = $thumbnail_url;
+              }
+              else {
+                // Base URL is Not present in the thumbnail URL.
+                $urls = $base_url . $thumbnail_url;
+              }
+            }
+          }
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $urls = $this->getWebpUrl($urls);
+          }
+          $media_data = [
+            'url'  => $urls,
+            'name' => $mname,
+            'alt'  => '',
+          ];
+        }
       }
+      elseif ($media_type === "video") {
+        $mname = $media_entity->get('name')->value;
+        $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
+        $mid = $media_entity->get('field_media_video_file')->target_id;
+        if (!empty($mid)) {
+          /**
+           * Get the File Details.
+           *
+           * @var object
+           */
+          $file = File::load($mid);
+          $url = $file->createFileUrl();
+        }
+
+        $media_data = [
+          'url'  => $url,
+          'name' => $mname,
+          'site'  => $site,
+        ];
+
+        if ($key == "cover_image") {
+          $tid = $media_entity->get('thumbnail')->target_id;
+          $thumbnail_url = '';
+          if (!empty($tid)) {
+            $thumbnail = File::load($tid);
+            $thumbnail_url = $thumbnail->createFileUrl();
+          }
+          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
+            $thumbnail_url = $this->getWebpUrl($thumbnail_url);
+          }
+          $media_data = [
+            'url'  => $thumbnail_url,
+            'name' => $mname,
+            'alt'  => '',
+          ];
+        }
+      }
+      return $media_data;
     }
     else {
       $media_data = [];
@@ -807,198 +953,6 @@ class CustomSerializer extends Serializer {
       }
       return $media_data;
     }
-  }
-
-  /**
-   * Process media entity and return formatted data.
-   *
-   * This method contains the actual media processing logic,
-   * separated from caching for better code organization.
-   */
-  protected function processMediaEntity($key, $values, $language_code, $request_uri) {
-    $url = $mname = $malt = '';
-    $media_data = [];
-    $media_entity = Media::load($values);
-
-    if (!$media_entity) {
-      return [];
-    }
-
-    $media_type = $media_entity->bundle();
-    $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
-
-    if ($media_type === 'image') {
-      $mid = $media_entity->get('field_media_image')->target_id;
-      if (!empty($mid)) {
-        $mname = $media_entity->get('name')->value;
-
-        // Use entity API instead of direct database query for alt text.
-        $image_field = $media_entity->get('field_media_image');
-        $malt = $image_field->alt ?? '';
-
-        // Use entity API to get file URI instead of direct database query.
-        $file = $image_field->entity;
-        $uri = '';
-        if ($file && $file instanceof FileInterface) {
-          $uri = $file->getFileUri();
-        }
-
-        $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
-        if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-          $url = $this->getWebpUrl($url);
-        }
-      }
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'alt'  => $malt,
-      ];
-    }
-    elseif ($media_type === "remote_video") {
-      $url = $media_entity->get('field_media_oembed_video')->value;
-      $mname = $media_entity->get('name')->value;
-      $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'site'  => $site,
-      ];
-
-      if ($key == "cover_image") {
-        $tid = $media_entity->get('thumbnail')->target_id;
-        $urls = '';
-        if (!empty($tid)) {
-          if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
-            // Get the value of the oEmbed video field.
-            $oembed_value = $media_entity->get('field_media_oembed_video')->value;
-
-            // Parse the oEmbed URL to extract the Vimeo video ID.
-            $parsed_url = parse_url($oembed_value);
-            if (isset($parsed_url['path'])) {
-              // Extract the Vimeo video ID from the path.
-              $path_segments = explode('/', $parsed_url['path']);
-              $vimeo_video_id = end($path_segments);
-
-              // Use Vimeo cache service if available.
-              if ($this->vimeoThumbnailCacheService) {
-                $urls = $this->vimeoThumbnailCacheService->getThumbnailUrl($vimeo_video_id, $values, function () use ($vimeo_video_id) {
-                  return $this->fetchVimeoThumbnail($vimeo_video_id);
-                });
-              }
-              else {
-                $urls = $this->fetchVimeoThumbnail($vimeo_video_id);
-              }
-            }
-            else {
-              // Vimeo video ID not found in the oEmbed URL.
-              $urls = '';
-            }
-          }
-          else {
-            // YouTube or other video - use entity API to load thumbnail.
-            $thumbnail_field = $media_entity->get('thumbnail');
-            if ($thumbnail_field && $thumbnail_field->entity && $thumbnail_field->entity instanceof FileInterface) {
-              $thumbnail_url = $thumbnail_field->entity->createFileUrl();
-              if (strpos($thumbnail_url, $base_url) !== FALSE) {
-                $urls = $thumbnail_url;
-              }
-              else {
-                $urls = $base_url . $thumbnail_url;
-              }
-            }
-          }
-        }
-        if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-          $urls = $this->getWebpUrl($urls);
-        }
-        $media_data = [
-          'url'  => $urls,
-          'name' => $mname,
-          'alt'  => '',
-        ];
-      }
-    }
-    elseif ($media_type === "video") {
-      $mname = $media_entity->get('name')->value;
-      $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-      $mid = $media_entity->get('field_media_video_file')->target_id;
-      if (!empty($mid)) {
-        // Use entity API to get file.
-        $file_field = $media_entity->get('field_media_video_file');
-        if ($file_field && $file_field->entity && $file_field->entity instanceof FileInterface) {
-          $url = $file_field->entity->createFileUrl();
-        }
-      }
-
-      $media_data = [
-        'url'  => $url,
-        'name' => $mname,
-        'site'  => $site,
-      ];
-
-      if ($key == "cover_image") {
-        $tid = $media_entity->get('thumbnail')->target_id;
-        $thumbnail_url = '';
-        if (!empty($tid)) {
-          // Use entity API to load thumbnail.
-          $thumbnail_field = $media_entity->get('thumbnail');
-          if ($thumbnail_field && $thumbnail_field->entity && $thumbnail_field->entity instanceof FileInterface) {
-            $thumbnail_url = $thumbnail_field->entity->createFileUrl();
-          }
-        }
-        if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-          $thumbnail_url = $this->getWebpUrl($thumbnail_url);
-        }
-        $media_data = [
-          'url'  => $thumbnail_url,
-          'name' => $mname,
-          'alt'  => '',
-        ];
-      }
-    }
-    return $media_data;
-  }
-
-  /**
-   * Fetch Vimeo thumbnail URL via API with timeout handling.
-   *
-   * @param string $vimeo_video_id
-   *   The Vimeo video ID.
-   *
-   * @return string
-   *   The thumbnail URL or empty string on error.
-   */
-  protected function fetchVimeoThumbnail($vimeo_video_id) {
-    $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
-
-    // Initialize cURL session.
-    $ch = curl_init();
-
-    // Set cURL options with timeout.
-    curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-
-    // Execute the cURL request.
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    if ($response === FALSE) {
-      // cURL error occurred - return empty string for graceful degradation.
-      return '';
-    }
-
-    // Decode the JSON response.
-    $data = json_decode($response, TRUE);
-
-    if ($data === NULL) {
-      // JSON decoding error - return empty string.
-      return '';
-    }
-
-    // Extract and return the thumbnail URL.
-    return $data['thumbnail_url'] ?? '';
   }
 
   /**
