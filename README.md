@@ -178,7 +178,7 @@ Follow these guidelines to keep work streams predictable and in sync with the Ac
 ![Branching strategy diagram](docs/BranchingStrategy.png)
 
 ## Maintainers
-The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners (including DATAMATICS). It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.
+The Bebbo CMS is actively maintained by UNICEF's Regional Office for Europe and Central Asia in collaboration with various partners. It is part of the larger Bebbo project, a digital parenting platform aimed at providing parents and caregivers with essential early childhood development resources.
 
 For ongoing maintenance, please reach out to the following maintainers:
 - [Evrim Sahin](https://github.com/evrimm)
@@ -187,3 +187,8 @@ For ongoing maintenance, please reach out to the following maintainers:
 
 ## Community
 Unicef Bebbo has a friendly and lively open-source community. Our communication happens primarily primarily in our [Github Discussion](https://github.com/UNICEFECAR/parenting-app-bebbo-CMS/discussions) and we welcome all interested contributors to join the conversation.
+
+## Contributors
+We acknowledge the contributors who helped improve the project:
+- [@Loveth Omokaro](https://github.com/Lovelyfin00)
+- [@Osumgba Chiamaka](https://github.com/osumgbachiamaka)
