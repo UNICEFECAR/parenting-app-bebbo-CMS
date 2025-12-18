@@ -1,0 +1,16 @@
+services:
+  # Helper service for CustomSerializer with caching and batch loading.
+  # This service centralizes entity loading, caching, and external API calls
+  # to improve performance of REST API responses.
+  custom_serialization.helper:
+    class: Drupal\custom_serialization\Service\CustomSerializerHelper
+    arguments:
+      - '@entity_type.manager'
+      - '@database'
+      - '@cache.default'
+      - '@http_client'
+      - '@logger.channel.custom_serialization'
+
+  logger.channel.custom_serialization:
+    parent: logger.channel_base
+    arguments: ['custom_serialization']
