@@ -10,8 +10,6 @@ use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -149,18 +147,10 @@ function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase 
             $field_condition = 'node__field_child_age.field_child_age_target_id IN(:node__field_child_age_field_child_age_target_id[])';
             if (isset($condition['field']) && $condition['field'] == $field_condition) {
 
-              $terms = \Drupal::service('entity_type.manager')
-                ->getStorage('taxonomy_term')->loadByProperties([
-                  'name' => 'Pregnancy',
-                  'vid' => 'child_age',
-                ]);
-              // Check if the term exists and return its name.
-              if ($terms) {
-                // Get the first term if there are multiple results.
-                $term = reset($terms);
-                $tid_pregnancy = (int) $term->id();
+              // Use cached pregnancy term ID to avoid repeated database lookups.
+              $tid_pregnancy = _pb_custom_form_get_pregnancy_term_id();
+              if ($tid_pregnancy) {
                 $condition['value'][':node__field_child_age_field_child_age_target_id[]'][] = $tid_pregnancy;
-
               }
             }
           }
@@ -168,6 +158,48 @@ function pb_custom_form_views_query_alter(ViewExecutable $view, QueryPluginBase 
       }
     }
   }
+}
+
+/**
+ * Get the pregnancy term ID with caching.
+ *
+ * @return int|null
+ *   The term ID or NULL if not found.
+ */
+function _pb_custom_form_get_pregnancy_term_id() {
+  // Use static cache for within-request caching.
+  $tid_pregnancy = &drupal_static(__FUNCTION__);
+
+  if ($tid_pregnancy !== NULL) {
+    return $tid_pregnancy;
+  }
+
+  // Check persistent cache.
+  $cache = \Drupal::cache()->get('pb_custom_form:pregnancy_term_id');
+  if ($cache && $cache->data) {
+    $tid_pregnancy = $cache->data;
+    return $tid_pregnancy;
+  }
+
+  // Load from database.
+  $terms = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties([
+      'name' => 'Pregnancy',
+      'vid' => 'child_age',
+    ]);
+
+  if ($terms) {
+    $term = reset($terms);
+    $tid_pregnancy = (int) $term->id();
+    // Cache for 24 hours.
+    \Drupal::cache()->set('pb_custom_form:pregnancy_term_id', $tid_pregnancy, \Drupal::time()->getRequestTime() + 86400);
+    return $tid_pregnancy;
+  }
+
+  // Term not found, cache as 0 to avoid repeated lookups.
+  $tid_pregnancy = 0;
+  return NULL;
 }
 
 /**
@@ -668,105 +700,224 @@ function pb_custom_form_group_country_save($form, FormStateInterface $form_state
 
 /**
  * Implements hook_preprocess_views_view_field().
+ *
+ * Optimized with batch loading and static caching.
  */
 function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables) {
-  if ($variables['field']->field == 'revision_uid') {
-    $langcode = $variables['row']->node_field_data_langcode;
-    $nid = $variables['row']->_entity->nid->value;
-    $storage = \Drupal::entityTypeManager()->getStorage('node');
-    /** @var \Drupal\node\NodeStorageInterface $storage */
-    $vid = $storage->getLatestRevisionId($nid);
-    if ($storage instanceof RevisionableStorageInterface) {
-      /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
-      $node = $storage->loadRevision($vid);
-    }
-    else {
-      $node = NULL;
-    }
-    if ($node instanceof NodeInterface) {
-      $storage = \Drupal::entityTypeManager()
-        ->getStorage($node->getEntityTypeId());
-      /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-      $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
-        $langcode);
-      if ($storage instanceof RevisionableStorageInterface) {
-        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
-        $revisionNode = $storage->loadRevision($revision_id);
-      }
-      else {
-        $revisionNode = NULL;
-      }
-      /** @var \Drupal\Core\Entity\TranslatableInterface $revisionNode */
-      $revisionTransNode = $revisionNode->getTranslation($langcode);
-      /** @var \Drupal\node\NodeInterface $revisionTransNode */
-      $uid = $revisionTransNode->get('revision_uid')->target_id ?? NULL;
-      $objUser = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
-      $variables['output'] = $objUser->name->value;
-    }
-  }
-
   $view = $variables['view'];
   $field = $variables['field'];
 
-  if ($view->storage->id() == 'country_content_listing' && $view->current_display == 'page_5' && $field->field == 'moderation_state') {
-    // Get the row entity (in this case, assuming a node).
-    if (isset($variables['row']->_entity) && $variables['row']->_entity instanceof NodeInterface) {
-      // $node = $variables['row']->_entity;
-      $nid = $variables['row']->_entity->id();
-      $storage_node = \Drupal::entityTypeManager()->getStorage('node');
-      /** @var \Drupal\node\NodeStorageInterface $storage_node */
-      $vid = $storage_node->getLatestRevisionId($nid);
+  // Handle revision_uid field.
+  if ($field->field == 'revision_uid') {
+    $output = _pb_custom_form_get_revision_author($variables, $view);
+    if ($output !== NULL) {
+      $variables['output'] = $output;
+    }
+    return;
+  }
 
-      if ($storage_node instanceof RevisionableStorageInterface) {
-        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage_node */
-        $node = $storage_node->loadRevision($vid);
-      }
-      else {
-        $node = NULL;
-      }
+  // Handle moderation_state field for country_content_listing view.
+  if ($view->storage->id() == 'country_content_listing' &&
+      $view->current_display == 'page_5' &&
+      $field->field == 'moderation_state') {
+    $output = _pb_custom_form_get_moderation_state_label($variables, $view);
+    if ($output !== NULL) {
+      $variables['output'] = $output;
+    }
+  }
+}
 
-      $field_language = $variables['row']->{'node_field_data_langcode'} ?? NULL;
+/**
+ * Get revision author with batch loading and caching.
+ */
+function _pb_custom_form_get_revision_author(&$variables, ViewExecutable $view) {
+  // Use static cache for batch-loaded data.
+  $cache = &drupal_static(__FUNCTION__, ['initialized' => FALSE, 'data' => []]);
 
-      // Get the moderation information service.
-      $moderation_information = \Drupal::service('content_moderation.moderation_information');
+  if (!$cache['initialized']) {
+    $cache = _pb_custom_form_batch_load_revision_authors($view);
+    $cache['initialized'] = TRUE;
+  }
 
-      // Check if the node is moderated.
-      if ($moderation_information->isModeratedEntity($node)) {
+  if (!isset($variables['row']->_entity)) {
+    return NULL;
+  }
 
-        if ($variables['field']->field == 'moderation_state') {
-          /** @var \Drupal\node\NodeInterface $node */
-          if ($node->hasField('moderation_state')) {
-            $storage = \Drupal::entityTypeManager()
-              ->getStorage($node->getEntityTypeId());
-            /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
-            $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
-              $field_language);
-            if ($storage instanceof RevisionableStorageInterface) {
-              /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
-              $revisionNode = $storage->loadRevision($revision_id);
-            }
-            else {
-              $revisionNode = NULL;
-            }
-            if ($revisionNode instanceof ContentEntityInterface) {
-              $info = $moderation_information->getAffectedRevisionTranslation($revisionNode);
-              if ($info instanceof ContentEntityInterface) {
-                $moderation_state = $info->get('moderation_state')->value;
+  $nid = $variables['row']->_entity->nid->value ?? $variables['row']->_entity->id();
+  $langcode = $variables['row']->node_field_data_langcode ?? 'en';
+  $cache_key = $nid . ':' . $langcode;
 
-                $workflow = $moderation_information->getWorkflowForEntity($info);
-                $label = $workflow->getTypePlugin()
-                  ->getState($moderation_state)->label();
-                $variables['output'] = $label;
+  return $cache['data'][$cache_key] ?? NULL;
+}
 
-              }
-            }
-          }
+/**
+ * Get moderation state label with batch loading and caching.
+ */
+function _pb_custom_form_get_moderation_state_label(&$variables, ViewExecutable $view) {
+  // Use static cache for batch-loaded data.
+  $cache = &drupal_static(__FUNCTION__, ['initialized' => FALSE, 'data' => []]);
+
+  if (!$cache['initialized']) {
+    $cache = _pb_custom_form_batch_load_moderation_states($view);
+    $cache['initialized'] = TRUE;
+  }
+
+  if (!isset($variables['row']->_entity) || !($variables['row']->_entity instanceof NodeInterface)) {
+    return NULL;
+  }
+
+  $nid = $variables['row']->_entity->id();
+  $langcode = $variables['row']->{'node_field_data_langcode'} ?? 'en';
+  $cache_key = $nid . ':' . $langcode;
+
+  return $cache['data'][$cache_key] ?? NULL;
+}
+
+/**
+ * Batch load revision authors for all view results.
+ */
+function _pb_custom_form_batch_load_revision_authors(ViewExecutable $view) {
+  $result = ['initialized' => TRUE, 'data' => []];
+
+  if (empty($view->result)) {
+    return $result;
+  }
+
+  $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+  $database = \Drupal::database();
+
+  // Collect all node IDs from view results.
+  $nid_langcode_map = [];
+  foreach ($view->result as $row) {
+    if (isset($row->_entity)) {
+      $nid = $row->_entity->nid->value ?? $row->_entity->id();
+      $langcode = $row->node_field_data_langcode ?? 'en';
+      $nid_langcode_map[$nid . ':' . $langcode] = [
+        'nid' => $nid,
+        'langcode' => $langcode,
+      ];
+    }
+  }
+
+  if (empty($nid_langcode_map)) {
+    return $result;
+  }
+
+  $nids = array_unique(array_column($nid_langcode_map, 'nid'));
+
+  // Single query to get latest revision IDs and their revision UIDs.
+  $query = $database->select('node_field_data', 'nfd');
+  $query->fields('nfd', ['nid', 'langcode', 'vid']);
+  $query->condition('nfd.nid', $nids, 'IN');
+  $revision_data = $query->execute()->fetchAll();
+
+  // Build revision map.
+  $revision_map = [];
+  $vids = [];
+  foreach ($revision_data as $row) {
+    $revision_map[$row->nid . ':' . $row->langcode] = $row->vid;
+    $vids[$row->vid] = $row->vid;
+  }
+
+  // Batch load revision UIDs.
+  if (!empty($vids)) {
+    $uid_query = $database->select('node_revision', 'nr');
+    $uid_query->fields('nr', ['vid', 'revision_uid']);
+    $uid_query->condition('nr.vid', array_values($vids), 'IN');
+    $uid_results = $uid_query->execute()->fetchAllKeyed();
+
+    // Batch load users.
+    $uids = array_unique(array_values($uid_results));
+    $users = $user_storage->loadMultiple($uids);
+
+    // Build the result cache.
+    foreach ($nid_langcode_map as $cache_key => $info) {
+      $vid = $revision_map[$cache_key] ?? NULL;
+      if ($vid && isset($uid_results[$vid])) {
+        $uid = $uid_results[$vid];
+        if (isset($users[$uid])) {
+          $result['data'][$cache_key] = $users[$uid]->name->value;
         }
-
       }
     }
   }
 
+  return $result;
+}
+
+/**
+ * Batch load moderation states for all view results.
+ */
+function _pb_custom_form_batch_load_moderation_states(ViewExecutable $view) {
+  $result = ['initialized' => TRUE, 'data' => []];
+
+  if (empty($view->result)) {
+    return $result;
+  }
+
+  $moderation_information = \Drupal::service('content_moderation.moderation_information');
+  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $database = \Drupal::database();
+
+  // Collect all node IDs from view results.
+  $nid_langcode_map = [];
+  foreach ($view->result as $row) {
+    if (isset($row->_entity) && $row->_entity instanceof NodeInterface) {
+      $nid = $row->_entity->id();
+      $langcode = $row->{'node_field_data_langcode'} ?? 'en';
+      $nid_langcode_map[$nid . ':' . $langcode] = [
+        'nid' => $nid,
+        'langcode' => $langcode,
+      ];
+    }
+  }
+
+  if (empty($nid_langcode_map)) {
+    return $result;
+  }
+
+  $nids = array_unique(array_column($nid_langcode_map, 'nid'));
+
+  // Single query to get content moderation states.
+  $query = $database->select('content_moderation_state_field_data', 'cms');
+  $query->fields('cms', ['content_entity_id', 'langcode', 'moderation_state']);
+  $query->condition('cms.content_entity_type_id', 'node');
+  $query->condition('cms.content_entity_id', $nids, 'IN');
+  $moderation_data = $query->execute()->fetchAll();
+
+  // Build moderation state map.
+  $state_map = [];
+  foreach ($moderation_data as $row) {
+    $state_map[$row->content_entity_id . ':' . $row->langcode] = $row->moderation_state;
+  }
+
+  // Get workflow once (assuming same workflow for all nodes of same type).
+  $workflow = NULL;
+  $state_labels = [];
+
+  // Load one sample node to get the workflow.
+  $sample_nid = reset($nids);
+  $sample_node = $node_storage->load($sample_nid);
+  if ($sample_node && $moderation_information->isModeratedEntity($sample_node)) {
+    $workflow = $moderation_information->getWorkflowForEntity($sample_node);
+    if ($workflow) {
+      // Pre-load all state labels.
+      $type_plugin = $workflow->getTypePlugin();
+      foreach ($type_plugin->getStates() as $state_id => $state) {
+        $state_labels[$state_id] = $state->label();
+      }
+    }
+  }
+
+  // Build the result cache.
+  foreach ($nid_langcode_map as $cache_key => $info) {
+    $state_id = $state_map[$cache_key] ?? NULL;
+    if ($state_id && isset($state_labels[$state_id])) {
+      $result['data'][$cache_key] = $state_labels[$state_id];
+    }
+  }
+
+  return $result;
 }
 
 /**
@@ -776,59 +927,38 @@ function pb_custom_form_pb_custom_field_preprocess_views_view_field(&$variables)
  * performance.
  */
 function pb_custom_form_views_post_execute(ViewExecutable $view) {
-  // For chil growth api.
+  // For child growth api - deduplicate results.
   if ($view->id() == 'articles') {
     $display = $view->getDisplay()->display['id'];
-    $dedupe = function (array $rows, string $field_name) {
+
+    // Map display to the field used for deduplication.
+    $dedupe_field_map = [
+      // Child Growth Pinned Content API & Milestone Related Content API.
+      'rest_export_18' => 'node_field_data_node__field_related_articles_nid',
+      'rest_export_20' => 'node_field_data_node__field_related_articles_nid',
+      // Health Check-Ups, FAQ Pinned Content APIs.
+      'rest_export_17' => 'node_field_data_node__field_pinned_article_nid',
+      'rest_export_1' => 'node_field_data_node__field_pinned_article_nid',
+      'rest_export_21' => 'node_field_data_node__field_pinned_article_nid',
+      // Child Development Girl Pinned Content API.
+      'rest_export_16' => 'node_field_data_node__field_pinned_article_for_girl_nid',
+      // Child Development Boy Pinned Content API.
+      'rest_export_19' => 'node_field_data_node__field_pinned_article_for_boy_nid',
+    ];
+
+    if (isset($dedupe_field_map[$display])) {
+      $field_name = $dedupe_field_map[$display];
+      // Optimized deduplication using associative array for O(1) lookups.
       $seen = [];
       $result = [];
-      foreach ($rows as $row) {
-        // ✅ Safe dynamic access
+      foreach ($view->result as $row) {
         $id = $row->{$field_name} ?? NULL;
-        if ($id && !in_array($id, $seen, TRUE)) {
-          $seen[] = $id;
+        if ($id !== NULL && !isset($seen[$id])) {
+          $seen[$id] = TRUE;
           $result[] = $row;
         }
       }
-      return $result;
-    };
-    switch ($display) {
-      // Child Growth Pinned Content API.
-      case 'rest_export_18':
-        // Milestone Related Content API.
-      case 'rest_export_20':
-        $view->result = $dedupe($view->result, 'node_field_data_node__field_related_articles_nid');
-        break;
-
-      // Health Check-Ups Pinned Content API.
-      case 'rest_export_17':
-        // FAQ Pinned Content API  // api/pinned-contents/en/faq.
-      case 'rest_export_1':
-        // FAQ Updated Pinned Content API
-        // api/updated-pinned-contents/en/faq.
-      case 'rest_export_21':
-        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_nid');
-        break;
-
-      // Child Development Girl Pinned Content API
-      // api/pinned-contents/en/child_development/41.
-      case 'rest_export_16':
-        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_for_girl_nid');
-        break;
-
-      // Vaccinations Pinned Content API.
-      case 'rest_export_12':
-        // Not able to test this as the data is empty.
-        break;
-
-      // Child Development Boy Pinned Content API
-      // api/pinned-contents/en/child_development/40.
-      case 'rest_export_19':
-        $view->result = $dedupe($view->result, 'node_field_data_node__field_pinned_article_for_boy_nid');
-        break;
-
-      // Case 'rest_export_2': // Article API.
-      default:
+      $view->result = $result;
     }
   }
 }
