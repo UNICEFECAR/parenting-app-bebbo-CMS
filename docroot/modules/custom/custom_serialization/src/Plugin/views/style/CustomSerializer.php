@@ -4,22 +4,17 @@ namespace Drupal\custom_serialization\Plugin\views\style;
 
 ini_set('serialize_precision', 6);
 
-use Drupal\file\Entity\File;
-use Drupal\group\Entity\Group;
-use Drupal\media\Entity\Media;
 use Drupal\taxonomy\TermInterface;
-use Drupal\image\Entity\ImageStyle;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Path\CurrentPathStack;
 use Drupal\rest\Plugin\views\style\Serializer;
-use Symfony\Component\HttpFoundation\Response;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\language_visibility_control\LanguageVisibilityService;
+use Drupal\custom_serialization\Service\CustomSerializerHelper;
 
 /**
  * The style plugin for serialized output formats.
@@ -34,6 +29,19 @@ use Drupal\language_visibility_control\LanguageVisibilityService;
  * )
  */
 class CustomSerializer extends Serializer {
+  /**
+   * The helper service for caching and batch loading.
+   *
+   * Provides:
+   * - Batch entity loading to reduce database queries
+   * - Request-level static caching for entities
+   * - Persistent caching for external API calls (Vimeo)
+   * - Cached lookups for frequently accessed data (taxonomy terms)
+   *
+   * @var \Drupal\custom_serialization\Service\CustomSerializerHelper
+   */
+  protected $helper;
+
   /**
    * The language visibility control service.
    *
@@ -77,41 +85,6 @@ class CustomSerializer extends Serializer {
   protected $entityTypeManager;
 
   /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
-   * The group membership loader.
-   *
-   * @var \Drupal\group\GroupMembershipLoaderInterface
-   */
-  protected $groupMembershipLoader;
-
-  /**
-   * The time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected $time;
-
-  /**
-   * The logger service.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
-   */
-  protected $logger;
-
-  /**
-   * The messenger service.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
-
-  /**
    * {@inheritdoc}
    */
   public function __construct(
@@ -127,6 +100,7 @@ class CustomSerializer extends Serializer {
     LanguageManagerInterface $language_manager,
     EntityTypeManagerInterface $entity_type_manager,
     LanguageVisibilityService $language_visibility_service,
+    CustomSerializerHelper $helper,
   ) {
     parent::__construct(
       $configuration,
@@ -142,6 +116,8 @@ class CustomSerializer extends Serializer {
     $this->languageManager = $language_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->languageVisibilityService = $language_visibility_service;
+    // Inject the helper service for caching and batch loading.
+    $this->helper = $helper;
   }
 
   /**
@@ -160,7 +136,9 @@ class CustomSerializer extends Serializer {
       $container->get('database'),
       $container->get('language_manager'),
       $container->get('entity_type.manager'),
-      $container->get('language_visibility_control.service')
+      $container->get('language_visibility_control.service'),
+      // Inject the helper service for improved performance.
+      $container->get('custom_serialization.helper')
     );
   }
 
@@ -173,8 +151,18 @@ class CustomSerializer extends Serializer {
     $request = explode('/', $request_uri);
     $request_path = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
 
+    // Cache URI type checks to avoid repeated strpos() calls.
+    // This improves performance by checking each pattern once.
+    $is_country_groups = (strpos($request_uri, "api/country-groups") !== FALSE);
+    $is_articles = (strpos($request_uri, "api/articles") !== FALSE);
+    $is_taxonomies = (strpos($request_uri, "api/taxonomies") !== FALSE);
+    $is_pinned_contents = (strpos($request_uri, "pinned-contents") !== FALSE);
+    $is_basic_pages = (strpos($request_uri, "basic-pages") !== FALSE);
+    $is_sponsors = (strpos($request_uri, "sponsors") !== FALSE);
+    $is_vocabularies = (strpos($request_uri, "vocabularies") !== FALSE);
+
     /* Validating request params to response error code. */
-    if (strpos($request_uri, "api/country-groups") !== FALSE) {
+    if ($is_country_groups) {
       $validate_params_res = '';
     }
     else {
@@ -209,8 +197,9 @@ class CustomSerializer extends Serializer {
       $data = [];
       $field_formatter = [];
       $uniques = [];
-      date_default_timezone_set('Asia/Kolkata');
-      $timestamp = date("Y-m-d H:i");
+      // Use helper service for timestamp generation.
+      // This avoids global timezone change that could affect other modules.
+      $timestamp = $this->helper->getCurrentTimestamp('Asia/Kolkata', 'Y-m-d H:i');
       if (isset($this->view->result) && !empty($this->view->result)) {
         if (isset($request[3])) {
           $language_code = $request[3];
@@ -221,16 +210,22 @@ class CustomSerializer extends Serializer {
         foreach ($this->view->result as $row_index => $row) {
           $this->view->row_index = $row_index;
 
+          // JSON encode/decode is required to properly convert Drupal Markup
+          // objects and render arrays to primitive values (strings, integers).
+          // Direct array casting keeps Markup objects which don't work as IDs.
           $view_render = $this->view->rowPlugin->render($row);
           $view_render = json_encode($view_render);
           $rendered_data = json_decode($view_render, TRUE);
-          // Custom country listing.
-          if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 131) {
+          // Custom country listing - use cached boolean.
+          if ($is_country_groups
+            && isset($rendered_data['CountryID'])
+            && $rendered_data['CountryID'] == 131
+          ) {
             continue;
           }
           /* error_log("type =>".$rendered_data['type']); */
-          /* Custom pinned api formatter. */
-          if (strpos($request_uri, "pinned-contents") !== FALSE && isset($request[4]) && in_array($request[4], $pinned_content)) {
+          /* Custom pinned api formatter - use cached boolean. */
+          if ($is_pinned_contents && isset($request[4]) && in_array($request[4], $pinned_content)) {
             if ($rendered_data['type'] === "Article") {
               unset($rendered_data['cover_video']);
               unset($rendered_data['cover_video_image']);
@@ -241,15 +236,12 @@ class CustomSerializer extends Serializer {
               unset($rendered_data['cover_video_image']);
             }
           }
-          /* Add unique field to Basic page API. */
-          if (strpos($request_uri, "basic-pages") !== FALSE && $rendered_data['type'] === "Basic page") {
-            $query = $this->database->select('node_field_data');
-            $query->condition('nid', $rendered_data['id']);
-            $query->condition('langcode', "en");
-            $query->fields('node_field_data');
-            $result = $query->execute()->fetchAll();
-            if (!empty($result)) {
-              $basic_title = $result[0]->title;
+          /* Add unique field to Basic page API - use cached boolean and helper. */
+          if ($is_basic_pages && $rendered_data['type'] === "Basic page") {
+            // Use helper service for batch node title lookup (cached).
+            $node_titles = $this->helper->getNodeTitlesBatch([$rendered_data['id']], 'en');
+            if (!empty($node_titles[$rendered_data['id']])) {
+              $basic_title = $node_titles[$rendered_data['id']];
               $basic_page = strtolower($basic_title);
               $basic_page = str_replace(' ', '_', $basic_page);
               $rendered_data['unique_name'] = $basic_page;
@@ -282,15 +274,15 @@ class CustomSerializer extends Serializer {
               $body_summary = str_replace("\n", '', $body_summary);
               /* Remove span tag from body and summary field */
               $body_summary = preg_replace('/<span[^>]+\>|<\/span>/i', '', $body_summary);
-              /* Remove empty <p> </p> tag */
+              /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-              /* Remove strong <strong> </strong> tag */
+              /* Remove strong <strong> </strong> tag */
               $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* remove inline style attribute */
               $body_summary = preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3', $body_summary);
-              /* Remove empty <p> </p> tag */
+              /* Remove empty <p> </p> tag */
               $body_summary = str_replace("<p> </p>", '', $body_summary);
-              /* Remove empty <strong> </strong> tag */
+              /* Remove empty <strong> </strong> tag */
               $body_summary = str_replace("<strong> </strong>", '', $body_summary);
               /* Remove width and height of remote video */
               $body_summary = str_replace('width="640"', '', $body_summary);
@@ -342,15 +334,17 @@ class CustomSerializer extends Serializer {
             /* Convert string to int. */
             if (in_array($key, $string_to_int)) {
               if (!empty($values)) {
-                $rendered_data[$key] = (int) $values;
+                // Convert Markup objects to string before casting to int.
+                $string_value = is_object($values) ? (string) $values : $values;
+                $rendered_data[$key] = (int) $string_value;
               }
               else {
                 $rendered_data[$key] = 0;
               }
             }
 
-            /* Custom Taxonomy Field Formatter. */
-            if (strpos($request_uri, "vocabularies") !== FALSE || strpos($request_uri, "taxonomies") !== FALSE) {
+            /* Custom Taxonomy Field Formatter - use cached booleans. */
+            if ($is_vocabularies || $is_taxonomies) {
               /* If the field have comma. */
               if (!empty($values) && strpos($values, ',') !== FALSE) {
                 /* remove keywords from taxonomy res */
@@ -365,57 +359,35 @@ class CustomSerializer extends Serializer {
               }
             }
 
-            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
+            // Handle CountryID 126 (special case) - use cached boolean.
+            if ($is_country_groups && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] == 126) {
               $display_ru = $display_en = $custom_locale_en = $custom_luxon_en = $custom_plural_en = $custom_locale_ru = $custom_luxon_ru = $custom_plural_ru = '';
 
-              // Get English language data.
-              $existing_data_en = $this->database->select('custom_language_data', 'cld')
-                ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
-                ->condition('langcode', 'en')
-                ->execute()
-                ->fetchAssoc();
+              // Batch load language data for en and ru using helper.
+              $lang_data_batch = $this->helper->getLanguageDataBatch(['en', 'ru']);
 
-              $langcode_en = 'en';
-              $language_en = $this->languageManager->getLanguage($langcode_en);
-              $this->languageManager->setConfigOverrideLanguage($language_en);
-              $languages_en = ConfigurableLanguage::load($langcode_en);
-
-              if ($languages_en) {
-                // Retrieve the display name (label) of the language.
-                if ($languages_en->label()) {
-                  $display_en = $languages_en->label();
-                }
+              // Use helper for cached ConfigurableLanguage loading.
+              $languages_en = $this->helper->getConfigurableLanguage('en');
+              if ($languages_en && $languages_en->label()) {
+                $display_en = $languages_en->label();
               }
 
-              if (!empty($existing_data_en)) {
-                $custom_locale_en = $existing_data_en['custom_locale'];
-                $custom_luxon_en = $existing_data_en['custom_luxon'];
-                $custom_plural_en = $existing_data_en['custom_plural'];
+              if (!empty($lang_data_batch['en'])) {
+                $custom_locale_en = $lang_data_batch['en']['custom_locale'];
+                $custom_luxon_en = $lang_data_batch['en']['custom_luxon'];
+                $custom_plural_en = $lang_data_batch['en']['custom_plural'];
               }
 
-              // Get Russian language data.
-              $existing_data_ru = $this->database->select('custom_language_data', 'cld')
-                ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
-                ->condition('langcode', 'ru')
-                ->execute()
-                ->fetchAssoc();
-
-              $langcode_ru = 'ru';
-              $language_ru = $this->languageManager->getLanguage($langcode_ru);
-              $this->languageManager->setConfigOverrideLanguage($language_ru);
-              $language_ru = ConfigurableLanguage::load($langcode_ru);
-
-              if ($language_ru) {
-                // Retrieve the display name (label) of the language.
-                if ($language_ru->label()) {
-                  $display_ru = $language_ru->label();
-                }
+              // Use helper for cached ConfigurableLanguage loading.
+              $languages_ru = $this->helper->getConfigurableLanguage('ru');
+              if ($languages_ru && $languages_ru->label()) {
+                $display_ru = $languages_ru->label();
               }
 
-              if (!empty($existing_data_ru)) {
-                $custom_locale_ru = $existing_data_ru['custom_locale'];
-                $custom_luxon_ru = $existing_data_ru['custom_luxon'];
-                $custom_plural_ru = $existing_data_ru['custom_plural'];
+              if (!empty($lang_data_batch['ru'])) {
+                $custom_locale_ru = $lang_data_batch['ru']['custom_locale'];
+                $custom_luxon_ru = $lang_data_batch['ru']['custom_luxon'];
+                $custom_plural_ru = $lang_data_batch['ru']['custom_plural'];
               }
 
               // Set up "Rest of the World" entry.
@@ -445,50 +417,57 @@ class CustomSerializer extends Serializer {
               unset($rendered_data['field_country_national_partner']);
               unset($rendered_data['published']);
             }
-            // Handle all other countries.
-            if (strpos($request_uri, "api/country-groups") !== FALSE && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {
-              $groups = Group::load($rendered_data['CountryID']);
+            // Handle all other countries - use cached boolean and helper.
+            if ($is_country_groups && isset($rendered_data['CountryID']) && $rendered_data['CountryID'] != 126) {
+              // Use helper for cached Group entity loading.
+              $groups = $this->helper->getGroupEntity($rendered_data['CountryID']);
+              if (!$groups) {
+                continue;
+              }
               $country_languages = $groups->get('field_language')->getValue();
               $rendered_data['languages'] = [];
+
+              // Collect all langcodes first for batch loading.
+              $langcodes_to_load = [];
+              foreach ($country_languages as $val) {
+                if (!empty($val['value'])) {
+                  $langcodes_to_load[] = $val['value'];
+                }
+              }
+
+              // Batch load all language data and ConfigurableLanguage entities.
+              $lang_data_batch = $this->helper->getLanguageDataBatch($langcodes_to_load);
+              $config_languages_batch = $this->helper->loadConfigurableLanguagesBatch($langcodes_to_load);
 
               foreach ($country_languages as $val) {
                 $langcode = $val['value'];
 
                 if ($langcode) {
-                  // Check if the language still exists (not disabled)
-                  try {
-                    $language = $this->languageManager->getLanguage($langcode);
-                  }
-                  catch (\Exception $e) {
-                    // Language doesn't exist, skip it.
+                  // Check if the language still exists (not disabled).
+                  $language = $this->languageManager->getLanguage($langcode);
+                  if (!$language) {
                     continue;
                   }
 
-                  $this->languageManager->setConfigOverrideLanguage($language);
-                  $languages = ConfigurableLanguage::load($langcode);
-
-                  // Skip if ConfigurableLanguage entity doesn't exist.
-                  if (!$languages) {
+                  // Use batch-loaded ConfigurableLanguage entity.
+                  $config_language = $config_languages_batch[$langcode] ?? NULL;
+                  if (!$config_language) {
                     continue;
                   }
 
-                  $view_weight = $languages->get('weight') ?? 0;
+                  $view_weight = $config_language->get('weight') ?? 0;
 
-                  // Fetch the existing data from the database.
-                  $existing_data_all = $this->database->select('custom_language_data', 'cld')
-                    ->fields('cld', ['custom_locale', 'custom_luxon', 'custom_plural', 'custom_language_name_local'])
-                    ->condition('langcode', $langcode)
-                    ->execute()
-                    ->fetchAssoc();
+                  // Use batch-loaded language data.
+                  $existing_data_all = $lang_data_batch[$langcode] ?? [];
 
                   // Initialize variables.
                   $custom_locale_all = $custom_luxon_all = $custom_plural_all = '';
                   $custom_language_name_local = '';
 
                   if (!empty($existing_data_all)) {
-                    $custom_locale_all = $existing_data_all['custom_locale'];
-                    $custom_luxon_all = $existing_data_all['custom_luxon'];
-                    $custom_plural_all = $existing_data_all['custom_plural'];
+                    $custom_locale_all = $existing_data_all['custom_locale'] ?? '';
+                    $custom_luxon_all = $existing_data_all['custom_luxon'] ?? '';
+                    $custom_plural_all = $existing_data_all['custom_plural'] ?? '';
                     $custom_language_name_local = !empty($existing_data_all['custom_language_name_local']) ?
                       $existing_data_all['custom_language_name_local'] : '';
                   }
@@ -530,14 +509,17 @@ class CustomSerializer extends Serializer {
             }
           }
 
-          if (strpos($request_uri, "vocabularies") !== FALSE || strpos($request_uri, "taxonomies") !== FALSE) {
+          // Use cached booleans for strpos checks.
+          if ($is_vocabularies || $is_taxonomies) {
             $data = $field_formatter;
             $rows['status'] = 200;
           }
           else {
             /* E error_log("data =>".print_r($rendered_data, true)); */
             $rows['status'] = 200;
-            if (strpos($request_uri, "pinned-contents") !== FALSE || strpos($request_uri, "related-article-contents") !== FALSE) {
+            // Use cached boolean and add check for related-article-contents.
+            $is_related_articles = (strpos($request_uri, "related-article-contents") !== FALSE);
+            if ($is_pinned_contents || $is_related_articles) {
               if (!in_array($rendered_data['id'], $uniques)) {
                 $uniques[] = $rendered_data['id'];
                 $data[] = $rendered_data;
@@ -551,7 +533,9 @@ class CustomSerializer extends Serializer {
               $rows['total'] = count($data);
             }
           }
-          if (strpos($request_uri, "archive") !== FALSE) {
+          // Use cached boolean check for archive.
+          $is_archive = (strpos($request_uri, "archive") !== FALSE);
+          if ($is_archive) {
             $type = $rendered_data['type'];
             $total_ids[] = $rendered_data['id'];
             $types[$type][] = +$rendered_data['id'];
@@ -561,8 +545,9 @@ class CustomSerializer extends Serializer {
           }
         }
 
-        if (strpos($request_uri, "/api/taxonomies") !== FALSE || strpos($request_uri, "/api/articles") !== FALSE) {
-          if (strpos($request_uri, "/api/articles") !== FALSE) {
+        // Use cached booleans for taxonomy/articles filtering.
+        if ($is_taxonomies || $is_articles) {
+          if ($is_articles) {
             $term_name_arr = ['Pregnancy'];
           }
           else {
@@ -578,22 +563,27 @@ class CustomSerializer extends Serializer {
               $term_name_arr = ['pregnancy'];
             }
           }
-          foreach ($term_name_arr as $val) {
-            $term_values = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties(['name' => $val]);
-            foreach ($term_values as $term_value) {
-              if ($term_value) {
-                // Use ->id() to get the term ID.
-                $tid = $term_value->id();
-                // Get the vocabulary ID.
-                $vid = $term_value->bundle();
-                // Adjust 'taxonomy_terms' to your actual key.
-                $data = $this->removeItemsByKeyValue($request_uri, $data, $vid, $tid);
+          // Use helper service for batch term loading instead of loading
+          // one-by-one.
+          if (!empty($term_name_arr)) {
+            $term_map = $this->helper->getTermIdsByNames($term_name_arr);
+            foreach ($term_name_arr as $val) {
+              if (isset($term_map[$val])) {
+                foreach ($term_map[$val] as $term_info) {
+                  $data = $this->removeItemsByKeyValue(
+                    $request_uri,
+                    $data,
+                    $term_info['vid'],
+                    $term_info['tid']
+                  );
+                }
               }
             }
           }
         }
 
-        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+        // Use cached boolean for country-groups.
+        if ($is_country_groups) {
           $index = array_search('126', array_column($data, 'CountryID'));
 
           // Check if the entry exists.
@@ -606,21 +596,22 @@ class CustomSerializer extends Serializer {
           }
         }
 
-        /* To validate request params. */
+        /* To validate request params. - Use cached booleans */
         if (isset($request[3]) && !empty($request[3])) {
           $rows['langcode'] = $request[3];
         }
 
-        if (strpos($request_uri, "api/country-groups") !== FALSE) {
+        if ($is_country_groups) {
           $rows['langcode'] = 'en';
         }
 
-        if (strpos($request_uri, "sponsors") !== FALSE) {
+        if ($is_sponsors) {
           unset($rows['langcode']);
         }
         $rows['datetime'] = $timestamp;
         $rows['data'] = $data;
         unset($this->view->row_index);
+
         /* Json output. */
         if ((empty($this->view->live_preview)) && method_exists($this->displayHandler, 'getContentType')) {
           $content_type = $this->displayHandler->getContentType();
@@ -629,24 +620,13 @@ class CustomSerializer extends Serializer {
           $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
         }
 
-        if (strpos($request_uri, "api/country-groups") !== FALSE) {
-          $serialized_data = $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
-
-          // Create a response object to set headers.
-          $response = new Response($serialized_data);
-          $response->headers->set('Content-Type', $content_type);
-          $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
-          $response->headers->set('Pragma', 'no-cache');
-          $response->headers->set('Expires', '0');
-
-          // Send headers and return serialized data.
-          $response->sendHeaders();
-
-          return $serialized_data;
-        }
-        else {
-          return $this->serializer->serialize($rows, $content_type, ['views_style_plugin' => $this]);
-        }
+        // Return serialized response - let Drupal Views caching handle
+        // HTTP cache headers.
+        return $this->serializer->serialize(
+          $rows,
+          $content_type,
+          ['views_style_plugin' => $this]
+        );
 
       }
       else {
@@ -664,7 +644,17 @@ class CustomSerializer extends Serializer {
   }
 
   /**
-   * To check request params is correct.
+   * Check if request params are valid.
+   *
+   * Validates language codes and country group IDs.
+   * Uses helper service for cached group loading to avoid
+   * loading all groups on every request.
+   *
+   * @param string $request_uri
+   *   The request URI.
+   *
+   * @return array|string
+   *   Error array with status and message, or empty string if valid.
    */
   public function checkRequestParams($request_uri) {
     $request = explode('/', $request_uri);
@@ -674,12 +664,9 @@ class CustomSerializer extends Serializer {
           return "";
         }
         else {
-          $groups = Group::loadMultiple();
-          $gids = [];
-          foreach ($groups as $group) {
-            $id = $group->get('id')->getString();
-            $gids[] = $id;
-          }
+          // Use helper service for cached group IDs instead of loading
+          // all groups.
+          $gids = $this->helper->getCountryGroupIds();
           if (!in_array($request[3], $gids)) {
             $respons_arr['status'] = 400;
             $respons_arr['message'] = "Request country code is wrong";
@@ -689,14 +676,9 @@ class CustomSerializer extends Serializer {
         }
       }
       else {
-        /* Get all enabled languages. */
+        /* Get all enabled languages - no JSON encode/decode needed. */
         $languages = $this->languageManager->getLanguages();
-        $languages = json_encode($languages);
-        $languages = json_decode($languages, TRUE);
-        $languages_arr = [];
-        foreach ($languages as $lang_code => $lang_name) {
-          $languages_arr[] = $lang_code;
-        }
+        $languages_arr = array_keys($languages);
         if (!empty($languages_arr)) {
           if (!in_array($request[3], $languages_arr)) {
             $respons_arr['status'] = 400;
@@ -711,9 +693,10 @@ class CustomSerializer extends Serializer {
           $requested_language = $request[3];
           $is_language_visible = FALSE;
 
-          // Check all country groups to see if this language is visible in any.
+          // Use helper service for cached groups instead of
+          // Group::loadMultiple().
           $language_visibility_service = $this->languageVisibilityService;
-          $groups = Group::loadMultiple();
+          $groups = $this->helper->getCountryGroups();
           foreach ($groups as $group) {
             if ($group->bundle() === 'country') {
               $visible_languages = $language_visibility_service->getVisibleLanguages($group);
@@ -754,205 +737,281 @@ class CustomSerializer extends Serializer {
   }
 
   /**
-   * To get media files details from db.
+   * Get media file details with caching and performance optimizations.
+   *
+   * This method uses the helper service for:
+   * - Cached media entity loading (request-level cache)
+   * - Cached ImageStyle loading (loaded once per request)
+   * - Cached Vimeo API calls (persistent cache, 24 hours)
+   * - Cached file entity loading (request-level cache)
+   *
+   * @param string $key
+   *   The field key (e.g., 'cover_image', 'cover_video').
+   * @param mixed $values
+   *   The media entity ID.
+   * @param string $language_code
+   *   The language code.
+   * @param string $request_uri
+   *   The current request URI.
+   *
+   * @return array
+   *   The formatted media data array.
    */
   public function customMediaFormatter($key, $values, $language_code, $request_uri = '') {
+    if (empty($values)) {
+      // Return empty structure for empty values.
+      return $this->getEmptyMediaData($key);
+    }
 
-    if (!empty($values)) {
-      $url = $mname = $malt = '';
-      $media_data = [];
-      $media_entity = Media::load($values);
-      $media_type = $media_entity->bundle();
-      $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
-      if ($media_type === 'image') {
-        $mid = $media_entity->get('field_media_image')->target_id;
-        if (!empty($mid)) {
-          $mname = $media_entity->get('name')->value;
-          $query = $this->database->select('media__field_media_image');
-          $query->condition('entity_id', $values);
-          $query->condition('langcode', $language_code);
-          $query->fields('media__field_media_image');
-          $result = $query->execute()->fetchAll();
-          if (!empty($result)) {
-            $malt = $result[0]->field_media_image_alt;
-          }
-          else {
-            $malt_field = $media_entity->get('field_media_image')->getValue();
-            $malt = $malt_field[0]['alt'] ?? '';
-          }
-          /**
-           * Get the File Details.
-           *
-           * @var object
-           */
-          $query = $this->database->select('file_managed');
-          $query->condition('fid', $mid);
-          $query->fields('file_managed');
-          $result22 = $query->execute()->fetchAll();
-          $uri = '';
-          if (!empty($result22)) {
-            $uri = $result22[0]->uri;
-          }
-          $url = ImageStyle::load('content_1200xh_')->buildUrl($uri);
-          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-            $url = $this->getWebpUrl($url);
-          }
+    // Use helper service for cached media entity loading.
+    $media_entity = $this->helper->getMediaEntity($values);
+    if (!$media_entity) {
+      return $this->getEmptyMediaData($key);
+    }
 
-        }
-        $media_data = [
-          'url'  => $url,
-          'name' => $mname,
-          'alt'  => $malt,
-        ];
+    $media_type = $media_entity->bundle();
+    $base_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+    // Flag for video-articles cover_image special handling.
+    $is_video_article_cover = (strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image");
+
+    // Process based on media type.
+    switch ($media_type) {
+      case 'image':
+        return $this->processImageMedia($media_entity, $key, $values, $language_code, $request_uri, $is_video_article_cover);
+
+      case 'remote_video':
+        return $this->processRemoteVideoMedia($media_entity, $key, $base_url, $is_video_article_cover);
+
+      case 'video':
+        return $this->processVideoMedia($media_entity, $key, $is_video_article_cover);
+
+      default:
+        return $this->getEmptyMediaData($key);
+    }
+  }
+
+  /**
+   * Process image media type.
+   *
+   * @param \Drupal\media\Entity\Media $media_entity
+   *   The media entity.
+   * @param string $key
+   *   The field key.
+   * @param mixed $values
+   *   The media entity ID.
+   * @param string $language_code
+   *   The language code.
+   * @param string $request_uri
+   *   The request URI.
+   * @param bool $is_video_article_cover
+   *   Whether this is a video article cover image.
+   *
+   * @return array
+   *   The formatted media data.
+   */
+  protected function processImageMedia($media_entity, $key, $values, $language_code, $request_uri, $is_video_article_cover) {
+    $url = $mname = $malt = '';
+
+    $mid = $media_entity->get('field_media_image')->target_id;
+    if (!empty($mid)) {
+      $mname = $media_entity->get('name')->value;
+
+      // Get alt text - try language-specific first, then fallback.
+      // Use helper for batch alt text lookup (cached within request).
+      $alt_texts = $this->helper->getMediaAltTextBatch([$values], $language_code);
+      if (!empty($alt_texts[$values])) {
+        $malt = $alt_texts[$values];
       }
-      elseif ($media_type === "remote_video") {
-        $url = $media_entity->get('field_media_oembed_video')->value;
-        $mname = $media_entity->get('name')->value;
-        $site = (stripos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-        $media_data = [
-          'url'  => $url,
-          'name' => $mname,
-          'site'  => $site,
-        ];
+      else {
+        $malt_field = $media_entity->get('field_media_image')->getValue();
+        $malt = $malt_field[0]['alt'] ?? '';
+      }
 
-        if ($key == "cover_image") {
-          $tid = $media_entity->get('thumbnail')->target_id;
-          $urls = '';
-          if (!empty($tid)) {
-            if (strpos($media_entity->get('field_media_oembed_video')->value, 'vimeo') !== FALSE) {
-              // Get the value of the oEmbed video field.
-              $oembed_value = $media_entity->get('field_media_oembed_video')->value;
+      // Get file URI using helper for batch lookup (cached within request).
+      $file_uris = $this->helper->getFileUrisBatch([$mid]);
+      $uri = $file_uris[$mid] ?? '';
 
-              // Parse the oEmbed URL to extract the Vimeo video ID.
-              $parsed_url = parse_url($oembed_value);
-              if (isset($parsed_url['path'])) {
-                // Extract the Vimeo video ID from the path.
-                $path_segments = explode('/', $parsed_url['path']);
-                $vimeo_video_id = end($path_segments);
-                $vimeo_api_url = "https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$vimeo_video_id}";
+      // Use helper for cached ImageStyle loading.
+      $image_style = $this->helper->getImageStyle('content_1200xh_');
+      if ($image_style && !empty($uri)) {
+        $url = $image_style->buildUrl($uri);
+      }
 
-                // Initialize cURL session.
-                $ch = curl_init();
+      // Convert to WebP unless video-articles cover_image.
+      if (!$is_video_article_cover) {
+        $url = $this->helper->convertToWebp($url);
+      }
+    }
 
-                // Set cURL options.
-                curl_setopt($ch, CURLOPT_URL, $vimeo_api_url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    return [
+      'url' => $url,
+      'name' => $mname,
+      'alt' => $malt,
+    ];
+  }
 
-                // Execute the cURL request.
-                $response = curl_exec($ch);
+  /**
+   * Process remote video media type (YouTube/Vimeo).
+   *
+   * Uses helper service for cached Vimeo API calls.
+   *
+   * @param \Drupal\media\Entity\Media $media_entity
+   *   The media entity.
+   * @param string $key
+   *   The field key.
+   * @param string $base_url
+   *   The base URL.
+   * @param bool $is_video_article_cover
+   *   Whether this is a video article cover image.
+   *
+   * @return array
+   *   The formatted media data.
+   */
+  protected function processRemoteVideoMedia($media_entity, $key, $base_url, $is_video_article_cover) {
+    $oembed_value = $media_entity->get('field_media_oembed_video')->value;
+    $mname = $media_entity->get('name')->value;
+    $is_vimeo = (stripos($oembed_value, 'vimeo') !== FALSE);
+    $site = $is_vimeo ? 'vimeo' : 'youtube';
 
-                if ($response === FALSE) {
-                  // cURL error occurred.
-                  curl_error($ch);
-                  // Handle the error, log it, etc.
-                  $urls = 'cURL error';
-                }
-                else {
-                  // Close cURL session.
-                  curl_close($ch);
+    $media_data = [
+      'url' => $oembed_value,
+      'name' => $mname,
+      'site' => $site,
+    ];
 
-                  // Decode the JSON response into an associative array.
-                  $data = json_decode($response, TRUE);
+    // Handle cover_image special case.
+    if ($key === "cover_image") {
+      $tid = $media_entity->get('thumbnail')->target_id;
+      $urls = '';
 
-                  if ($data === NULL) {
-                    // JSON decoding error occurred.
-                    json_last_error_msg();
-                    // Handle the error, log it, etc.
-                    $urls = 'Vimeo error';
-                  }
-                  else {
-                    // Extract the thumbnail URL from the response data.
-                    $urls = $data['thumbnail_url'] ?? NULL;
-                  }
-                }
-              }
-              else {
-                // Vimeo video ID not found in the oEmbed URL
-                // Handle the error, log it, etc.
-                $urls = 'Vimeo ID not found';
-              }
-
+      if (!empty($tid)) {
+        if ($is_vimeo) {
+          // Use helper service for cached Vimeo API call.
+          // This avoids external API calls on every request.
+          $vimeo_video_id = $this->helper->extractVimeoId($oembed_value);
+          if ($vimeo_video_id) {
+            $urls = $this->helper->getVimeoThumbnail($vimeo_video_id);
+          }
+          // Fallback if Vimeo API fails.
+          if (empty($urls) || $urls === NULL) {
+            $urls = '';
+          }
+        }
+        else {
+          // YouTube or other - use file thumbnail.
+          $thumbnail = $this->helper->getFileEntity($tid);
+          if ($thumbnail) {
+            $thumbnail_url = $thumbnail->createFileUrl();
+            if (strpos($thumbnail_url, $base_url) !== FALSE) {
+              $urls = $thumbnail_url;
             }
             else {
-              $thumbnail = File::load($tid);
-              $thumbnail_url = $thumbnail->createFileUrl();
-              if (strpos($thumbnail_url, $base_url) !== FALSE) {
-                // Base URL is present in the thumbnail URL.
-                $urls = $thumbnail_url;
-              }
-              else {
-                // Base URL is Not present in the thumbnail URL.
-                $urls = $base_url . $thumbnail_url;
-              }
+              $urls = $base_url . $thumbnail_url;
             }
           }
-          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-            $urls = $this->getWebpUrl($urls);
-          }
-          $media_data = [
-            'url'  => $urls,
-            'name' => $mname,
-            'alt'  => '',
-          ];
         }
       }
-      elseif ($media_type === "video") {
-        $mname = $media_entity->get('name')->value;
-        $site = (stripos($media_entity->get('field_media_video_file')->value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
-        $mid = $media_entity->get('field_media_video_file')->target_id;
-        if (!empty($mid)) {
-          /**
-           * Get the File Details.
-           *
-           * @var object
-           */
-          $file = File::load($mid);
-          $url = $file->createFileUrl();
-        }
 
-        $media_data = [
-          'url'  => $url,
-          'name' => $mname,
-          'site'  => $site,
-        ];
+      // Convert to WebP unless video-articles cover_image.
+      if (!$is_video_article_cover && !empty($urls)) {
+        $urls = $this->helper->convertToWebp($urls);
+      }
 
-        if ($key == "cover_image") {
-          $tid = $media_entity->get('thumbnail')->target_id;
-          $thumbnail_url = '';
-          if (!empty($tid)) {
-            $thumbnail = File::load($tid);
-            $thumbnail_url = $thumbnail->createFileUrl();
-          }
-          if (!(strpos($request_uri, "video-articles") !== FALSE && $key === "cover_image")) {
-            $thumbnail_url = $this->getWebpUrl($thumbnail_url);
-          }
-          $media_data = [
-            'url'  => $thumbnail_url,
-            'name' => $mname,
-            'alt'  => '',
-          ];
+      $media_data = [
+        'url' => $urls,
+        'name' => $mname,
+        'alt' => '',
+      ];
+    }
+
+    return $media_data;
+  }
+
+  /**
+   * Process video (file) media type.
+   *
+   * @param \Drupal\media\Entity\Media $media_entity
+   *   The media entity.
+   * @param string $key
+   *   The field key.
+   * @param bool $is_video_article_cover
+   *   Whether this is a video article cover image.
+   *
+   * @return array
+   *   The formatted media data.
+   */
+  protected function processVideoMedia($media_entity, $key, $is_video_article_cover) {
+    $mname = $media_entity->get('name')->value;
+    $video_field_value = $media_entity->get('field_media_video_file')->value ?? '';
+    $site = (stripos($video_field_value, 'vimeo') !== FALSE) ? 'vimeo' : 'youtube';
+    $mid = $media_entity->get('field_media_video_file')->target_id;
+    $url = '';
+
+    if (!empty($mid)) {
+      // Use helper for cached file loading.
+      $file = $this->helper->getFileEntity($mid);
+      if ($file) {
+        $url = $file->createFileUrl();
+      }
+    }
+
+    $media_data = [
+      'url' => $url,
+      'name' => $mname,
+      'site' => $site,
+    ];
+
+    // Handle cover_image special case.
+    if ($key === "cover_image") {
+      $tid = $media_entity->get('thumbnail')->target_id;
+      $thumbnail_url = '';
+
+      if (!empty($tid)) {
+        // Use helper for cached file loading.
+        $thumbnail = $this->helper->getFileEntity($tid);
+        if ($thumbnail) {
+          $thumbnail_url = $thumbnail->createFileUrl();
         }
       }
-      return $media_data;
-    }
-    else {
-      $media_data = [];
-      if ($key == "cover_image" || $key == "country_flag" || $key == "country_sponsor_logo" || $key == "country_national_partner") {
-        $media_data = [
-          'url'  => '',
-          'name' => '',
-          'alt'  => '',
-        ];
+
+      // Convert to WebP unless video-articles cover_image.
+      if (!$is_video_article_cover && !empty($thumbnail_url)) {
+        $thumbnail_url = $this->helper->convertToWebp($thumbnail_url);
       }
-      elseif ($key == "cover_video") {
-        $media_data = [
-          'url'  => '',
-          'name' => '',
-          'site'  => '',
-        ];
-      }
-      return $media_data;
+
+      $media_data = [
+        'url' => $thumbnail_url,
+        'name' => $mname,
+        'alt' => '',
+      ];
     }
+
+    return $media_data;
+  }
+
+  /**
+   * Get empty media data structure based on field key.
+   *
+   * @param string $key
+   *   The field key.
+   *
+   * @return array
+   *   Empty media data structure.
+   */
+  protected function getEmptyMediaData($key) {
+    if ($key === "cover_video") {
+      return [
+        'url' => '',
+        'name' => '',
+        'site' => '',
+      ];
+    }
+
+    return [
+      'url' => '',
+      'name' => '',
+      'alt' => '',
+    ];
   }
 
   /**
@@ -980,71 +1039,71 @@ class CustomSerializer extends Serializer {
       $tax_query->orderBy('vid', 'ASC');
       $tax_query->orderBy('sorted_weight', 'ASC');
       $tax_result = $tax_query->execute()->fetchAll();
-      for ($tax = 0; $tax < count($tax_result); $tax++) {
+
+      // Batch load all taxonomy terms at once to avoid N+1 queries.
+      // This significantly improves performance for large vocabularies.
+      $term_ids = array_column($tax_result, 'tid');
+      $term_entities = $this->helper->loadTaxonomyTermsBatch($term_ids);
+
+      $tax_count = count($tax_result);
+      for ($tax = 0; $tax < $tax_count; $tax++) {
+        $tid = $tax_result[$tax]->tid;
+        $term_obj = $term_entities[$tid] ?? NULL;
+
         if ($vocabulary_machine_name === "growth_period") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'vaccination_opens' => (int) $term_obj->get('field_vaccination_opens')->value,
+            'vaccination_opens' => $term_obj ? (int) $term_obj->get('field_vaccination_opens')->value : 0,
           ];
         }
         elseif ($vocabulary_machine_name === "child_age") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
-          $age_bracket = $term_obj->get('field_age_bracket')->getValue();
-          $ageBracket = [];
-          foreach ($age_bracket as $agevalue) {
-            $ageBracket[] = $agevalue['target_id'];
-          }
-          if (!empty($ageBracket)) {
-            $age_bracket_arr = array_map(function ($elem) {
-              return intval($elem);
-            }, $ageBracket);
-          }
-          else {
-            $age_bracket_arr = [];
+          $age_bracket_arr = [];
+          if ($term_obj) {
+            $age_bracket = $term_obj->get('field_age_bracket')->getValue();
+            foreach ($age_bracket as $agevalue) {
+              $age_bracket_arr[] = (int) $agevalue['target_id'];
+            }
           }
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'days_from' => (int) $term_obj->get('field_days_from')->value,
-            'days_to' => (int) $term_obj->get('field_days_to')->value,
-            'buffers_days' => (int) $term_obj->get('field_buffers_days')->value,
+            'days_from' => $term_obj ? (int) $term_obj->get('field_days_from')->value : 0,
+            'days_to' => $term_obj ? (int) $term_obj->get('field_days_to')->value : 0,
+            'buffers_days' => $term_obj ? (int) $term_obj->get('field_buffers_days')->value : 0,
             'age_bracket' => $age_bracket_arr,
           ];
         }
         elseif ($vocabulary_machine_name === "growth_introductory") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
             'body' => $tax_result[$tax]->description__value,
-            'days_from' => (int) $term_obj->get('field_days_from')->value,
-            'days_to' => (int) $term_obj->get('field_days_to')->value,
+            'days_from' => $term_obj ? (int) $term_obj->get('field_days_from')->value : 0,
+            'days_to' => $term_obj ? (int) $term_obj->get('field_days_to')->value : 0,
           ];
         }
         elseif ($vocabulary_machine_name === "standard_deviation") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
-          $sd0 = (float) $term_obj->get('field_sd0')->value;
-          $sd1 = (float) $term_obj->get('field_sd1')->value;
-          $sd2 = (float) $term_obj->get('field_sd2')->value;
-          $sd3 = (float) $term_obj->get('field_sd3')->value;
-          $sd4 = (float) $term_obj->get('field_sd4')->value;
-          $sd1neg = (float) $term_obj->get('field_sd1neg')->value;
-          $sd2neg = (float) $term_obj->get('field_sd2neg')->value;
-          $sd3neg = (float) $term_obj->get('field_sd3neg')->value;
-          $sd4neg = (float) $term_obj->get('field_sd4neg')->value;
+          $sd0 = $term_obj ? (float) $term_obj->get('field_sd0')->value : 0.0;
+          $sd1 = $term_obj ? (float) $term_obj->get('field_sd1')->value : 0.0;
+          $sd2 = $term_obj ? (float) $term_obj->get('field_sd2')->value : 0.0;
+          $sd3 = $term_obj ? (float) $term_obj->get('field_sd3')->value : 0.0;
+          $sd4 = $term_obj ? (float) $term_obj->get('field_sd4')->value : 0.0;
+          $sd1neg = $term_obj ? (float) $term_obj->get('field_sd1neg')->value : 0.0;
+          $sd2neg = $term_obj ? (float) $term_obj->get('field_sd2neg')->value : 0.0;
+          $sd3neg = $term_obj ? (float) $term_obj->get('field_sd3neg')->value : 0.0;
+          $sd4neg = $term_obj ? (float) $term_obj->get('field_sd4neg')->value : 0.0;
           $term_name = (float) $tax_result[$tax]->name;
 
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => round($term_name, 3),
-            'child_gender' => (int) $term_obj->get('field_child_gender')->target_id,
-            'growth_type' => (int) $term_obj->get('field_growth_type')->target_id,
+            'child_gender' => $term_obj ? (int) $term_obj->get('field_child_gender')->target_id : 0,
+            'growth_type' => $term_obj ? (int) $term_obj->get('field_growth_type')->target_id : 0,
             'sd0' => round($sd0, 3),
             'sd1' => round($sd1, 3),
             'sd2' => round($sd2, 3),
@@ -1057,60 +1116,47 @@ class CustomSerializer extends Serializer {
           ];
         }
         elseif ($vocabulary_machine_name === "chatbot_subcategory") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'parent_category_id' => (int) $term_obj->get('field_chatbot_category')->target_id,
-            'unique_name' => $term_obj->get('field_unique_name')->value,
+            'parent_category_id' => $term_obj ? (int) $term_obj->get('field_chatbot_category')->target_id : 0,
+            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
           ];
         }
         elseif ($vocabulary_machine_name === "category") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
-          $field_type_of_article_entity = $term_obj->get('field_type_of_article')->entity ?? NULL;
-          $field_type_of_article = $field_type_of_article_entity instanceof TermInterface
-          ? ($field_type_of_article_entity->get('name')->value ?? '')
-          : '';
+          $field_type_of_article = '';
+          if ($term_obj) {
+            $field_type_of_article_entity = $term_obj->get('field_type_of_article')->entity ?? NULL;
+            $field_type_of_article = $field_type_of_article_entity instanceof TermInterface
+              ? ($field_type_of_article_entity->get('name')->value ?? '')
+              : '';
+          }
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'unique_name' => $term_obj->get('field_unique_name')->value,
+            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
             'field_type_of_article' => $field_type_of_article,
           ];
         }
         elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
-          $term_obj = $this->entityTypeManager->getStorage('taxonomy_term')->load($tax_result[$tax]->tid);
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'unique_name' => $term_obj->get('field_unique_name')->value,
+            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
           ];
         }
         else {
           $term_data[] = [
-            'id' => (int) $tax_result[$tax]->tid,
+            'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
           ];
         }
       }
       return $term_data;
     }
-  }
-
-  /**
-   * Convert image URL to WebP format.
-   */
-  public function getWebpUrl($url) {
-    if (empty($url)) {
-      return $url;
-    }
-
-    $webp_url = preg_replace('/\.(jpg|jpeg|png)(\?.*)?$/i', '.webp$2', $url);
-    return $webp_url;
-
   }
 
   /**
@@ -1134,10 +1180,26 @@ class CustomSerializer extends Serializer {
   }
 
   /**
-   * Removes item.
+   * Removes items by key value from data array.
+   *
+   * This method filters data based on taxonomy term IDs.
+   * Uses helper service for cached pregnancy term ID lookup
+   * to avoid database queries on every call.
+   *
+   * @param string $request_uri
+   *   The current request URI.
+   * @param array $data
+   *   The data array to filter.
+   * @param string $key
+   *   The key to check in the data.
+   * @param int $tid
+   *   The taxonomy term ID to remove.
+   *
+   * @return array
+   *   The filtered data array.
    */
   public function removeItemsByKeyValue($request_uri, $data, $key, $tid) {
-
+    // Handle taxonomies API.
     if (strpos($request_uri, "/api/taxonomies") !== FALSE) {
       if (isset($data[$key]) && is_array($data[$key])) {
         foreach ($data[$key] as $itemKey => $item) {
@@ -1150,19 +1212,20 @@ class CustomSerializer extends Serializer {
       }
     }
 
+    // Handle articles API.
     if (strpos($request_uri, "/api/articles") !== FALSE) {
-      $pregnancy_tid = $this->entityTypeManager->getStorage('taxonomy_term')
-        ->getQuery()
-        ->condition('vid', 'child_age')
-        ->condition('name', 'pregnancy')
-        ->accessCheck(FALSE)
-        ->range(0, 1)
-        ->execute();
+      // Use helper service for cached pregnancy term ID lookup.
+      // This avoids a database query on every call.
+      $pregnancy_tid = $this->helper->getPregnancyTermId();
 
-      $pregnancy_tid = $pregnancy_tid ? reset($pregnancy_tid) : NULL;
       foreach ($data as $k => $val) {
+        // Check if key exists and contains the tid.
+        if (!isset($val[$key]) || !is_array($val[$key])) {
+          continue;
+        }
+
         if (in_array($tid, $val[$key])) {
-          // Ignore removal if tid is 166191 (Pregnancy).
+          // Ignore removal if tid is Pregnancy term.
           if ($tid == $pregnancy_tid) {
             continue;
           }
