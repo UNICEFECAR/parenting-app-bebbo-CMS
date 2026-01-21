@@ -45,7 +45,7 @@
         "drupal/imageapi_optimize_binaries": "^1.2@beta",
         "drupal/imageapi_optimize_gd": "^2.0",
         "drupal/imageapi_optimize_webp": "^2.1",
-        "drupal/imagemagick": "^4.0",
+        "drupal/imagemagick": "*",
         "drupal/json_field": "^1.5",
         "drupal/jsonapi_extras": "^3.26",
         "drupal/jsonapi_page_limit": "^1.1",
@@ -194,6 +194,9 @@
             "drupal/group": {
                 "Allow group admins to create user account and add to group" : "https://www.drupal.org/files/issues/2023-10-09/group-manage-users-2949408-45.patch",
                 "Fix Entity type doesn't exists": "patches/group/group_fix.patch"
+            },
+            "drupal/imagemagick": {
+                "Fix derivative generation - destination path not set for new files": "patches/imagemagick/fix-derivative-destination-path.patch"
             },
              "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"

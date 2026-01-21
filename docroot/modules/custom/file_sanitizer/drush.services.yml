@@ -1,0 +1,10 @@
+services:
+  file_sanitizer.commands:
+    class: Drupal\file_sanitizer\Commands\FileSanitizerCommands
+    arguments:
+      - '@entity_type.manager'
+      - '@database'
+      - '@file_system'
+      - '@file_sanitizer.filename_sanitizer'
+    tags:
+      - { name: drush.command }
