@@ -1,0 +1,56 @@
+diff --git a/src/EventSubscriber/ImagemagickEventSubscriber.php b/src/EventSubscriber/ImagemagickEventSubscriber.php
+index 3dbf64a..51aa010 100644
+--- a/src/EventSubscriber/ImagemagickEventSubscriber.php
++++ b/src/EventSubscriber/ImagemagickEventSubscriber.php
+@@ -133,21 +133,36 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
+     else {
+       // If we can resolve the realpath of the file, then the file is local
+       // and we can assign its real path.
+-      $path = $this->fileSystem->realpath($destination);
+-      if ($path) {
+-        $arguments->setDestinationLocalPath($path);
+-      }
+-      else {
+-        // We are working with a remote file, set the local destination to
+-        // a temp local file.
+-        $temp_path = $this->fileSystem->tempnam('temporary://', 'imagemagick_');
+-        $this->fileSystem->unlink($temp_path);
+-        $temp_path .= '.' . pathinfo($destination, PATHINFO_EXTENSION);
+-        $arguments->setDestinationLocalPath($this->fileSystem->realpath($temp_path));
+-        drupal_register_shutdown_function(
+-          [static::class, 'removeTemporaryRemoteCopy'],
+-          $arguments->getDestinationLocalPath()
+-        );
++      // Preserve URL-encoded filenames for destination path.
++      $wrapper = $this->streamWrapperManager->getViaUri($destination);
++      if ($wrapper) {
++        $realpath = $wrapper->realpath();
++        if ($realpath) {
++          $directory = dirname($realpath);
++          $uri_parts = explode('://', $destination, 2);
++          $encoded_filename = basename($uri_parts[1]);
++          $path = $directory . DIRECTORY_SEPARATOR . $encoded_filename;
++          // For image derivatives, the destination file doesn't exist yet.
++          // We still need to set the path so ImageMagick knows where to save.
++          $arguments->setDestinationLocalPath($path);
++          $this->logger->debug('Destination local path set: @path (exists: @exists)', [
++            '@path' => $path,
++            '@exists' => file_exists($path) ? 'yes' : 'no',
++          ]);
++        }
++        else {
++          $this->logger->warning('Unable to resolve realpath for destination: @uri', ['@uri' => $destination]);
++          // We are working with a remote file, set the local destination to
++          // a temp local file.
++          $temp_path = $this->fileSystem->tempnam('temporary://', 'imagemagick_');
++          $this->fileSystem->unlink($temp_path);
++          $temp_path .= '.' . pathinfo($destination, PATHINFO_EXTENSION);
++          $arguments->setDestinationLocalPath($this->fileSystem->realpath($temp_path));
++          drupal_register_shutdown_function(
++            [static::class, 'removeTemporaryRemoteCopy'],
++            $arguments->getDestinationLocalPath()
++          );
++        }
+       }
+     }
+   }
