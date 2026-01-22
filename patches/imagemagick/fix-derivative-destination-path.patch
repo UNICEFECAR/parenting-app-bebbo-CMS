@@ -2,7 +2,36 @@ diff --git a/src/EventSubscriber/ImagemagickEventSubscriber.php b/src/EventSubsc
 index 3dbf64a..51aa010 100644
 --- a/src/EventSubscriber/ImagemagickEventSubscriber.php
 +++ b/src/EventSubscriber/ImagemagickEventSubscriber.php
-@@ -133,21 +133,36 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
+@@ -83,13 +83,23 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
+     $source = $arguments->getSource();
+     if (!$this->streamWrapperManager->isValidUri($source)) {
+       // The value of $source is likely a file path already.
+       $arguments->setSourceLocalPath($source);
+     }
+     else {
+       // If we can resolve the realpath of the file, then the file is local
+       // and we can assign the actual file path.
+-      $path = $this->fileSystem->realpath($source);
+-      if ($path) {
++      // Preserve URL-encoded filenames for source path.
++      $wrapper = $this->streamWrapperManager->getViaUri($source);
++      if ($wrapper) {
++        $realpath = $wrapper->realpath();
++        if ($realpath) {
++          $directory = dirname($realpath);
++          $uri_parts = explode('://', $source, 2);
++          $encoded_filename = basename($uri_parts[1]);
++          $path = $directory . DIRECTORY_SEPARATOR . $encoded_filename;
++        }
++      }
++      else {
++        $path = $this->fileSystem->realpath($source);
++      }
++      if ($path && file_exists($path)) {
+         $arguments->setSourceLocalPath($path);
+       }
+       else {
+@@ -133,21 +143,36 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
      else {
        // If we can resolve the realpath of the file, then the file is local
        // and we can assign its real path.

@@ -196,7 +196,7 @@
                 "Fix Entity type doesn't exists": "patches/group/group_fix.patch"
             },
             "drupal/imagemagick": {
-                "Fix derivative generation - destination path not set for new files": "patches/imagemagick/fix-derivative-destination-path.patch"
+                "Fix derivative generation - preserve URL-encoded filenames": "patches/imagemagick/fix-url-encoded-filenames.patch"
             },
              "drupal/date_popup": {
                 "Add 1 day to the end so the query will include the selected date.": "https://www.drupal.org/files/issues/2020-10-18/range-selection-end-date-2983680-7.patch"
