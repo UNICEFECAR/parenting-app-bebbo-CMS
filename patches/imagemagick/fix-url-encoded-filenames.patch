@@ -1,0 +1,40 @@
+diff --git a/src/EventSubscriber/ImagemagickEventSubscriber.php b/src/EventSubscriber/ImagemagickEventSubscriber.php
+index 3dbf64a..8cee126 100644
+--- a/src/EventSubscriber/ImagemagickEventSubscriber.php
++++ b/src/EventSubscriber/ImagemagickEventSubscriber.php
+@@ -84,10 +84,13 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
+       $arguments->setSourceLocalPath($source);
+     }
+     else {
+-      // If we can resolve the realpath of the file, then the file is local
+-      // and we can assign the actual file path.
+-      $path = $this->fileSystem->realpath($source);
+-      if ($path) {
++      // Get the stream wrapper to preserve URL-encoded characters in filename.
++      $wrapper = $this->streamWrapperManager->getViaUri($source);
++      if ($wrapper instanceof \Drupal\Core\StreamWrapper\LocalStream) {
++        // Manually build path to preserve URL-encoded characters like %20.
++        $directory = dirname($wrapper->realpath());
++        $filename = basename($source);
++        $path = $directory . DIRECTORY_SEPARATOR . $filename;
+         $arguments->setSourceLocalPath($path);
+       }
+       else {
+@@ -131,10 +134,13 @@ class ImagemagickEventSubscriber implements EventSubscriberInterface {
+       $arguments->setDestinationLocalPath($destination);
+     }
+     else {
+-      // If we can resolve the realpath of the file, then the file is local
+-      // and we can assign its real path.
+-      $path = $this->fileSystem->realpath($destination);
+-      if ($path) {
++      // Get the stream wrapper to preserve URL-encoded characters in filename.
++      $wrapper = $this->streamWrapperManager->getViaUri($destination);
++      if ($wrapper instanceof \Drupal\Core\StreamWrapper\LocalStream) {
++        // Manually build path to preserve URL-encoded characters like %20.
++        $directory = dirname($wrapper->realpath());
++        $filename = basename($destination);
++        $path = $directory . DIRECTORY_SEPARATOR . $filename;
+         $arguments->setDestinationLocalPath($path);
+       }
+       else {
