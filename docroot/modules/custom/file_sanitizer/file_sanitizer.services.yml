@@ -1,0 +1,6 @@
+services:
+  file_sanitizer.filename_sanitizer:
+    class: Drupal\file_sanitizer\Service\FilenameSanitizer
+    arguments:
+      - '@transliteration'
+      - '@entity_type.manager'
