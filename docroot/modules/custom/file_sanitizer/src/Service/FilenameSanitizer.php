@@ -3,6 +3,7 @@
 namespace Drupal\file_sanitizer\Service;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Service for sanitizing file names to remove unsafe characters.
@@ -17,16 +18,25 @@ class FilenameSanitizer {
   protected TransliterationInterface $transliterator;
 
   /**
-   * Extensions that are allowed to exist as files.
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected array $allowedExtensions = [
-    'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg',
-    'pdf', 'csv', 'txt', 'doc', 'docx', 'xls', 'xlsx',
-    'mp4', 'webm',
-  ];
+  protected EntityTypeManagerInterface $entityTypeManager;
 
-  public function __construct(TransliterationInterface $transliterator) {
+  /**
+   * Cached allowed extensions.
+   *
+   * @var array|null
+   */
+  protected ?array $allowedExtensions = NULL;
+
+  public function __construct(
+    TransliterationInterface $transliterator,
+    EntityTypeManagerInterface $entity_type_manager,
+  ) {
     $this->transliterator = $transliterator;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -80,7 +90,42 @@ class FilenameSanitizer {
    * Check extension safety.
    */
   protected function isExtensionAllowed(string $extension): bool {
-    return in_array($extension, $this->allowedExtensions, TRUE);
+    return in_array($extension, $this->getAllowedExtensions(), TRUE);
+  }
+
+  /**
+   * Get allowed extensions from Drupal field configuration.
+   *
+   * @return array
+   *   Array of allowed file extensions.
+   */
+  protected function getAllowedExtensions(): array {
+    // Return cached value if already loaded.
+    if ($this->allowedExtensions !== NULL) {
+      return $this->allowedExtensions;
+    }
+
+    $extensions = [];
+
+    // Load field config for media.image.field_media_image.
+    $field_config = $this->entityTypeManager
+      ->getStorage('field_config')
+      ->load('media.image.field_media_image');
+
+    if ($field_config) {
+      $settings = $field_config->getSettings();
+      if (!empty($settings['file_extensions'])) {
+        // Parse space-separated extensions from field config.
+        $extensions = array_filter(
+          array_map('trim', explode(' ', $settings['file_extensions']))
+        );
+      }
+    }
+
+    // Cache the result.
+    $this->allowedExtensions = $extensions;
+
+    return $this->allowedExtensions;
   }
 
 }
