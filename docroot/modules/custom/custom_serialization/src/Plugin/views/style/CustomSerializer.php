@@ -560,7 +560,7 @@ class CustomSerializer extends Serializer {
             }
             else {
               // To hide pregnancy term in child age taxo.
-              $term_name_arr = ['pregnancy'];
+              $term_name_arr = ['Pregnancy'];
             }
           }
           // Use helper service for batch term loading instead of loading
