@@ -3,7 +3,6 @@
 namespace Drupal\file_sanitizer\Service;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Service for sanitizing file names to remove unsafe characters.
@@ -17,26 +16,8 @@ class FilenameSanitizer {
    */
   protected TransliterationInterface $transliterator;
 
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * Cached allowed extensions.
-   *
-   * @var array|null
-   */
-  protected ?array $allowedExtensions = NULL;
-
-  public function __construct(
-    TransliterationInterface $transliterator,
-    EntityTypeManagerInterface $entity_type_manager,
-  ) {
+  public function __construct(TransliterationInterface $transliterator) {
     $this->transliterator = $transliterator;
-    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -75,57 +56,12 @@ class FilenameSanitizer {
     $name = preg_replace('/-+/', '-', $name);
     $name = trim($name, '-');
 
-    // 8. Validate extension
+    // 8. Clean extension (lowercase, remove invalid chars) but KEEP it.
+    // Extension validation is Drupal's responsibility at the field level.
     $extension = preg_replace('/[^a-z0-9]+/', '', $extension);
 
-    if (!$this->isExtensionAllowed($extension)) {
-      // Neutralize dangerous extensions instead of failing upload.
-      $extension = 'bin';
-    }
-
-    return $name . '.' . $extension;
-  }
-
-  /**
-   * Check extension safety.
-   */
-  protected function isExtensionAllowed(string $extension): bool {
-    return in_array($extension, $this->getAllowedExtensions(), TRUE);
-  }
-
-  /**
-   * Get allowed extensions from Drupal field configuration.
-   *
-   * @return array
-   *   Array of allowed file extensions.
-   */
-  protected function getAllowedExtensions(): array {
-    // Return cached value if already loaded.
-    if ($this->allowedExtensions !== NULL) {
-      return $this->allowedExtensions;
-    }
-
-    $extensions = [];
-
-    // Load field config for media.image.field_media_image.
-    $field_config = $this->entityTypeManager
-      ->getStorage('field_config')
-      ->load('media.image.field_media_image');
-
-    if ($field_config) {
-      $settings = $field_config->getSettings();
-      if (!empty($settings['file_extensions'])) {
-        // Parse space-separated extensions from field config.
-        $extensions = array_filter(
-          array_map('trim', explode(' ', $settings['file_extensions']))
-        );
-      }
-    }
-
-    // Cache the result.
-    $this->allowedExtensions = $extensions;
-
-    return $this->allowedExtensions;
+    // Build final filename.
+    return $extension ? $name . '.' . $extension : $name;
   }
 
 }
