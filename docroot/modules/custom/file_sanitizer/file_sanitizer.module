@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\File\FileExists;
-use Drupal\Core\StreamWrapper\StreamWrapperManager;
 use Drupal\file\FileInterface;
 
 /**
@@ -14,29 +13,24 @@ use Drupal\file\FileInterface;
  */
 function file_sanitizer_file_presave(FileInterface $file) {
 
-  $initial_uri = $file->getFileUri();
-  $initial_filename = $file->getFilename();
-
-  \Drupal::logger('file_sanitizer')->notice(
-    '=== FILE_PRESAVE START === fid=@fid isNew=@new',
-    [
-      '@fid' => $file->id() ?? 'NEW',
-      '@new' => $file->isNew() ? 'YES' : 'NO',
-    ]
-  );
-
-  \Drupal::logger('file_sanitizer')->notice(
-    'INITIAL STATE: filename="@filename" | uri="@uri" | scheme=@scheme | target=@target',
-    [
-      '@filename' => $initial_filename,
-      '@uri' => $initial_uri,
-      '@scheme' => StreamWrapperManager::getScheme($initial_uri),
-      '@target' => StreamWrapperManager::getTarget($initial_uri),
-    ]
-  );
-
   // Only NEW uploads.
   if (!$file->isNew()) {
+    return;
+  }
+
+  $uri = $file->getFileUri();
+
+  // CRITICAL: Only process files uploaded through Drupal forms
+  // (temporary:// scheme). System-generated files (exports, programmatic
+  // files) use public:// or private:// directly and MUST NOT be sanitized.
+  if (!str_starts_with($uri, 'temporary://')) {
+    return;
+  }
+
+  // CRITICAL: ONLY process IMAGE files.
+  // Skip all other file types (PDF, DOC, CSV, Excel, JSON, etc.).
+  $mime_type = $file->getMimeType();
+  if (!$mime_type || !str_starts_with($mime_type, 'image/')) {
     return;
   }
 
@@ -51,135 +45,34 @@ function file_sanitizer_file_presave(FileInterface $file) {
 
   $sanitized_filename = $sanitizer->sanitize($filename);
 
-  \Drupal::logger('file_sanitizer')->notice(
-    'SANITIZATION: "@old" → "@new"',
-    [
-      '@old' => $filename,
-      '@new' => $sanitized_filename,
-    ]
-  );
-
-  // For files in temporary storage, we must physically rename the file
-  // AND update the URI. Drupal's copy operation uses basename($uri),
-  // so just updating the filename field is not enough.
-  if (str_starts_with($file->getFileUri(), 'temporary://')) {
-
-    $old_uri = $file->getFileUri();
-    $new_uri = 'temporary://' . $sanitized_filename;
-
-    \Drupal::logger('file_sanitizer')->notice(
-      'TEMPORARY FILE DETECTED: old_uri="@old" | new_uri="@new"',
-      [
-        '@old' => $old_uri,
-        '@new' => $new_uri,
-      ]
-    );
-
-    try {
-      // Physically rename/move the file in temporary storage.
-      $file_system = \Drupal::service('file_system');
-
-      \Drupal::logger('file_sanitizer')->notice(
-        'BEFORE MOVE: Calling file_system->move(source="@src", dest="@dest")',
-        [
-          '@src' => $old_uri,
-          '@dest' => $new_uri,
-        ]
-      );
-
-      $final_uri = $file_system->move(
-        $old_uri,
-        $new_uri,
-        FileExists::Replace
-      );
-
-      \Drupal::logger('file_sanitizer')->notice(
-        'AFTER MOVE: final_uri="@uri" | scheme=@scheme | target=@target',
-        [
-          '@uri' => $final_uri,
-          '@scheme' => StreamWrapperManager::getScheme($final_uri),
-          '@target' => StreamWrapperManager::getTarget($final_uri),
-        ]
-      );
-
-      // Update both filename and URI to match the sanitized name.
-      $file->setFilename($sanitized_filename);
-      $file->setFileUri($final_uri);
-
-      \Drupal::logger('file_sanitizer')->notice(
-        'FILE ENTITY UPDATED: filename="@filename" | uri="@uri"',
-        [
-          '@filename' => $file->getFilename(),
-          '@uri' => $file->getFileUri(),
-        ]
-      );
-    }
-    catch (\Exception $e) {
-      \Drupal::logger('file_sanitizer')->error(
-        'MOVE FAILED: @msg',
-        ['@msg' => $e->getMessage()]
-      );
-
-      // Fallback: at least update the filename field.
-      $file->setFilename($sanitized_filename);
-    }
-
-    \Drupal::logger('file_sanitizer')->notice(
-      '=== FILE_PRESAVE END (temporary) === Final: filename="@filename" | uri="@uri"',
-      [
-        '@filename' => $file->getFilename(),
-        '@uri' => $file->getFileUri(),
-      ]
-    );
-
-    return;
-  }
-
-  // For non-temporary files (rare but possible), rename in place.
+  // At this point, we know the file is in temporary:// (verified above).
+  // We must physically rename the file AND update the URI.
+  // Drupal's copy operation uses basename($uri), so just updating
+  // the filename field is not enough.
   $old_uri = $file->getFileUri();
-  $directory = dirname($old_uri);
-  $new_uri = $directory . '/' . $sanitized_filename;
-
-  \Drupal::logger('file_sanitizer')->notice(
-    'NON-TEMPORARY FILE: old_uri="@old" | directory="@dir" | new_uri="@new"',
-    [
-      '@old' => $old_uri,
-      '@dir' => $directory,
-      '@new' => $new_uri,
-    ]
-  );
+  $new_uri = 'temporary://' . $sanitized_filename;
 
   try {
+    // Physically rename/move the file in temporary storage.
     $file_system = \Drupal::service('file_system');
+
     $final_uri = $file_system->move(
       $old_uri,
       $new_uri,
-      FileExists::Rename
+      FileExists::Replace
     );
 
-    $file->setFilename(basename($final_uri));
+    // Update both filename and URI to match the sanitized name.
+    $file->setFilename($sanitized_filename);
     $file->setFileUri($final_uri);
-
-    \Drupal::logger('file_sanitizer')->notice(
-      'NON-TEMPORARY RENAMED: final_uri="@uri"',
-      ['@uri' => $final_uri]
-    );
   }
   catch (\Exception $e) {
     \Drupal::logger('file_sanitizer')->error(
-      'NON-TEMPORARY RENAME FAILED: @msg',
+      'MOVE FAILED: @msg',
       ['@msg' => $e->getMessage()]
     );
 
     // Fallback: at least update the filename field.
     $file->setFilename($sanitized_filename);
   }
-
-  \Drupal::logger('file_sanitizer')->notice(
-    '=== FILE_PRESAVE END (non-temporary) === Final: filename="@filename" | uri="@uri"',
-    [
-      '@filename' => $file->getFilename(),
-      '@uri' => $file->getFileUri(),
-    ]
-  );
 }
