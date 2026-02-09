@@ -1853,6 +1853,12 @@ function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $fo
  * Alters content moderation notification mail.
  */
 function pb_custom_field_content_moderation_notification_mail_data_alter(EntityInterface $entity, array &$data) {
+  // Skip email notifications during bulk operations (like node:touch).
+  if (\Drupal::state()->get('node_touch_bulk_operation', FALSE)) {
+    $data['to'] = [];
+    return;
+  }
+
   // Early return if no recipients.
   if (empty($data['to'])) {
     return;

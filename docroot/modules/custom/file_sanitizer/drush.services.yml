@@ -8,3 +8,9 @@ services:
       - '@file_sanitizer.filename_sanitizer'
     tags:
       - { name: drush.command }
+  file_sanitizer.node_touch_commands:
+      class: Drupal\file_sanitizer\Commands\NodeTouchCommands
+      arguments:
+        - '@entity_type.manager'
+      tags:
+        - { name: drush.command }
