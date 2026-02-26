@@ -3,15 +3,14 @@ name: Acquia CI/CD Pipeline
 on:
   push:
     branches:
-      - 'feature/**'
-      - 'bug/**'
-      - 'hotfix/**'
+      - 'develop'
       - 'main'
   pull_request:
     branches:
       - 'feature/**'
       - 'bug/**'
       - 'hotfix/**'
+      - 'develop'
       - 'main'
   workflow_dispatch:
 
@@ -52,7 +51,7 @@ jobs:
   deploy-dev:
     needs: ci-checks
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/feature/') || startsWith(github.ref, 'refs/heads/bug/'))
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     steps:
       - uses: actions/checkout@v3
 
@@ -63,7 +62,6 @@ jobs:
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
       - run: |
-          composer validate --no-check-all --ansi
           composer install --prefer-dist --no-progress --no-interaction
 
       - name: Install Acquia CLI
