@@ -1,0 +1,11 @@
+uuid: 28af0532-58cc-445c-af57-12183f021ee9
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_share_client
+id: entity_import_status.entity_import_status
+target_entity_type_id: entity_import_status
+target_bundle: entity_import_status
+default_langcode: site_default
+language_alterable: false

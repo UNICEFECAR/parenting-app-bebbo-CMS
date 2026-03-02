@@ -1,0 +1,7 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.video_article.field_meta_keywords
+  hidden:
+    field_meta_keywords: true
+removing: {  }

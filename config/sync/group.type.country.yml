@@ -1,0 +1,12 @@
+uuid: e4b01f0d-ccd1-451b-946d-f9edcf9ae2ed
+langcode: en
+status: true
+dependencies: {  }
+id: country
+label: Country
+description: ''
+new_revision: false
+creator_membership: false
+creator_wizard: false
+creator_roles:
+  - country-admin

@@ -1,0 +1,13 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.article.field_do_not_feature
+      - field.field.node.article.field_meta_keywords
+      - field.field.node.article.field_subcategory
+      - field.field.node.article.field_type_of_article
+  hidden:
+    field_do_not_feature: true
+    field_meta_keywords: true
+    field_subcategory: true
+    field_type_of_article: true
+removing: {  }

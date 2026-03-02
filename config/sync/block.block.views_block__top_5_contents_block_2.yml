@@ -1,0 +1,39 @@
+uuid: 9b50e931-742f-4b0b-883b-54e08587af48
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.top_5_contents
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - claro
+id: views_block__top_5_contents_block_2
+theme: claro
+region: content
+weight: -10
+provider: null
+plugin: 'views_block:top_5_contents-block_2'
+settings:
+  id: 'views_block:top_5_contents-block_2'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /admin/dashboard
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      global_admin: global_admin

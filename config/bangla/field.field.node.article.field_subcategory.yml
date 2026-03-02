@@ -1,0 +1,34 @@
+uuid: eefdaa06-8783-41e7-a84e-8a539e22e410
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subcategory
+    - node.type.article
+    - taxonomy.vocabulary.subcategory
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_subcategory
+field_name: field_subcategory
+entity_type: node
+bundle: article
+label: Subcategory
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subcategory: subcategory
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

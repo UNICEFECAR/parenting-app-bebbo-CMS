@@ -1,0 +1,18 @@
+adding:
+  dependencies:
+    config:
+      - field.field.group.country.field_app_name
+      - field.field.group.country.field_language_name_in_local
+      - field.field.group.country.field_language_visibility_in_app
+  content:
+    field_app_name:
+      type: list_default
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 4
+      region: content
+  hidden:
+    field_language_name_in_local: true
+    field_language_visibility_in_app: true
+removing: {  }

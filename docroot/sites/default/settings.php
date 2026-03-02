@@ -22,3 +22,8 @@ if (getenv('IS_DDEV_PROJECT') === 'true' && is_readable(__DIR__ . '/settings.dde
 if (is_readable($common_dir . '/post.settings.php')) {
   require_once $common_dir . '/post.settings.php';
 }
+
+// Load site-specific config split settings.
+if (file_exists($app_root . '/' . $site_path . '/site.splits.php')) {
+  include $app_root . '/' . $site_path . '/site.splits.php';
+}

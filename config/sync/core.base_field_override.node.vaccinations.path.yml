@@ -1,0 +1,20 @@
+uuid: 3134389e-6d98-4ed2-a429-01ad1413f012
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+  module:
+    - path
+id: node.vaccinations.path
+field_name: path
+entity_type: node
+bundle: vaccinations
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

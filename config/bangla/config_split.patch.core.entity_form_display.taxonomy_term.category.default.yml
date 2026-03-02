@@ -1,0 +1,12 @@
+adding:
+  dependencies:
+    config:
+      - field.field.taxonomy_term.category.field_type_of_article
+  content:
+    field_type_of_article:
+      type: options_select
+      weight: 1
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+removing: {  }

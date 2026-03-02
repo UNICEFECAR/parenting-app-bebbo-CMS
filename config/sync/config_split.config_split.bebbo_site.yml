@@ -1,0 +1,88 @@
+uuid: 4a1f5d18-eb6a-4761-bbda-06da24f45f6e
+langcode: en
+status: false
+dependencies: {  }
+id: bebbo_site
+label: 'Bebbo Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/bebbo
+module: {  }
+theme: {  }
+complete_list:
+  - core.base_field_override.block_content.basic.metatag
+  - core.base_field_override.group.country.metatag
+  - core.base_field_override.group.country.status
+  - core.base_field_override.group_content.country-group_membership.metatag
+  - core.base_field_override.menu_link_content.menu_link_content.metatag
+  - core.base_field_override.node.activities.moderation_state
+  - core.base_field_override.node.article.moderation_state
+  - core.base_field_override.node.child_development.moderation_state
+  - core.base_field_override.node.child_growth.moderation_state
+  - core.base_field_override.node.daily_homescreen_messages.moderation_state
+  - core.base_field_override.node.faq.moderation_state
+  - core.base_field_override.node.health_check_ups.moderation_state
+  - core.base_field_override.node.milestone.moderation_state
+  - core.base_field_override.node.page.moderation_state
+  - core.base_field_override.node.survey.moderation_state
+  - core.base_field_override.node.vaccinations.moderation_state
+  - core.base_field_override.node.video_article.moderation_state
+  - core.base_field_override.shortcut.default.metatag
+  - core.base_field_override.user.user.metatag
+  - entity_share_server.channel.content_article_mandatory_en
+  - entity_share_server.channel.content_article_nonm_health_en
+  - entity_share_server.channel.content_article_nonm_nutrition_en
+  - entity_share_server.channel.content_article_nonm_parenting_corner_en
+  - entity_share_server.channel.content_article_nonm_play_en_
+  - entity_share_server.channel.content_article_nonm_responsive_parenting_en
+  - entity_share_server.channel.content_article_nonm_safety_en
+  - entity_share_server.channel.content_article_nonmandatory_en_
+  - entity_share_server.channel.content_article_pregnancy_en
+  - entity_share_server.channel.content_basic_page_en
+  - entity_share_server.channel.content_child_development_age_periods
+  - entity_share_server.channel.content_child_growth_en
+  - entity_share_server.channel.content_daily_homescreen_messages_en
+  - entity_share_server.channel.content_faq_en
+  - entity_share_server.channel.content_games_en
+  - entity_share_server.channel.content_health_check_ups
+  - entity_share_server.channel.content_linked_pages_en
+  - entity_share_server.channel.content_milestone_en
+  - entity_share_server.channel.content_vaccinations_age_en
+  - entity_share_server.channel.content_video_article_en
+  - entity_share_server.channel.media_image_en
+  - entity_share_server.channel.media_remote_video_en
+  - entity_share_server.channel.media_video_en
+  - entity_share_server.channel.taxonomy_age_periods_for_vacc_en
+  - entity_share_server.channel.taxonomy_category_en
+  - entity_share_server.channel.taxonomy_chatbot_category_en
+  - entity_share_server.channel.taxonomy_chatbot_child_age_en
+  - entity_share_server.channel.taxonomy_chatbot_child_age_tr
+  - entity_share_server.channel.taxonomy_chatbot_subcategory_en_
+  - entity_share_server.channel.taxonomy_child_s_age_en
+  - entity_share_server.channel.taxonomy_child_s_gender_en
+  - entity_share_server.channel.taxonomy_domain_of_activity_en
+  - entity_share_server.channel.taxonomy_growth_introductory_en
+  - entity_share_server.channel.taxonomy_growth_type_en
+  - entity_share_server.channel.taxonomy_keywords_en
+  - entity_share_server.channel.taxonomy_parent_s_gender_en
+  - entity_share_server.channel.taxonomy_relationship_to_child_en
+  - entity_share_server.channel.taxonomy_standard_deviation_category_en
+  - entity_share_server.channel.taxonomy_standard_deviation_en
+  - entity_share_server.channel.taxonomy_subcategory_en
+  - entity_share_server.channel.taxonomy_type_of_article_en
+  - entity_share_server.channel.taxonomy_type_of_support_en_
+  - entity_share_server.channel.test_article_en
+  - field.field.taxonomy_term.subcategory.field_child_age
+  - field.storage.taxonomy_term.field_child_age
+  - language.content_settings.entity_import_status.entity_import_status
+  - language.entity.uz-kaa
+  - metatag.metatag_defaults.node__article
+  - pathauto.pattern.basic_pages_alias
+  - purge_queuer_coretags.settings
+  - structure_sync.data
+  - system.feature_flags
+partial_list:
+  - system.site

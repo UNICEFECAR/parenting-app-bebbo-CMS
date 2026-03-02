@@ -1,0 +1,14 @@
+uuid: 6fba041c-115f-46b2-8966-03b1f6daa2e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.se
+  module:
+    - user
+id: user_add_role_action.se
+label: 'Add the Senior Editor role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: se

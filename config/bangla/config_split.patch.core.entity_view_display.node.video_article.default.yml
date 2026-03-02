@@ -1,0 +1,13 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.video_article.field_meta_keywords
+  content:
+    field_meta_keywords:
+      type: basic_string
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 20
+      region: content
+removing: {  }

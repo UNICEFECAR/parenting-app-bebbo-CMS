@@ -1,0 +1,7 @@
+adding:
+  module:
+    entity_share_async: 0
+    google_analytics: 0
+removing:
+  module:
+    structure_sync: 0

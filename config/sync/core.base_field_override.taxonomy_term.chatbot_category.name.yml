@@ -1,0 +1,18 @@
+uuid: b8323249-2745-48ab-ac11-7948cc7a55dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.chatbot_category
+id: taxonomy_term.chatbot_category.name
+field_name: name
+entity_type: taxonomy_term
+bundle: chatbot_category
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

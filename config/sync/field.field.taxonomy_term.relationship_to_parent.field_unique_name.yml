@@ -1,0 +1,24 @@
+uuid: 2e71ce68-0539-46dd-b932-1edc8d6e171d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unique_name
+    - taxonomy.vocabulary.relationship_to_parent
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.relationship_to_parent.field_unique_name
+field_name: field_unique_name
+entity_type: taxonomy_term
+bundle: relationship_to_parent
+label: 'Unique name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

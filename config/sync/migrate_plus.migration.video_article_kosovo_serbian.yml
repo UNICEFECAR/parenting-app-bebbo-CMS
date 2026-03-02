@@ -1,0 +1,47 @@
+uuid: 72eb8978-0d6e-42e0-9e20-4c65e40bb231
+langcode: en
+status: true
+dependencies: {  }
+id: video_article_kosovo_serbian
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: video_article_kosovo_serbian
+migration_group: video_article
+label: 'Video Article Kosovo-Serbian'
+source:
+  plugin: csv
+  path: modules/custom/pb_custom_migrate/sources/video_article/video_article_kosovo_serbian.csv
+  header_row_count: 1
+  ids:
+    - ID
+process:
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: xk-rs
+  uid:
+    plugin: default_value
+    source: node_uid
+    default_value: 1
+  nid: ID
+  field_keywords:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Keywords
+    -
+      plugin: entity_lookup
+      value_key: tid
+      bundle_key: vid
+      bundle: keywords
+      entity_type: taxonomy_term
+  field_cover_video: Cover_video
+  moderation_state: Moderation_state
+destination:
+  plugin: 'entity:node'
+  default_bundle: video_article
+  translations: true
+migration_dependencies:
+  required: {  }
+  optional: {  }

@@ -1,0 +1,22 @@
+uuid: ee503a6f-1397-433d-acbf-980a6bc18a15
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.milestone
+id: node.milestone.status
+field_name: status
+entity_type: node
+bundle: milestone
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

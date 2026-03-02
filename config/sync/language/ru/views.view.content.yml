@@ -1,0 +1,53 @@
+label: Содержимое
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: Содержимое
+      fields:
+        title:
+          label: Title
+        type:
+          label: 'Content type'
+          separator: ', '
+        name:
+          label: Author
+        status:
+          label: Status
+        changed:
+          label: Updated
+        operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: 'Content type'
+        status:
+          expose:
+            label: Status
+        langcode:
+          expose:
+            label: Language
+  page_1:
+    display_options:
+      menu:
+        title: Содержимое
+      tab_options:
+        title: Содержимое

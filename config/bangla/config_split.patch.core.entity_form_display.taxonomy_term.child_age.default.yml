@@ -1,0 +1,14 @@
+adding:
+  dependencies:
+    config:
+      - field.field.taxonomy_term.child_age.field_unique_name
+  content:
+    field_unique_name:
+      type: string_textfield
+      weight: 6
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }

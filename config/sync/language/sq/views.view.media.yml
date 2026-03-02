@@ -1,0 +1,24 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Lloji
+        uid:
+          label: Author
+        status:
+          label: Status
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      filters:
+        bundle:
+          expose:
+            label: Lloji
+        langcode:
+          expose:
+            label: Language

@@ -1,0 +1,14 @@
+adding:
+  dependencies:
+    config:
+      - field.field.taxonomy_term.category.field_type_of_article
+  content:
+    field_type_of_article:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 1
+      region: content
+removing: {  }

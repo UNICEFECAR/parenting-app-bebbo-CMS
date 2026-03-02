@@ -1,0 +1,18 @@
+uuid: f5c875e8-7f70-49a9-8429-c6a05a1ab802
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_type
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.growth_type
+target_entity_type_id: taxonomy_term
+target_bundle: growth_type
+default_langcode: current_interface
+language_alterable: true

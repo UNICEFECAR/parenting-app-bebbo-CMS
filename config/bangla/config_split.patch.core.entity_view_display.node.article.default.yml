@@ -1,0 +1,42 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.article.field_do_not_feature
+      - field.field.node.article.field_meta_keywords
+      - field.field.node.article.field_subcategory
+      - field.field.node.article.field_type_of_article
+  content:
+    field_do_not_feature:
+      type: boolean
+      label: above
+      settings:
+        format: default
+        format_custom_false: ''
+        format_custom_true: ''
+      third_party_settings: {  }
+      weight: 19
+      region: content
+    field_meta_keywords:
+      type: basic_string
+      label: above
+      settings: {  }
+      third_party_settings: {  }
+      weight: 20
+      region: content
+    field_subcategory:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 7
+      region: content
+    field_type_of_article:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 21
+      region: content
+removing: {  }

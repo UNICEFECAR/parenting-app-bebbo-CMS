@@ -1,0 +1,18 @@
+uuid: ea57f8a9-6c0f-4cb7-83f4-67719c67d823
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.parent_gender
+id: taxonomy_term.parent_gender.name
+field_name: name
+entity_type: taxonomy_term
+bundle: parent_gender
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

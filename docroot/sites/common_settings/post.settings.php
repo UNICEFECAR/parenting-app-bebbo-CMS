@@ -32,9 +32,9 @@ if ($ah_group && $ah_env) {
   }
 
   // Connect to database
-  if (function_exists('acquia_hosting_db_choose_active')){
-    acquia_hosting_db_choose_active();
-  }
+  // if (function_exists('acquia_hosting_db_choose_active')){
+  //   acquia_hosting_db_choose_active();
+  // }
 
   // 3) Memcache include (only once, if you use the Acquia memcache helper).
   if (!empty($common_dir)) {
@@ -59,7 +59,6 @@ if ($ah_group && $ah_env) {
 
 // Hash salt, config sync, and app config (non-Acquia specific).
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
-$settings['config_sync_directory'] = '../config/default';
 
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
@@ -68,3 +67,5 @@ $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
 // $config['tmgmt.translator.google']['settings']['api_key'] = getenv('GOOGLE_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.deepl_free']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_FREE') ?: '';
 // $config['tmgmt.translator.deepl_pro']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_PRO') ?: '';
+
+$settings["config_sync_directory"] = '../config/sync';

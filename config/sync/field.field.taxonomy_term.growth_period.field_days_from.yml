@@ -1,0 +1,23 @@
+uuid: 8bceb520-ba8b-453f-88a8-40cede8f96b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_days_from
+    - taxonomy.vocabulary.growth_period
+id: taxonomy_term.growth_period.field_days_from
+field_name: field_days_from
+entity_type: taxonomy_term
+bundle: growth_period
+label: 'Days From'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

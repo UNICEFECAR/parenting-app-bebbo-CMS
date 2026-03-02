@@ -1,0 +1,36 @@
+uuid: 2bc42758-71d9-4406-a752-deed10368b02
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - claro
+_core:
+  default_config_hash: gfXKmThltk6eewwrjAEaxVPxzPEVHV1UfNjjOUQ5A7g
+id: claro_page_title
+theme: claro
+region: header
+weight: -12
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/share\r\n/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+      authenticated: authenticated

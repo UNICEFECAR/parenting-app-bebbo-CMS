@@ -1,0 +1,6 @@
+bebbo:
+  root: /var/www/html/docroot
+  uri: http://bebbo.app.ddev.site
+bangla:
+  root: /var/www/html/docroot
+  uri: http://bangla.bebbo.app.ddev.site

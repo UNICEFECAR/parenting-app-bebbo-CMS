@@ -1,0 +1,56 @@
+uuid: c9b07762-b3c7-4b97-a7df-0875d525e9cd
+langcode: en
+status: false
+dependencies: {  }
+id: bangladesh_site
+label: 'Bangladesh Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/bangla
+module: {  }
+theme: {  }
+complete_list:
+  - block.block.claro_logo
+  - core.entity_form_display.taxonomy_term.subcategory.default
+  - core.entity_view_display.taxonomy_term.subcategory.default
+  - entity_share_client.import_config.config_stage
+  - entity_share_client.remote.prod
+  - entity_share_client.remote.stage
+  - field.field.group.country.field_app_name
+  - field.field.group.country.field_language_name_in_local
+  - field.field.group.country.field_language_visibility_in_app
+  - field.field.node.article.field_do_not_feature
+  - field.field.node.article.field_meta_keywords
+  - field.field.node.article.field_subcategory
+  - field.field.node.article.field_type_of_article
+  - field.field.node.video_article.field_meta_keywords
+  - field.field.taxonomy_term.category.field_type_of_article
+  - field.field.taxonomy_term.child_age.field_unique_name
+  - field.field.taxonomy_term.subcategory.field_category
+  - field.field.taxonomy_term.subcategory.field_child_s_age
+  - field.storage.group.field_app_name
+  - field.storage.group.field_language_name_in_local
+  - field.storage.group.field_language_visibility_in_app
+  - field.storage.node.field_do_not_feature
+  - field.storage.node.field_meta_keywords
+  - field.storage.node.field_subcategory
+  - field.storage.node.field_type_of_article
+  - field.storage.taxonomy_term.field_category
+  - field.storage.taxonomy_term.field_child_s_age
+  - field.storage.taxonomy_term.field_type_of_article
+  - language.content_settings.taxonomy_term.subcategory
+  - language.content_settings.taxonomy_term.type_of_article
+  - language.entity.ar
+  - language.entity.bn
+  - language.entity.gr-arb
+  - language.entity.gr-fa
+  - google_analytics.settings
+  - views.view.duplicate_of_tax_test
+partial_list:
+  - system.site
+  - core.extension
+  - taxonomy.vocabulary.subcategory
+  - taxonomy.vocabulary.type_of_article

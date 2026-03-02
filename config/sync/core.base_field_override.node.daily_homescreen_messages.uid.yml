@@ -1,0 +1,20 @@
+uuid: 69b1db07-5846-41fe-ad68-8d7d78021628
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.uid
+field_name: uid
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference
