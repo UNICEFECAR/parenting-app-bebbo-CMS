@@ -6,10 +6,8 @@ display:
           label: From
         target_language:
           label: To
-        tags_count:
-          label: Tags
         operations:
-          label: Operations
+          label: Operacionet
       exposed_form:
         options:
           reset_button_label: Reset

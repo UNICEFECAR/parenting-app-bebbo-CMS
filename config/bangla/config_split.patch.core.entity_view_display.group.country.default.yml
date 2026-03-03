@@ -8,8 +8,6 @@ adding:
     field_app_name:
       type: list_default
       label: above
-      settings: {  }
-      third_party_settings: {  }
       weight: 4
       region: content
   hidden:

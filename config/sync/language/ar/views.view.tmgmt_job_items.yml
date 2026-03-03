@@ -1,0 +1,33 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      pager:
+        options:
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+      fields:
+        label:
+          label: التسمية
+        type:
+          label: النوع
+        tags_count:
+          label: Tags
+        operations:
+          label: عمليات
+      arguments:
+        tjid:
+          exception:
+            title: All
+  checkout:
+    display_options:
+      fields:
+        label:
+          label: التسمية
+        type:
+          label: النوع

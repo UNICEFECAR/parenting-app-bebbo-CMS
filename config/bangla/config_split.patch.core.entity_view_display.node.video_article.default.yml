@@ -6,8 +6,6 @@ adding:
     field_meta_keywords:
       type: basic_string
       label: above
-      settings: {  }
-      third_party_settings: {  }
       weight: 20
       region: content
 removing: {  }

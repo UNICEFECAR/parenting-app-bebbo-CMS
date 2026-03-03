@@ -8,7 +8,6 @@ adding:
       label: above
       settings:
         link: true
-      third_party_settings: {  }
       weight: 1
       region: content
 removing: {  }

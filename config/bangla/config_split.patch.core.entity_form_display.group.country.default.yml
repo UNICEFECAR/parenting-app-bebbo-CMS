@@ -9,8 +9,6 @@ adding:
       type: options_select
       weight: 1
       region: content
-      settings: {  }
-      third_party_settings: {  }
   hidden:
     field_language_name_in_local: true
     field_language_visibility_in_app: true

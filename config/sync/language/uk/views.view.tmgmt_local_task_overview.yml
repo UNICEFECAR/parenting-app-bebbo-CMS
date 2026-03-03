@@ -1,37 +1,16 @@
 display:
   default:
-    display_title: Головне
     display_options:
       exposed_form:
         options:
-          submit_button: Фільтр
+          submit_button: Filter
           reset_button_label: Reset
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
-          tags:
-            previous: '‹ Попередня'
-            next: 'Наступна ›'
-            first: '« Перша'
-            last: 'Остання »'
       fields:
         title:
           label: Мітка
-      filters:
-        status:
-          expose:
-            label: Стан
   closed:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -39,22 +18,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   completed:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -62,22 +33,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   eligible:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -85,22 +48,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   my_tasks:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -108,22 +63,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   pending:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -131,22 +78,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   rejected:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -154,22 +93,14 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
+          label: Operations
       filters:
-        status:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'
         title:
           expose:
             label: Мітка
   unassigned:
     display_options:
       fields:
-        status:
-          label: Стан
         title:
           label: Мітка
         source_language:
@@ -177,8 +108,4 @@ display:
         target_language:
           label: To
         operations:
-          label: Операції
-      filters:
-        status:
-          expose:
-            label: Стан
+          label: Operations

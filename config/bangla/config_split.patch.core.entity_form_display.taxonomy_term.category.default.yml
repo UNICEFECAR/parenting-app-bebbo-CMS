@@ -7,6 +7,4 @@ adding:
       type: options_select
       weight: 1
       region: content
-      settings: {  }
-      third_party_settings: {  }
 removing: {  }

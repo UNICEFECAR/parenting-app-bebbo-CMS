@@ -1,33 +1,16 @@
 display:
   default:
-    display_title: Master
     display_options:
       exposed_form:
         options:
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
       fields:
-        state:
-          label: State
         label:
-          label: Label
+          label: Метка
         type:
           label: Тип
-        word_count:
-          separator: ', '
-        tags_count:
-          label: Tags
-          separator: ', '
         operations:
-          label: Operations
+          label: Операции
       arguments:
         tjid:
           exception:
@@ -36,10 +19,6 @@ display:
     display_options:
       fields:
         label:
-          label: Label
+          label: Метка
         type:
           label: Тип
-        word_count:
-          separator: ', '
-        changed:
-          separator: ', '

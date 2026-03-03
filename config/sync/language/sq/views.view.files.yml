@@ -4,19 +4,15 @@ display:
     display_options:
       fields:
         filename:
-          label: Name
-        status:
-          label: Status
+          label: Emri
+        filesize:
+          label: Size
         count:
           format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
       exposed_form:
         options:
-          submit_button: Filter
+          submit_button: Filtri
           reset_button_label: Reset
-      filters:
-        status:
-          expose:
-            label: Status
   page_2:
     display_options:
       arguments:

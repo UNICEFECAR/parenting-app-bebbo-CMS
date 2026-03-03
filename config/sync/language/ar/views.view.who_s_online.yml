@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: "Who's online"
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      filters:
+        access:
+          expose:
+            label: 'Last access'
+  who_s_online_block:
+    display_title: "Who's online"
+    display_options:
+      block_description: "Who's online"

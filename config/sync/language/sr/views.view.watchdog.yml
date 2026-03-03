@@ -5,14 +5,11 @@ display:
       fields:
         type:
           label: Tип
-        name:
-          label: User
         link:
-          label: Operations
+          label: Операције
       exposed_form:
         options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
+          submit_button: Филтрирај
       filters:
         type:
           expose:

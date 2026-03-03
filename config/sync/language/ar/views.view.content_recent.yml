@@ -1,0 +1,15 @@
+label: 'Recent content'
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      title: 'Recent content'
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      empty:
+        area_text_custom:
+          content: 'No content available.'
+      use_more_text: More
+  block_1:
+    display_title: Block

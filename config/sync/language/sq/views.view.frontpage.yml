@@ -5,3 +5,6 @@ display:
       exposed_form:
         options:
           reset_button_label: Reset
+      empty:
+        title:
+          title: 'Welcome to [site:name]'

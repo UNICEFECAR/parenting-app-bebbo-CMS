@@ -3,123 +3,80 @@ display:
     display_options:
       exposed_form:
         options:
-          submit_button: Filter
-          exposed_sorts_label: 'Sort by'
+          submit_button: Филтрирај
       fields:
         title:
-          label: Label
-      filters:
-        status:
-          expose:
-            label: Status
+          label: Ознака
   closed:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
+            label: Ознака
   completed:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
-      menu:
-        title: Completed
+            label: Ознака
   eligible:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
+            label: Ознака
   my_tasks:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
+            label: Ознака
   pending:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
+            label: Ознака
   rejected:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
+          label: Операције
       filters:
-        status:
-          expose:
-            label: Status
         title:
           expose:
-            label: Label
+            label: Ознака
   unassigned:
     display_options:
       fields:
-        status:
-          label: Status
         title:
-          label: Label
+          label: Ознака
         operations:
-          label: Operations
-      filters:
-        status:
-          expose:
-            label: Status
+          label: Операције

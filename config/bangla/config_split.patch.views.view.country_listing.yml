@@ -58,9 +58,7 @@ adding:
             hide_alter_empty: true
             click_sort_column: value
             type: list_key
-            settings: {  }
             group_column: value
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0

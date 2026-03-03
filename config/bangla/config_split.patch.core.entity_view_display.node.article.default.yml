@@ -13,14 +13,11 @@ adding:
         format: default
         format_custom_false: ''
         format_custom_true: ''
-      third_party_settings: {  }
       weight: 19
       region: content
     field_meta_keywords:
       type: basic_string
       label: above
-      settings: {  }
-      third_party_settings: {  }
       weight: 20
       region: content
     field_subcategory:
@@ -28,7 +25,6 @@ adding:
       label: above
       settings:
         link: true
-      third_party_settings: {  }
       weight: 7
       region: content
     field_type_of_article:
@@ -36,7 +32,6 @@ adding:
       label: above
       settings:
         link: true
-      third_party_settings: {  }
       weight: 21
       region: content
 removing: {  }

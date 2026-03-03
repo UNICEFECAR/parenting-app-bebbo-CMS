@@ -6,9 +6,9 @@ display:
           reset_button_label: Reset
       fields:
         created:
-          label: Krijuar
+          label: Created
         name:
-          label: Name
+          label: Emri
       arguments:
         tjid:
           exception:

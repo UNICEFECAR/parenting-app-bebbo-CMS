@@ -1,28 +1,17 @@
 display:
   default:
-    display_title: Базово
+    display_title: Master
     display_options:
       fields:
         type:
-          label: Тип
-        name:
-          label: Користувач
+          label: Type
         link:
-          label: Операції
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
+          label: Operations
       exposed_form:
         options:
-          submit_button: Фільтр
+          submit_button: Filter
           reset_button_label: Reset
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
       filters:
         type:
           expose:
-            label: Тип
+            label: Type

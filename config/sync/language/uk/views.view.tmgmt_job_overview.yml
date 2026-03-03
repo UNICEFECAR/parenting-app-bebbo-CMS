@@ -1,36 +1,15 @@
 display:
   default:
-    display_title: Головне
     display_options:
       fields:
-        state:
-          label: Стан
         label:
           label: Мітка
         source_language_1:
           label: From
         target_language:
           label: To
-        tags_count:
-          label: Tags
         operations:
-          label: Операції
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
+          label: Operations
       exposed_form:
         options:
           reset_button_label: Reset
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
-      filters:
-        state:
-          expose:
-            label: Стан
-        source_language:
-          expose:
-            label: 'Вихідна мова'

@@ -74,9 +74,7 @@ adding:
             hide_alter_empty: true
             click_sort_column: target_id
             type: entity_reference_entity_id
-            settings: {  }
             group_column: target_id
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -136,9 +134,7 @@ adding:
             hide_alter_empty: true
             click_sort_column: target_id
             type: entity_reference_entity_id
-            settings: {  }
             group_column: target_id
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -198,9 +194,7 @@ adding:
             hide_alter_empty: true
             click_sort_column: value
             type: basic_string
-            settings: {  }
             group_column: value
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0
@@ -265,7 +259,6 @@ adding:
               format_custom_false: ''
               format_custom_true: ''
             group_column: value
-            group_columns: {  }
             group_rows: true
             delta_limit: 0
             delta_offset: 0

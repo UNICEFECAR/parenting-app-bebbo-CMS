@@ -1,0 +1,24 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        type:
+          label: টাইপ
+        timestamp:
+          label: Date
+        message:
+          label: Message
+        link:
+          label: কার্যাবলী
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+      empty:
+        area:
+          admin_label: 'No log messages available.'
+          content: 'No log messages available.'
+      filters:
+        type:
+          expose:
+            label: টাইপ

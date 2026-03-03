@@ -50,7 +50,25 @@ complete_list:
   - google_analytics.settings
   - views.view.duplicate_of_tax_test
 partial_list:
-  - system.site
+  - core.entity_form_display.group.country.default
+  - core.entity_form_display.node.article.default
+  - core.entity_form_display.node.video_article.default
+  - core.entity_form_display.taxonomy_term.category.default
+  - core.entity_form_display.taxonomy_term.child_age.default
+  - core.entity_view_display.group.country.default
+  - core.entity_view_display.node.article.default
+  - core.entity_view_display.node.article.full
+  - core.entity_view_display.node.article.rss
+  - core.entity_view_display.node.article.teaser
+  - core.entity_view_display.node.video_article.default
+  - core.entity_view_display.node.video_article.full
+  - core.entity_view_display.node.video_article.teaser
+  - core.entity_view_display.taxonomy_term.category.default
+  - core.entity_view_display.taxonomy_term.child_age.default
   - core.extension
+  - system.site
   - taxonomy.vocabulary.subcategory
   - taxonomy.vocabulary.type_of_article
+  - views.view.articles
+  - views.view.country_listing
+  - views.view.country_reports

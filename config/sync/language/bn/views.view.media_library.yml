@@ -1,0 +1,39 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      filters:
+        name:
+          expose:
+            label: নাম
+        langcode:
+          expose:
+            label: ভাষা
+  page:
+    display_options:
+      fields:
+        delete_media:
+          text: Delete
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: All
+      filters:
+        name:
+          expose:
+            label: নাম
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: নাম
+      arguments:
+        bundle:
+          exception:
+            title: All
+      filters:
+        name:
+          expose:
+            label: নাম

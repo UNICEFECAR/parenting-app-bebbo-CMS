@@ -5,15 +5,11 @@ display:
       fields:
         bundle:
           label: Lloji
-        uid:
-          label: Author
-        status:
-          label: Status
         operations:
-          label: Operations
+          label: Operacionet
       exposed_form:
         options:
-          submit_button: Filter
+          submit_button: Filtri
           reset_button_label: Reset
       filters:
         bundle:
@@ -21,4 +17,4 @@ display:
             label: Lloji
         langcode:
           expose:
-            label: Language
+            label: Gjuha

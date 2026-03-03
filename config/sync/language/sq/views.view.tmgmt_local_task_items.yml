@@ -5,12 +5,10 @@ display:
         options:
           reset_button_label: Reset
       fields:
-        status:
-          label: Status
         item_type:
           label: Lloji
         operations:
-          label: Operations
+          label: Operacionet
       arguments:
         tltid:
           exception:

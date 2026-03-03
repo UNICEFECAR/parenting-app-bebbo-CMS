@@ -4,3 +4,9 @@ bebbo:
 bangla:
   root: /var/www/html/docroot
   uri: http://bangla.bebbo.app.ddev.site
+turkey:
+  root: /var/www/html/docroot
+  uri: http://tr.bebbo.app.ddev.site
+ecuador:
+  root: /var/www/html/docroot
+  uri: http://ec.bebbo.app.ddev.site

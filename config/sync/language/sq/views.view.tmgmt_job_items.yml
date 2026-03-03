@@ -7,10 +7,8 @@ display:
       fields:
         type:
           label: Lloji
-        tags_count:
-          label: Tags
         operations:
-          label: Operations
+          label: Operacionet
       arguments:
         tjid:
           exception:

@@ -1,47 +1,20 @@
-label: Медіа
 display:
   default:
-    display_title: Базово
+    display_title: Master
     display_options:
-      title: Медіа
       fields:
         bundle:
-          label: Тип
-        uid:
-          label: Автор
-        status:
-          label: Стан
-        changed:
-          label: Оновлено
+          label: Type
         operations:
-          label: Операції
-      pager:
-        options:
-          tags:
-            next: 'Наступна ›'
-            previous: '‹ Попередня'
-            first: '« Перша'
-            last: 'Остання »'
-          expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
+          label: Operations
       exposed_form:
         options:
-          submit_button: Фільтр
+          submit_button: Filter
           reset_button_label: Reset
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
       filters:
         bundle:
           expose:
-            label: Тип
+            label: Type
         langcode:
           expose:
             label: Мова
-  media_page_list:
-    display_title: Медіа
-    display_options:
-      menu:
-        title: Медіа

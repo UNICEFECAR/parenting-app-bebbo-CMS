@@ -3,20 +3,12 @@ display:
     display_options:
       fields:
         state:
-          label: State
+          label: Статус
         label:
-          label: Label
-        translator:
-          label: Provider
+          label: Ознака
         operations:
-          label: Operations
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
+          label: Операције
       filters:
         state:
           expose:
-            label: State
-        translator:
-          expose:
-            label: Provider
+            label: Статус

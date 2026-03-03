@@ -11,10 +11,8 @@ display:
           label: From
         target_language:
           label: To
-        tags_count:
-          label: Tags
         operations:
-          label: Operations
+          label: Operacionet
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
