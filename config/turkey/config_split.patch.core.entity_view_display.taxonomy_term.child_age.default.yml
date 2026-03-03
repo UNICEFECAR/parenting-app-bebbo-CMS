@@ -1,0 +1,14 @@
+adding:
+  dependencies:
+    config:
+      - field.field.taxonomy_term.child_age.field_unique_name
+  content:
+    field_unique_name:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 7
+      region: content
+removing: {  }

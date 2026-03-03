@@ -1,0 +1,17 @@
+smtp_on: true
+smtp_host: smtp.office365.com
+smtp_hostbackup: ''
+smtp_port: '587'
+smtp_protocol: tls
+smtp_username: admin@bebbo.app
+smtp_password: Unicef@Ecaro2022
+smtp_from: admin@bebbo.app
+smtp_fromname: 'Bebbo Admin'
+smtp_client_hostname: ''
+smtp_client_helo: ''
+smtp_allowhtml: '0'
+smtp_test_address: ''
+smtp_debugging: false
+prev_mail_system: php_mail
+_core:
+  default_config_hash: WEa5Ex_IeAcm6Bm0hmQ4vU_nDwJDB8hW-vxT1qpGIbM

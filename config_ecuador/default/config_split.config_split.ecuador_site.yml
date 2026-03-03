@@ -1,0 +1,16 @@
+uuid: c4a6f02a-3d77-4a4b-af20-719e278b0d7f
+langcode: en
+status: false
+dependencies: {  }
+id: ecuador_site
+label: 'Ecuador Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/ecuador
+module: {  }
+theme: {  }
+complete_list: {  }
+partial_list: {  }

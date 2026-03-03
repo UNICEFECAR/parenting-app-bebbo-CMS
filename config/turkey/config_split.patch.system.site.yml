@@ -1,0 +1,14 @@
+adding:
+  name: 'Merhaba Bebek'
+  mail: iletisim@merhababebek.app
+  slogan: "UNICEF's parenting app"
+  page:
+    403: ''
+    front: /node/56
+removing:
+  name: Bebbo
+  mail: admin@bebbo.app
+  slogan: ''
+  page:
+    403: /user/login
+    front: /node/66001

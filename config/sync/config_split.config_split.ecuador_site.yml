@@ -1,0 +1,115 @@
+uuid: c4a6f02a-3d77-4a4b-af20-719e278b0d7f
+langcode: en
+status: false
+dependencies: {  }
+id: ecuador_site
+label: 'Ecuador Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/ecuador
+module: {  }
+theme: {  }
+complete_list:
+  - core.base_field_override.block_content.basic.metatag
+  - core.base_field_override.group.country.metatag
+  - core.base_field_override.group.country.status
+  - core.base_field_override.group_content.country-group_membership.metatag
+  - core.base_field_override.menu_link_content.menu_link_content.metatag
+  - core.base_field_override.node.activities.moderation_state
+  - core.base_field_override.node.article.moderation_state
+  - core.base_field_override.node.child_development.moderation_state
+  - core.base_field_override.node.child_growth.moderation_state
+  - core.base_field_override.node.daily_homescreen_messages.moderation_state
+  - core.base_field_override.node.faq.moderation_state
+  - core.base_field_override.node.health_check_ups.moderation_state
+  - core.base_field_override.node.milestone.moderation_state
+  - core.base_field_override.node.page.moderation_state
+  - core.base_field_override.node.survey.moderation_state
+  - core.base_field_override.node.vaccinations.moderation_state
+  - core.base_field_override.node.video_article.moderation_state
+  - core.base_field_override.shortcut.default.metatag
+  - core.base_field_override.user.user.metatag
+  - core.entity_form_display.taxonomy_term.subcategory.default
+  - core.entity_view_display.taxonomy_term.subcategory.default
+  - entity_share_client.import_config.config_stage
+  - entity_share_server.channel.content_article_en
+  - entity_share_server.channel.content_article_mandatory_en
+  - entity_share_server.channel.content_article_nonm_health_en
+  - entity_share_server.channel.content_article_nonm_health_tr_
+  - entity_share_server.channel.content_article_nonm_nutrition_en
+  - entity_share_server.channel.content_article_nonm_parenting_corner_en
+  - entity_share_server.channel.content_article_nonm_play_en_
+  - entity_share_server.channel.content_article_nonm_play_kg_
+  - entity_share_server.channel.content_article_nonm_responsive_parenting_en
+  - entity_share_server.channel.content_article_nonm_safety_en
+  - entity_share_server.channel.content_basic_page_en
+  - entity_share_server.channel.content_basic_page_kg_
+  - entity_share_server.channel.content_child_development_age_periods
+  - entity_share_server.channel.content_child_growth_en
+  - entity_share_server.channel.content_daily_homescreen_messages_en
+  - entity_share_server.channel.content_faq_en
+  - entity_share_server.channel.content_games_en
+  - entity_share_server.channel.content_health_check_ups
+  - entity_share_server.channel.content_linked_pages_en
+  - entity_share_server.channel.content_milestone_en
+  - entity_share_server.channel.content_vaccinations_age_en
+  - entity_share_server.channel.content_video_article_en
+  - entity_share_server.channel.media_image_en
+  - entity_share_server.channel.media_remote_video_en
+  - entity_share_server.channel.media_video_en
+  - entity_share_server.channel.taxonomy_age_periods_for_vacc_en
+  - entity_share_server.channel.taxonomy_category_en
+  - entity_share_server.channel.taxonomy_chatbot_category_en
+  - entity_share_server.channel.taxonomy_chatbot_child_age_en
+  - entity_share_server.channel.taxonomy_child_s_age_en
+  - entity_share_server.channel.taxonomy_child_s_gender_en
+  - entity_share_server.channel.taxonomy_domain_of_activity_en
+  - entity_share_server.channel.taxonomy_growth_introductory_en
+  - entity_share_server.channel.taxonomy_growth_type_en
+  - entity_share_server.channel.taxonomy_keywords_en
+  - entity_share_server.channel.taxonomy_parent_s_gender_en
+  - entity_share_server.channel.taxonomy_relationship_to_child_en
+  - entity_share_server.channel.taxonomy_standard_deviation_category_en
+  - entity_share_server.channel.taxonomy_standard_deviation_en
+  - entity_share_server.channel.taxonomy_subcategory_en
+  - entity_share_server.channel.taxonomy_type_of_support_en_
+  - entity_share_server.channel.test_article_en
+  - field.field.group.country.field_app_name
+  - field.field.group.country.field_language_visibility_in_app
+  - field.field.node.article.field_do_not_feature
+  - field.field.node.article.field_meta_keywords
+  - field.field.node.article.field_subcategory
+  - field.field.node.article.field_type_of_article
+  - field.field.node.video_article.field_meta_keywords
+  - field.field.taxonomy_term.category.field_type_of_article
+  - field.field.taxonomy_term.child_age.field_unique_name
+  - field.field.taxonomy_term.subcategory.field_category
+  - field.field.taxonomy_term.subcategory.field_child_age
+  - field.storage.group.field_app_name
+  - field.storage.group.field_language_visibility_in_app
+  - field.storage.node.field_do_not_feature
+  - field.storage.node.field_meta_keywords
+  - field.storage.node.field_subcategory
+  - field.storage.node.field_type_of_article
+  - field.storage.taxonomy_term.field_category
+  - field.storage.taxonomy_term.field_child_age
+  - field.storage.taxonomy_term.field_type_of_article
+  - google_analytics.settings
+  - language.content_settings.taxonomy_term.subcategory
+  - language.content_settings.taxonomy_term.type_of_article
+  - language.entity.ec-es
+  - language.entity.es
+  - metatag.metatag_defaults.node__article
+  - mobile_app_links.android
+  - mobile_app_links.ios
+  - pb_custom_form.mobile_app_share_link_form
+  - smtp.settings
+  - system.feature_flags
+  - tmgmt.translator.memsource
+partial_list:
+  - system.site
+  - core.extension
+  - taxonomy.vocabulary.type_of_article
