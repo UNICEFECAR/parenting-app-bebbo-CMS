@@ -13,8 +13,14 @@ if (is_readable($default_settings)) {
   require_once $default_settings;
 }
 
-$settings["config_sync_directory"] = '../config_turkey/default';
 // DDev db name override.
 if (getenv('IS_DDEV_PROJECT') == 'true') {
   $databases['default']['default']['database'] = 'turkey_db';
+}
+
+/**
+ * Include site specific splits.
+ */
+if (file_exists($app_root . '/' . $site_path . '/site.splits.php')) {
+  include $app_root . '/' . $site_path . '/site.splits.php';
 }
