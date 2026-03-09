@@ -1,0 +1,6 @@
+adding:
+  module:
+    pathauto: 0
+removing:
+  module:
+    pathauto: 1

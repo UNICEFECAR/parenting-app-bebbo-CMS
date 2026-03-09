@@ -1,0 +1,27 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          type:
+            label: 'İçerik türü'
+          changed:
+            label: Güncellendi
+        filters:
+          type:
+            expose:
+              label: 'İçerik türü'
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          type:
+            label: 'İçerik tipi'
+            separator: ', '
+          changed:
+            label: Güncellenme
+        filters:
+          type:
+            expose:
+              label: 'İçerik tipi'

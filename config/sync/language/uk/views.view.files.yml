@@ -1,0 +1,49 @@
+display:
+  default:
+    display_title: Базово
+    display_options:
+      fields:
+        filename:
+          label: "Назва (ім'я)"
+        filemime:
+          label: 'Тип MIME'
+        status:
+          label: Стан
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      pager:
+        options:
+          tags:
+            next: 'Наступна ›'
+            previous: '‹ Попередня'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
+      exposed_form:
+        options:
+          submit_button: Фільтр
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
+      filters:
+        filemime:
+          expose:
+            label: 'Тип MIME'
+        status:
+          expose:
+            label: Стан
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Тип сутності'
+      pager:
+        options:
+          tags:
+            next: 'Наступна ›'
+            previous: '‹ Попередня'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення

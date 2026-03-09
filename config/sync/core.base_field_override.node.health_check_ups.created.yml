@@ -1,0 +1,18 @@
+uuid: 1f9f6df1-604a-41f0-a59a-bb6e9ebfb0ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+id: node.health_check_ups.created
+field_name: created
+entity_type: node
+bundle: health_check_ups
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

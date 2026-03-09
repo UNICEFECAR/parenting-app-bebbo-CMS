@@ -1,0 +1,20 @@
+uuid: d5b549a6-0448-446a-8478-35ab2119705c
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: group.country.uid
+field_name: uid
+entity_type: group
+bundle: country
+label: 'Group creator'
+description: 'The username of the group creator.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\group\Entity\Group::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

@@ -1,0 +1,25 @@
+appID: SGVD5KL2Y7.org.unicef.pc.bebbopacific
+paths: '/share/*'
+appclips: ''
+appID_Test: SGVD5KL2Y7.org.unicef.pc.bebbopacific
+paths_Test: '/share/*'
+kosovo_appID: ''
+kosovo_paths: ''
+kosovo_appclips: ''
+kosovo_appID_Test: ''
+kosovo_paths_Test: ''
+applinks:
+  SGVD5KL2Y7-org-unicef-pc-bebbopacific_0:
+    applinks: ''
+    appID: SGVD5KL2Y7.org.unicef.pc.bebbopacific
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  SGVD5KL2Y7-org-unicef-pc-bebbopacific_1:
+    applinks: ''
+    appID: SGVD5KL2Y7.org.unicef.pc.bebbopacific
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''

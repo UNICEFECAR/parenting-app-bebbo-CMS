@@ -1,0 +1,9 @@
+uuid: 0ed9c98f-4326-4228-ba25-28279054913c
+langcode: zw-nd
+status: true
+dependencies: {  }
+id: zw-nd
+label: Zimbabwe-Ndebele
+direction: ltr
+weight: -8
+locked: false

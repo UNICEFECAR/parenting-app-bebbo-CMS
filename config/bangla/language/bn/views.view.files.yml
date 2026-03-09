@@ -1,0 +1,20 @@
+display:
+  default:
+    display_title: ডিফল্ট
+    display_options:
+      fields:
+        filename:
+          label: নাম
+        filesize:
+          label: Size
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: ফিল্টার
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

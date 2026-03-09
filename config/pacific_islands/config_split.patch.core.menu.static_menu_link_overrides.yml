@@ -1,0 +1,8 @@
+adding:
+  definitions:
+    standard__front_page:
+      enabled: true
+removing:
+  definitions:
+    standard__front_page:
+      enabled: false

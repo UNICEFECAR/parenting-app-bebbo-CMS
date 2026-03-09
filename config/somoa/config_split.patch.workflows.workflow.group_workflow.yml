@@ -1,0 +1,16 @@
+adding: {  }
+removing:
+  type_settings:
+    transitions:
+      senior_editor_review_to_draft:
+        label: 'Senior Editor Review to Draft'
+        from:
+          - senior_editor_review
+        to: draft
+        weight: 7
+      senior_editor_review_to_sme_review:
+        label: 'Senior Editor Review to SME Review'
+        from:
+          - senior_editor_review
+        to: sme_review
+        weight: 9

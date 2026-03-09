@@ -1,0 +1,146 @@
+adding:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Filtri
+    closed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    completed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    eligible:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    my_tasks:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    pending:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    rejected:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    unassigned:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+removing:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Filter
+        filters:
+          status:
+            expose:
+              label: Status
+    closed:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+        menu:
+          title: Closed
+    completed:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+    eligible:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+    my_tasks:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+    pending:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+    rejected:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status
+    unassigned:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations
+        filters:
+          status:
+            expose:
+              label: Status

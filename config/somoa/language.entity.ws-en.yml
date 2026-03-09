@@ -1,0 +1,9 @@
+uuid: fdd255fb-a225-4590-841a-5089b50bc789
+langcode: en
+status: true
+dependencies: {  }
+id: ws-en
+label: Samoa-English
+direction: ltr
+weight: -6
+locked: false

@@ -1,0 +1,40 @@
+display:
+  default:
+    display_title: 'Ana (master)'
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Sayfa başına öğe sayısı'
+            items_per_page_options_all_label: '- Tümü -'
+            offset_label: 'Başlangıç değeri'
+          tags:
+            previous: '‹ Önceki'
+            next: 'Sonraki ›'
+            first: '« İlk'
+            last: 'Son »'
+      fields:
+        status:
+          label: Durum
+        label:
+          label: Etiket
+        item_type:
+          label: Tip
+          separator: ', '
+        word_count:
+          separator: ', '
+        operations:
+          label: İşlemler
+      arguments:
+        tltid:
+          exception:
+            title: Tümü
+  block_1:
+    display_title: Blok

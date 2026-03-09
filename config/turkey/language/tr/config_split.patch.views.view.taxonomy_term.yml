@@ -1,0 +1,13 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            tags:
+              next: ››
+              previous: ‹‹
+        arguments:
+          tid:
+            title: '{{ arguments.tid }}'

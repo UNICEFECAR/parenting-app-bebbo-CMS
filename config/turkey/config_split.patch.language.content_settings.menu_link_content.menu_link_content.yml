@@ -1,0 +1,12 @@
+adding:
+  third_party_settings:
+    content_translation:
+      enabled: false
+  default_langcode: current_interface
+  language_alterable: false
+removing:
+  third_party_settings:
+    content_translation:
+      enabled: true
+  default_langcode: site_default
+  language_alterable: true

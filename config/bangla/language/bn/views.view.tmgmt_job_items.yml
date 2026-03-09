@@ -1,0 +1,17 @@
+display:
+  default:
+    display_options:
+      fields:
+        type:
+          label: টাইপ
+        operations:
+          label: কার্যাবলী
+      arguments:
+        tjid:
+          exception:
+            title: All
+  checkout:
+    display_options:
+      fields:
+        type:
+          label: টাইপ

@@ -1,0 +1,150 @@
+adding:
+  dependencies:
+    module:
+      - allowed_languages
+  permissions:
+    - 'access user profiles'
+    - 'administer allowed languages'
+    - 'administer permissions'
+    - 'administer users'
+    - 'bypass node access'
+    - 'create activities content'
+    - 'create article content'
+    - 'create child_development content'
+    - 'create child_growth content'
+    - 'create daily_homescreen_messages content'
+    - 'create faq content'
+    - 'create health_check_ups content'
+    - 'create media'
+    - 'create milestone content'
+    - 'create page content'
+    - 'create survey content'
+    - 'create terms in activity_category'
+    - 'create terms in category'
+    - 'create terms in chatbot_category'
+    - 'create terms in chatbot_child_age'
+    - 'create terms in chatbot_subcategory'
+    - 'create terms in child_age'
+    - 'create terms in child_gender'
+    - 'create terms in daily_home_screen_message_catego'
+    - 'create terms in growth_introductory'
+    - 'create terms in growth_period'
+    - 'create terms in growth_type'
+    - 'create terms in keywords'
+    - 'create terms in parent_gender'
+    - 'create terms in relationship_to_parent'
+    - 'create terms in standard_deviation'
+    - 'create terms in type_of_support'
+    - 'create vaccinations content'
+    - 'create video_article content'
+    - 'delete any media'
+    - 'edit any activities content'
+    - 'edit any article content'
+    - 'edit any child_development content'
+    - 'edit any child_growth content'
+    - 'edit any daily_homescreen_messages content'
+    - 'edit any faq content'
+    - 'edit any health_check_ups content'
+    - 'edit any milestone content'
+    - 'edit any page content'
+    - 'edit any survey content'
+    - 'edit any vaccinations content'
+    - 'edit any video_article content'
+    - 'translate all languages'
+    - 'update any media'
+removing:
+  dependencies:
+    config:
+      - core.entity_view_display.node.page.full
+      - feeds.feed_type.taxonomy_age_period
+      - feeds.feed_type.taxonomy_age_period_language
+      - rest.resource.custom_rest_resource
+      - taxonomy.vocabulary.standard_deviation_category
+      - taxonomy.vocabulary.subcategory
+      - taxonomy.vocabulary.type_of_article
+    module:
+      - config
+      - entity_share
+      - entity_share_client
+      - entity_share_server
+      - layout_builder
+      - layout_builder_styles
+      - pathauto
+      - redirect
+      - rest
+  permissions:
+    - 'access site reports'
+    - 'administer content types'
+    - 'administer menu'
+    - 'administer modules'
+    - 'administer pathauto'
+    - 'administer redirect settings'
+    - 'administer rest resources'
+    - 'administer site configuration'
+    - 'administer software updates'
+    - 'administer themes'
+    - 'administer toolbar menu'
+    - administer_channel_entity
+    - administer_import_config_entity
+    - administer_import_status_entities
+    - administer_remote_entity
+    - 'bulk update aliases'
+    - 'configure all page node layout overrides'
+    - 'configure any layout'
+    - 'configure editable page node layout overrides'
+    - 'create and edit custom blocks'
+    - 'create taxonomy_age_period feeds'
+    - 'create taxonomy_age_period_language feeds'
+    - 'edit terms in standard_deviation_category'
+    - 'edit terms in subcategory'
+    - 'edit terms in type_of_article'
+    - entity_share_access_config_pages
+    - entity_share_client_display_errors
+    - entity_share_server_access_channels
+    - 'export configuration'
+    - 'import configuration'
+    - 'manage layout builder style groups'
+    - 'manage layout builder styles'
+    - 'restful get custom_rest_resource'
+    - 'synchronize configuration'
+    - 'use group_workflow transition senior_editor_review_to_draft'
+    - 'use group_workflow transition senior_editor_review_to_sme_review'
+    - 'view own content_health_check_up_language feeds'
+    - 'view own content_homescreen_messages feeds'
+    - 'view own content_vaccination_languages feeds'
+    - 'view own media_image_import feeds'
+    - 'view own media_remote_video feeds'
+    - 'view own taxonomy_age_period feeds'
+    - 'view own taxonomy_age_period_language feeds'
+    - 'view own taxonomy_categories feeds'
+    - 'view own taxonomy_categories_serbia_serbi feeds'
+    - 'view own taxonomy_charbot_child_age feeds'
+    - 'view own taxonomy_charbot_child_age_langu feeds'
+    - 'view own taxonomy_chatbot_category feeds'
+    - 'view own taxonomy_chatbot_category_langua feeds'
+    - 'view own taxonomy_chatbot_subcategory feeds'
+    - 'view own taxonomy_chatbot_subcategory_lan feeds'
+    - 'view own taxonomy_child_age feeds'
+    - 'view own taxonomy_child_age_serbia_serbia feeds'
+    - 'view own taxonomy_child_gender feeds'
+    - 'view own taxonomy_child_gender_serbia_ser feeds'
+    - 'view own taxonomy_domain feeds'
+    - 'view own taxonomy_domain_language feeds'
+    - 'view own taxonomy_growth_introductory feeds'
+    - 'view own taxonomy_growth_introductory_lan feeds'
+    - 'view own taxonomy_growth_period feeds'
+    - 'view own taxonomy_growth_period_serbia_se feeds'
+    - 'view own taxonomy_growth_type feeds'
+    - 'view own taxonomy_growth_type_language feeds'
+    - 'view own taxonomy_keywords feeds'
+    - 'view own taxonomy_keywords_serbia_serbian feeds'
+    - 'view own taxonomy_parents_gender feeds'
+    - 'view own taxonomy_parents_gender_serbia_s feeds'
+    - 'view own taxonomy_relationship_to_child_l feeds'
+    - 'view own taxonomy_standard_deviation feeds'
+    - 'view own taxonomy_standard_deviation_cate feeds'
+    - 'view own taxonomy_type_of_support feeds'
+    - 'view own taxonomy_type_of_support_languag feeds'
+    - 'view own user_import feeds'
+    - 'view taxonomy_age_period feeds'
+    - 'view taxonomy_age_period_language feeds'

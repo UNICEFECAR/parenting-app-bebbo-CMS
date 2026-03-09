@@ -1,0 +1,12 @@
+adding:
+  content:
+    field_child_age:
+      weight: 12
+    translation:
+      weight: 11
+removing:
+  content:
+    field_child_age:
+      weight: 11
+    translation:
+      weight: 12

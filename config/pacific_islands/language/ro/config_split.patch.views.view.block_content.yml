@@ -1,0 +1,46 @@
+adding:
+  display:
+    page_1:
+      display_options:
+        menu:
+          title: Blocks
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          info:
+            label: 'Block description'
+            separator: ', '
+          type:
+            label: 'Block type'
+            separator: ', '
+          changed:
+            label: Updated
+        pager:
+          options:
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset
+        exposed_form:
+          options:
+            submit_button: Apply
+            exposed_sorts_label: 'Sort by'
+            sort_asc_label: Asc
+            sort_desc_label: Descendent
+        filters:
+          info:
+            expose:
+              label: 'Block description'
+          type:
+            expose:
+              label: 'Block type'
+    page_1:
+      display_title: Page
+      display_options:
+        menu:
+          title: Blocuri

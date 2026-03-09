@@ -1,0 +1,20 @@
+uuid: fc607635-b47b-4ece-8354-1b63aa7780fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_microsoft
+name: microsoft
+label: Microsoft
+description: ''
+auto_accept: false
+weight: -9
+plugin: microsoft
+settings:
+  api_key: ''
+remote_languages_mappings:
+  en: en
+  fj-fj: fj
+  fj-en: fj
+  ws-sm: sm
+  ws-en: en

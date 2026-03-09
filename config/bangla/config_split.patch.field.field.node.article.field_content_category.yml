@@ -1,0 +1,10 @@
+adding:
+  description: 'To Specify under which category this article falls'
+removing:
+  dependencies:
+    module:
+      - tmgmt_content
+  third_party_settings:
+    tmgmt_content:
+      excluded: false
+  description: 'To specify under which category this article falls'

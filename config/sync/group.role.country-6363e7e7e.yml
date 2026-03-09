@@ -1,0 +1,17 @@
+uuid: fdee8ec9-896c-4512-a09e-00091df0d1ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.se
+id: country-6363e7e7e
+label: 'Senior Editor'
+weight: 7
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

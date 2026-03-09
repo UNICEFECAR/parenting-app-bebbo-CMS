@@ -1,0 +1,12 @@
+adding:
+  content:
+    field_unique_name:
+      weight: 3
+    translation:
+      weight: 2
+removing:
+  content:
+    field_unique_name:
+      weight: 2
+    translation:
+      weight: 3

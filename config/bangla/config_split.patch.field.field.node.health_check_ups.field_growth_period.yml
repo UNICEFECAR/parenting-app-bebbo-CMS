@@ -1,0 +1,8 @@
+adding: {  }
+removing:
+  dependencies:
+    module:
+      - tmgmt_content
+  third_party_settings:
+    tmgmt_content:
+      excluded: false

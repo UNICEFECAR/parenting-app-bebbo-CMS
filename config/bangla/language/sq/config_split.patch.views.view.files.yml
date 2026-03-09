@@ -1,0 +1,28 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          filename:
+            label: Emri
+          filesize:
+            label: Size
+        exposed_form:
+          options:
+            submit_button: Filtri
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          filename:
+            label: Name
+          status:
+            label: Status
+        exposed_form:
+          options:
+            submit_button: Filter
+        filters:
+          status:
+            expose:
+              label: Status

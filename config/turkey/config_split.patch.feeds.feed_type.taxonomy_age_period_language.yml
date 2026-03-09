@@ -1,0 +1,24 @@
+adding:
+  processor_configuration:
+    langcode: sk
+    insert_new: 1
+    update_existing: 1
+  mappings:
+    -
+      unique:
+        value: '1'
+    -
+      settings:
+        language: sk
+removing:
+  processor_configuration:
+    langcode: uz-kaa
+    insert_new: 0
+    update_existing: 2
+  mappings:
+    -
+      unique:
+        value: 1
+    -
+      settings:
+        language: uz-kaa

@@ -1,0 +1,8 @@
+adding:
+  relationships:
+    'group_content:langcode:language':
+      label: Limba
+removing:
+  relationships:
+    'group_content:langcode:language':
+      label: Language

@@ -1,0 +1,17 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          word_count:
+            separator: ', '
+          tags_count:
+            separator: ', '
+    checkout:
+      display_options:
+        fields:
+          word_count:
+            separator: ', '
+          changed:
+            separator: ', '

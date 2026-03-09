@@ -1,0 +1,10 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          item_type:
+            separator: ', '
+          word_count:
+            separator: ', '

@@ -1,0 +1,13 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          title:
+            label: Title
+          name:
+            label: Author
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'

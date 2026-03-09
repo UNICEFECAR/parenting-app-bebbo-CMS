@@ -1,0 +1,32 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          operations:
+            label: Operacionet
+        exposed_form:
+          options:
+            submit_button: Filtri
+        filters:
+          langcode:
+            expose:
+              label: Gjuha
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          uid:
+            label: Author
+          status:
+            label: Status
+          operations:
+            label: Operations
+        exposed_form:
+          options:
+            submit_button: Filter
+        filters:
+          langcode:
+            expose:
+              label: Language

@@ -1,0 +1,20 @@
+uuid: e3c65e6f-be3c-44a2-b7ee-69cd519aff82
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.child_growth
+  module:
+    - path
+id: node.child_growth.path
+field_name: path
+entity_type: node
+bundle: child_growth
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

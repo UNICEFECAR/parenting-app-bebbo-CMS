@@ -1,0 +1,54 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          filesize:
+            label: Size
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          filename:
+            label: Name
+            separator: ', '
+          filemime:
+            label: MIME-тип
+          status:
+            label: Status
+        pager:
+          options:
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'
+            sort_asc_label: Asc
+            sort_desc_label: Desc
+        filters:
+          filemime:
+            expose:
+              label: MIME-тип
+          status:
+            expose:
+              label: Status
+    page_2:
+      display_options:
+        fields:
+          type:
+            label: 'Тип сущности'
+        pager:
+          options:
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset

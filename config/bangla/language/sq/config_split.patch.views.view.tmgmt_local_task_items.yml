@@ -1,0 +1,16 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          operations:
+            label: Operacionet
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          status:
+            label: Status
+          operations:
+            label: Operations

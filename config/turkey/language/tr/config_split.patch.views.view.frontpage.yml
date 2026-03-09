@@ -1,0 +1,14 @@
+adding:
+  display:
+    default:
+      display_options:
+        empty:
+          title:
+            title: 'Welcome to [site:name]'
+removing:
+  display:
+    default:
+      display_options:
+        empty:
+          title:
+            title: 'Hoş geldiniz!'

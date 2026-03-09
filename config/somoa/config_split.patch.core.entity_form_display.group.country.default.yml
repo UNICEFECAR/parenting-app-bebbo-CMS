@@ -1,0 +1,54 @@
+adding:
+  content:
+    field_content_toggle:
+      weight: 11
+    field_country_email:
+      weight: 4
+    field_country_flag:
+      weight: 5
+    field_country_national_partner:
+      weight: 8
+    field_country_sponsor_logo:
+      weight: 7
+    field_language:
+      weight: 10
+    field_language_name_in_local:
+      type: string_textfield
+      weight: 3
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_make_available_for_mobile:
+      weight: 13
+    field_master_language:
+      weight: 9
+    field_unicef_logo:
+      weight: 6
+    status:
+      weight: 12
+removing:
+  content:
+    field_content_toggle:
+      weight: 10
+    field_country_email:
+      weight: 3
+    field_country_flag:
+      weight: 4
+    field_country_national_partner:
+      weight: 7
+    field_country_sponsor_logo:
+      weight: 6
+    field_language:
+      weight: 9
+    field_make_available_for_mobile:
+      weight: 12
+    field_master_language:
+      weight: 8
+    field_unicef_logo:
+      weight: 5
+    status:
+      weight: 11
+  hidden:
+    field_language_name_in_local: true

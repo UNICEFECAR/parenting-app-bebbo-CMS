@@ -1,0 +1,16 @@
+adding:
+  url:
+    prefixes:
+      ar: ar
+      ws-en: ws-en
+      pc-en: pc-en
+    domains:
+      ar: ''
+      ws-en: ''
+      pc-en: ''
+removing:
+  url:
+    prefixes:
+      uz-kaa: uz-kaa
+    domains:
+      uz-kaa: ''

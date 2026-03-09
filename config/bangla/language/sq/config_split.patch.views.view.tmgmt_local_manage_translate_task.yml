@@ -1,0 +1,148 @@
+adding:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Filtri
+    assigned:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    closed:
+      display_options:
+        fields:
+          created:
+            label: Created
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    completed:
+      display_options:
+        fields:
+          created:
+            label: Created
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    pending:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    rejected:
+      display_options:
+        fields:
+          created:
+            label: Created
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+    unassigned:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          operations:
+            label: Operacionet
+removing:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Filter
+        fields:
+          title:
+            label: Title
+    assigned:
+      display_options:
+        fields:
+          status:
+            label: Status
+          title:
+            label: Title
+          operations:
+            label: Operations
+        filters:
+          title:
+            expose:
+              label: Title
+    closed:
+      display_title: Closed
+      display_options:
+        menu:
+          title: Closed
+        fields:
+          status:
+            label: Status
+          created:
+            label: Krijuar
+          title:
+            label: Title
+          operations:
+            label: Operations
+        filters:
+          title:
+            expose:
+              label: Title
+    completed:
+      display_options:
+        fields:
+          status:
+            label: Status
+          created:
+            label: Krijuar
+          title:
+            label: Title
+          operations:
+            label: Operations
+        filters:
+          title:
+            expose:
+              label: Title
+    pending:
+      display_options:
+        fields:
+          status:
+            label: Status
+          title:
+            label: Title
+          operations:
+            label: Operations
+        filters:
+          title:
+            expose:
+              label: Title
+    rejected:
+      display_options:
+        fields:
+          status:
+            label: Status
+          created:
+            label: Krijuar
+          title:
+            label: Title
+          operations:
+            label: Operations
+        filters:
+          title:
+            expose:
+              label: Title
+    unassigned:
+      display_options:
+        fields:
+          status:
+            label: Status
+          title:
+            label: Title
+          operations:
+            label: Operations

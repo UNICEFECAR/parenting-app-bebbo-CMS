@@ -1,0 +1,31 @@
+adding:
+  content:
+    field_type_of_article:
+      type: entity_reference_autocomplete
+      weight: 5
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+    langcode:
+      weight: 1
+    path:
+      weight: 3
+    status:
+      weight: 4
+    translation:
+      weight: 2
+removing:
+  content:
+    field_type_of_article:
+      type: options_select
+      weight: 1
+    langcode:
+      weight: 2
+    path:
+      weight: 4
+    status:
+      weight: 5
+    translation:
+      weight: 3

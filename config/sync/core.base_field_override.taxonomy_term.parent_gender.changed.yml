@@ -1,0 +1,18 @@
+uuid: 813de1d0-f3ef-4cb3-9df2-77444a17e884
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.parent_gender
+id: taxonomy_term.parent_gender.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: parent_gender
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

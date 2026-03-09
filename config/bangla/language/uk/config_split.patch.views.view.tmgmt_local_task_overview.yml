@@ -1,0 +1,192 @@
+adding:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Filter
+            reset_button_label: Reset
+    closed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    completed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    eligible:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    my_tasks:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    pending:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    rejected:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+    unassigned:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+          operations:
+            label: Operations
+removing:
+  display:
+    default:
+      display_title: Головне
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Фільтр
+            exposed_sorts_label: 'Впорядкувати за'
+            sort_asc_label: Зрост
+            sort_desc_label: Спад
+        pager:
+          options:
+            expose:
+              items_per_page_label: 'Елементів на сторінку'
+              items_per_page_options_all_label: '- Усе -'
+              offset_label: Зміщення
+            tags:
+              previous: '‹ Попередня'
+              next: 'Наступна ›'
+              first: '« Перша'
+              last: 'Остання »'
+        filters:
+          status:
+            expose:
+              label: Стан
+    closed:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    completed:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    eligible:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    my_tasks:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    pending:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    rejected:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан
+          source_language:
+            expose:
+              label: 'Вихідна мова'
+    unassigned:
+      display_options:
+        fields:
+          status:
+            label: Стан
+          operations:
+            label: Операції
+        filters:
+          status:
+            expose:
+              label: Стан

@@ -1,0 +1,10 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          name:
+            label: User
+          group_roles:
+            label: Roles

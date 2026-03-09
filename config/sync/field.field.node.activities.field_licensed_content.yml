@@ -1,0 +1,28 @@
+uuid: d96b407b-2aa3-48c7-ac9d-ee9611db0f04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.activities
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.activities.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: activities
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

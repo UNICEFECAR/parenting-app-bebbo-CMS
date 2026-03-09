@@ -1,0 +1,31 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          thumbnail__target_id:
+            label: 'Küçük resim'
+          changed:
+            label: Güncellendi
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          thumbnail__target_id:
+            label: 'Küçük görsel'
+            separator: ', '
+          name:
+            separator: ', '
+          bundle:
+            separator: ', '
+          uid:
+            separator: ', '
+          status:
+            separator: ', '
+          changed:
+            label: Güncellenme
+            separator: ', '
+        empty:
+          area_text_custom:
+            content: 'Ortam yok.'

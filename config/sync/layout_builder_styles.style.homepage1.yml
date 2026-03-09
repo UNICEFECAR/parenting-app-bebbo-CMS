@@ -1,0 +1,13 @@
+uuid: 5f255e51-7785-46fb-8c2b-a9ee13e177e8
+langcode: en
+status: true
+dependencies: {  }
+id: homepage1
+label: Homepage1
+classes: homepageblock1
+type: component
+group: default
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }
+weight: 0

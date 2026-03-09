@@ -1,0 +1,37 @@
+adding:
+  display:
+    rest_export_2:
+      display_options:
+        filters:
+          field_child_age_target_id:
+            value:
+              - 16
+              - 21
+              - 26
+              - 31
+              - 36
+              - 41
+              - 56
+              - 61
+              - 66
+              - 71
+removing:
+  display:
+    rest_export_2:
+      display_options:
+        filters:
+          field_child_age_target_id:
+            value:
+              - 43
+              - 44
+              - 45
+              - 47
+              - 48
+              - 49
+              - 50
+              - 52
+              - 57
+              - 58
+    rest_export_5:
+      display_options:
+        enabled: true

@@ -1,0 +1,8 @@
+adding:
+  definitions:
+    standard__front_page:
+      weight: -45
+removing:
+  definitions:
+    standard__front_page:
+      weight: -50

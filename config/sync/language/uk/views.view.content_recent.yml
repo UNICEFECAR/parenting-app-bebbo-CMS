@@ -1,0 +1,9 @@
+display:
+  default:
+    display_title: Базово
+    display_options:
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад

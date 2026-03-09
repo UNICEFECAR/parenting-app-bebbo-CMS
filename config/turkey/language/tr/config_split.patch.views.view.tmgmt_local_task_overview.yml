@@ -1,0 +1,73 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+    closed:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    completed:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    eligible:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    my_tasks:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    pending:
+      display_options:
+        fields:
+          status:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    rejected:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+    unassigned:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '

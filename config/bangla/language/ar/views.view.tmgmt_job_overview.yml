@@ -1,0 +1,24 @@
+display:
+  default:
+    display_options:
+      fields:
+        label:
+          label: التسمية
+        source_language_1:
+          label: From
+        target_language:
+          label: To
+        tags_count:
+          label: Tags
+        operations:
+          label: عمليات
+      pager:
+        options:
+          tags:
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
+      exposed_form:
+        options:
+          reset_button_label: Reset

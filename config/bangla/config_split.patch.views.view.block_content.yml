@@ -1,0 +1,31 @@
+adding:
+  label: 'Custom block library'
+  display:
+    default:
+      display_options:
+        access:
+          options:
+            perm: 'administer blocks'
+    page_1:
+      display_options:
+        path: admin/structure/block/block-content
+        menu:
+          title: 'Custom block library'
+          description: ''
+          parent: block.admin_display
+removing:
+  label: 'Content blocks'
+  display:
+    default:
+      display_options:
+        access:
+          options:
+            perm: 'access block library'
+    page_1:
+      display_options:
+        path: admin/content/block
+        menu:
+          title: Blocks
+          description: 'Create and edit block content.'
+          expanded: false
+          parent: system.admin_content

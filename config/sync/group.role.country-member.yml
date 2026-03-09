@@ -1,0 +1,17 @@
+uuid: e466b658-d579-4a1c-84ba-56293a609665
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-member
+label: Member
+weight: -100
+internal: true
+audience: member
+group_type: country
+permissions_ui: true
+permissions:
+  - 'access group_node overview'
+  - 'view group_membership content'
+  - 'view latest version'

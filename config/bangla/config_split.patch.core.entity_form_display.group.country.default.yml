@@ -1,0 +1,48 @@
+adding:
+  content:
+    field_app_name:
+      weight: 9
+    field_country_email:
+      weight: 11
+    field_country_flag:
+      weight: 2
+    field_country_national_partner:
+      weight: 4
+    field_country_sponsor_logo:
+      weight: 3
+    field_language:
+      weight: 5
+    field_make_available_for_mobile:
+      weight: 7
+    field_master_language:
+      weight: 6
+    field_unicef_logo:
+      weight: 12
+    langcode:
+      weight: 1
+    status:
+      weight: 8
+removing:
+  content:
+    field_app_name:
+      weight: 1
+    field_country_email:
+      weight: 3
+    field_country_flag:
+      weight: 4
+    field_country_national_partner:
+      weight: 7
+    field_country_sponsor_logo:
+      weight: 6
+    field_language:
+      weight: 9
+    field_make_available_for_mobile:
+      weight: 12
+    field_master_language:
+      weight: 8
+    field_unicef_logo:
+      weight: 5
+    langcode:
+      weight: 2
+    status:
+      weight: 11

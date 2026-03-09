@@ -1,0 +1,13 @@
+adding:
+  permissions:
+    - 'create image media'
+    - 'create media'
+    - 'create remote_video media'
+    - 'create video media'
+    - 'delete any remote_video media'
+    - 'delete media'
+    - 'delete own image media'
+    - 'delete own remote_video media'
+    - 'delete own video media'
+    - 'update media'
+removing: {  }

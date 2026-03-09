@@ -1,0 +1,50 @@
+adding:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button_label: Reset
+        fields:
+          type:
+            label: Type
+          operations:
+            label: Operations
+        filters:
+          type:
+            expose:
+              label: Type
+removing:
+  display:
+    default:
+      display_title: Головне
+      display_options:
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Впорядкувати за'
+            sort_asc_label: Зрост
+            sort_desc_label: Спад
+        pager:
+          options:
+            expose:
+              items_per_page_label: 'Елементів на сторінку'
+              items_per_page_options_all_label: '- Усе -'
+              offset_label: Зміщення
+        fields:
+          title:
+            label: Заголовок
+          type:
+            label: Тип
+          name:
+            label: Автор
+          changed:
+            label: Оновлено
+          operations:
+            label: Операції
+        filters:
+          title:
+            expose:
+              label: Заголовок
+          type:
+            expose:
+              label: Тип

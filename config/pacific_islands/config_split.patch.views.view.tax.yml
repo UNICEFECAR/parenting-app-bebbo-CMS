@@ -1,0 +1,41 @@
+adding:
+  dependencies:
+    config:
+      - user.role.anonymous
+      - user.role.authenticated
+  display:
+    rest_export_3:
+      display_options:
+        access:
+          type: role
+          options:
+            role:
+              anonymous: anonymous
+              authenticated: authenticated
+        cache:
+          type: none
+          options: {  }
+        row:
+          options:
+            field_options:
+              vid:
+                alias: ''
+                raw_output: false
+        defaults:
+          access: false
+          cache: false
+        rendering_language: '***LANGUAGE_entity_default***'
+      cache_metadata:
+        contexts:
+          - user.roles
+removing:
+  display:
+    rest_export_3:
+      display_options:
+        style:
+          options:
+            uses_fields: false
+      cache_metadata:
+        contexts:
+          - 'languages:language_content'
+          - user.permissions

@@ -1,0 +1,56 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          name:
+            label: User
+        arguments:
+          gid:
+            exception:
+              title: All
+removing:
+  label: 'Členovia skupiny'
+  display:
+    default:
+      display_title: Master
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Použiť
+            exposed_sorts_label: 'Zoradiť podľa'
+            sort_asc_label: Vzostupne
+            sort_desc_label: Zostupne
+        pager:
+          options:
+            tags:
+              previous: ‹‹
+              next: ››
+              first: «
+              last: »
+            expose:
+              items_per_page_label: 'Položky na stránku'
+              items_per_page_options_all_label: '- Všetky -'
+              offset_label: Ofset
+        fields:
+          name:
+            label: Používateľ
+            separator: ', '
+          group_roles:
+            separator: ', '
+          changed:
+            label: Aktualizované
+            separator: ', '
+          created:
+            label: 'Členom od'
+            separator: ', '
+        arguments:
+          gid:
+            exception:
+              title: Všetko
+        title: Členovia
+    page_1:
+      display_title: Stránka
+      display_options:
+        menu:
+          title: Členovia

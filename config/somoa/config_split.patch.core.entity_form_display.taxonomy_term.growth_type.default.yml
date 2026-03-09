@@ -1,0 +1,26 @@
+adding:
+  content:
+    path:
+      weight: 3
+    status:
+      weight: 4
+    translation:
+      weight: 2
+  hidden:
+    field_unique_name: true
+removing:
+  content:
+    field_unique_name:
+      type: string_textfield
+      weight: 2
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    path:
+      weight: 4
+    status:
+      weight: 5
+    translation:
+      weight: 3

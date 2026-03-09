@@ -1,0 +1,15 @@
+adding:
+  label: 'Custom block library'
+  description: 'Find and manage custom blocks.'
+  display:
+    default:
+      display_options:
+        title: 'Custom block library'
+        empty:
+          area_text_custom:
+            content: 'There are no custom blocks available.'
+    page_1:
+      display_options:
+        menu:
+          description: 'Create and edit block content.'
+removing: {  }

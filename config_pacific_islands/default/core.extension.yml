@@ -26,7 +26,6 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -129,7 +128,6 @@ module:
   toolbar: 0
   toolbar_menu: 0
   toolbar_menu_clean: 0
-  update: 0
   user: 0
   variationcache: 0
   video_embed_field: 0

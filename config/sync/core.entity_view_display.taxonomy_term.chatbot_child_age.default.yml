@@ -1,0 +1,53 @@
+uuid: ec025c24-854a-48e4-bc5d-936a08bb359c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.chatbot_child_age.feeds_item
+    - field.field.taxonomy_term.chatbot_child_age.field_days_from
+    - field.field.taxonomy_term.chatbot_child_age.field_days_to
+    - field.field.taxonomy_term.chatbot_child_age.field_period
+    - taxonomy.vocabulary.chatbot_child_age
+  module:
+    - text
+id: taxonomy_term.chatbot_child_age.default
+targetEntityType: taxonomy_term
+bundle: chatbot_child_age
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_days_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_days_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_period:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

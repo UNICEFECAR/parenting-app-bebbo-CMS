@@ -1,0 +1,24 @@
+adding:
+  settings:
+    allowed_values:
+      -
+        value: BebboPacific
+        label: 'Bebbo Pacific'
+      -
+        value: Bebbo
+        label: Bebbo
+      -
+        value: Foleja
+        label: Foleja
+      -
+        value: FATU
+        label: FATU
+removing:
+  settings:
+    allowed_values:
+      -
+        value: Bebbo
+        label: Bebbo
+      -
+        value: Foleja
+        label: Foleja

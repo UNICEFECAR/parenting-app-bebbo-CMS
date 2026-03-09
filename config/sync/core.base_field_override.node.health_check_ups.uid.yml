@@ -1,0 +1,20 @@
+uuid: 9e54db02-4d07-44a8-8342-0e71db983781
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+id: node.health_check_ups.uid
+field_name: uid
+entity_type: node
+bundle: health_check_ups
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

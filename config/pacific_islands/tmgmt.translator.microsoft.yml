@@ -1,0 +1,46 @@
+uuid: fa8cf41e-c69f-4284-8da0-b0e74379c00f
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_microsoft
+name: microsoft
+label: Microsoft
+description: ''
+auto_accept: false
+weight: null
+plugin: microsoft
+settings:
+  api_key: ''
+remote_languages_mappings:
+  en: EN
+  ru: RU
+  sq: ''
+  al-sq: ''
+  by-be: ''
+  by-ru: ''
+  bg-bg: ''
+  gr-el: ''
+  xk-sq: ''
+  xk-rs: ''
+  kg-ky: ''
+  kg-ru: ''
+  md-ro: ''
+  me-cnr: ''
+  mk-mk: ''
+  mk-sq: ''
+  ro: RO
+  ro-ro: ''
+  sr: ''
+  rs-sr: ''
+  rs-en: ''
+  sk: SK
+  tj-tg: ''
+  tj-ru: ''
+  tr: TR
+  uk: UK
+  uz-uz: ''
+  uz-ru: ''
+  ar: AR
+  ws-en: ''
+  pc-en: ''

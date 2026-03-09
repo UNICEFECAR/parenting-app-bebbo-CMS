@@ -1,0 +1,25 @@
+appID: K288UMKCNF.org.unicef.ecar.merhababebek
+paths: '/share/*'
+appclips: ''
+appID_Test: K288UMKCNF.org.unicef.ecar.merhababebek
+paths_Test: '/share/*'
+kosovo_appID: ''
+kosovo_paths: ''
+kosovo_appclips: ''
+kosovo_appID_Test: ''
+kosovo_paths_Test: ''
+applinks:
+  K288UMKCNF-org-unicef-ecar-merhababebek_0:
+    applinks: ''
+    appID: K288UMKCNF.org.unicef.ecar.merhababebek
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  K288UMKCNF-org-unicef-ecar-merhababebek_1:
+    applinks: ''
+    appID: K288UMKCNF.org.unicef.ecar.merhababebek
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''

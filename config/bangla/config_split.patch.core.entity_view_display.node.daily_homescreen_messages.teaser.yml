@@ -1,0 +1,6 @@
+adding: {  }
+removing:
+  dependencies:
+    config:
+      - field.field.node.daily_homescreen_messages.field_mandatory_content
+      - field.field.node.daily_homescreen_messages.field_pre_populated

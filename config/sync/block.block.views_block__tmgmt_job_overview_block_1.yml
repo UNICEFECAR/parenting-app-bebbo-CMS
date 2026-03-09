@@ -1,0 +1,38 @@
+uuid: ad31c766-3490-49bb-8222-edaaddb13570
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.tmgmt_job_overview
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - claro
+id: views_block__tmgmt_job_overview_block_1
+theme: claro
+region: content
+weight: -1
+provider: null
+plugin: 'views_block:tmgmt_job_overview-block_1'
+settings:
+  id: 'views_block:tmgmt_job_overview-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /dashboard
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      global_admin: global_admin

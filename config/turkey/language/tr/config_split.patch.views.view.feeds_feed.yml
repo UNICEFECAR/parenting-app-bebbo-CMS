@@ -1,0 +1,23 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          changed:
+            label: Güncellendi
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          type:
+            separator: ', '
+          name:
+            separator: ', '
+          changed:
+            label: Güncellenme
+            separator: ', '
+          imported:
+            separator: ', '

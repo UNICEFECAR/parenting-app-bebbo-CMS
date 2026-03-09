@@ -1,0 +1,62 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          source_language:
+            label: From
+          target_language:
+            label: To
+removing:
+  display:
+    default:
+      display_title: Master
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Použiť
+            exposed_sorts_label: 'Zoradiť podľa'
+            sort_asc_label: Vzostupne
+            sort_desc_label: Zostupne
+        pager:
+          options:
+            expose:
+              items_per_page_label: 'Položky na stránku'
+              items_per_page_options_all_label: '- Všetky -'
+              offset_label: Ofset
+            tags:
+              previous: '‹ Predchádzajúci'
+              next: Ďalej
+              first: «
+              last: »
+        fields:
+          state:
+            label: Stav
+          source_language:
+            label: Od
+            separator: ', '
+          target_language:
+            label: Komu
+            separator: ', '
+          word_count:
+            separator: ', '
+          tags_count:
+            label: Značky
+            separator: ', '
+          changed:
+            label: Zmenené
+            separator: ', '
+        filters:
+          state:
+            group_info:
+              label: Stav
+          source_language:
+            expose:
+              label: 'Zdrojový jazyk'
+          job_type:
+            group_info:
+              group_items:
+                1:
+                  title: Normálny
+    page_1:
+      display_title: Stránka

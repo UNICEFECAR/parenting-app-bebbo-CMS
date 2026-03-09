@@ -1,0 +1,14 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          source_language_1:
+            label: From
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          tags_count:
+            label: Tags

@@ -1,0 +1,19 @@
+adding:
+  translatable: false
+removing:
+  dependencies:
+    config:
+      - filter.format.admin_full_html
+      - filter.format.full_html
+      - filter.format.plain_text
+    module:
+      - tmgmt_content
+  third_party_settings:
+    tmgmt_content:
+      excluded: false
+  translatable: true
+  settings:
+    allowed_formats:
+      - full_html
+      - plain_text
+      - admin_full_html

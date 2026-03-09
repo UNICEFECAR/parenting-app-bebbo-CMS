@@ -1,0 +1,54 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        filename:
+          label: الاسم
+        filemime:
+          label: 'MIME type'
+        filesize:
+          label: Size
+        status:
+          label: الحالة
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+          expose:
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        filemime:
+          expose:
+            label: 'MIME type'
+        status:
+          expose:
+            label: الحالة
+  page_2:
+    display_options:
+      fields:
+        type:
+          label: 'Entity type'
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+          expose:
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      arguments:
+        fid:
+          exception:
+            title: All

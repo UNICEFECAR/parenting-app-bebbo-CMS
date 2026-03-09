@@ -1,0 +1,20 @@
+uuid: a5b1067e-5b19-4293-954d-4d03b519a7c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_sd3
+field_name: field_sd3
+entity_type: taxonomy_term
+type: decimal
+settings:
+  precision: 10
+  scale: 4
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

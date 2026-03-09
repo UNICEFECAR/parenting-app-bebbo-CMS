@@ -1,0 +1,17 @@
+uuid: b2b5a8cb-e454-4cc9-80d9-19d7438bab38
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.editor
+id: country-0b0baeca9
+label: Editor
+weight: 4
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }
