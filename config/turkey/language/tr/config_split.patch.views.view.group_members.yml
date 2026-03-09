@@ -1,0 +1,32 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          changed:
+            label: Güncellendi
+          view_group_content:
+            text: 'Manage member'
+          edit_group_content:
+            text: 'Assign roles'
+          edit_user:
+            text: 'Edit member'
+removing:
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            tags:
+              previous: ‹‹
+              next: ››
+        fields:
+          name:
+            separator: ', '
+          group_roles:
+            separator: ', '
+          changed:
+            label: Güncellenme
+            separator: ', '
+          created:
+            separator: ', '

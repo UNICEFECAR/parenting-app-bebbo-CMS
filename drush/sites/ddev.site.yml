@@ -4,18 +4,18 @@ bebbo:
 bangla:
   root: /var/www/html/docroot
   uri: http://bangla.bebbo.app.ddev.site
-ecuador:
+ec:
   root: /var/www/html/docroot
   uri: http://ec.bebbo.app.ddev.site
-pacific_islands:
+pc:
   root: /var/www/html/docroot
   uri: http://pc.bebbo.app.ddev.site
-somoa:
+ws:
   root: /var/www/html/docroot
   uri: http://ws.bebbo.app.ddev.site
-turkey:
+tr:
   root: /var/www/html/docroot
   uri: http://tr.bebbo.app.ddev.site
-zimbabwe:
+zw:
   root: /var/www/html/docroot
   uri: http://zw.bebbo.app.ddev.site

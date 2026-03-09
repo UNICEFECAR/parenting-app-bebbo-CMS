@@ -1,0 +1,22 @@
+uuid: 51506c56-4816-41db-8954-252a3f30823e
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.sticky
+field_name: sticky
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Sticky at top of lists'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

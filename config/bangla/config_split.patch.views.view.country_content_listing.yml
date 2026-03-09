@@ -1,0 +1,33 @@
+adding:
+  display:
+    default:
+      display_options:
+        cache:
+          type: none
+          options: {  }
+    page_5:
+      display_options:
+        filters:
+          langcode:
+            value:
+              '***LANGUAGE_site_default***': '***LANGUAGE_site_default***'
+              en: en
+              bn: bn
+            expose:
+              reduce: true
+removing:
+  display:
+    default:
+      display_options:
+        cache:
+          type: tag
+    page_5:
+      display_options:
+        cache:
+          type: none
+        filters:
+          langcode:
+            expose:
+              reduce: false
+        defaults:
+          cache: false

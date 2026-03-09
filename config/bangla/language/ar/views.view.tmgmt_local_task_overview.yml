@@ -1,0 +1,171 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: Reset
+      fields:
+        title:
+          label: التسمية
+        item_count:
+          label: Items
+      filters:
+        status:
+          expose:
+            label: Status
+  closed:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+      menu:
+        title: Closed
+  completed:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+  eligible:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+  my_tasks:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+  pending:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+        title:
+          expose:
+            label: التسمية
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: Status
+        title:
+          label: التسمية
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: عمليات
+      filters:
+        status:
+          expose:
+            label: Status
+      tab_options:
+        title: Translate

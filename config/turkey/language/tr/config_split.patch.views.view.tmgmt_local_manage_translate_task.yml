@@ -1,0 +1,96 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+    assigned:
+      display_options:
+        fields:
+          status:
+            separator: ', '
+          tuid:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '
+    closed:
+      display_options:
+        fields:
+          status:
+            separator: ', '
+          created:
+            separator: ', '
+          tuid:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '
+    completed:
+      display_options:
+        fields:
+          status:
+            separator: ', '
+          created:
+            separator: ', '
+          tuid:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '
+    pending:
+      display_options:
+        fields:
+          tuid:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '
+    rejected:
+      display_options:
+        fields:
+          created:
+            separator: ', '
+          tuid:
+            separator: ', '
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '
+    unassigned:
+      display_options:
+        fields:
+          title:
+            separator: ', '
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          loop_count:
+            separator: ', '

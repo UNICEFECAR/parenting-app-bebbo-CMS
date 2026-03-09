@@ -1,0 +1,38 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          state:
+            label: Статус
+          label:
+            label: Ознака
+          operations:
+            label: Операције
+        filters:
+          state:
+            expose:
+              label: Статус
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          state:
+            label: State
+          label:
+            label: Label
+          translator:
+            label: Provider
+          operations:
+            label: Operations
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'
+        filters:
+          state:
+            expose:
+              label: State
+          translator:
+            expose:
+              label: Provider

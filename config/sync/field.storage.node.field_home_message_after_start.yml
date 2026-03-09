@@ -1,0 +1,20 @@
+uuid: a1b6e26f-5386-4141-85c3-f4fd8559b4ea
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_home_message_after_start
+field_name: field_home_message_after_start
+entity_type: node
+type: decimal
+settings:
+  precision: 10
+  scale: 2
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

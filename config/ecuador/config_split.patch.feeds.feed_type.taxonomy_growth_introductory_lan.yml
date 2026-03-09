@@ -1,0 +1,28 @@
+adding:
+  processor_configuration:
+    langcode: uz-uz
+    insert_new: 1
+  mappings:
+    -
+      unique:
+        value: '1'
+    -
+      settings:
+        language: uz-uz
+    -
+      settings:
+        language: uz-uz
+removing:
+  processor_configuration:
+    langcode: tr
+    insert_new: 0
+  mappings:
+    -
+      unique:
+        value: 1
+    -
+      settings:
+        language: tr
+    -
+      settings:
+        language: tr

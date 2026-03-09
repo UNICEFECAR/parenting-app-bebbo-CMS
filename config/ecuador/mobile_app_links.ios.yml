@@ -1,0 +1,25 @@
+appID: K288UMKCNF.org.unicef.ec.wawamor
+paths: '/share/*'
+appclips: ''
+appID_Test: K288UMKCNF.org.unicef.ec.wawamor
+paths_Test: '/share/*'
+kosovo_appID: ''
+kosovo_paths: ''
+kosovo_appclips: ''
+kosovo_appID_Test: ''
+kosovo_paths_Test: ''
+applinks:
+  L9N55R289Y-org-unicef-ec-wawamor_0:
+    applinks: ''
+    appID: L9N55R289Y.org.unicef.ec.wawamor
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  L9N55R289Y-org-unicef-ec-wawamor_1:
+    applinks: ''
+    appID: L9N55R289Y.org.unicef.ec.wawamor
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''

@@ -1,0 +1,23 @@
+label: 'Güncel içerik'
+description: 'Güncel içerik.'
+display:
+  default:
+    display_title: Varsayılan
+    display_options:
+      title: 'Güncel içerik'
+      fields:
+        changed:
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Uygula
+          reset_button_label: Sıfırla
+          exposed_sorts_label: 'Sıralama anahtarı'
+          sort_asc_label: Artan
+          sort_desc_label: Azalan
+      empty:
+        area_text_custom:
+          content: 'Hiçbir içerik mevcut değil.'
+      use_more_text: Devamı
+  block_1:
+    display_title: Blok

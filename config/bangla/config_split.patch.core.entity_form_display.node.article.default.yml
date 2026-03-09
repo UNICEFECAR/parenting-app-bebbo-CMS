@@ -1,0 +1,26 @@
+adding:
+  content:
+    field_australian_article:
+      weight: 17
+    field_licensed_content:
+      weight: 15
+    field_premature_content:
+      weight: 16
+    field_references_and_comments:
+      weight: 18
+    translation:
+      weight: 14
+removing:
+  content:
+    field_australian_article:
+      weight: 18
+    field_licensed_content:
+      weight: 16
+    field_premature_content:
+      weight: 17
+    field_references_and_comments:
+      weight: 14
+    translation:
+      weight: 15
+    url_redirects:
+      weight: 50

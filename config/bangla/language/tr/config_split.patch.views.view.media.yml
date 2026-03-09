@@ -1,0 +1,73 @@
+adding:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button_label: Reset
+removing:
+  label: Medya
+  display:
+    default:
+      display_options:
+        title: Medya
+        fields:
+          thumbnail__target_id:
+            label: 'Küçük görsel'
+            separator: ', '
+          name:
+            label: 'Medya adı'
+            separator: ', '
+          bundle:
+            separator: ', '
+          uid:
+            label: Yazar
+            separator: ', '
+          status:
+            label: Durum
+            settings:
+              format_custom_false: 'Yayında değil'
+              format_custom_true: Yayında
+            separator: ', '
+          changed:
+            label: Güncellenme
+            separator: ', '
+        pager:
+          options:
+            tags:
+              next: 'Sonraki ›'
+              previous: '‹ Önceki'
+              first: '« İlk'
+              last: 'Son »'
+            expose:
+              items_per_page_label: 'Sayfa başına öğe sayısı'
+              items_per_page_options_all_label: '- Tümü -'
+              offset_label: 'Başlangıç değeri'
+        exposed_form:
+          options:
+            reset_button_label: Sıfırla
+            exposed_sorts_label: 'Sıralama anahtarı'
+            sort_asc_label: Artan
+            sort_desc_label: Azalan
+        empty:
+          area_text_custom:
+            content: 'Ortam yok.'
+        filters:
+          name:
+            expose:
+              label: 'Medya adı'
+          status:
+            expose:
+              label: Doğru
+            group_info:
+              label: 'Yayın durumu'
+              group_items:
+                1:
+                  title: Yayında
+                2:
+                  title: 'Yayında değil'
+    media_page_list:
+      display_title: Medya
+      display_options:
+        menu:
+          title: Medya

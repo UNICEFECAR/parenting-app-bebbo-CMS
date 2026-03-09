@@ -1,0 +1,10 @@
+android_packages:
+  org-unicef-ec-wawamor_0:
+    package_name: org.unicef.ec.wawamor
+    sha256_cert_fingerprints: |-
+      1D:E1:5A:AD:47:62:0D:A8:BA:B2:08:B1:82:C9:8A:C0:5A:3E:3D:BA:0D:D9:F7:2D:F7:6C:FF:7F:0D:07:E8:74
+      DF:59:B3:58:DF:EB:FD:78:93:CD:25:26:DD:78:59:76:C6:CA:01:76:8C:A3:77:B4:E7:DB:61:6A:0E:A0:35:47
+kosovo_package_name: org.unicef.ec.wawamor
+kosovo_sha256_cert_fingerprints: |-
+  1D:E1:5A:AD:47:62:0D:A8:BA:B2:08:B1:82:C9:8A:C0:5A:3E:3D:BA:0D:D9:F7:2D:F7:6C:FF:7F:0D:07:E8:74
+  DF:59:B3:58:DF:EB:FD:78:93:CD:25:26:DD:78:59:76:C6:CA:01:76:8C:A3:77:B4:E7:DB:61:6A:0E:A0:35:47

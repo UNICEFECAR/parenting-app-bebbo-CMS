@@ -1,0 +1,18 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: ws-en
+  mappings:
+    -
+      settings:
+        language: ws-en
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: uz-kaa
+  mappings:
+    -
+      settings:
+        language: uz-kaa

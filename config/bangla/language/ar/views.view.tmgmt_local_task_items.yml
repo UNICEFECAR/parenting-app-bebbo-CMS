@@ -1,0 +1,21 @@
+display:
+  default:
+    display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      fields:
+        status:
+          label: Status
+        label:
+          label: التسمية
+        item_type:
+          label: النوع
+        operations:
+          label: عمليات
+      arguments:
+        tltid:
+          exception:
+            title: All
+  block_1:
+    display_title: Block

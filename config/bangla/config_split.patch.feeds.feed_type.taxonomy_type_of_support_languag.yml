@@ -1,0 +1,24 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: bn
+  mappings:
+    -
+      unique:
+        value: 1
+    -
+      settings:
+        language: bn
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: sk
+  mappings:
+    -
+      unique:
+        value: '1'
+    -
+      settings:
+        language: sk

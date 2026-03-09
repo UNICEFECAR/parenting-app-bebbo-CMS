@@ -1,0 +1,18 @@
+uuid: 8557678f-33a2-4024-b752-6578e83cb058
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.changed
+field_name: changed
+entity_type: node
+bundle: vaccinations
+label: Changed
+description: 'The time that the node was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

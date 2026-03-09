@@ -1,0 +1,9 @@
+uuid: 7b213add-a5cc-4327-8689-3656bdaef849
+langcode: en
+status: true
+dependencies: {  }
+id: ws-en
+label: Samoa-English
+direction: ltr
+weight: 14
+locked: false

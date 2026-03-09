@@ -1,0 +1,22 @@
+uuid: 24dcf1af-7534-47e8-b694-c579b06a11a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.sticky
+field_name: sticky
+entity_type: node
+bundle: vaccinations
+label: 'Sticky at top of lists'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

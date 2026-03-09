@@ -1,0 +1,58 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          operations:
+            label: Операции
+        exposed_form:
+          options:
+            submit_button: Фильтр
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          name:
+            label: Username
+          status:
+            label: Status
+            settings:
+              format_custom_true: Active
+          roles_target_id:
+            label: Roles
+          operations:
+            label: Operations
+          mail:
+            separator: ', '
+        pager:
+          options:
+            tags:
+              next: 'Next ›'
+              previous: '‹ Previous'
+              first: '« First'
+              last: 'Last »'
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset
+        exposed_form:
+          options:
+            submit_button: Filter
+            exposed_sorts_label: 'Sort by'
+            sort_asc_label: Asc
+            sort_desc_label: Desc
+        filters:
+          status:
+            group_info:
+              label: Status
+              group_items:
+                1:
+                  title: Active
+          roles_target_id:
+            expose:
+              label: Роль
+    page_1:
+      display_options:
+        menu:
+          title: List

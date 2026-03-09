@@ -1,0 +1,127 @@
+uuid: 3a9c6061-083f-4629-bb59-f50dbd76103c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.vaccinations.body
+    - field.field.node.vaccinations.feeds_item
+    - field.field.node.vaccinations.field_growth_period
+    - field.field.node.vaccinations.field_licensed_content
+    - field.field.node.vaccinations.field_notification_from
+    - field.field.node.vaccinations.field_notification_to
+    - field.field.node.vaccinations.field_old_calendar
+    - field.field.node.vaccinations.field_pinned_article
+    - field.field.node.vaccinations.field_pinned_video_article
+    - field.field.node.vaccinations.field_pre_populated
+    - field.field.node.vaccinations.field_vaccination_closes
+    - field.field.node.vaccinations.field_vaccination_opens
+    - node.type.vaccinations
+  module:
+    - text
+    - user
+id: node.vaccinations.default
+targetEntityType: node
+bundle: vaccinations
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_growth_period:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_licensed_content:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 109
+    region: content
+  field_notification_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_notification_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_old_calendar:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 110
+    region: content
+  field_pinned_article:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_pinned_video_article:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  field_vaccination_closes:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_vaccination_opens:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_pre_populated: true
+  langcode: true

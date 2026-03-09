@@ -1,0 +1,25 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: tr
+    update_existing: 1
+  custom_sources:
+    term_id1:
+      value: Term_id
+      label: Term_id
+      machine_name: term_id1
+  mappings:
+    -
+      settings:
+        language: tr
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: uz-kaa
+    update_existing: 2
+  mappings:
+    -
+      settings:
+        language: uz-kaa

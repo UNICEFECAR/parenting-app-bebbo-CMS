@@ -1,0 +1,18 @@
+uuid: 1be2fde3-9b06-43c7-a3a3-5bff19964fd1
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.moderation_state
+field_name: moderation_state
+entity_type: node
+bundle: vaccinations
+label: 'Moderation state'
+description: 'The moderation state of this piece of content.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

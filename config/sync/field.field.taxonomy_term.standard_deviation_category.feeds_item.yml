@@ -1,0 +1,23 @@
+uuid: a211a5f7-8991-438c-a031-76c8fde34397
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.feeds_item
+    - taxonomy.vocabulary.standard_deviation_category
+  module:
+    - feeds
+id: taxonomy_term.standard_deviation_category.feeds_item
+field_name: feeds_item
+entity_type: taxonomy_term
+bundle: standard_deviation_category
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

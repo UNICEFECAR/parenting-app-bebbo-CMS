@@ -1,0 +1,20 @@
+uuid: 102271ba-48d2-462a-84cb-ff95cec7b1c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - text
+id: taxonomy_term.parent_gender.description
+field_name: description
+entity_type: taxonomy_term
+bundle: parent_gender
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

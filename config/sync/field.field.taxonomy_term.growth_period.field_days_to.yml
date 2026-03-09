@@ -1,0 +1,23 @@
+uuid: 567beef4-94c3-4706-bbcc-01577d06a553
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_days_to
+    - taxonomy.vocabulary.growth_period
+id: taxonomy_term.growth_period.field_days_to
+field_name: field_days_to
+entity_type: taxonomy_term
+bundle: growth_period
+label: 'Days To'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

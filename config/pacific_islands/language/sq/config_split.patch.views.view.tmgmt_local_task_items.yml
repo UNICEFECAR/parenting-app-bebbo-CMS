@@ -1,0 +1,8 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          status:
+            label: Status

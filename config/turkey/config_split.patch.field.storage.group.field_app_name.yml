@@ -1,0 +1,10 @@
+adding:
+  settings:
+    allowed_values:
+      -
+        value: Babuni
+        label: Babuni
+      -
+        value: merhababebek
+        label: 'Merhaba Bebek'
+removing: {  }

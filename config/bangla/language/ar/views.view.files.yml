@@ -1,0 +1,30 @@
+display:
+  default:
+    display_title: الافتراضي
+    display_options:
+      fields:
+        filename:
+          label: الاسم
+        filesize:
+          label: Size
+        status:
+          label: Status
+        count:
+          format_plural_string: !!binary MSBwbGFjZQNAY291bnQgcGxhY2Vz
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: Reset
+      filters:
+        filename:
+          expose:
+            label: Filename
+        status:
+          expose:
+            label: Status
+  page_2:
+    display_options:
+      arguments:
+        fid:
+          exception:
+            title: All

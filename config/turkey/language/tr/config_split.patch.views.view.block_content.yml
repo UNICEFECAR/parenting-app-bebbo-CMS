@@ -1,0 +1,32 @@
+adding:
+  label: 'Custom block library'
+  description: 'Find and manage custom blocks.'
+  display:
+    default:
+      display_options:
+        title: 'Custom block library'
+        fields:
+          changed:
+            label: Güncellendi
+        empty:
+          area_text_custom:
+            content: 'There are no custom blocks available.'
+    page_1:
+      display_options:
+        menu:
+          description: 'Create and edit block content.'
+removing:
+  description: 'İçerik bloklarını bulun ve yönetin.'
+  display:
+    default:
+      display_options:
+        fields:
+          info:
+            separator: ', '
+          type:
+            separator: ', '
+          changed:
+            label: Güncellenme
+        empty:
+          area_text_custom:
+            content: 'Kullanılabilir içerik bloğu yok.'

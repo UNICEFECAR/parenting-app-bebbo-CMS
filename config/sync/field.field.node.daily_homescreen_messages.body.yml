@@ -1,0 +1,23 @@
+uuid: 10bf7d1e-1246-4ef5-891c-8f2545d2fd9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.daily_homescreen_messages
+  module:
+    - text
+id: node.daily_homescreen_messages.body
+field_name: body
+entity_type: node
+bundle: daily_homescreen_messages
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

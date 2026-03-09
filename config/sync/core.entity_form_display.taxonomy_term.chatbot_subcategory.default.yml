@@ -1,0 +1,66 @@
+uuid: d00893a8-a5ad-4232-bf2f-21c0acd7504b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.chatbot_subcategory.feeds_item
+    - field.field.taxonomy_term.chatbot_subcategory.field_chatbot_category
+    - field.field.taxonomy_term.chatbot_subcategory.field_unique_name
+    - taxonomy.vocabulary.chatbot_subcategory
+  module:
+    - path
+id: taxonomy_term.chatbot_subcategory.default
+targetEntityType: taxonomy_term
+bundle: chatbot_subcategory
+mode: default
+content:
+  field_chatbot_category:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_unique_name:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 1
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true
+  feeds_item: true

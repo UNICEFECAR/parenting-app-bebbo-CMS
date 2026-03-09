@@ -1,0 +1,68 @@
+adding:
+  display:
+    default:
+      display_title: Master
+      display_options:
+        fields:
+          bundle:
+            label: Type
+          operations:
+            label: Operations
+        exposed_form:
+          options:
+            submit_button: Filter
+            reset_button_label: Reset
+        filters:
+          bundle:
+            expose:
+              label: Type
+          langcode:
+            expose:
+              label: Language
+removing:
+  label: Медіа
+  display:
+    default:
+      display_title: Базово
+      display_options:
+        title: Медіа
+        fields:
+          bundle:
+            label: Тип
+          uid:
+            label: Автор
+          status:
+            label: Стан
+          changed:
+            label: Оновлено
+          operations:
+            label: Операції
+        pager:
+          options:
+            tags:
+              next: 'Наступна ›'
+              previous: '‹ Попередня'
+              first: '« Перша'
+              last: 'Остання »'
+            expose:
+              items_per_page_label: 'Елементів на сторінку'
+              items_per_page_options_all_label: '- Усе -'
+              offset_label: Зміщення
+        exposed_form:
+          options:
+            submit_button: Фільтр
+            exposed_sorts_label: 'Впорядкувати за'
+            sort_asc_label: Зрост
+            sort_desc_label: Спад
+        filters:
+          bundle:
+            expose:
+              label: Тип
+          langcode:
+            expose:
+              label: Мова
+    media_page_list:
+      display_title: Медіа
+      display_options:
+        menu:
+          title: Медіа

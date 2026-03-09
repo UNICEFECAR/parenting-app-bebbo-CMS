@@ -1,0 +1,20 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: ec-es
+    update_existing: 1
+  mappings:
+    -
+      settings:
+        language: ec-es
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: uz-kaa
+    update_existing: 2
+  mappings:
+    -
+      settings:
+        language: uz-kaa

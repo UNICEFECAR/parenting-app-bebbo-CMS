@@ -1,0 +1,16 @@
+adding:
+  location: bulk_action
+  rotation:
+    destination: 'archive/[date:custom:Y-m-d].log'
+  format: '[[log:created]] [client: [log:ip], [log:user]] [log:message]'
+  level: 6
+  channels_type: include
+  channels:
+    - bulk_action
+removing:
+  location: 'public://logs'
+  rotation:
+    destination: 'archive/[date:custom:Y/m/d].log'
+  format: '[[log:created]] [[log:level]] [[log:channel]] [client: [log:ip], [log:user]] [log:message]'
+  level: 7
+  channels_type: exclude

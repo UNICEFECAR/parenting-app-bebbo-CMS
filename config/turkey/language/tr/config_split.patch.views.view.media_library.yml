@@ -1,0 +1,47 @@
+adding:
+  display:
+    widget:
+      display_title: 'Arayüz kontrolu (widget)'
+    widget_table:
+      display_options:
+        fields:
+          thumbnail__target_id:
+            label: 'Küçük resim'
+          changed:
+            label: Güncellendi
+removing:
+  display:
+    default:
+      display_options:
+        pager:
+          options:
+            tags:
+              next: ››
+              previous: ‹‹
+        exposed_form:
+          options:
+            submit_button: 'Filtreleri uygula'
+        empty:
+          area_text_custom:
+            content: 'Ortam yok.'
+        sorts:
+          name:
+            expose:
+              label: 'Ad (A-Z)'
+          name_1:
+            expose:
+              label: 'Ad (Z-A)'
+    page:
+      display_options:
+        fields:
+          name:
+            separator: ', '
+    widget:
+      display_title: 'Arayüz kontrolü (widget)'
+    widget_table:
+      display_options:
+        fields:
+          thumbnail__target_id:
+            label: 'Küçük görsel'
+          changed:
+            label: Güncellenme

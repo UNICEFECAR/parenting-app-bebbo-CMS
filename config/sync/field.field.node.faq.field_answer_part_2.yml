@@ -1,0 +1,27 @@
+uuid: 284540e5-6533-401e-89db-9c152985c2cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_answer_part_2
+    - node.type.faq
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.faq.field_answer_part_2
+field_name: field_answer_part_2
+entity_type: node
+bundle: faq
+label: 'Answer Part 2'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

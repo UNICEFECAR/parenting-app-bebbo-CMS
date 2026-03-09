@@ -1,0 +1,26 @@
+uuid: 05a9d9dd-bbd1-4aba-9c15-d415e8f85569
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_country_email
+    - group.type.country
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_country_email
+field_name: field_country_email
+entity_type: group
+bundle: country
+label: 'Country email'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: admin@bebbo.app
+default_value_callback: ''
+settings: {  }
+field_type: email

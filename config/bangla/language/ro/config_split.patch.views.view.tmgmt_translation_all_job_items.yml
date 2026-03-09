@@ -1,0 +1,72 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          label:
+            label: Etichetă
+          type:
+            label: Tip
+          operations:
+            label: Operațiuni
+removing:
+  display:
+    default:
+      display_title: Master
+      display_options:
+        exposed_form:
+          options:
+            submit_button: Apply
+            exposed_sorts_label: 'Sort by'
+            sort_asc_label: Asc
+            sort_desc_label: Descendent
+        pager:
+          options:
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset
+            tags:
+              previous: '‹ Previous'
+              next: 'Next ›'
+              first: '« First'
+              last: 'Last »'
+        fields:
+          state:
+            label: State
+          label:
+            label: Label
+          type:
+            label: Type
+          source_language:
+            separator: ', '
+          target_language:
+            separator: ', '
+          progress:
+            label: Progress
+          word_count:
+            separator: ', '
+          tags_count:
+            label: Tags
+            separator: ', '
+          changed:
+            label: Changed
+            separator: ', '
+          operations:
+            label: Operations
+        filters:
+          state:
+            expose:
+              label: States
+            group_info:
+              label: State
+          source_language:
+            expose:
+              label: 'Source language'
+          job_type:
+            group_info:
+              group_items:
+                1:
+                  title: Normal
+    page_1:
+      display_title: Page

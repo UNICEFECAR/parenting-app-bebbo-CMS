@@ -1,0 +1,15 @@
+adding:
+  content:
+    body:
+      label: hidden
+    field_licensed_content:
+      label: hidden
+removing:
+  dependencies:
+    config:
+      - field.field.node.faq.field_pre_populated
+  content:
+    body:
+      label: above
+    field_licensed_content:
+      label: above

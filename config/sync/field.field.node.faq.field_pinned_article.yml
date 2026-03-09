@@ -1,0 +1,31 @@
+uuid: d6da90d8-0c8a-4eee-8fa0-89f6ad7bd5c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pinned_article
+    - node.type.faq
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.faq.field_pinned_article
+field_name: field_pinned_article
+entity_type: node
+bundle: faq
+label: 'Related Article'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - article
+field_type: entity_reference

@@ -1,0 +1,23 @@
+uuid: c290d44d-cf96-45b1-8aa9-a19d6b123b6a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.feeds_item
+    - taxonomy.vocabulary.chatbot_child_age
+  module:
+    - feeds
+id: taxonomy_term.chatbot_child_age.feeds_item
+field_name: feeds_item
+entity_type: taxonomy_term
+bundle: chatbot_child_age
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

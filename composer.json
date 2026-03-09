@@ -213,6 +213,9 @@
             "drupal/filelog": {
                 "Circular reference fix": "https://www.drupal.org/files/issues/2024-08-01/3416342-12.patch"
             },
+            "drupal/lang_dropdown": {
+                "Fix InvalidArgumentException when no route object exists (404/403 pages)": "https://www.drupal.org/files/issues/2024-02-28/lang_dropdown_InvalidArgumentException.patch"
+            },
             "webflo/drupal-finder": {
                 "Uncaught TypeError fix": "patches/drupal_finder/drupal-finder-fix-start-path.patch"
             },

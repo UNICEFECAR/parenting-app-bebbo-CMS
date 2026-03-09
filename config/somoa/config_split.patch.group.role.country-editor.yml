@@ -1,0 +1,10 @@
+adding: {  }
+removing:
+  permissions:
+    - 'use editorial transition archived_draft'
+    - 'use editorial transition create_new_draft'
+    - 'use editorial transition publish'
+    - 'use group_workflow transition require_modification_to_draft'
+    - 'use group_workflow transition require_modification_to_senior_editor_review'
+    - 'use group_workflow transition review_after_translation_to_draft'
+    - 'use group_workflow transition review_after_translation_to_review_after_translation'

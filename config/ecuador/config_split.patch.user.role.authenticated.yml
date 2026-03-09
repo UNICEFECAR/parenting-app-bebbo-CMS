@@ -1,0 +1,14 @@
+adding:
+  dependencies:
+    module:
+      - field_ui
+      - group
+  permissions:
+    - 'access user profiles'
+    - 'administer group fields'
+removing:
+  dependencies:
+    module:
+      - entity_share_client
+  permissions:
+    - entity_share_client_pull_content

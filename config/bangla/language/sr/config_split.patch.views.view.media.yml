@@ -1,0 +1,35 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          operations:
+            label: Операције
+        exposed_form:
+          options:
+            submit_button: Филтрирај
+        filters:
+          langcode:
+            expose:
+              label: Језик
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          thumbnail__target_id:
+            label: 'Умањени приказ'
+          uid:
+            label: Author
+          status:
+            label: Status
+          operations:
+            label: Operations
+        exposed_form:
+          options:
+            submit_button: Filter
+            exposed_sorts_label: 'Sort by'
+        filters:
+          langcode:
+            expose:
+              label: Language

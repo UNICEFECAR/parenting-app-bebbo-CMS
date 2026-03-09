@@ -1,0 +1,16 @@
+adding:
+  processor_configuration:
+    langcode: xk-rs
+    update_existing: 1
+  mappings:
+    -
+      settings:
+        language: xk-rs
+removing:
+  processor_configuration:
+    langcode: uz-kaa
+    update_existing: 2
+  mappings:
+    -
+      settings:
+        language: uz-kaa

@@ -1,0 +1,32 @@
+adding:
+  content:
+    field_age_bracket:
+      weight: 6
+    field_buffers_days:
+      weight: 7
+    field_days_to:
+      weight: 5
+    field_unique_name:
+      weight: 8
+    path:
+      weight: 9
+    status:
+      weight: 10
+    translation:
+      weight: 11
+removing:
+  content:
+    field_age_bracket:
+      weight: 4
+    field_buffers_days:
+      weight: 5
+    field_days_to:
+      weight: 3
+    field_unique_name:
+      weight: 6
+    path:
+      weight: 7
+    status:
+      weight: 8
+    translation:
+      weight: 9

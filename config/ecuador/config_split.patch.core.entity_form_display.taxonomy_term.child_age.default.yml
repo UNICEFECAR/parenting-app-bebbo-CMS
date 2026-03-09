@@ -1,0 +1,20 @@
+adding:
+  content:
+    field_unique_name:
+      weight: 9
+    path:
+      weight: 6
+    status:
+      weight: 7
+    translation:
+      weight: 8
+removing:
+  content:
+    field_unique_name:
+      weight: 6
+    path:
+      weight: 7
+    status:
+      weight: 8
+    translation:
+      weight: 9

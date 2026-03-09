@@ -1,0 +1,29 @@
+uuid: c0724349-fe27-4165-b509-650ed3a559e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_daily_message_category
+    - node.type.daily_homescreen_messages
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+id: node.daily_homescreen_messages.field_daily_message_category
+field_name: field_daily_message_category
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Daily Home Screen Message Category'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      daily_home_screen_message_catego: daily_home_screen_message_catego
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

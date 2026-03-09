@@ -1,0 +1,17 @@
+uuid: 4d8da1f3-659a-4fa4-8e77-b1c2857d382a
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.administrator
+id: country-a416e6833
+label: Administrator
+weight: 2
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

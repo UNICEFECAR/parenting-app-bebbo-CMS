@@ -1,0 +1,12 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          state:
+            separator: ', '
+          source_language_1:
+            separator: ', '
+          target_language:
+            separator: ', '

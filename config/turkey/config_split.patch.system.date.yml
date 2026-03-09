@@ -1,0 +1,12 @@
+adding:
+  first_day: 1
+  country:
+    default: TR
+  timezone:
+    default: Europe/Istanbul
+removing:
+  first_day: 0
+  country:
+    default: RS
+  timezone:
+    default: Europe/Belgrade

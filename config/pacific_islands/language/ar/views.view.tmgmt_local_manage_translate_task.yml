@@ -1,0 +1,147 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: انتقاء
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+          expose:
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      fields:
+        title:
+          label: العنوان
+  assigned:
+    display_options:
+      fields:
+        status:
+          label: الحالة
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات
+      filters:
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: العنوان
+  closed:
+    display_title: Closed
+    display_options:
+      menu:
+        title: Closed
+      fields:
+        status:
+          label: الحالة
+        created:
+          label: الإنشاء
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات
+      filters:
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: العنوان
+  completed:
+    display_title: Completed
+    display_options:
+      menu:
+        title: Completed
+      fields:
+        status:
+          label: الحالة
+        created:
+          label: الإنشاء
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات
+      filters:
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: العنوان
+  pending:
+    display_options:
+      fields:
+        status:
+          label: الحالة
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات
+      filters:
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: العنوان
+  rejected:
+    display_options:
+      fields:
+        status:
+          label: الحالة
+        created:
+          label: الإنشاء
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات
+      filters:
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: العنوان
+  unassigned:
+    display_options:
+      fields:
+        status:
+          label: الحالة
+        title:
+          label: العنوان
+        source_language:
+          label: From
+        target_language:
+          label: To
+        operations:
+          label: عمليات

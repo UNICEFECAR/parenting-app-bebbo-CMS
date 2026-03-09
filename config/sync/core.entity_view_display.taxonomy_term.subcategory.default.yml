@@ -1,0 +1,40 @@
+uuid: e745769f-a4b4-4e33-9092-1c1dcb95aa88
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.subcategory.field_category
+    - field.field.taxonomy_term.subcategory.field_child_age
+    - taxonomy.vocabulary.subcategory
+  module:
+    - text
+id: taxonomy_term.subcategory.default
+targetEntityType: taxonomy_term
+bundle: subcategory
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_category:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_child_age:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  langcode: true

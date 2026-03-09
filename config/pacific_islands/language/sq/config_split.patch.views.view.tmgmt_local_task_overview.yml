@@ -1,0 +1,110 @@
+adding:
+  display:
+    closed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    completed:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    eligible:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    my_tasks:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    pending:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    rejected:
+      display_options:
+        fields:
+          source_language:
+            label: From
+    unassigned:
+      display_options:
+        fields:
+          source_language:
+            label: From
+removing:
+  display:
+    default:
+      display_options:
+        filters:
+          status:
+            expose:
+              label: Status
+    closed:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+        menu:
+          title: Closed
+    completed:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+    eligible:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+    my_tasks:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+    pending:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+    rejected:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status
+    unassigned:
+      display_options:
+        fields:
+          status:
+            label: Status
+        filters:
+          status:
+            expose:
+              label: Status

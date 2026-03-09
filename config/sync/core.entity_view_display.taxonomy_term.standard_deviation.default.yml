@@ -1,0 +1,149 @@
+uuid: da25479a-c916-4430-b533-893f019eaddf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.standard_deviation.field_child_gender
+    - field.field.taxonomy_term.standard_deviation.field_growth_type
+    - field.field.taxonomy_term.standard_deviation.field_sd0
+    - field.field.taxonomy_term.standard_deviation.field_sd1
+    - field.field.taxonomy_term.standard_deviation.field_sd1neg
+    - field.field.taxonomy_term.standard_deviation.field_sd2
+    - field.field.taxonomy_term.standard_deviation.field_sd2neg
+    - field.field.taxonomy_term.standard_deviation.field_sd3
+    - field.field.taxonomy_term.standard_deviation.field_sd3neg
+    - field.field.taxonomy_term.standard_deviation.field_sd4
+    - field.field.taxonomy_term.standard_deviation.field_sd4neg
+    - taxonomy.vocabulary.standard_deviation
+  module:
+    - text
+id: taxonomy_term.standard_deviation.default
+targetEntityType: taxonomy_term
+bundle: standard_deviation
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_child_gender:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_growth_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_sd0:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_sd1:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_sd1neg:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_sd2:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_sd2neg:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_sd3:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_sd3neg:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_sd4:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_sd4neg:
+    type: number_decimal
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

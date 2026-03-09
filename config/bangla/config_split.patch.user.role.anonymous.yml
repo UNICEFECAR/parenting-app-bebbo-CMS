@@ -1,0 +1,7 @@
+adding:
+  dependencies:
+    module:
+      - group
+  permissions:
+    - 'access group overview'
+removing: {  }

@@ -1,0 +1,19 @@
+uuid: 1c11fca2-c572-439e-b803-7d4d77797113
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_age_bracket
+field_name: field_age_bracket
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

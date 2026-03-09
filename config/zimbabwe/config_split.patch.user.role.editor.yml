@@ -1,0 +1,10 @@
+adding:
+  permissions:
+    - 'delete any remote_video media'
+    - 'delete media'
+    - 'delete own image media'
+    - 'delete own remote_video media'
+    - 'delete own video media'
+removing:
+  permissions:
+    - 'update any media'

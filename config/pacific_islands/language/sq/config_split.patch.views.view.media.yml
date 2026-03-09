@@ -1,0 +1,10 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          uid:
+            label: Author
+          status:
+            label: Status

@@ -1,0 +1,120 @@
+adding:
+  content:
+    created:
+      weight: 20
+    field_australian_article:
+      weight: 17
+    field_child_age:
+      weight: 5
+    field_child_gender:
+      weight: 6
+    field_content_category:
+      weight: 3
+    field_cover_image:
+      weight: 10
+    field_do_not_feature:
+      weight: 27
+    field_keywords:
+      weight: 8
+    field_licensed_content:
+      weight: 15
+    field_mandatory_content:
+      weight: 18
+    field_meta_keywords:
+      weight: 9
+    field_parent_gender:
+      weight: 7
+    field_pre_populated:
+      weight: 26
+    field_premature_content:
+      weight: 16
+    field_references_and_comments:
+      weight: 13
+    field_related_articles:
+      weight: 11
+    field_related_video_articles:
+      weight: 12
+    field_subcategory:
+      weight: 4
+    field_type_of_article:
+      type: entity_reference_autocomplete
+      weight: 28
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+    moderation_state:
+      weight: 25
+    path:
+      weight: 23
+    promote:
+      weight: 21
+    status:
+      weight: 24
+    sticky:
+      weight: 22
+    translation:
+      weight: 14
+    uid:
+      weight: 19
+removing:
+  content:
+    created:
+      weight: 21
+    field_australian_article:
+      weight: 18
+    field_child_age:
+      weight: 6
+    field_child_gender:
+      weight: 7
+    field_content_category:
+      weight: 4
+    field_cover_image:
+      weight: 11
+    field_do_not_feature:
+      weight: 28
+    field_keywords:
+      weight: 9
+    field_licensed_content:
+      weight: 16
+    field_mandatory_content:
+      weight: 19
+    field_meta_keywords:
+      weight: 10
+    field_parent_gender:
+      weight: 8
+    field_pre_populated:
+      weight: 27
+    field_premature_content:
+      weight: 17
+    field_references_and_comments:
+      weight: 14
+    field_related_articles:
+      weight: 12
+    field_related_video_articles:
+      weight: 13
+    field_subcategory:
+      weight: 5
+    field_type_of_article:
+      type: options_select
+      weight: 3
+    moderation_state:
+      weight: 26
+    path:
+      weight: 24
+    promote:
+      weight: 22
+    status:
+      weight: 25
+    sticky:
+      weight: 23
+    translation:
+      weight: 15
+    uid:
+      weight: 20
+    url_redirects:
+      weight: 50
+      region: content
+      settings: {  }
+      third_party_settings: {  }

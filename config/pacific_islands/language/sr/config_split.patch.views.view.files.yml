@@ -1,0 +1,23 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          filesize:
+            label: Size
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          filename:
+            label: Name
+          status:
+            label: Status
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'
+        filters:
+          status:
+            expose:
+              label: Status

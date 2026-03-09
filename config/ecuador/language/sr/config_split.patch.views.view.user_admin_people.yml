@@ -1,0 +1,23 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          name:
+            label: Username
+          status:
+            label: Status
+          roles_target_id:
+            label: Roles
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'
+        filters:
+          status:
+            group_info:
+              label: Status
+    page_1:
+      display_options:
+        menu:
+          title: List
+removing: {  }

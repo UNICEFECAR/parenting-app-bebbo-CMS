@@ -1,0 +1,20 @@
+uuid: 8dfe721f-36f1-40dc-a7d6-d7043861b254
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.child_age
+  module:
+    - text
+id: taxonomy_term.child_age.description
+field_name: description
+entity_type: taxonomy_term
+bundle: child_age
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

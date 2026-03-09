@@ -1,0 +1,47 @@
+adding:
+  display:
+    page_1:
+      display_options:
+        menu:
+          title: 'Custom block library'
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          info:
+            label: 'Popis bloku'
+            separator: ', '
+          type:
+            label: 'Typ bloku'
+            separator: ', '
+          changed:
+            label: Aktualizované
+        pager:
+          options:
+            tags:
+              next: Ďalej
+              previous: '‹ Predchádzajúci'
+            expose:
+              items_per_page_label: 'Položky na stránku'
+              items_per_page_options_all_label: '- Všetky -'
+              offset_label: Ofset
+        exposed_form:
+          options:
+            submit_button: Použiť
+            exposed_sorts_label: 'Zoradiť podľa'
+            sort_asc_label: Vzostupne
+            sort_desc_label: Zostupne
+        filters:
+          info:
+            expose:
+              label: 'Popis bloku'
+          type:
+            expose:
+              label: 'Typ bloku'
+    page_1:
+      display_title: Stránka
+      display_options:
+        menu:
+          title: Bloky
+          description: 'Create and edit block content.'

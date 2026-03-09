@@ -1,0 +1,79 @@
+adding:
+  display:
+    default:
+      display_title: Master
+      display_options:
+        exposed_form:
+          options:
+            reset_button_label: Reset
+        filters:
+          langcode:
+            expose:
+              label: Language
+    page:
+      display_options:
+        fields:
+          delete_media:
+            text: Delete
+    widget:
+      display_options:
+        arguments:
+          bundle:
+            exception:
+              title: All
+    widget_table:
+      display_options:
+        arguments:
+          bundle:
+            exception:
+              title: All
+removing:
+  display:
+    default:
+      display_title: Базово
+      display_options:
+        title: Медіа
+        pager:
+          options:
+            expose:
+              items_per_page_label: 'Елементів на сторінку'
+              items_per_page_options_all_label: '- Усе -'
+              offset_label: Зміщення
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Впорядкувати за'
+            sort_asc_label: Зрост
+            sort_desc_label: Спад
+        filters:
+          name:
+            expose:
+              label: "Назва (ім'я)"
+          langcode:
+            expose:
+              label: Мова
+    page:
+      display_options:
+        fields:
+          edit_media:
+            text: Редагувати
+          delete_media:
+            text: Видалити
+    widget:
+      display_options:
+        filters:
+          name:
+            expose:
+              label: "Назва (ім'я)"
+    widget_table:
+      display_options:
+        fields:
+          name:
+            label: "Назва (ім'я)"
+          uid:
+            label: Автор
+          changed:
+            label: Оновлено
+        filters:
+          name:
+            expose:
+              label: "Назва (ім'я)"

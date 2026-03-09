@@ -1,0 +1,96 @@
+uuid: 292ea534-df14-47d0-9232-a528df0545e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.health_check_ups.body
+    - field.field.node.health_check_ups.feeds_item
+    - field.field.node.health_check_ups.field_growth_period
+    - field.field.node.health_check_ups.field_licensed_content
+    - field.field.node.health_check_ups.field_notification_from
+    - field.field.node.health_check_ups.field_notification_to
+    - field.field.node.health_check_ups.field_pinned_article
+    - field.field.node.health_check_ups.field_pinned_video_article
+    - field.field.node.health_check_ups.field_pre_populated
+    - node.type.health_check_ups
+  module:
+    - text
+    - user
+id: node.health_check_ups.default
+targetEntityType: node
+bundle: health_check_ups
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_growth_period:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_licensed_content:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_notification_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_notification_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_pinned_article:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_pinned_video_article:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_pre_populated: true
+  langcode: true

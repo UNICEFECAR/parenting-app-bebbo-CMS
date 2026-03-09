@@ -1,0 +1,18 @@
+uuid: f33309ef-f05d-40c7-bde1-7d0f9a8d15b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.name
+field_name: name
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

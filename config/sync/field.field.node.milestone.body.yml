@@ -1,0 +1,23 @@
+uuid: ea151f97-4459-4620-ae68-8e7ff8135643
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.milestone
+  module:
+    - text
+id: node.milestone.body
+field_name: body
+entity_type: node
+bundle: milestone
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

@@ -1,0 +1,131 @@
+uuid: 5b0e4bcd-4930-47f1-b1c0-fd359ef2efeb
+langcode: en
+status: false
+dependencies: {  }
+id: zimbabwe_site
+label: 'Zimbabwe Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/zimbabwe
+module: {  }
+theme: {  }
+complete_list:
+  - core.extension
+  - system.site
+  - entity_share_client.import_config.config_production
+  - entity_share_server.channel.content_article_mandatory_tr
+  - entity_share_server.channel.content_article_nonmandatory_tr
+  - entity_share_server.channel.content_basic_page_tr
+  - entity_share_server.channel.content_child_dev_tr
+  - entity_share_server.channel.content_child_growth_tr
+  - entity_share_server.channel.content_daily_homescreen_messages_tr
+  - entity_share_server.channel.content_faq_tr
+  - entity_share_server.channel.content_games_tr
+  - entity_share_server.channel.content_health_check_ups_tr
+  - entity_share_server.channel.content_linked_pages_tr
+  - entity_share_server.channel.content_milestone_tr
+  - entity_share_server.channel.content_vaccinations_age_tr
+  - entity_share_server.channel.content_video_article_tr
+  - entity_share_server.channel.media_image_tr
+  - entity_share_server.channel.media_video_tr
+  - entity_share_server.channel.taxonomy_age_periods_for_vacc_tr
+  - entity_share_server.channel.taxonomy_category_tr
+  - entity_share_server.channel.taxonomy_chatbot_category_tr
+  - entity_share_server.channel.taxonomy_chatbot_subcategory_tr
+  - entity_share_server.channel.taxonomy_child_s_gender_tr
+  - entity_share_server.channel.taxonomy_domain_of_activity_tr
+  - entity_share_server.channel.taxonomy_growth_introductory_tr
+  - entity_share_server.channel.taxonomy_growth_type_tr
+  - entity_share_server.channel.taxonomy_keywords_tr
+  - entity_share_server.channel.taxonomy_parent_s_gender_tr
+  - entity_share_server.channel.taxonomy_relationship_to_child_tr
+  - entity_share_server.channel.taxonomy_standard_deviation_category_tr
+  - entity_share_server.channel.taxonomy_standard_deviation_tr
+  - entity_share_server.channel.taxonomy_subcategory_tr
+  - entity_share_server.channel.taxonomy_type_of_support_tr
+  - language.entity.zw-en
+  - language.entity.zw-nd
+  - language.entity.zw-sn
+  - language/en/system.menu.main
+  - mobile_app_links.android_packages
+  - mobile_app_links.ios
+  - pb_custom_form.landing_pages
+  - pb_custom_form.language_redirects
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.microsoft
+partial_list:
+  - admin_toolbar.settings
+  - block.block.claro_help_search
+  - core.base_field_override.taxonomy_term.activity_category.description
+  - core.base_field_override.taxonomy_term.category.description
+  - core.base_field_override.taxonomy_term.chatbot_category.description
+  - core.base_field_override.taxonomy_term.child_age.description
+  - core.base_field_override.taxonomy_term.child_gender.description
+  - core.base_field_override.taxonomy_term.growth_introductory.description
+  - core.base_field_override.taxonomy_term.growth_period.description
+  - core.base_field_override.taxonomy_term.growth_type.description
+  - core.base_field_override.taxonomy_term.keywords.description
+  - core.base_field_override.taxonomy_term.parent_gender.description
+  - core.base_field_override.taxonomy_term.standard_deviation.description
+  - core.base_field_override.taxonomy_term.type_of_support.description
+  - core.entity_form_display.block_content.basic.default
+  - core.entity_form_display.media.image.default
+  - core.entity_form_display.media.image.media_library
+  - core.entity_form_display.media.video.default
+  - core.entity_form_display.media.video.media_library
+  - core.entity_form_display.node.article.default
+  - core.entity_form_display.taxonomy_term.growth_period.default
+  - core.entity_form_display.taxonomy_term.growth_type.default
+  - core.entity_form_display.user.user.default
+  - core.entity_form_display.user.user.register
+  - core.entity_view_display.group.country.default
+  - core.entity_view_display.media.remote_video.media_library
+  - core.entity_view_display.media.video.media_library
+  - core.entity_view_display.user.user.compact
+  - core.entity_view_display.user.user.default
+  - core.menu.static_menu_link_overrides
+  - feeds.feed_type.taxonomy_age_period_language
+  - feeds.feed_type.taxonomy_keywords_serbia_serbian
+  - field.field.group.country.field_app_name
+  - field.field.group.country.field_language_visibility_in_app
+  - field.field.node.activities.body
+  - field.field.node.article.body
+  - field.field.node.article.field_references_and_comments
+  - field.field.node.child_development.body
+  - field.field.node.child_development.field_milestone_instructions
+  - field.field.node.child_growth.body
+  - field.field.node.daily_homescreen_messages.body
+  - field.field.node.faq.body
+  - field.field.node.faq.field_answer_part_2
+  - field.field.node.health_check_ups.body
+  - field.field.node.health_check_ups.field_growth_period
+  - field.field.node.milestone.body
+  - field.field.node.survey.body
+  - field.field.node.vaccinations.body
+  - field.field.node.video_article.body
+  - field.field.node.video_article.field_references_and_comments
+  - field.storage.group.field_app_name
+  - field.storage.group.field_language_visibility_in_app
+  - filelog.settings
+  - group.role.country-admin
+  - group.role.country-editor
+  - language.entity.en
+  - language.negotiation
+  - metatag.metatag_defaults.global
+  - structure_sync.data
+  - system.menu.main
+  - user.role.authenticated
+  - user.role.editor
+  - user.role.global_admin
+  - user.role.reviewer
+  - user.role.se
+  - user.role.sme
+  - views.view.articles
+  - views.view.country_content_listing
+  - views.view.keyword_term_count
+  - workflows.workflow.group_workflow

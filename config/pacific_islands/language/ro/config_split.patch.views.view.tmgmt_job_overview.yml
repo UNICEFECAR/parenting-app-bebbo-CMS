@@ -1,0 +1,53 @@
+adding: {  }
+removing:
+  display:
+    default:
+      display_title: Master
+      display_options:
+        fields:
+          state:
+            label: State
+            separator: ', '
+          label:
+            label: Label
+          source_language_1:
+            separator: ', '
+          target_language:
+            separator: ', '
+          translator:
+            label: Provider
+          progress:
+            label: Progress
+          tags_count:
+            label: Tags
+          changed:
+            label: Changed
+        pager:
+          options:
+            tags:
+              next: 'next ›'
+              previous: '‹ previous'
+              first: '« first'
+              last: 'last »'
+            expose:
+              items_per_page_label: 'Items per page'
+              items_per_page_options_all_label: '- All -'
+              offset_label: Offset
+        exposed_form:
+          options:
+            submit_button: Apply
+            exposed_sorts_label: 'Sort by'
+            sort_asc_label: Asc
+            sort_desc_label: Descendent
+        filters:
+          state:
+            expose:
+              label: State
+          source_language:
+            expose:
+              label: 'Source language'
+          translator:
+            expose:
+              label: Provider
+    page_1:
+      display_title: Page

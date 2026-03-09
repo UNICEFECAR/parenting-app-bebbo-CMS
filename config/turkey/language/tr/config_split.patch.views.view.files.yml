@@ -1,0 +1,16 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          created:
+            label: 'Yüklenme tarihi'
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          fid:
+            label: Fid
+          filename:
+            separator: ', '

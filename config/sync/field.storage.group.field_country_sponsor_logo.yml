@@ -1,0 +1,20 @@
+uuid: bb38600a-a8bf-4abf-ab3f-6f48f8c143e7
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - media
+id: group.field_country_sponsor_logo
+field_name: field_country_sponsor_logo
+entity_type: group
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
