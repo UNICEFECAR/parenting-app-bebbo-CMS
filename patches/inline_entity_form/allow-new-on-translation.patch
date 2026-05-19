@@ -1,0 +1,14 @@
+--- a/src/Plugin/Field/FieldWidget/InlineEntityFormComplex.php
++++ b/src/Plugin/Field/FieldWidget/InlineEntityFormComplex.php
+@@ -519,7 +519,10 @@
+ 
+     // When in translation, the widget only supports editing (translating)
+     // already added entities, so there's no need to show the rest.
+-    if ($element['#translating']) {
++    // Allow modules to override this per field via alter hook.
++    $restrict_translation = $element['#translating'];
++    $this->moduleHandler->alter('inline_entity_form_translation_restrict', $restrict_translation, $element, $this->fieldDefinition);
++    if ($restrict_translation) {
+       if (empty($entities)) {
+         // There are no entities available for translation, hide the widget.
+         // Safely restrict access. Entity cacheability already set.

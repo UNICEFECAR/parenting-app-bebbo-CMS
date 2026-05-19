@@ -1,0 +1,22 @@
+uuid: 8baa3949-6559-4f05-8d30-b95ae00390c5
+langcode: en
+status: true
+dependencies: {  }
+id: taxonomy_chatbot_category_tr
+label: 'Taxonomy - Chatbot Category (TR)'
+channel_entity_type: taxonomy_term
+channel_bundle: chatbot_category
+channel_langcode: tr
+channel_filters: null
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles:
+  administrator: administrator
+authorized_users:
+  94f74816-8dce-4b06-bf3b-299e8832e5f9: 94f74816-8dce-4b06-bf3b-299e8832e5f9
+  769078fd-5d20-4f46-b94d-0b1078c72d8e: 769078fd-5d20-4f46-b94d-0b1078c72d8e
+  06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115
+  4a2acf8b-48d0-4c14-8e52-09cf8dabfbf8: 4a2acf8b-48d0-4c14-8e52-09cf8dabfbf8

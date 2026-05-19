@@ -1,6 +1,7 @@
 langcode: en
 id: activity_greece_persian
-migration_tags: activity_greece_persian
+migration_tags:
+  - activity_greece_persian
 migration_group: activity
 label: 'activity_greece_persian'
 source:

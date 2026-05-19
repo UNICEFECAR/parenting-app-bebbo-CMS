@@ -1,0 +1,20 @@
+uuid: 1e4ed9b9-2738-4a5e-a758-a66d6cb3843e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_passing_score
+field_name: field_passing_score
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

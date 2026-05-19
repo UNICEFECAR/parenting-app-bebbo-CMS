@@ -1,0 +1,20 @@
+adding:
+  processor_configuration:
+    langcode: sk
+  mappings:
+    -
+      unique:
+        value: '1'
+    -
+      settings:
+        language: en
+removing:
+  processor_configuration:
+    langcode: tr
+  mappings:
+    -
+      unique:
+        value: 1
+    -
+      settings:
+        language: tr

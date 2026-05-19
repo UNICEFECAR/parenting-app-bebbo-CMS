@@ -1,0 +1,25 @@
+uuid: d7950f1c-cf4c-42f4-86a6-98f6352b9803
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_numbering_style
+    - node.type.courses_module
+  module:
+    - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.courses_module.field_numbering_style
+field_name: field_numbering_style
+entity_type: node
+bundle: courses_module
+label: 'Numbering style'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

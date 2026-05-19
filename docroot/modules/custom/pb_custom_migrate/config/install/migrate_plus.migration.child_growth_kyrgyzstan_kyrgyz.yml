@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_kyrgyzstan_kyrgyz
-migration_tags: child_growth_kyrgyzstan_kyrgyz
+migration_tags:
+  - child_growth_kyrgyzstan_kyrgyz
 migration_group: child_growth
 label: child_growth_kyrgyzstan_kyrgyz
 source:

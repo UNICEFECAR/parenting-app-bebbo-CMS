@@ -1,0 +1,10 @@
+status: 1
+pattern: 'CM-[node:field_module_title]'
+escape: false
+preserve_titles: false
+save: false
+chunk: 50
+dependencies:
+  config:
+    - node.type.courses_module
+new_content_behavior: 0

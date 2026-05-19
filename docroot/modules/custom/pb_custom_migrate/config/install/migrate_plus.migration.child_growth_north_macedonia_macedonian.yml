@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_north_macedonia_macedonian
-migration_tags: child_growth_north_macedonia_macedonian
+migration_tags:
+  - child_growth_north_macedonia_macedonian
 migration_group: child_growth
 label: child_growth_north_macedonia_macedonian
 source:

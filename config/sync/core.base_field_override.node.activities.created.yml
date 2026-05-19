@@ -1,0 +1,18 @@
+uuid: 33d342b6-1933-4a8f-98eb-215043e41694
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.activities
+id: node.activities.created
+field_name: created
+entity_type: node
+bundle: activities
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

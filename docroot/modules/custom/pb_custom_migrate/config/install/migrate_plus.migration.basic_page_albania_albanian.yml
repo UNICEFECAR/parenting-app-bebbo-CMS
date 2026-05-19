@@ -1,6 +1,7 @@
 langcode: en
 id: basic_page_albania_albanian
-migration_tags: basic_page_albania_albanian
+migration_tags:
+  - basic_page_albania_albanian
 migration_group: basic_page
 label: 'Basic Page Albania Albanian'
 source:

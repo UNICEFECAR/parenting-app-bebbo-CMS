@@ -1,0 +1,23 @@
+uuid: 665154da-16da-42dd-9b6f-d848b8037c03
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.video_article
+  module:
+    - text
+id: node.video_article.body
+field_name: body
+entity_type: node
+bundle: video_article
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

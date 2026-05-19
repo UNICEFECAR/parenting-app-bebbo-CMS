@@ -1,0 +1,43 @@
+uuid: ac980244-9314-45de-af59-9611d77d1085
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.growth_introductory.field_days_from
+    - field.field.taxonomy_term.growth_introductory.field_days_to
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - text
+id: taxonomy_term.growth_introductory.default
+targetEntityType: taxonomy_term
+bundle: growth_introductory
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_days_from:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_days_to:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

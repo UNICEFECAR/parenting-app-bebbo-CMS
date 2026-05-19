@@ -1,0 +1,38 @@
+uuid: 48cf4c84-358c-4a37-b707-269be69e0d00
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+    - user
+  theme:
+    - claro
+id: mainnavigation
+theme: claro
+region: header
+weight: -14
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Main navigation'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions\r\n/foleja\r\n/foleja-about-us\r\n/foleja-privacy-policy"

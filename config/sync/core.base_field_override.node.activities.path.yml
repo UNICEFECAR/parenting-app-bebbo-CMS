@@ -1,0 +1,20 @@
+uuid: 313ac347-a2eb-4232-ada4-01220c456182
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.activities
+  module:
+    - path
+id: node.activities.path
+field_name: path
+entity_type: node
+bundle: activities
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

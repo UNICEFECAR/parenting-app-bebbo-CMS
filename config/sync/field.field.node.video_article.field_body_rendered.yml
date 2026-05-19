@@ -1,0 +1,28 @@
+uuid: cfd2d4f2-3000-475d-b1c7-c3866cbd6380
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body_rendered
+    - filter.format.full_html
+    - node.type.video_article
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.video_article.field_body_rendered
+field_name: field_body_rendered
+entity_type: node
+bundle: video_article
+label: 'Body Rendered'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

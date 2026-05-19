@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_russian
-migration_tags: child_growth_russian
+migration_tags:
+  - child_growth_russian
 migration_group: child_growth
 label: child_growth_russian
 source:

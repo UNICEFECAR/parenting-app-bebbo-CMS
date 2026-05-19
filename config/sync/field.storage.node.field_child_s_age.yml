@@ -1,0 +1,20 @@
+uuid: 91ff0af3-7b4c-4df7-8d86-c67ee6868c37
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_child_s_age
+field_name: field_child_s_age
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,21 @@
+uuid: f59b886f-7f74-49e4-adc5-237c2cb177dd
+langcode: en
+status: true
+dependencies: {  }
+id: taxonomy_domain_of_activity_en
+label: 'Taxonomy - Domain of Activity (EN)'
+channel_entity_type: taxonomy_term
+channel_bundle: activity_category
+channel_langcode: en
+channel_filters: null
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles:
+  administrator: administrator
+authorized_users:
+  94f74816-8dce-4b06-bf3b-299e8832e5f9: 94f74816-8dce-4b06-bf3b-299e8832e5f9
+  769078fd-5d20-4f46-b94d-0b1078c72d8e: 769078fd-5d20-4f46-b94d-0b1078c72d8e
+  06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115

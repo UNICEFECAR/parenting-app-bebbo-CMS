@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_kosovo_albanian
-migration_tags: milestone_kosovo_albanian
+migration_tags:
+  - milestone_kosovo_albanian
 migration_group: milestone
 label: 'Milestone Kosovo Albanian'
 source:

@@ -1,0 +1,9 @@
+uuid: 2a3cdeb3-8e98-405a-a6d6-2fcf31f90332
+langcode: en
+status: true
+dependencies: {  }
+name: 'Course Category'
+vid: course_category
+description: 'Thematic categories related to all courses.'
+weight: 0
+new_revision: false

@@ -1,0 +1,28 @@
+uuid: c2b2efa5-6f96-4afc-9883-81a92db3ed24
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.pregnancy_weekly_overview
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.pregnancy_weekly_overview.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Licensed Content'
+description: 'Enable this filed if this content is country specific so that other countries could not add this content to their country.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

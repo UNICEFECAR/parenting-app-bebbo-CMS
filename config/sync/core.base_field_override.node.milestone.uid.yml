@@ -1,0 +1,20 @@
+uuid: 91aa697a-4375-4607-a4f1-e7a29bc0dbea
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.milestone
+id: node.milestone.uid
+field_name: uid
+entity_type: node
+bundle: milestone
+label: 'Authored by'
+description: 'The username of the content author.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: 'Drupal\node\Entity\Node::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

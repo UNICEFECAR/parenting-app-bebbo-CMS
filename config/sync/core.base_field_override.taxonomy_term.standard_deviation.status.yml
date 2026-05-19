@@ -1,0 +1,22 @@
+uuid: 004a1b9f-e6af-4358-9f48-4a797059ebc4
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.standard_deviation
+id: taxonomy_term.standard_deviation.status
+field_name: status
+entity_type: taxonomy_term
+bundle: standard_deviation
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

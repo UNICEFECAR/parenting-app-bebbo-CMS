@@ -1,0 +1,24 @@
+uuid: e1f78618-a899-4999-b809-2041969f85ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_explanation
+    - node.type.quiz_questions
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz_questions.field_explanation
+field_name: field_explanation
+entity_type: node
+bundle: quiz_questions
+label: Explanation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

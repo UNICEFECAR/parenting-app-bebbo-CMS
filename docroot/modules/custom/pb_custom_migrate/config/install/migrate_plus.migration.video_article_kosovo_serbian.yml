@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_kosovo_serbian
-migration_tags: video_article_kosovo_serbian
+migration_tags:
+  - video_article_kosovo_serbian
 migration_group: video_article
 label: 'Video Article Kosovo-Serbian'
 source:

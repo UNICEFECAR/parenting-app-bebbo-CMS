@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_kosovo_albanian
-migration_tags: homescreen_kosovo_albanian
+migration_tags:
+  - homescreen_kosovo_albanian
 migration_group: homescreen
 label: 'homescreen_kosovo_albanian'
 source:

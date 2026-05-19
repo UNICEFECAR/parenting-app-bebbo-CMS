@@ -1,0 +1,10 @@
+adding:
+  processor_configuration:
+    langcode: en
+  mappings:
+    -
+      settings:
+        language: null
+removing:
+  processor_configuration:
+    langcode: bg-bg

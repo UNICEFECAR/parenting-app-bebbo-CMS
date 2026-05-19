@@ -1,0 +1,13 @@
+uuid: 3444c8a9-1c92-4b55-9f11-59c0c538feba
+langcode: en
+status: true
+dependencies: {  }
+id: document
+label: Document
+description: 'Use this media type to upload and manage documents and audio files.'
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map: {  }

@@ -49,8 +49,10 @@ class ApiResponseSubscriber implements EventSubscriberInterface {
     $request = $event->getRequest();
     $response = $event->getResponse();
 
-    // Only process API requests for country-groups.
-    if (strpos($request->getPathInfo(), '/api/country-groups') === FALSE) {
+    // Only process old API requests for country-groups.
+    // V2 API handles language filtering in BebboSerializer directly.
+    $path = $request->getPathInfo();
+    if (strpos($path, '/api/country-groups') === FALSE || strpos($path, '/v2/') !== FALSE) {
       return;
     }
 

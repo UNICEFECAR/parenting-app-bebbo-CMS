@@ -48,6 +48,27 @@ function pb_custom_form_schema(): array {
         'default' => '',
         'description' => 'Status flag of the force update.',
       ],
+      'update_type' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => 'content_update',
+        'description' => 'Type of update: content_update or app_update.',
+      ],
+      'google_play_url' => [
+        'type' => 'varchar',
+        'length' => 512,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'Google Play Store URL for app update.',
+      ],
+      'app_store_url' => [
+        'type' => 'varchar',
+        'length' => 512,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'Apple App Store URL for app update.',
+      ],
     ],
     'primary key' => ['id'],
   ];
@@ -138,5 +159,58 @@ function pb_custom_form_update_70015(): void {
 function pb_custom_form_update_70016(): void {
   if (_pb_custom_form_db()->schema()->fieldExists('forcefull_check_update_api', 'updated_at')) {
     _pb_custom_form_db()->schema()->dropField('forcefull_check_update_api', 'updated_at');
+  }
+}
+
+/**
+ * Update #70017: Enable config_split module before config import.
+ */
+function pb_custom_form_update_70017(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('config_split')) {
+    \Drupal::service('module_installer')->install(['config_split']);
+  }
+}
+
+/**
+ * Update #70018: Add update_type, google_play_url, app_store_url columns.
+ *
+ * Adds update_type, google_play_url, and app_store_url columns.
+ *
+ * update_type distinguishes 'content_update' from 'app_update' rows.
+ * google_play_url and app_store_url are optional URLs for app update records.
+ * Existing rows default to 'content_update' to preserve backward compatibility.
+ */
+function pb_custom_form_update_70018(): void {
+  $db = _pb_custom_form_db();
+  $schema = $db->schema();
+
+  if (!$schema->fieldExists('forcefull_check_update_api', 'update_type')) {
+    $schema->addField('forcefull_check_update_api', 'update_type', [
+      'type' => 'varchar',
+      'length' => 50,
+      'not null' => TRUE,
+      'default' => 'content_update',
+      'description' => 'Type of update: content_update or app_update.',
+    ]);
+  }
+
+  if (!$schema->fieldExists('forcefull_check_update_api', 'google_play_url')) {
+    $schema->addField('forcefull_check_update_api', 'google_play_url', [
+      'type' => 'varchar',
+      'length' => 512,
+      'not null' => FALSE,
+      'default' => NULL,
+      'description' => 'Google Play Store URL for app update.',
+    ]);
+  }
+
+  if (!$schema->fieldExists('forcefull_check_update_api', 'app_store_url')) {
+    $schema->addField('forcefull_check_update_api', 'app_store_url', [
+      'type' => 'varchar',
+      'length' => 512,
+      'not null' => FALSE,
+      'default' => NULL,
+      'description' => 'Apple App Store URL for app update.',
+    ]);
   }
 }

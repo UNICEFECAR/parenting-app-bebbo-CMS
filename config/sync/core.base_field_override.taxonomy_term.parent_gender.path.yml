@@ -1,0 +1,20 @@
+uuid: c342e807-1d72-4f5a-b215-2bc1e739f22c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - path
+id: taxonomy_term.parent_gender.path
+field_name: path
+entity_type: taxonomy_term
+bundle: parent_gender
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

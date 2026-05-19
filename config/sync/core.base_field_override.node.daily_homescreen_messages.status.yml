@@ -1,0 +1,22 @@
+uuid: 0c255638-fc7b-4428-878d-e67d06a36dd4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.status
+field_name: status
+entity_type: node
+bundle: daily_homescreen_messages
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

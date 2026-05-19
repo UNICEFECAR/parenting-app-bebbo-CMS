@@ -1,0 +1,30 @@
+uuid: e85948dc-2cf0-4988-b90d-5c052a2fa985
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_quiz_type
+field_name: field_quiz_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: answer_after_each_question
+      label: 'Show correct answer after each question'
+    -
+      value: answers_at_the_end_of_quiz
+      label: 'Show correct answers at the end of quiz'
+    -
+      value: single_question_quiz
+      label: 'Single question quiz'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

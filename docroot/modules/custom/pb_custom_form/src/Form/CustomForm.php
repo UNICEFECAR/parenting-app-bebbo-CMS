@@ -2,20 +2,14 @@
 
 namespace Drupal\pb_custom_form\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\group\Entity\Group;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/*
-use Drupal\Core\Form\FormBase;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Database\Database;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\group\Entity\Group;
- */
 /**
- * Action description.
+ * Admin form for setting Force Content Update or Force App Update per country.
  *
  * @Action(
  *   id = "pb_custom_form_action",
@@ -29,49 +23,116 @@ class CustomForm extends FormBase {
   use StringTranslationTrait;
 
   /**
-   * Get force check update api.
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a CustomForm object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'forcefull_check_update_api';
   }
 
   /**
-   * Force update check build form.
+   * {@inheritdoc}
    *
-   * @param array $form
-   *   The custom form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The custom form state.
+   * Builds the force-update admin form with country selection, update type
+   * dropdown, enable/disable flag, and conditional app store URL fields.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $groups = Group::loadMultiple();
-    $coutry_group = [];
+    $groups = $this->entityTypeManager->getStorage('group')->loadMultiple();
+    $country_group = [];
     foreach ($groups as $group) {
-      $id = $group->get('id')->getString();
-      $label = $group->get('label')->getString();
-      $coutry_group[$id] = $label;
+      $id = $group->id();
+      $label = $group->label();
+      $country_group[$id] = $label;
     }
+    asort($country_group);
 
-    /* Dropdown Select. */
     $form['country_select'] = [
       '#type' => 'select',
       '#title' => $this->t('Country'),
-      '#options' => $coutry_group,
+      '#options' => $country_group,
+      '#required' => TRUE,
     ];
 
-    /* CheckBoxes. */
-    $form['checkbox'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Force Update Check'),
-      '#return_value' => 1,
-      '#default_value' => FALSE,
+    if (count($country_group) === 1) {
+      $form['country_select']['#default_value'] = key($country_group);
+    }
+
+    // Replaces the old "Force Update Check" checkbox.
+    $form['update_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Force Update'),
+      '#options' => [
+        'content_update' => $this->t('Force Content Update'),
+        'app_update' => $this->t('Force App Update'),
+      ],
+      '#required' => TRUE,
+    ];
+
+    $form['flag'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Flag'),
+      '#options' => [
+        '1' => $this->t('Enable'),
+        '0' => $this->t('Disable'),
+      ],
+      '#required' => TRUE,
+    ];
+
+    $form['google_play_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Google Play'),
+      '#description' => $this->t('Enter the new app store listing URL if a new app has been created.'),
+      '#maxlength' => 512,
+      '#states' => [
+        'visible' => [
+          ':input[name="update_type"]' => ['value' => 'app_update'],
+          ':input[name="flag"]' => ['value' => '1'],
+        ],
+      ],
+    ];
+
+    $form['app_store_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('App Store'),
+      '#description' => $this->t('Enter the new app store listing URL if a new app has been created.'),
+      '#maxlength' => 512,
+      '#states' => [
+        'visible' => [
+          ':input[name="update_type"]' => ['value' => 'app_update'],
+          ':input[name="flag"]' => ['value' => '1'],
+        ],
+      ],
     ];
 
     $form['actions'] = [
       '#type' => 'actions',
     ];
 
-    /* Add a submit button. */
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
@@ -82,32 +143,36 @@ class CustomForm extends FormBase {
   }
 
   /**
-   * Force update check build form validation.
-   *
-   * @param array $form
-   *   The custom form validation.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The custom form state validation.
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
   }
 
   /**
-   * Force update check build submit form.
+   * {@inheritdoc}
    *
-   * @param array $form
-   *   The custom form submit.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The custom form state.
+   * Redirects to the confirmation form passing all values as query parameters.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     global $base_url;
-    /* $date = new DrupalDateTime(); */
-    $flag = $form_state->getValue('checkbox');
+
+    $flag = $form_state->getValue('flag');
     $country_id = $form_state->getValue('country_select');
-    /* $updated_at = $date->getTimestamp(); */
-    $country_val = $form['country_select']['#options'][$country_id];
-    $path = $base_url . '/forcefull-update-check?flag=' . $flag . '&&country_id=' . $country_id . '&&country_name=' . $country_val;
+    $update_type = $form_state->getValue('update_type');
+    $google_play_url = $form_state->getValue('google_play_url') ?? '';
+    $app_store_url = $form_state->getValue('app_store_url') ?? '';
+    $country_label = $form['country_select']['#options'][$country_id];
+
+    $query_params = http_build_query([
+      'flag' => $flag,
+      'country_id' => $country_id,
+      'country_name' => $country_label,
+      'update_type' => $update_type,
+      'google_play_url' => $google_play_url,
+      'app_store_url' => $app_store_url,
+    ]);
+
+    $path = $base_url . '/forcefull-update-check?' . $query_params;
     pb_custom_form_my_goto($path);
   }
 

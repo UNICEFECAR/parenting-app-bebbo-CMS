@@ -1,0 +1,25 @@
+uuid: 5b4bbe2f-a27b-44d9-8dc9-99495f82d2f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_answers
+    - node.type.quiz_questions
+  module:
+    - bebbo_serializer
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz_questions.field_answers
+field_name: field_answers
+entity_type: node
+bundle: quiz_questions
+label: Answers
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: quiz_answer

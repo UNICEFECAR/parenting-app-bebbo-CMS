@@ -1,6 +1,7 @@
 langcode: en
 id: activity_english
-migration_tags: activity_english
+migration_tags:
+  - activity_english
 migration_group: activity
 label: 'activity_english'
 source:

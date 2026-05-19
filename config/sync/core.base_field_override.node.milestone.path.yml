@@ -1,0 +1,20 @@
+uuid: 9d114868-6c7d-439f-879e-6156e0dab918
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.milestone
+  module:
+    - path
+id: node.milestone.path
+field_name: path
+entity_type: node
+bundle: milestone
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

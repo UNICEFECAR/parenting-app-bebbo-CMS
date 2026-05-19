@@ -1,0 +1,15 @@
+android_packages:
+  com-datamatics-bangla_0:
+    package_name: com.datamatics.bangla
+    sha256_cert_fingerprints: |-
+      BC:DE:08:AD:A8:45:07:09:93:0C:CE:FD:22:FB:44:17:94:00:1D:2B:0F:87:0B:CE:C5:DC:0F:D1:6F:F9:E6:A6
+      B2:A0:F0:23:6F:4D:48:8B:F5:8C:C5:B0:EB:8E:2C:25:11:B5:A8:E1:56:54:FE:39:24:8B:7D:5F:5E:E7:78:7F
+  org-unicef-bangladesh-babuni_1:
+    package_name: org.unicef.bangladesh.babuni
+    sha256_cert_fingerprints: |-
+      BC:DE:08:AD:A8:45:07:09:93:0C:CE:FD:22:FB:44:17:94:00:1D:2B:0F:87:0B:CE:C5:DC:0F:D1:6F:F9:E6:A6
+      B2:A0:F0:23:6F:4D:48:8B:F5:8C:C5:B0:EB:8E:2C:25:11:B5:A8:E1:56:54:FE:39:24:8B:7D:5F:5E:E7:78:7F
+kosovo_package_name: org.unicef.bangladesh.babuni
+kosovo_sha256_cert_fingerprints: |-
+  BC:DE:08:AD:A8:45:07:09:93:0C:CE:FD:22:FB:44:17:94:00:1D:2B:0F:87:0B:CE:C5:DC:0F:D1:6F:F9:E6:A6
+  B2:A0:F0:23:6F:4D:48:8B:F5:8C:C5:B0:EB:8E:2C:25:11:B5:A8:E1:56:54:FE:39:24:8B:7D:5F:5E:E7:78:7F

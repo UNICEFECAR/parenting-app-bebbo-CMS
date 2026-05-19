@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_uzbekistan_russian
-migration_tags: video_article_uzbekistan_russian
+migration_tags:
+  - video_article_uzbekistan_russian
 migration_group: video_article
 label: 'Video Article Uzbekistan-Russian'
 source:

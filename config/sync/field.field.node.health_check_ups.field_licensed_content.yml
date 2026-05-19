@@ -1,0 +1,28 @@
+uuid: 1e4cab66-26fd-44cf-8159-ae88438e9620
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.health_check_ups
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.health_check_ups.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: health_check_ups
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

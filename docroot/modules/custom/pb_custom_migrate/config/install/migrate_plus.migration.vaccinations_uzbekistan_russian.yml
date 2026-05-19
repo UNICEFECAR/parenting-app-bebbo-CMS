@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_uzbekistan_russian
-migration_tags: vaccinations_uzbekistan_russian
+migration_tags:
+  - vaccinations_uzbekistan_russian
 migration_group: vaccinations
 label: 'Vaccinations Uzbekistan Russian'
 source:

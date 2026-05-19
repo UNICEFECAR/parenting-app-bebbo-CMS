@@ -1,0 +1,74 @@
+adding:
+  label: Kişiler
+  description: 'Sitenizle etkileşim kuran kişileri arayın ve yönetin.'
+  display:
+    default:
+      display_options:
+        title: Kişiler
+        fields:
+          user_bulk_form:
+            label: 'Toplu güncelleme'
+          status:
+            settings:
+              format_custom_false: Engellendi
+              format_custom_true: Etkin
+          created:
+            label: 'Üyelik süresi'
+          access:
+            label: 'Son erişim'
+            settings:
+              future_format: '@interval sonra'
+              past_format: '@interval önce'
+          mail:
+            separator: ', '
+        pager:
+          options:
+            tags:
+              next: 'Sonraki ›'
+              previous: '‹ Önceki'
+              first: '« İlk'
+              last: 'Son »'
+            expose:
+              items_per_page_label: 'Sayfa başına öğe sayısı'
+              items_per_page_options_all_label: '- Tümü -'
+              offset_label: 'Başlangıç değeri'
+        exposed_form:
+          options:
+            reset_button_label: Sıfırla
+            exposed_sorts_label: 'Sıralama anahtarı'
+            sort_asc_label: Artan
+            sort_desc_label: Azalan
+        empty:
+          area_text_custom:
+            content: 'Hiç kimse mevcut değil.'
+        filters:
+          combine:
+            expose:
+              label: 'Ad ya da e-posta şunu içersin'
+          status:
+            group_info:
+              group_items:
+                1:
+                  title: Etkin
+                2:
+                  title: Engellendi
+          permission:
+            expose:
+              label: İzinler
+        use_more_text: 'daha fazla'
+    page_1:
+      display_title: Sayfa
+      display_options:
+        menu:
+          title: Liste
+          description: 'Sitenizle etkileşim kuran kişileri arayın ve yönetin.'
+        tab_options:
+          title: Kişiler
+          description: 'Kullanıcı hesapları, roller ve izinleri yönetin.'
+removing:
+  display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button_label: Reset

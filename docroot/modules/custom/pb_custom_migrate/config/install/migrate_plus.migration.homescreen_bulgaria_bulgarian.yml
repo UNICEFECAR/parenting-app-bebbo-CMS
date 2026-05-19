@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_bulgaria_bulgarian
-migration_tags: homescreen_bulgaria_bulgarian
+migration_tags:
+  - homescreen_bulgaria_bulgarian
 migration_group: homescreen
 label: 'homescreen_bulgaria_bulgarian'
 source:

@@ -1,0 +1,8 @@
+display:
+  default:
+    display_options:
+      fields:
+        target_language:
+          label: To
+        operations:
+          label: কার্যাবলী

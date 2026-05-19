@@ -1,0 +1,36 @@
+uuid: e1222a9d-b3ea-4976-b3d0-5e2e1e6f22f1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_games
+    - node.type.guide
+  module:
+    - entity_reference_validators
+    - tmgmt_content
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: false
+    circular_reference_deep: false
+    duplicate_reference: true
+  tmgmt_content:
+    excluded: false
+id: node.guide.field_related_games
+field_name: field_related_games
+entity_type: node
+bundle: guide
+label: 'Related Games'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - activities
+field_type: entity_reference

@@ -1,6 +1,7 @@
 langcode: en
 id: activity_bulgaria_bulgarian
-migration_tags: activity_bulgaria_bulgarian
+migration_tags:
+  - activity_bulgaria_bulgarian
 migration_group: activity
 label: 'activity_bulgaria_bulgarian'
 source:

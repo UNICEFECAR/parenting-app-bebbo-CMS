@@ -10,7 +10,7 @@ pb_custom_form.forcefull_update_check:
   path: '/admin/config/parent-buddy/forcefull-update-check'
   defaults:
     _form:  '\Drupal\pb_custom_form\Form\CustomForm'
-    _title: 'Force Full Update Check Form'
+    _title: 'Force Update Settings'
   requirements:
     _permission: 'forcefull update check'
   options:
@@ -60,22 +60,13 @@ pb_custom_form.kosovo_pb_mobile:
     _permission: 'manage mobile javascript'
 
 
-pb_custom_form.content:
-  path: '/forcefull-check'
-  defaults:
-    _controller: '\Drupal\pb_custom_form\Controller\ForceCountrySaveController::content'
-    _title: 'Forcefull check form save method'
-  requirements:
-    _permission: 'access content'
-
 pb_custom_form.ForceUpdateCheckForm:
   path: '/forcefull-update-check'
   defaults:
     _form:  '\Drupal\pb_custom_form\Form\ForceUpdateCheckForm'
-    _title: 'Force Full Update Check Form'
+    _title: 'Force Update Settings'
   requirements:
-    # Open access required for automated update check processes
-    _access: 'TRUE'
+    _permission: 'forcefull update check'
 
 pb_custom_form.apply_trans_related_articles_video:
   # Open access required for internal content processing

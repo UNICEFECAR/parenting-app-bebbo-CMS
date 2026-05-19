@@ -1,0 +1,144 @@
+<?php
+
+/**
+ * @file
+ * Content Analytics module for Bebbo app.
+ */
+
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_cron().
+ */
+function pb_content_analytics_cron(): void {
+  /** @var \Drupal\pb_content_analytics\Service\AnalyticsSyncService $sync_service */
+  $sync_service = \Drupal::service('pb_content_analytics.sync_service');
+  $logger = \Drupal::logger('pb_content_analytics');
+
+  if (!$sync_service->isSyncEnabled()) {
+    $logger->info('Cron: analytics sync is disabled, skipping.');
+    return;
+  }
+
+  if (!$sync_service->isAutoSyncEnabled()) {
+    $logger->info('Cron: auto-sync is disabled, skipping.');
+    return;
+  }
+
+  $frequency = $sync_service->getSyncFrequency();
+  $interval = $frequency === 'daily' ? 86400 : 604800;
+
+  $last = $sync_service->getLastSuccessfulSyncLog();
+  if ($last) {
+    $last_time = strtotime($last['sync_time']);
+    $elapsed = time() - $last_time;
+    if ($elapsed < $interval) {
+      $remaining = $interval - $elapsed;
+      $logger->info('Cron: last sync was @elapsed s ago (@freq interval = @interval s). Next sync in @remaining s.', [
+        '@elapsed' => $elapsed,
+        '@freq' => $frequency,
+        '@interval' => $interval,
+        '@remaining' => $remaining,
+      ]);
+      return;
+    }
+  }
+
+  $logger->info('Cron: starting BigQuery analytics sync (@freq).', ['@freq' => $frequency]);
+
+  try {
+    $data = $sync_service->fetchFromBigQuery();
+    $logger->info('Cron: fetched @count records from BigQuery.', ['@count' => count($data)]);
+    $stats = $sync_service->processBatch($data);
+    $sync_service->logSyncResult($stats, 'cron');
+    $logger->info('Cron: sync complete — processed: @processed, updated: @updated, skipped: @skipped (unknown type: @ut, not found: @nf, up to date: @ud).', [
+      '@processed' => $stats['processed'],
+      '@updated' => $stats['updated'],
+      '@skipped' => $stats['skipped'],
+      '@ut' => $stats['skipped_unknown_type'],
+      '@nf' => $stats['skipped_not_found'],
+      '@ud' => $stats['skipped_up_to_date'],
+    ]);
+  }
+  catch (\RuntimeException $e) {
+    $sync_service->logSyncResult(
+      ['processed' => 0, 'updated' => 0, 'skipped' => 0],
+      'cron',
+      $e->getMessage()
+    );
+    $logger->error('Cron sync failed: @message', ['@message' => $e->getMessage()]);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * - Adds a CSV download button to the Content Analytics
+ *   report exposed filter form.
+ * - Disables analytics fields on node add/edit forms so they are visible
+ *   but cannot be edited by the user.
+ */
+function pb_content_analytics_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
+  if ($form_id === 'views_exposed_form') {
+    $storage = $form_state->getStorage();
+    if (!empty($storage['view']) && $storage['view']->id() === 'content_analytics') {
+      $form['#attached']['library'][] = 'pb_content_analytics/csv-export-relocate';
+    }
+    return;
+  }
+
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  $entity = $form_object->getEntity();
+  if (!$entity instanceof FieldableEntityInterface || $entity->getEntityTypeId() !== 'node') {
+    return;
+  }
+
+  $analytics_fields = ['field_like_count', 'field_read_count', 'field_analytics_updated'];
+
+  foreach ($analytics_fields as $field_name) {
+    if (isset($form[$field_name])) {
+      $form[$field_name]['#disabled'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function pb_content_analytics_node_view(array &$build, EntityInterface $entity, $display, $view_mode): void {
+  $supported_types = ['article', 'video_article', 'course', 'activities'];
+  if (!in_array($entity->bundle(), $supported_types, TRUE)) {
+    return;
+  }
+
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
+
+  /** @var \Drupal\pb_content_analytics\Service\AnalyticsSyncService $sync_service */
+  $sync_service = \Drupal::service('pb_content_analytics.sync_service');
+  if (!$sync_service->isSyncEnabled()) {
+    return;
+  }
+
+  $build['field_like_count'] = [
+    '#type'   => 'item',
+    '#title'  => t('Like count'),
+    '#markup' => (string) ($entity->get('field_like_count')->value ?? 0),
+    '#weight' => 100,
+  ];
+
+  $build['field_read_count'] = [
+    '#type'   => 'item',
+    '#title'  => t('Read count'),
+    '#markup' => (string) ($entity->get('field_read_count')->value ?? 0),
+    '#weight' => 101,
+  ];
+}

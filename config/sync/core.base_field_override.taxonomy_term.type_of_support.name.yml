@@ -1,0 +1,18 @@
+uuid: eeaac749-6f5f-479b-84e5-80f5e0a359fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.type_of_support
+id: taxonomy_term.type_of_support.name
+field_name: name
+entity_type: taxonomy_term
+bundle: type_of_support
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

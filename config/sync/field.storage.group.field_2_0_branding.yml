@@ -1,0 +1,20 @@
+uuid: 1ab8d656-c7be-4039-b380-2145eac3947c
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - media
+id: group.field_2_0_branding
+field_name: field_2_0_branding
+entity_type: group
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

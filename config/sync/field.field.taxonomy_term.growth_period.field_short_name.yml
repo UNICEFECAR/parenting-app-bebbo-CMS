@@ -1,0 +1,24 @@
+uuid: e9ca7fb7-30af-480f-8e35-cd379a76cb4b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_short_name
+    - taxonomy.vocabulary.growth_period
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.growth_period.field_short_name
+field_name: field_short_name
+entity_type: taxonomy_term
+bundle: growth_period
+label: 'Short name'
+description: 'Used for filters in Bebbo 2.0'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

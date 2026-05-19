@@ -1,0 +1,39 @@
+uuid: 000dd8f3-e7b7-4451-b681-26b9517d4c2d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_category
+    - node.type.course
+    - taxonomy.vocabulary.course_category
+  module:
+    - entity_reference_validators
+    - tmgmt_content
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: false
+    circular_reference_deep: false
+    duplicate_reference: false
+  tmgmt_content:
+    excluded: false
+id: node.course.field_course_category
+field_name: field_course_category
+entity_type: node
+bundle: course
+label: 'Course Category'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      course_category: course_category
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

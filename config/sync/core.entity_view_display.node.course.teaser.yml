@@ -1,0 +1,70 @@
+uuid: 8a165141-4553-4d5a-ac02-9e918afa1ef6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.course.feeds_item
+    - field.field.node.course.field_analytics_updated
+    - field.field.node.course.field_certificate
+    - field.field.node.course.field_child_age
+    - field.field.node.course.field_commentsand_references
+    - field.field.node.course.field_course_category
+    - field.field.node.course.field_course_duration
+    - field.field.node.course.field_course_expiry
+    - field.field.node.course.field_course_link
+    - field.field.node.course.field_course_modules
+    - field.field.node.course.field_cover_image
+    - field.field.node.course.field_description
+    - field.field.node.course.field_feedback_question
+    - field.field.node.course.field_feedback_required
+    - field.field.node.course.field_final_assessment
+    - field.field.node.course.field_licensed_content
+    - field.field.node.course.field_like_count
+    - field.field.node.course.field_module_numbering_style
+    - field.field.node.course.field_modules_unlock
+    - field.field.node.course.field_number_of_modules
+    - field.field.node.course.field_read_count
+    - field.field.node.course.field_target_audience
+    - node.type.course
+  module:
+    - user
+id: node.course.teaser
+targetEntityType: node
+bundle: course
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_analytics_updated: true
+  field_certificate: true
+  field_child_age: true
+  field_commentsand_references: true
+  field_course_category: true
+  field_course_duration: true
+  field_course_expiry: true
+  field_course_link: true
+  field_course_modules: true
+  field_cover_image: true
+  field_description: true
+  field_feedback_question: true
+  field_feedback_required: true
+  field_final_assessment: true
+  field_licensed_content: true
+  field_like_count: true
+  field_module_numbering_style: true
+  field_modules_unlock: true
+  field_number_of_modules: true
+  field_read_count: true
+  field_target_audience: true
+  langcode: true

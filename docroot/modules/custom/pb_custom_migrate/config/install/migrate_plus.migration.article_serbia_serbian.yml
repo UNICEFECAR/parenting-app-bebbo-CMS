@@ -1,6 +1,7 @@
 langcode: en
 id: article_serbia_serbian
-migration_tags: article_serbia_serbian
+migration_tags:
+  - article_serbia_serbian
 migration_group: article
 label: 'Article Serbia Serbian'
 source:

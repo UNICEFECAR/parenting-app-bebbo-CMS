@@ -1,0 +1,119 @@
+adding:
+  blocks:
+    config_split_sequence_are3deg8lo34mac3:
+      fields:
+        body:
+          -
+            value: '<div class="block-download-doubl-heart scroll-menu" id="download"><drupal-media data-entity-type="media" data-entity-uuid="017fc30f-8d4c-4fe2-8ebb-9cfb347e44a1" data-align="center">&nbsp;</drupal-media></div><div class="block-download-text">Since its launch in 2021, UNICEF''s parenting app Bebbo has become one of the most trusted sources of advice for parents globally. Started in Europe and Central Asia and currently localized in 15 languages, Bebbo offers parents of young children expert advice and tools on young child development - from health and nutrition, care for the newborn to safety and parental wellbeing. The Bebbo app is a parenting innovation, <span>recognized as </span><a href="https://app.digitalpublicgoods.net/a/11084"><span>a Digital Public Good</span></a><span>, </span>available to parents online and offline. Stay tuned for more news about new countries launching Bebbo!</div><div>&nbsp;</div><div class="block-download-text"><p>Bebbo was honored with the Silver Award in the Technology for Good category at the Global Good Awards 2024, recognizing its positive impact. Additionally, the Bebbo parenting app has been named one of the top 100 innovations to watch in the <a href="https://hundred.org/en/reports/hundred-global-collection-2025">HundrED Global Collection for 2025</a>, underscoring its growing influence in parenting support for children’s education. UNICEF Kyrgyzstan received the prestigious <a href="https://shortyawards.com/9th-impact/becoming-better-parents-with-bebbo">GoldHonour Shorty Impact Award</a> for its partnership with the National Television to create a TV series for parents inspired by the Bebbo parenting app.&nbsp;&nbsp;</p><div class="block-download-doubl-heart scroll-menu" id="download"><drupal-media data-entity-type="media" data-entity-uuid="ec24fcd0-6a31-4737-b88f-8fc90f0e8c67" data-align="center">&nbsp;</drupal-media></div></div>'
+  menus:
+    config_split_sequence_lqc3f12fn2ai1lnc:
+      uri: 'internal:/#case_studies'
+    config_split_sequence_kbbovvvdqg74jv6c:
+      uri: 'internal:/group/146/members'
+    config_split_sequence_dubhebdr85gtrb8l:
+      uri: 'internal:/group/146/content/create/group_membership'
+    config_split_sequence_sia0hnn971gjhi3s:
+      weight: -49
+    config_split_sequence_97ekvjdvn42vgq11:
+      weight: -48
+    config_split_sequence_c2p1gl0tc98njp6s:
+      weight: -46
+    config_split_sequence_tm5qce8347atr6to:
+      weight: -47
+    config_split_sequence_5ji1c58itjisodtp:
+      weight: -45
+    config_split_sequence_dviskkf6av8ctaqh:
+      uri: 'internal:/group/146/members'
+    config_split_sequence_hhk21tqth0vtvk:
+      weight: -49
+    config_split_sequence_efjh8kkrp02na472:
+      weight: 0
+    config_split_sequence_7tagqimrnpgf36jq:
+      weight: 0
+    config_split_sequence_ant85fbvsee3m8ss:
+      weight: 0
+    config_split_sequence_3s1he4gmi98a3kon:
+      weight: 0
+    config_split_sequence_226u8s7m7ovb9p13:
+      weight: 0
+    config_split_sequence_cjptsk9eqqj43ch1:
+      weight: 10
+removing:
+  blocks:
+    config_split_sequence_are3deg8lo34mac3:
+      fields:
+        body:
+          -
+            value: '<div class="block-download-doubl-heart scroll-menu" id="download"><drupal-media data-entity-type="media" data-entity-uuid="017fc30f-8d4c-4fe2-8ebb-9cfb347e44a1" data-align="center">&nbsp;</drupal-media></div><div class="block-download-text">Since its launch in 2021, UNICEF''s parenting app Bebbo has become one of the most trusted sources of advice for parents globally. Started in Europe and Central Asia and currently localized in 15 languages (<em>English, Русский, Shqip, Беларуская мова, Български, Ελληνικά, Кыргызча, Crnogorski, Македонски, Română, Srpski, Slovenčina, Тоҷикӣ, Робота, O‘zbekcha</em>), Bebbo offers parents of young children expert advice and tools on young child development - from health and nutrition, care for the newborn to safety and parental wellbeing. The Bebbo app is a parenting innovation, <span>recognized as </span><a href="https://app.digitalpublicgoods.net/a/11084"><span>a Digital Public Good</span></a><span>, </span>available to parents online and offline. Stay tuned for more news about new countries launching Bebbo!</div><div class="block-download-doubl-heart scroll-menu"><drupal-media data-entity-type="media" data-entity-uuid="c1cd83ee-5d48-4f7a-a9d1-6b5d6c130d68" data-align="center">&nbsp;</drupal-media></div><div class="block-download-text">Bebbo was honored with the Silver Award in the Technology for Good category at the Global Good Awards 2024, recognizing its positive impact. Additionally, the Bebbo parenting app has been named one of the top 100 innovations to watch in the <a href="https://hundred.org/en/reports/hundred-global-collection-2025">HundrED Global Collection for 2025</a>, underscoring its growing influence in parenting support for children’s education. UNICEF Kyrgyzstan received the prestigious <a href="https://shortyawards.com/9th-impact/becoming-better-parents-with-bebbo">GoldHonour Shorty Impact Award</a> for its partnership with the National Television to create a TV series for parents inspired by the Bebbo parenting app.&nbsp;&nbsp;</div><div class="block-download-doubl-heart scroll-menu"><drupal-media data-entity-type="media" data-entity-uuid="6606054c-f543-4baf-954a-a87b99c885c5" data-align="center">&nbsp;</drupal-media></div>'
+  menus:
+    config_split_sequence_lqc3f12fn2ai1lnc:
+      uri: 'internal:/#bebbo_families'
+    config_split_sequence_kbbovvvdqg74jv6c:
+      uri: 'internal:/group/41/members'
+    config_split_sequence_dubhebdr85gtrb8l:
+      uri: 'internal:/group/41/content/create/group_membership'
+    config_split_sequence_sia0hnn971gjhi3s:
+      weight: -48
+    config_split_sequence_9ifbn4qm5d2152sr:
+      menu_name: editorial-menu
+      title: 'Copy keywords/related articles to translations'
+      parent: 'menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818'
+      uri: 'internal:/admin/content/copy-translated-field'
+      link_title: ''
+      description: null
+      enabled: true
+      expanded: false
+      weight: 0
+      langcode: en
+      uuid: b9e8641b-cfa1-46b8-ab4e-343a76776709
+      options: {  }
+    config_split_sequence_97ekvjdvn42vgq11:
+      weight: -47
+    config_split_sequence_c2p1gl0tc98njp6s:
+      weight: -45
+    config_split_sequence_tm5qce8347atr6to:
+      weight: -46
+    config_split_sequence_5ji1c58itjisodtp:
+      weight: -49
+    config_split_sequence_hb3aj57qruaujqvd:
+      menu_name: editorial-menu
+      title: 'Redirect Management'
+      parent: null
+      uri: 'internal:/admin/config/parent-buddy/redirect-management'
+      link_title: ''
+      description: 'Manage language redirects and landing pages'
+      enabled: true
+      expanded: false
+      weight: -43
+      langcode: en
+      uuid: 9f8e2c4a-1b5d-4e8f-a9c3-7d6e5f4a8b2c
+      options: {  }
+    config_split_sequence_dviskkf6av8ctaqh:
+      uri: 'internal:/group/41/members'
+    config_split_sequence_hhk21tqth0vtvk:
+      weight: -50
+    config_split_sequence_efjh8kkrp02na472:
+      weight: -48
+    config_split_sequence_7tagqimrnpgf36jq:
+      weight: -49
+    config_split_sequence_ant85fbvsee3m8ss:
+      weight: -47
+    config_split_sequence_3s1he4gmi98a3kon:
+      weight: -45
+    config_split_sequence_dkjp3bdcqnblee1h:
+      menu_name: editorial-menu
+      title: 'Taxonomy Export - Standard Deviation'
+      parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+      uri: 'internal:/taxonomy-export-standard-deviation/en'
+      link_title: ''
+      description: null
+      enabled: true
+      expanded: false
+      weight: -46
+      langcode: en
+      uuid: 3474b254-edee-4422-a443-3eacff8ac212
+      options: {  }
+    config_split_sequence_226u8s7m7ovb9p13:
+      weight: -37
+    config_split_sequence_cjptsk9eqqj43ch1:
+      weight: -36

@@ -1,0 +1,18 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          field_app_name:
+            alter:
+              trim_whitespace: true
+            element_default_classes: false
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          field_app_name:
+            alter:
+              trim_whitespace: false
+            element_default_classes: true

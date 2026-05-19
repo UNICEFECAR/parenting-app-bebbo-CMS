@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_montenegro_montenegrin
-migration_tags: video_article_montenegro_montenegrin
+migration_tags:
+  - video_article_montenegro_montenegrin
 migration_group: video_article
 label: 'video_article_montenegro_montenegrin'
 source:

@@ -1,0 +1,49 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      fields:
+        state:
+          label: State
+        label:
+          label: Label
+        type:
+          label: Type
+        tags_count:
+          label: Tags
+        changed:
+          label: Changed
+        operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      arguments:
+        tjid:
+          exception:
+            title: All
+  checkout:
+    display_title: Checkout
+    display_options:
+      fields:
+        label:
+          label: Label
+        type:
+          label: Type
+        changed:
+          label: Changed

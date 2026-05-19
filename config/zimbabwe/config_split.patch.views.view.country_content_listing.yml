@@ -1,0 +1,20 @@
+adding:
+  display:
+    default:
+      display_options:
+        cache:
+          type: none
+          options: {  }
+removing:
+  display:
+    default:
+      display_options:
+        cache:
+          type: tag
+    page_5:
+      display_options:
+        cache:
+          type: none
+          options: {  }
+        defaults:
+          cache: false

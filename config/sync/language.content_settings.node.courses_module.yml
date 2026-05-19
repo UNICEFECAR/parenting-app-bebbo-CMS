@@ -1,0 +1,16 @@
+uuid: cfe5f16d-c0cd-4507-ae27-e7528ca6b779
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.courses_module
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+id: node.courses_module
+target_entity_type_id: node
+target_bundle: courses_module
+default_langcode: site_default
+language_alterable: true

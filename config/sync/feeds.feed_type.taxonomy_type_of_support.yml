@@ -1,0 +1,90 @@
+uuid: d33db75d-15b6-4ccf-8793-2602437635e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.type_of_support.name
+    - taxonomy.vocabulary.type_of_support
+  module:
+    - taxonomy
+label: 'Taxonomy - Type of Support'
+id: taxonomy_type_of_support
+description: 'Taxonomy - Type of Support'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: type_of_support
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term:
+    value: Term
+    label: Term
+    machine_name: term
+    type: csv
+  term_id:
+    value: Term_ID
+    label: Term_ID
+    machine_name: term_id
+    type: csv
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+    type: csv
+  weight:
+    value: Weight
+    label: Weight
+    machine_name: weight
+    type: csv
+  language_code:
+    value: Language_code
+    label: Language_code
+    machine_name: language_code
+    type: csv
+mappings:
+  -
+    target: tid
+    map:
+      value: term_id
+    settings: {  }
+    unique:
+      value: '1'
+  -
+    target: name
+    map:
+      value: term_name
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: weight
+    map:
+      value: weight
+    settings: {  }
+    unique: {  }
+  -
+    target: langcode
+    map:
+      value: language_code
+    settings:
+      language: en

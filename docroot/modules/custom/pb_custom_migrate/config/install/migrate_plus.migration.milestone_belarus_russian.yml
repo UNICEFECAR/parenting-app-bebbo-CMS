@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_belarus_russian
-migration_tags: milestone_belarus_russian
+migration_tags:
+  - milestone_belarus_russian
 migration_group: milestone
 label: 'Milestone Belarus Russian'
 source:

@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_montenegro_montenegrin
-migration_tags: homescreen_montenegro_montenegrin
+migration_tags:
+  - homescreen_montenegro_montenegrin
 migration_group: homescreen
 label: 'Homescreen Montenegro Montenegrin'
 source:

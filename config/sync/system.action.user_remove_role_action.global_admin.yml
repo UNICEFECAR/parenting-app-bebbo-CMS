@@ -1,0 +1,14 @@
+uuid: c1e8e14a-20f0-4a05-8394-64213cecfffd
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.global_admin
+  module:
+    - user
+id: user_remove_role_action.global_admin
+label: 'Remove the Global Admin role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: global_admin

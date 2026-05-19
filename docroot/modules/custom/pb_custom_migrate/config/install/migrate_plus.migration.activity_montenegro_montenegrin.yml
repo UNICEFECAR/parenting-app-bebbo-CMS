@@ -1,6 +1,7 @@
 langcode: en
 id: activity_montenegro_montenegrin
-migration_tags: activity_montenegro_montenegrin
+migration_tags:
+  - activity_montenegro_montenegrin
 migration_group: activity
 label: 'activity_montenegro_montenegrin'
 source:

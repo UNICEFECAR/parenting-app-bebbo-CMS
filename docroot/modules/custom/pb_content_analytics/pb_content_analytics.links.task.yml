@@ -1,0 +1,22 @@
+pb_content_analytics.settings_tab:
+  title: 'Settings'
+  route_name: pb_content_analytics.settings
+  base_route: pb_content_analytics.settings
+
+pb_content_analytics.reports_tab:
+  title: 'Report'
+  route_name: view.content_analytics.page_1
+  base_route: pb_content_analytics.settings
+  weight: 1
+
+pb_content_analytics.sync_tab:
+  title: 'Sync'
+  route_name: pb_content_analytics.sync
+  base_route: pb_content_analytics.settings
+  weight: 2
+
+pb_content_analytics.logs_tab:
+  title: 'Logs'
+  route_name: view.content_analytics_sync_log.page_1
+  base_route: pb_content_analytics.settings
+  weight: 3

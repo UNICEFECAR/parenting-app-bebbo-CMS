@@ -1,0 +1,26 @@
+uuid: 4c5d3a73-055e-4764-ba53-6e7197eb4efe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_optional_module
+    - node.type.courses_module
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.courses_module.field_optional_module
+field_name: field_optional_module
+entity_type: node
+bundle: courses_module
+label: 'Optional module'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'true'
+  off_label: 'false'
+field_type: boolean

@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_english
-migration_tags: homescreen_english
+migration_tags:
+  - homescreen_english
 migration_group: homescreen
 label: 'Homescreen English'
 source:

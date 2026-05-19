@@ -1,0 +1,48 @@
+uuid: 183a2c94-a25a-425d-89b0-026a2442cd08
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+    - options
+id: group.field_content_toggle
+field_name: field_content_toggle
+entity_type: group
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: ai_chatbot
+      label: 'AI Chatbot'
+    -
+      value: baby_size
+      label: 'Baby Size'
+    -
+      value: childs_growth
+      label: "Child's Growth"
+    -
+      value: faqs
+      label: FAQs
+    -
+      value: guide
+      label: Guide
+    -
+      value: health_check_up
+      label: 'Health Check-up'
+    -
+      value: learning
+      label: Learning
+    -
+      value: pregnancy
+      label: Pregnancy
+    -
+      value: vaccination
+      label: Vaccination
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,25 @@
+uuid: 0d57ad73-5a5a-49bd-82a3-866b21638dfe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_parental_week
+    - node.type.pregnancy_weekly_overview
+  module:
+    - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.pregnancy_weekly_overview.field_parental_week
+field_name: field_parental_week
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Parental week'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

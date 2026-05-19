@@ -1,0 +1,20 @@
+uuid: 9c090e5f-ff46-41c6-9270-77a6199a1676
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+    - node
+id: node.field_question_image
+field_name: field_question_image
+entity_type: node
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

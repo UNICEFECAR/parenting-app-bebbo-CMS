@@ -1,0 +1,20 @@
+uuid: ae0a4c40-0d69-418a-b1d9-acb5baa60cee
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_course_expiry
+field_name: field_course_expiry
+entity_type: node
+type: datetime
+settings:
+  datetime_type: datetime
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

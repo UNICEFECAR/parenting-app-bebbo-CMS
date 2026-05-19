@@ -1,0 +1,28 @@
+uuid: 452d0842-bc62-41f4-9ae4-c8e06dc811a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_modules_unlock
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_modules_unlock
+field_name: field_modules_unlock
+entity_type: node
+bundle: course
+label: 'Modules unlock after completing previous'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'true'
+  off_label: 'false'
+field_type: boolean

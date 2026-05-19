@@ -1,6 +1,7 @@
 langcode: en
 id: article_serbia_english
-migration_tags: article_serbia_english
+migration_tags:
+  - article_serbia_english
 migration_group: article
 label: 'Article North Macedonia Macedonian'
 source:

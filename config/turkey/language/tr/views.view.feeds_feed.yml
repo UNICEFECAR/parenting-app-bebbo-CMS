@@ -1,0 +1,49 @@
+label: Feeds
+display:
+  default:
+    display_title: Master
+    display_options:
+      title: Feeds
+      fields:
+        feeds_feed_bulk_form:
+          label: 'Bulk update'
+        title:
+          label: Title
+        type:
+          label: Type
+        name:
+          label: Author
+        changed:
+          label: Güncellendi
+        operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: 'next ›'
+            previous: '‹ previous'
+            first: '« first'
+            last: 'last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: Type
+  page_1:
+    display_title: Page
+    display_options:
+      menu:
+        title: Feeds

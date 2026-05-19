@@ -1,0 +1,24 @@
+uuid: d0b9bef6-fdf6-4d09-a248-602ea17e7f3b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unique_name
+    - taxonomy.vocabulary.course_category
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.course_category.field_unique_name
+field_name: field_unique_name
+entity_type: taxonomy_term
+bundle: course_category
+label: 'Unique name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

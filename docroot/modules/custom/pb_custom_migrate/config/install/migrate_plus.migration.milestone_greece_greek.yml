@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_greece_greek
-migration_tags: milestone_greece_greek
+migration_tags:
+  - milestone_greece_greek
 migration_group: milestone
 label: 'Milestone Greece Greek'
 source:

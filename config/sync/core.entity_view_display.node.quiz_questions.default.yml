@@ -1,0 +1,64 @@
+uuid: c45f68e5-6a4a-43d4-a1bc-e835d24cd3f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.quiz_questions.field_answers
+    - field.field.node.quiz_questions.field_explanation
+    - field.field.node.quiz_questions.field_question
+    - field.field.node.quiz_questions.field_question_image
+    - field.field.node.quiz_questions.field_question_type
+    - node.type.quiz_questions
+  module:
+    - bebbo_serializer
+    - options
+    - user
+id: node.quiz_questions.default
+targetEntityType: node
+bundle: quiz_questions
+mode: default
+content:
+  field_answers:
+    type: quiz_answer_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_explanation:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_question:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_question_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_question_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true

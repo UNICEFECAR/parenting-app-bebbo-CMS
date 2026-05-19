@@ -1,0 +1,11 @@
+administer content analytics settings:
+  title: 'Administer content analytics settings'
+  description: 'Configure Content Analytics API settings'
+
+manage content analytics sync:
+  title: 'Manage content analytics sync'
+  description: 'Trigger manual sync and view sync status'
+
+view content analytics report:
+  title: 'View content analytics report'
+  description: 'Access the Content Analytics report'

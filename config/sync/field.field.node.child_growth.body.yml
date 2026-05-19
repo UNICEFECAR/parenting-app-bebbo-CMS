@@ -1,0 +1,23 @@
+uuid: d6edb781-a690-4516-b1d2-83a89ba4cafa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.child_growth
+  module:
+    - text
+id: node.child_growth.body
+field_name: body
+entity_type: node
+bundle: child_growth
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

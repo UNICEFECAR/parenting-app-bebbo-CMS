@@ -1,0 +1,28 @@
+uuid: 52a8c069-8e2b-42e1-bb8b-536e4aa18f74
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_read_count
+    - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.video_article.field_read_count
+field_name: field_read_count
+entity_type: node
+bundle: video_article
+label: 'Read Count'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

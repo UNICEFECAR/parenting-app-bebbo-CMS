@@ -1,0 +1,7 @@
+adding:
+  permissions:
+    - 'create health_check_ups content'
+    - 'create vaccinations content'
+    - 'delete own health_check_ups content'
+    - 'delete own vaccinations content'
+removing: {  }

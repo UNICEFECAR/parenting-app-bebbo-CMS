@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_belarus_belarusian
-migration_tags: video_article_belarus_belarusian
+migration_tags:
+  - video_article_belarus_belarusian
 migration_group: video_article_belarusian
 label: 'Video Article Belarusian'
 source:

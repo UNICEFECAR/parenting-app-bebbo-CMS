@@ -1,0 +1,9 @@
+uuid: 36a06065-32a5-4473-a720-11f176b18bc9
+langcode: en
+status: true
+dependencies: {  }
+name: Strings
+vid: strings
+description: 'Translations of v2 app strings'
+weight: 0
+new_revision: true

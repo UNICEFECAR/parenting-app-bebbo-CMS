@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_kyrgyzstan_kyrgyz
-migration_tags: video_article_kyrgyzstan_kyrgyz
+migration_tags:
+  - video_article_kyrgyzstan_kyrgyz
 migration_group: video_article
 label: 'Video Article Kyrgyzstan-Kyrgyz'
 source:

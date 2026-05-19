@@ -1,0 +1,24 @@
+uuid: ef358540-837c-45b0-92dc-980924f2a340
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unique_name
+    - taxonomy.vocabulary.target_audience
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.target_audience.field_unique_name
+field_name: field_unique_name
+entity_type: taxonomy_term
+bundle: target_audience
+label: 'Unique name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

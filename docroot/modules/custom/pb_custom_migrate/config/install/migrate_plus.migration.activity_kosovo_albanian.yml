@@ -1,6 +1,7 @@
 langcode: en
 id: activity_kosovo_albanian
-migration_tags: activity_kosovo_albanian
+migration_tags:
+  - activity_kosovo_albanian
 migration_group: activity
 label: 'activity_kosovo_albanian'
 source:

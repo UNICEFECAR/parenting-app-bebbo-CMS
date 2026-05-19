@@ -1,0 +1,29 @@
+applinks:
+  93BCKGKLMZ-com-datamatics-bebbo_0:
+    applinks: ''
+    appID: 93BCKGKLMZ.com.datamatics.bebbo
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  K288UMKCNF-org-unicef-ecar-bebbo_1:
+    applinks: ''
+    appID: K288UMKCNF.org.unicef.ecar.bebbo
+    paths: '/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  93BCKGKLMZ-com-datamatics-foleja_2:
+    applinks: ''
+    appID: 93BCKGKLMZ.com.datamatics.foleja
+    paths: '/foleja/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''
+  K288UMKCNF-org-unicef-kosovo-foleja_3:
+    applinks: ''
+    appID: K288UMKCNF.org.unicef.kosovo.foleja
+    paths: '/foleja/share/*'
+    appclips: ''
+    appIDs: {  }
+    defaults: ''

@@ -1,0 +1,73 @@
+uuid: 12d46497-ac9f-4db4-b727-2f7e72b0c76d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.video_article.field_like_count
+    - field.field.node.video_article.field_read_count
+    - node.type.video_article
+  module:
+    - node
+label: 'Content Analytics Import - Video Article'
+id: analytics_import_video_article
+description: 'Import like and read counts for video article nodes via CSV upload.'
+help: 'Upload a CSV with columns: node_id, like_count, read_count'
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: csv
+  directory: 'public://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:node'
+processor_configuration:
+  values:
+    type: video_article
+  langcode: en
+  insert_new: 0
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  skip_validation: false
+  skip_validation_types: {  }
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 1
+custom_sources:
+  node_id:
+    value: node_id
+    label: node_id
+    machine_name: node_id
+  like_count:
+    value: like_count
+    label: like_count
+    machine_name: like_count
+  read_count:
+    value: read_count
+    label: read_count
+    machine_name: read_count
+mappings:
+  -
+    target: nid
+    map:
+      value: node_id
+    settings: {  }
+    unique:
+      value: '1'
+  -
+    target: field_like_count
+    map:
+      value: like_count
+    settings: {  }
+    unique: {  }
+  -
+    target: field_read_count
+    map:
+      value: read_count
+    settings: {  }
+    unique: {  }

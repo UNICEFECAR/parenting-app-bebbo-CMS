@@ -1,0 +1,28 @@
+uuid: 9faf3741-a33c-4250-8d4b-31d09bd73b7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pre_populated
+    - node.type.daily_homescreen_messages
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.daily_homescreen_messages.field_pre_populated
+field_name: field_pre_populated
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Pre Populated'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

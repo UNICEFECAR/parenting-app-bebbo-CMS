@@ -1,0 +1,6 @@
+csv-export-relocate:
+  js:
+    js/csv-export-relocate.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

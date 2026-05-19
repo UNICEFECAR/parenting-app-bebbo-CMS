@@ -1,0 +1,6 @@
+adding:
+  label: 'Global English'
+  weight: -10
+removing:
+  label: English
+  weight: -15

@@ -1,0 +1,20 @@
+uuid: 06990aa0-e903-4ef8-b134-0988b61f7dce
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.survey
+  module:
+    - path
+id: node.survey.path
+field_name: path
+entity_type: node
+bundle: survey
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

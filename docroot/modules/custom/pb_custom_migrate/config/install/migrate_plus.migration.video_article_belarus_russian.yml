@@ -1,6 +1,7 @@
 langcode: by-ru
 id: video_article_belarus_russian
-migration_tags: video_article_belarus_russian
+migration_tags:
+  - video_article_belarus_russian
 migration_group: video_article_belarus_russian
 label: 'Video Article Belarus Russian'
 source:

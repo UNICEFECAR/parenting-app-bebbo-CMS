@@ -1,0 +1,18 @@
+uuid: 1e45fcd8-0bee-4554-8954-874eeb10654c
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.quiz
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '1'
+id: node.quiz
+target_entity_type_id: node
+target_bundle: quiz
+default_langcode: site_default
+language_alterable: true

@@ -1,6 +1,7 @@
 langcode: en
 id: activity_tajikistan_tajik
-migration_tags: activity_tajikistan_tajik
+migration_tags:
+  - activity_tajikistan_tajik
 migration_group: activity
 label: 'activity_tajikistan_tajik'
 source:

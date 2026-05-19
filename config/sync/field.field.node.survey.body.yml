@@ -1,0 +1,23 @@
+uuid: 67819ef5-84b4-4dc3-8392-915992b01d16
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.survey
+  module:
+    - text
+id: node.survey.body
+field_name: body
+entity_type: node
+bundle: survey
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

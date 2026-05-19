@@ -1,0 +1,18 @@
+adding:
+  settings:
+    allowed_values:
+      -
+        value: Babuni
+        label: Babuni
+      -
+        value: merhababebek
+        label: 'Merhaba Bebek'
+removing:
+  settings:
+    allowed_values:
+      -
+        value: Bebbo
+        label: Bebbo
+      -
+        value: Foleja
+        label: Foleja

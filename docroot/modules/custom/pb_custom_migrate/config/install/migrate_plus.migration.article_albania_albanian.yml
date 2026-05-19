@@ -1,6 +1,7 @@
 langcode: en
 id: article_albania_albanian
-migration_tags: article_albania_albanian
+migration_tags:
+  - article_albania_albanian
 migration_group: article
 label: 'Article Albania Albanian'
 source:

@@ -1,0 +1,30 @@
+adding:
+  label: Садржај
+  display:
+    default:
+      display_options:
+        title: Садржај
+        fields:
+          title:
+            label: Title
+          name:
+            label: Author
+          status:
+            label: Status
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Sort by'
+        filters:
+          title:
+            expose:
+              label: Title
+          status:
+            expose:
+              label: Status
+    page_1:
+      display_options:
+        menu:
+          title: Садржај
+        tab_options:
+          title: Садржај
+removing: {  }

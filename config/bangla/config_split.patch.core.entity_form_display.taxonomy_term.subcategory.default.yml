@@ -1,0 +1,45 @@
+adding:
+  uuid: f827c6b0-01cb-404e-ad5c-e4e13a202418
+  dependencies:
+    config:
+      - field.field.taxonomy_term.subcategory.field_child_s_age
+  content:
+    description:
+      weight: 0
+    field_category:
+      weight: 101
+    field_child_s_age:
+      type: options_select
+      weight: 102
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    name:
+      weight: -5
+    path:
+      weight: 30
+    status:
+      weight: 100
+    translation:
+      weight: 10
+removing:
+  uuid: a3defacc-7716-47c8-824d-b8e5677a9421
+  dependencies:
+    config:
+      - field.field.taxonomy_term.subcategory.field_child_age
+  content:
+    description:
+      weight: 1
+    field_category:
+      weight: 3
+    field_child_age:
+      type: options_select
+      weight: 4
+    name:
+      weight: 0
+    path:
+      weight: 6
+    status:
+      weight: 7
+    translation:
+      weight: 5

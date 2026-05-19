@@ -1,0 +1,76 @@
+uuid: 3e2d868d-4f8c-4006-8c82-ef8e7e60b4de
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.quiz.field_instructions
+    - field.field.node.quiz.field_licensed_content
+    - field.field.node.quiz.field_number_of_questions
+    - field.field.node.quiz.field_passing_score
+    - field.field.node.quiz.field_quiz_questions
+    - field.field.node.quiz.field_quiz_type
+    - node.type.quiz
+  module:
+    - options
+    - user
+id: node.quiz.full
+targetEntityType: node
+bundle: quiz
+mode: full
+content:
+  field_instructions:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_licensed_content:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_number_of_questions:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_passing_score:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_quiz_questions:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_quiz_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  content_moderation_control: true
+  langcode: true
+  links: true

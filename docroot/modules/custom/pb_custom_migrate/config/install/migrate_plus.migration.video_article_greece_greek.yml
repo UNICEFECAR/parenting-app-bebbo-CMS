@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_greece_greek
-migration_tags: video_article_greece_greek
+migration_tags:
+  - video_article_greece_greek
 migration_group: video_article_greece_greek
 label: 'Video Article Greek'
 source:

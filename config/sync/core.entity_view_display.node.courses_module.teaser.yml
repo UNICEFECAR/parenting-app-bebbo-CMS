@@ -1,0 +1,78 @@
+uuid: 005f1f25-bc29-4f63-870e-f4bc39b91e05
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.courses_module.field_course_content
+    - field.field.node.courses_module.field_module_title
+    - field.field.node.courses_module.field_numbering_style
+    - field.field.node.courses_module.field_optional_module
+    - field.field.node.courses_module.field_resource_file_external
+    - field.field.node.courses_module.field_resource_file_internal
+    - node.type.courses_module
+  module:
+    - link
+    - options
+    - user
+id: node.courses_module.teaser
+targetEntityType: node
+bundle: courses_module
+mode: teaser
+content:
+  field_course_content:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_module_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_numbering_style:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_optional_module:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_resource_file_external:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_resource_file_internal:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden:
+  langcode: true
+  links: true

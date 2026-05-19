@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_bulgaria_bulgarian
-migration_tags: video_article_bulgaria_bulgarian
+migration_tags:
+  - video_article_bulgaria_bulgarian
 migration_group: video_article
 label: 'Video Article Bulgaria Bulgarian'
 source:

@@ -1,0 +1,21 @@
+uuid: 4cf1db53-e4a9-4461-9287-21c1c507e120
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_fun_fact
+field_name: field_fun_fact
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

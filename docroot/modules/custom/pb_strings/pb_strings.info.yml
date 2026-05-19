@@ -1,0 +1,8 @@
+name: PB Strings
+description: 'String management admin UI and unique name validation for the Bebbo Strings vocabulary.'
+package: Custom
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:taxonomy
+  - drupal:content_translation

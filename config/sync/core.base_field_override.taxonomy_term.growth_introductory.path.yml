@@ -1,0 +1,20 @@
+uuid: 8347c896-b07d-4f5f-bcd4-e8f873fa2ceb
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - path
+id: taxonomy_term.growth_introductory.path
+field_name: path
+entity_type: taxonomy_term
+bundle: growth_introductory
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

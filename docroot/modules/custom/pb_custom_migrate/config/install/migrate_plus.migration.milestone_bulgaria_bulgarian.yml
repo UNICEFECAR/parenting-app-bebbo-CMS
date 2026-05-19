@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_bulgaria_bulgarian
-migration_tags: milestone_bulgaria_bulgarian
+migration_tags:
+  - milestone_bulgaria_bulgarian
 migration_group: milestone
 label: 'Milestone Bulgaria Bulgarian'
 source:

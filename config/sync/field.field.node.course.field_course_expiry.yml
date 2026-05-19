@@ -1,0 +1,25 @@
+uuid: 8c8a0a48-51fa-4d57-a578-5fe5fa250415
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_expiry
+    - node.type.course
+  module:
+    - datetime
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_course_expiry
+field_name: field_course_expiry
+entity_type: node
+bundle: course
+label: 'Course Expiry'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

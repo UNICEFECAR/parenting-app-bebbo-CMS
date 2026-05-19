@@ -1,0 +1,28 @@
+uuid: ff79d78a-d7a6-44c1-9fc7-c858f05e6e42
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body_rendered
+    - filter.format.full_html
+    - node.type.activities
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.activities.field_body_rendered
+field_name: field_body_rendered
+entity_type: node
+bundle: activities
+label: 'Body Rendered'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

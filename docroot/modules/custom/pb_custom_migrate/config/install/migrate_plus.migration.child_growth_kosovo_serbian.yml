@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_kosovo_serbian
-migration_tags: child_growth_kosovo_serbian
+migration_tags:
+  - child_growth_kosovo_serbian
 migration_group: child_growth
 label: child_growth_kosovo_serbian
 source:

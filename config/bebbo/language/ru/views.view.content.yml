@@ -1,0 +1,66 @@
+label: Content
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: Content
+      fields:
+        title:
+          label: Title
+        type:
+          label: 'Content type'
+          separator: ', '
+        name:
+          label: Author
+        status:
+          label: Status
+          settings:
+            format_custom_false: 'Снято с публикации'
+            format_custom_true: Опубликовано
+        changed:
+          label: Updated
+        langcode:
+          label: Language
+          separator: ', '
+        operations:
+          label: Operations
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        title:
+          expose:
+            label: Title
+        type:
+          expose:
+            label: 'Content type'
+        status:
+          expose:
+            label: Status
+          group_info:
+            group_items:
+              1:
+                title: Опубликовано
+              2:
+                title: 'Снято с публикации'
+        langcode:
+          expose:
+            label: Language
+  page_1:
+    display_title: Страница
+    display_options:
+      menu:
+        title: Content
+      tab_options:
+        title: Content

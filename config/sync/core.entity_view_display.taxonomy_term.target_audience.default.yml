@@ -1,0 +1,31 @@
+uuid: 6fe68db8-2e49-420e-a496-ef9baa16fa85
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.target_audience.field_unique_name
+    - taxonomy.vocabulary.target_audience
+  module:
+    - text
+id: taxonomy_term.target_audience.default
+targetEntityType: taxonomy_term
+bundle: target_audience
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unique_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true

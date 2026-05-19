@@ -1,0 +1,24 @@
+uuid: 4f66f848-910f-4d16-9ea4-d6a97086531a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_embedded_images
+    - node.type.video_article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.video_article.field_embedded_images
+field_name: field_embedded_images
+entity_type: node
+bundle: video_article
+label: 'Embedded Images'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

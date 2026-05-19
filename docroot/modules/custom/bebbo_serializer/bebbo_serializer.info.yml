@@ -1,0 +1,9 @@
+name: Bebbo Serializer
+description: V2 enhanced API serialization for Bebbo REST exports.
+package: Custom
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:rest
+  - drupal:serialization
+  - language_visibility_control:language_visibility_control

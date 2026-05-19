@@ -1,0 +1,31 @@
+uuid: 4013850f-b054-4da9-9401-ffc10fdbc007
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_final_assessment
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_final_assessment
+field_name: field_final_assessment
+entity_type: node
+bundle: course
+label: 'Final assessment'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - quiz
+field_type: entity_reference

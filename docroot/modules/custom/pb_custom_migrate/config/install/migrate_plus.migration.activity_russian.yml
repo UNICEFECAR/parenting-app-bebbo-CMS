@@ -1,6 +1,7 @@
 langcode: en
 id: activity_russian
-migration_tags: activity_russian
+migration_tags:
+  - activity_russian
 migration_group: activity
 label: 'activity_russian'
 source:

@@ -1,0 +1,11 @@
+adding:
+  content:
+    field_licensed_content:
+      label: hidden
+removing:
+  dependencies:
+    config:
+      - field.field.node.activities.field_pre_populated
+  content:
+    field_licensed_content:
+      label: above

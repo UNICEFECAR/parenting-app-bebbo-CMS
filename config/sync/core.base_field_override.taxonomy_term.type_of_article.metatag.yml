@@ -1,0 +1,20 @@
+uuid: ecd25144-f041-4d82-960e-4ac6549cf231
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.type_of_article
+  module:
+    - metatag
+id: taxonomy_term.type_of_article.metatag
+field_name: metatag
+entity_type: taxonomy_term
+bundle: type_of_article
+label: 'Metatags (Hidden field for JSON support)'
+description: 'The computed meta tags for the entity.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: metatag_computed

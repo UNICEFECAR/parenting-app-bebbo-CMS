@@ -1,0 +1,20 @@
+adding:
+  dependencies:
+    config:
+      - workflows.workflow.group_workflow
+    module:
+      - content_moderation
+  content:
+    moderation_state:
+      type: moderation_state_default
+      weight: 23
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+removing:
+  dependencies:
+    config:
+      - field.field.node.video_article.field_body_rendered
+      - field.field.node.video_article.field_embedded_images
+  hidden:
+    moderation_state: true

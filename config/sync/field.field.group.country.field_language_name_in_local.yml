@@ -1,0 +1,24 @@
+uuid: 49edf97d-98a1-4352-9765-934ed8c517d8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_language_name_in_local
+    - group.type.country
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_language_name_in_local
+field_name: field_language_name_in_local
+entity_type: group
+bundle: country
+label: 'Language Name in Local'
+description: 'Add language name in locale'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

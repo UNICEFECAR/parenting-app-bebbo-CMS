@@ -1,0 +1,19 @@
+adding:
+  dependencies:
+    config:
+      - feeds.feed_type.taxonomy_age_period
+      - feeds.feed_type.taxonomy_age_period_language
+    module:
+      - feeds
+  permissions:
+    - 'delete any remote_video media'
+    - 'delete media'
+    - 'delete own image media'
+    - 'delete own remote_video media'
+    - 'delete own video media'
+    - 'update own taxonomy_age_period feeds'
+    - 'update own taxonomy_age_period_language feeds'
+    - 'update taxonomy_age_period feeds'
+removing:
+  permissions:
+    - 'update any media'

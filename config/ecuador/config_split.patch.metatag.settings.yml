@@ -1,0 +1,7 @@
+adding: {  }
+removing:
+  entity_type_groups:
+    node:
+      activities:
+        basic: basic
+        advanced: advanced

@@ -1,0 +1,22 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: bn
+    insert_new: 0
+    update_existing: 0
+    update_non_existent: 'entity:unpublish_action:taxonomy_term'
+    expire: 3600
+  mappings:
+    -
+      settings:
+        language: bn
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: tr
+    insert_new: 1
+    update_existing: 1
+    update_non_existent: _keep
+    expire: -1

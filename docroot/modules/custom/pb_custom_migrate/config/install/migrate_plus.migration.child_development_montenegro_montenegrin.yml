@@ -1,6 +1,7 @@
 langcode: en
 id: child_development_montenegro_montenegrin
-migration_tags: child_development_montenegro_montenegrin
+migration_tags:
+  - child_development_montenegro_montenegrin
 migration_group: child_development
 label: 'child_development_montenegro_montenegrin'
 source:

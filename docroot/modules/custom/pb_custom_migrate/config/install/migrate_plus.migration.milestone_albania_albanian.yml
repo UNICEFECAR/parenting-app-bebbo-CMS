@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_albania_albanian
-migration_tags: milestone_albania_albanian
+migration_tags:
+  - milestone_albania_albanian
 migration_group: milestone
 label: 'Milestone Albania Albanian'
 source:

@@ -1,0 +1,15 @@
+adding:
+  dependencies:
+    module:
+      - group
+  permissions:
+    - 'access group overview'
+    - 'access user profiles'
+removing:
+  dependencies:
+    module:
+      - entity_share_client
+      - file
+  permissions:
+    - 'delete own files'
+    - entity_share_client_pull_content

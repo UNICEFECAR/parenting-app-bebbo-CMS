@@ -1,0 +1,19 @@
+uuid: c4147eb5-3ee7-4adc-a5c3-159d2686fa00
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_resource_file_external
+field_name: field_resource_file_external
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

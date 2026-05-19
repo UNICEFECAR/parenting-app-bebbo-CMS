@@ -1,0 +1,23 @@
+uuid: 963fed3b-05dd-4fd1-8363-0262f21b9cab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.feeds_item
+    - taxonomy.vocabulary.chatbot_category
+  module:
+    - feeds
+id: taxonomy_term.chatbot_category.feeds_item
+field_name: feeds_item
+entity_type: taxonomy_term
+bundle: chatbot_category
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

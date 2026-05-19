@@ -1,0 +1,25 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: bn
+  mappings:
+    -
+      unique:
+        value: 1
+    -
+      settings:
+        language: bn
+        autocreate_bundle: false
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: xk-sq
+  mappings:
+    -
+      unique:
+        value: '1'
+    -
+      settings:
+        language: xk-sq

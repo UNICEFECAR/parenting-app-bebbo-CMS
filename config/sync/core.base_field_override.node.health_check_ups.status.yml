@@ -1,0 +1,22 @@
+uuid: 4a90a28c-ec97-41e4-9ab6-9fb8f7688d73
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+id: node.health_check_ups.status
+field_name: status
+entity_type: node
+bundle: health_check_ups
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,6 +1,7 @@
 langcode: en
 id: activity_serbia_serbian
-migration_tags: activity_serbia_serbian
+migration_tags:
+  - activity_serbia_serbian
 migration_group: activity
 label: 'activity_serbia_serbian'
 source:

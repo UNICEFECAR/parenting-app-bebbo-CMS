@@ -1,0 +1,31 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Type
+        uid:
+          label: Author
+        status:
+          label: Status
+          settings:
+            format_custom_true: Publikuar
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+      filters:
+        bundle:
+          expose:
+            label: Type
+        status:
+          group_info:
+            group_items:
+              1:
+                title: Publikuar
+        langcode:
+          expose:
+            label: Language

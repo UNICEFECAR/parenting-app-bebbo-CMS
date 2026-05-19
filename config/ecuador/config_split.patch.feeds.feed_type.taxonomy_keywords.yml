@@ -1,0 +1,24 @@
+adding:
+  processor_configuration:
+    langcode: en
+  mappings:
+    -
+      map:
+        value: term_id3
+      unique:
+        value: '1'
+    -
+      settings:
+        language: null
+removing:
+  processor_configuration:
+    langcode: bg-bg
+  mappings:
+    -
+      map:
+        value: term_id
+      unique:
+        value: 1
+    -
+      settings:
+        language: bg-bg

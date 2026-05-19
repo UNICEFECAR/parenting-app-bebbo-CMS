@@ -1,0 +1,21 @@
+uuid: 4bd1c12d-61a3-4716-a54a-c5f796a8fd6b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_embedded_images
+field_name: field_embedded_images
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

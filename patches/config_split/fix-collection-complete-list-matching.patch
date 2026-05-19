@@ -1,0 +1,27 @@
+diff --git a/src/ConfigSplitManager.php b/src/ConfigSplitManager.php
+index da85589..0fdb440 100644
+--- a/src/ConfigSplitManager.php
++++ b/src/ConfigSplitManager.php
+@@ -366,9 +366,19 @@ public function splitPreview(ImmutableConfig $config, StorageInterface $transfor
+         $splitCollection = $splitStorage->createCollection($collection);
+         $sourceCollection = $source->createCollection($collection);
+ 
+-        $removeList = array_filter($sourceCollection->listAll(), function ($name) use ($completeSplitList, $completelySplit) {
+-          // Check for wildcards.
+-          return in_array($name, $completelySplit) || self::inFilterList($name, $completeSplitList);
++        // $removeList = array_filter($sourceCollection->listAll(), function ($name) use ($completeSplitList, $completelySplit) {
++        // Check for wildcards.
++        // return in_array($name, $completelySplit) || self::inFilterList($name, $completeSplitList);
++        // Convert the collection name (e.g. "language.ro") to the directory
++        // path used in complete_list entries (e.g. "language/ro").
++        $collectionDir = str_replace('.', '/', $collection);
++          
++        $removeList = array_filter($sourceCollection->listAll(), function ($name) use ($completeSplitList, $completelySplit, $collectionDir) {
++          // Also check with the collection directory prefix so that
++          // complete_list entries like "language/ro/config.name" are matched
++          // when processing the "language.ro" collection.
++          $prefixedName = $collectionDir . '/' . $name;
++          return in_array($name, $completelySplit) || self::inFilterList($name, $completeSplitList) || self::inFilterList($prefixedName, $completeSplitList);
+         });
+         foreach ($removeList as $name) {
+           // Split collections.

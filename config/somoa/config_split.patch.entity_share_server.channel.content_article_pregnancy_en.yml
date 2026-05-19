@@ -1,0 +1,14 @@
+adding:
+  channel_filters:
+    field_content_category_name:
+      path: field_content_category.name
+      operator: '='
+      value:
+        - 'Week by Week'
+removing:
+  channel_filters:
+    field_type_of_article_name:
+      path: field_type_of_article.name
+      operator: '='
+      value:
+        - 'Article for Pregnancy'

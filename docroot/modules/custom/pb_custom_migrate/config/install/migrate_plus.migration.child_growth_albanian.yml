@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_albanian
-migration_tags: child_growth_albanian
+migration_tags:
+  - child_growth_albanian
 migration_group: child_growth
 label: child_growth_albanian
 source:

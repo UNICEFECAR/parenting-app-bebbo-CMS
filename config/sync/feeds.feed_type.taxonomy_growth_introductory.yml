@@ -1,0 +1,132 @@
+uuid: f6160ade-1426-4503-9ac2-4b4b4c349013
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.taxonomy_term.growth_introductory.description
+    - core.base_field_override.taxonomy_term.growth_introductory.name
+    - field.field.taxonomy_term.growth_introductory.field_days_from
+    - field.field.taxonomy_term.growth_introductory.field_days_to
+    - taxonomy.vocabulary.growth_introductory
+  module:
+    - taxonomy
+label: 'Taxonomy - Growth Introductory'
+id: taxonomy_growth_introductory
+description: 'Taxonomy - Growth Introductory'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: growth_introductory
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  term_name:
+    value: Term_name
+    label: Term_name
+    machine_name: term_name
+    type: csv
+  days_from:
+    value: days_from
+    label: days_from
+    machine_name: days_from
+    type: csv
+  days_to:
+    value: days_to
+    label: days_to
+    machine_name: days_to
+    type: csv
+  weight:
+    value: Weight
+    label: Weight
+    machine_name: weight
+    type: csv
+  '':
+    value: ''
+    label: ''
+    machine_name: ''
+    type: csv
+  language_code:
+    value: Language_code
+    label: Language_code
+    machine_name: language_code
+    type: csv
+  title:
+    value: Title
+    label: Title
+    machine_name: title
+    type: csv
+  days_froms:
+    value: days_from
+    label: days_from
+    machine_name: days_froms
+    type: csv
+  days_tos:
+    value: days_to
+    label: days_to
+    machine_name: days_tos
+    type: csv
+  body:
+    value: body
+    label: body
+    machine_name: body
+    type: csv
+  id:
+    value: ID
+    label: ID
+    machine_name: id
+    type: csv
+mappings:
+  -
+    target: name
+    map:
+      value: title
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: field_days_from
+    map:
+      value: days_froms
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: field_days_to
+    map:
+      value: days_tos
+    settings:
+      language: en
+    unique: {  }
+  -
+    target: description
+    map:
+      value: body
+    settings:
+      language: en
+      format: plain_text
+  -
+    target: tid
+    map:
+      value: id
+    settings: {  }
+    unique:
+      value: '1'

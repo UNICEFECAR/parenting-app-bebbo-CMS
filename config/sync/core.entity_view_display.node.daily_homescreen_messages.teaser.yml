@@ -1,0 +1,46 @@
+uuid: 0288358c-ee3f-40ee-ae19-706b11752505
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.daily_homescreen_messages.body
+    - field.field.node.daily_homescreen_messages.feeds_item
+    - field.field.node.daily_homescreen_messages.field_daily_message_category
+    - field.field.node.daily_homescreen_messages.field_licensed_content
+    - field.field.node.daily_homescreen_messages.field_mandatory_content
+    - field.field.node.daily_homescreen_messages.field_pre_populated
+    - node.type.daily_homescreen_messages
+  module:
+    - text
+    - user
+id: node.daily_homescreen_messages.teaser
+targetEntityType: node
+bundle: daily_homescreen_messages
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  feeds_item: true
+  field_daily_message_category: true
+  field_licensed_content: true
+  field_mandatory_content: true
+  field_pre_populated: true
+  langcode: true

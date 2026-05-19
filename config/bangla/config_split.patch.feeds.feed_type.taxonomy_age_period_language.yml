@@ -1,0 +1,18 @@
+adding:
+  fetcher_configuration:
+    directory: 'public://feeds'
+  processor_configuration:
+    langcode: bn
+    insert_new: 1
+    update_existing: 1
+  mappings:
+    -
+      settings:
+        language: bn
+removing:
+  fetcher_configuration:
+    directory: 'private://feeds'
+  processor_configuration:
+    langcode: uz-kaa
+    insert_new: 0
+    update_existing: 2

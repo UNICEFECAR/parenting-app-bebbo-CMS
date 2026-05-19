@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_serbia_english
-migration_tags: vaccinations_serbia_english
+migration_tags:
+  - vaccinations_serbia_english
 migration_group: vaccinations
 label: 'Vaccinations Serbia English'
 source:

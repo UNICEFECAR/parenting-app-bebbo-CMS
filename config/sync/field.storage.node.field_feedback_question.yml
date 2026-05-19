@@ -1,0 +1,21 @@
+uuid: 84bd3ae3-e3f2-45c1-b949-5e1538f1839e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_feedback_question
+field_name: field_feedback_question
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

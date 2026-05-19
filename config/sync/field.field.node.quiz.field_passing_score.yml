@@ -1,0 +1,28 @@
+uuid: 635d20b8-8b17-4b98-98aa-78841dd53dfa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_passing_score
+    - node.type.quiz
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz.field_passing_score
+field_name: field_passing_score
+entity_type: node
+bundle: quiz
+label: 'Passing Score'
+description: 'The passing score out of x'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

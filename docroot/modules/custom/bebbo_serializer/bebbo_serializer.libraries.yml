@@ -1,0 +1,31 @@
+course_module_count:
+  js:
+    js/course_module_count.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+quiz_question_count:
+  js:
+    js/quiz_question_count.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupalSettings
+
+course_expiry:
+  js:
+    js/course_expiry.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+
+decimal-restriction:
+  js:
+    js/decimal-input-restriction.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once

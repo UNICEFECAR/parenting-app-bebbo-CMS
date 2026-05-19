@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the PB Strings module.
+ */
+
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\taxonomy\TermInterface;
+
+/**
+ * Implements hook_entity_presave() for taxonomy terms.
+ */
+function pb_strings_taxonomy_term_presave(TermInterface $term): void {
+  if ($term->bundle() !== 'strings') {
+    return;
+  }
+  if (!$term->hasField('field_unique_name')) {
+    return;
+  }
+
+  $unique_name = $term->get('field_unique_name')->value;
+  if (empty($unique_name)) {
+    return;
+  }
+
+  $query = \Drupal::database()->select('taxonomy_term__field_unique_name', 'un');
+  $query->join('taxonomy_term_field_data', 'td', 'un.entity_id = td.tid');
+  $query->fields('un', ['entity_id']);
+  $query->condition('un.field_unique_name_value', $unique_name);
+  $query->condition('td.vid', 'strings');
+  $query->condition('un.deleted', 0);
+
+  if (!$term->isNew()) {
+    $query->condition('un.entity_id', $term->id(), '<>');
+  }
+
+  $existing = $query->range(0, 1)->execute()->fetchField();
+
+  if ($existing) {
+    throw new EntityStorageException(sprintf(
+      'A string with the unique name "%s" already exists.',
+      $unique_name
+    ));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for taxonomy_term_strings_form.
+ */
+function pb_strings_form_taxonomy_term_strings_form_alter(array &$form, FormStateInterface $form_state): void {
+  $form['#validate'][] = '_pb_strings_validate_unique_name';
+}
+
+/**
+ * Validation callback for unique name on the strings term form.
+ */
+function _pb_strings_validate_unique_name(array &$form, FormStateInterface $form_state): void {
+  $unique_name = $form_state->getValue(['field_unique_name', 0, 'value']);
+  if (empty($unique_name)) {
+    return;
+  }
+
+  $form_object = $form_state->getFormObject();
+  assert($form_object instanceof EntityFormInterface);
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $form_object->getEntity();
+
+  $query = \Drupal::database()->select('taxonomy_term__field_unique_name', 'un');
+  $query->join('taxonomy_term_field_data', 'td', 'un.entity_id = td.tid');
+  $query->fields('un', ['entity_id']);
+  $query->condition('un.field_unique_name_value', $unique_name);
+  $query->condition('td.vid', 'strings');
+  $query->condition('un.deleted', 0);
+
+  if (!$term->isNew()) {
+    $query->condition('un.entity_id', $term->id(), '<>');
+  }
+
+  $existing = $query->range(0, 1)->execute()->fetchField();
+
+  if ($existing) {
+    $form_state->setErrorByName('field_unique_name', t(
+      'A string with the unique name "%unique_name" already exists.',
+      ['%unique_name' => $unique_name]
+    ));
+  }
+}

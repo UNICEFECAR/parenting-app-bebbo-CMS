@@ -1,0 +1,21 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      title: "Who's online"
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        access:
+          expose:
+            label: 'Last access'
+            description: 'A user is considered online for this long after they have last viewed a page.'
+  who_s_online_block:
+    display_title: "Who's online"
+    display_options:
+      block_description: "Who's online"

@@ -1,0 +1,19 @@
+uuid: a7c11ba2-f7ab-42c3-841e-c765985cfbdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_language_visibility_in_app
+    - group.type.country
+id: group.country.field_language_visibility_in_app
+field_name: field_language_visibility_in_app
+entity_type: group
+bundle: country
+label: 'Language Visibility in Mobile App'
+description: 'Languages visible in the mobile app for this country.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

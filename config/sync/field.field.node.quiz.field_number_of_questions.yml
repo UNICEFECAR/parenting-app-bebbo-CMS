@@ -1,0 +1,28 @@
+uuid: bdeab73c-0025-49b4-ab4f-20a36340a258
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_number_of_questions
+    - node.type.quiz
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz.field_number_of_questions
+field_name: field_number_of_questions
+entity_type: node
+bundle: quiz
+label: 'Number of Questions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

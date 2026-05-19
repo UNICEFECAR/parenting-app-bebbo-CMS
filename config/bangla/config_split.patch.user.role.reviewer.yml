@@ -1,0 +1,10 @@
+adding:
+  dependencies:
+    module:
+      - actions_permissions
+      - group
+  permissions:
+    - 'access user profiles'
+    - 'bypass group access'
+    - 'execute pb_custom_field_assign_action node'
+removing: {  }

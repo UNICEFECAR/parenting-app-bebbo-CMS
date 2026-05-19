@@ -1,0 +1,22 @@
+uuid: 5007e7d5-957a-4da0-9607-0bd2f7417790
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.health_check_ups
+id: node.health_check_ups.promote
+field_name: promote
+entity_type: node
+bundle: health_check_ups
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

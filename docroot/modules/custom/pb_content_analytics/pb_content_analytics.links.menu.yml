@@ -1,0 +1,27 @@
+pb_content_analytics.settings:
+  title: 'Content Analytics Settings'
+  route_name: pb_content_analytics.settings
+  parent: system.admin_config
+  description: 'Configure Content Analytics API settings and sync schedule'
+  weight: 150
+
+pb_content_analytics.reports:
+  title: 'Content Analytics Report'
+  route_name: view.content_analytics.page_1
+  parent: pb_content_analytics.settings
+  description: 'View content engagement analytics'
+  weight: 0
+
+pb_content_analytics.sync:
+  title: 'Content Analytics Sync'
+  route_name: pb_content_analytics.sync
+  parent: pb_content_analytics.settings
+  description: 'Manage content analytics sync'
+  weight: 1
+
+pb_content_analytics.logs:
+  title: 'Content Analytics Logs'
+  route_name: view.content_analytics_sync_log.page_1
+  parent: pb_content_analytics.settings
+  description: 'View content analytics sync run history'
+  weight: 2

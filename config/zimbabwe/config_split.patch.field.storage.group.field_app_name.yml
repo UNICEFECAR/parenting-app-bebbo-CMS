@@ -1,0 +1,21 @@
+adding:
+  settings:
+    allowed_values:
+      -
+        value: reraiumntwana
+        label: 'Rerai Umtwana'
+      -
+        value: Bebbo
+        label: Bebbo
+      -
+        value: zimbabwe
+        label: Zimbabwe
+removing:
+  settings:
+    allowed_values:
+      -
+        value: Bebbo
+        label: Bebbo
+      -
+        value: Foleja
+        label: Foleja

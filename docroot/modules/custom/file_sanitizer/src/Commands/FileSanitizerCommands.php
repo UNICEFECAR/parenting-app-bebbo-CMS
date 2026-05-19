@@ -6,6 +6,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\FileInterface;
 use Drupal\file_sanitizer\Service\FilenameSanitizer;
 use Drush\Commands\DrushCommands;
 
@@ -594,6 +595,194 @@ class FileSanitizerCommands extends DrushCommands {
       ]);
       $this->logger()->error("SKIP fid {$fid}: Move failed - {$e->getMessage()}");
       return FALSE;
+    }
+  }
+
+  /**
+   * Scan body-embedded media files for unsafe filenames, optionally rename.
+   *
+   * @param string $content_type
+   *   The machine name of the content type to scan.
+   * @param array $options
+   *   Command options (execute, limit).
+   *
+   * @command file-sanitizer:scan-body
+   * @aliases fssb
+   * @option execute Rename files in-place (default: dry-run)
+   * @option limit Limit number of nodes processed
+   * @usage drush file-sanitizer:scan-body activities
+   *   Dry-run scan of body-embedded media in activities nodes.
+   * @usage drush file-sanitizer:scan-body activities --execute
+   *   Rename unsafe filenames in activities body-embedded media.
+   */
+  public function scanBody(
+    string $content_type,
+    array $options = [
+      'execute' => FALSE,
+      'limit' => NULL,
+    ],
+  ): void {
+    $storage = $this->entityTypeManager->getStorage('node');
+
+    // Verify content type exists.
+    $type_storage = $this->entityTypeManager->getStorage('node_type');
+    if (!$type_storage->load($content_type)) {
+      $this->logger()->error("Content type '{$content_type}' does not exist.");
+      return;
+    }
+
+    // Set up CSV reports.
+    $timestamp = date('Ymd_His');
+    $report_dir = 'public://file-sanitizer';
+    $this->fileSystem->prepareDirectory(
+      $report_dir,
+      FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS
+    );
+
+    $report_csv = "$report_dir/body_files_{$content_type}_{$timestamp}.csv";
+    $validation_csv = "$report_dir/body_validation_{$content_type}_{$timestamp}.csv";
+
+    $report = fopen($this->fileSystem->realpath($report_csv), 'w');
+    $validation = fopen($this->fileSystem->realpath($validation_csv), 'w');
+
+    fputcsv($report, [
+      'nid',
+      'fid',
+      'original_filename',
+      'sanitized_filename',
+      'uri_before',
+      'uri_after',
+      'action',
+    ]);
+
+    fputcsv($validation, [
+      'fid',
+      'filename',
+      'uri',
+      'error_type',
+      'error_message',
+    ]);
+
+    // Query published nodes of the given content type.
+    $query = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('type', $content_type)
+      ->condition('status', 1);
+
+    if (!empty($options['limit'])) {
+      $query->range(0, (int) $options['limit']);
+    }
+
+    $nids = $query->execute();
+    if (empty($nids)) {
+      $this->logger()->notice("No published nodes found for '{$content_type}'.");
+      fclose($report);
+      fclose($validation);
+      return;
+    }
+
+    $mediaStorage = $this->entityTypeManager->getStorage('media');
+    $total_nodes = count($nids);
+    $files_checked = 0;
+    $files_needing_rename = 0;
+    $files_renamed = 0;
+    $seen_fids = [];
+
+    $this->logger()->notice("Processing {$total_nodes} '{$content_type}' nodes" . ($options['execute'] ? '' : ' (dry-run)') . '...');
+
+    foreach ($storage->loadMultiple($nids) as $node) {
+      if (!$node->hasField('body')) {
+        continue;
+      }
+
+      // Collect media UUIDs from all translations of this node.
+      $all_uuids = [];
+      foreach ($node->getTranslationLanguages() as $langcode => $language) {
+        $translation = $node->getTranslation($langcode);
+        $body = $translation->get('body')->value ?? '';
+        if (empty($body) || strpos($body, '<drupal-media') === FALSE) {
+          continue;
+        }
+
+        preg_match_all(
+          '/data-entity-uuid="([a-f0-9\-]+)"/i',
+          $body,
+          $matches
+        );
+
+        foreach ($matches[1] ?? [] as $uuid) {
+          $all_uuids[$uuid] = TRUE;
+        }
+      }
+
+      if (empty($all_uuids)) {
+        continue;
+      }
+
+      // Load media entities by UUID.
+      $mediaEntities = $mediaStorage->loadByProperties([
+        'uuid' => array_keys($all_uuids),
+      ]);
+
+      foreach ($mediaEntities as $media) {
+        if ($media->bundle() !== 'image' || !$media->hasField('field_media_image')) {
+          continue;
+        }
+
+        $file = $media->get('field_media_image')->entity;
+        if (!$file instanceof FileInterface) {
+          continue;
+        }
+
+        $fid = (int) $file->id();
+
+        // Skip files already processed in this run.
+        if (isset($seen_fids[$fid])) {
+          continue;
+        }
+        $seen_fids[$fid] = TRUE;
+        $files_checked++;
+
+        $original = $file->getFilename();
+        $sanitized = $this->sanitizer->sanitize($original);
+
+        if ($original === $sanitized) {
+          continue;
+        }
+
+        $files_needing_rename++;
+        $old_uri = $file->getFileUri();
+        $new_uri = dirname($old_uri) . '/' . $sanitized;
+
+        fputcsv($report, [
+          $node->id(),
+          $fid,
+          $original,
+          $sanitized,
+          $old_uri,
+          $new_uri,
+          $options['execute'] ? 'RENAMED' : 'DRY-RUN',
+        ]);
+
+        if ($options['execute']) {
+          if ($this->renameFileSafely($fid, $sanitized, $validation)) {
+            $files_renamed++;
+          }
+        }
+      }
+    }
+
+    fclose($report);
+    fclose($validation);
+
+    $this->logger()->success("{$content_type}: {$total_nodes} nodes scanned, {$files_checked} files checked, {$files_needing_rename} need rename" . ($options['execute'] ? ", {$files_renamed} renamed" : ' [DRY-RUN]'));
+    $this->logger()->success("Report: $report_csv");
+    $this->logger()->success("Validation errors: $validation_csv");
+
+    if ($options['execute']) {
+      $this->logger()->warning(
+        'After execution you MUST run: drush image:flush --all && drush cr'
+      );
     }
   }
 

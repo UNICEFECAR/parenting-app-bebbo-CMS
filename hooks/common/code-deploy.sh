@@ -38,6 +38,7 @@ if [ "$target_env" != 'prod' ]; then
     $DRUSH updb -y
     echo "Running config import."
     $DRUSH cim -y
+    $DRUSH cr
     $DRUSH cim -y
     echo "Running cache clear."
     $DRUSH cr

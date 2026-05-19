@@ -1,0 +1,28 @@
+uuid: 725f98cb-81d7-49bd-b390-20efe3dfca67
+langcode: by-ru
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - filter.format.full_html
+    - node.type.course
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_description
+field_name: field_description
+entity_type: node
+bundle: course
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

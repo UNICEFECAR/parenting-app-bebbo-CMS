@@ -1,0 +1,24 @@
+uuid: d0309310-ba83-469a-b8aa-556bc4fcb33d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_link
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_course_link
+field_name: field_course_link
+entity_type: node
+bundle: course
+label: 'Course Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

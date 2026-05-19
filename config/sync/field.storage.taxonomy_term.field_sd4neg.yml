@@ -1,0 +1,20 @@
+uuid: 8d573eb2-0491-42eb-b92d-9d147d4c9ee5
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_sd4neg
+field_name: field_sd4neg
+entity_type: taxonomy_term
+type: decimal
+settings:
+  precision: 10
+  scale: 4
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

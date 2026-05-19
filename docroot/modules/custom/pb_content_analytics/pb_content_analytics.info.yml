@@ -1,0 +1,6 @@
+name: Content Analytics
+description: Content analytics tracking and sync for Bebbo app
+type: module
+package: custom
+module: pb_content_analytics
+core_version_requirement: ^9.2 || ^10 || ^11

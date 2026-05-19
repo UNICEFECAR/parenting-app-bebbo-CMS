@@ -1,0 +1,14 @@
+label: 'Term i taxonomy'
+display:
+  default:
+    display_title: Default
+    display_options:
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      arguments:
+        tid:
+          exception:
+            title: All
+  page_1:
+    display_title: Faqe

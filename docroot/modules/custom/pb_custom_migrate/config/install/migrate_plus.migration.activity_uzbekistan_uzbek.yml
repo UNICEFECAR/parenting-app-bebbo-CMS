@@ -1,6 +1,7 @@
 langcode: en
 id: activity_uzbekistan_uzbek
-migration_tags: activity_uzbekistan_uzbek
+migration_tags:
+  - activity_uzbekistan_uzbek
 migration_group: activity
 label: 'activity_uzbekistan_uzbek'
 source:

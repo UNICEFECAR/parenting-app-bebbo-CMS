@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_greece_arab
-migration_tags: milestone_greece_arab
+migration_tags:
+  - milestone_greece_arab
 migration_group: milestone
 label: 'Milestone Greece Arab'
 source:

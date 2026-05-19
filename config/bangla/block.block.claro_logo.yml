@@ -1,0 +1,38 @@
+uuid: d98e370a-538b-43f8-9c64-6f142eccee09
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:7b41d89c-eb0c-4bc0-b79c-16af7714dfc8'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - claro
+id: claro_logo
+theme: claro
+region: header
+weight: -14
+provider: null
+plugin: 'block_content:7b41d89c-eb0c-4bc0-b79c-16af7714dfc8'
+settings:
+  id: 'block_content:7b41d89c-eb0c-4bc0-b79c-16af7714dfc8'
+  label: LOGO
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/homepage\r\n/about-us\r\n/privacy-policy\r\n/terms-and-conditions"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous

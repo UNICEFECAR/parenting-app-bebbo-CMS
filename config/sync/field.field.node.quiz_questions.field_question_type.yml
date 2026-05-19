@@ -1,0 +1,25 @@
+uuid: 478f5521-6f1d-4911-9e98-a68c7bc74dad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_question_type
+    - node.type.quiz_questions
+  module:
+    - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz_questions.field_question_type
+field_name: field_question_type
+entity_type: node
+bundle: quiz_questions
+label: 'Question type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

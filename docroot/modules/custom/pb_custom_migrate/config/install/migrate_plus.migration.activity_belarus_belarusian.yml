@@ -1,6 +1,7 @@
 langcode: en
 id: activity_belarus_belarusian
-migration_tags: activity_belarus_belarusian
+migration_tags:
+  - activity_belarus_belarusian
 migration_group: activity
 label: 'activity_belarus_belarusian'
 source:

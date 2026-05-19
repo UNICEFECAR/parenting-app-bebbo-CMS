@@ -1,0 +1,31 @@
+uuid: 3d8c5c9b-83f8-4bdc-a5f7-01c9290c5afb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.course_category.field_unique_name
+    - taxonomy.vocabulary.course_category
+  module:
+    - text
+id: taxonomy_term.course_category.default
+targetEntityType: taxonomy_term
+bundle: course_category
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unique_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true

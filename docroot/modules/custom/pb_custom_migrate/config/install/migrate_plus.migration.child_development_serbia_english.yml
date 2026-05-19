@@ -1,6 +1,7 @@
 langcode: en
 id: child_development_serbia_english
-migration_tags: child_development_serbia_english
+migration_tags:
+  - child_development_serbia_english
 migration_group: child_development
 label: 'child_development_serbia_english'
 source:

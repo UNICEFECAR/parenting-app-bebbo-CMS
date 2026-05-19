@@ -1,6 +1,7 @@
 langcode: en
 id: article_kyrgyzstan_russian
-migration_tags: article_kyrgyzstan_russian
+migration_tags:
+  - article_kyrgyzstan_russian
 migration_group: article
 label: 'Article Kyrgyzstan Russian'
 source:

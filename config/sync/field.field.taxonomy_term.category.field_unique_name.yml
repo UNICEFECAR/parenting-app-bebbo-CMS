@@ -1,0 +1,24 @@
+uuid: 281d4235-ce98-4549-84df-43bee1304477
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unique_name
+    - taxonomy.vocabulary.category
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: taxonomy_term.category.field_unique_name
+field_name: field_unique_name
+entity_type: taxonomy_term
+bundle: category
+label: 'Unique name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

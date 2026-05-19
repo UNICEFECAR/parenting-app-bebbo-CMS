@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_serbia_english
-migration_tags: homescreen_serbia_english
+migration_tags:
+  - homescreen_serbia_english
 migration_group: homescreen
 label: 'homescreen_serbia_english'
 source:

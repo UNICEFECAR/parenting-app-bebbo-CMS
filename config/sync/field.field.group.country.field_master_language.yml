@@ -1,0 +1,25 @@
+uuid: bb528cf8-c558-4591-b7ee-c62b6df7978c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_master_language
+    - group.type.country
+  module:
+    - languagefield
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_master_language
+field_name: field_master_language
+entity_type: group
+bundle: country
+label: 'Master Language'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: language_field

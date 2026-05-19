@@ -1,6 +1,7 @@
 langcode: en
 id: child_growth_greece_greek
-migration_tags: child_growth_greece_greek
+migration_tags:
+  - child_growth_greece_greek
 migration_group: child_growth
 label: child_growth_greece_greek
 source:

@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for bebbo_serializer.
+ */
+
+/**
+ * Delete orphaned paragraph and consumer entities before config import.
+ *
+ * Config sync removes the Paragraphs and Consumers modules, but existing
+ * entities block uninstall validation. This update hook runs via drush updb
+ * BEFORE drush cim, ensuring entities are gone when validation runs.
+ */
+function bebbo_serializer_update_10001(): string {
+  $messages = [];
+
+  // Delete all paragraph entities.
+  if (\Drupal::moduleHandler()->moduleExists('paragraphs')) {
+    $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    $entities = $storage->loadMultiple();
+    if ($entities) {
+      $storage->delete($entities);
+      $messages[] = 'Deleted ' . count($entities) . ' paragraph entities.';
+    }
+    else {
+      $messages[] = 'No paragraph entities found.';
+    }
+  }
+
+  // Delete all consumer entities.
+  if (\Drupal::moduleHandler()->moduleExists('consumers')) {
+    $storage = \Drupal::entityTypeManager()->getStorage('consumer');
+    $entities = $storage->loadMultiple();
+    if ($entities) {
+      $storage->delete($entities);
+      $messages[] = 'Deleted ' . count($entities) . ' consumer entities.';
+    }
+    else {
+      $messages[] = 'No consumer entities found.';
+    }
+  }
+
+  return implode(' ', $messages);
+}
+
+/**
+ * Migrate field_content_toggle 'ai_chatbot' values to 'chatbot'.
+ *
+ * Config sync changes the allowed_values keys for this Group list field.
+ * Existing data with the old 'ai_chatbot' key must be updated to 'chatbot'
+ * before config import, or Drupal blocks the key change.
+ */
+function bebbo_serializer_update_10002(): string {
+  $database = \Drupal::database();
+  $tables = [
+    'group__field_content_toggle',
+    'group_revision__field_content_toggle',
+  ];
+  $total = 0;
+
+  foreach ($tables as $table) {
+    if (!$database->schema()->tableExists($table)) {
+      continue;
+    }
+    $updated = $database->update($table)
+      ->fields(['field_content_toggle_value' => 'chatbot'])
+      ->condition('field_content_toggle_value', 'ai_chatbot')
+      ->execute();
+    $total += $updated;
+  }
+
+  return "Updated $total field_content_toggle rows from 'ai_chatbot' to 'chatbot'.";
+}
+
+/**
+ * Set definitive content_toggle allowed values and migrate DB data.
+ */
+function bebbo_serializer_update_10003(): string {
+  $database = \Drupal::database();
+  $messages = [];
+
+  // Old value => new value. Only entries that changed.
+  $key_map = [
+    'chatbot' => 'ai_chatbot',
+    'Chatbot' => 'ai_chatbot',
+    "Child's Growth" => 'childs_growth',
+    'Health Check-up' => 'health_check_up',
+    'Vaccination' => 'vaccination',
+    'Pregnancy' => 'pregnancy',
+    'Baby Size' => 'baby_size',
+    'Guide' => 'guide',
+    'Learning' => 'learning',
+    'FAQs' => 'faqs',
+  ];
+
+  $tables = [
+    'group__field_content_toggle',
+    'group_revision__field_content_toggle',
+  ];
+
+  foreach ($tables as $table) {
+    if (!$database->schema()->tableExists($table)) {
+      continue;
+    }
+    foreach ($key_map as $old_value => $new_value) {
+      $updated = $database->update($table)
+        ->fields(['field_content_toggle_value' => $new_value])
+        ->condition('field_content_toggle_value', $old_value)
+        ->execute();
+      if ($updated > 0) {
+        $messages[] = "$table: '$old_value' -> '$new_value' ($updated rows)";
+      }
+    }
+
+    // Remove any values not in the canonical list.
+    $valid_values = [
+      'ai_chatbot', 'childs_growth', 'health_check_up', 'vaccination',
+      'pregnancy', 'baby_size', 'guide', 'learning', 'faqs',
+    ];
+    $deleted = $database->delete($table)
+      ->condition('field_content_toggle_value', $valid_values, 'NOT IN')
+      ->execute();
+    if ($deleted > 0) {
+      $messages[] = "$table: removed $deleted rows with invalid values";
+    }
+  }
+
+  // Set the canonical allowed values on the field storage config.
+  $allowed_values = [
+    ['value' => 'ai_chatbot', 'label' => 'AI Chatbot'],
+    ['value' => 'baby_size', 'label' => 'Baby Size'],
+    ['value' => 'childs_growth', 'label' => "Child's Growth"],
+    ['value' => 'faqs', 'label' => 'FAQs'],
+    ['value' => 'guide', 'label' => 'Guide'],
+    ['value' => 'health_check_up', 'label' => 'Health Check-up'],
+    ['value' => 'learning', 'label' => 'Learning'],
+    ['value' => 'pregnancy', 'label' => 'Pregnancy'],
+    ['value' => 'vaccination', 'label' => 'Vaccination'],
+  ];
+
+  $config = \Drupal::configFactory()->getEditable('field.storage.group.field_content_toggle');
+  $config->set('settings.allowed_values', $allowed_values);
+  $config->save();
+  $messages[] = 'Set canonical allowed_values on field.storage.group.field_content_toggle';
+
+  return implode('; ', $messages) ?: 'No changes needed.';
+}

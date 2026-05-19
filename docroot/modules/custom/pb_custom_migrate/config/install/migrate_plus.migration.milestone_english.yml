@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_english
-migration_tags: milestone_english
+migration_tags:
+  - milestone_english
 migration_group: milestone
 label: 'Milestone English'
 source:

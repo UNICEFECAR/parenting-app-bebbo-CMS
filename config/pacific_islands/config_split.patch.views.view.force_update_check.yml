@@ -1,0 +1,71 @@
+adding:
+  display:
+    default:
+      display_options:
+        fields:
+          flag_status:
+            label: 'Flag status'
+        filters:
+          flag_status:
+            group_info:
+              group_items:
+                -
+                  title: ''
+                  value: ''
+                -
+                  title: ''
+                  value: ''
+                -
+                  title: ''
+                  operator: '='
+                  value: ''
+          countries_id:
+            expose:
+              label: 'Countries id'
+        filter_groups:
+          operator: AND
+          groups:
+            1: AND
+        style:
+          options:
+            columns:
+              country_id: country_id
+              flag: flag_status
+            info:
+              country_id:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+              flag:
+                sortable: false
+                default_sort_order: asc
+                align: ''
+                separator: ''
+                empty_column: false
+                responsive: ''
+removing:
+  display:
+    default:
+      display_options:
+        fields:
+          id:
+            entity_type: null
+            entity_field: null
+          flag_status:
+            label: 'Flag Status'
+        filters:
+          flag_status:
+            group_info:
+              group_items:
+                -
+                  title: Enable
+                  value: '1'
+                -
+                  title: Disable
+                  value: '0'
+          countries_id:
+            expose:
+              label: 'Country Id'

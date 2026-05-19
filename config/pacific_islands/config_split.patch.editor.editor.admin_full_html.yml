@@ -1,0 +1,12 @@
+adding:
+  settings:
+    plugins:
+      ckeditor5_sourceEditing:
+        allowed_tags:
+          - '<a hreflang>'
+removing:
+  settings:
+    plugins:
+      ckeditor5_sourceEditing:
+        allowed_tags:
+          - '<a hreflang target>'

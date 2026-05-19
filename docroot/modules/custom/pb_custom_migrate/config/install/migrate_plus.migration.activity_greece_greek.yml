@@ -1,6 +1,7 @@
 langcode: en
 id: activity_greece_greek
-migration_tags: activity_greece_greek
+migration_tags:
+  - activity_greece_greek
 migration_group: activity
 label: 'activity_greece_greek'
 source:

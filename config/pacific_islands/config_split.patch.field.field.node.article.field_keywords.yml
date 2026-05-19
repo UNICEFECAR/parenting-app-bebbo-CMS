@@ -1,0 +1,4 @@
+adding:
+  description: 'Type a character to choose from existing keywords or type your own text, upon saving the content the keyword will be created newly'
+removing:
+  description: 'These keywords are predefined and will be used for <b>search suggestions</b> in the app. '

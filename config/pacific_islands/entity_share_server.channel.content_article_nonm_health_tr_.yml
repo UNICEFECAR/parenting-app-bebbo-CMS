@@ -1,0 +1,26 @@
+uuid: cd004377-d62c-4089-801e-059080644bb2
+langcode: en
+status: true
+dependencies: {  }
+id: content_article_nonm_health_tr_
+label: 'Content - Article nonm. Health (TR)'
+channel_entity_type: node
+channel_bundle: article
+channel_langcode: tr
+channel_filters:
+  field_mandatory_content:
+    path: field_mandatory_content
+    operator: '<>'
+    value:
+      - '1'
+channel_groups: null
+channel_sorts: {  }
+channel_searches: null
+channel_maxsize: 50
+access_by_permission: true
+authorized_roles:
+  administrator: administrator
+authorized_users:
+  94f74816-8dce-4b06-bf3b-299e8832e5f9: 94f74816-8dce-4b06-bf3b-299e8832e5f9
+  769078fd-5d20-4f46-b94d-0b1078c72d8e: 769078fd-5d20-4f46-b94d-0b1078c72d8e
+  06e30352-0665-4c74-9578-8812beb0d115: 06e30352-0665-4c74-9578-8812beb0d115

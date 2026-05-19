@@ -1,0 +1,14 @@
+uuid: d4d5a2a3-3c2e-45dc-a429-9988618e5eb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.se
+  module:
+    - user
+id: user_remove_role_action.se
+label: 'Remove the Senior Editor role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: se

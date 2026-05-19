@@ -1,0 +1,24 @@
+uuid: 84c28309-6d12-429d-ad43-d5cd70f745b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_instructions
+    - node.type.quiz
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.quiz.field_instructions
+field_name: field_instructions
+entity_type: node
+bundle: quiz
+label: Instructions
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

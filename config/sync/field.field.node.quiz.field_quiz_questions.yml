@@ -1,0 +1,39 @@
+uuid: 039d67b2-7e22-4782-ad5d-09f2564c351e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_quiz_questions
+    - node.type.quiz
+    - node.type.quiz_questions
+  module:
+    - entity_reference_validators
+    - tmgmt_content
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: false
+    circular_reference_deep: false
+    duplicate_reference: false
+  tmgmt_content:
+    excluded: false
+id: node.quiz.field_quiz_questions
+field_name: field_quiz_questions
+entity_type: node
+bundle: quiz
+label: Questions
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      quiz_questions: quiz_questions
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

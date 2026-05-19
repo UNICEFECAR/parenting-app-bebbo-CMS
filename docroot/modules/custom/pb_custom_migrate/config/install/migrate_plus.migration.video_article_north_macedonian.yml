@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_north_macedonian
-migration_tags: video_article_north_macedonian
+migration_tags:
+  - video_article_north_macedonian
 migration_group: video_article
 label: 'Video Article North Macedonia-Macedonian'
 source:

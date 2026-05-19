@@ -1,0 +1,23 @@
+uuid: ef243033-6d53-4dae-af64-963602a0b8db
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.feeds_item
+    - taxonomy.vocabulary.child_age
+  module:
+    - feeds
+id: taxonomy_term.child_age.feeds_item
+field_name: feeds_item
+entity_type: taxonomy_term
+bundle: child_age
+label: 'Feeds item'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:feeds_feed'
+  handler_settings: {  }
+field_type: feeds_item

@@ -1,0 +1,29 @@
+pb_content_analytics.settings:
+  path: '/admin/config/content-analytics/settings'
+  defaults:
+    _form: '\Drupal\pb_content_analytics\Form\ContentAnalyticsSettingsForm'
+    _title: 'Content Analytics Settings'
+  requirements:
+    _permission: 'administer content analytics settings'
+  options:
+    _admin_route: TRUE
+
+pb_content_analytics.sync:
+  path: '/admin/config/content-analytics/sync'
+  defaults:
+    _form: '\Drupal\pb_content_analytics\Form\ContentAnalyticsSyncForm'
+    _title: 'Content Analytics Sync'
+  requirements:
+    _permission: 'manage content analytics sync'
+  options:
+    _admin_route: TRUE
+
+pb_content_analytics.sync_now:
+  path: '/admin/config/content-analytics/sync/now'
+  defaults:
+    _controller: '\Drupal\pb_content_analytics\Controller\AnalyticsSyncController::syncNow'
+    _title: 'Sync Now'
+  requirements:
+    _permission: 'manage content analytics sync'
+  options:
+    _admin_route: TRUE

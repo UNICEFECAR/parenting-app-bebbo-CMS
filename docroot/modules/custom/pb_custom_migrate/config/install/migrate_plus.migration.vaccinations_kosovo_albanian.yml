@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_kosovo_albanian
-migration_tags: vaccinations_kosovo_albanian
+migration_tags:
+  - vaccinations_kosovo_albanian
 migration_group: vaccinations
 label: 'Vaccinations Kosovo Albanian'
 source:

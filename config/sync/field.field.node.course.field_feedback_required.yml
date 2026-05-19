@@ -1,0 +1,26 @@
+uuid: 74c0aecb-ccba-453a-887d-b0401b474b85
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_feedback_required
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_feedback_required
+field_name: field_feedback_required
+entity_type: node
+bundle: course
+label: 'Feedback required'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'true'
+  off_label: 'false'
+field_type: boolean

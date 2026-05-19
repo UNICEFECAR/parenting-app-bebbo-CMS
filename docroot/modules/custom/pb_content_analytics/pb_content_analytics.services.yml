@@ -1,0 +1,12 @@
+services:
+  logger.channel.pb_content_analytics:
+    parent: logger.channel_base
+    arguments: ['pb_content_analytics']
+  pb_content_analytics.sync_service:
+    class: Drupal\pb_content_analytics\Service\AnalyticsSyncService
+    arguments: ['@http_client', '@database', '@entity_type.manager', '@config.factory', '@logger.channel.pb_content_analytics']
+  pb_content_analytics.feeds_import_subscriber:
+    class: Drupal\pb_content_analytics\EventSubscriber\FeedsImportSubscriber
+    arguments: ['@pb_content_analytics.sync_service']
+    tags:
+      - { name: event_subscriber }

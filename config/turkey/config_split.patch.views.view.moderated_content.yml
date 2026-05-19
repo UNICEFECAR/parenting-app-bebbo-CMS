@@ -1,0 +1,53 @@
+adding:
+  status: true
+  dependencies:
+    config:
+      - workflows.workflow.group_workflow
+  display:
+    default:
+      display_options:
+        filters:
+          moderation_state_1:
+            id: moderation_state_1
+            table: node_field_revision
+            field: moderation_state
+            relationship: none
+            group_type: group
+            admin_label: ''
+            entity_type: node
+            plugin_id: moderation_state_filter
+            operator: in
+            value:
+              group_workflow-draft: group_workflow-draft
+              group_workflow-archive: group_workflow-archive
+            group: 1
+            exposed: true
+            expose:
+              operator_id: moderation_state_1_op
+              label: 'Moderation state'
+              description: ''
+              use_operator: false
+              operator: moderation_state_1_op
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: moderation_state
+              required: false
+              remember: false
+              multiple: false
+              remember_roles:
+                authenticated: authenticated
+              reduce: true
+            is_grouped: false
+            group_info:
+              label: ''
+              description: ''
+              identifier: ''
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items: {  }
+removing:
+  status: false

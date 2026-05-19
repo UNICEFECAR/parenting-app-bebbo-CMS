@@ -1,0 +1,67 @@
+adding:
+  status: true
+  dependencies:
+    config:
+      - workflows.workflow.group_workflow
+  display:
+    default:
+      display_options:
+        filters:
+          moderation_state_1:
+            id: moderation_state_1
+            table: node_field_revision
+            field: moderation_state
+            relationship: none
+            group_type: group
+            admin_label: ''
+            entity_type: node
+            plugin_id: moderation_state_filter
+            operator: in
+            value:
+              group_workflow-draft: group_workflow-draft
+              group_workflow-sme_review: group_workflow-sme_review
+              group_workflow-senior_editor_review: group_workflow-senior_editor_review
+              group_workflow-reject: group_workflow-reject
+              group_workflow-archive: group_workflow-archive
+              group_workflow-review_after_translation: group_workflow-review_after_translation
+            group: 1
+            exposed: true
+            expose:
+              operator_id: moderation_state_1_op
+              label: 'Moderation state'
+              description: ''
+              use_operator: false
+              operator: moderation_state_1_op
+              operator_limit_selection: false
+              operator_list: {  }
+              identifier: moderation_state_1
+              required: false
+              remember: false
+              multiple: false
+              remember_roles:
+                authenticated: authenticated
+                anonymous: '0'
+                administrator: '0'
+                global_admin: '0'
+                editor: '0'
+                sme: '0'
+                reviewer: '0'
+                se: '0'
+              reduce: true
+            is_grouped: false
+            group_info:
+              label: 'Moderation state'
+              description: null
+              identifier: moderation_state_1
+              optional: true
+              widget: select
+              multiple: false
+              remember: false
+              default_group: All
+              default_group_multiple: {  }
+              group_items:
+                1: {  }
+                2: {  }
+                0: {  }
+removing:
+  status: false

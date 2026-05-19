@@ -1,0 +1,21 @@
+uuid: 8a23693b-f1a0-4ca1-aef4-084ca08be1b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_period
+  module:
+    - text
+id: taxonomy_term.growth_period.description
+field_name: description
+entity_type: taxonomy_term
+bundle: growth_period
+label: Description
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

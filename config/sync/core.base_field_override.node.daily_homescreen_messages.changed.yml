@@ -1,0 +1,18 @@
+uuid: 14d78629-af4f-4719-aadc-9fc2b6089f2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.daily_homescreen_messages
+id: node.daily_homescreen_messages.changed
+field_name: changed
+entity_type: node
+bundle: daily_homescreen_messages
+label: Changed
+description: 'The time that the node was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

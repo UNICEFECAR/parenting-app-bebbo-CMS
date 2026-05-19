@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_english
-migration_tags: vaccinations_english
+migration_tags:
+  - vaccinations_english
 migration_group: vaccinations
 label: 'Vaccinations English'
 source:

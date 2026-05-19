@@ -1,0 +1,116 @@
+uuid: 799dec4f-8fbe-49ee-8f28-1c8783389039
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.pregnancy_weekly_overview.field_average_height
+    - field.field.node.pregnancy_weekly_overview.field_average_weight
+    - field.field.node.pregnancy_weekly_overview.field_featured_image_1
+    - field.field.node.pregnancy_weekly_overview.field_featured_image_2
+    - field.field.node.pregnancy_weekly_overview.field_fruit
+    - field.field.node.pregnancy_weekly_overview.field_fun_fact
+    - field.field.node.pregnancy_weekly_overview.field_licensed_content
+    - field.field.node.pregnancy_weekly_overview.field_parental_week
+    - field.field.node.pregnancy_weekly_overview.field_related_articles
+    - node.type.pregnancy_weekly_overview
+  module:
+    - options
+    - user
+id: node.pregnancy_weekly_overview.default
+targetEntityType: node
+bundle: pregnancy_weekly_overview
+mode: default
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  field_average_height:
+    type: number_decimal
+    label: hidden
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_average_weight:
+    type: number_decimal
+    label: hidden
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_featured_image_1:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_featured_image_2:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_fruit:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_fun_fact:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_licensed_content:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_parental_week:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_related_articles:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  langcode: true

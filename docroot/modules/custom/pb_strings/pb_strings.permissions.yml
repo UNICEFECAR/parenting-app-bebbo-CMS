@@ -1,0 +1,6 @@
+administer strings:
+  title: 'Administer Strings'
+  description: 'Full CRUD access to string terms and translations'
+translate strings:
+  title: 'Translate Strings'
+  description: 'Add and edit translations for strings in assigned languages'

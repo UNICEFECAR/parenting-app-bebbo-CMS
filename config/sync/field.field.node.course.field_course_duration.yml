@@ -1,0 +1,28 @@
+uuid: 489b27c8-9dd2-4890-85e0-8e1f5b1dce33
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_duration
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_course_duration
+field_name: field_course_duration
+entity_type: node
+bundle: course
+label: 'Course Duration'
+description: 'In minutes'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

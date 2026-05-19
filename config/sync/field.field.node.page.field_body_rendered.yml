@@ -1,0 +1,28 @@
+uuid: 1bf50ec3-61b3-4a86-80d0-daf88b7f5748
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_body_rendered
+    - filter.format.full_html
+    - node.type.page
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.page.field_body_rendered
+field_name: field_body_rendered
+entity_type: node
+bundle: page
+label: 'Body Rendered'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

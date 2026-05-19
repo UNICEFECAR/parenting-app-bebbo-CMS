@@ -1,0 +1,12 @@
+adding:
+  dependencies:
+    module:
+      - tmgmt_local
+  permissions:
+    - 'access content overview'
+    - 'administer allowed languages'
+    - 'administer group'
+    - 'administer translation tasks'
+removing:
+  permissions:
+    - 'view article revisions'

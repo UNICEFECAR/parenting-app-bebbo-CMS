@@ -1,0 +1,28 @@
+uuid: 206a483d-8aa5-4d90-b812-821b324841ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.child_growth
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.child_growth.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: child_growth
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

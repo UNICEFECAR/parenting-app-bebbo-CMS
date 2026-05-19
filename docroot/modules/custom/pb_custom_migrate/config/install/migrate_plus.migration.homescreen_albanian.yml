@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_albanian
-migration_tags: homescreen_albanian
+migration_tags:
+  - homescreen_albanian
 migration_group: homescreen
 label: 'homescreen_albanian'
 source:

@@ -1,0 +1,36 @@
+uuid: 056fd2fa-5aeb-4a1a-b42b-adcf19e404c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.guide.field_child_age_guide
+    - field.field.node.guide.field_licensed_content
+    - field.field.node.guide.field_message
+    - field.field.node.guide.field_related_articles
+    - field.field.node.guide.field_related_games
+    - node.type.guide
+  module:
+    - user
+id: node.guide.teaser
+targetEntityType: node
+bundle: guide
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_child_age_guide: true
+  field_licensed_content: true
+  field_message: true
+  field_related_articles: true
+  field_related_games: true
+  langcode: true

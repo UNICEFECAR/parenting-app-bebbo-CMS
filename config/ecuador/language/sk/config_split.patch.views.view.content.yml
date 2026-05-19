@@ -1,0 +1,53 @@
+adding:
+  label: Obsah
+  description: 'Vyhľadať a spravovať obsah'
+  display:
+    default:
+      display_options:
+        title: Obsah
+        fields:
+          type:
+            label: 'Typ obsahu'
+            separator: ', '
+          status:
+            settings:
+              format_custom_false: Nezverejnené
+              format_custom_true: Zverejnené
+          changed:
+            label: Aktualizované
+        pager:
+          options:
+            tags:
+              next: Ďalej
+              previous: '‹ Predchádzajúci'
+              first: «
+              last: »
+        exposed_form:
+          options:
+            exposed_sorts_label: 'Zoradiť podľa'
+            sort_asc_label: Vzostupne
+            sort_desc_label: Zostupne
+        empty:
+          area_text_custom:
+            content: 'Žiaden obsah nie je dostupný.'
+        filters:
+          type:
+            expose:
+              label: 'Typ obsahu'
+          status:
+            group_info:
+              label: 'Stav zverejnenia'
+              group_items:
+                1:
+                  title: Zverejnené
+                2:
+                  title: Nezverejnené
+    page_1:
+      display_title: Stránka
+      display_options:
+        menu:
+          title: Obsah
+        tab_options:
+          title: Obsah
+          description: 'Nájsť a spravovať obsah.'
+removing: {  }

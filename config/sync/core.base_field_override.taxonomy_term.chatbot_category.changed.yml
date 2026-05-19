@@ -1,0 +1,18 @@
+uuid: 24db03b1-7e7d-4629-8d8f-3703a6d0550d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.chatbot_category
+id: taxonomy_term.chatbot_category.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: chatbot_category
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

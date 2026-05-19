@@ -1,0 +1,20 @@
+uuid: 4c43a52c-62a9-4fb2-b6bf-ca25bb3dcb30
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_weeks_from
+field_name: field_weeks_from
+entity_type: taxonomy_term
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

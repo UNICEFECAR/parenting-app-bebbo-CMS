@@ -1,0 +1,27 @@
+uuid: 7e8aa121-f81e-43f1-b347-1f8101e6cc93
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_question_type
+field_name: field_question_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: true_or_false
+      label: 'True or False'
+    -
+      value: multiple_choice
+      label: 'Multiple Choice'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

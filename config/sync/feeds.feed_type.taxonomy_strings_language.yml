@@ -1,0 +1,66 @@
+uuid: a61d010e-00e9-4e66-8976-f2379a5a1dc7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.strings.field_unique_name
+    - taxonomy.vocabulary.strings
+  module:
+    - taxonomy
+label: 'Taxonomy - Strings - Language'
+id: taxonomy_strings_language
+description: ''
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'public://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  values:
+    vid: strings
+  langcode: ru
+  insert_new: 1
+  update_existing: 2
+  update_non_existent: _keep
+  skip_hash_check: false
+  skip_validation: false
+  skip_validation_types: {  }
+  authorize: false
+  revision: false
+  expire: -1
+  owner_feed_author: false
+  owner_id: 0
+custom_sources:
+  unique_name:
+    value: unique_name
+    label: unique_name
+    machine_name: unique_name
+    type: csv
+  name:
+    value: name
+    label: name
+    machine_name: name
+    type: csv
+mappings:
+  -
+    target: field_unique_name
+    map:
+      value: unique_name
+    settings:
+      language: en
+    unique:
+      value: 1
+  -
+    target: name
+    map:
+      value: name
+    settings:
+      language: ru
+    unique: {  }

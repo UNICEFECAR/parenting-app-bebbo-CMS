@@ -1,0 +1,79 @@
+uuid: e49e0e24-c803-44af-96ac-d27ada8c6055
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.ief
+    - field.field.node.courses_module.field_course_content
+    - field.field.node.courses_module.field_module_title
+    - field.field.node.courses_module.field_numbering_style
+    - field.field.node.courses_module.field_optional_module
+    - field.field.node.courses_module.field_resource_file_external
+    - field.field.node.courses_module.field_resource_file_internal
+    - node.type.courses_module
+  module:
+    - link
+    - media_library
+id: node.courses_module.ief
+targetEntityType: node
+bundle: courses_module
+mode: ief
+content:
+  field_course_content:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_module_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_numbering_style:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_optional_module:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_resource_file_external:
+    type: link_default
+    weight: 4
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_resource_file_internal:
+    type: media_library_widget
+    weight: 5
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  moderation_state: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  translation: true
+  uid: true
+  url_redirects: true

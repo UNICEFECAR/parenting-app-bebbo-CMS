@@ -1,0 +1,39 @@
+uuid: 6ff45e58-d5d9-43f0-81a5-4285deb59345
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_course_modules
+    - node.type.course
+    - node.type.courses_module
+  module:
+    - entity_reference_validators
+    - tmgmt_content
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: false
+    circular_reference_deep: false
+    duplicate_reference: true
+  tmgmt_content:
+    excluded: false
+id: node.course.field_course_modules
+field_name: field_course_modules
+entity_type: node
+bundle: course
+label: Modules
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      courses_module: courses_module
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_kyrgyzstan_russian
-migration_tags: milestone_kyrgyzstan_russian
+migration_tags:
+  - milestone_kyrgyzstan_russian
 migration_group: milestone
 label: 'Milestone Kyrgyzstan Russian'
 source:

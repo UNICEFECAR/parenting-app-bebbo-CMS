@@ -1,0 +1,18 @@
+adding:
+  processor_configuration:
+    langcode: tr
+    insert_new: 1
+    update_existing: 1
+  mappings:
+    -
+      settings:
+        language: tr
+removing:
+  processor_configuration:
+    langcode: uz-kaa
+    insert_new: 0
+    update_existing: 2
+  mappings:
+    -
+      settings:
+        language: uz-kaa

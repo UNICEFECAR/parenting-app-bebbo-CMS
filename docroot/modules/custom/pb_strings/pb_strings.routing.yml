@@ -1,0 +1,13 @@
+pb_strings.strings_list:
+  path: '/admin/structure/taxonomy/manage/{taxonomy_vocabulary}/strings-list'
+  defaults:
+    _controller: '\Drupal\pb_strings\Controller\StringsListController::listPage'
+    _title: 'All String Translations'
+  requirements:
+    _custom_access: '\Drupal\pb_strings\Controller\StringsListController::access'
+  options:
+    _admin_route: TRUE
+    parameters:
+      taxonomy_vocabulary:
+        type: entity:taxonomy_vocabulary
+        with_config_overrides: TRUE

@@ -1,0 +1,14 @@
+uuid: 4d3301d4-c80d-4511-9d73-816a310916a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.sme
+  module:
+    - user
+id: user_remove_role_action.sme
+label: 'Remove the SME role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: sme

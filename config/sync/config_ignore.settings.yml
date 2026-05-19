@@ -1,0 +1,22 @@
+_core:
+  default_config_hash: UVH1aJ4b44UM-VdPVN7hNNuuVqfReJxwfVeDQH1Hvsk
+mode: simple
+ignored_config_entities:
+  - admin_toolbar.settings
+  - 'entity_share_client.remote*'
+  - google_analytics.settings
+  - mobile_app_links.android_packages
+  - mobile_app_links.ios
+  - pb_content_analytics.settings
+  - pb_custom_form.landing_pages
+  - pb_custom_form.language_redirects
+  - pb_custom_form.mobile_app_share_link_form
+  - purge.logger_channels
+  - smtp.settings
+  - 'tmgmt.translator.*'
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - views.view.entity_share_client_entity_import_status

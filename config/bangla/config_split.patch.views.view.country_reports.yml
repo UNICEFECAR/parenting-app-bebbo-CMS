@@ -1,0 +1,270 @@
+adding:
+  display:
+    page_5:
+      display_options:
+        fields:
+          field_child_gender:
+            exclude: false
+          field_parent_gender:
+            exclude: false
+          name:
+            exclude: false
+removing:
+  dependencies:
+    config:
+      - field.storage.node.field_do_not_feature
+      - field.storage.node.field_subcategory
+  display:
+    data_export_1:
+      display_options:
+        fields:
+          field_subcategory:
+            id: field_subcategory
+            table: node__field_subcategory
+            field: field_subcategory
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: field
+            label: Subcategory
+            exclude: false
+            alter:
+              alter_text: false
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: true
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            click_sort_column: target_id
+            type: entity_reference_label
+            settings:
+              link: false
+            group_column: target_id
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+          field_do_not_feature:
+            id: field_do_not_feature
+            table: node__field_do_not_feature
+            field: field_do_not_feature
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: field
+            label: 'Do not feature'
+            exclude: false
+            alter:
+              alter_text: false
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: true
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            click_sort_column: value
+            type: boolean
+            settings:
+              format: yes-no
+              format_custom_false: ''
+              format_custom_true: ''
+            group_column: value
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+      cache_metadata:
+        tags:
+          - 'config:field.storage.node.field_do_not_feature'
+          - 'config:field.storage.node.field_subcategory'
+    page_5:
+      display_options:
+        fields:
+          field_subcategory:
+            id: field_subcategory
+            table: node__field_subcategory
+            field: field_subcategory
+            relationship: none
+            group_type: group
+            admin_label: ''
+            plugin_id: field
+            label: Subcategory
+            exclude: false
+            alter:
+              alter_text: false
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_class: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: true
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            element_default_classes: true
+            empty: ''
+            hide_empty: false
+            empty_zero: false
+            hide_alter_empty: true
+            click_sort_column: target_id
+            type: entity_reference_label
+            settings:
+              link: false
+            group_column: target_id
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+          field_child_gender:
+            exclude: true
+          field_parent_gender:
+            exclude: true
+          name:
+            group_type: group
+            admin_label: ''
+            exclude: true
+            alter:
+              text: ''
+              make_link: false
+              path: ''
+              absolute: false
+              external: false
+              replace_spaces: false
+              path_case: none
+              trim_whitespace: false
+              alt: ''
+              rel: ''
+              link_class: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              nl2br: false
+              max_length: 0
+              word_boundary: true
+              ellipsis: true
+              more_link: false
+              more_link_text: ''
+              more_link_path: ''
+              strip_tags: false
+              trim: false
+              preserve_tags: ''
+              html: false
+            element_type: ''
+            element_label_type: ''
+            element_label_class: ''
+            element_label_colon: true
+            element_wrapper_type: ''
+            element_wrapper_class: ''
+            click_sort_column: value
+            settings:
+              link_to_entity: true
+            group_column: value
+            group_rows: true
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
+            multi_type: separator
+            separator: ', '
+            field_api_classes: false
+      cache_metadata:
+        tags:
+          - 'config:field.storage.node.field_subcategory'

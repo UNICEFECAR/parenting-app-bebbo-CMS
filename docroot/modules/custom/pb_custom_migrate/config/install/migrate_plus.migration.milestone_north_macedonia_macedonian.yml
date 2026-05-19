@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_north_macedonia_macedonian
-migration_tags: milestone_north_macedonia_macedonian
+migration_tags:
+  - milestone_north_macedonia_macedonian
 migration_group: milestone
 label: 'Milestone North Macedonia Macedonian'
 source:

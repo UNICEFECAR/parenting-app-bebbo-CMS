@@ -1,0 +1,34 @@
+uuid: abf1a58c-e9a2-4731-b93a-1276e56b082e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_2_0_branding
+    - group.type.country
+    - media.type.image
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_2_0_branding
+field_name: field_2_0_branding
+entity_type: group
+bundle: country
+label: '2.0 Branding'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

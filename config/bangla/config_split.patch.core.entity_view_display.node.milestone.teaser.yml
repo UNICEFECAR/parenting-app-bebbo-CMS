@@ -1,0 +1,29 @@
+adding:
+  content:
+    body:
+      weight: 101
+    content_moderation_control:
+      weight: -20
+    links:
+      weight: 100
+  hidden:
+    field_mandatory_content: true
+removing:
+  dependencies:
+    config:
+      - field.field.node.milestone.field_pre_populated
+  content:
+    body:
+      weight: 2
+    content_moderation_control:
+      weight: 0
+    field_mandatory_content:
+      type: boolean
+      label: above
+      settings:
+        format: default
+        format_custom_false: ''
+        format_custom_true: ''
+      weight: 3
+    links:
+      weight: 1

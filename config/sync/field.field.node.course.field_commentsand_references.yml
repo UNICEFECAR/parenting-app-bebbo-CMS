@@ -1,0 +1,28 @@
+uuid: 8a18c041-9e80-4045-9d3e-2e267f75a892
+langcode: by-ru
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_commentsand_references
+    - filter.format.full_html
+    - node.type.course
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_commentsand_references
+field_name: field_commentsand_references
+entity_type: node
+bundle: course
+label: 'References and Comments'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

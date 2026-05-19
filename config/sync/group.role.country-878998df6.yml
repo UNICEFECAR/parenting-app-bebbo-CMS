@@ -1,0 +1,17 @@
+uuid: ac5d4fd9-0569-47a3-92a2-688bc1731c43
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.global_admin
+id: country-878998df6
+label: 'Global Admin'
+weight: 3
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

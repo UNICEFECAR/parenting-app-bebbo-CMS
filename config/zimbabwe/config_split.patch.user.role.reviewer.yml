@@ -1,0 +1,16 @@
+adding:
+  dependencies:
+    config:
+      - media.type.image
+      - media.type.remote_video
+      - media.type.video
+    module:
+      - content_translation
+      - file
+  permissions:
+    - 'access user profiles'
+    - 'delete own files'
+    - 'translate image media'
+    - 'translate remote_video media'
+    - 'translate video media'
+removing: {  }

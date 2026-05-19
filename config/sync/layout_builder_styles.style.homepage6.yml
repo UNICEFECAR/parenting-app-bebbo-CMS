@@ -1,0 +1,13 @@
+uuid: fb36f432-118d-41a5-9bc3-25435ed30709
+langcode: en
+status: true
+dependencies: {  }
+id: homepage6
+label: Homepage6
+classes: homepageblock6
+type: component
+group: default
+block_restrictions:
+  - 'inline_block:basic'
+layout_restrictions: {  }
+weight: 0

@@ -1,0 +1,18 @@
+uuid: 2e03c890-f389-43cd-8de0-12af1c60b25c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.type_of_support
+id: taxonomy_term.type_of_support.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: type_of_support
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

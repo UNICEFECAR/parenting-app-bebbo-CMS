@@ -1,0 +1,22 @@
+uuid: a246f9ad-a1c2-41c3-b1d1-0562dae1e7c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.milestone
+id: node.milestone.sticky
+field_name: sticky
+entity_type: node
+bundle: milestone
+label: 'Sticky at top of lists'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

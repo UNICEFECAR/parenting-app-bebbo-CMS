@@ -1,0 +1,35 @@
+uuid: d5e04ec1-aecc-45fa-912f-470b14c7e5a5
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - user
+  theme:
+    - claro
+_core:
+  default_config_hash: b6mUaCq5YPapRUABXRHfNTT6fxWIj5lgf0Mg4HaRJ_I
+id: claro_breadcrumbs
+theme: claro
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/share\r\n/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja-privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous

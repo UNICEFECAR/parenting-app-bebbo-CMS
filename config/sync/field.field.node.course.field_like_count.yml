@@ -1,0 +1,28 @@
+uuid: 7d166888-89ae-478a-b3ed-eb3dcd06578c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_like_count
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_like_count
+field_name: field_like_count
+entity_type: node
+bundle: course
+label: 'Like Count'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the Content Analytics module.
+ */
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_schema().
+ */
+function pb_content_analytics_schema() {
+  $schema['pb_analytics_sync_log'] = [
+    'description' => 'Stores content analytics sync log entries.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique log entry ID.',
+      ],
+      'sync_time' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'ISO datetime when sync was executed.',
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'Sync result: success or failure.',
+      ],
+      'nodes_processed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Total nodes received from BigQuery API.',
+      ],
+      'nodes_updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nodes actually written to the database.',
+      ],
+      'nodes_skipped' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nodes skipped (up to date or not found).',
+      ],
+      'error_message' => [
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'Full error string on failure.',
+      ],
+      'triggered_by' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'cron or manual.',
+      ],
+      'skipped_unknown_type' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nodes skipped: content type not in supported map.',
+      ],
+      'skipped_not_found' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nodes skipped: nid not found or bundle mismatch.',
+      ],
+      'skipped_up_to_date' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nodes skipped: BigQuery data not newer than stored.',
+      ],
+      'message' => [
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'Human-readable summary of the sync run.',
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function pb_content_analytics_install() {
+  $content_types = ['article', 'video_article', 'course', 'activities'];
+
+  $fields = [
+    'field_like_count' => [
+      'type' => 'integer',
+      'label' => 'Like count',
+    ],
+    'field_read_count' => [
+      'type' => 'integer',
+      'label' => 'Read count',
+    ],
+    'field_analytics_updated' => [
+      'type' => 'datetime',
+      'label' => 'Analytics updated',
+    ],
+  ];
+
+  foreach ($fields as $field_name => $definition) {
+    if (!FieldStorageConfig::loadByName('node', $field_name)) {
+      FieldStorageConfig::create([
+        'field_name' => $field_name,
+        'entity_type' => 'node',
+        'type' => $definition['type'],
+        'translatable' => FALSE,
+      ])->save();
+    }
+
+    foreach ($content_types as $bundle) {
+      if (!FieldConfig::loadByName('node', $bundle, $field_name)) {
+        FieldConfig::create([
+          'field_name' => $field_name,
+          'entity_type' => 'node',
+          'bundle' => $bundle,
+          'label' => $definition['label'],
+          'required' => FALSE,
+        ])->save();
+      }
+    }
+  }
+}
+
+/**
+ * Add skip-reason breakdown columns to pb_analytics_sync_log.
+ */
+function pb_content_analytics_update_9001(): void {
+  $schema = \Drupal::database()->schema();
+  $table = 'pb_analytics_sync_log';
+
+  $columns = [
+    'skipped_unknown_type' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Nodes skipped: content type not in supported map.',
+    ],
+    'skipped_not_found' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Nodes skipped: nid not found or bundle mismatch.',
+    ],
+    'skipped_up_to_date' => [
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Nodes skipped: BigQuery data not newer than stored.',
+    ],
+    'message' => [
+      'type' => 'text',
+      'not null' => FALSE,
+      'description' => 'Human-readable summary of the sync run.',
+    ],
+  ];
+
+  foreach ($columns as $name => $spec) {
+    if (!$schema->fieldExists($table, $name)) {
+      $schema->addField($table, $name, $spec);
+    }
+  }
+}
+
+/**
+ * Add message column to pb_analytics_sync_log.
+ */
+function pb_content_analytics_update_9002(): void {
+  $schema = \Drupal::database()->schema();
+  $table = 'pb_analytics_sync_log';
+
+  if (!$schema->fieldExists($table, 'message')) {
+    $schema->addField($table, 'message', [
+      'type' => 'text',
+      'not null' => FALSE,
+      'description' => 'Human-readable summary of the sync run.',
+    ]);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function pb_content_analytics_uninstall() {
+  $content_types = ['article', 'video_article', 'course', 'activities'];
+  $field_names = ['field_like_count', 'field_read_count', 'field_analytics_updated'];
+
+  foreach ($field_names as $field_name) {
+    foreach ($content_types as $bundle) {
+      $field = FieldConfig::loadByName('node', $bundle, $field_name);
+      if ($field) {
+        $field->delete();
+      }
+    }
+    $storage = FieldStorageConfig::loadByName('node', $field_name);
+    if ($storage) {
+      $storage->delete();
+    }
+  }
+
+  \Drupal::database()->schema()->dropTable('pb_analytics_sync_log');
+}

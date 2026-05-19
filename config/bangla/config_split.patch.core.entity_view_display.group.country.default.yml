@@ -1,0 +1,38 @@
+adding:
+  content:
+    field_language_name_in_local:
+      type: string
+      label: above
+      settings:
+        link_to_entity: false
+      third_party_settings: {  }
+      weight: 2
+      region: content
+  hidden:
+    field_app_name: true
+    field_content_toggle: true
+    field_country_email: true
+    field_unicef_logo: true
+removing:
+  content:
+    field_app_name:
+      type: list_default
+      label: above
+      weight: 4
+    field_content_toggle:
+      type: list_default
+      label: above
+      weight: 3
+    field_country_email:
+      type: basic_string
+      label: above
+      weight: 2
+    field_unicef_logo:
+      type: entity_reference_entity_view
+      label: above
+      settings:
+        view_mode: default
+        link: false
+      weight: 5
+  hidden:
+    field_language_name_in_local: true

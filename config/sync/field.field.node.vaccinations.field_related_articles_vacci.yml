@@ -1,0 +1,36 @@
+uuid: 6b3a0ece-c64f-4cac-ac44-ebc26f5ac842
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_articles_vacci
+    - node.type.vaccinations
+  module:
+    - entity_reference_validators
+    - tmgmt_content
+third_party_settings:
+  entity_reference_validators:
+    circular_reference: false
+    circular_reference_deep: false
+    duplicate_reference: true
+  tmgmt_content:
+    excluded: false
+id: node.vaccinations.field_related_articles_vacci
+field_name: field_related_articles_vacci
+entity_type: node
+bundle: vaccinations
+label: 'Related Articles'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_1
+      arguments:
+        - article
+field_type: entity_reference

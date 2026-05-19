@@ -1,0 +1,9 @@
+adding:
+  dependencies:
+    config:
+      - workflows.workflow.group_workflow
+  permissions:
+    - 'use group_workflow transition _sme_review_to_require_modification'
+    - 'use group_workflow transition sme_review_to_senior_editor_review'
+    - 'use group_workflow transition sme_review_to_sme_review'
+removing: {  }

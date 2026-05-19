@@ -1,0 +1,18 @@
+uuid: d904264d-808c-420c-949f-9fe086d9cf1c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.child_gender
+id: taxonomy_term.child_gender.name
+field_name: name
+entity_type: taxonomy_term
+bundle: child_gender
+label: Name
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,17 @@
+uuid: df87b64d-cd97-479c-9d7b-7e9cca627488
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.translator
+id: country-4f5146610
+label: Translator
+weight: 3
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

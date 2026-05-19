@@ -1,0 +1,28 @@
+uuid: 4311d293-75fb-4e0f-8894-504dc1b2af59
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_message
+    - filter.format.full_html
+    - node.type.guide
+  module:
+    - text
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.guide.field_message
+field_name: field_message
+entity_type: node
+bundle: guide
+label: 'Positive message to parents for this age period'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - full_html
+field_type: text_long

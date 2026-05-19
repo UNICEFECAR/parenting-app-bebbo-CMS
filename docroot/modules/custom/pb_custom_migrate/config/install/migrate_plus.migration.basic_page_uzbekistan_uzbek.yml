@@ -1,6 +1,7 @@
 langcode: en
 id: basic_page_uzbekistan_uzbek
-migration_tags: basic_page_uzbekistan_uzbek
+migration_tags:
+  - basic_page_uzbekistan_uzbek
 migration_group: basic_page
 label: 'basic_page_uzbekistan_uzbek'
 source:

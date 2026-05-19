@@ -1,6 +1,7 @@
 langcode: en
 id: basic_page_tajikistan_russian
-migration_tags: basic_page_tajikistan_russian
+migration_tags:
+  - basic_page_tajikistan_russian
 migration_group: basic_page
 label: 'basic_page_tajikistan_russian'
 source:

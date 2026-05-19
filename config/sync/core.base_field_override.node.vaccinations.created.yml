@@ -1,0 +1,18 @@
+uuid: f0820ae0-2595-47c4-95f7-c55131e69baa
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.vaccinations
+id: node.vaccinations.created
+field_name: created
+entity_type: node
+bundle: vaccinations
+label: 'Authored on'
+description: 'The time that the node was created.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: created

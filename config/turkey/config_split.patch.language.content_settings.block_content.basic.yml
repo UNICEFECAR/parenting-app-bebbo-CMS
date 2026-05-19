@@ -1,0 +1,6 @@
+adding:
+  default_langcode: current_interface
+  language_alterable: false
+removing:
+  default_langcode: site_default
+  language_alterable: true

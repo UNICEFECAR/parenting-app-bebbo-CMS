@@ -1,0 +1,95 @@
+uuid: 04ef1e5d-48cb-48b8-a967-b51f1c11d9f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.base_field_override.media.remote_video.name
+    - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_video_embed_url
+    - media.type.remote_video
+  module:
+    - feeds_tamper
+    - media
+    - video_embed_field
+third_party_settings:
+  feeds_tamper:
+    tampers:
+      f8dde7f2-06ab-4ea9-89b8-b7dd2c693127:
+        uuid: f8dde7f2-06ab-4ea9-89b8-b7dd2c693127
+        plugin: html_entity_decode
+        source: name
+        weight: 0
+        label: 'HTML entity decode'
+label: 'Media - Remote Video'
+id: media_remote_video
+description: 'Media - Remote Video'
+help: ''
+import_period: -1
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'private://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:media'
+processor_configuration:
+  values:
+    bundle: remote_video
+  langcode: en
+  insert_new: 1
+  update_existing: 1
+  update_non_existent: _keep
+  skip_hash_check: false
+  authorize: true
+  revision: false
+  expire: -1
+  owner_feed_author: true
+  owner_id: 0
+custom_sources:
+  id:
+    value: ID
+    label: ID
+    machine_name: id
+    type: csv
+  name:
+    value: Name
+    label: Name
+    machine_name: name
+    type: csv
+  video_embed_url:
+    value: Video_embed_url
+    label: Video_embed_url
+    machine_name: video_embed_url
+    type: csv
+mappings:
+  -
+    target: mid
+    map:
+      value: id
+    settings: {  }
+    unique:
+      value: '1'
+  -
+    target: name
+    map:
+      value: name
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_video_embed_url
+    map:
+      value: video_embed_url
+    settings:
+      language: null
+    unique: {  }
+  -
+    target: field_media_oembed_video
+    map:
+      value: video_embed_url
+    settings:
+      language: null
+    unique: {  }

@@ -1,0 +1,60 @@
+uuid: 9e5d476c-a0e0-4573-ae0d-797d7c04947d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.quiz_questions.field_answers
+    - field.field.node.quiz_questions.field_explanation
+    - field.field.node.quiz_questions.field_question
+    - field.field.node.quiz_questions.field_question_image
+    - field.field.node.quiz_questions.field_question_type
+    - node.type.quiz_questions
+  module:
+    - bebbo_serializer
+    - options
+    - user
+id: node.quiz_questions.teaser
+targetEntityType: node
+bundle: quiz_questions
+mode: teaser
+content:
+  field_answers:
+    type: quiz_answer_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_explanation:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_question:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_question_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_question_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+hidden:
+  langcode: true
+  links: true

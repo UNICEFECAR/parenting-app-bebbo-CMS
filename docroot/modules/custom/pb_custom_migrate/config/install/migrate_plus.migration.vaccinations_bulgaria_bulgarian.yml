@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_bulgaria_bulgarian
-migration_tags: vaccinations_bulgaria_bulgarian
+migration_tags:
+  - vaccinations_bulgaria_bulgarian
 migration_group: vaccinations
 label: 'Vaccinations Bulgaria Bulgarian'
 source:

@@ -1,0 +1,41 @@
+uuid: dfe42f24-01d7-450b-ad37-434d071ffe60
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - system
+    - user
+  theme:
+    - claro
+id: pagetitle
+theme: claro
+region: content
+weight: -14
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/homepage\r\n/share\r\n/foleja"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      page: page

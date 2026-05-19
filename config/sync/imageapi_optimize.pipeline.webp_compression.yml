@@ -1,0 +1,29 @@
+uuid: 6baea8ac-4a66-408c-b83f-0c50ecebd60d
+langcode: en
+status: true
+dependencies:
+  module:
+    - imageapi_optimize_binaries
+    - webp
+name: webp_compression
+label: 'WebP + Compression'
+processors:
+  d14784ca-da59-4d30-b003-314720703476:
+    id: webp_webp
+    data:
+      quality: 80
+    weight: -10
+    uuid: d14784ca-da59-4d30-b003-314720703476
+  80f27bcb-ed94-4a77-a240-0a03622f2191:
+    id: jpegtran
+    data:
+      manual_executable_path: ''
+      progressive: true
+    weight: 4
+    uuid: 80f27bcb-ed94-4a77-a240-0a03622f2191
+  a804f416-6fe8-4655-b47a-e5a884b42e21:
+    id: pngcrush
+    data:
+      manual_executable_path: ''
+    weight: 5
+    uuid: a804f416-6fe8-4655-b47a-e5a884b42e21

@@ -1,6 +1,7 @@
 langcode: en
 id: child_development_north_macedonia_albanian
-migration_tags: child_development_north_macedonia_albanian
+migration_tags:
+  - child_development_north_macedonia_albanian
 migration_group: child_development
 label: 'child_development_north_macedonia_albanian'
 source:

@@ -1,0 +1,20 @@
+uuid: 7e9d9f6d-8f7b-4165-9078-964569ef49ba
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_seasons
+field_name: field_seasons
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

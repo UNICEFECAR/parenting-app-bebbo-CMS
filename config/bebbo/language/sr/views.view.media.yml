@@ -1,0 +1,33 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        thumbnail__target_id:
+          label: Thumbnail
+        bundle:
+          label: Type
+        uid:
+          label: Author
+        status:
+          label: Status
+          settings:
+            format_custom_false: Необјабљено
+        operations:
+          label: Operations
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      filters:
+        bundle:
+          expose:
+            label: Type
+        status:
+          group_info:
+            group_items:
+              2:
+                title: Необјабљено
+        langcode:
+          expose:
+            label: Language

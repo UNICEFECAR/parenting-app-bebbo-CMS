@@ -1,0 +1,28 @@
+uuid: 7ea59293-c6ac-4593-8b43-30dd18dfd11b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_average_height
+    - node.type.pregnancy_weekly_overview
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.pregnancy_weekly_overview.field_average_height
+field_name: field_average_height
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Average Height'
+description: 'Please add value in "cm".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

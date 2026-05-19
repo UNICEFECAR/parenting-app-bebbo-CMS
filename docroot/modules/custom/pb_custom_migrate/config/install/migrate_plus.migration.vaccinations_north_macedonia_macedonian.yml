@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_north_macedonia_macedonian
-migration_tags: vaccinations_north_macedonia_macedonian
+migration_tags:
+  - vaccinations_north_macedonia_macedonian
 migration_group: vaccinations
 label: 'Vaccinations North Macedonia Macedonian'
 source:

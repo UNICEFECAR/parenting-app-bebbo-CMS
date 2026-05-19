@@ -1,0 +1,18 @@
+uuid: d9bf9009-b2ab-423b-80c4-3a709e3a4fb4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.child_growth
+id: node.child_growth.moderation_state
+field_name: moderation_state
+entity_type: node
+bundle: child_growth
+label: 'Moderation state'
+description: 'The moderation state of this piece of content.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

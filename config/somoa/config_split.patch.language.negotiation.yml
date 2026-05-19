@@ -1,0 +1,13 @@
+adding:
+  url:
+    prefixes:
+      ws-sm: ws-sm
+      fj-fj: fj-fj
+      fj-en: fj-en
+      ws-en: ws-en
+    domains:
+      ws-sm: ''
+      fj-fj: ''
+      fj-en: ''
+      ws-en: ''
+removing: {  }

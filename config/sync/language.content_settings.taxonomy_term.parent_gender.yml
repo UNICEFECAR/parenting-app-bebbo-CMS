@@ -1,0 +1,18 @@
+uuid: 1035af34-1e84-479a-856e-9994c394483c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.parent_gender
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '0'
+id: taxonomy_term.parent_gender
+target_entity_type_id: taxonomy_term
+target_bundle: parent_gender
+default_langcode: current_interface
+language_alterable: true

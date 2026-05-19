@@ -1,0 +1,202 @@
+display:
+  default:
+    display_title: Master
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        title:
+          label: Title
+        item_count:
+          label: Items
+      pager:
+        options:
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+  assigned:
+    display_title: Assigned
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        source_language:
+          expose:
+            label: 'Source language'
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: Title
+      menu:
+        title: Assigned
+  closed:
+    display_title: Closed
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        created:
+          label: Created
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        source_language:
+          expose:
+            label: 'Source language'
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: Title
+      menu:
+        title: Closed
+  completed:
+    display_title: Completed
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        created:
+          label: Created
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        source_language:
+          expose:
+            label: 'Source language'
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: Title
+      menu:
+        title: Completed
+  pending:
+    display_title: Pending
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        source_language:
+          expose:
+            label: 'Source language'
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: Title
+      menu:
+        title: Pending
+  rejected:
+    display_title: Rejected
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        created:
+          label: Created
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations
+      filters:
+        source_language:
+          expose:
+            label: 'Source language'
+        uid:
+          expose:
+            label: Provider
+        title:
+          expose:
+            label: Title
+      menu:
+        title: Rejected
+  unassigned:
+    display_options:
+      fields:
+        tmgmt_local_task_bulk_form:
+          label: 'Bulk update'
+        status:
+          label: Status
+        title:
+          label: Title
+        source_language:
+          label: From
+        target_language:
+          label: To
+        item_count:
+          label: Items
+        operations:
+          label: Operations

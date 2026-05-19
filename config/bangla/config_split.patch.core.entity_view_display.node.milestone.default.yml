@@ -1,0 +1,15 @@
+adding:
+  content:
+    field_licensed_content:
+      label: hidden
+    field_mandatory_content:
+      label: above
+removing:
+  dependencies:
+    config:
+      - field.field.node.milestone.field_pre_populated
+  content:
+    field_licensed_content:
+      label: above
+    field_mandatory_content:
+      label: inline

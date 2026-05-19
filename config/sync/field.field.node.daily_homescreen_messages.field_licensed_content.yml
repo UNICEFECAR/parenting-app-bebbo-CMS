@@ -1,0 +1,28 @@
+uuid: e2a6f66b-030d-46e5-8f33-a40afdc7a93e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.daily_homescreen_messages
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.daily_homescreen_messages.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: daily_homescreen_messages
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,22 @@
+uuid: 47632a3a-9243-43d9-88bc-93e476ab4928
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.chatbot_category
+id: taxonomy_term.chatbot_category.status
+field_name: status
+entity_type: taxonomy_term
+bundle: chatbot_category
+label: Published
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

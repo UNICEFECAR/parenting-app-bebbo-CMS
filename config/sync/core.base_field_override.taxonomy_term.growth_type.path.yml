@@ -1,0 +1,20 @@
+uuid: bde161e5-1c78-4650-8851-8521c8538316
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_type
+  module:
+    - path
+id: taxonomy_term.growth_type.path
+field_name: path
+entity_type: taxonomy_term
+bundle: growth_type
+label: 'URL alias'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: path

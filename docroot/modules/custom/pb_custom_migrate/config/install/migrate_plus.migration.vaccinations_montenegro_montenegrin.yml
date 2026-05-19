@@ -1,5 +1,6 @@
 id: vaccinations_montenegro_montenegrin
-migration_tags: vaccinations_montenegro_montenegrin
+migration_tags:
+  - vaccinations_montenegro_montenegrin
 migration_group: vaccinations
 label: 'Vaccinations Montenegro Montenegrin'
 source:

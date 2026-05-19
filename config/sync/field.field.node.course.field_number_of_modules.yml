@@ -1,0 +1,28 @@
+uuid: 30ba8d09-f097-4372-9371-c8f575cda02a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_number_of_modules
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_number_of_modules
+field_name: field_number_of_modules
+entity_type: node
+bundle: course
+label: 'Number of modules'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

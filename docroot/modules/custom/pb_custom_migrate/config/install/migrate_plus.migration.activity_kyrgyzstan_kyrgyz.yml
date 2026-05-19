@@ -1,6 +1,7 @@
 langcode: en
 id: activity_kyrgyzstan_kyrgyz
-migration_tags: activity_kyrgyzstan_kyrgyz
+migration_tags:
+  - activity_kyrgyzstan_kyrgyz
 migration_group: activity
 label: 'activity_kyrgyzstan_kyrgyz'
 source:

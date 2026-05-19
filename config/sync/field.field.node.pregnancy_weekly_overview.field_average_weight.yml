@@ -1,0 +1,28 @@
+uuid: 4ee7f458-14e6-4cb2-b54e-f5dc15a2cdb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_average_weight
+    - node.type.pregnancy_weekly_overview
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.pregnancy_weekly_overview.field_average_weight
+field_name: field_average_weight
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Average Weight'
+description: 'Please add value in "grams".'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

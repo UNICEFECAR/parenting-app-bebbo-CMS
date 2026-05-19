@@ -1,0 +1,9 @@
+adding:
+  url:
+    prefixes:
+      es: es
+      ec-es: ec-es
+    domains:
+      es: ''
+      ec-es: ''
+removing: {  }

@@ -101,18 +101,30 @@ class ForceUpdateCheckForm extends FormBase {
     global $base_url;
     $request = $this->requestStack->getCurrentRequest();
     $country_name = $request->query->get('country_name');
+    $update_type = $request->query->get('update_type', 'content_update');
+    $flag = $request->query->get('flag', '0');
+
+    $update_type_label = $update_type === 'app_update'
+      ? $this->t('Force App Update')
+      : $this->t('Force Content Update');
+    $flag_label = $flag === '1' ? $this->t('Enable') : $this->t('Disable');
 
     $form['markup_text'] = [
       '#type' => 'markup',
-      '#markup' => '<b> Are you sure you want to proceed with a force update for ' . $country_name . ' Country</b>',
-
+      '#markup' => '<b>' . $this->t(
+        'Are you sure you want to @flag @type for @country Country?',
+        [
+          '@flag' => $flag_label,
+          '@type' => $update_type_label,
+          '@country' => $country_name,
+        ]
+      ) . '</b>',
     ];
 
     $form['actions'] = [
       '#type' => 'actions',
     ];
 
-    /* Add a submit button. */
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Yes'),
@@ -136,30 +148,37 @@ class ForceUpdateCheckForm extends FormBase {
     $request = $this->requestStack->getCurrentRequest();
     $country_id = $request->query->get('country_id');
     $flag = $request->query->get('flag');
+    $update_type = $request->query->get('update_type', 'content_update');
+    $google_play_url = $request->query->get('google_play_url', '');
+    $app_store_url = $request->query->get('app_store_url', '');
+
     $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $uuid = $user->uuid();
     $date = new DrupalDateTime();
-    if ($flag != '' && $country_id != '') {
+
+    if ($flag !== NULL && $flag !== '' && $country_id !== NULL && $country_id !== '') {
       $this->database->insert('forcefull_check_update_api')->fields(
-      [
-        'flag_status' => $flag,
-        'countries_id' => $country_id,
-        'uuid' => $uuid,
-        'created_at' => $date->getTimestamp(),
-      ]
+        [
+          'flag_status' => $flag,
+          'countries_id' => $country_id,
+          'uuid' => $uuid,
+          'created_at' => $date->getTimestamp(),
+          'update_type' => in_array($update_type, ['content_update', 'app_update'], TRUE)
+            ? $update_type
+            : 'content_update',
+          'google_play_url' => $google_play_url ?: NULL,
+          'app_store_url' => $app_store_url ?: NULL,
+        ]
       )->execute();
       drupal_flush_all_caches();
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
       pb_custom_form_my_goto($path);
-      // drupal_set_message(t('data inserted successfully'), 'status', TRUE);.
-      $this->messenger()->addStatus('data inserted successfully');
+      $this->messenger()->addStatus($this->t('Force update record saved successfully.'));
     }
     else {
       $path = $base_url . '/admin/config/parent-buddy/forcefull-update-check';
       pb_custom_form_my_goto($path);
-      // drupal_set_message(t('Please Select Country And Flag'),
-      // 'warning', TRUE);.
-      $this->messenger()->addWarning('Please Select Country And Flag');
+      $this->messenger()->addWarning($this->t('Please select a country and flag.'));
     }
   }
 

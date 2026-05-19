@@ -1,0 +1,9 @@
+uuid: 253db12b-fea8-4c18-be95-d2544d1a20f1
+langcode: en
+status: true
+dependencies: {  }
+name: 'Target Audience'
+vid: target_audience
+description: 'User types and contexts targetted in some content.'
+weight: 0
+new_revision: false

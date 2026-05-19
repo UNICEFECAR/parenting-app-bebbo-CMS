@@ -1,0 +1,5 @@
+pb_strings.strings_list:
+  title: 'All String Translations'
+  route_name: pb_strings.strings_list
+  base_route: entity.taxonomy_vocabulary.overview_form
+  weight: 10

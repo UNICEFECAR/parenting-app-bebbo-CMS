@@ -1,0 +1,48 @@
+adding:
+  content:
+    field_child_age:
+      weight: 10
+    field_cover_image:
+      weight: 8
+    field_licensed_content:
+      label: hidden
+      weight: 9
+    field_mandatory_content:
+      weight: 7
+    field_pre_populated:
+      type: boolean
+      label: above
+      settings:
+        format: default
+        format_custom_false: ''
+        format_custom_true: ''
+      third_party_settings: {  }
+      weight: 11
+      region: content
+    field_related_articles:
+      weight: 6
+    langcode:
+      type: language
+      label: above
+      settings:
+        link_to_entity: false
+        native_language: false
+      third_party_settings: {  }
+      weight: 12
+      region: content
+removing:
+  content:
+    field_child_age:
+      weight: 6
+    field_cover_image:
+      weight: 9
+    field_licensed_content:
+      label: above
+      weight: 10
+    field_mandatory_content:
+      weight: 8
+    field_related_articles:
+      weight: 7
+  hidden:
+    field_pre_populated: true
+    langcode: true

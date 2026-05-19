@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_uzbekistan_russian
-migration_tags: milestone_uzbekistan_russian
+migration_tags:
+  - milestone_uzbekistan_russian
 migration_group: milestone
 label: 'Milestone Uzbekistan Russian'
 source:

@@ -1,0 +1,26 @@
+uuid: 98bea2aa-6dac-45ce-a498-1d7febfdfd0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_do_not_feature
+    - node.type.article
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.article.field_do_not_feature
+field_name: field_do_not_feature
+entity_type: node
+bundle: article
+label: 'Do not feature'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

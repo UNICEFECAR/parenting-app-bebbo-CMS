@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the pb_custom_field module.
+ */
+
+/**
+ * Migrate field_content_toggle keys from title-case to machine_name format.
+ *
+ * Only updates rows that still have the old keys; safe to run multiple times.
+ */
+function pb_custom_field_update_10003() {
+  $database = \Drupal::database();
+
+  // Old key → new key mapping.
+  $key_map = [
+    'Chatbot' => 'chatbot',
+    "Child's Growth" => 'childs_growth',
+    'Health Check-up' => 'health_check_up',
+    'Vaccination' => 'vaccination',
+    'Pregnancy' => 'pregnancy',
+  ];
+
+  $tables = [
+    'group__field_content_toggle',
+    'group_revision__field_content_toggle',
+  ];
+
+  // Migrate stored data from old keys to new keys.
+  foreach ($tables as $table) {
+    if (!$database->schema()->tableExists($table)) {
+      continue;
+    }
+    foreach ($key_map as $old_value => $new_value) {
+      $updated = $database->update($table)
+        ->fields(['field_content_toggle_value' => $new_value])
+        ->condition('field_content_toggle_value', $old_value)
+        ->execute();
+      if ($updated > 0) {
+        \Drupal::logger('pb_custom_field')->notice("Updated @count rows in @table: '@old' -> '@new'.", [
+          '@count' => $updated,
+          '@table' => $table,
+          '@old' => $old_value,
+          '@new' => $new_value,
+        ]);
+      }
+    }
+  }
+
+  // Update the active config so the subsequent config import does not fail.
+  $config = \Drupal::configFactory()->getEditable('field.storage.group.field_content_toggle');
+  $allowed_values = $config->get('settings.allowed_values');
+  if ($allowed_values) {
+    $changed = FALSE;
+    foreach ($allowed_values as &$item) {
+      if (isset($key_map[$item['value']])) {
+        $item['value'] = $key_map[$item['value']];
+        $changed = TRUE;
+      }
+    }
+    if ($changed) {
+      $config->set('settings.allowed_values', $allowed_values);
+      $config->save();
+      \Drupal::logger('pb_custom_field')->notice('Updated active config: migrated field_content_toggle allowed value keys to machine_name format.');
+    }
+  }
+}

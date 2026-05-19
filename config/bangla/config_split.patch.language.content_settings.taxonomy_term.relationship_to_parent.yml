@@ -1,0 +1,6 @@
+adding: {  }
+removing:
+  third_party_settings:
+    content_translation:
+      bundle_settings:
+        untranslatable_fields_hide: '0'

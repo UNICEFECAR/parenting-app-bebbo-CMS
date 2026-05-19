@@ -1,0 +1,33 @@
+uuid: 92320c19-dec2-44ba-8ad3-e63345477d43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.chatbot_category.feeds_item
+    - field.field.taxonomy_term.chatbot_category.field_unique_name
+    - taxonomy.vocabulary.chatbot_category
+  module:
+    - text
+id: taxonomy_term.chatbot_category.default
+targetEntityType: taxonomy_term
+bundle: chatbot_category
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unique_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

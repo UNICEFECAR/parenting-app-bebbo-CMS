@@ -1,0 +1,33 @@
+uuid: aa558ee0-c8ee-4ef6-8aca-56ea1e7eb5cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.strings.feeds_item
+    - field.field.taxonomy_term.strings.field_unique_name
+    - taxonomy.vocabulary.strings
+  module:
+    - text
+id: taxonomy_term.strings.default
+targetEntityType: taxonomy_term
+bundle: strings
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_unique_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  feeds_item: true
+  langcode: true

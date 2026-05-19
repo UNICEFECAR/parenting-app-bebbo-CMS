@@ -1,0 +1,17 @@
+uuid: a6b9d032-b390-4f31-915b-e34ef311bc85
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+  enforced:
+    config:
+      - user.role.sme
+id: country-2ac261336
+label: SME
+weight: 5
+internal: true
+audience: outsider
+group_type: country
+permissions_ui: false
+permissions: {  }

@@ -26,7 +26,6 @@ module:
   custom_serialization: 0
   date_popup: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   entity: 0
@@ -140,6 +139,7 @@ module:
   views_ui: 0
   webp: 0
   workflows: 0
+  pathauto: 1
   content_translation: 10
   views: 10
   contextual_range_filter: 11

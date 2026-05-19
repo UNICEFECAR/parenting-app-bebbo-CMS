@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_north_macedonia_albanian
-migration_tags: homescreen_north_macedonia_albanian
+migration_tags:
+  - homescreen_north_macedonia_albanian
 migration_group: homescreen
 label: 'homescreen_north_macedonia_albanian'
 source:

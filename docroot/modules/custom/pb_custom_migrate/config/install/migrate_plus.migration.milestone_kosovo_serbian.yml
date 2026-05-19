@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_kosovo_serbian
-migration_tags: milestone_kosovo_serbian
+migration_tags:
+  - milestone_kosovo_serbian
 migration_group: milestone
 label: 'Milestone Kosovo Serbian'
 source:

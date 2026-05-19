@@ -1,0 +1,34 @@
+uuid: 3f75b450-9f1d-496f-97b0-3fe44c75d526
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cover_image
+    - media.type.image
+    - node.type.course
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.course.field_cover_image
+field_name: field_cover_image
+entity_type: node
+bundle: course
+label: 'Cover Image'
+description: 'Upload an image of dimensions 1600 in width for best results'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

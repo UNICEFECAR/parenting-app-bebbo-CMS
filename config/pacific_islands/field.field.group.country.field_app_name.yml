@@ -1,0 +1,27 @@
+uuid: 3b44056f-299e-4fb7-bda5-de3988b31053
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.group.field_app_name
+    - group.type.country
+  module:
+    - options
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: group.country.field_app_name
+field_name: field_app_name
+entity_type: group
+bundle: country
+label: 'App name'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: Bebbo
+default_value_callback: ''
+settings: {  }
+field_type: list_string

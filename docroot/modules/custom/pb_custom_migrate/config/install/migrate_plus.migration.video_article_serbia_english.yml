@@ -1,6 +1,7 @@
 langcode: en
 id: video_article_serbia_english
-migration_tags: video_article_serbia_english
+migration_tags:
+  - video_article_serbia_english
 migration_group: video_article
 label: 'Video Article Serbia-English'
 source:

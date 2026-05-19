@@ -185,8 +185,8 @@ class CustomSerializer extends Serializer {
         "id", "field_type_of_article", "category", "subcategory", "child_gender", "parent_gender", "licensed", "premature",
         "mandatory", "growth_type", "standard_deviation", "boy_video_article", "girl_video_article",
         "growth_period", "activity_category", "equipment", "type_of_support",
-        "make_available_for_mobile", "pinned_article", "pinned_video_article", "chatbot_subcategory",
-        "related_article", "old_calendar",
+        "make_available_for_mobile", "pinned_video_article", "chatbot_subcategory",
+        "related_article", "old_calendar", "pinned_article",
       ];
       $string_to_array_of_int = [
         "related_articles", "keywords", "child_age", "related_activities", "related_video_articles",
@@ -1121,7 +1121,7 @@ class CustomSerializer extends Serializer {
             'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
             'parent_category_id' => $term_obj ? (int) $term_obj->get('field_chatbot_category')->target_id : 0,
-            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
+            'unique_name' => ($term_obj && !empty($term_obj->get('field_unique_name')->value)) ? $term_obj->get('field_unique_name')->value : "",
           ];
         }
         elseif ($vocabulary_machine_name === "category") {
@@ -1136,16 +1136,16 @@ class CustomSerializer extends Serializer {
           $term_data[] = [
             'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
+            'unique_name' => ($term_obj && !empty($term_obj->get('field_unique_name')->value)) ? $term_obj->get('field_unique_name')->value : "",
             'field_type_of_article' => $field_type_of_article,
           ];
         }
-        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category") {
+        elseif ($vocabulary_machine_name === "growth_type" || $vocabulary_machine_name === "activity_category" || $vocabulary_machine_name === "child_gender" || $vocabulary_machine_name === "parent_gender" || $vocabulary_machine_name === "relationship_to_parent" || $vocabulary_machine_name === "chatbot_category" || $vocabulary_machine_name === "subcategory" || $vocabulary_machine_name === "target_audience" || $vocabulary_machine_name === "course_category") {
           /** @var \Drupal\taxonomy\TermInterface $term_obj */
           $term_data[] = [
             'id' => (int) $tid,
             'name' => $tax_result[$tax]->name,
-            'unique_name' => $term_obj ? $term_obj->get('field_unique_name')->value : '',
+            'unique_name' => ($term_obj && !empty($term_obj->get('field_unique_name')->value)) ? $term_obj->get('field_unique_name')->value : "",
           ];
         }
         else {

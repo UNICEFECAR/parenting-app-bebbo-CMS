@@ -1,0 +1,20 @@
+uuid: 8f9b6f54-8954-4bae-adf2-44247f924eda
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_course_duration
+field_name: field_course_duration
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

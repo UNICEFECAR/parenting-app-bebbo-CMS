@@ -1,0 +1,18 @@
+uuid: a2180454-b66b-4106-b424-8205fa8fcc1d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.growth_introductory
+id: taxonomy_term.growth_introductory.changed
+field_name: changed
+entity_type: taxonomy_term
+bundle: growth_introductory
+label: Changed
+description: 'The time that the term was last edited.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: changed

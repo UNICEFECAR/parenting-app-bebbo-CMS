@@ -1,6 +1,7 @@
 langcode: en
 id: homescreen_belarus_russian
-migration_tags: homescreen_belarus_russian
+migration_tags:
+  - homescreen_belarus_russian
 migration_group: homescreen
 label: 'homescreen_belarus_russian'
 source:

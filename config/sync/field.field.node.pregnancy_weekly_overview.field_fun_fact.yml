@@ -1,0 +1,24 @@
+uuid: 2e908b1f-0a49-48a0-9655-a6705de04428
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fun_fact
+    - node.type.pregnancy_weekly_overview
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.pregnancy_weekly_overview.field_fun_fact
+field_name: field_fun_fact
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Fun Fact'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

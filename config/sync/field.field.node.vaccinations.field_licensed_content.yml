@@ -1,0 +1,28 @@
+uuid: c95c55e0-5c34-4753-b398-f14ac2356132
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_licensed_content
+    - node.type.vaccinations
+  module:
+    - tmgmt_content
+third_party_settings:
+  tmgmt_content:
+    excluded: false
+id: node.vaccinations.field_licensed_content
+field_name: field_licensed_content
+entity_type: node
+bundle: vaccinations
+label: 'Licensed Content'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

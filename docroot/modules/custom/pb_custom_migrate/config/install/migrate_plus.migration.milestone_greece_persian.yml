@@ -1,6 +1,7 @@
 langcode: en
 id: milestone_greece_persian
-migration_tags: milestone_greece_persian
+migration_tags:
+  - milestone_greece_persian
 migration_group: milestone
 label: 'Milestone Greece Persian'
 source:

@@ -1,6 +1,7 @@
 langcode: en
 id: vaccinations_greece_arab
-migration_tags: vaccinations_greece_arab
+migration_tags:
+  - vaccinations_greece_arab
 migration_group: vaccinations
 label: 'Vaccinations Greece Arab'
 source:

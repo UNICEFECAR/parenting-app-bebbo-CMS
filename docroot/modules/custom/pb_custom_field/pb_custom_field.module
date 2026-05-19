@@ -26,6 +26,7 @@ use Drupal\Core\Database\Database;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Access\AccessResult;
+use Drupal\taxonomy\TermForm;
 
 /**
  * Get target roles for cross-country editing.
@@ -794,6 +795,14 @@ function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state
       }
     }
   }
+
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof TermForm) {
+    $langcode = $form_state->get('langcode');
+    if ($langcode !== 'en' && isset($form['field_unique_name'])) {
+      $form['field_unique_name']['#disabled'] = TRUE;
+    }
+  }
 }
 
 /**
@@ -1522,57 +1531,57 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
         }
       }
     }
+  }
 
-    if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
-      $current_user = \Drupal::currentUser();
-      $roles = $current_user->getRoles();
-      if (in_array('editor', $roles)) {
-        $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
-        if (!empty($user_lang)) {
-          $query->setGroupOperator('AND');
-          // @phpstan-ignore-next-line
-          $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
-        }
-      }
-      // @phpstan-ignore-next-line
-      foreach ($query->orderby as $key => $condition) {
-        if ($condition['field'] == 'tmgmt_job_item.item_id') {
-          // @phpstan-ignore-next-line
-          $order_val = $query->orderby[$key]['direction'];
-          // Delete orderby which exist sort by id.
-          // @phpstan-ignore-next-line
-          $query->orderby = [];
-          // @phpstan-ignore-next-line
-          $query->orderby[] = [
-            'field' => 'tmgmt_job_itemitem_id',
-            'direction' => $order_val,
-          ];
-        }
+  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'page_1') {
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
+    if (in_array('editor', $roles)) {
+      $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+      if (!empty($user_lang)) {
+        $query->setGroupOperator('AND');
+        // @phpstan-ignore-next-line
+        $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
       }
     }
-
-    if ($view->id() == 'tmgmt_job_items' && $view->current_display == 'submitted') {
-      // @phpstan-ignore-next-line
-      $query->distinct = TRUE;
-      // @phpstan-ignore-next-line
-      $query->addField('', 'tmgmt_job_item.changed', '');
-      // @phpstan-ignore-next-line
-      $query->addField('', 'tmgmt_job_item.item_id', '', ['function' => 'groupby']);
-      // @phpstan-ignore-next-line
-      $query->addGroupBy('tmgmt_job_item.item_id');
+    // @phpstan-ignore-next-line
+    foreach ($query->orderby as $key => $condition) {
+      if ($condition['field'] == 'tmgmt_job_item.item_id') {
+        // @phpstan-ignore-next-line
+        $order_val = $query->orderby[$key]['direction'];
+        // Delete orderby which exist sort by id.
+        // @phpstan-ignore-next-line
+        $query->orderby = [];
+        // @phpstan-ignore-next-line
+        $query->orderby[] = [
+          'field' => 'tmgmt_job_itemitem_id',
+          'direction' => $order_val,
+        ];
+      }
     }
+  }
 
-    if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
-      $current_user = \Drupal::currentUser();
+  if ($view->id() == 'tmgmt_job_items' && $view->current_display == 'submitted') {
+    // @phpstan-ignore-next-line
+    $query->distinct = TRUE;
+    // @phpstan-ignore-next-line
+    $query->addField('', 'tmgmt_job_item.changed', '');
+    // @phpstan-ignore-next-line
+    $query->addField('', 'tmgmt_job_item.item_id', '', ['function' => 'groupby']);
+    // @phpstan-ignore-next-line
+    $query->addGroupBy('tmgmt_job_item.item_id');
+  }
 
-      $roles = $current_user->getRoles();
-      if (in_array('editor', $roles)) {
-        $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
-        if (!empty($user_lang)) {
-          $query->setGroupOperator('AND');
-          // @phpstan-ignore-next-line
-          $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
-        }
+  if ($view->id() == 'tmgmt_translation_all_job_items' && $view->current_display == 'block_1') {
+    $current_user = \Drupal::currentUser();
+
+    $roles = $current_user->getRoles();
+    if (in_array('editor', $roles)) {
+      $user_lang = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages();
+      if (!empty($user_lang)) {
+        $query->setGroupOperator('AND');
+        // @phpstan-ignore-next-line
+        $query->addWhere(1, 'tmgmt_job_tmgmt_job_item.target_language', $user_lang, 'IN');
       }
     }
   }
