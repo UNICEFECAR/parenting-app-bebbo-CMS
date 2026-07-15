@@ -1,0 +1,8 @@
+name: 'PB Standard Deviation (uninstall stub)'
+description: 'Temporary stub retaining the pb_custom_standard_deviation plugin ID so the module can be uninstalled from sites where it is still enabled. Remove once every environment has imported configuration.'
+package: Custom
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:rest
+  - drupal:views

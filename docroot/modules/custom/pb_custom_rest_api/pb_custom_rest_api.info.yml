@@ -1,0 +1,7 @@
+name: 'PB Custom REST API (uninstall stub)'
+description: 'Temporary stub retaining the custom_rest_resource and v2_custom_rest_resource plugin IDs so the module can be uninstalled from sites where it is still enabled. Remove once every environment has imported configuration.'
+package: Custom
+type: module
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:rest
