@@ -18,6 +18,8 @@ display:
           label: Provider
         tags_count:
           label: Tags
+        changed:
+          label: Changed
         operations:
           label: Operations
       pager:

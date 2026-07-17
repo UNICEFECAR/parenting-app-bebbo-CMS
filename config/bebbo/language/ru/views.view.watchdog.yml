@@ -5,6 +5,8 @@ display:
       fields:
         nothing:
           admin_label: Icon
+        severity:
+          label: Severity
         type:
           label: Тип
         message:
@@ -16,6 +18,9 @@ display:
           label: Operations
       pager:
         options:
+          tags:
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'
@@ -31,5 +36,8 @@ display:
         type:
           expose:
             label: Тип
+        severity:
+          expose:
+            label: Severity
   page:
     display_title: Страница

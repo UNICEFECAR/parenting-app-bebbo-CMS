@@ -7,6 +7,10 @@ display:
           label: Title
         name:
           label: Author
+      pager:
+        options:
+          tags:
+            previous: ‹‹
       exposed_form:
         options:
           exposed_sorts_label: 'Sort by'

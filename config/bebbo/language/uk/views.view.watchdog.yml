@@ -3,16 +3,24 @@ display:
     display_title: Базово
     display_options:
       fields:
+        nothing:
+          admin_label: Icon
+        severity:
+          label: Severity
         type:
           label: Тип
         message:
           label: Message
         name:
           label: User
+          separator: ', '
         link:
           label: Операції
       pager:
         options:
+          tags:
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page_label: 'Елементів на сторінку'
             items_per_page_options_all_label: '- Усе -'
@@ -28,5 +36,8 @@ display:
         type:
           expose:
             label: Тип
+        severity:
+          expose:
+            label: Severity
   page:
     display_title: Сторінка

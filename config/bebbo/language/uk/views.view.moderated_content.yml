@@ -7,14 +7,19 @@ display:
       fields:
         title:
           label: Title
+          separator: ', '
         type:
           label: 'Content type'
+          separator: ', '
         name:
           label: Автор
+          separator: ', '
         moderation_state:
           label: 'Moderation state'
+          separator: ', '
         changed:
           label: Оновлено
+          separator: ', '
         operations:
           label: Операції
       pager:

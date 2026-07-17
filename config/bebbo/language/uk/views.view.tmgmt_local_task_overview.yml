@@ -23,6 +23,7 @@ display:
       fields:
         title:
           label: Мітка
+          separator: ', '
       filters:
         status:
           expose:
@@ -34,10 +35,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -59,10 +63,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -82,10 +89,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -105,10 +115,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -126,12 +139,16 @@ display:
       fields:
         status:
           label: Стан
+          separator: ', '
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -151,10 +168,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:
@@ -174,10 +194,13 @@ display:
           label: Стан
         title:
           label: Мітка
+          separator: ', '
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         operations:
           label: Операції
       filters:

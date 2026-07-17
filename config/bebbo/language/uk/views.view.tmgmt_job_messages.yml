@@ -20,6 +20,7 @@ display:
           label: Created
         name:
           label: "Назва (ім'я)"
+          separator: ', '
       arguments:
         tjid:
           exception:

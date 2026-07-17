@@ -3,6 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
+        severity:
+          label: Severity
         type:
           label: Type
         message:
@@ -19,5 +21,8 @@ display:
         type:
           expose:
             label: Type
+        severity:
+          expose:
+            label: Severity
   page:
     display_title: Faqe

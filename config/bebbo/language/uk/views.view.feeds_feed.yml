@@ -18,12 +18,18 @@ display:
       fields:
         title:
           label: Title
+          separator: ', '
         type:
           label: Тип
+          separator: ', '
         name:
           label: Автор
+          separator: ', '
         changed:
           label: Оновлено
+          separator: ', '
+        imported:
+          separator: ', '
         operations:
           label: Операції
       filters:

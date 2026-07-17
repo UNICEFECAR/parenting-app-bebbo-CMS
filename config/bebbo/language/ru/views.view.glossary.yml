@@ -9,6 +9,9 @@ display:
           label: Author
       pager:
         options:
+          tags:
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page_label: 'Items per page'
             items_per_page_options_all_label: '- All -'

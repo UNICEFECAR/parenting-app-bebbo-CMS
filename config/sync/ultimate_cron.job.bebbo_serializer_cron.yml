@@ -11,6 +11,9 @@ module: bebbo_serializer
 callback: 'bebbo_serializer#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '0+@ */12 * * *'
 launcher:
   id: serial
 logger:

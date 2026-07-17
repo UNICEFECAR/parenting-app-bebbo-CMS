@@ -6,6 +6,10 @@ display:
     display_options:
       title: 'Custom block library'
       fields:
+        info:
+          separator: ', '
+        type:
+          separator: ', '
         changed:
           label: Оновлено
         operations:

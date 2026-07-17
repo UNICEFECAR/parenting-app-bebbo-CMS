@@ -9,6 +9,7 @@ display:
           label: Title
         type:
           label: 'Content type'
+          separator: ', '
         name:
           label: Автор
         status:
@@ -20,6 +21,7 @@ display:
           label: Оновлено
         langcode:
           label: Мова
+          separator: ', '
         operations:
           label: Операції
       pager:

@@ -39,6 +39,7 @@ display:
           label: Tags
           separator: ', '
         changed:
+          label: Changed
           separator: ', '
         operations:
           label: Operations

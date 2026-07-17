@@ -6,10 +6,15 @@ display:
           text: 'Edit member'
         name:
           label: User
+          separator: ', '
         group_roles:
           label: Ролі
+          separator: ', '
         changed:
           label: Оновлено
+          separator: ', '
+        created:
+          separator: ', '
         view_group_relationship:
           text: 'Manage member'
         edit_group_relationship:
@@ -19,6 +24,8 @@ display:
       pager:
         options:
           tags:
+            next: ››
+            previous: ‹‹
             first: '« Перша'
             last: 'Остання »'
           expose:

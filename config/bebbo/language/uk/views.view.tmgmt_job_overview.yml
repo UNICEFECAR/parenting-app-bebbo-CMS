@@ -5,14 +5,19 @@ display:
       fields:
         state:
           label: Стан
+          separator: ', '
         label:
           label: Мітка
         source_language_1:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
         translator:
           label: Provider
+        changed:
+          label: Changed
         operations:
           label: Операції
       pager:

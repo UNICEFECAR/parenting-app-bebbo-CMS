@@ -5,17 +5,25 @@ display:
     display_options:
       title: Медіа
       fields:
+        thumbnail__target_id:
+          separator: ', '
+        name:
+          separator: ', '
         bundle:
           label: Тип
+          separator: ', '
         uid:
           label: Автор
+          separator: ', '
         status:
           label: Стан
           settings:
             format_custom_false: Неопубліковано
             format_custom_true: Опубліковано
+          separator: ', '
         changed:
           label: Оновлено
+          separator: ', '
         operations:
           label: Операції
       pager:

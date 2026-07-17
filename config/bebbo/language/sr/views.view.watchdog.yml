@@ -3,6 +3,8 @@ display:
     display_title: Default
     display_options:
       fields:
+        nothing:
+          admin_label: Icon
         type:
           label: Type
         message:
@@ -11,6 +13,10 @@ display:
           label: User
         link:
           label: Operations
+      pager:
+        options:
+          tags:
+            previous: ‹‹
       exposed_form:
         options:
           submit_button: Filter

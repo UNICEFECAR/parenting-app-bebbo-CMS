@@ -29,8 +29,17 @@ display:
           label: Тип
         source_language:
           label: From
+          separator: ', '
         target_language:
           label: To
+          separator: ', '
+        word_count:
+          separator: ', '
+        tags_count:
+          separator: ', '
+        changed:
+          label: Changed
+          separator: ', '
         operations:
           label: Операції
       filters:

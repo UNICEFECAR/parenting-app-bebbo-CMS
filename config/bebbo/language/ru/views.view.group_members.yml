@@ -24,6 +24,8 @@ display:
       pager:
         options:
           tags:
+            next: ››
+            previous: ‹‹
             first: '« First'
             last: 'Last »'
           expose:

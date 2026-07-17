@@ -27,6 +27,8 @@ display:
         tags_count:
           label: Tags
           separator: ', '
+        changed:
+          label: Changed
         operations:
           label: Operations
       arguments:
@@ -43,4 +45,5 @@ display:
         word_count:
           separator: ', '
         changed:
+          label: Changed
           separator: ', '

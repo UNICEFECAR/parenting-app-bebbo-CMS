@@ -22,6 +22,12 @@ display:
           label: Мітка
         type:
           label: Тип
+        word_count:
+          separator: ', '
+        tags_count:
+          separator: ', '
+        changed:
+          label: Changed
         operations:
           label: Операції
       arguments:
@@ -35,3 +41,8 @@ display:
           label: Мітка
         type:
           label: Тип
+        word_count:
+          separator: ', '
+        changed:
+          label: Changed
+          separator: ', '
