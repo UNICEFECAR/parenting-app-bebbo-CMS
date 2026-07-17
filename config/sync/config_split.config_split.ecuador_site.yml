@@ -82,8 +82,6 @@ complete_list:
   - language/es/metatag.metatag_defaults.user
   - language/es/node.type.article
   - language/es/node.type.page
-  - language/es/search.page.node_search
-  - language/es/search.page.user_search
   - language/es/shortcut.set.default
   - language/es/system.action.media_delete_action
   - language/es/system.action.media_publish_action

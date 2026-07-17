@@ -11,6 +11,9 @@ module: layout_builder
 callback: 'layout_builder#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
 launcher:
   id: serial
 logger:

@@ -13,7 +13,6 @@ folder: ../config/pakistan
 module: {  }
 theme: {  }
 complete_list:
-  - block.block.claro_help_search
   - field.field.group.country.field_app_name
   - field.storage.group.field_app_name
   - language.entity.ur
@@ -68,7 +67,6 @@ partial_list:
   - language.content_settings.block_content.basic
   - language.content_settings.menu_link_content.menu_link_content
   - language.negotiation
-  - search.settings
   - structure_sync.data
   - system.date
   - system.image.gd

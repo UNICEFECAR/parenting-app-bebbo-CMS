@@ -1,4 +1,4 @@
-uuid: 3e8ae4c9-8efe-4a46-bd19-428003f6ecaf
+uuid: c13d5985-ad8d-4b7a-b94a-dfd70718f0bc
 langcode: en
 status: true
 dependencies:
@@ -10,7 +10,7 @@ plugin: office365_oauth
 configuration:
   smtp_host: smtp.office365.com
   smtp_port: '587'
-  user: admin@bebbo.app
-  client_id: REPLACE_WITH_CLIENT_ID
-  client_secret: REPLACE_WITH_CLIENT_SECRET
-  tenant_id: REPLACE_WITH_TENANT_ID
+  user: null
+  client_id: null
+  client_secret: null
+  tenant_id: null

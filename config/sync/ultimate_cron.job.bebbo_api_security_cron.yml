@@ -11,6 +11,9 @@ module: bebbo_api_security
 callback: 'bebbo_api_security#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
 launcher:
   id: serial
 logger:

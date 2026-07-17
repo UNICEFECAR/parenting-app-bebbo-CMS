@@ -15,7 +15,6 @@ dependencies:
     - node
     - pb_content_analytics
     - pb_custom_form
-    - search
     - shortcut
     - system
     - taxonomy
@@ -38,7 +37,6 @@ permissions:
   - 'edit own remote_video media'
   - 'edit own video media'
   - 'manage mobile javascript'
-  - 'search content'
   - 'use text format full_html'
   - 'view all media revisions'
   - 'view any document media revisions'

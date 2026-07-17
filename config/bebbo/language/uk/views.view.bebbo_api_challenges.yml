@@ -3,6 +3,8 @@ display:
     display_title: Базово
     display_options:
       fields:
+        used:
+          label: Used
         created:
           label: Created
       pager:

@@ -9,9 +9,6 @@ ignored_config_entities:
   - mobile_app_links.ios
   - pb_content_analytics.settings
   - purge.logger_channels
-  - 'symfony_mailer.mailer_transport.office_365_oauth:configuration.client_id'
-  - 'symfony_mailer.mailer_transport.office_365_oauth:configuration.client_secret'
-  - 'symfony_mailer.mailer_transport.office_365_oauth:configuration.tenant_id'
   - 'symfony_mailer_office365.config:client_id'
   - 'symfony_mailer_office365.config:client_secret'
   - 'symfony_mailer_office365.config:tenant_id'

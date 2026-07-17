@@ -87,8 +87,6 @@ complete_list:
   - language/tr/node.type.article
   - language/tr/node.type.page
   - language/tr/pathauto.pattern.group_content
-  - language/tr/search.page.node_search
-  - language/tr/search.page.user_search
   - language/tr/shortcut.set.default
   - language/tr/system.action.media_delete_action
   - language/tr/system.action.media_publish_action

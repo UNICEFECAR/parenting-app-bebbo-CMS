@@ -29,7 +29,6 @@ complete_list:
   - language/ar/metatag.metatag_defaults.node
   - language/ar/metatag.metatag_defaults.user
   - language/ar/pathauto.pattern.group_content
-  - language/ar/search.page.node_search
   - language/ar/shortcut.set.default
   - language/ar/views.view.archive
   - language/ar/views.view.block_content
@@ -187,7 +186,6 @@ partial_list:
   - metatag.metatag_defaults.node__page
   - metatag.settings
   - pathauto.pattern.group_content
-  - search.settings
   - system.action.pathauto_update_alias_node
   - system.action.pathauto_update_alias_user
   - system.menu.footer

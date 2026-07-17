@@ -11,6 +11,9 @@ module: dblog
 callback: 'dblog#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
 launcher:
   id: serial
 logger:
