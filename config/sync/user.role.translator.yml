@@ -56,6 +56,7 @@ weight: 3
 is_admin: null
 permissions:
   - 'accept translation jobs'
+  - 'create content translations'
   - 'create media'
   - 'translate activities node'
   - 'translate activity_category taxonomy_term'
