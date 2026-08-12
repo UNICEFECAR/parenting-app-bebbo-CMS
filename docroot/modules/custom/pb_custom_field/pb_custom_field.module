@@ -2517,3 +2517,39 @@ function pb_custom_field_entity_field_access($operation, FieldDefinitionInterfac
   }
   return AccessResult::neutral();
 }
+
+/**
+ * Implements hook_node_presave().
+ *
+ * The content_moderation EntityModerationForm advances the revision timestamp
+ * on a moderation transition but never touches `changed`. The moderated content
+ * report lists the per-translation `changed`, so changing state alone left the
+ * "Updated" column frozen at the last text edit — the transition looked as if
+ * it had never been recorded. Stamp `changed` when the state genuinely moves
+ * and nothing else has already updated it.
+ */
+function pb_custom_field_node_presave(NodeInterface $node) {
+  if ($node->isNew() || !$node->hasField('moderation_state')) {
+    return;
+  }
+
+  $original = $node->getOriginal();
+  if (!$original) {
+    return;
+  }
+
+  // Compare like for like: moderation state is per translation.
+  $langcode = $node->language()->getId();
+  if ($original->hasTranslation($langcode)) {
+    $original = $original->getTranslation($langcode);
+  }
+
+  if ($node->get('moderation_state')->value === $original->get('moderation_state')->value) {
+    return;
+  }
+
+  // An accompanying text edit has already bumped `changed`; leave it alone.
+  if ($node->getChangedTime() === $original->getChangedTime()) {
+    $node->setChangedTime(\Drupal::time()->getRequestTime());
+  }
+}
