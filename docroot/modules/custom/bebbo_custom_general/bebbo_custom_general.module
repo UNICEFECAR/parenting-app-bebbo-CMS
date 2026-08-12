@@ -12,6 +12,9 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\ViewExecutable;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -661,6 +664,35 @@ function bebbo_custom_general_query_tmgmt_entity_get_translatable_entities_alter
     // Add our Node ID ordering.
     $query->orderBy('e.nid', strtoupper($sort));
   }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * Restricts the TMGMT job overview to the languages a user is assigned through
+ * allowed_languages. TMGMT ships no allowed_languages integration, so without
+ * this a Translator sees — and can act on — jobs belonging to every country's
+ * languages, not just their own.
+ */
+function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'tmgmt_job_overview' || !$query instanceof Sql) {
+    return;
+  }
+
+  // Users who administer TMGMT must keep sight of every job.
+  if (\Drupal::currentUser()->hasPermission('administer tmgmt')) {
+    return;
+  }
+
+  $langcodes = \Drupal::service('allowed_languages.allowed_languages_manager')
+    ->assignedLanguages();
+  // An empty assignment means the account is not language-restricted at all;
+  // leave the query alone rather than hiding every job from them.
+  if (empty($langcodes)) {
+    return;
+  }
+
+  $query->addWhere(0, 'tmgmt_job.target_language', $langcodes, 'IN');
 }
 
 /**
