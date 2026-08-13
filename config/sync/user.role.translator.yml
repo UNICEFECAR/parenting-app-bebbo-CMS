@@ -50,6 +50,7 @@ dependencies:
     - media
     - node
     - tmgmt
+    - toolbar_menu
 id: translator
 label: Translator
 weight: 3
@@ -108,6 +109,7 @@ permissions:
   - 'view course revisions'
   - 'view courses_module revisions'
   - 'view daily_homescreen_messages revisions'
+  - 'view editorial_menu in toolbar'
   - 'view faq revisions'
   - 'view guide revisions'
   - 'view health_check_ups revisions'

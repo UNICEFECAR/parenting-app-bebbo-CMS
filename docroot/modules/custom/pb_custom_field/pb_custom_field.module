@@ -895,10 +895,13 @@ function pb_custom_field_preprocess_menu(&$variables) {
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
 
-  // Define roles that should have access to editorial menu.
+  // Define roles that should have access to editorial menu. Translator is
+  // listed here but deliberately not in _pb_custom_field_get_target_roles(),
+  // which also drives cross-country content access — a translator is scoped to
+  // their own country's languages and must not gain that.
   $editorial_roles = array_merge(
     _pb_custom_field_get_target_roles(),
-    ['global_admin', 'administrator']
+    ['global_admin', 'administrator', 'translator']
   );
 
   if (!array_intersect($roles, $editorial_roles)) {
