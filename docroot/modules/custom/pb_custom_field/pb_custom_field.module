@@ -30,6 +30,9 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\taxonomy\TermForm;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 
 /**
  * Get target roles for cross-country editing.
@@ -2516,4 +2519,86 @@ function pb_custom_field_entity_field_access($operation, FieldDefinitionInterfac
     }
   }
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * The content_moderation EntityModerationForm advances the revision timestamp
+ * on a moderation transition but never touches `changed`. The moderated content
+ * report lists the per-translation `changed`, so changing state alone left the
+ * "Updated" column frozen at the last text edit — the transition looked as if
+ * it had never been recorded. Stamp `changed` when the state genuinely moves
+ * and nothing else has already updated it.
+ */
+function pb_custom_field_node_presave(NodeInterface $node) {
+  if ($node->isNew() || !$node->hasField('moderation_state')) {
+    return;
+  }
+
+  $original = $node->getOriginal();
+  if (!$original) {
+    return;
+  }
+
+  // Compare like for like: moderation state is per translation.
+  $langcode = $node->language()->getId();
+  if ($original->hasTranslation($langcode)) {
+    $original = $original->getTranslation($langcode);
+  }
+
+  if ($node->get('moderation_state')->value === $original->get('moderation_state')->value) {
+    return;
+  }
+
+  // An accompanying text edit has already bumped `changed`; leave it alone.
+  if ($node->getChangedTime() === $original->getChangedTime()) {
+    $node->setChangedTime(\Drupal::time()->getRequestTime());
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ *
+ * A translation added programmatically is seeded with
+ * addTranslation($langcode, $entity->toArray()), which copies the source
+ * revision's metadata along with its content. Left as-is the translation is
+ * saved back-dated and attributed to whoever last touched the source, so an
+ * AI-translated node shows the source revision's timestamp instead of the
+ * time it was translated. The manual translation form and tmgmt each stamp
+ * these values themselves; ai_translate does not. Stamping here covers every
+ * path that creates a translation rather than one module's controller.
+ */
+function pb_custom_field_entity_presave(EntityInterface $entity) {
+  if (!$entity instanceof ContentEntityInterface
+    || $entity->isNew()
+    || !$entity->isNewTranslation()) {
+    return;
+  }
+
+  $request_time = \Drupal::time()->getRequestTime();
+
+  if ($entity instanceof RevisionLogInterface) {
+    $entity->setRevisionCreationTime($request_time);
+    $entity->setRevisionUserId(\Drupal::currentUser()->id());
+
+    // Without a message the revision list shows the translation with no
+    // indication of what produced it. Only fill a message in when the caller
+    // has not set one — tmgmt writes its own, naming the job.
+    if (empty($entity->getRevisionLogMessage())) {
+      $entity->setRevisionLogMessage((string) new TranslatableMarkup(
+        'Created @langcode translation.',
+        ['@langcode' => $entity->language()->getId()]
+      ));
+    }
+  }
+
+  // Only replace a `changed` value that was inherited verbatim from the source
+  // language. Anything else was set deliberately — Entity Share imports carry
+  // the remote's timestamp and compare against it to decide what to re-import,
+  // so overwriting it there would force needless re-imports.
+  if ($entity instanceof EntityChangedInterface
+    && $entity->getChangedTime() === $entity->getUntranslated()->getChangedTime()) {
+    $entity->setChangedTime($request_time);
+  }
 }
