@@ -49,6 +49,7 @@ dependencies:
     - locale
     - media
     - node
+    - pb_strings
     - tmgmt
     - toolbar_menu
 id: translator
@@ -57,6 +58,7 @@ weight: 3
 is_admin: null
 permissions:
   - 'accept translation jobs'
+  - 'create content translations'
   - 'create media'
   - 'translate activities node'
   - 'translate activity_category taxonomy_term'
@@ -91,6 +93,7 @@ permissions:
   - 'translate relationship_to_parent taxonomy_term'
   - 'translate standard_deviation taxonomy_term'
   - 'translate standard_deviation_category taxonomy_term'
+  - 'translate strings'
   - 'translate strings taxonomy_term'
   - 'translate subcategory taxonomy_term'
   - 'translate survey node'
