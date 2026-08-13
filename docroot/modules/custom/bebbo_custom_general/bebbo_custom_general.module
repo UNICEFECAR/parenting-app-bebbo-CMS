@@ -5,13 +5,21 @@
  * Common Bebbo utilities with no dedicated module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\tmgmt\JobInterface;
+use Drupal\tmgmt\JobItemInterface;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\ViewExecutable;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -661,6 +669,129 @@ function bebbo_custom_general_query_tmgmt_entity_get_translatable_entities_alter
     // Add our Node ID ordering.
     $query->orderBy('e.nid', strtoupper($sort));
   }
+}
+
+/**
+ * The langcodes an account is limited to, or NULL when it is unrestricted.
+ *
+ * TMGMT ships no allowed_languages integration, so both the job listings and
+ * the job routes have to consult the assignment explicitly.
+ *
+ * @param \Drupal\Core\Session\AccountInterface|null $account
+ *   The account to check, or NULL for the current user.
+ *
+ * @return string[]|null
+ *   The assigned langcodes, or NULL when the account must not be restricted:
+ *   users who administer TMGMT must keep sight of every job, and an empty
+ *   assignment means the account is not language-restricted at all, so hiding
+ *   or denying everything from them would be wrong.
+ */
+function _bebbo_custom_general_assigned_langcodes(?AccountInterface $account = NULL) {
+  $manager = \Drupal::service('allowed_languages.allowed_languages_manager');
+  $account = $manager->accountFromProxy($account ?: \Drupal::currentUser());
+
+  if ($account->hasPermission('administer tmgmt')) {
+    return NULL;
+  }
+
+  return $manager->assignedLanguages($account) ?: NULL;
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * Restricts the TMGMT job and job item listings to the languages a user is
+ * assigned through allowed_languages. Without this a Translator sees — and can
+ * act on — jobs belonging to every country's languages, not just their own.
+ */
+function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Views built on tmgmt_job, then those built on tmgmt_job_item.
+  $job_views = ['tmgmt_job_overview', 'translation_review_pending'];
+  $item_views = ['tmgmt_job_items', 'tmgmt_translation_all_job_items'];
+  $id = $view->id();
+
+  if (!$query instanceof Sql
+    || (!in_array($id, $job_views, TRUE) && !in_array($id, $item_views, TRUE))) {
+    return;
+  }
+
+  $langcodes = _bebbo_custom_general_assigned_langcodes();
+  if ($langcodes === NULL) {
+    return;
+  }
+
+  // The result set now varies by account and nothing in the view's own
+  // cacheability says so. Two translators hold identical permissions but
+  // different language assignments, so `user.permissions` collides between them
+  // and one could be served the other's job list from the render cache. The
+  // assignment is a field on the user, so depend on that entity too — otherwise
+  // editing someone's languages would leave a stale listing cached.
+  $view->addCacheContext('user');
+  $view->element['#cache']['tags'][] = 'user:' . \Drupal::currentUser()->id();
+
+  if (in_array($id, $job_views, TRUE)) {
+    $query->addWhere(0, 'tmgmt_job.target_language', $langcodes, 'IN');
+    return;
+  }
+
+  // A job item has no target language of its own — it inherits its job's — and
+  // not every display of these views joins tmgmt_job, so filter on the job
+  // reference instead of on a relationship alias that may not be in the query.
+  $jobs = \Drupal::database()->select('tmgmt_job', 'j');
+  $jobs->fields('j', ['tjid']);
+  $jobs->condition('j.target_language', $langcodes, 'IN');
+  $query->addWhere(0, 'tmgmt_job_item.tjid', $jobs, 'IN');
+}
+
+/**
+ * Implements hook_entity_access().
+ *
+ * Denies TMGMT jobs and job items whose target language the account is not
+ * assigned. The views filter above only hides foreign jobs from the listings;
+ * every job and job item route (edit, delete, abort, resubmit) is guarded by
+ * _entity_access, so without this a Translator can still open and act on
+ * another country's job by URL.
+ */
+function bebbo_custom_general_entity_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($entity instanceof JobInterface) {
+    $job = $entity;
+  }
+  elseif ($entity instanceof JobItemInterface) {
+    $job = $entity->getJob();
+  }
+  else {
+    return AccessResult::neutral();
+  }
+
+  $langcodes = _bebbo_custom_general_assigned_langcodes($account);
+
+  // The assignment is a field on the user, so the decision has to depend on
+  // that entity as well: varying per user alone would leave a stale allow or
+  // deny cached after someone's languages are edited. Mirrors what
+  // allowed_languages_entity_access() does.
+  $user = \Drupal::service('allowed_languages.allowed_languages_manager')
+    ->accountFromProxy($account);
+
+  $access = AccessResult::neutral()->cachePerPermissions()->cachePerUser();
+  if ($user instanceof EntityInterface) {
+    $access->addCacheableDependency($user);
+  }
+  if ($langcodes === NULL) {
+    return $access;
+  }
+
+  // A job item whose job has gone missing has no language to check, so it is
+  // denied along with the foreign languages.
+  $langcode = $job ? $job->getTargetLangcode() : NULL;
+  if (!in_array($langcode, $langcodes, TRUE)) {
+    $denied = AccessResult::forbidden()->cachePerPermissions()->cachePerUser();
+    if ($user instanceof EntityInterface) {
+      $denied->addCacheableDependency($user);
+    }
+    return $denied;
+  }
+
+  return $access;
 }
 
 /**
