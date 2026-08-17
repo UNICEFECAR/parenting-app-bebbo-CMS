@@ -1,0 +1,29 @@
+diff --git a/tmgmt.module b/tmgmt.module
+index 3cb0c52..e9087a2 100644
+--- a/tmgmt.module
++++ b/tmgmt.module
+@@ -524,6 +524,13 @@ function tmgmt_translator_labels() {
+  */
+ function tmgmt_translator_labels_flagged(?JobInterface $job = NULL) {
+   $labels = array();
++  // Only the provider that is actually selected may be contacted. Flagging
++  // every configured provider costs a remote call per provider on every form
++  // build, so a provider that is merely configured - not chosen - prints its
++  // own connection errors over an unrelated translation job, and a provider
++  // that is unreachable slows down the form for all the others. Providers
++  // that are not selected are listed by their plain label instead.
++  $selected = isset($job) ? $job->getTranslatorId() : NULL;
+   $translators = Translator::loadMultiple();
+   uasort($translators, array('Drupal\Core\Config\Entity\ConfigEntityBase', 'sort'));
+   /** @var \Drupal\tmgmt\Entity\Translator $translator */
+@@ -531,6 +538,10 @@ function tmgmt_translator_labels_flagged(?JobInterface $job = NULL) {
+     if (isset($job) && $job->isContinuous() && !($translator->getPlugin() instanceof ContinuousTranslatorInterface)) {
+       continue;
+     }
++    if ($translator->id() !== $selected) {
++      $labels[$translator->id()] = $translator->label();
++      continue;
++    }
+     if (!$translator->checkAvailable()->getSuccess()) {
+       $labels[$translator->id()] = t('@label (not available)', array('@label' => $translator->label()));
+     }

@@ -227,7 +227,8 @@
             "drupal/tmgmt": {
                 "Added custom filter in source page like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch",
                 "Update the Entity Author Details": "patches/tmgmt/tmgmt_revision.patch",
-                "Fix JobType grouped filter passing array to escapeLike": "patches/tmgmt/tmgmt_job_type_grouped_filter_fix.patch"
+                "Fix JobType grouped filter passing array to escapeLike": "patches/tmgmt/tmgmt_job_type_grouped_filter_fix.patch",
+                "Contact only the selected provider when building the job form": "patches/tmgmt/tmgmt_probe_only_selected_provider.patch"
             },
             "drupal/tmgmt_memsource": {
                 "PHP 8.4: explicit nullable param in createFileTranslation": "patches/tmgmt_memsource-implicit-nullable-php84.patch"

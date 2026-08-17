@@ -1006,6 +1006,7 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            nid: nid
             title: title
             type: type
             langcode: langcode
@@ -1016,6 +1017,13 @@ display:
             operations: operations
           default: changed
           info:
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             title:
               sortable: true
               default_sort_order: asc
@@ -1066,8 +1074,6 @@ display:
               empty_column: false
               responsive: ''
             operations:
-              sortable: false
-              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false

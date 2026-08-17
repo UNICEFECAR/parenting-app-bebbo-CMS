@@ -901,6 +901,7 @@ display:
         fields: false
         filters: false
         filter_groups: false
+      rendering_language: '***LANGUAGE_language_interface***'
       display_extenders: {  }
       path: keyword-link-to-content
       displays:

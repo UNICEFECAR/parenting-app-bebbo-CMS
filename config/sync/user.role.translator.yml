@@ -52,7 +52,7 @@ dependencies:
     - tmgmt
 id: translator
 label: Translator
-weight: 3
+weight: -6
 is_admin: null
 permissions:
   - 'accept translation jobs'

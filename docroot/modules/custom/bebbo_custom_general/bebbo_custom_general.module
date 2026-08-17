@@ -11,7 +11,13 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\bebbo_custom_general\Plugin\views\sort\NaturalTitleSort;
+use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\Plugin\views\style\Table;
+use Drupal\views\ViewExecutable;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
@@ -1043,5 +1049,63 @@ function bebbo_custom_general_form_views_exposed_form_alter(&$form, FormStateInt
     foreach ($hidden as $type) {
       unset($form[$identifier]['#options'][$type]);
     }
+  }
+}
+
+/**
+ * Views whose Title column header sort uses the language-neutral ordering.
+ *
+ * Keyed by view ID, valued by the title field handler IDs to cover.
+ */
+function _bebbo_custom_general_natural_title_sort_views() {
+  return [
+    'duplicate_of_moderated_group_relationship' => ['title'],
+  ];
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * A table column sort does not go through a sort handler: the table style
+ * calls the *field* handler's clickSort(), which orders on the raw column and
+ * so inherits the stored utf8mb4_general_ci collation. Rewrite that ORDER BY
+ * with the same expressions the "Title (language-neutral sort)" handler uses,
+ * so the column and the sort handler order identically.
+ *
+ * Reads the column off the table style rather than the request, so the
+ * display's default sort is covered as well as an explicit header click.
+ *
+ * @see \Drupal\bebbo_custom_general\Plugin\views\sort\NaturalTitleSort
+ */
+function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if (!$query instanceof Sql) {
+    return;
+  }
+  $covered = _bebbo_custom_general_natural_title_sort_views();
+  if (!isset($covered[$view->id()])) {
+    return;
+  }
+
+  $style = $view->style_plugin;
+  if (!$style instanceof Table || !in_array($style->active, $covered[$view->id()], TRUE)) {
+    return;
+  }
+  $handler = $view->field[$style->active] ?? NULL;
+  if (!$handler instanceof FieldPluginBase || empty($handler->tableAlias)) {
+    return;
+  }
+
+  // clickSort() orders on the select alias when the column is already in the
+  // query, and on the qualified column otherwise.
+  $qualified = $handler->tableAlias . '.' . $handler->realField;
+  $aliases = array_filter([$handler->field_alias, $qualified]);
+  foreach ($query->orderby as $delta => $orderby) {
+    if (!in_array($orderby['field'], $aliases, TRUE)) {
+      continue;
+    }
+    unset($query->orderby[$delta]);
+    $query->orderby = array_values($query->orderby);
+    NaturalTitleSort::orderBy($query, $qualified, $orderby['direction']);
+    return;
   }
 }

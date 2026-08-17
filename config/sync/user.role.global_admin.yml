@@ -99,7 +99,7 @@ dependencies:
     - toolbar_menu
 id: global_admin
 label: 'Global Admin'
-weight: -7
+weight: -8
 is_admin: null
 permissions:
   - 'accept translation jobs'

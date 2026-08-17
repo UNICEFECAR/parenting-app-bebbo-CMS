@@ -156,7 +156,7 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 
 **Name:** Bebbo Custom General
 **Core:** `^10 || ^11`
-**Dependencies:** `group`, `menu_per_role`
+**Dependencies:** `drupal:views`, `group`, `menu_per_role`
 
 ### Purpose
 
@@ -203,9 +203,13 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `hook_preprocess_node_add_list` | Removes hidden bundles (see helper below) from the `/node/add` content-type selection page |
 | `hook_menu_links_discovered_alter` | Removes `node.add` links for hidden bundles from every Add-content menu, including the `admin_toolbar_tools` shortcuts |
 | `hook_form_views_exposed_form_alter` | Removes hidden bundles from the exposed "Type" dropdown on the `content`, `global_content_listing`, and `country_content_listing` views |
+| `hook_views_data_alter` (`bebbo_custom_general.views.inc`) | Adds a `title_natural` sort ("Title (language-neutral sort)") to `node_field_data` and `node_field_revision`, backed by the `bebbo_natural_title` sort plugin |
+| `hook_views_query_alter` | Rewrites the Title column-header click sort on the `duplicate_of_moderated_group_relationship` view so it uses the same ordering as that sort plugin |
 | `bebbo_custom_general_node_validate` (form `#validate` handler) | Attached to node edit/add forms via `hook_form_alter`; requires a revision log when a non-admin sets a node to the archive moderation state |
 
 > **Hidden-bundle visibility:** `_bebbo_custom_general_hidden_node_types()` returns the node bundles that must never appear as standalone, selectable content in the admin UI (currently `quiz_questions`, which is authored only inline via the Quiz content type's `field_quiz_questions` inline entity form). The three hooks above consume it. This is visibility-only — no permission or access change — so inline entity form authoring is unaffected. To reveal a bundle, remove it from that helper.
+
+> **Language-neutral title sort:** node titles are stored under `utf8mb4_general_ci`, which only folds case for ASCII — accented letters sort after Z, leading whitespace and punctuation skew the order, and digits sort ahead of letters. `NaturalTitleSort` first strips leading non-word characters with `REGEXP_REPLACE(title, '^\\W+', '')`, so a title opening with a quote (`'Pula kërcimtare'!`, `“Vendosja e alarmit”`) files under its real letter instead of bunching at the top; `\\W` is Unicode-aware here, so accented Latin and Cyrillic letters survive. It then orders that value under `utf8mb4_unicode_520_ci`, so `Ç` sorts with `C` and `Á` with `A`, and adds a leading `LEFT(…, 1) BETWEEN '0' AND '9'` key so numeric titles group at the end of an ascending list and the start of a descending one. Scripts still sort in Unicode block order (Latin, then Cyrillic, then others) — this is collation, not transliteration, so a Cyrillic title does not interleave with its Latin equivalent. The digit test avoids `REGEXP '^[0-9]'` on purpose: Drupal reads square brackets in a query string as identifier quoting, so that pattern reaches the database as `^"0-9"` and never matches. The sort is selectable in any view over nodes; `duplicate_of_moderated_group_relationship` (`/group/{id}/moderated`) uses it via its Title column, which is also that display's default sort — the table lands on Title A-Z and any column header click replaces it for that request. Note that adding it as an *exposed* sort would disable every column-header sort in a view, because core's `ExposedFormPluginBase::query()` clears the query's ORDER BY whenever the exposed form carries a `sort_by` value.
 
 > **Dead-code note:** `bebbo_custom_general_pb_custom_field_preprocess_views_view_field()` was moved verbatim from `pb_custom_form` (slice 4/5). Its name does not match the `{module}_preprocess_{hook}` pattern, so the theme registry never registers it — it is a no-op.
 
@@ -220,6 +224,7 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `ApplyNodeTranslations` | Batch processor | Copies related articles/videos across node translations |
 | `InternalContentNodeRedirect` | Event subscriber | Anonymous internal node → language redirect |
 | `MailerSenderOverride` | Event subscriber | Mail sender override from config |
+| `NaturalTitleSort` | Views sort plugin (`bebbo_natural_title`) | Language-neutral alphabetical ordering of a text column, numeric titles grouped apart |
 | Form classes | Forms | `MobileAppShareLinkForm`, `RedirectManagementForm`, `SettingsForm`, `AppStoreRedirectForm`, `ApplyTransRelatedArticlesVideo` |
 
 ### Config
