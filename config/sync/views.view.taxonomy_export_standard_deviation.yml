@@ -1452,7 +1452,7 @@ display:
       export_method: batch
       export_batch_size: 100
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_1
       include_query_params: false
       export_filesystem: private
     cache_metadata:

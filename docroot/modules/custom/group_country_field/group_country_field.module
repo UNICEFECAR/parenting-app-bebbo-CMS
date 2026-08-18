@@ -5,9 +5,14 @@
  * It contains group field module.
  */
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\Group;
+use Drupal\tmgmt\JobInterface;
+use Drupal\tmgmt\JobItemInterface;
 use Drupal\user\Entity\Role;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
@@ -56,6 +61,11 @@ function group_country_field_form_alter(array &$form, FormStateInterface $form_s
 function group_country_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   if ($view->id() == 'duplicate_of_moderated_group_relationship') {
     group_country_field_views_query_alter_moderated_group($view, $query);
+    return;
+  }
+
+  if (in_array($view->id(), ['tmgmt_job_overview', 'tmgmt_translation_all_job_items'], TRUE)) {
+    group_country_field_views_query_alter_tmgmt_jobs($view, $query);
     return;
   }
 
@@ -128,6 +138,116 @@ function group_country_field_views_query_alter_moderated_group(ViewExecutable $v
   }
 
   $query->addWhere(1, 'node_field_revision.vid', $subquery, 'IN');
+}
+
+/**
+ * Returns the languages a user may see translation jobs for.
+ *
+ * Users who manage translation across the whole platform are not restricted:
+ * 'translate all languages' is held by editors and senior editors, 'create
+ * translation jobs' by global admins and 'administer tmgmt' by site admins.
+ * Everyone else is limited to the languages assigned on their profile.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The account to check.
+ *
+ * @return string[]|null
+ *   Langcodes the account may see, or NULL when it is not restricted. An empty
+ *   array means the account has no assigned languages and may see nothing.
+ */
+function group_country_field_job_langcodes(AccountInterface $account): ?array {
+  $bypass = [
+    'administer tmgmt',
+    'translate all languages',
+    'create translation jobs',
+  ];
+  foreach ($bypass as $permission) {
+    if ($account->hasPermission($permission)) {
+      return NULL;
+    }
+  }
+
+  if (!\Drupal::moduleHandler()->moduleExists('allowed_languages')) {
+    return NULL;
+  }
+
+  return \Drupal::service('allowed_languages.allowed_languages_manager')
+    ->assignedLanguages($account);
+}
+
+/**
+ * Query alter for the TMGMT job and job item Views.
+ *
+ * Without this, any user who can reach the job overview sees jobs in every
+ * language, not only the ones assigned to them.
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ *   The view being executed.
+ * @param \Drupal\views\Plugin\views\query\Sql $query
+ *   The query to alter.
+ */
+function group_country_field_views_query_alter_tmgmt_jobs(ViewExecutable $view, Sql $query) {
+  $langcodes = group_country_field_job_langcodes(\Drupal::currentUser());
+  if ($langcodes === NULL) {
+    return;
+  }
+
+  $view->element['#cache']['contexts'][] = 'user';
+
+  if (empty($langcodes)) {
+    $query->addWhereExpression(0, '1 = 0');
+    return;
+  }
+
+  // The job overview is built on tmgmt_job, the job item view reaches the job
+  // through its tjid relationship.
+  $table = $view->id() === 'tmgmt_job_overview'
+    ? 'tmgmt_job'
+    : $query->ensureTable('tmgmt_job', 'tjid');
+  $query->addWhere(0, $table . '.target_language', $langcodes, 'IN');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access() for tmgmt_job entities.
+ */
+function group_country_field_tmgmt_job_access(JobInterface $entity, $operation, AccountInterface $account) {
+  return group_country_field_job_language_access($entity->getTargetLangcode(), $account);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access() for tmgmt_job_item entities.
+ */
+function group_country_field_tmgmt_job_item_access(JobItemInterface $entity, $operation, AccountInterface $account) {
+  $job = $entity->getJob();
+  return group_country_field_job_language_access($job ? $job->getTargetLangcode() : NULL, $account);
+}
+
+/**
+ * Denies access to a translation job outside the account's languages.
+ *
+ * The View query alter only hides rows; this closes the direct route to a
+ * single job or job item.
+ *
+ * @param string|null $langcode
+ *   Target language of the job, or NULL when it cannot be determined.
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The account to check.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   Forbidden for an out of scope language, neutral otherwise.
+ */
+function group_country_field_job_language_access(?string $langcode, AccountInterface $account) {
+  $langcodes = group_country_field_job_langcodes($account);
+  if ($langcodes === NULL) {
+    return AccessResult::neutral()->cachePerUser();
+  }
+
+  if ($langcode !== NULL && in_array($langcode, $langcodes, TRUE)) {
+    return AccessResult::neutral()->cachePerUser();
+  }
+
+  return AccessResult::forbidden('The translation job is not in one of the languages assigned to this user.')
+    ->cachePerUser();
 }
 
 /**

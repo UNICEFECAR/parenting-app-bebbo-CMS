@@ -67,7 +67,7 @@ class BodyRenderedCommands extends DrushCommands {
    * @option limit Process only this many nodes.
    * @option dry-run Report counts without saving.
    * @usage drush body-rendered:populate article
-   *   Populate rendered body for all published articles.
+   *   Populate rendered body for all articles, in any moderation state.
    * @usage drush brp activities --limit=10 --dry-run
    *   Dry-run for first 10 activities nodes.
    */
@@ -89,8 +89,7 @@ class BodyRenderedCommands extends DrushCommands {
 
     $query = $storage->getQuery()
       ->accessCheck(FALSE)
-      ->condition('type', $content_type)
-      ->condition('status', 1);
+      ->condition('type', $content_type);
 
     if (!empty($options['limit'])) {
       $query->range(0, (int) $options['limit']);
@@ -98,13 +97,14 @@ class BodyRenderedCommands extends DrushCommands {
 
     $nids = $query->execute();
     if (empty($nids)) {
-      $this->logger()->notice("No published nodes found for '{$content_type}'.");
+      $this->logger()->notice("No nodes found for '{$content_type}'.");
       return;
     }
 
     $total = count($nids);
     $updated = 0;
     $skipped = 0;
+    $pending = 0;
     $dry_run = $options['dry-run'];
     $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
 
@@ -113,6 +113,14 @@ class BodyRenderedCommands extends DrushCommands {
     foreach ($storage->loadMultiple($nids) as $node) {
       if (!$node->hasField('body') || !$node->hasField('field_body_rendered')) {
         $skipped++;
+        continue;
+      }
+
+      // Saving the default revision of a node that has a pending revision
+      // would push that pending revision out of the latest-revision slot and
+      // lose the editor's work in progress. Leave those nodes alone.
+      if ($storage->getLatestRevisionId($node->id()) != $node->getRevisionId()) {
+        $pending++;
         continue;
       }
 
@@ -137,6 +145,12 @@ class BodyRenderedCommands extends DrushCommands {
 
         $rendered = $this->processor->render($body, $bodyFormat, $langcode, $baseUrl);
 
+        // Nothing to do when the stored value is already correct: saving
+        // anyway would spend a revision on every node on every run.
+        if ($rendered === ($translation->get('field_body_rendered')->value ?? '')) {
+          continue;
+        }
+
         $translation->set('field_body_rendered', [
           'value' => $rendered,
           'format' => 'full_html',
@@ -156,7 +170,7 @@ class BodyRenderedCommands extends DrushCommands {
       $updated++;
     }
 
-    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (no body), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
+    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (nothing to update), {$pending} skipped (pending revision), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
   }
 
 }

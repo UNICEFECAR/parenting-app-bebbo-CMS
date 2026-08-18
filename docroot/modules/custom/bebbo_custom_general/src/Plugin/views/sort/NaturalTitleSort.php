@@ -28,6 +28,19 @@ class NaturalTitleSort extends SortPluginBase {
   public const COLLATION = 'utf8mb4_unicode_520_ci';
 
   /**
+   * Leading characters dropped before titles are compared.
+   *
+   * Whitespace and the punctuation editors habitually open a title with. Kept
+   * to a fixed list on purpose: see cleanExpression() for why a regular
+   * expression is not an option.
+   */
+  protected const LEADING_NOISE = [
+    ' ', "\t", "\n", "\r",
+    '"', "'", '«', '“', '‘', '‚', '(', '[', '{',
+    '-', '–', '—', '.', '…', '*', '#', '¿', '¡',
+  ];
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -51,19 +64,45 @@ class NaturalTitleSort extends SortPluginBase {
   public static function orderBy(Sql $query, string $field, string $direction): void {
     $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
 
-    // Titles are routinely wrapped in quotes or opened with punctuation, which
-    // would otherwise bunch them all together ahead of the alphabet. Drop any
-    // leading non-word characters, whitespace included, before comparing.
-    // "\W" is Unicode aware here, so accented Latin and Cyrillic letters are
-    // kept; under NO_BACKSLASH_ESCAPES the pattern simply matches nothing and
-    // the ordering degrades to the untrimmed title rather than breaking.
-    $clean = "REGEXP_REPLACE($field, '^\\\\W+', '')";
+    $clean = static::cleanExpression($field);
 
     // Deliberately not a REGEXP: Drupal treats square brackets in a query
     // string as identifier quoting, so a '^[0-9]' pattern reaches the database
     // as '^"0-9"' and never matches.
     $query->addOrderBy(NULL, "(LEFT($clean, 1) BETWEEN '0' AND '9')", $direction, 'bebbo_title_numeric');
     $query->addOrderBy(NULL, $clean . ' COLLATE ' . static::COLLATION, $direction, 'bebbo_title_natural');
+  }
+
+  /**
+   * Builds an expression stripping leading noise from a text column.
+   *
+   * Deliberately nested TRIM() calls rather than a regular expression: the
+   * only portable replacement function, REGEXP_REPLACE(), does not exist on
+   * MySQL before 8.0.4, and Acquia's environments crash on it where local
+   * MariaDB does not. Character classes are out for the same reason, since
+   * MySQL 5.7 ships the POSIX engine that has no "\W", and Drupal reads square
+   * brackets in a query string as identifier quoting so "[[:punct:]]" never
+   * reaches the database intact either.
+   *
+   * TRIM(LEADING) removes repeats of a single character, so the list is
+   * applied twice: one pass alone would leave, say, a quote stranded behind
+   * the spaces of ' "Title' or the reverse.
+   *
+   * @param string $field
+   *   Fully qualified column, for example "node_field_revision.title".
+   *
+   * @return string
+   *   SQL expression yielding the comparable part of the title.
+   */
+  protected static function cleanExpression(string $field): string {
+    $expression = $field;
+    for ($pass = 0; $pass < 2; $pass++) {
+      foreach (static::LEADING_NOISE as $character) {
+        $literal = "'" . str_replace(["\\", "'"], ["\\\\", "''"], $character) . "'";
+        $expression = "TRIM(LEADING $literal FROM $expression)";
+      }
+    }
+    return $expression;
   }
 
 }

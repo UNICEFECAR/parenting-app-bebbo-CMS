@@ -256,6 +256,9 @@
             "drupal/lang_dropdown": {
                 "Fix InvalidArgumentException when no route object exists (404/403 pages)": "https://www.drupal.org/files/issues/2024-02-28/lang_dropdown_InvalidArgumentException.patch"
             },
+            "drupal/gin": {
+                "Contextual Edit toolbar tab always renders highlighted: unqualified selector in the Inline Edit toggle block": "patches/gin/contextual-edit-toolbar-tab-always-highlighted.patch"
+            },
             "webflo/drupal-finder": {
                 "Uncaught TypeError fix": "patches/drupal_finder/drupal-finder-fix-start-path.patch"
             },
@@ -274,6 +277,9 @@
             },
             "drupal/menu_export": {
                 "Fix drush command calling protected exportMenus method": "patches/menu_export_drush_visibility.patch"
+            },
+            "drupal/ai_translate": {
+                "Stamp revision date, author and log message on AI generated translations": "patches/ai_translate/stamp-revision-metadata-on-ai-translation.patch"
             },
             "drupal/contextual_range_filter": {
                 "Fix PHP 8.4 implicit nullable deprecation in DateRange::init() (https://www.drupal.org/i/3521312)": "patches/contextual_range_filter/3521312-implicit-nullable-php84.patch"

@@ -112,7 +112,7 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 
 | Hook | Behavior |
 |------|----------|
-| `hook_node_presave` | Populates `field_number_of_modules` (course), `field_number_of_questions` (quiz), truncates height/weight decimals (pregnancy_weekly_overview), auto-populates `field_embedded_images` and `field_body_rendered` for published nodes |
+| `hook_node_presave` | Populates `field_number_of_modules` (course), `field_number_of_questions` (quiz), truncates height/weight decimals (pregnancy_weekly_overview), auto-populates `field_embedded_images` for published nodes and `field_body_rendered` for nodes in any moderation state |
 | `hook_node_predelete` | Deletes orphaned quiz_questions nodes when quiz node deleted |
 | `hook_views_query_alter` | Adds Pregnancy term to child_age filter when `?pregnancy=true` on the V1 + V2 articles endpoints |
 | `hook_form_alter` | Makes module/question count fields readonly on course/quiz forms; validates course expiry and passing score; rejects saving a Quiz as `single_question_quiz` while it holds more than one question (validation error — extra questions are never auto-removed) |

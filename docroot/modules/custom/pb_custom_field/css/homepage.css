@@ -612,6 +612,18 @@ img[alt="bebbo-hearts"] {
   z-index: 999;
 }
 
+/* The fixed header above leaves normal flow, so the highlighted region -- the
+   first thing Gin renders inside <main>, and where the status messages block
+   sits -- starts at the top of the viewport and disappears behind the banner.
+   Content blocks clear it with their own margins; messages had none. The
+   offset goes on the message itself, not on .region-highlighted: that wrapper
+   is in the DOM on every load carrying the empty messages placeholder, so
+   padding there would add dead space to a landing page with nothing to say.
+   Header measures 109px at 1280, 108px at 768 and 102px at 375. */
+.pb-main-homepage .region-highlighted .messages-list__item {
+  margin-top: 120px;
+}
+
 .pb-main-homepage .page-wrapper {
   overflow-x: hidden;
 }

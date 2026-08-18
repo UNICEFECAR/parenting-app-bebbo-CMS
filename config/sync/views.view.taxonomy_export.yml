@@ -761,7 +761,7 @@ display:
       export_batch_size: 100
       export_filesystem: private
       custom_redirect_path: false
-      redirect_to_display: none
+      redirect_to_display: page_1
       include_query_params: false
     cache_metadata:
       max-age: -1

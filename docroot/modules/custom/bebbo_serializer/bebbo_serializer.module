@@ -142,8 +142,9 @@ function bebbo_serializer_node_presave(NodeInterface $node): void {
     }
   }
 
-  // Only process published nodes with a body field.
-  if (!$node->isPublished() || !$node->hasField('body')) {
+  // Process every moderation state, not only published nodes: the reports
+  // export reads field_body_rendered, so drafts need it populated too.
+  if (!$node->hasField('body')) {
     return;
   }
 
@@ -153,7 +154,11 @@ function bebbo_serializer_node_presave(NodeInterface $node): void {
     $original_body = $node->original->get('body')->value ?? '';
   }
 
-  _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
+  // Embedded images are only consumed by the API, which serves published
+  // content, so there is nothing to gain from extracting them on drafts.
+  if ($node->isPublished()) {
+    _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
+  }
   _bebbo_serializer_populate_body_rendered($node, $body, $original_body);
 }
 
@@ -197,6 +202,11 @@ function _bebbo_serializer_populate_embedded_images(NodeInterface $node, string 
   /** @var \Drupal\bebbo_serializer\Service\BodyImageProcessor $processor */
   $processor = \Drupal::service('bebbo_serializer.body_image_processor');
   $urls = $processor->extractImageUrls($body);
+
+  // field_embedded_images is a 255 character string field. Legacy bodies still
+  // carry signed S3 URLs well over that, and storing one aborts the node save
+  // with an SQL truncation error, so drop them instead.
+  $urls = array_values(array_filter($urls, static fn(string $url): bool => mb_strlen($url) <= 255));
 
   // Only update field if URLs actually changed.
   if ($urls === $existing) {
