@@ -37,6 +37,7 @@ complete_list:
   - system.site
   - taxonomy.vocabulary.type_of_article
   - workflows.workflow.group_workflow
+  - warmer.settings
 partial_list:
   - gin.settings
   - system.date

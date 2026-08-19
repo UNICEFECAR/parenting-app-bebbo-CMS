@@ -5,6 +5,10 @@
  * Hook implementations for the Bebbo Serializer module.
  */
 
+use Drupal\bebbo_serializer\Cache\ApiCacheTags;
+use Drupal\bebbo_serializer\Cache\IgnoredChangeFields;
+use Drupal\bebbo_serializer\Cache\RowFragmentCache;
+use Drupal\Core\Cache\Cache;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -17,14 +21,154 @@ use Drupal\Core\Datetime\Element\Datetime;
 use Drupal\views\Plugin\views\query\Sql;
 
 /**
- * Implements hook_cron().
+ * Implements hook_node_update().
  *
- * Pre-renders the large article list endpoints into the fragment cache so a
- * visitor never triggers the cold render that exceeds the gateway timeout.
- * Discovered and scheduled as its own isolated job by ultimate_cron.
+ * Expires the node's cached row fragments, per language where possible.
+ *
+ * Core tags a node's caches node:NID with no language in it, so without this
+ * a translator saving one language would discard that node's fragments in all
+ * of them — on the default site, 28 rows thrown away to rebuild one. The
+ * fragments are tagged by RowFragmentCache instead, and this decides which of
+ * those tags to fire:
+ *
+ * - an untranslatable field changed → every language, since the value is
+ *   shared and each translation now renders stale;
+ * - otherwise → only the translations whose stored values actually differ.
+ *
+ * The response-level tags are untouched: node:NID still bubbles out of
+ * RowFragmentCache, so page and CDN invalidation behave exactly as before.
  */
-function bebbo_serializer_cron(): void {
-  \Drupal::service('bebbo_serializer.article_fragment_warmer')->warm();
+function bebbo_serializer_node_update(NodeInterface $node): void {
+  $original = $node->getOriginal();
+  if ($original === NULL) {
+    return;
+  }
+
+  $nid = (int) $node->id();
+
+  $languages = array_keys($node->getTranslationLanguages());
+
+  // A translation removed outright leaves a fragment behind with nothing to
+  // compare against, and a shared value changing makes every translation
+  // render differently. Both cases expire the node everywhere.
+  if (_bebbo_serializer_untranslatable_changed($node, $original)
+    || count($original->getTranslationLanguages()) > count($languages)) {
+    Cache::invalidateTags(array_merge(
+      [RowFragmentCache::anyLanguageTag($nid)],
+      _bebbo_serializer_list_tags($node, array_keys($original->getTranslationLanguages() + $node->getTranslationLanguages())),
+    ));
+    return;
+  }
+
+  $changed = [];
+  foreach ($languages as $langcode) {
+    if (!$original->hasTranslation($langcode)) {
+      // A translation that did not exist before cannot have a stale fragment,
+      // but the row now appears in that language's listing.
+      $changed[] = $langcode;
+      continue;
+    }
+    if (_bebbo_serializer_translation_changed($node->getTranslation($langcode), $original->getTranslation($langcode))) {
+      $changed[] = $langcode;
+    }
+  }
+
+  if (!$changed) {
+    return;
+  }
+
+  $tags = _bebbo_serializer_list_tags($node, $changed);
+  foreach ($changed as $langcode) {
+    $tags[] = RowFragmentCache::languageTag($nid, $langcode);
+  }
+  Cache::invalidateTags($tags);
+}
+
+/**
+ * Implements hook_node_insert().
+ *
+ * A new node has no fragments yet, but every listing it belongs to is now
+ * missing a row.
+ */
+function bebbo_serializer_node_insert(NodeInterface $node): void {
+  $tags = _bebbo_serializer_list_tags($node, array_keys($node->getTranslationLanguages()));
+  if ($tags) {
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Listing tags for one node in the given languages.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node whose bundle decides which listings are affected.
+ * @param string[] $langcodes
+ *   The languages whose listings must be expired.
+ *
+ * @return string[]
+ *   Cache tags, one per language.
+ */
+function _bebbo_serializer_list_tags(NodeInterface $node, array $langcodes): array {
+  $bundle = $node->bundle();
+
+  return array_values(array_map(
+    static fn(string $langcode): string => ApiCacheTags::listTag($bundle, $langcode),
+    array_unique($langcodes),
+  ));
+}
+
+/**
+ * Whether any untranslatable field differs between two node revisions.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node as saved.
+ * @param \Drupal\node\NodeInterface $original
+ *   The node as it was before the save.
+ *
+ * @return bool
+ *   TRUE when a value shared by all translations changed.
+ */
+function _bebbo_serializer_untranslatable_changed(NodeInterface $node, NodeInterface $original): bool {
+  foreach ($node->getFieldDefinitions() as $name => $definition) {
+    if ($definition->isTranslatable() || $definition->isComputed()
+      || in_array($name, IgnoredChangeFields::UNTRANSLATABLE, TRUE)) {
+      continue;
+    }
+    if (!$original->hasField($name)) {
+      return TRUE;
+    }
+    if ($node->get($name)->getValue() != $original->get($name)->getValue()) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Whether a single translation's translatable values changed.
+ *
+ * @param \Drupal\node\NodeInterface $translation
+ *   The translation as saved.
+ * @param \Drupal\node\NodeInterface $original
+ *   The same translation before the save.
+ *
+ * @return bool
+ *   TRUE when this language's rendered row can no longer be trusted.
+ */
+function _bebbo_serializer_translation_changed(NodeInterface $translation, NodeInterface $original): bool {
+  foreach ($translation->getFieldDefinitions() as $name => $definition) {
+    if (!$definition->isTranslatable() || $definition->isComputed()
+      || in_array($name, IgnoredChangeFields::TRANSLATABLE, TRUE)) {
+      continue;
+    }
+    if (!$original->hasField($name)) {
+      return TRUE;
+    }
+    if ($translation->get($name)->getValue() != $original->get($name)->getValue()) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -35,6 +179,12 @@ function bebbo_serializer_cron(): void {
  * but direct Quiz deletion would orphan the referenced question nodes.
  */
 function bebbo_serializer_node_predelete(NodeInterface $node): void {
+  // The row is gone in every language, so no per-language reasoning applies.
+  Cache::invalidateTags(array_merge(
+    [RowFragmentCache::anyLanguageTag((int) $node->id())],
+    _bebbo_serializer_list_tags($node, array_keys($node->getTranslationLanguages())),
+  ));
+
   if ($node->bundle() !== 'quiz') {
     return;
   }

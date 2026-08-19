@@ -24,6 +24,7 @@ complete_list:
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
   - workflows.workflow.group_workflow
+  - warmer.settings
 partial_list:
   - gin.settings
   - system.date

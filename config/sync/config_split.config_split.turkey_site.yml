@@ -153,6 +153,7 @@ complete_list:
   - core.entity_form_display.taxonomy_term.subcategory.default
   - core.entity_view_display.taxonomy_term.subcategory.default
   - workflows.workflow.group_workflow
+  - warmer.settings
 partial_list:
   - ai_translate.settings
   - block.block.languagedropdownswitcher

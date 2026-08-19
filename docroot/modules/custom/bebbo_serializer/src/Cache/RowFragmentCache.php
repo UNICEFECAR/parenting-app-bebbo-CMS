@@ -34,6 +34,30 @@ class RowFragmentCache {
   }
 
   /**
+   * Tag marking one node's fragments in a single language.
+   *
+   * Core's node:NID carries no language, so a translator editing one language
+   * would otherwise discard that node's fragments in every other language.
+   * bebbo_serializer_node_update() invalidates this tag for the translations
+   * it finds changed.
+   */
+  public static function languageTag(int $nid, string $langcode): string {
+    return 'bebbo_node:' . $nid . ':' . $langcode;
+  }
+
+  /**
+   * Tag marking one node's fragments in every language.
+   *
+   * Untranslatable fields are shared by all translations, so a change to one
+   * makes every language's fragment stale at once. Deletions are the same
+   * case. One tag is cheaper and harder to get wrong than enumerating the
+   * site's languages at invalidation time.
+   */
+  public static function anyLanguageTag(int $nid): string {
+    return 'bebbo_node_any:' . $nid;
+  }
+
+  /**
    * Returns rendered raw rows, rendering (and caching) only cache misses.
    *
    * @param string $displayId
@@ -74,53 +98,34 @@ class RowFragmentCache {
       $rendered = $this->renderer->executeInRenderContext($context, function () use ($renderRow, $i, $row) {
         return $renderRow($i, $row);
       });
-      $tags = ['node:' . (int) $row->nid];
-      if (!$context->isEmpty()) {
-        $tags = Cache::mergeTags($tags, $context->pop()->getCacheTags());
-      }
+      $nid = (int) $row->nid;
+
+      // The row render contributes no node:NID of its own — only the file and
+      // config tags of what it rendered — so the two consumers can be tagged
+      // independently. The fragment answers to the language-scoped tags, so
+      // one translation's edit leaves the other languages' rows cached. What
+      // bubbles carries no per-node tag at all: the response is scoped by the
+      // listing tags the views cache plugin emits, and 460 node tags on one
+      // response is what made every unrelated save expire it.
+      $tags = $context->isEmpty() ? [] : $context->pop()->getCacheTags();
       $out[$i] = $rendered;
       $bubble->addCacheTags($tags);
+
+      $fragmentTags = Cache::mergeTags(
+        $tags,
+        [static::languageTag($nid, $langcode), static::anyLanguageTag($nid)],
+      );
 
       // Persist each fragment as soon as it is rendered. Writing per-row (not
       // in a single batch after the loop) means a request aborted mid-render
       // — e.g. a cold /api/articles/{lang} killed by the gateway timeout —
       // still saves the rows it managed to build, so successive requests
       // render only what remains and the endpoint converges to fully warm.
-      $this->cache->set($cid, ['row' => $rendered, 'tags' => $tags], Cache::PERMANENT, $tags);
+      $this->cache->set($cid, ['row' => $rendered, 'tags' => $tags], Cache::PERMANENT, $fragmentTags);
     }
 
     ksort($out);
     return array_values($out);
-  }
-
-  /**
-   * Builds the cache id for a per-language warm marker.
-   */
-  public function warmFlagCid(string $key, string $langcode, string $host): string {
-    return 'bebbo_api:warm:' . $key . ':' . $langcode . ':' . $host;
-  }
-
-  /**
-   * Whether the given endpoint/language/host has already been warmed.
-   */
-  public function isWarm(string $key, string $langcode, string $host): bool {
-    return (bool) $this->cache->get($this->warmFlagCid($key, $langcode, $host));
-  }
-
-  /**
-   * Records that the given endpoint/language/host has been warmed.
-   *
-   * The marker carries the same list tags as the article response, so any
-   * node or media change (and any full cache flush) expires it and the cron
-   * warmer re-renders that endpoint on its next pass.
-   */
-  public function markWarm(string $key, string $langcode, string $host): void {
-    $this->cache->set(
-      $this->warmFlagCid($key, $langcode, $host),
-      TRUE,
-      Cache::PERMANENT,
-      ['node_list', 'media_list'],
-    );
   }
 
 }

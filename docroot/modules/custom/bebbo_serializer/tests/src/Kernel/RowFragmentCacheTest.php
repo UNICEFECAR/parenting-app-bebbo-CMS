@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\bebbo_serializer\Kernel;
 
+use Drupal\bebbo_serializer\Cache\RowFragmentCache;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\KernelTests\KernelTestBase;
@@ -49,14 +50,18 @@ class RowFragmentCacheTest extends KernelTestBase {
     $this->assertSame(['R10', 'R11'], $out2);
     $this->assertSame([10, 11], $calls, 'no new render calls on cache hit');
 
-    // node:10 tag bubbled so page cache invalidates with the node.
-    $this->assertContains('node:10', $meta1->getCacheTags());
+    // No per-node tag reaches the response: 460 of them is what made every
+    // unrelated save expire it. The listing tags from the views cache plugin
+    // scope the response instead.
+    $this->assertNotContains('node:10', $meta1->getCacheTags());
+    $this->assertNotContains('node:11', $meta1->getCacheTags());
   }
 
   /**
    * Invalidating a single node's cache tag only re-renders that row.
    *
    * @covers ::render
+   * @covers ::anyLanguageTag
    */
   public function testInvalidationByNodeTagReRendersOnlyThatRow(): void {
     /** @var \Drupal\bebbo_serializer\Cache\RowFragmentCache $svc */
@@ -71,11 +76,98 @@ class RowFragmentCacheTest extends KernelTestBase {
 
     $svc->render('d', 'en', 'https://h', $rows, $renderRow, new BubbleableMetadata());
 
-    Cache::invalidateTags(['node:10']);
+    Cache::invalidateTags([RowFragmentCache::anyLanguageTag(10)]);
 
     $calls = [];
     $svc->render('d', 'en', 'https://h', $rows, $renderRow, new BubbleableMetadata());
     $this->assertSame([10], $calls, 'only node 10 re-rendered');
+  }
+
+  /**
+   * One language's invalidation leaves the same node's other languages warm.
+   *
+   * @covers ::render
+   * @covers ::languageTag
+   */
+  public function testLanguageTagInvalidatesOnlyThatLanguage(): void {
+    /** @var \Drupal\bebbo_serializer\Cache\RowFragmentCache $svc */
+    $svc = $this->container->get('bebbo_serializer.row_fragment_cache');
+
+    $rows = [(object) ['nid' => 10]];
+    $calls = [];
+    $renderRow = function (int $i, object $row) use (&$calls) {
+      $calls[] = $row->nid;
+      return 'R' . $row->nid;
+    };
+
+    foreach (['en', 'ro-ro', 'bn'] as $langcode) {
+      $svc->render('d', $langcode, 'https://h', $rows, $renderRow, new BubbleableMetadata());
+    }
+    $this->assertCount(3, $calls, 'one render per language');
+
+    // A translator saves ro-ro only.
+    Cache::invalidateTags([RowFragmentCache::languageTag(10, 'ro-ro')]);
+
+    $calls = [];
+    foreach (['en', 'ro-ro', 'bn'] as $langcode) {
+      $svc->render('d', $langcode, 'https://h', $rows, $renderRow, new BubbleableMetadata());
+    }
+    $this->assertSame([10], $calls, 'only ro-ro re-rendered; en and bn stayed cached');
+  }
+
+  /**
+   * An untranslatable change expires the node in every language at once.
+   *
+   * @covers ::render
+   * @covers ::anyLanguageTag
+   */
+  public function testAnyLanguageTagInvalidatesEveryLanguage(): void {
+    /** @var \Drupal\bebbo_serializer\Cache\RowFragmentCache $svc */
+    $svc = $this->container->get('bebbo_serializer.row_fragment_cache');
+
+    $rows = [(object) ['nid' => 10]];
+    $calls = [];
+    $renderRow = function (int $i, object $row) use (&$calls) {
+      $calls[] = $row->nid;
+      return 'R' . $row->nid;
+    };
+
+    foreach (['en', 'ro-ro', 'bn'] as $langcode) {
+      $svc->render('d', $langcode, 'https://h', $rows, $renderRow, new BubbleableMetadata());
+    }
+
+    Cache::invalidateTags([RowFragmentCache::anyLanguageTag(10)]);
+
+    $calls = [];
+    foreach (['en', 'ro-ro', 'bn'] as $langcode) {
+      $svc->render('d', $langcode, 'https://h', $rows, $renderRow, new BubbleableMetadata());
+    }
+    $this->assertCount(3, $calls, 'every language re-rendered');
+  }
+
+  /**
+   * Core's node:NID no longer expires the fragment, only the response.
+   *
+   * @covers ::render
+   */
+  public function testCoreNodeTagDoesNotExpireFragments(): void {
+    /** @var \Drupal\bebbo_serializer\Cache\RowFragmentCache $svc */
+    $svc = $this->container->get('bebbo_serializer.row_fragment_cache');
+
+    $rows = [(object) ['nid' => 10]];
+    $calls = [];
+    $renderRow = function (int $i, object $row) use (&$calls) {
+      $calls[] = $row->nid;
+      return 'R' . $row->nid;
+    };
+
+    $svc->render('d', 'en', 'https://h', $rows, $renderRow, new BubbleableMetadata());
+
+    Cache::invalidateTags(['node:10']);
+
+    $calls = [];
+    $svc->render('d', 'en', 'https://h', $rows, $renderRow, new BubbleableMetadata());
+    $this->assertSame([], $calls, 'fragment survives core node tag; hook drives expiry now');
   }
 
   /**
@@ -114,26 +206,6 @@ class RowFragmentCacheTest extends KernelTestBase {
     $out = $svc->render('d', 'en', 'https://h', $rows, $renderRow, new BubbleableMetadata());
     $this->assertSame(['R10', 'R11'], $out);
     $this->assertSame([11], $calls, 'node 10 survived the aborted pass; only node 11 re-rendered');
-  }
-
-  /**
-   * Warm markers report warmth and expire with the article list tags.
-   *
-   * @covers ::markWarm
-   * @covers ::isWarm
-   */
-  public function testWarmFlagLifecycle(): void {
-    /** @var \Drupal\bebbo_serializer\Cache\RowFragmentCache $svc */
-    $svc = $this->container->get('bebbo_serializer.row_fragment_cache');
-
-    $this->assertFalse($svc->isWarm('api/articles', 'en', 'https://h'));
-
-    $svc->markWarm('api/articles', 'en', 'https://h');
-    $this->assertTrue($svc->isWarm('api/articles', 'en', 'https://h'));
-
-    // A content change invalidates the list tag and re-cools the marker.
-    Cache::invalidateTags(['node_list']);
-    $this->assertFalse($svc->isWarm('api/articles', 'en', 'https://h'), 'node_list edit expires the warm marker');
   }
 
 }

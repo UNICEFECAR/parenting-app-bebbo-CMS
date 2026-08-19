@@ -21,6 +21,7 @@ complete_list:
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
   - system.site
+  - warmer.settings
 partial_list:
   - ai_translate.settings
   - core.date_format.long

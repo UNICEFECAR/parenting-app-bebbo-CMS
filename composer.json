@@ -115,6 +115,7 @@
         "drupal/views_bulk_operations": "^4.4",
         "drupal/views_data_export": "^1.10",
         "drupal/views_field_view": "^1.0",
+        "drupal/warmer": "^2.0",
         "drupal/webp": "^1.0@RC",
         "drush/drush": "^13",
         "enshrined/svg-sanitize": "^0.22.0",
@@ -292,6 +293,9 @@
             },
             "drupal/migrate_source_csv": {
                 "Fix league/csv 9.27 createFromStream deprecation": "patches/migrate_source_csv-league_csv_deprecation.patch"
+            },
+            "drupal/ultimate_cron": {
+                "D11: legacy #ajax 'replace' method breaks scheduler/logger switch on the job edit form (3535416, MR!71)": "patches/ultimate_cron/ajax-replacewith-3535416.patch"
             }
         },
         "drupal-lenient": {

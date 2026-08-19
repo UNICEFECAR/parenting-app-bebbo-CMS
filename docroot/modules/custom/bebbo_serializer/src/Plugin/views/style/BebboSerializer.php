@@ -2,6 +2,7 @@
 
 namespace Drupal\bebbo_serializer\Plugin\views\style;
 
+use Drupal\bebbo_serializer\Cache\ApiCacheTags;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;
 use Drupal\file\FileInterface;
@@ -216,20 +217,23 @@ class BebboSerializer extends Serializer {
       $langcode = $this->view->args[0] ?? $this->languageManager->getCurrentLanguage()->getId();
       $bubble   = new BubbleableMetadata();
       $rows     = $this->rowFragmentCache->render($displayId, $langcode, $host, $this->view->result, $renderRow, $bubble);
-      // Invalidate the page on any node/media change via list tags only.
-      // We deliberately do NOT bubble the hundreds of per-row entity tags
-      // ($bubble->getCacheTags()) onto the response: acquia_purge emits every
-      // response cache tag as a CDN Surrogate-Key header and queues each for
-      // purging, so hundreds of node:ID tags overflow the response header
-      // (Apache "premature end of script headers" → HTTP 500) and flood the
-      // purge queue. The individual node:ID/media:ID tags live on the fragment
-      // cache entries instead (set inside RowFragmentCache), which drives
-      // selective per-row re-render. The article payload only references node
-      // and media entities (categories/keywords are emitted as IDs, so term
-      // edits never change output), so node_list + media_list is complete.
+      // Scope the response to this listing in this language. node_list would
+      // expire it on any node save anywhere — an FAQ edit taking every
+      // article response with it — and the per-row entity tags are worse
+      // still: acquia_purge emits every response tag as a CDN Surrogate-Key,
+      // so hundreds of node:ID tags overflow the response header (Apache
+      // "premature end of script headers" → HTTP 500) and flood the purge
+      // queue. Per-row invalidation lives on the fragments instead, which is
+      // what re-renders only the edited row. The payload references node and
+      // media entities only — categories and keywords are emitted as IDs, so
+      // term edits never change output — so the listing tags plus media_list
+      // are complete.
+      $bundles = $this->view->display_handler->getOption('filters')['type']['value'] ?? [];
       $this->view->element['#cache']['tags'] = Cache::mergeTags(
         $this->view->element['#cache']['tags'] ?? [],
-        ['node_list', 'media_list'],
+        $bundles
+          ? array_merge(ApiCacheTags::listTags(array_values($bundles), $langcode), ['media_list'])
+          : ['node_list', 'media_list'],
       );
     }
     else {

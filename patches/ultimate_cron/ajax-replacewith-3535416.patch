@@ -1,0 +1,13 @@
+diff --git a/src/Form/CronJobForm.php b/src/Form/CronJobForm.php
+index e4e7cb62a38eaff9364d3ff36f30a05e3af51d85..6e54e14fe5a76326e85edb54842e2f0149f42656 100644
+--- a/src/Form/CronJobForm.php
++++ b/src/Form/CronJobForm.php
+@@ -107,7 +107,7 @@ class CronJobForm extends EntityForm {
+         '#ajax' => array(
+           'callback' => array($this, 'updateSelectedPluginType'),
+           'wrapper' => $plugin_type . '_settings',
+-          'method' => 'replace',
++          'method' => 'replaceWith',
+         ),
+         '#submit' => array('::submitForm', '::rebuild'),
+         '#limit_validation_errors' => array(array($plugin_type, 'id')),
