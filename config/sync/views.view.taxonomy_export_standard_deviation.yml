@@ -15,6 +15,11 @@ dependencies:
     - field.storage.taxonomy_term.field_sd4neg
     - field.storage.taxonomy_term.field_unique_name
     - taxonomy.vocabulary.standard_deviation
+    - user.role.administrator
+    - user.role.editor
+    - user.role.global_admin
+    - user.role.reviewer
+    - user.role.se
   module:
     - csv_serialization
     - node
@@ -257,9 +262,14 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            global_admin: global_admin
+            reviewer: reviewer
+            se: se
+            administrator: administrator
+            editor: editor
       cache:
         type: tag
         options: {  }

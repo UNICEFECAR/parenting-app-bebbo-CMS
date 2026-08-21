@@ -676,6 +676,7 @@ warmers:
       - '/api/updated-pinned-contents/uz-kaa/faq'
       - '/api/vaccinations/uz-kaa'
       - '/api/video-articles/uz-kaa'
-    headers: {  }
+    headers:
+      - 'X-Bebbo-Warmer: 1'
     verify: true
-    maxConcurrentRequests: 2
+    maxConcurrentRequests: 8

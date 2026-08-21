@@ -84,6 +84,7 @@ links:
     langcode: en
     show_role:
     - administrator
+    - editor
     - global_admin
     - reviewer
     - se
@@ -436,6 +437,7 @@ links:
     langcode: en
     show_role:
     - administrator
+    - editor
     - global_admin
     - reviewer
     - se

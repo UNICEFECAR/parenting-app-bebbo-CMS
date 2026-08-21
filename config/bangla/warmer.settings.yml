@@ -4,30 +4,6 @@ warmers:
     frequency: 3600
     batchSize: 10
     urls:
-      - '/api/activities/en'
-      - '/api/archive/en'
-      - '/api/articles/en'
-      - '/api/articles/en?pregnancy=true'
-      - '/api/basic-pages/en'
-      - '/api/child-development-data/en'
-      - '/api/child-growth-data/en'
-      - '/api/daily-homescreen-messages/en'
-      - '/api/faqs/en'
-      - '/api/health-checkup-data/en'
-      - '/api/milestones/en'
-      - '/api/pinned-contents/en/child_development/40'
-      - '/api/pinned-contents/en/child_development/41'
-      - '/api/pinned-contents/en/child_growth'
-      - '/api/pinned-contents/en/faq'
-      - '/api/pinned-contents/en/health_check_ups'
-      - '/api/pinned-contents/en/vaccinations'
-      - '/api/related-article-contents/en/milestone'
-      - '/api/standard_deviation/en'
-      - '/api/surveys/en'
-      - '/api/taxonomies/en/all'
-      - '/api/updated-pinned-contents/en/faq'
-      - '/api/vaccinations/en'
-      - '/api/video-articles/en'
       - '/api/activities/bn'
       - '/api/archive/bn'
       - '/api/articles/bn'
@@ -52,6 +28,7 @@ warmers:
       - '/api/updated-pinned-contents/bn/faq'
       - '/api/vaccinations/bn'
       - '/api/video-articles/bn'
-    headers: {  }
+    headers:
+      - 'X-Bebbo-Warmer: 1'
     verify: true
-    maxConcurrentRequests: 2
+    maxConcurrentRequests: 8

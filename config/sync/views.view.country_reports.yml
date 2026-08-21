@@ -23,7 +23,7 @@ dependencies:
     - taxonomy.vocabulary.parent_gender
     - taxonomy.vocabulary.target_audience
     - user.role.administrator
-    - user.role.authenticated
+    - user.role.editor
     - user.role.global_admin
     - user.role.reviewer
     - user.role.se
@@ -374,6 +374,7 @@ display:
             reviewer: reviewer
             se: se
             administrator: administrator
+            editor: editor
       cache:
         type: tag
       empty:
@@ -2376,11 +2377,11 @@ display:
         type: role
         options:
           role:
-            authenticated: authenticated
             global_admin: global_admin
             reviewer: reviewer
             se: se
             administrator: administrator
+            editor: editor
       sorts:
         nid:
           id: nid
@@ -4358,11 +4359,11 @@ display:
         type: role
         options:
           role:
-            authenticated: authenticated
             global_admin: global_admin
             reviewer: reviewer
             se: se
             administrator: administrator
+            editor: editor
       arguments: {  }
       filters:
         nid:

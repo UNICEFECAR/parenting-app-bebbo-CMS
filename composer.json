@@ -21,6 +21,7 @@
         "drupal/auto_entitylabel": "^3.4",
         "drupal/autocomplete_id": "^1.7",
         "drupal/better_exposed_filters": "^7.1",
+        "drupal/cloudflare": "^2.0@beta",
         "drupal/color": "^1.0",
         "drupal/config_ignore": "^3.4",
         "drupal/config_split": "^2.0",
@@ -296,6 +297,12 @@
             },
             "drupal/ultimate_cron": {
                 "D11: legacy #ajax 'replace' method breaks scheduler/logger switch on the job edit form (3535416, MR!71)": "patches/ultimate_cron/ajax-replacewith-3535416.patch"
+            },
+            "drupal/tmgmt_google": {
+                "Do not print a page-level error when the job form incidentally probes Google": "patches/tmgmt_google/no_global_error_on_incidental_probe.patch"
+            },
+            "drupal/warmer": {
+                "CDN warmer aborts cold pages at the 30s http_client default timeout": "patches/warmer/cdn-warmer-request-timeout.patch"
             }
         },
         "drupal-lenient": {

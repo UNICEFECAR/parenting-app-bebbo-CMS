@@ -1,0 +1,19 @@
+--- a/modules/warmer_cdn/src/Plugin/warmer/CdnWarmer.php
++++ b/modules/warmer_cdn/src/Plugin/warmer/CdnWarmer.php
+@@ -69,8 +69,15 @@
+ 
+     foreach ($items as $url) {
+       // Fire async request.
++      // A cold page can take far longer to build than the http_client default
++      // timeout of 30 seconds, and aborting early leaves the cache cold.
+       $promises[] = $this->httpClient
+-        ->requestAsync('GET', $url, ['headers' => $headers, 'verify' => $verify])
++        ->requestAsync('GET', $url, [
++          'headers' => $headers,
++          'verify' => $verify,
++          'timeout' => 300,
++          'connect_timeout' => 10,
++        ])
+         ->then(function (ResponseInterface $response) use (&$success) {
+           if ($response->getStatusCode() < 399) {
+             $success++;

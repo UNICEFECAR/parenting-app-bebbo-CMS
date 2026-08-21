@@ -1,0 +1,22 @@
+diff --git a/src/Plugin/tmgmt/Translator/GoogleTranslator.php b/src/Plugin/tmgmt/Translator/GoogleTranslator.php
+--- a/src/Plugin/tmgmt/Translator/GoogleTranslator.php
++++ b/src/Plugin/tmgmt/Translator/GoogleTranslator.php
+@@ -179,7 +179,17 @@
+       }
+     }
+     catch (\Exception $e) {
+-      \Drupal::messenger()->addMessage($e->getMessage(), 'error');
++      // The job form probes whichever provider it preselected, so a Google
++      // failure printed a page-level error over a job another provider was
++      // translating. Log it always - the failure still has to be diagnosable -
++      // but only put it on screen where the reader is asking about Google,
++      // which is this provider's own settings form.
++      \Drupal::logger('tmgmt_google')->error('@error', ['@error' => $e->getMessage()]);
++      $route = \Drupal::routeMatch();
++      if ($route->getRouteName() === 'entity.tmgmt_translator.edit_form'
++        && $route->getRawParameter('tmgmt_translator') === $translator->id()) {
++        \Drupal::messenger()->addError($e->getMessage());
++      }
+       return $languages;
+     }
+ 
