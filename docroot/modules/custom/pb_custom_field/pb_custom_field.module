@@ -1402,6 +1402,45 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
+ * Implements hook_views_data_alter().
+ *
+ * Exposes the user's groups as a single-row field, so user listings can show
+ * group membership without joining the one-to-many membership table into the
+ * result set and listing a user once per group.
+ */
+function pb_custom_field_views_data_alter(array &$data) {
+  $data['users_field_data']['pb_user_groups'] = [
+    'title' => t('Groups'),
+    'help' => t('All groups the user belongs to, listed in a single row.'),
+    'field' => [
+      'id' => 'pb_user_groups',
+      'real field' => 'uid',
+      'click sortable' => FALSE,
+    ],
+  ];
+
+  $data['users_field_data']['pb_user_group_label'] = [
+    'title' => t('Group name (membership)'),
+    'help' => t('Filters on the name of a group the user belongs to, without listing the user once per group.'),
+    'filter' => [
+      'id' => 'pb_user_group_label',
+      'real field' => 'uid',
+      'allow empty' => TRUE,
+    ],
+  ];
+
+  $data['users_field_data']['pb_user_group_id'] = [
+    'title' => t('Group ID (membership)'),
+    'help' => t('Filters on the ID of a group the user belongs to, without listing the user once per group.'),
+    'filter' => [
+      'id' => 'pb_user_group_id',
+      'real field' => 'uid',
+      'allow empty' => TRUE,
+    ],
+  ];
+}
+
+/**
  * View query alter for cross-country content access.
  */
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {

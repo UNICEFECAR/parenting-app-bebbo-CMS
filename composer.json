@@ -206,6 +206,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/ai": {
+                "Preserve HTML in streamed output - hold flush buffer until tags balance (3586558, MR !1734)": "patches/ai/preserve-html-in-streamed-output-3586558-mr1734.patch"
+            },
             "drupal/csv_serialization": {
                 "Fix league/csv 9.27 deprecations: createFromFileObject/createFromString (3562555)": "patches/csv_serialization_league_csv_deprecation-3562555.patch"
             },

@@ -76,3 +76,8 @@ partial_list:
   - views.view.articles
   - views.view.country_content_listing
   - views.view.keyword_term_count
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

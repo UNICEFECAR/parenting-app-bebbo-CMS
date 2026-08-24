@@ -927,10 +927,16 @@ This table reflects the languages **actually enabled in each site's live databas
 |---|---|
 | `tmgmt_content.settings` | embedded_fields empty; default_moderation_states `group_workflow: ''` |
 | `tmgmt_local.settings` | use_admin_theme `true`; allow_all `false` |
-| `tmgmt_memsource.settings` | debug `true`; token is empty in config (managed per-environment via `config_ignore`) |
+| `tmgmt_memsource.settings` | debug `true`; token is empty in config, and `tmgmt_memsource.settings:memsource_token` is a key-level `config_ignore` entry so each environment keeps its own |
 
 ### Translators
-**No `tmgmt.translator.*.yml` exist in `config/sync/`.** All are in `config_ignore` and managed per-environment: `deepl_free`, `deepl_pro`, `google`, `memsource`, `microsoft`.
+Eight translator entities live in shared `config/sync/`: `open_ai` (weight −10), `deepl_pro` (−9), `google` (−8), `microsoft` (−7), `memsource` (−6), `file` (−5), `deepl_free` (−4), `local` (−3). That weight order is the provider order every site shows.
+
+`remote_languages_mappings` is **empty in the shared base** and supplied per site by config-split partial patches (`config/{folder}/config_split.patch.tmgmt.translator.{id}.yml`), because each site serves a different language set. Patch counts: bebbo 6, bangla 4, turkey 6, ecuador 6, pakistan 2, somoa 4, zimbabwe 5 — one per translator that has mappings on that site. `file` and `local` hold no mappings anywhere. Each patch maps exactly the languages that site has installed and nothing else: bebbo its 28, bangla `en`/`bn`, turkey `en`/`tr`, ecuador `en`/`es`/`ec-es`, pakistan `en`/`ur`, somoa `en`/`fj-en`/`fj-fj`/`ws-en`/`ws-sm`, zimbabwe `en`/`zw-en`/`zw-nd`/`zw-sn`. A language the provider does not support carries an empty value rather than being omitted.
+
+Credential fields (`api_key`, `auth_key`, `memsource_user_name`, `memsource_password`) are empty in every committed file and protected by key-level `config_ignore` entries, so an import cannot overwrite a live key. Ecuador additionally pins `open_ai` `settings.tokenizer_model` to `openai__gpt-5.4-nano-2026-03-17` through its patch; the shared base is `openai__gpt-4.1-mini`.
+
+> Before the first `cim` in any environment, run `scripts/tmgmt-translator-uuid-align.php` once per site. A uuid mismatch makes Drupal delete and recreate the entity, and the delete cascades through that site's TMGMT jobs.
 
 ---
 
@@ -1125,6 +1131,8 @@ Country coverage (approx counts): Albania 45, Serbia 36, Greece 27 (3 languages:
 
 > The `tax` view (machine name `tax`) is labelled "Taxonomy, Vocabulary & Strings APIs"; it serves the V1 `api/taxonomies/%/%`, `api/strings/%`, `api/vocabularies/%` and V2 `v2/api/...` displays.
 
+> The user listings `user_admin_people` (display `page_2`, path `users`) and `users_list` (display `page_2`, path `users/country`) show group membership through the `pb_custom_field` Views plugins `pb_user_groups`, `pb_user_group_label` and `pb_user_group_id` rather than a `group_relationship` relationship, so each user occupies exactly one row regardless of how many groups — or group translations — they have. `users_reports` still uses the relationship and lists a user once per group.
+
 ---
 
 ## 16. Config Split Architecture
@@ -1158,12 +1166,16 @@ Country coverage (approx counts): Albania 45, Serbia 36, Greece 27 (3 languages:
 
 ### `config_ignore.settings.yml` — never imported/exported
 
-Whole-entity ignores: `admin_toolbar.settings`, `bebbo_api_security.settings`, `mobile_app_links.android_packages`, `mobile_app_links.ios`, `pb_content_analytics.settings`, `purge.logger_channels`, `tmgmt.translator.*` (plus explicit `deepl_free`, `deepl_pro`, `google`, `memsource`, `microsoft`), `tmgmt_memsource.settings`, `views.view.entity_share_client_entity_import_status`.
+Whole-entity ignores: `admin_toolbar.settings`, `bebbo_api_security.settings`, `mobile_app_links.android_packages`, `mobile_app_links.ios`, `pb_content_analytics.settings`, `purge.logger_channels`, `views.view.entity_share_client_entity_import_status`.
 
 Key-level ignores (only the named key is environment-managed; the rest of the entity stays in Git):
 - `key.key.entity_share_basic_auth:key_provider_settings.key_value`
 - `symfony_mailer.mailer_transport.office_365_oauth:configuration.client_id` / `:configuration.client_secret` / `:configuration.tenant_id`
 - `symfony_mailer_office365.config:client_id` / `:client_secret` / `:tenant_id`
+- `tmgmt.translator.deepl_free:settings.auth_key` / `tmgmt.translator.deepl_pro:settings.auth_key`
+- `tmgmt.translator.google:settings.api_key` / `tmgmt.translator.microsoft:settings.api_key`
+- `tmgmt.translator.memsource:settings.memsource_user_name` / `:settings.memsource_password`
+- `tmgmt_memsource.settings:memsource_token`
 
 ### Custom-module configs in sync
 - `bebbo_custom_general.adminsettings` — Master language `en,sr,ru,sq`

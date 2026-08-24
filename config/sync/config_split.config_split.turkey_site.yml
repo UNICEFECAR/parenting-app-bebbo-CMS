@@ -272,3 +272,9 @@ partial_list:
   - views.view.user_admin_people
   - views.view.users_list
   - views.view.bebbo_v2_apis
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

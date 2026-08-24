@@ -257,3 +257,9 @@ partial_list:
   - views.view.tmgmt_local_task_overview
   - views.view.user_admin_people
   - views.view.users_list
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

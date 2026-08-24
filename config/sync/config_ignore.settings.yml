@@ -16,11 +16,11 @@ ignored_config_entities:
   - 'symfony_mailer_office365.config:client_id'
   - 'symfony_mailer_office365.config:client_secret'
   - 'symfony_mailer_office365.config:tenant_id'
-  - 'tmgmt.translator.*'
-  - tmgmt.translator.deepl_free
-  - tmgmt.translator.deepl_pro
-  - tmgmt.translator.google
-  - tmgmt.translator.memsource
-  - tmgmt.translator.microsoft
-  - tmgmt_memsource.settings
+  - 'tmgmt.translator.deepl_free:settings.auth_key'
+  - 'tmgmt.translator.deepl_pro:settings.auth_key'
+  - 'tmgmt.translator.google:settings.api_key'
+  - 'tmgmt.translator.memsource:settings.memsource_password'
+  - 'tmgmt.translator.memsource:settings.memsource_user_name'
+  - 'tmgmt.translator.microsoft:settings.api_key'
+  - 'tmgmt_memsource.settings:memsource_token'
   - views.view.entity_share_client_entity_import_status

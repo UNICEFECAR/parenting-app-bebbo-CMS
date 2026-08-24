@@ -279,6 +279,7 @@ The largest editorial module. Controls field access, form alterations, editorial
 | `hook_views_pre_render` | Transforms force_update_check view data |
 | `hook_views_pre_execute` | Column sorting conversions |
 | `hook_views_query_alter` | Cross-country access, language filtering, TMGMT query mods |
+| `hook_views_data_alter` | Adds `pb_user_groups`, `pb_user_group_label` and `pb_user_group_id` to `users_field_data` |
 | `hook_menu_local_tasks_alter` | Removes/displays tabs based on roles |
 | `hook_menu_local_actions_alter` | Renames "Add member" → "Add existing member" |
 | `hook_entity_operation_alter` | Controls edit/delete/translate by moderation state |
@@ -315,6 +316,17 @@ The largest editorial module. Controls field access, form alterations, editorial
 | `MovefrompublishtodraftAction` | Moves from Published to Draft |
 | `MovefrompublishtosenioreditorAction` | Moves from Published to Senior Editor |
 | `MovefrompublishtosmeAction` | Moves from Published to SME |
+
+**Views Plugins** (`src/Plugin/views/`):
+
+| Class | Plugin ID | Role |
+|-------|-----------|------|
+| `UserGroups` | `pb_user_groups` | Field: lists every group the row's user belongs to in one cell. Memberships for the whole page are loaded in a single query during `preRender`. |
+| `UserGroupLabel` | `pb_user_group_label` | Filter: matches users on a group name via `uid IN (subquery)`. Operators `=`, `!=`, `contains`, `starts`, `empty`, `not empty`. |
+| `UserGroupId` | `pb_user_group_id` | Filter: matches users on a group ID via the same subquery. Operators `=`, `!=`, `in`, `not in`, `empty`, `not empty`. |
+| `UserGroupFilterTrait` | — | Shared subquery builder for both filters; joins `groups_field_data` on `default_langcode = 1`. |
+
+These replace the reverse `group_relationship` relationship on the user listings (`user_admin_people.page_2` at `/users`, `users_list.page_2` at `/users/country`). The relationship joined a one-to-many table twice over — one row per membership and one row per group translation — so members were listed repeatedly. Reading memberships outside the query keeps the listings at one row per user. Their config schema lives in `config/schema/pb_custom_field.views.schema.yml`.
 
 **Batch Handler Classes** (`src/`):
 

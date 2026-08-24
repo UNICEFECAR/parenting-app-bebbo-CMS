@@ -1,0 +1,10 @@
+adding:
+  remote_languages_mappings:
+    en: en
+    es: es
+    ec-es: ec-es
+  settings:
+    tokenizer_model: openai__gpt-5.4-nano-2026-03-17
+removing:
+  settings:
+    tokenizer_model: openai__gpt-4.1-mini

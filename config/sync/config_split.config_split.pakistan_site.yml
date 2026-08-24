@@ -72,8 +72,6 @@ partial_list:
   - system.date
   - system.image.gd
   - tmgmt.settings
-  - tmgmt.translator.file
-  - tmgmt.translator.local
   - tmgmt_memsource.settings
   - views.view.articles
   - views.view.bebbo_v2_apis
@@ -104,3 +102,5 @@ partial_list:
   - views.view.tmgmt_local_manage_translate_task
   - views.view.tmgmt_local_task_items
   - views.view.tmgmt_local_task_overview
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro

@@ -215,3 +215,7 @@ partial_list:
   - views.view.country_reports
   - views.view.keyword_term_count
   - views.view.tmgmt_translation_all_job_items
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
