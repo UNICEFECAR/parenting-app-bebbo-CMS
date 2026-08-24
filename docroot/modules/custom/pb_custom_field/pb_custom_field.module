@@ -38,7 +38,7 @@ use Drupal\taxonomy\TermForm;
  *   Array of target role machine names.
  */
 function _pb_custom_field_get_target_roles() {
-  return ['editor', 'se', 'sme', 'reviewer'];
+  return ['editor', 'se', 'sme', 'reviewer', 'translator'];
 }
 
 /**

@@ -334,7 +334,7 @@ These replace the reverse `group_relationship` relationship on the user listings
 
 ### Helper Functions
 
-- `_pb_custom_field_get_target_roles()` → `['editor', 'se', 'sme', 'reviewer']`
+- `_pb_custom_field_get_target_roles()` → `['editor', 'se', 'sme', 'reviewer', 'translator']`
 - `_pb_custom_field_get_trusted_roles()` → `['editor', 'se', 'sme']`
 - `_pb_custom_field_get_user_groups_cached()` — Group memberships with 5min TTL cache
 - `_pb_custom_field_is_multi_country_user()` — Checks multiple group memberships
