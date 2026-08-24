@@ -1,116 +1,151 @@
 links:
-  07634636-74b5-4e48-8e0a-0c6c14e6e719:
-    title: Add Users
+  819297d2-c5d6-4915-9e17-4c881f438abd:
+    title: 'Dashboard'
     description: ''
-    uri: internal:/admin/people/create
-    options: {  }
-    weight: -49
-    expanded: false
-    enabled: true
-    parent: menu_link_content:c659125b-835a-4622-847b-f5ba2bba7f4f
-    langcode: en
-    show_role:
-    - administrator
-    hide_role: {  }
-  124e8726-a1d3-493e-a24f-7fb2a434f3be:
-    title: Keywords linked to content
-    description: ''
-    uri: internal:/keyword-link-to-content
-    options: {  }
-    weight: -46
-    expanded: false
-    enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    - reviewer
-    - se
-    hide_role: {  }
-  1957d201-3fc5-4b1c-a9dd-03b0f5f89f79:
-    title: Force Update Config
-    description: ''
-    uri: internal:/admin/config/parent-buddy/forcefull-update-check
-    options: {  }
-    weight: 0
-    expanded: false
-    enabled: true
-    parent: menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    hide_role: {  }
-  283a6bbe-7ab6-446f-97bc-ede852ba6338:
-    title: Media List
-    description: ''
-    uri: internal:/admin/content/media
+    uri: 'internal:/dashboard'
     options: {  }
     weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661
+    parent: ''
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - sme
+      - translator
     hide_role: {  }
-  2f932b25-2b85-4721-bc41-dba801403ba8:
-    title: Import Taxonomy
+  66da6c66-6252-497a-b0d8-53ed20212dc7:
+    title: 'Manage Content'
     description: ''
-    uri: internal:/admin/structure/feeds
+    uri: 'internal:/global-content-list'
     options: {  }
-    weight: -36
+    weight: -49
     expanded: false
     enabled: true
     parent: ''
     langcode: en
     show_role:
-    - administrator
-    - global_admin
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - sme
+      - translator
     hide_role: {  }
-  3474b254-edee-4422-a443-3eacff8ac212:
-    title: Taxonomy Export - Standard Deviation
+  51afa768-e69e-4e9e-8c3a-25187410c2bf:
+    title: 'Country Content'
     description: ''
-    uri: internal:/taxonomy-export-standard-deviation/en
+    uri: 'internal:/country-content-list'
     options: {  }
-    weight: -44
+    weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
     langcode: en
     show_role:
-    - administrator
-    - editor
-    - global_admin
-    - reviewer
-    - se
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - sme
+      - translator
     hide_role: {  }
-  3c7e267a-6c10-4efd-8654-41d657c1ecf6:
-    title: Manage Reports
+  b4b73541-f9d7-4ca7-acc0-855c95556a4a:
+    title: 'Global Content'
     description: ''
-    uri: route:<nolink>
+    uri: 'internal:/global-content-list'
     options: {  }
-    weight: -39
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    langcode: en
+    show_role:
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - sme
+      - translator
+    hide_role: {  }
+  8bd8e166-b0b5-4070-8004-705946477f28:
+    title: 'Add Content'
+    description: ''
+    uri: 'internal:/node/add'
+    options: {  }
+    weight: -48
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    langcode: en
+    show_role:
+      - administrator
+      - editor
+      - global_admin
+      - se
+      - sme
+      - translator
+    hide_role: {  }
+  65004a8e-ba1f-43f8-a108-37d55d29aba7:
+    title: 'Manage Translations'
+    description: ''
+    uri: 'internal:/admin/tmgmt'
+    options: {  }
+    weight: -48
     expanded: false
     enabled: true
     parent: ''
     langcode: en
     show_role:
-    - administrator
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - sme
+      - administrator
+      - editor
+      - global_admin
+      - se
+      - sme
+      - translator
     hide_role: {  }
-  43d7c694-1ab4-446e-bd39-76009d2ed5dc:
-    title: Manage Country
+  61da3e38-12b5-4b43-928f-c929c9ebb814:
+    title: 'Manage Translation Jobs'
     description: ''
-    uri: internal:/admin/group
+    uri: 'internal:/admin/tmgmt/job_items'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:65004a8e-ba1f-43f8-a108-37d55d29aba7'
+    langcode: en
+    show_role:
+      - administrator
+      - editor
+      - se
+      - sme
+      - translator
+    hide_role: {  }
+  90295e25-b01c-4fab-ad3a-0977d50469b5:
+    title: 'Add Translation Job'
+    description: ''
+    uri: 'internal:/admin/tmgmt/sources'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:65004a8e-ba1f-43f8-a108-37d55d29aba7'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  bcf35cf7-73e2-4ea4-a568-dea9bee18661:
+    title: 'Manage Media'
+    description: ''
+    uri: 'internal:/admin/content/media'
     options: {  }
     weight: -47
     expanded: false
@@ -118,43 +153,162 @@ links:
     parent: ''
     langcode: en
     show_role:
-    - global_admin
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - translator
     hide_role: {  }
-  51afa768-e69e-4e9e-8c3a-25187410c2bf:
-    title: Country Content
+  6cff2259-4049-4ff5-a797-b9a4071156d0:
+    title: 'Add Media'
     description: ''
-    uri: internal:/country-content-list
+    uri: 'internal:/media/add'
     options: {  }
-    weight: 0
+    weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7
+    parent: 'menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661'
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - sme
-    - translator
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
     hide_role: {  }
-  51ef2a66-2df6-4dd5-baf4-a5987010ba30:
-    title: Add Language
+  6ffc3c54-07d8-4788-8e51-663b6737d818:
+    title: 'View Taxonomies'
     description: ''
-    uri: internal:/admin/config/regional/language/add
+    uri: 'internal:/admin/structure/taxonomy'
+    options: {  }
+    weight: -46
+    expanded: false
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+      - translator
+    hide_role: {  }
+  b9e8641b-cfa1-46b8-ab4e-343a76776709:
+    title: 'Copy keywords/related articles to translations'
+    description: ''
+    uri: 'internal:/admin/content/copy-translated-field'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+      - translator
+    hide_role: {  }
+  2f932b25-2b85-4721-bc41-dba801403ba8:
+    title: 'View taxonomy feed types'
+    description: ''
+    uri: 'internal:/admin/structure/feeds'
+    options: {  }
+    weight: -45
+    expanded: false
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  cc58df9c-c066-4e2e-b4a5-b6fd1ba44c7e:
+    title: 'Add taxonomy feed types'
+    description: ''
+    uri: 'internal:/admin/structure/feeds/add'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  6195c940-bdcf-483a-9bf2-ecbd96b99ddd:
+    title: 'View taxonomy feeds'
+    description: ''
+    uri: 'internal:/admin/content/feed'
     options: {  }
     weight: -49
     expanded: false
     enabled: true
-    parent: menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f
+    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - global_admin
     hide_role: {  }
-  561521ca-3ac0-481f-ba4e-a31239456a45:
-    title: Country Users
+  abda3924-e3ef-42b7-b4a1-25c2375cbcd1:
+    title: 'Add taxonomy feed'
     description: ''
-    uri: internal:/country-users
+    uri: 'internal:/feed/add'
+    options: {  }
+    weight: -48
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  43d7c694-1ab4-446e-bd39-76009d2ed5dc:
+    title: 'Manage Country'
+    description: ''
+    uri: 'internal:/admin/group'
+    options: {  }
+    weight: -44
+    expanded: false
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  926c5da5-45a7-4ab5-9031-a165f5fd6dce:
+    title: 'Country List'
+    description: ''
+    uri: 'internal:/admin/group'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  71693b5d-55eb-4847-ab62-74f1d6dde7c8:
+    title: 'Add Country'
+    description: ''
+    uri: 'internal:/group/add/country'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  e4fbbe06-dedb-4497-81c0-42ed48a7389f:
+    title: 'Manage Language'
+    description: ''
+    uri: 'internal:/admin/config/regional/language/add'
     options: {  }
     weight: -43
     expanded: false
@@ -162,178 +316,71 @@ links:
     parent: ''
     langcode: en
     show_role:
-    - reviewer
-    hide_role: {  }
-  5c33f0c2-a86c-4e11-b7cc-7ed35703795f:
-    title: Keyword Not linked to content
-    description: ''
-    uri: internal:/keyword-notlink-to-content
-    options: {  }
-    weight: -47
-    expanded: false
-    enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    - reviewer
-    - se
-    hide_role: {  }
-  6195c940-bdcf-483a-9bf2-ecbd96b99ddd:
-    title: Add Feed
-    description: ''
-    uri: internal:/admin/content/feed
-    options: {  }
-    weight: 2
-    expanded: false
-    enabled: true
-    parent: menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    hide_role: {  }
-  61da3e38-12b5-4b43-928f-c929c9ebb814:
-    title: Manage Translation Jobs
-    description: ''
-    uri: internal:/admin/tmgmt/job_items
-    options: {  }
-    weight: -50
-    expanded: false
-    enabled: true
-    parent: menu_link_content:65004a8e-ba1f-43f8-a108-37d55d29aba7
-    langcode: en
-    show_role:
-    - editor
-    - se
-    - translator
+      - administrator
+      - global_admin
     hide_role: {  }
   61e227a4-33cf-47c5-8ec6-ac318d970c63:
-    title: Language List
+    title: 'Language List'
     description: ''
-    uri: internal:/admin/config/regional/language
+    uri: 'internal:/admin/config/regional/language'
     options: {  }
     weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f
+    parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - global_admin
     hide_role: {  }
-  65004a8e-ba1f-43f8-a108-37d55d29aba7:
-    title: ' Manage Translations'
+  51ef2a66-2df6-4dd5-baf4-a5987010ba30:
+    title: 'Add Language'
     description: ''
-    uri: internal:/admin/tmgmt
+    uri: 'internal:/admin/config/regional/language/add'
     options: {  }
     weight: -49
     expanded: false
     enabled: true
-    parent: ''
+    parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - se
-    - translator
+      - administrator
+      - global_admin
     hide_role: {  }
-  66da6c66-6252-497a-b0d8-53ed20212dc7:
-    title: Manage Content
+  07634636-74b5-4e48-8e0a-0c6c14e6e719:
+    title: 'Add user'
     description: ''
-    uri: internal:/global-content-list
+    uri: 'internal:/admin/people/create'
     options: {  }
-    weight: -50
+    weight: -42
     expanded: false
     enabled: true
     parent: ''
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - sme
-    - translator
+      - administrator
+      - global_admin
+      - reviewer
+      - se
     hide_role: {  }
-  6cff2259-4049-4ff5-a797-b9a4071156d0:
-    title: Add Media
+  ea19dbd1-9f2e-4f1b-abe2-ed2e619cf43b:
+    title: 'User List'
     description: ''
-    uri: internal:/media/add
+    uri: 'internal:/users'
     options: {  }
-    weight: -49
-    expanded: false
-    enabled: true
-    parent: menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661
-    langcode: en
-    show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    hide_role: {  }
-  6ffc3c54-07d8-4788-8e51-663b6737d818:
-    title: Manage Taxonomies
-    description: ''
-    uri: internal:/admin/structure/taxonomy
-    options: {  }
-    weight: -48
+    weight: -41
     expanded: false
     enabled: true
     parent: ''
     langcode: en
     show_role:
-    - global_admin
-    - translator
+      - administrator
+      - global_admin
     hide_role: {  }
-  71693b5d-55eb-4847-ab62-74f1d6dde7c8:
-    title: Add Country
+  3c7e267a-6c10-4efd-8654-41d657c1ecf6:
+    title: 'Manage Reports'
     description: ''
-    uri: internal:/group/add/country
-    options: {  }
-    weight: -48
-    expanded: false
-    enabled: true
-    parent: menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc
-    langcode: en
-    show_role:
-    - administrator
-    hide_role: {  }
-  73e31053-b3fe-4133-9a76-ba343afa462b:
-    title: Redirect Management
-    description: ''
-    uri: internal:/admin/config/parent-buddy/redirect-management
-    options: {  }
-    weight: -35
-    expanded: false
-    enabled: true
-    parent: ''
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    - reviewer
-    hide_role: {  }
-  74f2eb98-339f-434f-9f56-a2b5fa1f6d6e:
-    title: Taxonomy Export
-    description: ''
-    uri: internal:/taxonomy-export
-    options: {  }
-    weight: -45
-    expanded: false
-    enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    - reviewer
-    - se
-    hide_role: {  }
-  819297d2-c5d6-4915-9e17-4c881f438abd:
-    title: Dashboard
-    description: ''
-    uri: internal:/dashboard
+    uri: 'route:<nolink>'
     options: {  }
     weight: -40
     expanded: false
@@ -341,242 +388,176 @@ links:
     parent: ''
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - sme
-    - translator
-    hide_role: {  }
-  89b69e27-2acb-4528-aa42-134d864d2c4f:
-    title: Manage Force Update
-    description: ''
-    uri: route:<nolink>
-    options: {  }
-    weight: -37
-    expanded: false
-    enabled: true
-    parent: ''
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    hide_role: {  }
-  8bd8e166-b0b5-4070-8004-705946477f28:
-    title: Add Content
-    description: ''
-    uri: internal:/node/add
-    options: {  }
-    weight: -47
-    expanded: false
-    enabled: true
-    parent: menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7
-    langcode: en
-    show_role:
-    - editor
-    - global_admin
-    - se
-    hide_role: {  }
-  926c5da5-45a7-4ab5-9031-a165f5fd6dce:
-    title: Country List
-    description: ''
-    uri: internal:/admin/group
-    options: {  }
-    weight: -49
-    expanded: false
-    enabled: true
-    parent: menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc
-    langcode: en
-    show_role:
-    - global_admin
-    hide_role: {  }
-  b46b5a91-fcfc-40da-9349-25ed38411078:
-    title: Content engagement report
-    description: ''
-    uri: internal:/admin/config/content-analytics/report
-    options: {  }
-    weight: -49
-    expanded: false
-    enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
-    langcode: en
-    show_role:
-    - administrator
-    - editor
-    - global_admin
-    - se
-    - sme
-    hide_role: {  }
-  b4b73541-f9d7-4ca7-acc0-855c95556a4a:
-    title: Global Content
-    description: ''
-    uri: internal:/global-content-list
-    options: {  }
-    weight: 0
-    expanded: false
-    enabled: true
-    parent: menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7
-    langcode: en
-    show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - sme
-    - translator
+      - administrator
+      - editor
+      - global_admin
+      - reviewer
+      - se
     hide_role: {  }
   b79316ca-8c26-42f0-abdf-8f054c80e4ce:
-    title: Country Reports
+    title: 'Country Reports'
     description: ''
-    uri: internal:/country-reports
+    uri: 'internal:/country-reports'
     options: {  }
     weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-    - administrator
-    - editor
-    - global_admin
-    - reviewer
-    - se
+      - administrator
+      - authenticated
+      - editor
+      - global_admin
+      - se
+      - sme
     hide_role: {  }
-  b9e8641b-cfa1-46b8-ab4e-343a76776709:
-    title: Copy keywords/related articles to translations
+  b46b5a91-fcfc-40da-9349-25ed38411078:
+    title: 'Content engagement report'
     description: ''
-    uri: internal:/admin/content/copy-translated-field
+    uri: 'internal:/admin/config/content-analytics/report'
     options: {  }
-    weight: 0
+    weight: -49
     expanded: false
     enabled: true
-    parent: menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - authenticated
+      - editor
+      - global_admin
+      - se
+      - sme
     hide_role: {  }
-  bcf35cf7-73e2-4ea4-a568-dea9bee18661:
-    title: Manage Media
+  d8eb3afe-9e45-437f-923f-1755ff030df8:
+    title: 'Users Reports'
     description: ''
-    uri: internal:/admin/content/media
+    uri: 'internal:/users-reports'
     options: {  }
-    weight: -44
+    weight: -48
     expanded: false
     enabled: true
-    parent: ''
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-    - editor
-    - global_admin
-    - reviewer
-    - se
-    - translator
+      - administrator
+      - global_admin
+      - se
     hide_role: {  }
-  c659125b-835a-4622-847b-f5ba2bba7f4f:
-    title: Manage Users
+  74f2eb98-339f-434f-9f56-a2b5fa1f6d6e:
+    title: 'Taxonomy Export'
     description: ''
-    uri: internal:/users
-    options: {  }
-    weight: -46
-    expanded: false
-    enabled: true
-    parent: ''
-    langcode: en
-    show_role:
-    - administrator
-    hide_role: {  }
-  ce0c550b-57be-4bb5-b308-c9f584f143f6:
-    title: View strings
-    description: ''
-    uri: internal:/admin/structure/taxonomy/manage/strings/overview
+    uri: 'internal:/taxonomy-export'
     options: {  }
     weight: -47
     expanded: false
     enabled: true
-    parent: menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-    - global_admin
-    - translator
+      - administrator
+      - editor
+      - se
     hide_role: {  }
-  d41a7dc9-f812-4d71-97e5-d68aa7caff46:
-    title: Force Update List
+  124e8726-a1d3-493e-a24f-7fb2a434f3be:
+    title: 'Keywords linked to content'
     description: ''
-    uri: internal:/force-update-check
+    uri: 'internal:/keyword-link-to-content'
     options: {  }
-    weight: 0
+    weight: -46
     expanded: false
     enabled: true
-    parent: menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-    - administrator
-    - global_admin
+      - administrator
+      - editor
+      - se
     hide_role: {  }
-  d8eb3afe-9e45-437f-923f-1755ff030df8:
-    title: Users Reports
+  5c33f0c2-a86c-4e11-b7cc-7ed35703795f:
+    title: 'Keywords not linked to content'
     description: ''
-    uri: internal:/users-reports
-    options: {  }
-    weight: -48
-    expanded: false
-    enabled: true
-    parent: menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    hide_role: {  }
-  dda3433c-2fd2-4880-bdc6-9c0bd8f90d47:
-    title: Feeds Type
-    description: ''
-    uri: internal:/admin/structure/feeds
-    options: {  }
-    weight: 1
-    expanded: false
-    enabled: true
-    parent: menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8
-    langcode: en
-    show_role:
-    - administrator
-    - global_admin
-    hide_role: {  }
-  e4fbbe06-dedb-4497-81c0-42ed48a7389f:
-    title: Manage Language
-    description: ''
-    uri: internal:/admin/config/regional/language/add
+    uri: 'internal:/keyword-notlink-to-content'
     options: {  }
     weight: -45
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
+    langcode: en
+    show_role:
+      - administrator
+      - editor
+      - se
+    hide_role: {  }
+  89b69e27-2acb-4528-aa42-134d864d2c4f:
+    title: 'Manage Force Update'
+    description: ''
+    uri: 'route:<nolink>'
+    options: {  }
+    weight: -39
     expanded: false
     enabled: true
     parent: ''
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - global_admin
     hide_role: {  }
-  ea19dbd1-9f2e-4f1b-abe2-ed2e619cf43b:
-    title: User List
+  1957d201-3fc5-4b1c-a9dd-03b0f5f89f79:
+    title: 'Force Update Config'
     description: ''
-    uri: internal:/users
+    uri: 'internal:/admin/config/parent-buddy/forcefull-update-check'
     options: {  }
-    weight: -48
+    weight: -50
     expanded: false
     enabled: true
-    parent: menu_link_content:c659125b-835a-4622-847b-f5ba2bba7f4f
+    parent: 'menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f'
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - global_admin
     hide_role: {  }
-  fdd0d2a7-6ae1-471a-8efc-4001327a4b59:
-    title: Individual string translation
+  d41a7dc9-f812-4d71-97e5-d68aa7caff46:
+    title: 'Force Update List'
     description: ''
-    uri: internal:/admin/structure/taxonomy/manage/strings/strings-list
+    uri: 'internal:/force-update-check'
     options: {  }
-    weight: -46
+    weight: -49
     expanded: false
     enabled: true
-    parent: menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818
+    parent: 'menu_link_content:89b69e27-2acb-4528-aa42-134d864d2c4f'
     langcode: en
     show_role:
-    - administrator
+      - administrator
+      - global_admin
+    hide_role: {  }
+  73e31053-b3fe-4133-9a76-ba343afa462b:
+    title: 'Redirect Management'
+    description: ''
+    uri: 'internal:/admin/config/parent-buddy/redirect-management'
+    options: {  }
+    weight: -38
+    expanded: false
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+      - reviewer
+    hide_role: {  }
+  f07283dc-3ad9-4a7d-8f05-8efad3de4ddf:
+    title: 'Google Analytics'
+    description: ''
+    uri: 'internal:/admin/config/system/google-analytics'
+    options: {  }
+    weight: -37
+    expanded: false
+    enabled: false
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
     hide_role: {  }

@@ -1180,7 +1180,7 @@ Key-level ignores (only the named key is environment-managed; the rest of the en
 ### Custom-module configs in sync
 - `bebbo_custom_general.adminsettings` — Master language `en,sr,ru,sq`
 - `bebbo_custom_general.app_store_redirect` — App store / Google Play URLs both empty
-- `bebbo_custom_general.editorial_menu` — canonical editorial menu, 39 links keyed by UUID with title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Shared by all 7 sites and applied to each site's menu links by `drush bebbo:menu-sync` (menu links are content entities, so `cim` alone does not apply them)
+- `bebbo_custom_general.editorial_menu` — canonical editorial menu, 36 links keyed by UUID with title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Shared by all 7 sites and applied to each site's menu links by `drush bebbo:menu-sync` (menu links are content entities, so `cim` alone does not apply them)
 
 ---
 

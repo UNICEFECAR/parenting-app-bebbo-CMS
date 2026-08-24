@@ -1265,7 +1265,7 @@ Example — `GET /api/strings/en`:
 
 > The `status` and `changed` shapes are a consequence of the `data_field` row plugin: unlike every other endpoint, no serializer transform normalises them. Treat them as raw Views output.
 
-The vocabulary is editable at **Manage Taxonomies → Strings**; see the editorial menu entries *View strings* (`/admin/structure/taxonomy/manage/strings/overview`) and *Individual string translation* (`/admin/structure/taxonomy/manage/strings/strings-list`, provided by the `pb_strings` module).
+The vocabulary is editable at `/admin/structure/taxonomy/manage/strings/overview`, with per-string translation at `/admin/structure/taxonomy/manage/strings/strings-list` (provided by the `pb_strings` module). Neither page has an editorial-menu entry.
 
 ---
 
