@@ -5,6 +5,10 @@
  * Hook implementations for the Bebbo Serializer module.
  */
 
+use Drupal\bebbo_serializer\Cache\ApiCacheTags;
+use Drupal\bebbo_serializer\Cache\IgnoredChangeFields;
+use Drupal\bebbo_serializer\Cache\RowFragmentCache;
+use Drupal\Core\Cache\Cache;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
@@ -13,17 +17,158 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\Element\Datetime;
 use Drupal\views\Plugin\views\query\Sql;
 
 /**
- * Implements hook_cron().
+ * Implements hook_node_update().
  *
- * Pre-renders the large article list endpoints into the fragment cache so a
- * visitor never triggers the cold render that exceeds the gateway timeout.
- * Discovered and scheduled as its own isolated job by ultimate_cron.
+ * Expires the node's cached row fragments, per language where possible.
+ *
+ * Core tags a node's caches node:NID with no language in it, so without this
+ * a translator saving one language would discard that node's fragments in all
+ * of them — on the default site, 28 rows thrown away to rebuild one. The
+ * fragments are tagged by RowFragmentCache instead, and this decides which of
+ * those tags to fire:
+ *
+ * - an untranslatable field changed → every language, since the value is
+ *   shared and each translation now renders stale;
+ * - otherwise → only the translations whose stored values actually differ.
+ *
+ * The response-level tags are untouched: node:NID still bubbles out of
+ * RowFragmentCache, so page and CDN invalidation behave exactly as before.
  */
-function bebbo_serializer_cron(): void {
-  \Drupal::service('bebbo_serializer.article_fragment_warmer')->warm();
+function bebbo_serializer_node_update(NodeInterface $node): void {
+  $original = $node->getOriginal();
+  if ($original === NULL) {
+    return;
+  }
+
+  $nid = (int) $node->id();
+
+  $languages = array_keys($node->getTranslationLanguages());
+
+  // A translation removed outright leaves a fragment behind with nothing to
+  // compare against, and a shared value changing makes every translation
+  // render differently. Both cases expire the node everywhere.
+  if (_bebbo_serializer_untranslatable_changed($node, $original)
+    || count($original->getTranslationLanguages()) > count($languages)) {
+    Cache::invalidateTags(array_merge(
+      [RowFragmentCache::anyLanguageTag($nid)],
+      _bebbo_serializer_list_tags($node, array_keys($original->getTranslationLanguages() + $node->getTranslationLanguages())),
+    ));
+    return;
+  }
+
+  $changed = [];
+  foreach ($languages as $langcode) {
+    if (!$original->hasTranslation($langcode)) {
+      // A translation that did not exist before cannot have a stale fragment,
+      // but the row now appears in that language's listing.
+      $changed[] = $langcode;
+      continue;
+    }
+    if (_bebbo_serializer_translation_changed($node->getTranslation($langcode), $original->getTranslation($langcode))) {
+      $changed[] = $langcode;
+    }
+  }
+
+  if (!$changed) {
+    return;
+  }
+
+  $tags = _bebbo_serializer_list_tags($node, $changed);
+  foreach ($changed as $langcode) {
+    $tags[] = RowFragmentCache::languageTag($nid, $langcode);
+  }
+  Cache::invalidateTags($tags);
+}
+
+/**
+ * Implements hook_node_insert().
+ *
+ * A new node has no fragments yet, but every listing it belongs to is now
+ * missing a row.
+ */
+function bebbo_serializer_node_insert(NodeInterface $node): void {
+  $tags = _bebbo_serializer_list_tags($node, array_keys($node->getTranslationLanguages()));
+  if ($tags) {
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Listing tags for one node in the given languages.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node whose bundle decides which listings are affected.
+ * @param string[] $langcodes
+ *   The languages whose listings must be expired.
+ *
+ * @return string[]
+ *   Cache tags, one per language.
+ */
+function _bebbo_serializer_list_tags(NodeInterface $node, array $langcodes): array {
+  $bundle = $node->bundle();
+
+  return array_values(array_map(
+    static fn(string $langcode): string => ApiCacheTags::listTag($bundle, $langcode),
+    array_unique($langcodes),
+  ));
+}
+
+/**
+ * Whether any untranslatable field differs between two node revisions.
+ *
+ * @param \Drupal\node\NodeInterface $node
+ *   The node as saved.
+ * @param \Drupal\node\NodeInterface $original
+ *   The node as it was before the save.
+ *
+ * @return bool
+ *   TRUE when a value shared by all translations changed.
+ */
+function _bebbo_serializer_untranslatable_changed(NodeInterface $node, NodeInterface $original): bool {
+  foreach ($node->getFieldDefinitions() as $name => $definition) {
+    if ($definition->isTranslatable() || $definition->isComputed()
+      || in_array($name, IgnoredChangeFields::UNTRANSLATABLE, TRUE)) {
+      continue;
+    }
+    if (!$original->hasField($name)) {
+      return TRUE;
+    }
+    if ($node->get($name)->getValue() != $original->get($name)->getValue()) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Whether a single translation's translatable values changed.
+ *
+ * @param \Drupal\node\NodeInterface $translation
+ *   The translation as saved.
+ * @param \Drupal\node\NodeInterface $original
+ *   The same translation before the save.
+ *
+ * @return bool
+ *   TRUE when this language's rendered row can no longer be trusted.
+ */
+function _bebbo_serializer_translation_changed(NodeInterface $translation, NodeInterface $original): bool {
+  foreach ($translation->getFieldDefinitions() as $name => $definition) {
+    if (!$definition->isTranslatable() || $definition->isComputed()
+      || in_array($name, IgnoredChangeFields::TRANSLATABLE, TRUE)) {
+      continue;
+    }
+    if (!$original->hasField($name)) {
+      return TRUE;
+    }
+    if ($translation->get($name)->getValue() != $original->get($name)->getValue()) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -34,6 +179,12 @@ function bebbo_serializer_cron(): void {
  * but direct Quiz deletion would orphan the referenced question nodes.
  */
 function bebbo_serializer_node_predelete(NodeInterface $node): void {
+  // The row is gone in every language, so no per-language reasoning applies.
+  Cache::invalidateTags(array_merge(
+    [RowFragmentCache::anyLanguageTag((int) $node->id())],
+    _bebbo_serializer_list_tags($node, array_keys($node->getTranslationLanguages())),
+  ));
+
   if ($node->bundle() !== 'quiz') {
     return;
   }
@@ -141,8 +292,9 @@ function bebbo_serializer_node_presave(NodeInterface $node): void {
     }
   }
 
-  // Only process published nodes with a body field.
-  if (!$node->isPublished() || !$node->hasField('body')) {
+  // Process every moderation state, not only published nodes: the reports
+  // export reads field_body_rendered, so drafts need it populated too.
+  if (!$node->hasField('body')) {
     return;
   }
 
@@ -152,7 +304,11 @@ function bebbo_serializer_node_presave(NodeInterface $node): void {
     $original_body = $node->original->get('body')->value ?? '';
   }
 
-  _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
+  // Embedded images are only consumed by the API, which serves published
+  // content, so there is nothing to gain from extracting them on drafts.
+  if ($node->isPublished()) {
+    _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
+  }
   _bebbo_serializer_populate_body_rendered($node, $body, $original_body);
 }
 
@@ -196,6 +352,11 @@ function _bebbo_serializer_populate_embedded_images(NodeInterface $node, string 
   /** @var \Drupal\bebbo_serializer\Service\BodyImageProcessor $processor */
   $processor = \Drupal::service('bebbo_serializer.body_image_processor');
   $urls = $processor->extractImageUrls($body);
+
+  // field_embedded_images is a 255 character string field. Legacy bodies still
+  // carry signed S3 URLs well over that, and storing one aborts the node save
+  // with an SQL truncation error, so drop them instead.
+  $urls = array_values(array_filter($urls, static fn(string $url): bool => mb_strlen($url) <= 255));
 
   // Only update field if URLs actually changed.
   if ($urls === $existing) {
@@ -311,6 +472,17 @@ function bebbo_serializer_form_alter(array &$form, FormStateInterface $form_stat
     $form['#attached']['library'][] = 'bebbo_serializer/course_module_count';
     $form['#attached']['library'][] = 'bebbo_serializer/course_expiry';
     $form['#validate'][] = '_bebbo_serializer_course_expiry_validate';
+    $form['#validate'][] = '_bebbo_serializer_course_link_validate';
+
+    // Default an omitted expiry time to end of day. This has to happen in the
+    // value callback: by the time any validator runs, core has already failed
+    // to build a date from "Y-m-d H:i:s" against a date-only string and left
+    // the raw array in place. course_expiry.js goes further and rewrites the
+    // time whenever the date changes; this only covers the empty case, which
+    // is all a submission can tell us about.
+    if (isset($form['field_course_expiry']['widget'][0]['value'])) {
+      $form['field_course_expiry']['widget'][0]['value']['#value_callback'] = '_bebbo_serializer_course_expiry_value';
+    }
   }
 
   // Pregnancy weekly overview: restrict.
@@ -469,11 +641,43 @@ function _bebbo_serializer_quiz_question_count_validate(array &$form, FormStateI
 }
 
 /**
+ * Value callback for the course expiry element.
+ *
+ * Fills in an end-of-day time when the editor supplies a date on its own, so
+ * "expires on the 10th" means the whole of the 10th rather than midnight at
+ * its start. Runs ahead of validation, so the defaulted value is what gets
+ * validated and saved.
+ *
+ * @param array $element
+ *   The datetime form element.
+ * @param mixed $input
+ *   Submitted input, or FALSE when the form is being built.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ *
+ * @return array
+ *   The datetime element value, as built by the core value callback.
+ */
+function _bebbo_serializer_course_expiry_value(array &$element, $input, FormStateInterface $form_state): array {
+  if (is_array($input) && !empty($input['date']) && empty($input['time'])) {
+    $input['time'] = '23:59:59';
+  }
+
+  return Datetime::valueCallback($element, $input, $form_state);
+}
+
+/**
  * Validates that the course expiry date is in the future.
  */
 function _bebbo_serializer_course_expiry_validate(array &$form, FormStateInterface $form_state): void {
   $expiry = $form_state->getValue(['field_course_expiry', 0, 'value']);
   if (empty($expiry)) {
+    return;
+  }
+
+  // A date the editor never completed stays an array here; core has already
+  // flagged it, so there is nothing useful left to check.
+  if (is_array($expiry)) {
     return;
   }
 
@@ -484,6 +688,26 @@ function _bebbo_serializer_course_expiry_validate(array &$form, FormStateInterfa
     $form_state->setErrorByName(
       'field_course_expiry',
       t('Course expiry date must be in the future.')
+    );
+  }
+}
+
+/**
+ * Validates that the course link is a valid URL.
+ */
+function _bebbo_serializer_course_link_validate(array &$form, FormStateInterface $form_state): void {
+  $link = $form_state->getValue(['field_course_link', 0, 'value']);
+  if (empty($link)) {
+    return;
+  }
+
+  // FILTER_VALIDATE_URL alone accepts any scheme with an authority, ftp://
+  // included. App users can only follow a web link, so restrict it.
+  $scheme = strtolower((string) parse_url($link, PHP_URL_SCHEME));
+  if (!filter_var($link, FILTER_VALIDATE_URL) || !in_array($scheme, ['http', 'https'], TRUE)) {
+    $form_state->setErrorByName(
+      'field_course_link',
+      t('Please enter a valid URL for the course link, starting with http:// or https:// (e.g. https://example.com).')
     );
   }
 }

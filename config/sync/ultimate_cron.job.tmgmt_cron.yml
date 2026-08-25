@@ -11,6 +11,9 @@ module: tmgmt
 callback: 'tmgmt#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '*/30+@ * * * *'
 launcher:
   id: serial
 logger:

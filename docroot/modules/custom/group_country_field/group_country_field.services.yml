@@ -1,0 +1,5 @@
+services:
+  group_country_field.route_subscriber:
+    class: Drupal\group_country_field\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

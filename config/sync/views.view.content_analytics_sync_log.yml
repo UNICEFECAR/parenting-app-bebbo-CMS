@@ -547,7 +547,7 @@ display:
         options:
           perm: 'manage content analytics sync'
       cache:
-        type: tag
+        type: none
         options: {  }
       empty: {  }
       sorts:

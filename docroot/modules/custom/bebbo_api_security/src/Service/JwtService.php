@@ -202,6 +202,29 @@ class JwtService {
   }
 
   /**
+   * Resolve the device a refresh token belongs to, without validating it.
+   *
+   * Intended for rate-limit keying only. Revoked and expired tokens are
+   * deliberately still resolved so replay attempts count against the same
+   * device budget instead of escaping the limit.
+   *
+   * @param string $raw_refresh_token
+   *   The refresh token as presented by the client.
+   *
+   * @return string|null
+   *   The owning device ID, or NULL if the token matches no stored row.
+   */
+  public function getDeviceIdForRefreshToken(string $raw_refresh_token): ?string {
+    $device_id = $this->database->select('bebbo_api_refresh_tokens', 'rt')
+      ->fields('rt', ['device_id'])
+      ->condition('rt.token_hash', hash('sha256', $raw_refresh_token))
+      ->execute()
+      ->fetchField();
+
+    return $device_id === FALSE ? NULL : (string) $device_id;
+  }
+
+  /**
    * Revoke all refresh tokens for a device.
    */
   public function revokeTokensForDevice(string $device_id): int {

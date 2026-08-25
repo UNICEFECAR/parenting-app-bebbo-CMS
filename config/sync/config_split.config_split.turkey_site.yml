@@ -153,6 +153,7 @@ complete_list:
   - core.entity_form_display.taxonomy_term.subcategory.default
   - core.entity_view_display.taxonomy_term.subcategory.default
   - workflows.workflow.group_workflow
+  - warmer.settings
 partial_list:
   - ai_translate.settings
   - block.block.languagedropdownswitcher
@@ -271,3 +272,9 @@ partial_list:
   - views.view.user_admin_people
   - views.view.users_list
   - views.view.bebbo_v2_apis
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

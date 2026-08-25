@@ -8,6 +8,19 @@ bebbo_custom_general.mobile_app_share_link_form:
   options:
     _admin_route: TRUE
 
+bebbo_custom_general.country_users:
+  path: '/country-users'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\CountryUsersController::redirectToCountry'
+    _title: 'Country Users'
+  requirements:
+    # The member list and group overview both run their own access checks; this
+    # route only resolves which of them to send the user to.
+    _user_is_logged_in: 'TRUE'
+  options:
+    _admin_route: TRUE
+    no_cache: TRUE
+
 bebbo_custom_general.pb_mobile:
   path: '/share/{param1}/{param2}/{param3}'
   defaults:

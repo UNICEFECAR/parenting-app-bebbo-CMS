@@ -282,6 +282,17 @@ class SecurityController extends ControllerBase {
       return $body;
     }
 
+    // Throttle per device. Tokens that match no device (garbage or forged)
+    // fall back to the client IP so they cannot be sprayed for free.
+    $config = $this->config('bebbo_api_security.settings');
+    $limit = (int) $config->get('refresh_rate_limit') ?: 30;
+    $device_id = $this->jwtService->getDeviceIdForRefreshToken($body['refresh_token']);
+    $identifier = $device_id ?? ($request->getClientIp() ?? '0.0.0.0');
+    $rate_error = $this->rateLimit($identifier, 'bebbo_refresh', $limit, 3600);
+    if ($rate_error) {
+      return $rate_error;
+    }
+
     $result = $this->jwtService->refreshTokens($body['refresh_token']);
     if (!$result) {
       return new JsonResponse([

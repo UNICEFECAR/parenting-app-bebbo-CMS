@@ -4,3 +4,5 @@ type: module
 package: custom
 module: pb_custom_form
 core_version_requirement: ^9.2 || ^10 || ^11
+dependencies:
+  - bebbo_custom_general:bebbo_custom_general

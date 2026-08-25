@@ -3,3 +3,7 @@ description: 'Common Bebbo utilities that have no dedicated module (mobile-JS sh
 type: module
 package: custom
 core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:views
+  - group:group
+  - menu_per_role:menu_per_role

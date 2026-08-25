@@ -8,6 +8,7 @@ use Drupal\bebbo_api_security\Controller\SecurityController;
 use Drupal\key\KeyInterface;
 use Drupal\key\KeyRepositoryInterface;
 use Drupal\KernelTests\KernelTestBase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -206,6 +207,112 @@ class SecurityControllerTest extends KernelTestBase {
     $this->assertNotEmpty($data['refresh_token']);
     // Rotation must issue a different refresh token.
     $this->assertNotEquals($verify_data['refresh_token'], $data['refresh_token']);
+  }
+
+  /**
+   * Tests that /refresh throttles at the configured refresh_rate_limit.
+   *
+   * @covers ::refresh
+   */
+  public function testRefreshRespectsConfiguredRateLimit(): void {
+    $this->config('bebbo_api_security.settings')
+      ->set('refresh_rate_limit', 1)
+      ->save();
+
+    $refresh_token = $this->provisionDevice('test-006');
+
+    // First call is within the limit of 1.
+    $response = $this->refreshWith($refresh_token);
+    $this->assertEquals(200, $response->getStatusCode());
+    $rotated = json_decode($response->getContent(), TRUE)['refresh_token'];
+
+    // Second call exceeds it, even though the rotated token is valid.
+    $response = $this->refreshWith($rotated);
+    $this->assertEquals(429, $response->getStatusCode());
+    $this->assertEquals(
+      'rate_limited',
+      json_decode($response->getContent(), TRUE)['error'],
+    );
+
+    // Raising the configured value moves the trip point: the same device is
+    // allowed through again without its flood record being cleared.
+    $this->config('bebbo_api_security.settings')
+      ->set('refresh_rate_limit', 5)
+      ->save();
+    $response = $this->refreshWith($rotated);
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+  /**
+   * Tests that an unknown refresh token is throttled by client IP.
+   *
+   * @covers ::refresh
+   */
+  public function testRefreshThrottlesUnknownTokensByIp(): void {
+    $this->config('bebbo_api_security.settings')
+      ->set('refresh_rate_limit', 1)
+      ->save();
+
+    // Unknown tokens resolve to no device, so the IP fallback must apply.
+    $this->assertEquals(401, $this->refreshWith('deadbeef')->getStatusCode());
+    $this->assertEquals(429, $this->refreshWith('cafebabe')->getStatusCode());
+  }
+
+  /**
+   * Run the sideloaded flow for a device and return its refresh token.
+   *
+   * @param string $device_id
+   *   Device identifier to register and verify.
+   *
+   * @return string
+   *   The issued refresh token.
+   */
+  private function provisionDevice(string $device_id): string {
+    $key = openssl_pkey_new([
+      'curve_name' => 'prime256v1',
+      'private_key_type' => OPENSSL_KEYTYPE_EC,
+    ]);
+    openssl_pkey_export($key, $private_pem);
+    $details = openssl_pkey_get_details($key);
+
+    $request = Request::create('/api/security/device/register', 'POST', [], [], [], [], json_encode([
+      'device_id' => $device_id,
+      'public_key' => $details['key'],
+    ]));
+    $reg_data = json_decode(
+      $this->getController()->deviceRegister($request)->getContent(),
+      TRUE,
+    );
+
+    openssl_sign(hex2bin($reg_data['challenge']), $signature, $private_pem, OPENSSL_ALGO_SHA256);
+
+    $request = Request::create('/api/security/device/verify', 'POST', [], [], [], [], json_encode([
+      'device_id' => $device_id,
+      'challenge' => $reg_data['challenge'],
+      'signature' => base64_encode($signature),
+    ]));
+    $verify_data = json_decode(
+      $this->getController()->deviceVerify($request)->getContent(),
+      TRUE,
+    );
+
+    return $verify_data['refresh_token'];
+  }
+
+  /**
+   * Call the refresh endpoint with the given token.
+   *
+   * @param string $refresh_token
+   *   Token to present.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The controller response.
+   */
+  private function refreshWith(string $refresh_token): JsonResponse {
+    $request = Request::create('/api/security/refresh', 'POST', [], [], [], [], json_encode([
+      'refresh_token' => $refresh_token,
+    ]));
+    return $this->getController()->refresh($request);
   }
 
   /**

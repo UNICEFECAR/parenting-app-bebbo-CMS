@@ -492,3 +492,9 @@ complete_list:
 partial_list:
   - ai_translate.settings
   - language.negotiation
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

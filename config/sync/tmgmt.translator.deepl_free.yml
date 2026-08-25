@@ -1,0 +1,25 @@
+uuid: 7a1c0e64-5b2f-4d81-9c33-0f6a2e5d1b46
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_deepl
+name: deepl_free
+label: 'DeepL API Free'
+description: 'DeepL API Free translator service.'
+auto_accept: false
+weight: -4
+plugin: deepl_free
+settings:
+  url: 'https://api-free.deepl.com/v2/translate'
+  url_usage: 'https://api-free.deepl.com/v2/usage'
+  auth_key: ''
+  tag_handling: '0'
+  non_splitting_tags: ''
+  splitting_tags: ''
+  ignore_tags: ''
+  split_sentences: '1'
+  preserve_formatting: 0
+  formality: default
+  outline_detection: 0
+remote_languages_mappings: {  }

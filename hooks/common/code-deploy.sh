@@ -36,20 +36,25 @@ if [ "$target_env" != 'prod' ]; then
     echo "=============================================="
     DRUSH="php -d memory_limit=1024M vendor/drush/drush/drush.php @$site.$target_env -l $site_name"
 
-    echo "[1/5] Cache rebuild..."
+    echo "[1/6] Cache rebuild..."
     $DRUSH cr
 
-    echo "[2/5] Database updates..."
+    echo "[2/6] Database updates..."
     $DRUSH updb -y
 
-    echo "[3/5] Config import (pass 1)..."
+    echo "[3/6] Config import (pass 1)..."
     $DRUSH cim -y
 
-    echo "[4/5] Cache rebuild + config import (pass 2)..."
+    echo "[4/6] Cache rebuild + config import (pass 2)..."
     $DRUSH cr
     $DRUSH cim -y
 
-    echo "[5/5] Final cache rebuild..."
+    # Menu links are content entities, so config import never applies menu
+    # changes. This runs after cim so it reads the freshly imported canon.
+    echo "[5/6] Editorial menu sync..."
+    $DRUSH bebbo:menu-sync
+
+    echo "[6/6] Final cache rebuild..."
     $DRUSH cr
 
     echo "--- Done: $site_name ---"

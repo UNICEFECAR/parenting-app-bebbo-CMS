@@ -873,7 +873,7 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
+        type: bebbo_api_tag
         options: {  }
       empty: {  }
       sorts:

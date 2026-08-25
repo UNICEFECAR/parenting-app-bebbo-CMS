@@ -22,6 +22,8 @@
     var checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.className = 'include-body-text-checkbox';
+    checkbox.style.width = '24px';
+    checkbox.style.height = '24px';
 
     var labelText = document.createTextNode('Include body text');
     label.appendChild(checkbox);

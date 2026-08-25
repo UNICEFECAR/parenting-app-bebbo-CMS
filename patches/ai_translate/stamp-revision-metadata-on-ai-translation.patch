@@ -1,0 +1,153 @@
+diff --git a/src/Controller/AiTranslateController.php b/src/Controller/AiTranslateController.php
+index d2489f5..c287963 100644
+--- a/src/Controller/AiTranslateController.php
++++ b/src/Controller/AiTranslateController.php
+@@ -11,6 +11,8 @@ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\ai_translate\TextExtractorInterface;
+ use Drupal\ai_translate\TextTranslatorInterface;
+ use Drupal\ai_translate\TranslationException;
++use Drupal\ai_translate\TranslationRevisionStampTrait;
++use Drupal\Component\Datetime\TimeInterface;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+ use Symfony\Component\HttpFoundation\RedirectResponse;
+ 
+@@ -20,6 +22,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
+ class AiTranslateController extends ControllerBase {
+ 
+   use DependencySerializationTrait;
++  use TranslationRevisionStampTrait;
++
++  /**
++   * Time service.
++   *
++   * @var \Drupal\Component\Datetime\TimeInterface
++   */
++  protected TimeInterface $time;
+ 
+   /**
+    * Text extractor service.
+@@ -44,6 +54,8 @@ class AiTranslateController extends ControllerBase {
+     $instance->languageManager = $container->get('language_manager');
+     $instance->textExtractor = $container->get('ai_translate.text_extractor');
+     $instance->aiTranslator = $container->get('ai_translate.text_translator');
++    $instance->time = $container->get('datetime.time');
++    $instance->currentUser = $container->get('current_user');
+     return $instance;
+   }
+ 
+@@ -200,6 +212,7 @@ class AiTranslateController extends ControllerBase {
+ 
+     $this->textExtractor->insertTextMetadata($translation,
+       $context['results']['processedTranslations'] ?? []);
++    $this->stampTranslationRevision($translation, $lang_to);
+     try {
+       $translation->save();
+       $this->messenger()->addStatus($this->t('Content translated successfully.'));
+diff --git a/src/Drush/AiTranslateCommands.php b/src/Drush/AiTranslateCommands.php
+index 564f387..6976baa 100644
+--- a/src/Drush/AiTranslateCommands.php
++++ b/src/Drush/AiTranslateCommands.php
+@@ -10,6 +10,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\ai_translate\TextExtractorInterface;
+ use Drupal\ai_translate\TextTranslatorInterface;
+ use Drupal\ai_translate\TranslationException;
++use Drupal\ai_translate\TranslationRevisionStampTrait;
++use Drupal\Component\Datetime\TimeInterface;
++use Drupal\Core\Session\AccountInterface;
+ use Drush\Attributes\Argument;
+ use Drush\Attributes\Command;
+ use Drush\Commands\DrushCommands;
+@@ -23,6 +26,21 @@ class AiTranslateCommands extends DrushCommands {
+   use LoggerChannelTrait;
+   use MessengerTrait;
+   use StringTranslationTrait;
++  use TranslationRevisionStampTrait;
++
++  /**
++   * Time service.
++   *
++   * @var \Drupal\Component\Datetime\TimeInterface
++   */
++  protected TimeInterface $time;
++
++  /**
++   * The current user.
++   *
++   * @var \Drupal\Core\Session\AccountInterface
++   */
++  protected AccountInterface $currentUser;
+ 
+   /**
+    * The language manager.
+@@ -61,6 +79,8 @@ class AiTranslateCommands extends DrushCommands {
+     $instance->entityTypeManager = $container->get('entity_type.manager');
+     $instance->textExtractor = $container->get('ai_translate.text_extractor');
+     $instance->textTranslator = $container->get('ai_translate.text_translator');
++    $instance->time = $container->get('datetime.time');
++    $instance->currentUser = $container->get('current_user');
+     return $instance;
+   }
+ 
+@@ -123,6 +143,7 @@ class AiTranslateCommands extends DrushCommands {
+       $translation = $entity->addTranslation($langTo, $entity->toArray());
+       $this->textExtractor->insertTextMetadata($translation,
+         $textMetadata);
++      $this->stampTranslationRevision($translation, $langTo);
+       try {
+         $entityStorage->save($translation);
+         $this->messenger()
+diff --git a/src/TranslationRevisionStampTrait.php b/src/TranslationRevisionStampTrait.php
+new file mode 100644
+index 0000000..ec57bd2
+--- /dev/null
++++ b/src/TranslationRevisionStampTrait.php
+@@ -0,0 +1,49 @@
++<?php
++
++namespace Drupal\ai_translate;
++
++use Drupal\Core\Entity\EntityChangedInterface;
++use Drupal\Core\Entity\EntityInterface;
++use Drupal\Core\Entity\RevisionLogInterface;
++
++/**
++ * Stamps revision metadata on AI generated translations.
++ *
++ * Core only sets the revision creation time, revision author, revision log
++ * message and changed time in entity forms, so a programmatic save copies
++ * those values from the source revision. Without this, an AI translation
++ * creates a revision that claims to have been made by the previous editor at
++ * the time of the previous edit, with no log entry - which also breaks any
++ * view sorted on the changed time.
++ *
++ * Host classes must provide $this->time, $this->currentUser,
++ * $this->languageManager and the t() method.
++ */
++trait TranslationRevisionStampTrait {
++
++  /**
++   * Records who created a translation revision, when, and why.
++   *
++   * @param \Drupal\Core\Entity\EntityInterface $translation
++   *   The unsaved translation.
++   * @param string $langcode
++   *   Language code of the translation.
++   */
++  protected function stampTranslationRevision(EntityInterface $translation, string $langcode): void {
++    $request_time = $this->time->getRequestTime();
++
++    if ($translation instanceof RevisionLogInterface) {
++      $translation->setRevisionCreationTime($request_time);
++      $translation->setRevisionUserId($this->currentUser->id());
++      $language = $this->languageManager->getLanguage($langcode);
++      $translation->setRevisionLogMessage((string) $this->t('AI translated to @language.', [
++        '@language' => $language ? $language->getName() : $langcode,
++      ]));
++    }
++
++    if ($translation instanceof EntityChangedInterface) {
++      $translation->setChangedTime($request_time);
++    }
++  }
++
++}

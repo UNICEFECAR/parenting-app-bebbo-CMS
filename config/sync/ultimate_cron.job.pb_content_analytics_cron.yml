@@ -11,6 +11,9 @@ module: pb_content_analytics
 callback: 'pb_content_analytics#cron'
 scheduler:
   id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
 launcher:
   id: serial
 logger:

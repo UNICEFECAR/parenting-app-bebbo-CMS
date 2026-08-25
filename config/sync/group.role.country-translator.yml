@@ -1,0 +1,18 @@
+uuid: 6249a62a-194e-4229-b1f6-83990c251f5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+id: country-translator
+label: Translator
+weight: 103
+admin: false
+scope: individual
+global_role: null
+group_type: country
+permissions:
+  - 'use group_workflow transition review_after_translation_to_draft'
+  - 'use group_workflow transition review_after_translation_to_review_after_translation'
+  - 'use group_workflow transition review_after_translation_to_sme_review'
+  - 'view latest version'

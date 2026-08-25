@@ -10,7 +10,3 @@ plugin: office365_oauth
 configuration:
   smtp_host: smtp.office365.com
   smtp_port: '587'
-  user: null
-  client_id: null
-  client_secret: null
-  tenant_id: null

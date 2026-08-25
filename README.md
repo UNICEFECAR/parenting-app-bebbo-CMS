@@ -147,43 +147,22 @@ ddev drush cr
 
 ## Feature Setup
 
-Some features rely on external services and need credentials configured before they work. Credentials are never committed to git — they are entered per environment.
+Installing the codebase and importing configuration gets a site running, but several features ship inert: their structure is in Git while their credentials, endpoints and enrolment settings are supplied per environment. Configure these **after** setting up a new site — including each new country site — or the feature will silently do nothing.
 
-### AI Translate (OpenAI)
+Every step, form path, permission and verification check is documented in **[Post-Setup Configuration](docs/POST_SETUP_CONFIGURATION.md)**, which covers:
 
-The AI translation feature (and the other AI-powered features) uses the OpenAI provider, which reads its API key from the Key module entity **OpenAI API Key** (`openai_api_key`). The key ships empty, so AI Translate will not work until you add a key:
+| Feature | Needs |
+|---|---|
+| AI / AI Translate (OpenAI) | An OpenAI API key in the Key module, plus TMGMT providers — no `tmgmt.translator.*` entity arrives via `cim` |
+| Email TFA | Working outbound email first; it is globally enforced, uid 1 included |
+| Outbound email (Microsoft 365) | An Entra ID app registration, a per-environment redirect URI, and a one-time delegated sign-in |
+| Content Analytics | The BigQuery endpoint URL and its `X-API-Key`, plus cron |
+| Entity Share | The `entity_share_basic_auth` key and a reachable remote |
+| API security (JWT + device attestation) | `BEBBO_JWT_PRIVATE_KEY` (and optionally `BEBBO_GOOGLE_SA_KEY`) as environment variables; enforcement is `disabled` by default |
 
-1. **Generate the key:** sign in at [platform.openai.com](https://platform.openai.com/api-keys), open **API keys**, and create a new secret key (`sk-...`). The account must have billing enabled.
-2. **Add it to the CMS:** go to **Configuration → System → Keys** (`/admin/config/system/keys`), edit **OpenAI API Key**, paste the key value, and save.
-3. **Verify:** open a piece of content, use the **Translate** tab's AI translate action, and confirm a translation is produced. Provider settings live at **Configuration → AI** (`/admin/config/ai`).
+That document also carries the ordered [new-site checklist](docs/POST_SETUP_CONFIGURATION.md#8-new-site-checklist) — order matters, since email must work before TFA and keys must exist before the features that read them.
 
-The key is stored in the site's active configuration only; do not export it into `config/sync`.
-
-### Outbound Email (Microsoft 365)
-
-Outbound email (content-moderation notifications, two-factor codes) is sent through the Symfony Mailer **Office 365 OAuth** transport. The committed configuration contains placeholders — email will not send until you supply real credentials:
-
-1. **Register an application** in [Microsoft Entra ID (Azure AD)](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade): note the **Application (client) ID** and **Directory (tenant) ID**, create a **client secret**, and grant the application the `Mail.Send` Microsoft Graph permission (admin consent required).
-2. **Add the credentials to the CMS:** go to **Configuration → System → Mailer** (`/admin/config/system/mailer`), edit the **Office 365 OAuth** transport, and enter the client ID, client secret, tenant ID, and the sending mailbox address.
-3. **Verify:** send a test email via **Configuration → System → Mailer → Test**.
-
-These three values are ignored by configuration export (`config_ignore`), so they stay local to each environment. For local development you can skip this — DDEV captures outgoing mail in Mailpit (`ddev launch -m`).
-
-### API Authentication (JWT + Device Attestation)
-
-The V2 REST APIs (`/v2/api/*`) support device-based authentication provided by the `bebbo_api_security` module. Enforcement is **disabled by default**, so a fresh install works without any of this — set it up only when you want to exercise the secured API flow:
-
-1. **Generate an RSA signing key** for JWTs and expose it as an environment variable:
-   ```bash
-   openssl genrsa -out bebbo-jwt.pem 2048
-   base64 -i bebbo-jwt.pem   # value for BEBBO_JWT_PRIVATE_KEY
-   ```
-   For DDEV, uncomment and set `BEBBO_JWT_PRIVATE_KEY` under `web_environment` in `.ddev/config.yaml` (see the commented example), then `ddev restart`. On hosted environments set it as a platform environment variable.
-2. **(Optional) Android attestation:** create a Google Cloud service account with the **Play Integrity API** enabled, download its JSON key, and set it (base64-encoded) as the `BEBBO_GOOGLE_SA_KEY` environment variable.
-3. **(Optional) iOS attestation:** enter your Apple **Team ID**, **bundle ID**, and the [Apple App Attestation Root CA](https://www.apple.com/certificateauthority/) PEM in the module settings form (**Configuration → Web services → API Security**).
-4. **Enable enforcement** by switching the module's *Enforcement mode* from `disabled` to `grace_period` (monitor) or `enforced`.
-
-The full attestation flow, token lifetimes, and rollout guidance are documented in [API Security](docs/API_SECURITY.md).
+**No credential is ever committed.** Values are entered in admin forms or set as environment variables. One trap to note: `key.key.openai_api_key` is *not* in `config_ignore`, so a blanket `drush cex` after entering the OpenAI key will write the secret into `config/sync`. Export only the files your change touched.
 
 ## Documentation
 
@@ -193,6 +172,7 @@ The project documentation is organised under the `/docs` directory.
 |--------|-------------|
 | [Architecture](docs/ARCHITECTURE.md) | Overall CMS architecture and system design |
 | [Configuration](docs/CONFIGURATION.md) | Drupal configuration management |
+| [Post-Setup Configuration](docs/POST_SETUP_CONFIGURATION.md) | What to configure after install: AI, MFA, analytics, mail, Entity Share, API security |
 | [Environment Guide](docs/ENVIRONMENTS.md) | Development, Stage and Production environments |
 | [Modules](docs/MODULES.md) | Custom modules and their purpose |
 | [API Reference](docs/API_REFERENCE.md) | REST API endpoints |
@@ -215,7 +195,7 @@ The automated pipeline defined in [.github/workflows/pipelines.yml](.github/work
 
 - **Credentials isolation**: Acquia API keys, SSH keys, and host fingerprints are consumed exclusively via encrypted GitHub Secrets (`ACQUIA_API_KEY_ID`, `ACQUIA_API_KEY_SECRET`, `ACQUIA_SSH_PRIVATE_KEY`, `ACQUIA_SSH_KNOWN_HOSTS`). Secrets are injected only into the relevant deploy jobs.
 - **Hardening SSH connectivity**: The workflow provisions SSH access using `webfactory/ssh-agent` with the private key from secrets and explicitly pins the Acquia Git host fingerprint via `ssh-keyscan` before any remote interaction.
-- **Clean build environments**: Every job starts from a fresh `ubuntu-latest` runner and pins PHP via `shivammathur/setup-php` (PHP 8.4 for CI checks and the Dev deploy, PHP 8.3 for the Stage deploy), then performs `git reset --hard` / `git clean -fd` prior to artifact pushes to avoid leaking untracked files.
+- **Clean build environments**: Every job starts from a fresh `ubuntu-latest` runner and pins PHP via `shivammathur/setup-php` — **PHP 8.4 in all three jobs** (`ci-checks`, `deploy-dev`, `deploy-stage`) — then performs `git reset --hard` / `git clean -fd` prior to artifact pushes to avoid leaking untracked files. This is the PHP version of the GitHub runner that builds and pushes the artifact; the PHP version each Acquia environment *runs* is set in Acquia Cloud and is not defined in this repository.
 - **Dependency and code integrity checks**: `composer validate`, `composer install --no-interaction`, PHPCS, `drupal-check`, and `phplint` run on each push/PR to catch tampered dependencies or insecure code patterns before deployment.
 - **Scoped deployments**: Deploy jobs only run for specific branches — a push to `develop` deploys to Acquia Dev, a push to `stage` deploys to Acquia Stage — after CI checks pass (`needs: ci-checks`), ensuring only vetted code can reach Acquia environments. `main` is not a deploy trigger; Prod is deployed manually.
 - **Auditable automation account**: Git author identity for automated commits to Acquia Git is consistently set to `github-actions+bebbo@unicef.org`, making bot activity traceable in repository history.
@@ -223,8 +203,8 @@ The automated pipeline defined in [.github/workflows/pipelines.yml](.github/work
 ## Branching Strategy
 Follow these guidelines to keep work streams predictable and in sync with the Acquia environments. Deployments are driven by **branch pushes**, not by merges into `main`:
 
-- Push to **`develop`** → deploys to **Acquia Dev** (`@parentbuddy2.dev`, PHP 8.4).
-- Push to **`stage`** → deploys to **Acquia Stage** (`@parentbuddy2.test`, PHP 8.3).
+- Push to **`develop`** → deploys to **Acquia Dev** (`@parentbuddy2.dev`).
+- Push to **`stage`** → deploys to **Acquia Stage** (`@parentbuddy2.test`).
 - **`main` is not a deploy trigger.** Production is released manually (no automated job).
 
 CI checks (`composer validate`, PHPCS, `drupal-check`, `phplint`) run on every push to `develop`/`stage` and on every PR targeting `feature/**`, `bug/**`, `hotfix/**`, `develop`, and `stage`.

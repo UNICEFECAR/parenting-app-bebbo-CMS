@@ -43,3 +43,57 @@ bebbo_custom_general.adminsettings:
     master_language:
       type: string
       label: 'Master language for the countries'
+
+bebbo_custom_general.editorial_menu:
+  type: config_object
+  label: 'Canonical editorial menu'
+  mapping:
+    links:
+      type: sequence
+      label: 'Menu links keyed by UUID'
+      sequence:
+        type: mapping
+        label: 'Menu link'
+        mapping:
+          title:
+            type: label
+            label: 'Title'
+          description:
+            type: text
+            label: 'Description'
+          uri:
+            type: string
+            label: 'Link URI'
+          options:
+            type: sequence
+            label: 'Link options'
+            sequence:
+              type: ignore
+              label: 'Option'
+          weight:
+            type: integer
+            label: 'Weight'
+          expanded:
+            type: boolean
+            label: 'Show as expanded'
+          enabled:
+            type: boolean
+            label: 'Enabled'
+          parent:
+            type: string
+            label: 'Parent link'
+          langcode:
+            type: string
+            label: 'Language code'
+          show_role:
+            type: sequence
+            label: 'Roles the link is shown to'
+            sequence:
+              type: string
+              label: 'Role ID'
+          hide_role:
+            type: sequence
+            label: 'Roles the link is hidden from'
+            sequence:
+              type: string
+              label: 'Role ID'

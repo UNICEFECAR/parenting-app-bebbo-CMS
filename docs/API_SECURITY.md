@@ -54,7 +54,7 @@ flowchart TD
     TOK[buildTokenResponse<br/>JwtService::createToken + createRefreshToken] --> RESP["{ access_token JWT, refresh_token,<br/>expires_in=jwt_expiry_seconds }"]
     RESP --> PROT["Protected request<br/>Authorization: Bearer JWT"]
     PROT --> SUB[ApiSecuritySubscriber onRequest priority 300]
-    SUB --> REFRESH["POST /api/security/refresh<br/>before exp → new JWT + rotated refresh token"]
+    SUB --> REFRESH["POST /api/security/refresh<br/>Flood bebbo_refresh — per device, refresh_rate_limit/hr<br/>before exp → new JWT + rotated refresh token"]
     REFRESH -.->|refresh expired/revoked/replay| REATTEST[401 → re-attestation required]
 ```
 
@@ -171,7 +171,7 @@ Beyond the two dedicated Composer packages, the module relies on the following �
 | `drupal/views` + `view_custom_table` | Contrib module dep | 4 admin Views over the custom tables (§10) |
 | `ext-openssl` (PHP) | PHP extension | `openssl_x509_verify`, `openssl_pkey_get_{public,private,details}`, `openssl_verify` — Apple cert-chain + key derivation, sideloaded ECDSA verify, RSA public-key derivation for JWT |
 | `GuzzleHttp\ClientInterface` (`@http_client`) | Drupal core service | Google OAuth2 token + `decodeIntegrityToken` HTTP calls (`GooglePlayIntegrityService`) |
-| Flood (`@flood`) | Drupal core service | Per-event rate limiting on register / device-register / device-verify (§9, §11) |
+| Flood (`@flood`) | Drupal core service | Per-event rate limiting on register / device-register / device-verify / refresh (§9, §11) |
 | `key.repository` | Drupal `key` service | Loads the JWT signing key and Google SA JSON |
 | `@config.factory` | Drupal core service | Reads `bebbo_api_security.settings` |
 | `@database` | Drupal core service | CRUD on the 4 custom tables (`DeviceRegistryService`) |
@@ -250,7 +250,7 @@ Required body: `device_id`, `challenge`, `signature`. Rate limit: `verify_rate_l
 
 ### 4.4 `POST /api/security/refresh` — Token refresh
 
-Required body: `refresh_token`. Calls `JwtService::refreshTokens()`. Success → `{status: refreshed, access_token, token_type: Bearer, expires_in, refresh_token}`. Failure (expired/revoked/replay) → **401** `{status: invalid, message: "Refresh token expired or revoked. Re-attestation required."}`.
+Required body: `refresh_token`. Rate limit: `refresh_rate_limit` per hour (default 30; event `bebbo_refresh`), keyed on the **device** that owns the presented token — resolved by `JwtService::getDeviceIdForRefreshToken()`, which matches on token hash alone so revoked and expired tokens still count against their device's budget. Tokens matching no stored row fall back to the client **IP**. Then calls `JwtService::refreshTokens()`. Success → `{status: refreshed, access_token, token_type: Bearer, expires_in, refresh_token}`. Failure (expired/revoked/replay) → **401** `{status: invalid, message: "Refresh token expired or revoked. Re-attestation required."}`.
 
 ### 4.5 `POST /api/security/revoke` — Logout / revoke
 
@@ -435,7 +435,7 @@ Config object `bebbo_api_security.settings` (schema in `config/schema/`, default
 | `register_rate_limit` | `10` | 1–100 | `/register` Flood |
 | `device_register_ip_rate_limit` | `5` | 1–50 | `/device/register` Flood |
 | `verify_rate_limit` | `10` | 1–100 | `/device/verify` Flood |
-| `refresh_rate_limit` | `30` | 1–200 | Admin form |
+| `refresh_rate_limit` | `30` | 1–200 | `/refresh` Flood |
 | `challenge_expiry_seconds` | `120` | 30–600 | Sideloaded challenge TTL |
 | `revoked_token_retention_days` | `7` | 1–90 | Cron purge |
 | `security_log_max_entries` | `10000` | 1000–100000 | Cron/purge trim |
@@ -514,6 +514,7 @@ Rate limits (per hour, via Drupal Flood API):
 | `/api/security/register` | `bebbo_register` | 10 | `device_id` |
 | `/api/security/device/register` | `bebbo_device_register` | 5 | client IP |
 | `/api/security/device/verify` | `bebbo_device_verify` | 10 | `device_id` |
+| `/api/security/refresh` | `bebbo_refresh` | 30 | `device_id` owning the token; client IP if it matches none |
 
 #### Platform attestation (`/api/security/register`)
 

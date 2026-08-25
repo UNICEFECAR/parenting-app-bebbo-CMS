@@ -12,10 +12,12 @@
 |-------------|-------|-----|----------------|---------------|---------------|
 | **Local** | DDEV (`bebbo.app`) | 8.4 | n/a (manual `ddev start`) | — | `config/sync` + active split |
 | **Dev** | Acquia Cloud | **8.4** | push to `develop` | `@parentbuddy2.dev` | `config/sync` + active split |
-| **Stage** | Acquia Cloud | **8.3** | push to `stage` | `@parentbuddy2.test` | `config/sync` + active split |
+| **Stage** | Acquia Cloud | **8.4**² | push to `stage` | `@parentbuddy2.test` | `config/sync` + active split |
 | **Prod** | Acquia Cloud | **8.4**¹ | **manual only** | `@parentbuddy2.prod`¹ | `config/sync` + active split |
 
 > Acquia Dev runs MySQL 5.7.44 — below Drupal 11's MySQL 8.0 minimum. The `drupal/mysql57` contrib module backports the database driver. Its settings include is loaded in `post.settings.php` after the Acquia include so `$databases` is already populated.
+
+² `pipelines.yml` pins `php-version: 8.4` for all three jobs (`ci-checks`, `deploy-dev`, `deploy-stage`). That is the GitHub runner's PHP, used to build and push the artifact. The PHP version each Acquia environment runs is set in Acquia Cloud and is not defined in this repository — confirm it there before relying on it.
 
 ¹ There is **no** `deploy-prod` job and **no** `@parentbuddy2.prod` reference in `pipelines.yml`. Prod is deployed manually; the cloud hook explicitly **skips** DB/config steps on prod (see [§6](#6-acquia-cloud-hooks)).
 
@@ -190,7 +192,7 @@ Source: `.github/workflows/pipelines.yml`. Triggers (`on:`): push to `develop` /
 |-----|--------------|-----|--------|
 | `ci-checks` | every push + PR | 8.4 | `composer validate --no-check-all` → `composer install` → `phpcs` → `drupal-check -d docroot/modules/custom` → `phplint` |
 | `deploy-dev` | `push` && `refs/heads/develop` | 8.4 | `acli push:artifact @parentbuddy2.dev --no-interaction -vvv` |
-| `deploy-stage` | `push` && `refs/heads/stage` | 8.3 | `acli push:artifact @parentbuddy2.test --no-interaction` |
+| `deploy-stage` | `push` && `refs/heads/stage` | 8.4 | `acli push:artifact @parentbuddy2.test --no-interaction` |
 
 - **Branch → env:** `develop` → Dev; `stage` → Stage/Test. `main` is **not** a trigger anywhere.
 - Deploy jobs `needs: ci-checks` (CI must pass first).

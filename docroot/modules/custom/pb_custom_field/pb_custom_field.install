@@ -5,6 +5,131 @@
  * Install, update and uninstall functions for the pb_custom_field module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\Core\Language\LanguageInterface;
+
+/**
+ * Repair users whose langcode is not an installed language.
+ *
+ * Entity storage only loads dedicated-table field values whose langcode is an
+ * installed language (SqlContentEntityStorage::loadFromDedicatedTables()), so a
+ * user left pointing at a language the site no longer has - after a site clone
+ * or a language removal - loads with no roles, no allowed languages and no
+ * picture, even though the rows are still on disk. Saving that user then
+ * rewrites the values under the same invalid langcode, so they stay invisible
+ * and any value the form could not show is lost.
+ *
+ * Moves those users, and their dedicated-table field rows, to the site default
+ * language. Only touches rows with an invalid langcode; safe to run repeatedly.
+ */
+function pb_custom_field_update_10004() {
+  $database = \Drupal::database();
+  $language_manager = \Drupal::languageManager();
+  $valid = array_keys($language_manager->getLanguages(LanguageInterface::STATE_ALL));
+  $default_langcode = $language_manager->getDefaultLanguage()->getId();
+
+  $uids = $database->select('users_field_data', 'u')
+    ->fields('u', ['uid'])
+    ->condition('u.langcode', $valid, 'NOT IN')
+    ->execute()
+    ->fetchCol();
+
+  if (!$uids) {
+    return 'No users with an invalid langcode.';
+  }
+
+  // A user that already has a row in the default language cannot be moved
+  // without breaking the primary key, so leave it for manual review.
+  $collisions = $database->select('users_field_data', 'u')
+    ->fields('u', ['uid'])
+    ->condition('u.uid', $uids, 'IN')
+    ->condition('u.langcode', $default_langcode)
+    ->execute()
+    ->fetchCol();
+  if ($collisions) {
+    \Drupal::logger('pb_custom_field')->warning('Skipped @count user(s) that already have a @langcode row: @uids.', [
+      '@count' => count($collisions),
+      '@langcode' => $default_langcode,
+      '@uids' => implode(', ', $collisions),
+    ]);
+    $uids = array_diff($uids, $collisions);
+    if (!$uids) {
+      return 'All users with an invalid langcode were skipped; see the log.';
+    }
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('user');
+  $mapping = $storage->getTableMapping();
+  if (!$mapping instanceof DefaultTableMapping) {
+    return 'Unexpected user table mapping; nothing was changed.';
+  }
+  $definitions = \Drupal::service('entity_field.manager')->getFieldDefinitions('user', 'user');
+  $moved = 0;
+
+  foreach ($definitions as $definition) {
+    $storage_definition = $definition->getFieldStorageDefinition();
+    if (!$mapping->requiresDedicatedTableStorage($storage_definition)) {
+      continue;
+    }
+    $table = $mapping->getDedicatedDataTableName($storage_definition);
+    if (!$database->schema()->tableExists($table)) {
+      continue;
+    }
+
+    // Drop invalid rows that already have a counterpart in the default
+    // language; the visible row is the one the site has been using.
+    $duplicates = $database->query('SELECT entity_id, delta FROM {' . $table . '} WHERE entity_id IN (:uids[]) AND deleted = 0 GROUP BY entity_id, delta HAVING COUNT(*) > 1', [
+      ':uids[]' => $uids,
+    ])->fetchAll();
+    foreach ($duplicates as $duplicate) {
+      $deleted = $database->delete($table)
+        ->condition('entity_id', $duplicate->entity_id)
+        ->condition('delta', $duplicate->delta)
+        ->condition('langcode', $valid, 'NOT IN')
+        ->execute();
+      \Drupal::logger('pb_custom_field')->warning('Deleted @count duplicate row(s) from @table for user @uid delta @delta.', [
+        '@count' => $deleted,
+        '@table' => $table,
+        '@uid' => $duplicate->entity_id,
+        '@delta' => $duplicate->delta,
+      ]);
+    }
+
+    $moved += $database->update($table)
+      ->fields(['langcode' => $default_langcode])
+      ->condition('entity_id', $uids, 'IN')
+      ->condition('langcode', $valid, 'NOT IN')
+      ->execute();
+  }
+
+  $database->update('users_field_data')
+    ->fields(['langcode' => $default_langcode])
+    ->condition('uid', $uids, 'IN')
+    ->condition('langcode', $valid, 'NOT IN')
+    ->execute();
+
+  // An invalid preferred language falls back at runtime, but leaving it means
+  // the profile form keeps showing a language that is not there.
+  $database->update('users_field_data')
+    ->fields(['preferred_langcode' => $default_langcode])
+    ->condition('uid', $uids, 'IN')
+    ->condition('preferred_langcode', $valid, 'NOT IN')
+    ->execute();
+
+  $storage->resetCache($uids);
+  Cache::invalidateTags(array_map(function ($uid) {
+    return 'user:' . $uid;
+  }, $uids));
+
+  return t('Moved @users user(s) and @rows field row(s) to @langcode: @uids', [
+    '@users' => count($uids),
+    '@rows' => $moved,
+    '@langcode' => $default_langcode,
+    '@uids' => implode(', ', $uids),
+  ]);
+}
+
 /**
  * Migrate field_content_toggle keys from title-case to machine_name format.
  *

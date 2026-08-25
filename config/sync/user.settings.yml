@@ -9,7 +9,7 @@ notify:
   status_activated: false
   status_blocked: false
   status_canceled: false
-  register_admin_created: true
+  register_admin_created: false
   register_no_approval_required: false
   register_pending_approval: false
 register: admin_only

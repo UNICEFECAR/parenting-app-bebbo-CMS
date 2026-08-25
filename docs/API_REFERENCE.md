@@ -197,8 +197,16 @@ Every `data[]` row includes both **typed keys** (explicitly cast by the transfor
 
 **Common passthrough keys** present on most content endpoints (omitted from the per-endpoint table):
 - `type` (string) — content-type label. Present on: activities, articles, video-articles, faqs, basic-pages, daily-homescreen-messages, vaccinations, milestones, pinned-contents, child-development-data, child-growth-data, health-checkup-data, quiz. **Not** on: course, weekly-overview, guide, standard-deviation, archive, country-groups. Surveys have a `type` key but it comes from `field_type` (survey type), not the content-type label.
-- `created_at` (string) — formatted creation timestamp. Present on all content endpoints **except** standard-deviation.
-- `updated_at` (string) — formatted last-modified timestamp. Present on all content endpoints **except** standard-deviation.
+- `created_at` (string) — creation timestamp. Present on all content endpoints **except** standard-deviation.
+- `updated_at` (string) — last-modified timestamp. Present on all content endpoints **except** standard-deviation.
+
+> **Both date fields are rendered HTML, not plain text.** Views' default date formatter emits a complete `<time>` element with a trailing newline, and no serializer transform strips it — on V1 *and* V2:
+>
+> ```
+> "created_at": "<time datetime=\"2026-07-16T09:13:01+02:00\" class=\"datetime\">Thu, 07/16/2026 - 09:13</time>\n"
+> ```
+>
+> The human-readable part uses Drupal's configured *medium* date format; the machine-readable value is the `datetime` attribute, which clients must parse out. V1 additionally escapes the markup as `\u003Ctime …` because its empty/success envelopes are encoded with plain `json`, while V2's `bebbo_json` encoder passes `<` through unescaped — the payload is otherwise identical. The abbreviated `"Wed, 06/15/2026 - 10:00"` values used in the examples further down show only that inner text; the wire format carries the full element.
 
 | Endpoint | All response keys |
 |----------|-------------------|
@@ -240,7 +248,7 @@ All content endpoints return the **standard envelope** wrapping a `data[]` array
 
 Envelope variants: **taxonomy/vocabulary** omit `total`; **standard-deviation** omits `total` and `datetime`; **archive** has a grouped `data` object (not array). See [§5.1](#51-envelope-variants).
 
-The examples below show the **complete response** (envelope + a representative `data[]` item) for each endpoint. Timestamps (`created_at`, `updated_at`) use Drupal's configured "medium" date format.
+The examples below show the **complete response** (envelope + a representative `data[]` item) for each endpoint. Timestamps (`created_at`, `updated_at`) are abbreviated to their inner text for readability — the wire format wraps them in a `<time>` element, as described in [§5.3](#53-per-endpoint-response-fields) above.
 
 ---
 
@@ -631,6 +639,30 @@ Response contains both Article-type and Video-Article-type rows in the same `dat
   ]
 }
 ```
+
+The **V1** endpoint `/api/health-checkup-data/%` returns the same eight keys from the same source content, served by `bebbo_v1_serializer` instead. Verified live response:
+
+```json
+{
+  "status": 200,
+  "total": 12,
+  "langcode": "en",
+  "data": [
+    {
+      "id": 66891,
+      "type": "Health Check-ups - Age Periods",
+      "title": "Tests content 16july deployement sanity",
+      "growth_period": 6476,
+      "pinned_article": 65671,
+      "pinned_video_article": 58511,
+      "created_at": "<time datetime=\"2026-07-16T09:13:01+02:00\" class=\"datetime\">Thu, 07/16/2026 - 09:13</time>\n",
+      "updated_at": "<time datetime=\"2026-07-16T09:20:28+02:00\" class=\"datetime\">Thu, 07/16/2026 - 09:20</time>\n"
+    }
+  ]
+}
+```
+
+`type` is the content-type label **"Health Check-ups - Age Periods"** — note the hyphen in "Check-ups", which differs from the endpoint path segment `health-checkup-data` and from the `health_check_ups` machine name used in the V1 pinned-contents path. Rows are deduplicated by `id`. Do not confuse this endpoint with `/api/check-update/{country}`, the force-update endpoint documented in [§9](#9-force-update--check-update-endpoint).
 
 > Rows are **deduplicated by `id`**. The View display only provides these 8 keys. The transform contains additional casts for `category`, `child_gender`, `parent_gender`, `licensed`, `premature`, `mandatory`, `child_age`, `related_articles`, `related_video_articles` and cover-image type-switching logic, but those are all no-ops since the View does not include those fields.
 
@@ -1189,6 +1221,52 @@ Both versions return **keyed objects**, not flat arrays.
 
 V1 (`bebbo_v1_serializer`) produces an equivalent keyed map (byte-identical to V2); both envelopes omit `total`.
 
+### 7.1 Strings (`/api/strings/%`, `/v2/api/strings/%`)
+
+UI label strings for the mobile app, stored as terms in the **`strings`** vocabulary. Both paths are displays on the `tax` view (`string_rest_export` for V1, `v2_string_rest_export` for V2) and both use the **`bebbo_serializer`** style, even though one sits under `/api/`. The two displays carry identical fields, filters and arguments, so the responses are byte-identical.
+
+| Aspect | Value |
+|--------|-------|
+| Row plugin | `data_field` — **no `transformX()` method runs**, so field values are emitted exactly as Views renders them |
+| Fields | `name`, `field_unique_name`, `status`, `changed` |
+| Filters | `status = 1` (published only), `vid = strings` |
+| Arguments | `langcode` (path arg 1), `changed` (optional — see below) |
+| Envelope | Standard `{status,total,langcode,datetime,data}` |
+
+**Response fields**
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `name` | string | The translated string value for the requested langcode |
+| `field_unique_name` | string | Stable machine key the app looks the string up by — this, not the term ID, is the contract |
+| `status` | string | Published flag rendered by Views as the **string** `"1"`, not an integer or boolean |
+| `changed` | string | **Rendered HTML**, not a timestamp — Views' default date formatter emits a full `<time datetime="…" class="datetime">…</time>` element, including a trailing newline. Clients that need a machine-readable value must parse the `datetime` attribute. |
+
+Example — `GET /api/strings/en`:
+
+```json
+{
+  "status": 200,
+  "total": 1,
+  "langcode": "en",
+  "datetime": "2026-08-05 18:00",
+  "data": [
+    {
+      "name": "term 1",
+      "field_unique_name": "testing_term1",
+      "status": "1",
+      "changed": "<time datetime=\"2026-07-16T09:43:25+02:00\" class=\"datetime\">Thu, 07/16/2026 - 09:43</time>\n"
+    }
+  ]
+}
+```
+
+`GET /v2/api/strings/en` returns exactly the same body.
+
+> The `status` and `changed` shapes are a consequence of the `data_field` row plugin: unlike every other endpoint, no serializer transform normalises them. Treat them as raw Views output.
+
+The vocabulary is editable at `/admin/structure/taxonomy/manage/strings/overview`, with per-string translation at `/admin/structure/taxonomy/manage/strings/strings-list` (provided by the `pb_strings` module). Neither page has an editorial-menu entry.
+
 ---
 
 ## 8. Standard Deviation
@@ -1543,7 +1621,7 @@ The security endpoints (`/api/security/*`) return **real HTTP status codes** via
 | **403** | `status: "rejected"` | `{"status": "rejected", "reason": "device_integrity_failed", "message": "<detail>"}` | Play Integrity or App Attest verification fails | `/api/security/register` |
 | **403** | `status: "rejected"` | `{"status": "rejected", "reason": "verification_failed", "message": "<detail>"}` | Sideloaded challenge lookup fails (expired, used, not found) | `/api/security/device/verify` |
 | **403** | `status: "rejected"` | `{"status": "rejected", "reason": "signature_invalid", "message": "Challenge signature verification failed."}` | ECDSA signature verification fails | `/api/security/device/verify` |
-| **429** | `error: "rate_limited"` | `{"error": "rate_limited", "message": "Too many requests. Try again later."}` | Flood threshold exceeded | `/api/security/register`, `/device/register`, `/device/verify` |
+| **429** | `error: "rate_limited"` | `{"error": "rate_limited", "message": "Too many requests. Try again later."}` | Flood threshold exceeded | `/api/security/register`, `/device/register`, `/device/verify`, `/refresh` |
 
 > **Replay detection:** When a revoked refresh token is reused, the server revokes the **entire token family** (all tokens in the same rotation chain) and logs `"Refresh token replay detected"`. However, the client receives the same **401** `{status: "invalid"}` response — there is no distinct replay error code. The replay is only distinguishable server-side via the security log.
 

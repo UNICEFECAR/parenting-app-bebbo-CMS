@@ -1,4 +1,8 @@
 services:
+  bebbo_custom_general.editorial_menu_manager:
+    class: Drupal\bebbo_custom_general\Service\EditorialMenuManager
+    arguments: ['@config.factory', '@entity_type.manager']
+
   bebbo_custom_general.mailer_sender_override:
     class: Drupal\bebbo_custom_general\EventSubscriber\MailerSenderOverride
     arguments: ['@config.factory']

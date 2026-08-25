@@ -24,6 +24,7 @@ complete_list:
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
   - workflows.workflow.group_workflow
+  - warmer.settings
 partial_list:
   - gin.settings
   - system.date
@@ -75,3 +76,8 @@ partial_list:
   - views.view.articles
   - views.view.country_content_listing
   - views.view.keyword_term_count
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

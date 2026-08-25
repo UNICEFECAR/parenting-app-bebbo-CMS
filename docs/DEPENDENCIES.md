@@ -18,7 +18,7 @@
 | Locked runtime packages | **263** (incl. transitive) | `composer.lock` `packages` |
 | Locked dev packages | **52** (incl. transitive) | `composer.lock` `packages-dev` |
 | Stability | `minimum-stability: dev`, `prefer-stable: true` | `composer.json` |
-| Patches applied | **30** entries (22 local files + 8 remote URLs) | `composer.json` `extra.patches` |
+| Patches applied | **39** entries (31 local files + 8 remote URLs) | `composer.json` `extra.patches` |
 | Content hash | `afe646e7271863fec441f548a24a4208` | `composer.lock` |
 
 > **Counts are total locked packages** (direct + transitive dependencies), not the count of `require` entries. `composer.json` directly declares 120 runtime + 11 dev packages; Composer resolves the rest.
@@ -329,7 +329,7 @@ The CI quality gate (`.github/workflows/pipelines.yml`) runs `composer validate`
 
 ## 6. Patches (`extra.patches`)
 
-Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â€” a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 22 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
+Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â€” a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 31 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
 
 | Target package | Fix | Source |
 |----------------|-----|--------|
@@ -344,6 +344,8 @@ Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â
 | `drupal/tmgmt` | Custom source-page filter (node id + country) | local |
 | `drupal/tmgmt` | Entity author details | local |
 | `drupal/tmgmt` | JobType grouped-filter `escapeLike` array fix | local |
+| `drupal/tmgmt` | Contact only the selected provider when building the job form | local |
+| `drupal/tmgmt_google` | No page-level error when the job form incidentally probes Google | local |
 | `drupal/tmgmt_memsource` | PHP 8.4: explicit nullable param in `createFileTranslation` | local |
 | `drupal/imagemagick` | Preserve URL-encoded filenames | local |
 | `drupal/date_popup` | Include selected end date (+1 day, 2983680-7) | remote URL |
@@ -363,6 +365,13 @@ Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â
 | `drupal/contextual_range_filter` | PHP 8.4 implicit-nullable in `DateRange::init()` (3521312) | local |
 | `drupal/menu_export` | Drush command calling protected `exportMenus` | local |
 | `drupal/symfony_mailer_office365` | Pass event dispatcher to ESMTP transport factory + transport (SendAsDenied fix) | local |
+| `drupal/ai` | Preserve HTML in streamed chat output â€” hold flush buffer until tags balance (3586558, MR!1734) | local |
+| `drupal/ai_translate` | Stamp revision date, author and log message on AI-generated translations | local |
+| `drupal/gin` | Contextual Edit toolbar tab always rendered highlighted (unqualified selector) | local |
+| `drupal/migrate_source_csv` | league/csv 9.27 `createFromStream` deprecation fix | local |
+| `drupal/structure_sync` | PHP 8.4 implicit-nullable params (3563762) | local |
+| `drupal/ultimate_cron` | D11: legacy `#ajax` 'replace' method breaks scheduler/logger switch on job edit form (3535416, MR!71) | local |
+| `drupal/warmer` | CDN warmer aborts cold pages at the 30s http_client default timeout | local |
 
 ---
 

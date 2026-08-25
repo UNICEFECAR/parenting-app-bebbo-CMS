@@ -112,7 +112,7 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 
 | Hook | Behavior |
 |------|----------|
-| `hook_node_presave` | Populates `field_number_of_modules` (course), `field_number_of_questions` (quiz), truncates height/weight decimals (pregnancy_weekly_overview), auto-populates `field_embedded_images` and `field_body_rendered` for published nodes |
+| `hook_node_presave` | Populates `field_number_of_modules` (course), `field_number_of_questions` (quiz), truncates height/weight decimals (pregnancy_weekly_overview), auto-populates `field_embedded_images` for published nodes and `field_body_rendered` for nodes in any moderation state |
 | `hook_node_predelete` | Deletes orphaned quiz_questions nodes when quiz node deleted |
 | `hook_views_query_alter` | Adds Pregnancy term to child_age filter when `?pregnancy=true` on the V1 + V2 articles endpoints |
 | `hook_form_alter` | Makes module/question count fields readonly on course/quiz forms; validates course expiry and passing score; rejects saving a Quiz as `single_question_quiz` while it holds more than one question (validation error — extra questions are never auto-removed) |
@@ -156,11 +156,11 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 
 **Name:** Bebbo Custom General
 **Core:** `^10 || ^11`
-**Dependencies:** none declared in `.info.yml`
+**Dependencies:** `drupal:views`, `group`, `menu_per_role`
 
 ### Purpose
 
-Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag (P1 slices + `.module` hook slices 1–5b). Houses self-contained admin features and editorial-form helpers that have no dedicated module: Entity Share CSV export, TMGMT overview/cart UX, mobile-JS share landing pages, language/landing-page redirect management, app-store QR redirect, master-language settings, article category AJAX cascade, group-country form handling, node archive validation, and node-action batch helpers.
+Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag (P1 slices + `.module` hook slices 1–5b). Houses self-contained admin features and editorial-form helpers that have no dedicated module: Entity Share CSV export, TMGMT overview/cart UX, mobile-JS share landing pages, language/landing-page redirect management, app-store QR redirect, master-language settings, article category AJAX cascade, group-country form handling, node archive validation, node-action batch helpers, and the canonical editorial menu (export, per-site sync, and the country-users redirect).
 
 ### Services
 
@@ -168,6 +168,7 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 |-----------|-------|------|
 | `bebbo_custom_general.mailer_sender_override` | `MailerSenderOverride` | Event subscriber — overrides mail sender from config |
 | `bebbo_custom_general.internal_content_node_redirect` | `InternalContentNodeRedirect` | `KernelEvents::REQUEST` — redirects anonymous internal node URLs by language / site context |
+| `bebbo_custom_general.editorial_menu_manager` | `EditorialMenuManager` | Exports the editorial menu to config and applies that canon to a site |
 
 ### Routes
 
@@ -184,6 +185,7 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `/admin/content/entity_share/pull/export/csv` | `CsvExportController::download` | `entity_share_client_pull_content` |
 | `/admin/content/entity_share/pull/export/csv/batch` | `CsvExportController::downloadBatch` | `entity_share_client_pull_content` |
 | `/admin/content/entity_share/pull/export/csv/download` | `CsvExportController::downloadCompleted` | `entity_share_client_pull_content` |
+| `/country-users` | `CountryUsersController::redirectToCountry` | `_user_is_logged_in` |
 
 > The admin forms hang off the `pb_custom_form.admin_config_parent_buddy` menu container, and their permissions (`manage mobile javascript`, `manage redirect settings`) are still declared by `pb_custom_form`.
 
@@ -201,9 +203,13 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `hook_preprocess_node_add_list` | Removes hidden bundles (see helper below) from the `/node/add` content-type selection page |
 | `hook_menu_links_discovered_alter` | Removes `node.add` links for hidden bundles from every Add-content menu, including the `admin_toolbar_tools` shortcuts |
 | `hook_form_views_exposed_form_alter` | Removes hidden bundles from the exposed "Type" dropdown on the `content`, `global_content_listing`, and `country_content_listing` views |
+| `hook_views_data_alter` (`bebbo_custom_general.views.inc`) | Adds a `title_natural` sort ("Title (language-neutral sort)") to `node_field_data` and `node_field_revision`, backed by the `bebbo_natural_title` sort plugin |
+| `hook_views_query_alter` | Rewrites the Title column-header click sort on the `duplicate_of_moderated_group_relationship` view so it uses the same ordering as that sort plugin |
 | `bebbo_custom_general_node_validate` (form `#validate` handler) | Attached to node edit/add forms via `hook_form_alter`; requires a revision log when a non-admin sets a node to the archive moderation state |
 
 > **Hidden-bundle visibility:** `_bebbo_custom_general_hidden_node_types()` returns the node bundles that must never appear as standalone, selectable content in the admin UI (currently `quiz_questions`, which is authored only inline via the Quiz content type's `field_quiz_questions` inline entity form). The three hooks above consume it. This is visibility-only — no permission or access change — so inline entity form authoring is unaffected. To reveal a bundle, remove it from that helper.
+
+> **Language-neutral title sort:** node titles are stored under `utf8mb4_general_ci`, which only folds case for ASCII — accented letters sort after Z, leading whitespace and punctuation skew the order, and digits sort ahead of letters. `NaturalTitleSort` first strips leading non-word characters with `REGEXP_REPLACE(title, '^\\W+', '')`, so a title opening with a quote (`'Pula kërcimtare'!`, `“Vendosja e alarmit”`) files under its real letter instead of bunching at the top; `\\W` is Unicode-aware here, so accented Latin and Cyrillic letters survive. It then orders that value under `utf8mb4_unicode_520_ci`, so `Ç` sorts with `C` and `Á` with `A`, and adds a leading `LEFT(…, 1) BETWEEN '0' AND '9'` key so numeric titles group at the end of an ascending list and the start of a descending one. Scripts still sort in Unicode block order (Latin, then Cyrillic, then others) — this is collation, not transliteration, so a Cyrillic title does not interleave with its Latin equivalent. The digit test avoids `REGEXP '^[0-9]'` on purpose: Drupal reads square brackets in a query string as identifier quoting, so that pattern reaches the database as `^"0-9"` and never matches. The sort is selectable in any view over nodes; `duplicate_of_moderated_group_relationship` (`/group/{id}/moderated`) uses it via its Title column, which is also that display's default sort — the table lands on Title A-Z and any column header click replaces it for that request. Note that adding it as an *exposed* sort would disable every column-header sort in a view, because core's `ExposedFormPluginBase::query()` clears the query's ORDER BY whenever the exposed form carries a `sort_by` value.
 
 > **Dead-code note:** `bebbo_custom_general_pb_custom_field_preprocess_views_view_field()` was moved verbatim from `pb_custom_form` (slice 4/5). Its name does not match the `{module}_preprocess_{hook}` pattern, so the theme registry never registers it — it is a no-op.
 
@@ -218,11 +224,21 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `ApplyNodeTranslations` | Batch processor | Copies related articles/videos across node translations |
 | `InternalContentNodeRedirect` | Event subscriber | Anonymous internal node → language redirect |
 | `MailerSenderOverride` | Event subscriber | Mail sender override from config |
+| `NaturalTitleSort` | Views sort plugin (`bebbo_natural_title`) | Language-neutral alphabetical ordering of a text column, numeric titles grouped apart |
 | Form classes | Forms | `MobileAppShareLinkForm`, `RedirectManagementForm`, `SettingsForm`, `AppStoreRedirectForm`, `ApplyTransRelatedArticlesVideo` |
 
 ### Config
 
-`bebbo_custom_general.adminsettings`, `bebbo_custom_general.app_store_redirect`, and `bebbo_custom_general.mobile_app_share_link_form` live in shared `config/sync/` (the mobile-share form is additionally overridden in the Ecuador and Turkey splits). `bebbo_custom_general.landing_pages` and `bebbo_custom_general.language_redirects` are **per-site**: each of the 7 split folders carries its own copy; neither exists in `config/sync/`. Schema in `config/schema/bebbo_custom_general.schema.yml`. None of these are in `config_ignore`.
+`bebbo_custom_general.adminsettings`, `bebbo_custom_general.app_store_redirect`, and `bebbo_custom_general.mobile_app_share_link_form` live in shared `config/sync/` (the mobile-share form is additionally overridden in the Ecuador and Turkey splits). `bebbo_custom_general.landing_pages` and `bebbo_custom_general.language_redirects` are **per-site**: each of the 7 split folders carries its own copy; neither exists in `config/sync/`. `bebbo_custom_general.editorial_menu` is shared and holds the canonical editorial menu: every link keyed by UUID with its title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Schema in `config/schema/bebbo_custom_general.schema.yml`. None of these are in `config_ignore`.
+
+### Drush commands
+
+| Command | Direction | Use |
+|---------|-----------|-----|
+| `bebbo:menu-export` (`bme`) | database → config | Run on bebbo after editing the editorial menu, then commit the exported config file. Keeps every value of multi-value fields, unlike `menu_export`. |
+| `bebbo:menu-sync` (`bms`) | config → database | Applies the canon to one site. Idempotent, `--dry-run` shows the diff. Runs per site on every deploy from `hooks/common/code-deploy.sh`. |
+
+Menu links are content entities, so config import alone never applies a menu change. `bebbo:menu-sync` upserts by UUID, sets the `menu_per_role` roles to exactly the canonical values, and deletes editorial-menu links absent from the canon — scoped to that menu only.
 
 ### Post-Update Hooks
 
@@ -263,6 +279,7 @@ The largest editorial module. Controls field access, form alterations, editorial
 | `hook_views_pre_render` | Transforms force_update_check view data |
 | `hook_views_pre_execute` | Column sorting conversions |
 | `hook_views_query_alter` | Cross-country access, language filtering, TMGMT query mods |
+| `hook_views_data_alter` | Adds `pb_user_groups`, `pb_user_group_label` and `pb_user_group_id` to `users_field_data` |
 | `hook_menu_local_tasks_alter` | Removes/displays tabs based on roles |
 | `hook_menu_local_actions_alter` | Renames "Add member" → "Add existing member" |
 | `hook_entity_operation_alter` | Controls edit/delete/translate by moderation state |
@@ -300,13 +317,24 @@ The largest editorial module. Controls field access, form alterations, editorial
 | `MovefrompublishtosenioreditorAction` | Moves from Published to Senior Editor |
 | `MovefrompublishtosmeAction` | Moves from Published to SME |
 
+**Views Plugins** (`src/Plugin/views/`):
+
+| Class | Plugin ID | Role |
+|-------|-----------|------|
+| `UserGroups` | `pb_user_groups` | Field: lists every group the row's user belongs to in one cell. Memberships for the whole page are loaded in a single query during `preRender`. |
+| `UserGroupLabel` | `pb_user_group_label` | Filter: matches users on a group name via `uid IN (subquery)`. Operators `=`, `!=`, `contains`, `starts`, `empty`, `not empty`. |
+| `UserGroupId` | `pb_user_group_id` | Filter: matches users on a group ID via the same subquery. Operators `=`, `!=`, `in`, `not in`, `empty`, `not empty`. |
+| `UserGroupFilterTrait` | — | Shared subquery builder for both filters; joins `groups_field_data` on `default_langcode = 1`. |
+
+These replace the reverse `group_relationship` relationship on the user listings (`user_admin_people.page_2` at `/users`, `users_list.page_2` at `/users/country`). The relationship joined a one-to-many table twice over — one row per membership and one row per group translation — so members were listed repeatedly. Reading memberships outside the query keeps the listings at one row per user. Their config schema lives in `config/schema/pb_custom_field.views.schema.yml`.
+
 **Batch Handler Classes** (`src/`):
 
 `ChangeActionStatus`, `ChangeintoArchiveActionStatus`, `ChangeintoPublishActionStatus`, `ChangeintoSeniorEditorActionStatus`, `ChangeintoSMEActionStatus` — batch processing callbacks for the corresponding VBO actions.
 
 ### Helper Functions
 
-- `_pb_custom_field_get_target_roles()` → `['editor', 'se', 'sme', 'reviewer']`
+- `_pb_custom_field_get_target_roles()` → `['editor', 'se', 'sme', 'reviewer', 'translator']`
 - `_pb_custom_field_get_trusted_roles()` → `['editor', 'se', 'sme']`
 - `_pb_custom_field_get_user_groups_cached()` — Group memberships with 5min TTL cache
 - `_pb_custom_field_is_multi_country_user()` — Checks multiple group memberships

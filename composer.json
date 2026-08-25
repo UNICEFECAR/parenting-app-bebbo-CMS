@@ -21,6 +21,7 @@
         "drupal/auto_entitylabel": "^3.4",
         "drupal/autocomplete_id": "^1.7",
         "drupal/better_exposed_filters": "^7.1",
+        "drupal/cloudflare": "^2.0@beta",
         "drupal/color": "^1.0",
         "drupal/config_ignore": "^3.4",
         "drupal/config_split": "^2.0",
@@ -115,6 +116,7 @@
         "drupal/views_bulk_operations": "^4.4",
         "drupal/views_data_export": "^1.10",
         "drupal/views_field_view": "^1.0",
+        "drupal/warmer": "^2.0",
         "drupal/webp": "^1.0@RC",
         "drush/drush": "^13",
         "enshrined/svg-sanitize": "^0.22.0",
@@ -204,6 +206,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/ai": {
+                "Preserve HTML in streamed output - hold flush buffer until tags balance (3586558, MR !1734)": "patches/ai/preserve-html-in-streamed-output-3586558-mr1734.patch"
+            },
             "drupal/csv_serialization": {
                 "Fix league/csv 9.27 deprecations: createFromFileObject/createFromString (3562555)": "patches/csv_serialization_league_csv_deprecation-3562555.patch"
             },
@@ -227,7 +232,8 @@
             "drupal/tmgmt": {
                 "Added custom filter in source page like node id and country": "patches/tmgmt/custom_filter_in_tmgmt_source_page.patch",
                 "Update the Entity Author Details": "patches/tmgmt/tmgmt_revision.patch",
-                "Fix JobType grouped filter passing array to escapeLike": "patches/tmgmt/tmgmt_job_type_grouped_filter_fix.patch"
+                "Fix JobType grouped filter passing array to escapeLike": "patches/tmgmt/tmgmt_job_type_grouped_filter_fix.patch",
+                "Contact only the selected provider when building the job form": "patches/tmgmt/tmgmt_probe_only_selected_provider.patch"
             },
             "drupal/tmgmt_memsource": {
                 "PHP 8.4: explicit nullable param in createFileTranslation": "patches/tmgmt_memsource-implicit-nullable-php84.patch"
@@ -255,6 +261,9 @@
             "drupal/lang_dropdown": {
                 "Fix InvalidArgumentException when no route object exists (404/403 pages)": "https://www.drupal.org/files/issues/2024-02-28/lang_dropdown_InvalidArgumentException.patch"
             },
+            "drupal/gin": {
+                "Contextual Edit toolbar tab always renders highlighted: unqualified selector in the Inline Edit toggle block": "patches/gin/contextual-edit-toolbar-tab-always-highlighted.patch"
+            },
             "webflo/drupal-finder": {
                 "Uncaught TypeError fix": "patches/drupal_finder/drupal-finder-fix-start-path.patch"
             },
@@ -274,6 +283,9 @@
             "drupal/menu_export": {
                 "Fix drush command calling protected exportMenus method": "patches/menu_export_drush_visibility.patch"
             },
+            "drupal/ai_translate": {
+                "Stamp revision date, author and log message on AI generated translations": "patches/ai_translate/stamp-revision-metadata-on-ai-translation.patch"
+            },
             "drupal/contextual_range_filter": {
                 "Fix PHP 8.4 implicit nullable deprecation in DateRange::init() (https://www.drupal.org/i/3521312)": "patches/contextual_range_filter/3521312-implicit-nullable-php84.patch"
             },
@@ -285,6 +297,15 @@
             },
             "drupal/migrate_source_csv": {
                 "Fix league/csv 9.27 createFromStream deprecation": "patches/migrate_source_csv-league_csv_deprecation.patch"
+            },
+            "drupal/ultimate_cron": {
+                "D11: legacy #ajax 'replace' method breaks scheduler/logger switch on the job edit form (3535416, MR!71)": "patches/ultimate_cron/ajax-replacewith-3535416.patch"
+            },
+            "drupal/tmgmt_google": {
+                "Do not print a page-level error when the job form incidentally probes Google": "patches/tmgmt_google/no_global_error_on_incidental_probe.patch"
+            },
+            "drupal/warmer": {
+                "CDN warmer aborts cold pages at the 30s http_client default timeout": "patches/warmer/cdn-warmer-request-timeout.patch"
             }
         },
         "drupal-lenient": {
