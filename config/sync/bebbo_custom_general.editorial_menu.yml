@@ -192,21 +192,6 @@ links:
       - global_admin
       - translator
     hide_role: {  }
-  b9e8641b-cfa1-46b8-ab4e-343a76776709:
-    title: 'Copy keywords/related articles to translations'
-    description: ''
-    uri: 'internal:/admin/content/copy-translated-field'
-    options: {  }
-    weight: -50
-    expanded: false
-    enabled: true
-    parent: 'menu_link_content:6ffc3c54-07d8-4788-8e51-663b6737d818'
-    langcode: en
-    show_role:
-      - administrator
-      - global_admin
-      - translator
-    hide_role: {  }
   2f932b25-2b85-4721-bc41-dba801403ba8:
     title: 'View taxonomy feed types'
     description: ''
@@ -389,10 +374,12 @@ links:
     langcode: en
     show_role:
       - administrator
+      - authenticated
       - editor
       - global_admin
       - reviewer
       - se
+      - sme
     hide_role: {  }
   b79316ca-8c26-42f0-abdf-8f054c80e4ce:
     title: 'Country Reports'

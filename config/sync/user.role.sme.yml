@@ -34,13 +34,30 @@ dependencies:
     - media
     - node
     - pb_content_analytics
+    - tmgmt
     - toolbar_menu
 id: sme
 label: SME
 weight: -4
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access media overview'
+  - 'create activities content'
+  - 'create article content'
+  - 'create course content'
+  - 'create courses_module content'
+  - 'create daily_homescreen_messages content'
+  - 'create faq content'
+  - 'create guide content'
+  - 'create health_check_ups content'
+  - 'create milestone content'
+  - 'create page content'
+  - 'create quiz content'
+  - 'create quiz_questions content'
+  - 'create survey content'
+  - 'create vaccinations content'
+  - 'create video_article content'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'

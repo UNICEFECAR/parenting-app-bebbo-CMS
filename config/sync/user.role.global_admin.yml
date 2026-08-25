@@ -84,6 +84,7 @@ dependencies:
     - filter
     - group
     - help
+    - language
     - layout_builder
     - layout_builder_styles
     - media
@@ -116,10 +117,12 @@ permissions:
   - 'administer content translation'
   - 'administer content types'
   - 'administer feeds'
+  - 'administer languages'
   - 'administer nodes'
   - 'administer redirect settings'
   - 'administer rest resources'
   - 'administer toolbar menu'
+  - 'administer users'
   - administer_channel_entity
   - administer_import_config_entity
   - administer_import_status_entities
@@ -136,6 +139,7 @@ permissions:
   - 'create content_health_check_up_language feeds'
   - 'create content_homescreen_messages feeds'
   - 'create content_vaccination_languages feeds'
+  - 'create country group'
   - 'create media'
   - 'create media_image_import feeds'
   - 'create media_remote_video feeds'

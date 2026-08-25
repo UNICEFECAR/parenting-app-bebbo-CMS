@@ -370,11 +370,12 @@ display:
         type: role
         options:
           role:
+            administrator: administrator
+            authenticated: authenticated
+            editor: editor
             global_admin: global_admin
             reviewer: reviewer
             se: se
-            administrator: administrator
-            editor: editor
       cache:
         type: tag
       empty:
@@ -2377,11 +2378,12 @@ display:
         type: role
         options:
           role:
+            administrator: administrator
+            authenticated: authenticated
+            editor: editor
             global_admin: global_admin
             reviewer: reviewer
             se: se
-            administrator: administrator
-            editor: editor
       sorts:
         nid:
           id: nid
@@ -4359,11 +4361,12 @@ display:
         type: role
         options:
           role:
+            administrator: administrator
+            authenticated: authenticated
+            editor: editor
             global_admin: global_admin
             reviewer: reviewer
             se: se
-            administrator: administrator
-            editor: editor
       arguments: {  }
       filters:
         nid:
