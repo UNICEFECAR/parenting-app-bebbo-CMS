@@ -1,0 +1,40 @@
+--- a/src/Access/ContentTranslationAccessCheck.php	2026-08-25 14:12:51
++++ b/src/Access/ContentTranslationAccessCheck.php	2026-08-25 14:13:05
+@@ -76,7 +76,13 @@
+       return AccessResult::neutral();
+     }
+ 
+-    $language = $this->getTargetLanguage($target);
++    // The add route carries the langcode in {target}, while the edit and
++    // delete routes carry it in {language}. Only one of them is ever
++    // populated, so use whichever the current route supplied. Reading
++    // {target} alone made this check fall back to the page content language
++    // on the edit and delete routes, which both denied users the languages
++    // they are assigned and granted them languages they are not.
++    $language = $this->getTargetLanguage($language ?: $target);
+     $user = $this->allowedLanguagesManager->accountFromProxy($account);
+     if ($this->allowedLanguagesManager->hasPermissionForLanguage($language, $user)) {
+       return AccessResult::allowed()->cachePerUser()->addCacheableDependency($user);
+@@ -86,16 +92,16 @@
+   }
+ 
+   /**
+-   * Get the target language object.
++   * Get the language object the operation applies to.
+    *
+-   * @param string $target
+-   *   The target language id.
++   * @param string $langcode
++   *   The language id the translation operation targets.
+    *
+    * @return \Drupal\Core\Language\LanguageInterface
+-   *   The target language object or the current content language.
++   *   The targeted language object or the current content language.
+    */
+-  private function getTargetLanguage($target) {
+-    return $this->languageManager->getLanguage($target)
++  private function getTargetLanguage($langcode) {
++    return $this->languageManager->getLanguage($langcode)
+       ?: $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT);
+   }
+ 
