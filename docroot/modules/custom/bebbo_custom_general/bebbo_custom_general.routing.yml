@@ -116,3 +116,23 @@ bebbo_custom_general.csv_export_download:
     _title: 'Download CSV Export'
   requirements:
     _permission: 'entity_share_client_pull_content'
+
+bebbo_custom_general.warmer_settings:
+  path: '/admin/config/development/api-warmer'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\WarmerSettingsForm'
+    _title: 'API cache warmer'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.warmer_logs:
+  path: '/admin/config/development/api-warmer/logs'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\WarmerLogController::overview'
+    _title: 'API cache warmer'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

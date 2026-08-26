@@ -1,0 +1,10 @@
+bebbo_custom_general.warmer_settings:
+  title: 'Settings'
+  route_name: bebbo_custom_general.warmer_settings
+  base_route: bebbo_custom_general.warmer_settings
+  weight: 0
+bebbo_custom_general.warmer_logs:
+  title: 'Logs'
+  route_name: bebbo_custom_general.warmer_logs
+  base_route: bebbo_custom_general.warmer_settings
+  weight: 10

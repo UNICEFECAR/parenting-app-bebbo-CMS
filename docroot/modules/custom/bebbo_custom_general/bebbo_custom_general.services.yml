@@ -14,3 +14,16 @@ services:
     arguments: ['@current_route_match', '@language_manager', '@current_user', '@entity_type.manager', '@path.current', '@path_alias.manager', '@page_cache_kill_switch', '@config.factory']
     tags:
       - { name: event_subscriber }
+
+  bebbo_custom_general.warmer_runner:
+    class: Drupal\bebbo_custom_general\Service\WarmerRunner
+    arguments:
+      - '@config.factory'
+      - '@http_client'
+      - '@entity_type.manager'
+      - '@language_visibility_control.service'
+      - '@request_stack'
+      - '@database'
+      - '@datetime.time'
+      - '@logger.factory'
+      - '%site.path%'

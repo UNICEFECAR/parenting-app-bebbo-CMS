@@ -142,7 +142,6 @@ complete_list:
   - bebbo_custom_general.language_redirects
   - bebbo_custom_general.mobile_app_share_link_form
   - views.view.bebbo_v2_apis
-  - warmer.settings
 partial_list:
   - ai_translate.settings
   - system.date

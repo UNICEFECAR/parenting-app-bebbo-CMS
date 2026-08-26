@@ -28,3 +28,9 @@ bebbo_custom_general.app_store_redirect:
   parent: pb_custom_form.admin_config_parent_buddy
   description: 'Configure app store URLs for QR code redirect page'
   weight: 106
+bebbo_custom_general.warmer_settings:
+  title: 'API cache warmer'
+  route_name: bebbo_custom_general.warmer_settings
+  parent: system.admin_config_development
+  description: 'Settings, manual run and run log for the v1 API cache warmer.'
+  weight: 10

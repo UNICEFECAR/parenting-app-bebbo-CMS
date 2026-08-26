@@ -6,6 +6,92 @@
  */
 
 /**
+ * Implements hook_schema().
+ */
+function bebbo_custom_general_schema(): array {
+  $schema['bebbo_warmer_log'] = [
+    'description' => 'One row per API cache warmer run on this site.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary key.',
+      ],
+      'started' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp the run started.',
+      ],
+      'finished' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp the run finished.',
+      ],
+      'duration' => [
+        'type' => 'float',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Seconds the run took.',
+      ],
+      'total' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'URLs the run was asked to warm.',
+      ],
+      'warmed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'URLs that answered warm.',
+      ],
+      'failed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'URLs that did not.',
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'success, issues or aborted.',
+      ],
+      'trigger' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'What started the run: form or drush.',
+      ],
+      'host' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Hostname the run requested.',
+      ],
+      'failures' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'JSON map of failing URL to reason.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'started' => ['started'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
  * Remove defunct custom_serialization and pb_custom_standard_deviation modules.
  *
  * These modules were deleted from disk but may still be registered in the
@@ -44,4 +130,19 @@ function bebbo_custom_general_update_10001(): string {
     return 'Removed defunct modules from core.extension: ' . implode(', ', $removed);
   }
   return 'No defunct modules found in core.extension; schema entries cleaned.';
+}
+
+/**
+ * Create the API cache warmer run log table.
+ */
+function bebbo_custom_general_update_10006(): string {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('bebbo_warmer_log')) {
+    return 'The bebbo_warmer_log table already exists.';
+  }
+
+  $tables = bebbo_custom_general_schema();
+  $schema->createTable('bebbo_warmer_log', $tables['bebbo_warmer_log']);
+
+  return 'Created the bebbo_warmer_log table.';
 }
