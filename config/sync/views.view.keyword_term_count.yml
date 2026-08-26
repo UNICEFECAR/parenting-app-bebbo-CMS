@@ -248,9 +248,12 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            administrator: administrator
+            editor: editor
+            se: se
       cache:
         type: tag
         options: {  }
@@ -3476,9 +3479,12 @@ display:
           offset: 0
           items_per_page: 2
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content'
+          role:
+            administrator: administrator
+            editor: editor
+            se: se
       filters:
         status:
           id: status

@@ -480,4 +480,26 @@ trait BebboSerializerHelpers {
     return $result;
   }
 
+  /**
+   * Derives a stable machine name from a term label.
+   *
+   * Used where a vocabulary has no field_unique_name to read, and for terms
+   * whose field_unique_name is empty. Callers pass the English label so the
+   * result does not vary by language.
+   *
+   * @param string $name
+   *   The term label.
+   *
+   * @return string
+   *   Lowercase label with every non-alphanumeric run collapsed to a single
+   *   underscore, e.g. "Article for birth to 6 years" becomes
+   *   "article_for_birth_to_6_years".
+   */
+  private function slugifyTermName(string $name): string {
+    $machine = strtolower($name);
+    $machine = preg_replace('/[^a-z0-9]/', '_', $machine);
+    $machine = preg_replace('/_+/', '_', $machine);
+    return trim($machine, '_');
+  }
+
 }

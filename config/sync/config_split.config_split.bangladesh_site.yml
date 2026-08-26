@@ -85,7 +85,6 @@ complete_list:
   - mobile_app_links.ios
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
-  - warmer.settings
 partial_list:
   - ai_translate.settings
   - system.date

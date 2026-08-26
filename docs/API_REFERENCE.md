@@ -890,7 +890,7 @@ Full response (no `total` in envelope, keyed by vocabulary):
       {"id": 60, "name": "Feeding", "parent_category_id": 5, "unique_name": "feeding"}
     ],
     "category": [
-      {"id": 5, "name": "Nutrition", "unique_name": "nutrition", "field_type_of_article": "General"}
+      {"id": 5, "name": "Nutrition", "unique_name": "nutrition", "field_type_of_article": "article_for_birth_to_6_years"}
     ],
     "activity_category": [
       {"id": 3, "name": "Music & Songs", "unique_name": "music_songs"}
@@ -1214,7 +1214,7 @@ Both versions return **keyed objects**, not flat arrays.
   - `child_age`: `{id,name,days_from,days_to,buffers_days,age_bracket(int[])}`
   - `growth_introductory`: `{id,name,body,days_from,days_to}`
   - `chatbot_subcategory`: `{id,name,parent_category_id(int),unique_name}`
-  - `category`: `{id,name,unique_name,field_type_of_article}`
+  - `category`: `{id,name,unique_name,field_type_of_article}` — `field_type_of_article` is a machine name derived from the referenced term's English label, so it does not vary by `{lang}`.
   - unique-name vocabs: `{id,name,unique_name}`
   - basic vocabs: `{id,name}`
   - `keywords` is always skipped.
@@ -1764,7 +1764,7 @@ Values vary per subsite. Common `unique_name` examples: `music_songs`, `reading`
 
 **`category`** — source: `/v2/api/taxonomies/{lang}/category`
 
-Article/video-article categories. Each term also carries `field_type_of_article` and `unique_name`. Values vary per subsite — fetch from taxonomy endpoint.
+Article/video-article categories. Each term also carries `unique_name` and `field_type_of_article`, the latter a machine name derived from the referenced `type_of_article` term's English label (e.g. `article_for_birth_to_6_years`) — unlike `name`, it is identical across languages. Values vary per subsite — fetch from taxonomy endpoint.
 
 **`subcategory`** — source: `/v2/api/taxonomies/{lang}/subcategory`
 

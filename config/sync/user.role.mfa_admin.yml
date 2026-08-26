@@ -1,0 +1,19 @@
+uuid: 05c96d1d-dd5e-446a-a4c9-67132af35e54
+langcode: en
+status: true
+dependencies:
+  module:
+    - email_tfa
+    - symfony_mailer
+    - system
+    - toolbar
+id: mfa_admin
+label: 'MFA Admin'
+weight: -7
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access toolbar'
+  - 'administer email tfa'
+  - 'administer mailer'
+  - 'view the administration theme'

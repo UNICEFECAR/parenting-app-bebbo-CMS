@@ -67,6 +67,7 @@ permissions:
   - 'accept translation jobs'
   - 'access group overview'
   - 'access media overview'
+  - 'administer users'
   - 'create activities content'
   - 'create article content'
   - 'create content translations'

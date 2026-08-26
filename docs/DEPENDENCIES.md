@@ -329,10 +329,11 @@ The CI quality gate (`.github/workflows/pipelines.yml`) runs `composer validate`
 
 ## 6. Patches (`extra.patches`)
 
-Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` — a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 31 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
+Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` — a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 32 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
 
 | Target package | Fix | Source |
 |----------------|-----|--------|
+| `drupal/allowed_languages` | Content translation edit/delete access read `{target}` instead of `{language}` | local |
 | `drupal/csv_serialization` | league/csv 9.27 deprecation fix (3562555) | local |
 | `drupal/entity_share` | PHP 8.4 implicit-nullable (3553318) | local |
 | `drupal/entity_share` | Remove dangling canonical link templates → `RouteNotFoundException` (3419256, MR!89) | local |

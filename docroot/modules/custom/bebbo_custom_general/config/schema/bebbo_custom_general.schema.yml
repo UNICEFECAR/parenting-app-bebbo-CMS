@@ -97,3 +97,39 @@ bebbo_custom_general.editorial_menu:
             sequence:
               type: string
               label: 'Role ID'
+
+bebbo_custom_general.warmer:
+  type: config_object
+  label: 'API cache warmer'
+  mapping:
+    concurrency:
+      type: integer
+      label: 'Concurrent requests'
+    request_timeout:
+      type: integer
+      label: 'Request timeout in seconds'
+    paths:
+      type: sequence
+      label: 'Paths to warm'
+      sequence:
+        type: string
+        label: 'Path'
+    sites:
+      type: sequence
+      label: 'Per-site settings keyed by site directory'
+      sequence:
+        type: mapping
+        label: 'Site'
+        mapping:
+          hosts:
+            type: sequence
+            label: 'Hostname per environment'
+            sequence:
+              type: string
+              label: 'Hostname'
+          languages:
+            type: sequence
+            label: 'Languages to warm'
+            sequence:
+              type: string
+              label: 'Langcode'

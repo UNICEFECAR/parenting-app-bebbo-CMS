@@ -9,6 +9,7 @@ dependencies:
     - entity_share_client
     - entity_share_server
     - group
+    - media
     - node
     - pb_content_analytics
     - pb_custom_form
@@ -22,6 +23,8 @@ permissions:
   - 'access content'
   - 'access group overview'
   - 'administer allowed languages'
+  - 'administer users'
+  - 'create media'
   - entity_share_client_pull_content
   - entity_share_server_access_channels
   - 'execute user_add_role_action user'

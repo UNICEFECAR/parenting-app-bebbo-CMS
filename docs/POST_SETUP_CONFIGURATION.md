@@ -111,7 +111,7 @@ Module `email_tfa`. Sends a one-time code by email as a second factor after pass
 | `security_code_length` | `6` | Digits in the code |
 | `timeouts` | `300` | Code lifetime in seconds |
 | `flood_threshold` / `flood_window` | `5` / `3600` | Five attempts per hour |
-| `role_exclusion_type` / `ignore_role` | `disable_for` / empty | No role is currently exempt |
+| `role_exclusion_type` / `ignore_role` | `disable_for` / `mfa_admin` | Holders of the **MFA Admin** role skip the OTP step; every other role is challenged |
 | `dev_mode` | `false` | Must stay `false` outside local debugging |
 | `log_events` | `false` | No verbose logging |
 | `routes` | `email_tfa.verifiy`, `user.logout` | Routes reachable while a challenge is pending |
@@ -127,9 +127,9 @@ The subject line and body template are also exported, using the tokens `[user:na
 
 ### Required for it to work
 
-**Working outbound email.** With `tracks: globally_enabled` and `user_one: false`, *every* account — uid 1 included — needs the emailed code, so a mail outage locks everyone out of the UI. Configure §4 and verify a test email arrives **before** enabling TFA on a new environment, and confirm every account has a valid email address.
+**Working outbound email.** With `tracks: globally_enabled` and `user_one: false`, *every* account without the `mfa_admin` role — uid 1 included — needs the emailed code, so a mail outage locks everyone out of the UI. Configure §4 and verify a test email arrives **before** enabling TFA on a new environment, and confirm every account has a valid email address.
 
-> If you want a recovery path, tick **Exclude user 1** on the settings form, or keep `drush uli` available from the command line — that link bypasses the form login entirely.
+> Recovery paths: assign the **MFA Admin** role (`mfa_admin`) to an account — it is exempt from the OTP step and can administer both the mailer and the TFA settings. Alternatively tick **Exclude user 1** on the settings form, or keep `drush uli` available from the command line — that link bypasses the form login entirely.
 
 ---
 

@@ -1,0 +1,113 @@
+concurrency: 8
+request_timeout: 300
+paths:
+  - /api/activities/{lang}
+  - /api/archive/{lang}
+  - /api/articles/{lang}
+  - '/api/articles/{lang}?pregnancy=true'
+  - /api/basic-pages/{lang}
+  - /api/child-development-data/{lang}
+  - /api/child-growth-data/{lang}
+  - /api/country-groups/{lang}
+  - /api/daily-homescreen-messages/{lang}
+  - /api/faqs/{lang}
+  - /api/health-checkup-data/{lang}
+  - /api/milestones/{lang}
+  - /api/pinned-contents/{lang}/child_development/40
+  - /api/pinned-contents/{lang}/child_development/41
+  - /api/pinned-contents/{lang}/child_growth
+  - /api/pinned-contents/{lang}/faq
+  - /api/pinned-contents/{lang}/health_check_ups
+  - /api/pinned-contents/{lang}/vaccinations
+  - /api/related-article-contents/{lang}/milestone
+  - /api/sponsors/{lang}
+  - /api/standard_deviation/{lang}
+  - /api/strings/{lang}
+  - /api/surveys/{lang}
+  - /api/taxonomies/{lang}/all
+  - '/api/taxonomies/{lang}/all?pregnancy=true'
+  - /api/updated-pinned-contents/{lang}/faq
+  - /api/vaccinations/{lang}
+  - /api/video-articles/{lang}
+  - /api/vocabularies/{lang}
+sites:
+  default:
+    hosts:
+      dev: dev.bebbo.app
+      test: stage.bebbo.app
+      prod: bebbo.app
+    languages:
+      - al-sq
+      - bg-bg
+      - by-be
+      - by-ru
+      - en
+      - eu
+      - gr-el
+      - kg-ky
+      - kg-ru
+      - md-ro
+      - me-cnr
+      - mk-mk
+      - mk-sq
+      - ro-ro
+      - rs-en
+      - rs-sr
+      - ru
+      - sk
+      - tj-ru
+      - tj-tg
+      - uk
+      - uz-kaa
+      - uz-ru
+      - uz-uz
+      - xk-rs
+      - xk-sq
+  bangladesh:
+    hosts:
+      dev: bangla-dev.bebbo.app
+      test: bangla-stage.bebbo.app
+      prod: babuni.app
+    languages:
+      - bn
+  ecuador:
+    hosts:
+      dev: ec-dev.bebbo.app
+      test: ec-stage.bebbo.app
+      prod: wawamor.ec
+    languages:
+      - es
+      - ec-es
+  pakistan:
+    hosts:
+      dev: pk-dev.bebbo.app
+      test: pk-stage.bebbo.app
+      prod: pk.bebbo.app
+    languages:
+      - ur
+  somoa:
+    hosts:
+      dev: ws-dev.bebbo.app
+      test: ws-stage.bebbo.app
+      prod: bebbopacific.app
+    languages:
+      - fj-fj
+      - fj-en
+      - ws-sm
+      - ws-en
+  turkey:
+    hosts:
+      dev: tr-dev.bebbo.app
+      test: tr-stage.bebbo.app
+      prod: merhababebek.app
+    languages:
+      - tr
+  zimbabwe:
+    hosts:
+      dev: zw-dev.bebbo.app
+      test: zw-stage.bebbo.app
+      prod: rerai.umntwana.app
+    languages:
+      - zw-en
+      - zw-sn
+      - zw-nd

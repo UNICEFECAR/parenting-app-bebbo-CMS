@@ -206,6 +206,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/allowed_languages": {
+                "Content translation edit/delete access reads {target} instead of {language}, so it tests the page content language: denies assigned languages under /en and grants unassigned ones under a language prefix": "patches/allowed_languages/content-translation-edit-uses-language-param.patch"
+            },
             "drupal/ai": {
                 "Preserve HTML in streamed output - hold flush buffer until tags balance (3586558, MR !1734)": "patches/ai/preserve-html-in-streamed-output-3586558-mr1734.patch"
             },

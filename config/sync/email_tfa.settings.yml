@@ -9,7 +9,8 @@ status: true
 tracks: globally_enabled
 user_one: false
 role_exclusion_type: disable_for
-ignore_role: {  }
+ignore_role:
+  - mfa_admin
 dev_mode: false
 security_code_label_text: 'One-time security code'
 security_code_description_text: 'We sent you an email containing your one-time security code. Please enter the code provided to proceed.'
