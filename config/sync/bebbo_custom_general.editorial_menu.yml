@@ -10,7 +10,6 @@ links:
     parent: ''
     langcode: en
     show_role:
-      - administrator
       - editor
       - global_admin
       - reviewer
@@ -19,12 +18,12 @@ links:
       - translator
     hide_role: {  }
   66da6c66-6252-497a-b0d8-53ed20212dc7:
-    title: 'Manage Content'
+    title: 'Content'
     description: ''
-    uri: 'internal:/global-content-list'
+    uri: route:<nolink>
     options: {  }
     weight: -49
-    expanded: false
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
@@ -37,10 +36,10 @@ links:
       - sme
       - translator
     hide_role: {  }
-  51afa768-e69e-4e9e-8c3a-25187410c2bf:
-    title: 'Country Content'
+  3f1c8a94-52d7-4e6b-9c31-7a0e5d84b612:
+    title: 'Content overview'
     description: ''
-    uri: 'internal:/country-content-list'
+    uri: 'internal:/admin/content'
     options: {  }
     weight: -50
     expanded: false
@@ -49,6 +48,19 @@ links:
     langcode: en
     show_role:
       - administrator
+      - global_admin
+    hide_role: {  }
+  51afa768-e69e-4e9e-8c3a-25187410c2bf:
+    title: 'Country Content'
+    description: ''
+    uri: 'internal:/country-content-list'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
+    langcode: en
+    show_role:
       - editor
       - global_admin
       - reviewer
@@ -61,13 +73,12 @@ links:
     description: ''
     uri: 'internal:/global-content-list'
     options: {  }
-    weight: -49
+    weight: -48
     expanded: false
     enabled: true
     parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
     langcode: en
     show_role:
-      - administrator
       - editor
       - global_admin
       - reviewer
@@ -80,13 +91,12 @@ links:
     description: ''
     uri: 'internal:/node/add'
     options: {  }
-    weight: -48
+    weight: -47
     expanded: false
     enabled: true
     parent: 'menu_link_content:66da6c66-6252-497a-b0d8-53ed20212dc7'
     langcode: en
     show_role:
-      - administrator
       - editor
       - global_admin
       - se
@@ -94,12 +104,12 @@ links:
       - translator
     hide_role: {  }
   65004a8e-ba1f-43f8-a108-37d55d29aba7:
-    title: 'Manage Translations'
+    title: 'Translation'
     description: ''
-    uri: 'internal:/admin/tmgmt'
+    uri: route:<nolink>
     options: {  }
     weight: -48
-    expanded: false
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
@@ -112,9 +122,9 @@ links:
       - translator
     hide_role: {  }
   61da3e38-12b5-4b43-928f-c929c9ebb814:
-    title: 'Manage Translation Jobs'
+    title: 'Translation Overview'
     description: ''
-    uri: 'internal:/admin/tmgmt/job_items'
+    uri: 'internal:/admin/tmgmt/jobs'
     options: {  }
     weight: -50
     expanded: false
@@ -122,14 +132,14 @@ links:
     parent: 'menu_link_content:65004a8e-ba1f-43f8-a108-37d55d29aba7'
     langcode: en
     show_role:
-      - administrator
       - editor
+      - global_admin
       - se
       - sme
       - translator
     hide_role: {  }
   90295e25-b01c-4fab-ad3a-0977d50469b5:
-    title: 'Add Translation Job'
+    title: 'Create Translation Job'
     description: ''
     uri: 'internal:/admin/tmgmt/sources'
     options: {  }
@@ -142,18 +152,34 @@ links:
       - administrator
       - global_admin
     hide_role: {  }
+  b8d24f07-1e93-45ac-8f26-0c9713ad5e48:
+    title: 'Media'
+    description: ''
+    uri: route:<nolink>
+    options: {  }
+    weight: -47
+    expanded: true
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - editor
+      - global_admin
+      - reviewer
+      - se
+      - translator
+    hide_role: {  }
   bcf35cf7-73e2-4ea4-a568-dea9bee18661:
     title: 'Manage Media'
     description: ''
     uri: 'internal:/admin/content/media'
     options: {  }
-    weight: -47
+    weight: -50
     expanded: false
     enabled: true
-    parent: ''
+    parent: 'menu_link_content:b8d24f07-1e93-45ac-8f26-0c9713ad5e48'
     langcode: en
     show_role:
-      - administrator
       - editor
       - global_admin
       - reviewer
@@ -165,25 +191,24 @@ links:
     description: ''
     uri: 'internal:/media/add'
     options: {  }
-    weight: -50
+    weight: -49
     expanded: false
     enabled: true
-    parent: 'menu_link_content:bcf35cf7-73e2-4ea4-a568-dea9bee18661'
+    parent: 'menu_link_content:b8d24f07-1e93-45ac-8f26-0c9713ad5e48'
     langcode: en
     show_role:
-      - administrator
       - editor
       - global_admin
       - reviewer
       - se
     hide_role: {  }
-  6ffc3c54-07d8-4788-8e51-663b6737d818:
-    title: 'View Taxonomies'
+  9a63e1cb-77f4-4d80-b512-8e4af0263d97:
+    title: 'Taxonomies'
     description: ''
-    uri: 'internal:/admin/structure/taxonomy'
+    uri: route:<nolink>
     options: {  }
     weight: -46
-    expanded: false
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
@@ -192,15 +217,29 @@ links:
       - global_admin
       - translator
     hide_role: {  }
+  6ffc3c54-07d8-4788-8e51-663b6737d818:
+    title: 'View Taxonomies'
+    description: ''
+    uri: 'internal:/admin/structure/taxonomy'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:9a63e1cb-77f4-4d80-b512-8e4af0263d97'
+    langcode: en
+    show_role:
+      - global_admin
+      - translator
+    hide_role: {  }
   2f932b25-2b85-4721-bc41-dba801403ba8:
     title: 'View taxonomy feed types'
     description: ''
     uri: 'internal:/admin/structure/feeds'
     options: {  }
-    weight: -45
+    weight: -49
     expanded: false
     enabled: true
-    parent: ''
+    parent: 'menu_link_content:9a63e1cb-77f4-4d80-b512-8e4af0263d97'
     langcode: en
     show_role:
       - administrator
@@ -211,10 +250,10 @@ links:
     description: ''
     uri: 'internal:/admin/structure/feeds/add'
     options: {  }
-    weight: -50
+    weight: -48
     expanded: false
     enabled: true
-    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    parent: 'menu_link_content:9a63e1cb-77f4-4d80-b512-8e4af0263d97'
     langcode: en
     show_role:
       - administrator
@@ -225,10 +264,10 @@ links:
     description: ''
     uri: 'internal:/admin/content/feed'
     options: {  }
-    weight: -49
+    weight: -47
     expanded: false
     enabled: true
-    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    parent: 'menu_link_content:9a63e1cb-77f4-4d80-b512-8e4af0263d97'
     langcode: en
     show_role:
       - administrator
@@ -239,27 +278,26 @@ links:
     description: ''
     uri: 'internal:/feed/add'
     options: {  }
-    weight: -48
+    weight: -46
     expanded: false
     enabled: true
-    parent: 'menu_link_content:2f932b25-2b85-4721-bc41-dba801403ba8'
+    parent: 'menu_link_content:9a63e1cb-77f4-4d80-b512-8e4af0263d97'
     langcode: en
     show_role:
       - administrator
       - global_admin
     hide_role: {  }
   43d7c694-1ab4-446e-bd39-76009d2ed5dc:
-    title: 'Manage Country'
+    title: 'Countries'
     description: ''
-    uri: 'internal:/admin/group'
+    uri: route:<nolink>
     options: {  }
-    weight: -44
-    expanded: false
+    weight: -45
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
   926c5da5-45a7-4ab5-9031-a165f5fd6dce:
@@ -273,7 +311,6 @@ links:
     parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
   71693b5d-55eb-4847-ab62-74f1d6dde7c8:
@@ -287,21 +324,19 @@ links:
     parent: 'menu_link_content:43d7c694-1ab4-446e-bd39-76009d2ed5dc'
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
   e4fbbe06-dedb-4497-81c0-42ed48a7389f:
-    title: 'Manage Language'
+    title: 'Languages'
     description: ''
-    uri: 'internal:/admin/config/regional/language/add'
+    uri: route:<nolink>
     options: {  }
-    weight: -43
-    expanded: false
+    weight: -44
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
   61e227a4-33cf-47c5-8ec6-ac318d970c63:
@@ -315,7 +350,6 @@ links:
     parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
   51ef2a66-2df6-4dd5-baf4-a5987010ba30:
@@ -329,21 +363,19 @@ links:
     parent: 'menu_link_content:e4fbbe06-dedb-4497-81c0-42ed48a7389f'
     langcode: en
     show_role:
-      - administrator
       - global_admin
     hide_role: {  }
-  07634636-74b5-4e48-8e0a-0c6c14e6e719:
-    title: 'Add user'
+  c4e07b52-3a16-49fd-9081-25b6ce8f7d30:
+    title: 'Users'
     description: ''
-    uri: 'internal:/admin/people/create'
+    uri: route:<nolink>
     options: {  }
-    weight: -42
-    expanded: false
+    weight: -43
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
     show_role:
-      - administrator
       - global_admin
       - reviewer
       - se
@@ -353,22 +385,37 @@ links:
     description: ''
     uri: 'internal:/users'
     options: {  }
-    weight: -41
+    weight: -50
     expanded: false
     enabled: true
-    parent: ''
+    parent: 'menu_link_content:c4e07b52-3a16-49fd-9081-25b6ce8f7d30'
     langcode: en
     show_role:
-      - administrator
       - global_admin
+      - se
+    hide_role: {  }
+  07634636-74b5-4e48-8e0a-0c6c14e6e719:
+    title: 'Add user'
+    description: ''
+    uri: 'internal:/admin/people/create'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:c4e07b52-3a16-49fd-9081-25b6ce8f7d30'
+    langcode: en
+    show_role:
+      - global_admin
+      - reviewer
+      - se
     hide_role: {  }
   3c7e267a-6c10-4efd-8654-41d657c1ecf6:
-    title: 'Manage Reports'
+    title: 'Reports'
     description: ''
-    uri: 'route:<nolink>'
+    uri: route:<nolink>
     options: {  }
-    weight: -40
-    expanded: false
+    weight: -42
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
@@ -382,7 +429,7 @@ links:
       - sme
     hide_role: {  }
   b79316ca-8c26-42f0-abdf-8f054c80e4ce:
-    title: 'Country Reports'
+    title: 'Country Report'
     description: ''
     uri: 'internal:/country-reports'
     options: {  }
@@ -418,7 +465,7 @@ links:
       - sme
     hide_role: {  }
   d8eb3afe-9e45-437f-923f-1755ff030df8:
-    title: 'Users Reports'
+    title: 'User Report'
     description: ''
     uri: 'internal:/users-reports'
     options: {  }
@@ -428,12 +475,11 @@ links:
     parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-      - administrator
       - global_admin
       - se
     hide_role: {  }
   74f2eb98-339f-434f-9f56-a2b5fa1f6d6e:
-    title: 'Taxonomy Export'
+    title: 'Taxonomy Report'
     description: ''
     uri: 'internal:/taxonomy-export'
     options: {  }
@@ -443,7 +489,6 @@ links:
     parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-      - administrator
       - editor
       - se
     hide_role: {  }
@@ -458,7 +503,6 @@ links:
     parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-      - administrator
       - editor
       - se
     hide_role: {  }
@@ -473,17 +517,16 @@ links:
     parent: 'menu_link_content:3c7e267a-6c10-4efd-8654-41d657c1ecf6'
     langcode: en
     show_role:
-      - administrator
       - editor
       - se
     hide_role: {  }
   89b69e27-2acb-4528-aa42-134d864d2c4f:
-    title: 'Manage Force Update'
+    title: 'Force Update'
     description: ''
-    uri: 'route:<nolink>'
+    uri: route:<nolink>
     options: {  }
-    weight: -39
-    expanded: false
+    weight: -41
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
@@ -524,7 +567,7 @@ links:
     description: ''
     uri: 'internal:/admin/config/parent-buddy/redirect-management'
     options: {  }
-    weight: -38
+    weight: -40
     expanded: false
     enabled: true
     parent: ''
@@ -533,18 +576,4 @@ links:
       - administrator
       - global_admin
       - reviewer
-    hide_role: {  }
-  f07283dc-3ad9-4a7d-8f05-8efad3de4ddf:
-    title: 'Google Analytics'
-    description: ''
-    uri: 'internal:/admin/config/system/google-analytics'
-    options: {  }
-    weight: -37
-    expanded: false
-    enabled: false
-    parent: ''
-    langcode: en
-    show_role:
-      - administrator
-      - global_admin
     hide_role: {  }

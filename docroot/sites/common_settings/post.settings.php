@@ -67,16 +67,6 @@ if ($ah_group && $ah_env) {
 $settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
 $settings['config_sync_directory'] = '../config/sync';
 
-// Keep the Bebbo API row-fragment cache on the database backend rather than
-// the site-wide memcache default. The fragments are PERMANENT and invalidated
-// only by node/media edits, but the article payloads are large enough that
-// memcache evicts them under LRU pressure within minutes, re-cooling
-// /api/articles/{lang} and reintroducing the cold-render timeout. The database
-// bin is durable, so once the cron warmer fills it the endpoint stays warm
-// until the content actually changes. Placed after the memcache include so it
-// overrides the default bin backend.
-$settings['cache']['bins']['bebbo_api_fragment'] = 'cache.backend.database';
-
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
 

@@ -12,8 +12,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Path\CurrentPathStack;
-use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\bebbo_serializer\Cache\RowFragmentCache;
+use Drupal\Core\Render\RenderContext;
+use Drupal\Core\TypedData\TranslatableInterface;
 use Drupal\group\Entity\Group;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\language_visibility_control\LanguageVisibilityService;
@@ -55,9 +55,13 @@ class BebboSerializer extends Serializer {
   use BebboSerializerHelpers;
 
   /**
-   * Displays whose rows are 1:1 with a node and are safe to fragment-cache.
+   * Displays whose response cache tags are scoped to the listing.
+   *
+   * Rows on these displays render in an isolated context so their per-entity
+   * tags never reach the response; the listing tags emitted below (and by
+   * the bebbo_api_tag views cache plugin) cover invalidation instead.
    */
-  private const CACHEABLE_DISPLAYS = [
+  private const TAG_SCOPED_DISPLAYS = [
     'articles_rest_export',
   ];
 
@@ -104,13 +108,6 @@ class BebboSerializer extends Serializer {
   protected LanguageVisibilityService $languageVisibilityService;
 
   /**
-   * The row fragment cache.
-   *
-   * @var \Drupal\bebbo_serializer\Cache\RowFragmentCache
-   */
-  protected RowFragmentCache $rowFragmentCache;
-
-  /**
    * The file URL generator.
    *
    * @var \Drupal\Core\File\FileUrlGeneratorInterface
@@ -133,7 +130,6 @@ class BebboSerializer extends Serializer {
     EntityTypeManagerInterface $entity_type_manager,
     Connection $database,
     LanguageVisibilityService $language_visibility_service,
-    RowFragmentCache $row_fragment_cache,
     FileUrlGeneratorInterface $file_url_generator,
   ) {
     parent::__construct(
@@ -150,7 +146,6 @@ class BebboSerializer extends Serializer {
     $this->entityTypeManager = $entity_type_manager;
     $this->database = $database;
     $this->languageVisibilityService = $language_visibility_service;
-    $this->rowFragmentCache = $row_fragment_cache;
     $this->fileUrlGenerator = $file_url_generator;
   }
 
@@ -171,7 +166,6 @@ class BebboSerializer extends Serializer {
       $container->get('entity_type.manager'),
       $container->get('database'),
       $container->get('language_visibility_control.service'),
-      $container->get('bebbo_serializer.row_fragment_cache'),
       $container->get('file_url_generator'),
     );
   }
@@ -204,30 +198,41 @@ class BebboSerializer extends Serializer {
       return $etagResponse;
     }
 
-    // Collect rows via the parent row plugin, routing 1:1 node displays
-    // through the fragment cache so only edited rows are re-rendered.
-    $renderRow = function (int $rowIndex, object $row): mixed {
+    // Collect rows via the parent row plugin.
+    // Hand the row entity over already switched to the requested language.
+    // Entities load with their original language active, and core's
+    // EntityRepository::getTranslationFromContext() runs the full
+    // language-fallback negotiation (content_translation walks every
+    // translation with access checks) whenever the active language differs
+    // from the requested one — even when that translation exists.
+    $renderLangcode = $this->view->args[0] ?? $this->languageManager->getCurrentLanguage()->getId();
+    $renderRow = function (int $rowIndex, object $row) use ($renderLangcode): mixed {
       $this->view->row_index = $rowIndex;
+      if (isset($row->_entity) && $row->_entity instanceof TranslatableInterface && $row->_entity->hasTranslation($renderLangcode)) {
+        $row->_entity = $row->_entity->getTranslation($renderLangcode);
+      }
       return $this->normalizeMarkup($this->view->rowPlugin->render($row));
     };
 
-    if (in_array($displayId, self::CACHEABLE_DISPLAYS, TRUE)) {
-      $request  = $this->requestStack->getCurrentRequest();
-      $host     = $request !== NULL ? $request->getSchemeAndHttpHost() : '';
+    if (in_array($displayId, self::TAG_SCOPED_DISPLAYS, TRUE)) {
       $langcode = $this->view->args[0] ?? $this->languageManager->getCurrentLanguage()->getId();
-      $bubble   = new BubbleableMetadata();
-      $rows     = $this->rowFragmentCache->render($displayId, $langcode, $host, $this->view->result, $renderRow, $bubble);
+      // Render in an isolated context and discard what bubbles. acquia_purge
+      // emits every response tag as a CDN Surrogate-Key, so hundreds of
+      // node:ID tags overflow the response header (Apache "premature end of
+      // script headers" → HTTP 500) and flood the purge queue.
+      $rows = $this->getRenderer()->executeInRenderContext(new RenderContext(), function () use ($renderRow): array {
+        $rows = [];
+        foreach ($this->view->result as $rowIndex => $row) {
+          $rows[] = $renderRow($rowIndex, $row);
+        }
+        return $rows;
+      });
       // Scope the response to this listing in this language. node_list would
       // expire it on any node save anywhere — an FAQ edit taking every
-      // article response with it — and the per-row entity tags are worse
-      // still: acquia_purge emits every response tag as a CDN Surrogate-Key,
-      // so hundreds of node:ID tags overflow the response header (Apache
-      // "premature end of script headers" → HTTP 500) and flood the purge
-      // queue. Per-row invalidation lives on the fragments instead, which is
-      // what re-renders only the edited row. The payload references node and
-      // media entities only — categories and keywords are emitted as IDs, so
-      // term edits never change output — so the listing tags plus media_list
-      // are complete.
+      // article response with it. The payload references node and media
+      // entities only — categories and keywords are emitted as IDs, so term
+      // edits never change output — so the listing tags plus media_list are
+      // complete.
       $bundles = $this->view->display_handler->getOption('filters')['type']['value'] ?? [];
       $this->view->element['#cache']['tags'] = Cache::mergeTags(
         $this->view->element['#cache']['tags'] ?? [],
@@ -1322,8 +1327,9 @@ class BebboSerializer extends Serializer {
   /**
    * Queries category vocabulary terms.
    *
-   * Resolves field_type_of_article entity reference label via a single JOIN
-   * instead of N+1 entity loads.
+   * Resolves the field_type_of_article entity reference via JOINs instead of
+   * N+1 entity loads, and returns it as a machine name derived from the
+   * English label.
    *
    * @param string $langcode
    *   The language code.
@@ -1335,15 +1341,15 @@ class BebboSerializer extends Serializer {
     $query = $this->buildTermBaseQuery('category', $langcode);
     $query->leftJoin('taxonomy_term__field_unique_name', 'un', "un.entity_id = td.tid AND un.langcode = 'en'");
     $query->leftJoin('taxonomy_term__field_type_of_article', 'toa', 'toa.entity_id = td.tid');
-    // Resolve the entity reference to a label via two JOINs: first try the
-    // requested language, then fall back to English. This matches V1's
-    // entity-loading behaviour where Drupal returns the default-language
-    // value when no translation exists (e.g. type_of_article terms are
-    // English-only on most sites).
+    // Resolve the entity reference via two JOINs. The English label is
+    // preferred because it is the source for the machine name, which must not
+    // vary by language; the requested language is only a fallback for terms
+    // with no English row at all. type_of_article carries no
+    // field_unique_name, so there is no stored machine name to read instead.
     $query->leftJoin('taxonomy_term_field_data', 'toa_td_lang', "toa_td_lang.tid = toa.field_type_of_article_target_id AND toa_td_lang.langcode = td.langcode");
     $query->leftJoin('taxonomy_term_field_data', 'toa_td_en', "toa_td_en.tid = toa.field_type_of_article_target_id AND toa_td_en.langcode = 'en'");
     $query->addField('un', 'field_unique_name_value', 'unique_name');
-    $query->addExpression("COALESCE(toa_td_lang.name, toa_td_en.name)", 'type_of_article');
+    $query->addExpression("COALESCE(toa_td_en.name, toa_td_lang.name)", 'type_of_article');
 
     $results = $query->execute()->fetchAll();
     $terms = [];
@@ -1353,7 +1359,7 @@ class BebboSerializer extends Serializer {
         'id' => (int) $row->tid,
         'name' => $row->name,
         'unique_name' => $row->unique_name ?? '',
-        'field_type_of_article' => $row->type_of_article ?? '',
+        'field_type_of_article' => $row->type_of_article ? $this->slugifyTermName($row->type_of_article) : '',
       ];
       if (empty($row->unique_name)) {
         $needsMachineName[$idx] = (int) $row->tid;
@@ -1508,10 +1514,7 @@ class BebboSerializer extends Serializer {
 
     foreach ($needsMachineName as $idx => $tid) {
       $source = $enNames[$tid] ?? $terms[$idx]['name'];
-      $machine = strtolower($source);
-      $machine = preg_replace('/[^a-z0-9]/', '_', $machine);
-      $machine = preg_replace('/_+/', '_', $machine);
-      $terms[$idx]['unique_name'] = trim($machine, '_');
+      $terms[$idx]['unique_name'] = $this->slugifyTermName($source);
     }
   }
 

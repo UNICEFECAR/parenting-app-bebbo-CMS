@@ -20,15 +20,13 @@ use Drupal\views\Plugin\views\cache\Tag;
  * site, including the 40-odd endpoints that could not contain the saved node.
  *
  * This narrows the response to one tag per bundle the display lists, in the
- * language it was built for. Per-row invalidation is not lost: the row
- * fragments carry their own language-scoped tags, so an edit re-renders the
- * row it touched and leaves the rest of the listing cached.
+ * language it was built for. bebbo_serializer_node_update() fires those tags
+ * only for the languages whose stored values actually changed.
  *
  * The plugin keeps core's behaviour whenever it cannot establish what the
  * display lists — an unknown bundle set or a language it does not recognise
  * would otherwise trade staleness for speed.
  *
- * @see \Drupal\bebbo_serializer\Cache\RowFragmentCache
  * @see \Drupal\views\Plugin\views\query\Sql::getCacheTags()
  */
 #[ViewsCache(

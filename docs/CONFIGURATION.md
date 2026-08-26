@@ -102,7 +102,7 @@ The timezone affects admin-UI date display only — stored values are Unix times
 | OTP timeout | `300` s (5 min) |
 | Flood protection | `5` attempts per `3600` s (1 h) |
 | Dev mode | `disabled` |
-| Role exclusion | none (`ignore_role: {}`) |
+| Role exclusion | `disable_for` — `mfa_admin` is exempt (`ignore_role: [mfa_admin]`) |
 | Email subject | "One Time Password" |
 | Email body tokens | `[user:email_tfa]`, `[user:name]`, `[site:name]` |
 | Log events | `disabled` |
@@ -213,7 +213,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 
 ## 3. User Roles & Permissions
 
-9 global roles (`user.role.*.yml`). Permission counts are exact from the YAML.
+10 global roles (`user.role.*.yml`). Permission counts are exact from the YAML.
 
 | Role ID | Label | is_admin | # Permissions |
 |---|---|---|---|
@@ -222,6 +222,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 | `authenticated` | Authenticated user | `false` | 24 |
 | `editor` | Editor | `null` | 131 |
 | `global_admin` | Global Admin | `null` | 389 |
+| `mfa_admin` | MFA Admin | `null` | 5 |
 | `reviewer` | Country Admin | `null` | 16 |
 | `se` | Senior Editor | `null` | 178 |
 | `sme` | SME | `null` | 86 |
@@ -236,6 +237,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 - **Senior Editor (`se`)** — Editor + publish/archive/reject transitions, revision revert all types, content translations, `administer users`
 - **SME** — create and edit any content (15 node types), `accept translation jobs`, transitions SME→reject / SME→senior_editor / SME→SME, view unpublished
 - **Country Admin (`reviewer`)** — `access content`, `access group overview`, `administer allowed languages`, `administer users`, `create media`, entity_share client/server, user actions (add_role/block/unblock), redirect settings
+- **MFA Admin** — `administer mailer`, `administer email tfa`, `access administration pages`, `access toolbar`, `view the administration theme`. Scoped to the Symfony Mailer pages (policy, transport, Office365, test) and the Email TFA settings form. Listed in `email_tfa` `ignore_role`, so holders log in without the OTP step
 - **Global Admin** — full admin: feeds (all 43 feed types), entity_share, REST, content types, nodes, users, languages, country group creation, all workflow transitions, layout builder, redirect, toolbar menu
 - **Translator** — create content (15 node types), translate nodes/taxonomy/media, translation job mgmt, `translate interface`, transitions review_after_translation→draft/SME
 
