@@ -222,7 +222,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 | `authenticated` | Authenticated user | `false` | 24 |
 | `editor` | Editor | `null` | 131 |
 | `global_admin` | Global Admin | `null` | 389 |
-| `mfa_admin` | MFA Admin | `null` | 5 |
+| `mfa_admin` | MFA Admin | `null` | 6 |
 | `reviewer` | Country Admin | `null` | 16 |
 | `se` | Senior Editor | `null` | 178 |
 | `sme` | SME | `null` | 86 |
@@ -237,7 +237,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 - **Senior Editor (`se`)** — Editor + publish/archive/reject transitions, revision revert all types, content translations, `administer users`
 - **SME** — create and edit any content (15 node types), `accept translation jobs`, transitions SME→reject / SME→senior_editor / SME→SME, view unpublished
 - **Country Admin (`reviewer`)** — `access content`, `access group overview`, `administer allowed languages`, `administer users`, `create media`, entity_share client/server, user actions (add_role/block/unblock), redirect settings
-- **MFA Admin** — `administer mailer`, `administer email tfa`, `access administration pages`, `access toolbar`, `view the administration theme`. Scoped to the Symfony Mailer pages (policy, transport, Office365, test) and the Email TFA settings form. Listed in `email_tfa` `ignore_role`, so holders log in without the OTP step
+- **MFA Admin** — `administer mailer`, `administer email tfa`, `access administration pages`, `access toolbar`, `view editorial_menu in toolbar`, `view the administration theme`. Scoped to the Symfony Mailer pages (policy, transport, Office365, test) and the Email TFA settings form, reached through the **Email & MFA** group in the editorial menu. Listed in `email_tfa` `ignore_role`, so holders log in without the OTP step
 - **Global Admin** — full admin: feeds (all 43 feed types), entity_share, REST, content types, nodes, users, languages, country group creation, all workflow transitions, layout builder, redirect, toolbar menu
 - **Translator** — create content (15 node types), translate nodes/taxonomy/media, translation job mgmt, `translate interface`, transitions review_after_translation→draft/SME
 
@@ -1182,7 +1182,7 @@ Key-level ignores (only the named key is environment-managed; the rest of the en
 ### Custom-module configs in sync
 - `bebbo_custom_general.adminsettings` — Master language `en,sr,ru,sq`
 - `bebbo_custom_general.app_store_redirect` — App store / Google Play URLs both empty
-- `bebbo_custom_general.editorial_menu` — canonical editorial menu, 35 links keyed by UUID with title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Shared by all 7 sites and applied to each site's menu links by `drush bebbo:menu-sync` (menu links are content entities, so `cim` alone does not apply them)
+- `bebbo_custom_general.editorial_menu` — canonical editorial menu, 44 links keyed by UUID with title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Shared by all 7 sites and applied to each site's menu links by `drush bebbo:menu-sync` (menu links are content entities, so `cim` alone does not apply them)
 
 ---
 

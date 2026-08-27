@@ -577,3 +577,87 @@ links:
       - global_admin
       - reviewer
     hide_role: {  }
+  6ca18dad-3067-4090-9bbc-f9bc60dd0e2e:
+    title: 'Email & MFA'
+    description: ''
+    uri: route:<nolink>
+    options: {  }
+    weight: -39
+    expanded: true
+    enabled: true
+    parent: ''
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
+  06450ce1-bbf3-4a56-8257-734e34ddd320:
+    title: 'Email TFA Menu'
+    description: ''
+    uri: 'internal:/admin/config/people/email-tfa'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ca18dad-3067-4090-9bbc-f9bc60dd0e2e'
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
+  45d3f9ac-d75e-48eb-9811-338b5f4673ac:
+    title: 'Mailer policy'
+    description: ''
+    uri: 'internal:/admin/config/system/mailer'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ca18dad-3067-4090-9bbc-f9bc60dd0e2e'
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
+  4c1e1db9-ea3f-41a5-ab20-372c404945c4:
+    title: 'Mailer transport'
+    description: ''
+    uri: 'internal:/admin/config/system/mailer/transport'
+    options: {  }
+    weight: -48
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ca18dad-3067-4090-9bbc-f9bc60dd0e2e'
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
+  b04e39b3-43d6-454e-84d9-1be146c1e25c:
+    title: 'Office365 Configuration'
+    description: ''
+    uri: 'internal:/admin/config/system/mailer/office365'
+    options: {  }
+    weight: -47
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ca18dad-3067-4090-9bbc-f9bc60dd0e2e'
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
+  8d69c9b3-cedd-497a-8902-3377fc414d8d:
+    title: 'Mailer test'
+    description: ''
+    uri: 'internal:/admin/config/system/mailer/test'
+    options: {  }
+    weight: -46
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:6ca18dad-3067-4090-9bbc-f9bc60dd0e2e'
+    langcode: en
+    show_role:
+      - administrator
+      - mfa_admin
+    hide_role: {  }
