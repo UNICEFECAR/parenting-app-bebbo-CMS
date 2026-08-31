@@ -1,12 +1,11 @@
-diff --git a/src/Plugin/tmgmt/Translator/MemsourceTranslator.php b/src/Plugin/tmgmt/Translator/MemsourceTranslator.php
 --- a/src/Plugin/tmgmt/Translator/MemsourceTranslator.php
 +++ b/src/Plugin/tmgmt/Translator/MemsourceTranslator.php
-@@ -3966,7 +3966,7 @@
+@@ -4074,7 +4074,7 @@
     * @throws \Drupal\tmgmt\TMGMTException
     *   Thrown when file creation fails.
     */
--  protected function createFileTranslation(\Drupal\file\FileInterface $source_file, string $target_langcode, string $translation_content, string $destination = NULL) {
-+  protected function createFileTranslation(\Drupal\file\FileInterface $source_file, string $target_langcode, string $translation_content, ?string $destination = NULL) {
+-  protected function createFileTranslation(FileInterface $source_file, string $target_langcode, string $translation_content, string $destination = NULL) {
++  protected function createFileTranslation(FileInterface $source_file, string $target_langcode, string $translation_content, ?string $destination = NULL) {
      $this->logDebug('Creating translated file for source file @filename (FID: @fid) using TMGMT core service', [
        '@filename' => $source_file->getFilename(),
        '@fid' => $source_file->id(),

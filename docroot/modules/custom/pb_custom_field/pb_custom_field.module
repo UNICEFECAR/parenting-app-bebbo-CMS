@@ -1831,7 +1831,9 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
     $conn = Database::getConnection();
     $query = $conn->query("SELECT status FROM {users_field_data} WHERE uid = :uid", [':uid' => $user_id]);
     $result = $query->fetchObject();
-    $form['account']['status']['#default_value'] = $result->status;
+    if (is_object($result)) {
+      $form['account']['status']['#default_value'] = $result->status;
+    }
 
     if ($user_id) {
       $database = \Drupal::database();
@@ -1957,7 +1959,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     if ($val) {
       // Check cache first.
       if (!isset($user_notification_cache[$val])) {
-        $user_load = user_load_by_mail($val);
+        $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $val]);
+        $user_load = reset($user_accounts);
         if (!$user_load) {
           $user_notification_cache[$val] = FALSE;
           continue;
@@ -2034,7 +2037,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
           if ($mail != '') {
             // Check cache.
             if (!isset($user_lang_cache[$mail])) {
-              $user_load = user_load_by_mail($mail);
+              $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $mail]);
+              $user_load = reset($user_accounts);
               if (!$user_load) {
                 $user_lang_cache[$mail] = FALSE;
                 continue;
@@ -2099,7 +2103,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
         if ($mail != '') {
           // Check cache.
           if (!isset($user_lang_cache[$mail])) {
-            $user_load = user_load_by_mail($mail);
+            $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $mail]);
+            $user_load = reset($user_accounts);
             if (!$user_load) {
               $user_lang_cache[$mail] = FALSE;
               continue;
