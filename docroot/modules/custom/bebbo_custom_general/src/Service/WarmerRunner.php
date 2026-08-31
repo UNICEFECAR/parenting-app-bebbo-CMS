@@ -274,7 +274,10 @@ class WarmerRunner {
    */
   public function buildUrls(): array {
     $languages = $this->getLanguages();
-    $base = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+    // Always https: a drush --uri without a scheme defaults to http, and the
+    // CDN caches http and https under different keys — warming http would
+    // leave the https entries the app requests cold.
+    $base = 'https://' . $this->requestStack->getCurrentRequest()->getHttpHost();
     $paths = $this->settings()->get('paths') ?: [];
 
     $urls = [];
