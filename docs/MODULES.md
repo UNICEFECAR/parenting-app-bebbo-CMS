@@ -106,6 +106,7 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 | `bebbo_serializer.encoder.bebbo_json` | `BebboEncoder` | JSON encoder with `UNESCAPED_SLASHES \| UNESCAPED_UNICODE` |
 | `bebbo_serializer.request_format_subscriber` | `RequestFormatSubscriber` | `KernelEvents::REQUEST` (priority 1000) — registers `bebbo_json` MIME type |
 | `bebbo_serializer.etag_response_subscriber` | `EtagResponseSubscriber` | `KernelEvents::RESPONSE` (priority 0) — ETag/304 support |
+| `bebbo_serializer.api_vary_response_subscriber` | `ApiVaryResponseSubscriber` | `KernelEvents::RESPONSE` (priority -10) — drops `Cookie` from `Vary` on `/api/*` and `/v{n}/api/*` responses so shared caches key them without cookies |
 | `bebbo_serializer.body_image_processor` | `BodyImageProcessor` | Renders body HTML, extracts image URLs, converts to WebP |
 
 ### Hooks
@@ -113,7 +114,8 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 | Hook | Behavior |
 |------|----------|
 | `hook_node_presave` | Populates `field_number_of_modules` (course), `field_number_of_questions` (quiz), truncates height/weight decimals (pregnancy_weekly_overview), auto-populates `field_embedded_images` for published nodes and `field_body_rendered` for nodes in any moderation state |
-| `hook_node_predelete` | Deletes orphaned quiz_questions nodes when quiz node deleted |
+| `hook_node_update` / `hook_node_insert` | Invalidates the per-bundle, per-language API listing tags (`bebbo_api_list:{bundle}:{langcode}`, see `ApiCacheTags`): all languages when an untranslatable field changed or a translation was removed, otherwise only the translations whose stored values differ. Revision bookkeeping and analytics counters (`IgnoredChangeFields::UNTRANSLATABLE`) are excluded from the comparison so an analytics run does not expire every language. |
+| `hook_node_predelete` | Deletes orphaned quiz_questions nodes when quiz node deleted; invalidates the listing tags of the deleted node |
 | `hook_views_query_alter` | Adds Pregnancy term to child_age filter when `?pregnancy=true` on the V1 + V2 articles endpoints |
 | `hook_form_alter` | Makes module/question count fields readonly on course/quiz forms; validates course expiry and passing score; rejects saving a Quiz as `single_question_quiz` while it holds more than one question (validation error — extra questions are never auto-removed) |
 | `hook_inline_entity_form_translation_restrict_alter` | Allows adding new course modules on translation forms |
@@ -128,6 +130,8 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 | `BebboSerializerHelpers` | Trait | Shared pure row-transform helpers (type casts, media/HTML parsing, language resolution, taxonomy) used by both style plugins |
 | `CheckUpdateController` | Controller | Force-update / check-update endpoint, shared by the V1 and V2 routes |
 | `BebboEncoder` | Encoder | `bebbo_json` format encoding |
+| `ApiCacheTags` | Cache | `listTag()` / `listTags()` — `bebbo_api_list:{bundle}:{langcode}` tags that scope the article listings to one bundle in one language instead of core's site-wide `node_list` |
+| `IgnoredChangeFields` | Cache | Untranslatable fields excluded from the change comparison in `hook_node_update` (`vid`, `revision_*`, `feeds_item`, `field_analytics_updated`, `field_like_count`, `field_read_count`) |
 | `BodyImageProcessor` | Service | Presave body HTML → image URL extraction |
 | `QuizAnswerItem` | Field type | Custom compound field (value + is_correct) |
 | `QuizAnswerFormatter` | Field formatter | Displays quiz answers with correct indicator |
@@ -156,11 +160,11 @@ Also hosts two endpoints exposed under both V1 and V2 paths: the **Strings API**
 
 **Name:** Bebbo Custom General
 **Core:** `^10 || ^11`
-**Dependencies:** `drupal:views`, `group`, `menu_per_role`
+**Dependencies:** `drupal:views`, `group`, `language_visibility_control`, `menu_per_role`
 
 ### Purpose
 
-Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag (P1 slices + `.module` hook slices 1–5b). Houses self-contained admin features and editorial-form helpers that have no dedicated module: Entity Share CSV export, TMGMT overview/cart UX, mobile-JS share landing pages, language/landing-page redirect management, app-store QR redirect, master-language settings, article category AJAX cascade, group-country form handling, node archive validation, node-action batch helpers, and the canonical editorial menu (export, per-site sync, and the country-users redirect).
+Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag (P1 slices + `.module` hook slices 1–5b). Houses self-contained admin features and editorial-form helpers that have no dedicated module: Entity Share CSV export, TMGMT overview/cart UX, mobile-JS share landing pages, language/landing-page redirect management, app-store QR redirect, master-language settings, article category AJAX cascade, group-country form handling, node archive validation, node-action batch helpers, the canonical editorial menu (export, per-site sync, and the country-users redirect), and the **v1 API cache warmer** (settings form, manual run, run log, and the `bebbo:warm` / `bebbo:warm-all` Drush commands an Acquia scheduled job calls).
 
 ### Services
 
@@ -169,6 +173,7 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `bebbo_custom_general.mailer_sender_override` | `MailerSenderOverride` | Event subscriber — overrides mail sender from config |
 | `bebbo_custom_general.internal_content_node_redirect` | `InternalContentNodeRedirect` | `KernelEvents::REQUEST` — redirects anonymous internal node URLs by language / site context |
 | `bebbo_custom_general.editorial_menu_manager` | `EditorialMenuManager` | Exports the editorial menu to config and applies that canon to a site |
+| `bebbo_custom_general.warmer_runner` | `WarmerRunner` | Builds one site's v1 warm list, issues the requests through a Guzzle pool, writes the run log (`bebbo_warmer_log`) |
 
 ### Routes
 
@@ -179,13 +184,15 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `/foleja/share/{param1}/{param2}/{param3}` | `PbMobile::kosovorender` | `manage mobile javascript` |
 | `/admin/config/parent-buddy/redirect-management` | `RedirectManagementForm` | `manage redirect settings` |
 | `/admin/config/parent-buddy/admin-parent-buddy` | `SettingsForm` (master language) | `administer site configuration` |
-| `/admin/config/parent-buddy/app-store-redirect` | `AppStoreRedirectForm` | `administer site configuration` |
+| `/admin/config/parent-buddy/app-store-redirect` | `AppStoreRedirectForm` | `manage redirect settings` |
 | `/downloadapp.html` | `AppStoreRedirectController::render` | public (`_access: TRUE`) |
 | `/admin/config/parent-buddy/apply-trans-related-articles-video` | `ApplyTransRelatedArticlesVideo` | `administer site configuration` |
 | `/admin/content/entity_share/pull/export/csv` | `CsvExportController::download` | `entity_share_client_pull_content` |
 | `/admin/content/entity_share/pull/export/csv/batch` | `CsvExportController::downloadBatch` | `entity_share_client_pull_content` |
 | `/admin/content/entity_share/pull/export/csv/download` | `CsvExportController::downloadCompleted` | `entity_share_client_pull_content` |
 | `/country-users` | `CountryUsersController::redirectToCountry` | `_user_is_logged_in` |
+| `/admin/config/development/api-warmer` | `WarmerSettingsForm` — settings, "Warm this site" batch button | `administer site configuration` |
+| `/admin/config/development/api-warmer/logs` | `WarmerLogController::overview` — paged run log (25/page) | `administer site configuration` |
 
 > The admin forms hang off the `pb_custom_form.admin_config_parent_buddy` menu container, and their permissions (`manage mobile javascript`, `manage redirect settings`) are still declared by `pb_custom_form`.
 
@@ -199,6 +206,7 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `hook_query_TAG_alter` (`tmgmt_entity_get_translatable_entities`) | Node ID filter/sort on the translatable-entities query |
 | `hook_menu_local_tasks_alter` | Adds TMGMT Job Items/Jobs/Sources/Cart/Providers/Settings local tasks |
 | `hook_menu_local_actions_alter` | Renames the "Add group" action on `/admin/group` to "Add Country" (all sites use the single `country` group type) |
+| `hook_toolbar_alter` | Attaches the `bebbo_custom_general/editorial_toolbar` library to the editorial menu tray. Its JS wraps the `<nolink>` parents (rendered as `<span>`, which core's `toolbar.menu.js` skips) in a `.toolbar-box` with core's collapse toggle so they open and close in the vertical toolbar; its CSS maps each top-level item's UUID class to a Gin sprite icon instead of the placeholder square. Also removes the `contextual` toolbar item, so the "Edit" tab never renders |
 | `hook_preprocess_page` | TMGMT route cache context |
 | `hook_preprocess_node_add_list` | Removes hidden bundles (see helper below) from the `/node/add` content-type selection page |
 | `hook_menu_links_discovered_alter` | Removes `node.add` links for hidden bundles from every Add-content menu, including the `admin_toolbar_tools` shortcuts |
@@ -223,13 +231,16 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `ChangeNodeStatus` | Batch processor | Archives node translations during country offload |
 | `ApplyNodeTranslations` | Batch processor | Copies related articles/videos across node translations |
 | `InternalContentNodeRedirect` | Event subscriber | Anonymous internal node → language redirect |
+| `WarmerRunner` | Service | v1 API cache warmer: derives the URL list, runs the Guzzle pool, judges each response by its JSON envelope, records runs |
+| `WarmCommands` | Drush commands | `bebbo:warm` (one site) and `bebbo:warm-all` (every site, one subprocess each, lock-guarded) |
+| `WarmerLogController` | Controller | Run-log listing for the site it is opened on |
 | `MailerSenderOverride` | Event subscriber | Mail sender override from config |
 | `NaturalTitleSort` | Views sort plugin (`bebbo_natural_title`) | Language-neutral alphabetical ordering of a text column, numeric titles grouped apart |
-| Form classes | Forms | `MobileAppShareLinkForm`, `RedirectManagementForm`, `SettingsForm`, `AppStoreRedirectForm`, `ApplyTransRelatedArticlesVideo` |
+| Form classes | Forms | `MobileAppShareLinkForm`, `RedirectManagementForm`, `SettingsForm`, `AppStoreRedirectForm`, `ApplyTransRelatedArticlesVideo`, `WarmerSettingsForm` |
 
 ### Config
 
-`bebbo_custom_general.adminsettings`, `bebbo_custom_general.app_store_redirect`, and `bebbo_custom_general.mobile_app_share_link_form` live in shared `config/sync/` (the mobile-share form is additionally overridden in the Ecuador and Turkey splits). `bebbo_custom_general.landing_pages` and `bebbo_custom_general.language_redirects` are **per-site**: each of the 7 split folders carries its own copy; neither exists in `config/sync/`. `bebbo_custom_general.editorial_menu` is shared and holds the canonical editorial menu: every link keyed by UUID with its title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. Schema in `config/schema/bebbo_custom_general.schema.yml`. None of these are in `config_ignore`.
+`bebbo_custom_general.adminsettings`, `bebbo_custom_general.app_store_redirect`, and `bebbo_custom_general.mobile_app_share_link_form` live in shared `config/sync/` (the mobile-share form is additionally overridden in the Ecuador and Turkey splits). `bebbo_custom_general.landing_pages` and `bebbo_custom_general.language_redirects` are **per-site**: each of the 7 split folders carries its own copy; neither exists in `config/sync/`. `bebbo_custom_general.editorial_menu` is shared and holds the canonical editorial menu: every link keyed by UUID with its title, URI, parent, weight, enabled state and `menu_per_role` show/hide roles. `bebbo_custom_general.warmer` is shared (`config/sync/` only, no split override) and holds the warmer settings: `concurrency` (8), `request_timeout` (300 s), the 21 `paths` templates with a `{lang}` placeholder, and a `sites` map keyed by site directory with `hosts` per environment (`dev`, `test`, `prod`) and the `languages` to warm — see the [API cache warmer](#api-cache-warmer) section below. Schema in `config/schema/bebbo_custom_general.schema.yml`. None of these are in `config_ignore`.
 
 ### Drush commands
 
@@ -239,6 +250,31 @@ Catch-all utilities module created by decomposing the `pb_custom_form` grab-bag 
 | `bebbo:menu-sync` (`bms`) | config → database | Applies the canon to one site. Idempotent, `--dry-run` shows the diff. Runs per site on every deploy from `hooks/common/code-deploy.sh`. |
 
 Menu links are content entities, so config import alone never applies a menu change. `bebbo:menu-sync` upserts by UUID, sets the `menu_per_role` roles to exactly the canonical values, and deletes editorial-menu links absent from the canon — scoped to that menu only.
+
+| Command | Scope | Use |
+|---------|-------|-----|
+| `bebbo:warm` (`bw`) | the bootstrapped site | Requests every v1 URL of the site named by `--uri` and records the run. `--dry-run` prints the list and stops. Exit code is non-zero when any URL did not answer warm. |
+| `bebbo:warm-all` (`bwa`) | all 7 sites, sequentially | Spawns one `bebbo:warm` Drush subprocess per site with `--uri=https://<host>` taken from the `sites.<site>.hosts.<env>` setting. `--env=dev\|test\|prod` (defaults to `AH_SITE_ENVIRONMENT`), `--sites=turkey,bangladesh` to restrict. Guarded by the `bebbo_warm_all` lock (1 h expiry, refreshed at every site boundary); a pass that finds the lock held logs a warning and exits 0. Subprocesses run without a timeout. |
+
+### API cache warmer
+
+The warmer keeps the public **V1** `/api/*` listings hot in Drupal's page cache and the Acquia CDN so the mobile app never pays a cold Views render. It warms nothing under `/v2/api/*`.
+
+- **URL list is derived, never stored.** Every `paths` template is crossed with the site's language list, plus `/api/check-update/{gid}` for every `country` group on the site. Languages come from `sites.<site>.languages`; a site with none configured falls back to the languages its country groups make visible in the app (`LanguageVisibilityService::getVisibleLanguages()`, then `getAllGroupLanguages()`), so a new language warms on the next run without a config change.
+- **Requests** go through a Guzzle `Pool` at the configured concurrency with the configured per-request timeout, `connect_timeout` 10 s, and the header `X-Bebbo-Warmer: 1`. The host is the current request's scheme+host — on the CLI that is the `--uri` handed to Drush, which is the only thing telling a subprocess which site it warms.
+- **Pass/fail is the JSON envelope, not the HTTP code.** V1 answers HTTP 200 even when it refuses a request; envelope `status` 200 or 204 ("No Records Found") counts as warm, anything else is logged as a failure with its status or the transport error.
+- **Run log** — table `bebbo_warmer_log` (one row per run: started, finished, duration, total, warmed, failed, status `success`/`issues`/`aborted`, trigger `form`/`drush`, host, up to 100 failing URLs as JSON). The newest 100 runs are kept per site; each run also writes a `bebbo_warmer` dblog entry (info on success, warning otherwise). Because the table lives in each site's database, the log is per site by construction.
+- **Manual run** — the settings form's *Warm this site* button runs the same list through the Batch API (one operation per concurrency-sized chunk) and logs it with trigger `form`. The form warms only the site it is opened on; cross-site orchestration is `bebbo:warm-all` only, because a site's list can only be derived from that site's database.
+- **Schedule** — an Acquia scheduled job per non-prod environment calls `bebbo:warm-all` every two hours (see [`ENVIRONMENTS.md`](ENVIRONMENTS.md) §8.3).
+
+### Database Table
+
+`bebbo_warmer_log` — created by `hook_schema()` and by `bebbo_custom_general_update_10006()` on sites installed before the table existed.
+
+### Update Hooks
+
+- `10001`: removes the defunct `custom_serialization`, `pb_custom_rest_api` and `pb_custom_standard_deviation` modules from `core.extension` and their `system.schema` rows before config import.
+- `10006`: creates the `bebbo_warmer_log` table when it is missing.
 
 ### Post-Update Hooks
 
@@ -268,10 +304,11 @@ The largest editorial module. Controls field access, form alterations, editorial
 
 | Hook | Behavior |
 |------|----------|
+| `hook_entity_base_field_info_alter` | Makes the core user `roles` base field display-configurable (`entity_reference_label`, no link), so the user View tab can list roles; the component is enabled in `core.entity_view_display.user.user.default` |
 | `hook_user_update` | Clears user caches on update |
 | `hook_form_alter` | Language filters, field access control, validation on node/media forms |
 | `hook_link_alter` | Alters editorial menu links for country users |
-| `hook_preprocess_menu` | Filters editorial menu by user roles |
+| `hook_preprocess_menu` | Empties the editorial menu for users who neither hold `view editorial_menu in toolbar` nor belong to a group |
 | `hook_preprocess_html` | Loads homepage styling, Kosovo-specific assets |
 | `hook_preprocess_page` | Attaches mylib and admin_rtl libraries |
 | `hook_block_access` | Restricts block visibility for non-admin users |
@@ -762,6 +799,7 @@ language_custom_field ──→ field:field, field:field_ui
 | `bebbo_custom_general.internal_content_node_redirect` | `REQUEST` | — | `bebbo_custom_general` | Anonymous internal node URL redirect |
 | `bebbo_custom_general.mailer_sender_override` | mail events | — | `bebbo_custom_general` | Mail sender override from config |
 | `bebbo_serializer.etag_response_subscriber` | `RESPONSE` | 0 | `bebbo_serializer` | ETag/304 |
+| `bebbo_serializer.api_vary_response_subscriber` | `RESPONSE` | -10 | `bebbo_serializer` | Removes `Cookie` from `Vary` on API responses |
 | `pb_content_analytics.feeds_import_subscriber` | Feeds events | — | `pb_content_analytics` | Feeds import integration |
 
 ---

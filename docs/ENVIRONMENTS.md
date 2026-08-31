@@ -229,6 +229,23 @@ $DRUSH cr              # [5/5] final cache rebuild
 
 > `cim -y` runs **twice** per site (with a cache rebuild between passes) — a deliberate belt-and-suspenders import to settle config that depends on freshly-imported config.
 
+### 8.3 Acquia scheduled jobs (cron)
+
+Configured in Acquia Cloud, not in this repository (`acli api:environments:cron-job-list parentbuddy2.<env>` lists them). Each Drupal site needs its own cron entry because one Drush process bootstraps one site.
+
+| Environment | Job | Schedule | Command |
+|---|---|---|---|
+| **Dev** | Drupal cron × 7 (`BEBBO`, `Bangla`, `Eductor`, `Turkey`, `PK`, `Bebbo Pacific`, `Zimbabwe`) | every 15 min | `/usr/local/bin/cron-wrapper.sh parentbuddy2.test https://<site>-dev.bebbo.app` |
+| **Dev** | `DEV API Warmer` | `30 */2 * * *` (every 2 h at :30) | `cd /var/www/html/parentbuddy2.dev && vendor/bin/drush @parentbuddy2.dev -l dev.bebbo.app bebbo:warm-all --env=dev` |
+| **Dev** | Database backup | daily 19:50 + Acquia `ah-db-backup` 08:02 | `drush sql-dump` to `/mnt/gfs/…/backups/on-demand/` |
+| **Stage** | Drupal cron × 6 (`Bebbo`, `Bangla`, `Eductor`, `Turkey`, `Pk`, `Zimbabwe`) | every 15 min | `/usr/local/bin/cron-wrapper.sh parentbuddy2.test https://<site>-stage.bebbo.app` |
+| **Stage** | `Stage API Warmer` | `30 */2 * * *` | `cd /var/www/html/parentbuddy2.test/docroot && ../vendor/bin/drush -l stage.bebbo.app bebbo:warm-all --env=test` |
+| **Stage** | Database backup | every 8 h + `ah-db-backup` 08:12 | `drush sql-dump` to `/mnt/gfs/…/backups/on-demand/` |
+| **Prod** | `Drupal Cron - 22/12` | daily 00:00 | `/usr/local/bin/cron-wrapper.sh parentbuddy2.prod http://bebbo.app` (default site only) |
+| **Prod** | `ah-db-backup` | daily 06:52 | Acquia-managed backup |
+
+The API warmer job runs `bebbo:warm-all`, which warms the 7 sites one after another through their public hostnames for that environment (`--env` picks the host map in `bebbo_custom_general.warmer`). A pass that starts while the previous one still holds the `bebbo_warm_all` lock exits without doing anything, so the 2-hour interval and a long cold pass cannot overlap. Prod has no warmer job. Drupal-side cron work (purge queue, TMGMT, mailer token refresh, analytics, security cleanup) is scheduled by `ultimate_cron` inside those per-site cron runs.
+
 ---
 
 ## 9. Cross-Environment / Cross-Site Content Sync

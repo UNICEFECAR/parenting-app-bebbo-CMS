@@ -19,7 +19,7 @@ Bebbo (a.k.a. *Parent Buddy*) is the **headless Drupal CMS** behind UNICEF's par
 | Admin theme | **Gin** (`drupal/gin ^5.0`) | `config/sync/system.theme.yml` |
 | Default theme | **Gin** (headless — no separate frontend theme) | `config/sync/system.theme.yml` |
 | Hosting | **Acquia Cloud** — application `parentbuddy2` | `drush/sites/parentbuddy2.site.yml`, `hooks/`, `README.acquia` |
-| Caching | Memcache (Acquia) | `acquia/memcache-settings`, `docroot/sites/common_settings/cloud-memcache-d8+.php` |
+| Caching | Memcache (Acquia) for Drupal bins; Varnish + Acquia Platform CDN in front, purged via `acquia_purge`; V1 API kept warm by the `bebbo_custom_general` warmer on an Acquia scheduled job | `acquia/memcache-settings`, `docroot/sites/common_settings/cloud-memcache-d8+.php`, `config/sync/purge.plugins.yml`, `config/sync/bebbo_custom_general.warmer.yml` |
 | Local dev | DDEV (`bebbo.app`) | `.ddev/` |
 | Architecture | Single codebase, **7-site Drupal multisite**, per-site config via Config Split | `docroot/sites/`, `config/` |
 
@@ -315,6 +315,7 @@ sequenceDiagram
 
 - Endpoints, query parameters, field mappings, and JSON envelope variants: **`API_REFERENCE.md`**.
 - JWT modes, attestation flows, and enforcement rollout: **`API_SECURITY.md`**.
+- **Caching:** anonymous API responses are page-cached (`max-age` 32 days) and served from Varnish / Acquia Platform CDN; the article listings carry per-bundle, per-language `bebbo_api_list:*` tags so one save expires only its own listings, and every invalidated tag is pushed to Acquia through the purge chain. The V1 listings are re-requested every two hours on dev and stage by `drush bebbo:warm-all` (Acquia scheduled job) so the app never hits a cold render after a deploy or cache clear. Details: **`API_REFERENCE.md`** §12, **`CONFIGURATION.md`** *Purge / Cache invalidation*, **`ENVIRONMENTS.md`** §8.3.
 - **Protection scope (verified):** `protected_api_patterns` defaults to `/v2/api/` (this covers `/v2/api/check-update/`). The **V1 `/api/*` endpoints — content *and* the public `/api/check-update/` — are not JWT-protected**. `/api/security/*` is excluded (token-issuance endpoints must be reachable without a JWT). The diagram above shows the V2 path; a V1 request skips the security subscriber and goes straight to the serializer.
 
 ---

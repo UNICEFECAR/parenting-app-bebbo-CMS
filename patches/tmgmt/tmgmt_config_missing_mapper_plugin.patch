@@ -1,0 +1,28 @@
+diff --git a/sources/tmgmt_config/src/Plugin/tmgmt/Source/ConfigSource.php b/sources/tmgmt_config/src/Plugin/tmgmt/Source/ConfigSource.php
+--- a/sources/tmgmt_config/src/Plugin/tmgmt/Source/ConfigSource.php
++++ b/sources/tmgmt_config/src/Plugin/tmgmt/Source/ConfigSource.php
+@@ -2,6 +2,7 @@
+
+ namespace Drupal\tmgmt_config\Plugin\tmgmt\Source;
+
++use Drupal\Component\Plugin\Exception\PluginException;
+ use Drupal\config_translation\ConfigMapperManagerInterface;
+ use Drupal\config_translation\Form\ConfigTranslationFormBase;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+@@ -146,7 +147,15 @@
+    *   If there is no entity, throws an exception.
+    */
+   protected function getMapper(JobItemInterface $job_item) {
+-    $config_mapper =$this->configMapperManager->createInstance($this->getMapperId($job_item));
++    // A job item can outlive its config mapper, for instance when the module
++    // that defined the mapped entity type is upgraded or removed. Report that
++    // the same way as a missing entity so listings keep rendering.
++    try {
++      $config_mapper = $this->configMapperManager->createInstance($this->getMapperId($job_item));
++    }
++    catch (PluginException $e) {
++      throw new TMGMTException('The config mapper for item type %type no longer exists.', array('%type' => $job_item->getItemType()));
++    }
+
+     if ($job_item->getItemType() != static::SIMPLE_CONFIG) {
+       /** @var \Drupal\Core\Config\Entity\ConfigEntityTypeInterface $entity_type */

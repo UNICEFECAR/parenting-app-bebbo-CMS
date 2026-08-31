@@ -23,6 +23,7 @@ permissions:
   - 'access content'
   - 'access group overview'
   - 'administer allowed languages'
+  - 'administer languages'
   - 'administer users'
   - 'create media'
   - entity_share_client_pull_content
@@ -30,7 +31,6 @@ permissions:
   - 'execute user_add_role_action user'
   - 'execute user_block_user_action user'
   - 'execute user_unblock_user_action user'
-  - 'manage redirect settings'
   - 'view any unpublished content'
   - 'view content analytics report'
   - 'view editorial_menu in toolbar'

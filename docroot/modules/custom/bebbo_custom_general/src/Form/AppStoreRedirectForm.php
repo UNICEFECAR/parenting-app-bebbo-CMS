@@ -35,7 +35,10 @@ class AppStoreRedirectForm extends ConfigFormBase {
     $form['landing_page'] = [
       '#type' => 'item',
       '#title' => $this->t('Landing page'),
-      '#markup' => $this->t('Visitors are redirected from <a href=":url" target="_blank">:url</a>, the page QR codes should point to.', [':url' => $this->landingPageUrl()]),
+      '#markup' => $this->t('Redirecting you to @app homepage: <a href=":url" target="_blank">:url</a>', [
+        '@app' => $this->config('system.site')->get('name') ?: 'Bebbo',
+        ':url' => $this->landingPageUrl(),
+      ]),
     ];
 
     $form['app_store_url'] = [

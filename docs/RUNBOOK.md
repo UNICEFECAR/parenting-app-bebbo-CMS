@@ -77,6 +77,15 @@ ddev drush @ddev.tr cst           # show config status (drift)
 
 To run across all 7 locally, loop the aliases (`bebbo bangla ec pakistan ws tr zw`).
 
+**Warm the V1 API caches** (after a `cr`, `cim` or deploy — the first render of a cold listing takes tens of seconds):
+
+```bash
+ddev drush @ddev.tr bebbo:warm --dry-run     # list the URLs this site would warm
+ddev drush @ddev.tr bebbo:warm               # warm this site, print warmed/failed, log the run
+```
+
+`bebbo:warm-all` needs the public hostnames from `bebbo_custom_general.warmer` (`dev`/`test`/`prod` only), so locally warm one site at a time, or use the **Warm this site** button on `/admin/config/development/api-warmer`. The run log is on `/admin/config/development/api-warmer/logs`. On Acquia dev and stage the warmer runs unattended every two hours (see [`ENVIRONMENTS.md`](ENVIRONMENTS.md) §8.3).
+
 ---
 
 ## 5. Configuration Import / Export
@@ -140,7 +149,7 @@ The local convenience form `phpcs docroot/modules/custom --standard=Drupal,Drupa
 
 ## 7. Custom Drush Commands
 
-All 11 are **legacy-style** (`@command` annotations) across three custom modules. Run with a site alias, e.g. `ddev drush @ddev.bangla <command>`. Most mutating commands are **dry-run by default** and need `--execute` to write — verify before running on real data.
+All 15 are **legacy-style** (`@command` annotations) across four custom modules. Run with a site alias, e.g. `ddev drush @ddev.bangla <command>`. Most mutating commands are **dry-run by default** and need `--execute` to write — verify before running on real data.
 
 ### `file_sanitizer`
 
@@ -167,6 +176,15 @@ All 11 are **legacy-style** (`@command` annotations) across three custom modules
 | `body-rendered:populate` | `brp` | Populate `field_body_rendered` from body HTML | arg `content_type`; `--limit`, `--dry-run` |
 | `file-paths:fix` | `fpf` | Rewrite `/sites/default/files/` refs to current site + copy files (⚠️ refuses to run on default site) | arg `content_type`; `--limit`, `--dry-run`, `--taxonomy` |
 | `bebbo:remove-tr-translations` | `rm-tr` | Remove Turkish (`tr`) translations from nodes/terms/media + path aliases (dry-run) | `--execute`, `--force-delete-default`, `--entity-type`, `--batch-size` (50) |
+
+### `bebbo_custom_general`
+
+| Command | Alias | Action | Key args/options |
+|---------|-------|--------|------------------|
+| `bebbo:menu-export` | `bme` | Export the editorial menu to `bebbo_custom_general.editorial_menu` config (run on bebbo, commit the YAML) | — |
+| `bebbo:menu-sync` | `bms` | Apply the canonical editorial menu to the current site (runs per site on every deploy) | `--dry-run` |
+| `bebbo:warm` | `bw` | Request every V1 `/api/*` URL of the current site (paths × languages + `check-update` per group), record the run in `bebbo_warmer_log`; non-zero exit if any URL did not answer warm | `--dry-run`; host comes from `--uri` |
+| `bebbo:warm-all` | `bwa` | Run `bebbo:warm` for all 7 sites in sequence, one subprocess each, against the public hostnames of `--env`; lock-guarded (`bebbo_warm_all`, 1 h) | `--env=dev\|test\|prod` (default `AH_SITE_ENVIRONMENT`), `--sites=a,b` |
 
 ---
 
@@ -499,6 +517,7 @@ Email TFA depends on working email delivery. If Symfony Mailer / OAuth is not co
 | Custom Drush command "writes nothing" | Most are dry-run by default — add `--execute` (file-sanitizer/rm-tr) once verified. |
 | `file-paths:fix` refuses to run | By design it will not run on the default site — target a country alias. |
 | Container / port issues | `ddev restart`, then `ddev poweroff && ddev start`. Check `ddev describe`. |
+| First app request after a deploy is slow / times out | The V1 listings are cold. Run `drush bebbo:warm` on that site (or the **Warm this site** button on `/admin/config/development/api-warmer`), then check `/admin/config/development/api-warmer/logs` — a run whose failures list shows `status 4xx`/`5xx` names the URLs that did not cache. On Acquia the warmer job also logs to dblog channel `bebbo_warmer`. |
 
 ---
 

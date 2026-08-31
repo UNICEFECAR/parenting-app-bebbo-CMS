@@ -5607,6 +5607,7 @@ display:
     display_plugin: rest_export
     position: 18
     display_options:
+      enabled: false
       title: 'Child Development Boy Pinned Content API'
       fields:
         nid:
@@ -7075,6 +7076,7 @@ display:
     display_plugin: rest_export
     position: 19
     display_options:
+      enabled: false
       title: 'Child Development Girl Pinned Content API'
       fields:
         nid:
@@ -13256,6 +13258,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'Child Growth Pinned Content API'
       fields:
         nid:
@@ -14822,6 +14825,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'FAQ Pinned Content API'
       fields:
         nid:
@@ -16296,6 +16300,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'Health Check-Ups Pinned Content API'
       fields:
         nid:
@@ -17862,6 +17867,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'Vaccinations Pinned Content API'
       fields:
         nid:
@@ -19428,6 +19434,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'Milestone Related Content API'
       fields:
         nid:
@@ -22085,6 +22092,7 @@ display:
     display_plugin: rest_export
     position: 1
     display_options:
+      enabled: false
       title: 'FAQ Updated Pinned Content API'
       fields:
         nid:

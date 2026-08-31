@@ -73,10 +73,10 @@ Also shipped: `request_timeout: 60`, `prompt_logging: false`, the prompt type `a
 |---|---|---|
 | 1. Generate an OpenAI API key | [platform.openai.com](https://platform.openai.com/api-keys) → **API keys** → *Create new secret key* | Produces an `sk-...` value, shown once. The account must have billing enabled or every request fails with a quota error. |
 | 2. Add the key to the CMS | **Configuration → System → Keys** → `/admin/config/system/keys`, edit **OpenAI API Key** | `ai_provider_openai.settings` stores only the key entity name (`openai_api_key`), never the secret. Read the export warning in §1. |
-| 3. Confirm the provider | `/admin/config/ai/providers/openai` | Moderation is on; `host` is empty, meaning the default OpenAI endpoint. Set a host only for a proxy or Azure-style gateway. |
+| 3. Confirm the provider | **Configuration → AI → AI Infrastructure → AI Platform Providers → OpenAI** → `/admin/config/ai/providers/openai` | Moderation is on; `host` is empty, meaning the default OpenAI endpoint. Set a host only for a proxy or Azure-style gateway. |
 | 4. Review default models | **Configuration → AI** → `/admin/config/ai` (the settings form is `ai.settings_form`, routed as `/admin/config/ai/settings/{nojs}`) | Only if you want to deviate from the table above. Model IDs must exist for your account. |
-| 5. Review the translation prompt | `/admin/config/ai/prompts` → `ai_translate__ai_translate_default` | Prompt variables available: `sourceLang`, `sourceLangName`, `destLang`, `destLangName` (required), `inputText`, `countryName`. Prompt types are at `/admin/config/ai/prompts/prompt-types`. |
-| 6. Review AI Translate behaviour | `/admin/config/ai/ai-translate` | Per-language model/prompt overrides, draft-vs-publish behaviour, reference depth. |
+| 5. Review the translation prompt | **Configuration → AI → AI Infrastructure → Vector Database Configuration → Prompt Library** → `/admin/config/ai/prompts` → `ai_translate__ai_translate_default` | The AI module nests the Prompt Library link under Vector Database Configuration; the path is the reliable way in. Prompt variables available: `sourceLang`, `sourceLangName`, `destLang`, `destLangName` (required), `inputText`, `countryName`. Prompt types are the second tab, **AI Prompt Types** → `/admin/config/ai/prompts/prompt-types`. |
+| 6. Review AI Translate behaviour | **Configuration → AI → AI Translate settings** → `/admin/config/ai/ai-translate` | Per-language model/prompt overrides, draft-vs-publish behaviour, reference depth. |
 | 7. Verify | Open a node, use the **Translate** tab's AI translate action | A draft translation should be produced. |
 
 ### The TMGMT side
@@ -156,9 +156,9 @@ The module requests these **delegated** scopes: `https://outlook.office365.com/I
 | 1. Register the app | [Microsoft Entra ID](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) | Capture Application (client) ID, Directory (tenant) ID, and a client secret **value** — the value, not its ID, and it is displayed only once |
 | 2. Register the redirect URI | Entra → **Authentication → Add a platform → Web** | `https://<your-host>/office365/oauth/callback`. **One entry per environment and per domain** — Dev, Stage, Prod and each country domain each sign in against their own host. A mismatch fails with `AADSTS50011`. |
 | 3. Grant delegated permissions | Entra → **API permissions** | The three scopes above, with admin consent if the tenant requires it. Confirm SMTP AUTH is enabled for the mailbox — Exchange Online disables it per-mailbox by default. |
-| 4. Enter credentials | `/admin/config/system/mailer/office365` | Client ID, Client Secret, Tenant ID, sending mailbox. The page prints the exact Redirect URL for step 2. |
+| 4. Enter credentials | **Configuration → System → Mailer**, then the **Office365** tab → `/admin/config/system/mailer/office365` | Client ID, Client Secret, Tenant ID, sending mailbox. The page prints the exact Redirect URL for step 2. |
 | 5. Sign in | Same page → **Login via Microsoft** | Until this is done the page reads *"Not functional. Login is needed"*. **Saving the form clears the stored token and forces a re-login.** |
-| 6. Test | `/admin/config/system/mailer` | Send a test message |
+| 6. Test | **Configuration → System → Mailer**, then the **Test** tab → `/admin/config/system/mailer/test` | Send a test message. The Mailer landing page itself (`/admin/config/system/mailer`) is the Policy list; Transport and Override are the other tabs. |
 
 ### Required for it to work
 
@@ -220,8 +220,8 @@ Modules `entity_share`, `entity_share_server`, `entity_share_client`, `entity_sh
 |---|---|---|
 | 1. **Set the shared key** | **Configuration → System → Keys** → `/admin/config/system/keys`, edit **entity_share_basic_auth** | This is where the key goes. Its type is `entity_share_basic_auth`, holding the username and password of an account **on the remote site** that may read the channels. Its `key_value` is `config_ignore`d at key level, so it is never exported. |
 | 2. Check the remotes | **Configuration → Web services → Entity Share → Remotes** → `/admin/config/services/entity_share/remote` | Confirm the URL is right for what this site should pull from. Add a remote here if you are pulling from somewhere else. |
-| 3. Check the channels | `/admin/config/services/entity_share/channel` | On the **source** site. A channel is only visible to a remote whose account holds an authorised role or is individually listed. |
-| 4. Grant permissions | `/admin/people/permissions` | `entity_share_client_pull_content`, `entity_share_access_config_pages`, `entity_share_server_access_channels`, `entity_share_client_display_errors` — currently held by **global_admin**. |
+| 3. Check the channels | **Configuration → Web services → Entity Share → Channels** → `/admin/config/services/entity_share/channel` | On the **source** site. A channel is only visible to a remote whose account holds an authorised role or is individually listed. |
+| 4. Grant permissions | **People → Permissions** → `/admin/people/permissions` (filtered: `/admin/people/permissions/module/entity_share_client,entity_share_server`) | `entity_share_client_pull_content`, `entity_share_access_config_pages`, `entity_share_server_access_channels`, `entity_share_client_display_errors` — currently held by **global_admin**. |
 | 5. Pull | **Content → Entity Share pull** → `/admin/content/entity_share/pull` | Choose remote, channel, then the entities to import. A CSV export of the pull list is available at `/admin/content/entity_share/pull/export/csv` (permission `entity_share_client_pull_content`). |
 
 ### Required for it to work
@@ -290,7 +290,81 @@ For JWT issuance: `BEBBO_JWT_PRIVATE_KEY`. For Android attestation: `BEBBO_GOOGL
 
 ---
 
-## 8. New-site checklist
+## 8. Cron — where it runs, and how to stop it
+
+Several features above are inert without cron: the Office 365 token refresh (§4), the Content Analytics sync (§5), the API-security cleanup (§7), TMGMT polling and the purge queue.
+
+### Nothing schedules itself inside Drupal
+
+`automated_cron.settings` → `interval: 0`, so Drupal never runs cron at the end of a web request. Every cron run is triggered from outside: an **Acquia Cloud scheduled job** on Dev/Stage/Prod, or `drush cron` by hand. One Drush process bootstraps one site, so each of the 7 sites needs its own job.
+
+| Environment | What triggers Drupal cron | Cadence |
+|---|---|---|
+| Dev | 7 Acquia jobs, `cron-wrapper.sh parentbuddy2.test https://<site>-dev.bebbo.app` | every 15 min |
+| Stage | 6 Acquia jobs, `cron-wrapper.sh parentbuddy2.test https://<site>-stage.bebbo.app` | every 15 min |
+| Prod | 1 Acquia job, `cron-wrapper.sh parentbuddy2.prod http://bebbo.app` — the default site only | daily 00:00 |
+| Local (DDEV) | nothing; run `ddev drush @ddev.{site} cron` yourself | on demand |
+
+A separate Acquia job on Dev and Stage runs the API cache warmer (`drush bebbo:warm-all`, every 2 h at :30) — that one is not Drupal cron, see §9. Full job list and commands: [ENVIRONMENTS.md](ENVIRONMENTS.md) §8.3; list them live with `acli api:environments:cron-job-list parentbuddy2.<env>`.
+
+### What runs inside a cron run — `ultimate_cron`
+
+The job registry lives in `config/sync` (17 `ultimate_cron.job.*` entities) and is managed at **Configuration → System → Cron** → `/admin/config/system/cron/jobs`; scheduler, launcher and logger defaults are at `/admin/config/system/cron/settings`.
+
+| Job | Schedule rule | Runs |
+|---|---|---|
+| `tmgmt_cron` | `*/30+@ * * * *` | every 30 min |
+| `purge_processor_cron_cron`, `symfony_mailer_office365_cron`, `tmgmt_memsource_cron` | no own rule | falls back to the site default, `*/15+@ * * * *` |
+| `bebbo_api_security_cron`, `pb_content_analytics_cron`, `system_cron`, `dblog_cron`, `feeds_cron`, `field_cron`, `file_cron`, `filelog_cron`, `layout_builder_cron`, `locale_cron`, `ultimate_cron_cron`, `update_cron` | `0+@ 0 * * *` | once a day around midnight |
+| `node_cron` | — | **disabled** (`status: false`) |
+
+The `+@` in a rule is a per-job offset derived from the job name, so jobs sharing a rule do not all fire in the same minute. A job only runs if a cron run happens while its rule is due — with the daily prod cron, a `*/15` job still runs once a day. The launcher is `serial` with `max_threads: 1` and a 3600 s lock, so one long job blocks the rest of that run; clear a stuck lock at `/admin/config/system/cron/jobs/{job}/unlock`.
+
+### Stopping cron
+
+| Scope | How |
+|---|---|
+| One job, one site | `/admin/config/system/cron/jobs` → **Disable** on the row, or `drush cron:disable <job_id>` (`cron:enable` to restore, `cron:list` to see state). This is active config — export it only if you mean every site to stop running that job. |
+| All jobs, one site | `drush cron:disable --all` |
+| The whole site's cron | Disable or delete that site's scheduled job in **Acquia Cloud → Environment → Cron tasks**. Nothing else triggers cron (`automated_cron` interval is 0), so this stops all scheduled work for that site. |
+| The API warmer | Disable the *DEV API Warmer* / *Stage API Warmer* Acquia job. It is Drush-only; disabling it does not affect Drupal cron. |
+| Locally | Nothing to stop — cron runs only when you run it. |
+
+> Stopping cron for more than a few hours stops the Office 365 refresh-token renewal. When that token lapses, mail stops, and with Email TFA globally enabled (§3) every account without the `mfa_admin` role is locked out. The purge queue keeps draining even without cron — the `lateruntime` processor drains a slice at the end of web requests — but analytics sync, TMGMT polling and security-token cleanup simply stop.
+
+---
+
+## 9. Caching
+
+Nothing here needs configuring on a new site; it is listed so an operator knows which layer is serving a stale response.
+
+### The layers, front to back
+
+| # | Layer | What it does here |
+|---|---|---|
+| 1 | **Cloudflare** (6 public zones) | Proxy only. No cache rule is configured, so responses come back `cf-cache-status: DYNAMIC` and Cloudflare stores nothing. No `cloudflare`/`cloudflarepurger` module is enabled. |
+| 2 | **Acquia Platform CDN (Fastly) + Varnish** | The real edge cache. Anonymous GETs are held for the full `max-age` and cleared by tag purges, not by TTL expiry. |
+| 3 | **Drupal page cache** (`page_cache`) | Anonymous responses, `Cache-Control: max-age=2764800, public` (32 days) from `system.performance`. `dynamic_page_cache` + `big_pipe` cover authenticated pages. |
+| 4 | **Views result cache** | `bebbo_v1_apis` and `bebbo_v2_apis` use the custom `bebbo_api_tag` plugin (`bebbo_serializer`); the other API views use core's tag plugin. |
+| 5 | **Cache backends** | On Acquia, Memcache is the default bin plus `bootstrap`/`discovery`/`config`, with a per-site `key_prefix` so one site's `drush cr` does not flush another's; `depcalc` stays on the database. Locally everything is the database. |
+
+### How invalidation works
+
+Tag-driven, not TTL-driven. The API listings are tagged `bebbo_api_list:{bundle}:{langcode}` (plus `media_list`) instead of the site-wide `node_list`, so saving a node expires only the listings of its bundle in the languages whose values actually changed. `purge_queuer_coretags` queues every invalidated tag; the `acquia_purge` and `acquia_platform_cdn` purgers clear Varnish and the Platform CDN; the `cron` and `lateruntime` processors drain the queue. Tag details: [API_REFERENCE.md](API_REFERENCE.md) §12; purger/queuer/processor list: [CONFIGURATION.md](CONFIGURATION.md) *Purge / Cache invalidation*.
+
+Two response-level helpers in `bebbo_serializer` sit alongside this: `ApiVaryResponseSubscriber` strips `Cookie` from `Vary` on `/api/*` and `/v{n}/api/*` so shared caches can store one copy per URL, and `EtagResponseSubscriber` answers `If-None-Match` with a 304 on five V2 displays (articles, video articles, activities, FAQs, basic pages) without rendering anything.
+
+### Warming
+
+Because a cold V1 listing is a slow Views render, `bebbo_custom_general` re-requests every V1 `/api/*` path × app-visible language (plus `/api/check-update/{gid}` per country group) after deploys and cache clears — `drush bebbo:warm-all` on an Acquia job every 2 h on Dev and Stage, or the **Warm this site** button at **Configuration → Development → API cache warmer** → `/admin/config/development/api-warmer`. Run log: `/admin/config/development/api-warmer/logs`. Prod has no warmer job. Nothing warms `/v2/api/*`. Settings and per-site language lists: [CONFIGURATION.md](CONFIGURATION.md) *API cache warmer*.
+
+### Clearing caches by hand
+
+`drush cr` per site rebuilds Drupal's own bins; it does not clear Varnish or the Platform CDN. `purge_drush` is not enabled, so there are no `p:*` Drush commands — inspect the queue, purgers and diagnostics at **Configuration → Development → Performance → Purge** → `/admin/config/development/performance/purge`, or let the tag purge that the content save already queued drain on its own. After a `drush cr` the V1 listings are cold; warm them rather than leaving the first app request to pay for the render.
+
+---
+
+## 10. New-site checklist
 
 Order matters: email before TFA, keys before the features that read them.
 
@@ -305,7 +379,7 @@ Order matters: email before TFA, keys before the features that read them.
 | 7 | Set the Entity Share basic-auth key and check the remote URL | §6 | Only if pulling content |
 | 8 | Set the Content Analytics endpoint and API key, enable sync | §5 | Only for the analytics report |
 | 9 | Set `BEBBO_JWT_PRIVATE_KEY` (and `BEBBO_GOOGLE_SA_KEY`) in Acquia | §7 | Only for secured API |
-| 10 | Confirm cron is running | `/admin/reports/status` | Yes — mail token refresh, analytics sync and security cleanup all depend on it |
+| 10 | Confirm cron is running — the site needs its own Acquia scheduled job (§8) | `/admin/reports/status`, `/admin/config/system/cron/jobs` | Yes — mail token refresh, analytics sync and security cleanup all depend on it |
 | 11 | Re-check that no secret reached Git | `git status`, `git diff config/sync` | Yes |
 
 ### Post-configuration verification
@@ -322,7 +396,7 @@ Order matters: email before TFA, keys before the features that read them.
 
 ---
 
-## 9. Related documentation
+## 11. Related documentation
 
 | Document | Covers |
 |---|---|

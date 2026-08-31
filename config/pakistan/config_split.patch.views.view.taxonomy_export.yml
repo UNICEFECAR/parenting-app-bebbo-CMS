@@ -2,9 +2,6 @@ adding:
   display:
     default:
       display_options:
-        pager:
-          options:
-            items_per_page: 10
         filters:
           vid:
             expose:
@@ -40,9 +37,6 @@ removing:
             table: taxonomy_term__field_sd4neg
             field: field_sd4neg
             plugin_id: field
-        pager:
-          options:
-            items_per_page: 1000
         filters:
           vid:
             value:

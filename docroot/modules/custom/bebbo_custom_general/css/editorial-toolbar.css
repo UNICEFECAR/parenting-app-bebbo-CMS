@@ -1,0 +1,79 @@
+/**
+ * @file
+ * Gin icons for the editorial menu's top-level items.
+ *
+ * toolbar_menu gives every link a class built from its UUID, and Gin only
+ * knows the icons of core admin routes, so these items fall back to Gin's
+ * placeholder square. The UUIDs are the canonical ones from
+ * bebbo_custom_general.editorial_menu, shared by every site.
+ */
+
+/* The tray's tab in the toolbar bar. */
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-editorial_menu::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#list-view");
+}
+
+/* Home row Gin prepends to every toolbar menu. */
+#toolbar-item-toolbar-menu-editorial-menu-tray .toolbar-menu-administration .menu-item__tools .toolbar-icon-default::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#backtosite-view");
+}
+
+/* Dashboard */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-819297d2-c5d6-4915-9e17-4c881f438abd::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#grid-view");
+}
+
+/* Content */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-66da6c66-6252-497a-b0d8-53ed20212dc7::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#content-view");
+}
+
+/* Translation */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-65004a8e-ba1f-43f8-a108-37d55d29aba7::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#tmgmt-view");
+}
+
+/* Media */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-b8d24f07-1e93-45ac-8f26-0c9713ad5e48::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#files-view");
+}
+
+/* Taxonomies */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-9a63e1cb-77f4-4d80-b512-8e4af0263d97::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#structure-view");
+}
+
+/* Countries */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-43d7c694-1ab4-446e-bd39-76009d2ed5dc::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#group-view");
+}
+
+/* Languages */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-e4fbbe06-dedb-4497-81c0-42ed48a7389f::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#webform-view");
+}
+
+/* Users */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-c4e07b52-3a16-49fd-9081-25b6ce8f7d30::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#people-view");
+}
+
+/* Reports */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-3c7e267a-6c10-4efd-8654-41d657c1ecf6::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#reports-view");
+}
+
+/* Force Update */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-89b69e27-2acb-4528-aa42-134d864d2c4f::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#extend-view");
+}
+
+/* Redirect Management */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-9f1c2d47-6b3a-4f0e-8c15-2a7e5d90b431::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#backtosite-view");
+}
+
+/* Email & MFA */
+.toolbar .toolbar-bar .toolbar-menu-administration .toolbar-icon-link-toolbar-menu-menu-link-content-6ca18dad-3067-4090-9bbc-f9bc60dd0e2e::before {
+  --icon: url("/themes/contrib/gin/dist/media/sprite.svg#config-view");
+}

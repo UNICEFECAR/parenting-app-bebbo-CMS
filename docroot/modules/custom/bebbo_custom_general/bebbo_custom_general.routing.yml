@@ -69,7 +69,7 @@ bebbo_custom_general.app_store_redirect:
     _form: '\Drupal\bebbo_custom_general\Form\AppStoreRedirectForm'
     _title: 'App Store Redirect Settings'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'manage redirect settings'
   options:
     _admin_route: TRUE
 

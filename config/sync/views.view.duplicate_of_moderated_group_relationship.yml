@@ -38,8 +38,8 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-          label: ''
-          exclude: true
+          label: 'Node ID'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -979,8 +979,8 @@ display:
           default: changed
           info:
             nid:
-              sortable: false
-              default_sort_order: asc
+              sortable: true
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false

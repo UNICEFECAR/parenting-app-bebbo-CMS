@@ -7,6 +7,7 @@ dependencies:
     - symfony_mailer
     - system
     - toolbar
+    - toolbar_menu
 id: mfa_admin
 label: 'MFA Admin'
 weight: -7
@@ -16,4 +17,5 @@ permissions:
   - 'access toolbar'
   - 'administer email tfa'
   - 'administer mailer'
+  - 'view editorial_menu in toolbar'
   - 'view the administration theme'
