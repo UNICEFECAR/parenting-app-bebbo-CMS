@@ -479,3 +479,91 @@ function _bebbo_custom_general_relangcode_entity(string $entity_type, $id, array
       ->execute();
   }
 }
+
+/**
+ * Applies key-order-only config changes that config import cannot see.
+ *
+ * Drupal's StorageComparer sorts config data recursively before comparing it,
+ * so a change that only reorders array keys is invisible to `drush cim`: the
+ * importer reports "no changes" and the active config keeps the old order.
+ * Views read their column order from the order of the `fields` array and their
+ * exposed-filter order from the order of the `filters` array, so those two
+ * changes never reach a deployed site.
+ *
+ * This re-orders the active config to match the sync file without touching a
+ * single value: keys are taken in the sync file's order, keys that exist only
+ * in the active config are appended, and keys that exist only in the sync file
+ * are skipped. That keeps every per-site config_split override intact — the
+ * splits change values, not ordering.
+ *
+ * Runs per site (the deploy hook loops every site running `drush updb`) before
+ * config import, and is idempotent: once the order matches, it does nothing.
+ */
+function bebbo_custom_general_post_update_apply_config_key_order(): string {
+  // Configs whose ordering changed but whose values did not.
+  $names = [
+    // Content ID leads the keyword table; the country content list moved its
+    // tall exposed filters to the end of the form.
+    'views.view.keyword_term_count',
+    'views.view.country_content_listing',
+  ];
+
+  $sync = \Drupal::service('config.storage.sync');
+  $config_factory = \Drupal::configFactory();
+  $reordered = [];
+
+  foreach ($names as $name) {
+    $source = $sync->read($name);
+    if (!$source) {
+      continue;
+    }
+    $config = $config_factory->getEditable($name);
+    $active = $config->getRawData();
+    if (!$active) {
+      continue;
+    }
+    $ordered = _bebbo_custom_general_order_like($active, $source);
+    // === on arrays is key-order sensitive, which is exactly the difference
+    // being fixed here.
+    if ($ordered === $active) {
+      continue;
+    }
+    $config->setData($ordered)->save();
+    $reordered[] = $name;
+  }
+
+  return $reordered
+    ? 'Re-ordered config keys to match the sync files: ' . implode(', ', $reordered) . '.'
+    : 'All listed configs already match the sync key order.';
+}
+
+/**
+ * Re-orders an array's keys to match a source array, keeping every value.
+ *
+ * @param array $data
+ *   The active config data.
+ * @param array $source
+ *   The sync config data whose key order should be adopted.
+ *
+ * @return array
+ *   The active data with the source's key order applied recursively.
+ */
+function _bebbo_custom_general_order_like(array $data, array $source): array {
+  $ordered = [];
+  foreach ($source as $key => $source_value) {
+    if (!array_key_exists($key, $data)) {
+      continue;
+    }
+    $ordered[$key] = (is_array($data[$key]) && is_array($source_value))
+      ? _bebbo_custom_general_order_like($data[$key], $source_value)
+      : $data[$key];
+  }
+  // Keys the sync file does not know about (per-site split additions) keep
+  // their relative order at the end.
+  foreach ($data as $key => $value) {
+    if (!array_key_exists($key, $ordered)) {
+      $ordered[$key] = $value;
+    }
+  }
+  return $ordered;
+}
