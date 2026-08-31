@@ -138,7 +138,7 @@ After standard login, users are redirected to the OTP verification page. On succ
 - **Tag blacklist:** `4xx-response`, `config:core.extension`, `extensions`, `config:purge`, `theme_registry`, `config:field.storage`, `route_match`, `routes`
 - **Cron:** `ultimate_cron.job.purge_processor_cron_cron` ("Invalidate cache items") drains the queue on every Drupal cron run; the late-runtime processor also drains a slice at the end of web requests.
 - **API listing tags:** the article API responses are tagged `bebbo_api_list:{bundle}:{langcode}` (plus `media_list`) rather than `node_list`, so a node save queues only the listings of its bundle and affected languages — see [`API_REFERENCE.md`](API_REFERENCE.md) §12.
-- **No Cloudflare purger.** All six public zones are proxied through Cloudflare, but no `cloudflare` module or `cloudflarepurger` is enabled; edge correctness there rests on the Acquia purge chain above and on the API responses not varying by `Cookie`.
+- **No Cloudflare purger on content save.** All six public zones are proxied through Cloudflare, but no `cloudflare` module or `cloudflarepurger` is enabled; nothing purges the Cloudflare edge when content is saved. Edge freshness instead comes from the API warmer, which purges its URL list from Cloudflare and re-fetches it on every run (see the warmer section below), bounded by the edge TTL of the Cloudflare cache rule.
 
 ### API cache warmer — `bebbo_custom_general.warmer.yml`
 Shared config (`config/sync/` only). Editable at `/admin/config/development/api-warmer` on any site; the settings apply to every site because the file is not split.
@@ -152,6 +152,8 @@ Shared config (`config/sync/` only). Editable at `/admin/config/development/api-
 | `sites.<dir>.languages` | Langcodes to warm on that site: default 25 (`al-sq` … `xk-sq`), bangladesh `bn`, ecuador `ec-es`, pakistan `ur`, somoa `ws-en` + `fj-en`, turkey `tr`, zimbabwe `zw-en` + `zw-sn` + `zw-nd`. Empty list = derive from the country groups' app-visible languages. |
 
 `/api/check-update/{gid}` is added at run time for every `country` group and is not in `paths`. The schedule that runs the warmer is an Acquia job, not Drupal cron — see [`ENVIRONMENTS.md`](ENVIRONMENTS.md) §8.3.
+
+Before warming, the runner purges its URL list from the Cloudflare edge (`purge_cache` API, 30 URLs per call) so the warm requests that follow re-populate the edge with fresh responses and the warmer, not an app user, absorbs every cold render. The credentials come from `$settings['bebbo_warmer_cloudflare']`, filled in `post.settings.php` from the `CLOUDFLARE_WARMER_TOKEN` and `CLOUDFLARE_ZONE_ID` environment variables (a zone-scoped token with only the Cache Purge permission; the single `bebbo.app` zone covers every dev/stage hostname). When they are unset — DDEV, or an environment without the variables — the purge is skipped with a `bebbo_warmer` log notice and the run still warms the origin caches.
 
 ### Text formats — `filter.format.*`
 | ID | Name | Status |

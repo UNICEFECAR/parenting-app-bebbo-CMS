@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\language_visibility_control\LanguageVisibilityService;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Pool;
@@ -315,6 +316,8 @@ class WarmerRunner {
       return ['warmed' => 0, 'failures' => []];
     }
 
+    $this->purgeEdge($urls);
+
     $warmed = 0;
     $failures = [];
     $timeout = $this->getRequestTimeout();
@@ -350,6 +353,46 @@ class WarmerRunner {
     $pool->promise()->wait();
 
     return ['warmed' => $warmed, 'failures' => $failures];
+  }
+
+  /**
+   * Purges the URLs from the Cloudflare edge before they are re-fetched.
+   *
+   * The warm requests that follow travel through Cloudflare, so purging
+   * first means the fresh origin response is what the edge stores for the
+   * next TTL window. Without credentials (local environments) the purge is
+   * skipped and the warm-up still refreshes the origin caches.
+   *
+   * @param string[] $urls
+   *   Absolute URLs about to be warmed.
+   */
+  protected function purgeEdge(array $urls): void {
+    $cloudflare = Settings::get('bebbo_warmer_cloudflare', []);
+    $token = $cloudflare['api_token'] ?? '';
+    $zone = $cloudflare['zone_id'] ?? '';
+    $logger = $this->loggerFactory->get('bebbo_warmer');
+    if (!$token || !$zone) {
+      $logger->notice('Cloudflare purge skipped: bebbo_warmer_cloudflare settings are not configured.');
+      return;
+    }
+
+    // The purge_cache endpoint accepts at most 30 URLs per request.
+    foreach (array_chunk($urls, 30) as $chunk) {
+      try {
+        $response = $this->httpClient->request('POST', 'https://api.cloudflare.com/client/v4/zones/' . $zone . '/purge_cache', [
+          'headers' => ['Authorization' => 'Bearer ' . $token],
+          'json' => ['files' => $chunk],
+          'timeout' => 30,
+        ]);
+        $body = json_decode((string) $response->getBody(), TRUE);
+        if (empty($body['success'])) {
+          $logger->warning('Cloudflare purge refused: @body', ['@body' => (string) $response->getBody()]);
+        }
+      }
+      catch (\Throwable $e) {
+        $logger->warning('Cloudflare purge failed: @message', ['@message' => $e->getMessage()]);
+      }
+    }
   }
 
   /**
