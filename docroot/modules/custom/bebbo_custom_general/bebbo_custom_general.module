@@ -782,6 +782,24 @@ function bebbo_custom_general_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_toolbar_alter().
+ *
+ * The editorial menu parents are <nolink> links, which the toolbar renders
+ * without the collapse toggle core gives linked parents. The library adds it.
+ *
+ * The contextual "Edit" tab goes too: every editing route on this site is
+ * reached through the editorial menu, and only full administrators ever saw
+ * the tab, so it is one more thing to explain and nothing to gain.
+ */
+function bebbo_custom_general_toolbar_alter(array &$items): void {
+  if (isset($items['toolbar_menu_editorial_menu'])) {
+    $items['toolbar_menu_editorial_menu']['#attached']['library'][] = 'bebbo_custom_general/editorial_toolbar';
+  }
+
+  unset($items['contextual']);
+}
+
+/**
  * Implements hook_menu_local_actions_alter().
  */
 function bebbo_custom_general_menu_local_actions_alter(&$local_actions): void {

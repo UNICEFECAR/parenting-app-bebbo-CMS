@@ -122,7 +122,7 @@ links:
       - translator
     hide_role: {  }
   61da3e38-12b5-4b43-928f-c929c9ebb814:
-    title: 'Translation Overview'
+    title: 'Translation Jobs'
     description: ''
     uri: 'internal:/admin/tmgmt/jobs'
     options: {  }
@@ -299,6 +299,7 @@ links:
     langcode: en
     show_role:
       - global_admin
+      - reviewer
     hide_role: {  }
   926c5da5-45a7-4ab5-9031-a165f5fd6dce:
     title: 'Country List'
@@ -312,6 +313,7 @@ links:
     langcode: en
     show_role:
       - global_admin
+      - reviewer
     hide_role: {  }
   71693b5d-55eb-4847-ab62-74f1d6dde7c8:
     title: 'Add Country'
@@ -338,6 +340,7 @@ links:
     langcode: en
     show_role:
       - global_admin
+      - reviewer
     hide_role: {  }
   61e227a4-33cf-47c5-8ec6-ac318d970c63:
     title: 'Language List'
@@ -351,6 +354,7 @@ links:
     langcode: en
     show_role:
       - global_admin
+      - reviewer
     hide_role: {  }
   51ef2a66-2df6-4dd5-baf4-a5987010ba30:
     title: 'Add Language'
@@ -377,7 +381,6 @@ links:
     langcode: en
     show_role:
       - global_admin
-      - reviewer
       - se
     hide_role: {  }
   ea19dbd1-9f2e-4f1b-abe2-ed2e619cf43b:
@@ -406,7 +409,6 @@ links:
     langcode: en
     show_role:
       - global_admin
-      - reviewer
       - se
     hide_role: {  }
   3c7e267a-6c10-4efd-8654-41d657c1ecf6:
@@ -421,7 +423,6 @@ links:
     langcode: en
     show_role:
       - administrator
-      - authenticated
       - editor
       - global_admin
       - reviewer
@@ -440,7 +441,6 @@ links:
     langcode: en
     show_role:
       - administrator
-      - authenticated
       - editor
       - global_admin
       - se
@@ -458,7 +458,6 @@ links:
     langcode: en
     show_role:
       - administrator
-      - authenticated
       - editor
       - global_admin
       - se
@@ -490,6 +489,7 @@ links:
     langcode: en
     show_role:
       - editor
+      - global_admin
       - se
     hide_role: {  }
   124e8726-a1d3-493e-a24f-7fb2a434f3be:
@@ -504,6 +504,7 @@ links:
     langcode: en
     show_role:
       - editor
+      - global_admin
       - se
     hide_role: {  }
   5c33f0c2-a86c-4e11-b7cc-7ed35703795f:
@@ -518,6 +519,7 @@ links:
     langcode: en
     show_role:
       - editor
+      - global_admin
       - se
     hide_role: {  }
   89b69e27-2acb-4528-aa42-134d864d2c4f:
@@ -535,7 +537,7 @@ links:
       - global_admin
     hide_role: {  }
   1957d201-3fc5-4b1c-a9dd-03b0f5f89f79:
-    title: 'Force Update Config'
+    title: 'Force Update Configuration'
     description: ''
     uri: 'internal:/admin/config/parent-buddy/forcefull-update-check'
     options: {  }
@@ -549,7 +551,7 @@ links:
       - global_admin
     hide_role: {  }
   d41a7dc9-f812-4d71-97e5-d68aa7caff46:
-    title: 'Force Update List'
+    title: 'Force Update Records'
     description: ''
     uri: 'internal:/force-update-check'
     options: {  }
@@ -562,20 +564,47 @@ links:
       - administrator
       - global_admin
     hide_role: {  }
-  73e31053-b3fe-4133-9a76-ba343afa462b:
+  9f1c2d47-6b3a-4f0e-8c15-2a7e5d90b431:
     title: 'Redirect Management'
     description: ''
-    uri: 'internal:/admin/config/parent-buddy/redirect-management'
+    uri: route:<nolink>
     options: {  }
     weight: -40
-    expanded: false
+    expanded: true
     enabled: true
     parent: ''
     langcode: en
     show_role:
       - administrator
       - global_admin
-      - reviewer
+    hide_role: {  }
+  73e31053-b3fe-4133-9a76-ba343afa462b:
+    title: 'Redirect Landing Pages'
+    description: ''
+    uri: 'internal:/admin/config/parent-buddy/redirect-management'
+    options: {  }
+    weight: -50
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:9f1c2d47-6b3a-4f0e-8c15-2a7e5d90b431'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
+    hide_role: {  }
+  2b8e4a91-7d05-4c63-9f2a-6e1b3c58d7a0:
+    title: 'App stores redirect'
+    description: ''
+    uri: 'internal:/admin/config/parent-buddy/app-store-redirect'
+    options: {  }
+    weight: -49
+    expanded: false
+    enabled: true
+    parent: 'menu_link_content:9f1c2d47-6b3a-4f0e-8c15-2a7e5d90b431'
+    langcode: en
+    show_role:
+      - administrator
+      - global_admin
     hide_role: {  }
   6ca18dad-3067-4090-9bbc-f9bc60dd0e2e:
     title: 'Email & MFA'

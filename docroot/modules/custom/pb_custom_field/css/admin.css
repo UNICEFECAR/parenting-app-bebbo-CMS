@@ -83,13 +83,31 @@ table.tmgmt-ui-review input.unreviewed,
   background: transparent;
 }
 
-/* Group members operations dropbutton: Gin 5.0.x reserves only the
-   "extrasmall" toggle size (~23px) as the primary action's inline-end margin,
-   but the toggle button renders at the full --gin-spacing-xxl width (~49px)
-   and is absolutely positioned. With a long label ("Manage member") the
-   toggle overflows ~26px onto the text, drawing its divider through the label
-   while the action's own divider sits 26px further right (two lines). Reserve
-   the real toggle width so both dividers line up into one. */
-.view-group-members .dropbutton--multiple > .dropbutton__item:first-of-type {
+/* Multi-action dropbuttons: Gin 5.0.x reserves only the "extrasmall" toggle
+   size (~23px) as the primary action's inline-end margin, but a full-size
+   toggle renders at --gin-spacing-xxl (~49px) and is absolutely positioned.
+   With a long label ("Manage member", "Save and import") the toggle overflows
+   ~26px onto the text, drawing its divider through the label while the
+   action's own divider sits 26px further right (two lines). Reserve the real
+   toggle width so both dividers line up into one. Gin gives the --small and
+   --extrasmall variants matching margins already, so leave those alone. */
+.dropbutton--multiple:not(.dropbutton--small):not(.dropbutton--extrasmall) > .dropbutton__item:first-of-type {
   margin-inline-end: calc(var(--gin-spacing-xxl) + 1px) !important;
+}
+
+/* TMGMT jobs overview: keep the two-word "Job ID" header on one line so the
+   sort icon sits beside the label instead of under a wrapped second line. */
+.view-tmgmt-job-overview th.views-field-tjid {
+  white-space: nowrap;
+}
+
+/* tmgmt collapses the icon-only State header to padding:0 with a zero-width
+   link, which pushes the Gin sort arrow past the cell edge. Give the cell
+   its normal padding and let the link size itself so the arrow stays inside. */
+.view-tmgmt-job-overview th.views-field-state {
+  padding: 0 var(--gin-spacing-m, 1rem);
+}
+
+.view-tmgmt-job-overview th.views-field-state a {
+  width: auto;
 }

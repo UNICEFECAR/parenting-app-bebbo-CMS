@@ -68,7 +68,7 @@ The timezone affects admin-UI date display only — stored values are Unix times
 |---|---|---|
 | `system.logging` | Error display | `hide` (no errors shown to users) |
 | `system.cron` | Warning / error thresholds | `172800` s (2 d) / `1209600` s (14 d); logging `true` |
-| `automated_cron.settings` | Interval | `86400` s (24 h) |
+| `automated_cron.settings` | Interval | `0` — cron never runs on a web request; every run comes from an Acquia scheduled job or `drush cron` (see [`POST_SETUP_CONFIGURATION.md`](POST_SETUP_CONFIGURATION.md) §8) |
 | `dblog.settings` | Row limit | `1000` |
 | `syslog.settings` | Identity / Facility | `bebbo` / `128` (LOG_LOCAL0) |
 | `syslog.settings` | Format | `!base_url\|!timestamp\|!type\|!ip\|!request_uri\|!referer\|!uid\|!link\|!message` |
@@ -136,6 +136,22 @@ After standard login, users are redirected to the OTP verification page. On succ
 - **Processors:** drush_purge_queue_work, drush_purge_invalidate, cron, lateruntime, purge_ui_block_processor
 - **Queuers:** drush_purge_queue_add, coretags, purge_ui_block_queuer
 - **Tag blacklist:** `4xx-response`, `config:core.extension`, `extensions`, `config:purge`, `theme_registry`, `config:field.storage`, `route_match`, `routes`
+- **Cron:** `ultimate_cron.job.purge_processor_cron_cron` ("Invalidate cache items") drains the queue on every Drupal cron run; the late-runtime processor also drains a slice at the end of web requests.
+- **API listing tags:** the article API responses are tagged `bebbo_api_list:{bundle}:{langcode}` (plus `media_list`) rather than `node_list`, so a node save queues only the listings of its bundle and affected languages — see [`API_REFERENCE.md`](API_REFERENCE.md) §12.
+- **No Cloudflare purger.** All six public zones are proxied through Cloudflare, but no `cloudflare` module or `cloudflarepurger` is enabled; edge correctness there rests on the Acquia purge chain above and on the API responses not varying by `Cookie`.
+
+### API cache warmer — `bebbo_custom_general.warmer.yml`
+Shared config (`config/sync/` only). Editable at `/admin/config/development/api-warmer` on any site; the settings apply to every site because the file is not split.
+
+| Key | Value |
+|---|---|
+| `concurrency` | `8` requests in flight (form allows 1–32) |
+| `request_timeout` | `300` s per request (form allows 30–900) |
+| `paths` | 21 V1 path templates with a `{lang}` placeholder: activities, archive, articles (+ `?pregnancy=true`), basic-pages, child-development-data, child-growth-data, country-groups, daily-homescreen-messages, faqs, health-checkup-data, milestones, sponsors, standard_deviation, strings, surveys, taxonomies/{lang}/all (+ `?pregnancy=true`), vaccinations, video-articles, vocabularies |
+| `sites.<dir>.hosts` | Public hostname per environment (`dev`, `test`, `prod`) for each of the 7 site directories — the `--uri` `bebbo:warm-all` gives each subprocess |
+| `sites.<dir>.languages` | Langcodes to warm on that site: default 25 (`al-sq` … `xk-sq`), bangladesh `bn`, ecuador `ec-es`, pakistan `ur`, somoa `ws-en` + `fj-en`, turkey `tr`, zimbabwe `zw-en` + `zw-sn` + `zw-nd`. Empty list = derive from the country groups' app-visible languages. |
+
+`/api/check-update/{gid}` is added at run time for every `country` group and is not in `paths`. The schedule that runs the warmer is an Acquia job, not Drupal cron — see [`ENVIRONMENTS.md`](ENVIRONMENTS.md) §8.3.
 
 ### Text formats — `filter.format.*`
 | ID | Name | Status |
@@ -236,7 +252,7 @@ Because registration is `admin_only` and no account-created mail is sent, creati
 - **Editor** — full content-type CRUD, media, `translate any entity`, layout builder, workflow transitions (draft→SME, draft→review_after_translation)
 - **Senior Editor (`se`)** — Editor + publish/archive/reject transitions, revision revert all types, content translations, `administer users`
 - **SME** — create and edit any content (15 node types), `accept translation jobs`, transitions SME→reject / SME→senior_editor / SME→SME, view unpublished
-- **Country Admin (`reviewer`)** — `access content`, `access group overview`, `administer allowed languages`, `administer users`, `create media`, entity_share client/server, user actions (add_role/block/unblock), redirect settings
+- **Country Admin (`reviewer`)** — `access content`, `access group overview`, `administer allowed languages`, `administer languages`, `administer users`, `create media`, entity_share client/server, user actions (add_role/block/unblock)
 - **MFA Admin** — `administer mailer`, `administer email tfa`, `access administration pages`, `access toolbar`, `view editorial_menu in toolbar`, `view the administration theme`. Scoped to the Symfony Mailer pages (policy, transport, Office365, test) and the Email TFA settings form, reached through the **Email & MFA** group in the editorial menu. Listed in `email_tfa` `ignore_role`, so holders log in without the OTP step
 - **Global Admin** — full admin: feeds (all 43 feed types), entity_share, REST, content types, nodes, users, languages, country group creation, all workflow transitions, layout builder, redirect, toolbar menu
 - **Translator** — create content (15 node types), translate nodes/taxonomy/media, translation job mgmt, `translate interface`, transitions review_after_translation→draft/SME

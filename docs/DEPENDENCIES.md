@@ -346,6 +346,7 @@ Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â
 | `drupal/tmgmt` | Entity author details | local |
 | `drupal/tmgmt` | JobType grouped-filter `escapeLike` array fix | local |
 | `drupal/tmgmt` | Contact only the selected provider when building the job form | local |
+| `drupal/tmgmt` | Config source reports a removed config mapper plugin as `TMGMTException` so job listings keep rendering | local |
 | `drupal/tmgmt_google` | No page-level error when the job form incidentally probes Google | local |
 | `drupal/tmgmt_memsource` | PHP 8.4: explicit nullable param in `createFileTranslation` | local |
 | `drupal/imagemagick` | Preserve URL-encoded filenames | local |
@@ -372,7 +373,7 @@ Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` â
 | `drupal/migrate_source_csv` | league/csv 9.27 `createFromStream` deprecation fix | local |
 | `drupal/structure_sync` | PHP 8.4 implicit-nullable params (3563762) | local |
 | `drupal/ultimate_cron` | D11: legacy `#ajax` 'replace' method breaks scheduler/logger switch on job edit form (3535416, MR!71) | local |
-| `drupal/warmer` | CDN warmer aborts cold pages at the 30s http_client default timeout | local |
+| `drupal/warmer` | CDN warmer aborts cold pages at the 30s http_client default timeout â€” package still declared and patched, but the module is not enabled on any site; warming is done by the custom `bebbo_custom_general` warmer | local |
 
 ---
 

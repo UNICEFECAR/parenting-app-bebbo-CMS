@@ -305,6 +305,8 @@ function group_country_field_form_views_exposed_form_alter(&$form, $form_state) 
           $query->fields('ufd', ['uid', 'name']);
           $query->condition('nfr.langcode', $languages, 'IN');
           $query->condition('nfr.vid', $sub, 'IN');
+          // Legacy migration saves carry no author; anonymous has no name.
+          $query->condition('nr.revision_uid', 0, '<>');
           $query->distinct();
           $authors = $query->execute()->fetchAllKeyed();
           asort($authors);

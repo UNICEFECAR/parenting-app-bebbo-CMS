@@ -1411,6 +1411,7 @@ API requests pass through these event subscribers in priority order:
 | Priority | Subscriber | Module | Effect |
 |----------|-----------|--------|--------|
 | **0** | `EtagResponseSubscriber` | `bebbo_serializer` | Sets ETag header; converts to 304 on matching `If-None-Match`. |
+| **-10** | `ApiVaryResponseSubscriber` | `bebbo_serializer` | Runs after core's `FinishResponseSubscriber` (priority 0) and removes `Cookie` from `Vary` on `/api/*` and `/v{n}/api/*`. The API bodies do not depend on any cookie, so without this a request carrying any cookie would miss the shared-cache copy stored for a cookie-less one. `Accept-Encoding` and anything an edge added stay; HTML responses keep `Vary: Cookie`. |
 
 > Both serializers call `filterLanguageDataForApi()` inline inside `transformCountryGroups()`; there is no response-phase language filter (no `language_visibility_control` `ApiResponseSubscriber`).
 
@@ -1428,6 +1429,10 @@ Both serializers use the same caching/batching mechanisms (verified in `BebboSer
 | **Batched media resolution** | Per request | `resolveMediaIds()` / `parseViewCoverImage()` resolve all media IDs in a row set together (WebP image styles) — one query per row set, no per-row N+1 entity loads. |
 | **Batched taxonomy/title lookups** | Per request | `queryBasicTermsBatch()` / `queryUniqueNameTermsBatch()` (taxonomy transforms); `getEnglishNodeTitles()` (shared) load in one query per request. |
 | **Persistent cache** | Across requests | Pregnancy term TID: permanent, cid `bebbo_serializer:pregnancy_tid`, tag `taxonomy_term_list` (`bebbo_serializer.module`). |
+| **Render / page cache** | Whole response | Anonymous GETs are stored by core's page cache and Acquia (Varnish + Platform CDN) with `max-age` `2764800` s (`system.performance`). `Vary` carries no `Cookie` on API paths (see §11). |
+| **Listing cache tags** | Per bundle, per language | The articles displays (`v1_articles_rest_export`, `articles_rest_export`) render rows in an isolated render context and tag the response `bebbo_api_list:{bundle}:{langcode}` for each bundle the display filters on, plus `media_list` — instead of core's site-wide `node_list`, which any node save would expire. Isolating the row render also keeps hundreds of `node:ID` tags out of the response, which `acquia_purge` would otherwise emit as a `Surrogate-Key` header and flood the purge queue with. `hook_node_update` / `insert` / `predelete` in `bebbo_serializer.module` fire the matching tags — per language when only translated values changed, all languages when an untranslatable field changed. Other displays keep core's `node_list` tagging. |
+| **Invalidation** | Origin → edge | `purge_queuer_coretags` queues every invalidated tag; `acquia_purge` + `acquia_platform_cdn` purgers clear Varnish and the Platform CDN; processed by cron (`purge_processor_cron`) and late-runtime. See [`CONFIGURATION.md`](CONFIGURATION.md) *Purge / Cache invalidation*. |
+| **Warming** | V1 only | `bebbo_custom_general` warmer (`bebbo:warm-all`, Acquia scheduled job every 2 h on dev and stage; manual *Warm this site* button at `/admin/config/development/api-warmer`) requests every V1 listing × app-visible language plus `/api/check-update/{gid}` so the first app request after a cache clear or deploy hits a warm copy. Nothing warms `/v2/api/*`. See [`MODULES.md`](MODULES.md) §3. |
 
 ---
 

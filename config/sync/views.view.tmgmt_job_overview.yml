@@ -805,6 +805,7 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            tjid: tjid
             label: label
             source_language_1: source_language_1
             state: state
@@ -816,6 +817,13 @@ display:
             operations: operations
           default: changed
           info:
+            tjid:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             label:
               sortable: true
               default_sort_order: asc

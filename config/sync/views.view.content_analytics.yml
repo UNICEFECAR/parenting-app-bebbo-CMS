@@ -3,13 +3,17 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_activity_category
     - field.storage.node.field_analytics_updated
+    - field.storage.node.field_content_category
     - field.storage.node.field_like_count
     - field.storage.node.field_read_count
     - node.type.activities
     - node.type.article
     - node.type.course
     - node.type.video_article
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
   module:
     - better_exposed_filters
     - csv_serialization
@@ -17,6 +21,7 @@ dependencies:
     - node
     - rest
     - serialization
+    - taxonomy
     - user
     - views_data_export
 id: content_analytics
@@ -643,6 +648,96 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+        field_content_category_target_id:
+          id: field_content_category_target_id
+          table: node__field_content_category
+          field: field_content_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_category_target_id_op
+            label: Category
+            description: ''
+            use_operator: false
+            operator: field_content_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_category_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_activity_category_target_id:
+          id: field_activity_category_target_id
+          table: node__field_activity_category
+          field: field_activity_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_activity_category_target_id_op
+            label: 'Activity Category'
+            description: ''
+            use_operator: false
+            operator: field_activity_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_activity_category_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: activity_category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -1374,6 +1469,96 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_content_category_target_id:
+          id: field_content_category_target_id
+          table: node__field_content_category
+          field: field_content_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_category_target_id_op
+            label: Category
+            description: ''
+            use_operator: false
+            operator: field_content_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_category_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_activity_category_target_id:
+          id: field_activity_category_target_id
+          table: node__field_activity_category
+          field: field_activity_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_activity_category_target_id_op
+            label: 'Activity Category'
+            description: ''
+            use_operator: false
+            operator: field_activity_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_activity_category_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: activity_category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -1686,6 +1871,96 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_content_category_target_id:
+          id: field_content_category_target_id
+          table: node__field_content_category
+          field: field_content_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_content_category_target_id_op
+            label: Category
+            description: ''
+            use_operator: false
+            operator: field_content_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_content_category_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_activity_category_target_id:
+          id: field_activity_category_target_id
+          table: node__field_activity_category
+          field: field_activity_category_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_activity_category_target_id_op
+            label: 'Activity Category'
+            description: ''
+            use_operator: false
+            operator: field_activity_category_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_activity_category_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: activity_category
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
