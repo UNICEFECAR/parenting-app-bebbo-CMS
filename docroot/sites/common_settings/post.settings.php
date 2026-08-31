@@ -70,6 +70,13 @@ $settings['config_sync_directory'] = '../config/sync';
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
 
+// Cloudflare purge credentials for the API warmer. When unset, the warmer
+// skips the edge purge and only refreshes the origin caches.
+$settings['bebbo_warmer_cloudflare'] = [
+  'api_token' => getenv('CLOUDFLARE_WARMER_TOKEN') ?: '',
+  'zone_id' => getenv('CLOUDFLARE_ZONE_ID') ?: '',
+];
+
 // $config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.google']['settings']['api_key'] = getenv('GOOGLE_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.deepl_free']['settings']['auth_key'] = getenv('DEEPL_AUTH_KEY_FREE') ?: '';

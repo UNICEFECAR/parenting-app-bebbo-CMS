@@ -183,7 +183,7 @@ All 15 are **legacy-style** (`@command` annotations) across four custom modules.
 |---------|-------|--------|------------------|
 | `bebbo:menu-export` | `bme` | Export the editorial menu to `bebbo_custom_general.editorial_menu` config (run on bebbo, commit the YAML) | — |
 | `bebbo:menu-sync` | `bms` | Apply the canonical editorial menu to the current site (runs per site on every deploy) | `--dry-run` |
-| `bebbo:warm` | `bw` | Request every V1 `/api/*` URL of the current site (paths × languages + `check-update` per group), record the run in `bebbo_warmer_log`; non-zero exit if any URL did not answer warm | `--dry-run`; host comes from `--uri` |
+| `bebbo:warm` | `bw` | Purge the site's V1 `/api/*` URLs from the Cloudflare edge (skipped when `CLOUDFLARE_WARMER_TOKEN`/`CLOUDFLARE_ZONE_ID` are unset), then request every URL (paths × languages + `check-update` per group), record the run in `bebbo_warmer_log`; non-zero exit if any URL did not answer warm | `--dry-run`; host comes from `--uri` |
 | `bebbo:warm-all` | `bwa` | Run `bebbo:warm` for all 7 sites in sequence, one subprocess each, against the public hostnames of `--env`; lock-guarded (`bebbo_warm_all`, 1 h) | `--env=dev\|test\|prod` (default `AH_SITE_ENVIRONMENT`), `--sites=a,b` |
 
 ---

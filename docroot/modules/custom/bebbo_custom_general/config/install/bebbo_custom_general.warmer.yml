@@ -13,20 +13,12 @@ paths:
   - /api/faqs/{lang}
   - /api/health-checkup-data/{lang}
   - /api/milestones/{lang}
-  - /api/pinned-contents/{lang}/child_development/40
-  - /api/pinned-contents/{lang}/child_development/41
-  - /api/pinned-contents/{lang}/child_growth
-  - /api/pinned-contents/{lang}/faq
-  - /api/pinned-contents/{lang}/health_check_ups
-  - /api/pinned-contents/{lang}/vaccinations
-  - /api/related-article-contents/{lang}/milestone
   - /api/sponsors/{lang}
   - /api/standard_deviation/{lang}
   - /api/strings/{lang}
   - /api/surveys/{lang}
   - /api/taxonomies/{lang}/all
   - '/api/taxonomies/{lang}/all?pregnancy=true'
-  - /api/updated-pinned-contents/{lang}/faq
   - /api/vaccinations/{lang}
   - /api/video-articles/{lang}
   - /api/vocabularies/{lang}
@@ -42,7 +34,6 @@ sites:
       - by-be
       - by-ru
       - en
-      - eu
       - gr-el
       - kg-ky
       - kg-ru
@@ -76,7 +67,6 @@ sites:
       test: ec-stage.bebbo.app
       prod: wawamor.ec
     languages:
-      - es
       - ec-es
   pakistan:
     hosts:
@@ -91,10 +81,8 @@ sites:
       test: ws-stage.bebbo.app
       prod: bebbopacific.app
     languages:
-      - fj-fj
-      - fj-en
-      - ws-sm
       - ws-en
+      - fj-en
   turkey:
     hosts:
       dev: tr-dev.bebbo.app
