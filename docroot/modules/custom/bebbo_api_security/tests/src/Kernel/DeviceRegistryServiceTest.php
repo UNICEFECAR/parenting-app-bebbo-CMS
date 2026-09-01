@@ -165,7 +165,8 @@ class DeviceRegistryServiceTest extends KernelTestBase {
       ->execute()
       ->fetchObject();
 
-    $this->assertNotNull($log);
+    $this->assertIsObject($log);
+    assert(is_object($log));
     $this->assertEquals('register', $log->event_type);
     $this->assertEquals('192.168.1.1', $log->ip_address);
     $this->assertEquals('{"foo":"bar"}', $log->details);

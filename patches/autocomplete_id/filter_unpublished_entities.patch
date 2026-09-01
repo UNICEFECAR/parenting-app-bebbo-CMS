@@ -1,16 +1,16 @@
 diff --git a/src/EntityIdAutocompleteMatcher.php b/src/EntityIdAutocompleteMatcher.php
-index 1234567..abcdefg 100644
+index 1a30f3e..23b3a83 100644
 --- a/src/EntityIdAutocompleteMatcher.php
 +++ b/src/EntityIdAutocompleteMatcher.php
-@@ -5,6 +5,7 @@ namespace Drupal\autocomplete_id;
- use Drupal\Component\Plugin\Exception\PluginNotFoundException;
- use Drupal\Component\Utility\Html;
+@@ -7,6 +7,7 @@ use Drupal\Component\Utility\Html;
  use Drupal\Component\Utility\Tags;
-+use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Config\ConfigFactoryInterface;
  use Drupal\Core\Entity\EntityAutocompleteMatcherInterface;
++use Drupal\Core\Entity\EntityPublishedInterface;
  use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
  use Drupal\Core\Entity\EntityRepositoryInterface;
-@@ -104,6 +105,10 @@ class EntityIdAutocompleteMatcher implements EntityAutocompleteMatcherInterface {
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+@@ -121,6 +122,10 @@ class EntityIdAutocompleteMatcher implements EntityAutocompleteMatcherInterface
        (isset($selection_settings['target_bundles']) && is_array($selection_settings['target_bundles']) && !in_array($entity->bundle(), $selection_settings['target_bundles']))) {
        return $matches;
      }
@@ -18,6 +18,6 @@ index 1234567..abcdefg 100644
 +    if ($entity instanceof EntityPublishedInterface && !$entity->isPublished()) {
 +      return $matches;
 +    }
-
+ 
      $entity_id = $entity->id();
      $label = Html::escape($this->entityRepository->getTranslationFromContext($entity)

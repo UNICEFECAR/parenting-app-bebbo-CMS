@@ -1,0 +1,80 @@
+diff --git a/src/Logger/FileLog.php b/src/Logger/FileLog.php
+index 93b55a5..c7e375c 100644
+--- a/src/Logger/FileLog.php
++++ b/src/Logger/FileLog.php
+@@ -31,11 +31,22 @@ class FileLog implements LoggerInterface {
+   use DependencySerializationTrait;
+ 
+   /**
+-   * The filelog settings.
++   * The config factory.
+    *
+-   * @var \Drupal\Core\Config\Config
++   * @var \Drupal\Core\Config\ConfigFactoryInterface
+    */
+-  protected Config $config;
++  protected ConfigFactoryInterface $configFactory;
++
++  /**
++   * The (lazy loaded) filelog settings.
++   *
++   * Loading configuration in the constructor triggers configuration
++   * overrides while the logger itself is being built, which can recurse
++   * into the service container and blow up with a circular reference.
++   *
++   * @var ?\Drupal\Core\Config\Config
++   */
++  protected ?Config $config = NULL;
+ 
+   /**
+    * The state system, for updating the filelog.rotation timestamp.
+@@ -108,13 +119,23 @@ class FileLog implements LoggerInterface {
+    *   The filelog.file_manager service.
+    */
+   public function __construct(ConfigFactoryInterface $configFactory, StateInterface $state, TimeInterface $time, LogMessageParserInterface $parser, LogFileManagerInterface $fileManager) {
+-    $this->config = $configFactory->get('filelog.settings');
++    $this->configFactory = $configFactory;
+     $this->state = $state;
+     $this->time = $time;
+     $this->parser = $parser;
+     $this->fileManager = $fileManager;
+   }
+ 
++  /**
++   * Loads the filelog settings on first use.
++   *
++   * @return \Drupal\Core\Config\Config
++   *   The filelog settings.
++   */
++  protected function getConfig(): Config {
++    return $this->config ??= $this->configFactory->get('filelog.settings');
++  }
++
+   /**
+    * Open the logfile for writing.
+    *
+@@ -193,12 +214,12 @@ class FileLog implements LoggerInterface {
+   protected function shouldLog(mixed $level, string $message, array $context = []): bool {
+     // Ignore any messages below the configured severity.
+     // (Severity decreases with level.)
+-    $should_log = $this->config->get('enabled') && $level <= $this->config->get('level');
++    $should_log = $this->getConfig()->get('enabled') && $level <= $this->getConfig()->get('level');
+ 
+     // Include or exclude based on channel list.
+     return $should_log && (
+-      ($this->config->get('channels_type') === 'include')
+-      === in_array($context['channel'], $this->config->get('channels'), TRUE)
++      ($this->getConfig()->get('channels_type') === 'include')
++      === in_array($context['channel'], $this->getConfig()->get('channels'), TRUE)
+     );
+   }
+ 
+@@ -225,7 +246,7 @@ class FileLog implements LoggerInterface {
+     $bubbleable_metadata_to_discard = new BubbleableMetadata();
+     $log = new LogMessage($level, $message, $variables, $context);
+     $entry = $this->token()->replace(
+-      $this->config->get('format'),
++      $this->getConfig()->get('format'),
+       ['log' => $log],
+       [],
+       $bubbleable_metadata_to_discard

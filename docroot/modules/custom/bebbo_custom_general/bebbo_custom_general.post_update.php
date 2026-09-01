@@ -52,8 +52,10 @@ function bebbo_custom_general_post_update_purge_orphan_paragraph_fields(): strin
     // remain for the storage.
     $unique_id = $field_storage->getUniqueStorageIdentifier();
     foreach ($repository->getFieldDefinitions($unique_id) as $field) {
+      // @phpstan-ignore-next-line -- deprecated in 11.4 with no replacement.
       field_purge_field($field);
     }
+    // @phpstan-ignore-next-line -- deprecated in 11.4 with no replacement.
     field_purge_field_storage($field_storage);
 
     $purged[] = $field_storage->getTargetEntityTypeId() . '.' . $field_storage->getName();

@@ -87,6 +87,8 @@ class SideloadedVerificationServiceTest extends KernelTestBase {
       ->condition('d.device_id', 'test-device-001')
       ->execute()
       ->fetchObject();
+    $this->assertIsObject($device);
+    assert(is_object($device));
     $this->assertEquals('pending', $device->status);
     $this->assertEquals('sideloaded', $device->platform);
   }
@@ -111,6 +113,8 @@ class SideloadedVerificationServiceTest extends KernelTestBase {
       ->condition('d.device_id', 'test-device-002')
       ->execute()
       ->fetchObject();
+    $this->assertIsObject($device);
+    assert(is_object($device));
     $this->assertEquals('active', $device->status);
   }
 
