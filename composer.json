@@ -118,7 +118,7 @@
         "drupal/views_field_view": "^1.0",
         "drupal/warmer": "^2.0",
         "drupal/webp": "^1.0@RC",
-        "drush/drush": "^13",
+        "drush/drush": "^13.7",
         "enshrined/svg-sanitize": "^0.22.0",
         "firebase/php-jwt": "^7.0@stable",
         "mglaman/composer-drupal-lenient": "^2.0",
@@ -225,7 +225,8 @@
             },
             "drupal/core": {
                 "Fix moderation issue for translation": "patches/content_moderation/content_moderation_revision.patch",
-                "Field translated field issue fixed": "https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch"
+                "Field translated field issue fixed": "https://www.drupal.org/files/issues/2024-05-01/3025039-94.patch",
+                "Load syslog settings lazily, not in the logger constructor": "patches/core/syslog-lazy-config-load.patch"
             },
             "drupal/view_custom_table": {
                 "Defensive checks in views_data to avoid fatal on malformed config": "patches/view_custom_table/safe_views_data.patch"
@@ -261,7 +262,8 @@
             },
             "drupal/filelog": {
                 "Circular reference fix": "https://www.drupal.org/files/issues/2024-08-01/3416342-12.patch",
-                "Drupal 11 compatibility (3464223)": "patches/filelog-d11-compatibility.patch"
+                "Drupal 11 compatibility (3464223)": "patches/filelog-d11-compatibility.patch",
+                "Load settings lazily, not in the logger constructor": "patches/filelog-lazy-config-load.patch"
             },
             "drupal/lang_dropdown": {
                 "Fix InvalidArgumentException when no route object exists (404/403 pages)": "https://www.drupal.org/files/issues/2024-02-28/lang_dropdown_InvalidArgumentException.patch"

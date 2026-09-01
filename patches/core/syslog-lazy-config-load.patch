@@ -1,0 +1,67 @@
+diff --git a/core/modules/syslog/src/Logger/SysLog.php b/core/modules/syslog/src/Logger/SysLog.php
+--- a/core/modules/syslog/src/Logger/SysLog.php
++++ b/core/modules/syslog/src/Logger/SysLog.php
+@@ -18,9 +18,20 @@ class SysLog implements LoggerInterface {
+   /**
+    * A configuration object containing syslog settings.
+    *
+-   * @var \Drupal\Core\Config\Config
++   * Loaded lazily: loading configuration in the constructor runs config
++   * overrides while the logger is being built, which can recurse into the
++   * container and trigger a circular service reference.
++   *
++   * @var \Drupal\Core\Config\Config|null
++   */
++  protected $config = NULL;
++
++  /**
++   * The configuration factory.
++   *
++   * @var \Drupal\Core\Config\ConfigFactoryInterface
+    */
+-  protected $config;
++  protected $configFactory;
+ 
+   /**
+    * The message's placeholders parser.
+@@ -45,18 +56,28 @@ class SysLog implements LoggerInterface {
+    *   The parser to use when extracting message variables.
+    */
+   public function __construct(ConfigFactoryInterface $config_factory, LogMessageParserInterface $parser) {
+-    $this->config = $config_factory->get('syslog.settings');
++    $this->configFactory = $config_factory;
+     $this->parser = $parser;
+   }
+ 
++  /**
++   * Loads the syslog settings on first use.
++   *
++   * @return \Drupal\Core\Config\Config
++   *   The syslog settings.
++   */
++  protected function getConfig() {
++    return $this->config ??= $this->configFactory->get('syslog.settings');
++  }
++
+   /**
+    * Opens a connection to the system logger.
+    */
+   protected function openConnection() {
+     if (!$this->connectionOpened) {
+       // Do not connect if identity or facility are not configured.
+-      $identity = $this->config->get('identity');
+-      $facility = $this->config->get('facility');
++      $identity = $this->getConfig()->get('identity');
++      $facility = $this->getConfig()->get('facility');
+       if ($identity === NULL || $facility === NULL) {
+         return;
+       }
+@@ -70,7 +91,7 @@ protected function openConnection() {
+   public function log($level, string|\Stringable $message, array $context = []): void {
+     global $base_url;
+ 
+-    $format = $this->config->get('format');
++    $format = $this->getConfig()->get('format');
+     // If no format is configured then a message will not be written to syslog
+     // so return early. This occurs during installation of the syslog module
+     // before configuration has been written.
