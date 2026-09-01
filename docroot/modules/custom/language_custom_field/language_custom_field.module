@@ -21,11 +21,10 @@ function language_custom_field_form_alter(&$form, &$form_state, $form_id) {
     // Change the weight of the direction field.
     $form['direction']['#weight'] = 10;
     // Add custom field to the form.
-    $langcode = '';
-    // If we are editing, we should have a langcode.
-    if ($form_id == 'language_admin_edit_form' && isset($form['langcode']['#value'])) {
-      $langcode = $form['langcode']['#value'];
-    }
+    // The langcode comes from the entity being edited: core 11.1.4 stopped
+    // putting a 'langcode' element on the edit form (issue #2927338), leaving
+    // only the read-only 'langcode_view' item.
+    $langcode = $form_state->getFormObject()->getEntity()->id() ?? '';
     // Load existing data for the given langcode from the database.
     $existing_data = [];
     if (!empty($langcode)) {
@@ -81,9 +80,9 @@ function language_custom_field_custom_submit($form, &$form_state) {
     $field_custom_plural = $form_state->getValue('custom_plural');
   }
 
-  if ($form_state->getValue('langcode')) {
-    $langcode = $form_state->getValue('langcode');
-  }
+  // The form itself no longer carries a 'langcode' value, so read it from the
+  // entity, which core has already saved by the time this handler runs.
+  $langcode = $form_state->getFormObject()->getEntity()->id() ?? '';
 
   if ($form_state->getValue('custom_language_name_local')) {
     $custom_language_name_local = $form_state->getValue('custom_language_name_local');
