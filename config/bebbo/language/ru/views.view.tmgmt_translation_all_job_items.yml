@@ -28,6 +28,7 @@ display:
         type:
           label: Тип
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -49,6 +50,11 @@ display:
         source_language:
           expose:
             label: 'Исходный язык'
+        job_type:
+          group_info:
+            group_items:
+              1:
+                title: Normal
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"

@@ -1,0 +1,4 @@
+administer bebbo api security:
+  title: 'Administer Bebbo API security settings'
+  description: 'Configure device attestation, JWT, and enforcement mode for V2 API endpoints.'
+  restrict access: true

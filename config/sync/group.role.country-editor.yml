@@ -7,10 +7,7 @@ dependencies:
 id: country-editor
 label: Editor
 weight: 101
-internal: false
-audience: member
 group_type: country
-permissions_ui: true
 permissions:
   - 'create group_node:activities content'
   - 'create group_node:activities entity'
@@ -84,3 +81,5 @@ permissions:
   - 'view unpublished group_node:survey entity'
   - 'view unpublished group_node:vaccinations entity'
   - 'view unpublished group_node:video_article entity'
+admin: false
+scope: individual

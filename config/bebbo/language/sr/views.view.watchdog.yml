@@ -1,0 +1,27 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        nothing:
+          admin_label: Icon
+        type:
+          label: Type
+        message:
+          label: Message
+        name:
+          label: User
+        link:
+          label: Operations
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+      exposed_form:
+        options:
+          submit_button: Filter
+          exposed_sorts_label: 'Sort by'
+      filters:
+        type:
+          expose:
+            label: Type

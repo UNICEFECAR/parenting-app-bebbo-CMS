@@ -1,5 +1,5 @@
 name: File Sanitizer
 type: module
 description: Sanitizes unsafe filenames and updates Drupal file entities safely.
-core_version_requirement: ^10
+core_version_requirement: ^10 || ^11
 package: Custom

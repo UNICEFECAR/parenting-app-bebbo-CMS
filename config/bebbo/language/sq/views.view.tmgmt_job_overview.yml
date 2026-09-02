@@ -2,6 +2,8 @@ display:
   default:
     display_options:
       fields:
+        source_language_1:
+          label: From
         target_language:
           label: To
         tags_count:

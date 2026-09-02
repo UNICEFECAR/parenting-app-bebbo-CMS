@@ -1,0 +1,31 @@
+adding:
+  remote_languages_mappings:
+    en: en
+    ru: ru
+    sq: sq
+    al-sq: sq
+    by-be: be
+    by-ru: ru
+    bg-bg: bg
+    gr-el: el
+    xk-sq: sq
+    xk-rs: sr-Cyrl
+    kg-ky: ky
+    kg-ru: ru
+    md-ro: ro
+    me-cnr: mn-Cyrl
+    mk-mk: mk
+    mk-sq: mk
+    ro: ro
+    ro-ro: ro
+    sr: sr-Cyrl
+    rs-sr: sr-Cyrl
+    rs-en: en
+    sk: sk
+    tj-tg: ''
+    tj-ru: ru
+    uk: uk
+    uz-uz: uz
+    uz-ru: uz
+    uz-kaa: uz
+removing: {  }

@@ -16,7 +16,7 @@ field_name: field_course_expiry
 entity_type: node
 bundle: course
 label: 'Course Expiry'
-description: ''
+description: 'Enter a date and time for when you wish this course to no longer be available to app users.'
 required: false
 translatable: true
 default_value: {  }

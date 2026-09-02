@@ -2,4 +2,4 @@ name: 'Custom Article Update'
 type: module
 description: 'Updates "Do not feature" field based on user-selected fields.'
 package: Custom
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11

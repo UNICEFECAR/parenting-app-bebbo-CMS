@@ -1,7 +1,8 @@
-name: PB API Serialization
-description: Define's a custom serialization
+name: 'PB API Serialization (uninstall stub)'
+description: 'Temporary stub retaining the custom_serialization plugin ID so the module can be uninstalled from sites where it is still enabled. Remove once every environment has imported configuration.'
 package: Custom
 type: module
-core_version_requirement: ^9.2 || ^10 || ^11
+core_version_requirement: ^10 || ^11
 dependencies:
-  - language_visibility_control:language_visibility_control
+  - drupal:rest
+  - drupal:views

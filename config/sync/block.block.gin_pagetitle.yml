@@ -1,0 +1,40 @@
+uuid: ecf09995-5fcc-4fdd-93ae-7d789dda687c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - system
+    - user
+  theme:
+    - gin
+id: gin_pagetitle
+theme: gin
+region: content
+weight: -14
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/homepage\r\n/share\r\n/foleja"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      page: page

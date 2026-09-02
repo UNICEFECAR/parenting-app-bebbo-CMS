@@ -1,9 +1,0 @@
-adding:
-  permissions:
-    - 'access user profiles'
-removing:
-  dependencies:
-    module:
-      - entity_share_client
-  permissions:
-    - entity_share_client_pull_content

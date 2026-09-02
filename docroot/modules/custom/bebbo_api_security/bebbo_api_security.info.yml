@@ -1,0 +1,9 @@
+name: Bebbo API Security
+description: 'Device attestation and JWT authentication for V2 API endpoints.'
+type: module
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:key
+  - drupal:views
+  - view_custom_table:view_custom_table

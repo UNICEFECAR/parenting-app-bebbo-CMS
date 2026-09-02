@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\bebbo_custom_general\StoreUrl;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -146,6 +147,21 @@ class CustomForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Both fields only apply to an app update, and are optional even then:
+    // they are filled in when a new app has been published elsewhere.
+    if ($form_state->getValue('update_type') !== 'app_update' || $form_state->getValue('flag') !== '1') {
+      return;
+    }
+
+    $google_play_url = trim((string) $form_state->getValue('google_play_url'));
+    if ($google_play_url !== '' && !StoreUrl::isGooglePlay($google_play_url)) {
+      $form_state->setErrorByName('google_play_url', $this->t('Enter a Google Play listing URL, for example https://play.google.com/store/apps/details?id=org.unicef.ecar.bebbo.'));
+    }
+
+    $app_store_url = trim((string) $form_state->getValue('app_store_url'));
+    if ($app_store_url !== '' && !StoreUrl::isAppStore($app_store_url)) {
+      $form_state->setErrorByName('app_store_url', $this->t('Enter an App Store listing URL, for example https://apps.apple.com/app/bebbo-parenting-app/id1588918146.'));
+    }
   }
 
   /**

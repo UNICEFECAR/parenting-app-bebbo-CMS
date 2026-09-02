@@ -1,0 +1,7 @@
+pb_custom_field.group_create_member:
+  route_name: 'entity.group_relationship.create_form'
+  route_parameters:
+    plugin_id: 'group_membership'
+  title: 'Add new member'
+  appears_on:
+    - 'view.group_members.page_1'

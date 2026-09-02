@@ -1,0 +1,15 @@
+views.field.pb_user_groups:
+  type: views_field
+  label: 'All groups a user belongs to'
+
+views.filter.pb_user_group_label:
+  type: views.filter.string
+  label: 'Group name a user belongs to'
+
+views.filter.pb_user_group_id:
+  type: views.filter.numeric
+  label: 'Group ID a user belongs to'
+
+views.filter_value.pb_user_group_id:
+  type: views.filter_value.numeric
+  label: 'Group ID a user belongs to'

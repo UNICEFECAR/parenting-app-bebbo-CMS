@@ -1,0 +1,81 @@
+--- a/modules/entity_share_client/src/Service/ImportConfigManipulator.php
++++ b/modules/entity_share_client/src/Service/ImportConfigManipulator.php
+@@ -53,7 +53,7 @@
+    * @throws \Exception
+    *   Thrown if an unknown $type or plugin ID is given.
+    */
+-  protected function createImportProcessorPlugins(ImportConfigInterface $import_config, array $plugin_ids = NULL, array $configurations = []) {
++  protected function createImportProcessorPlugins(ImportConfigInterface $import_config, ?array $plugin_ids = NULL, array $configurations = []) {
+     if ($plugin_ids === NULL) {
+       $plugin_ids = array_keys($this->importProcessorPluginManager->getDefinitions());
+     }
+--- a/modules/entity_share_client/src/Plugin/Action/UpdatePolicyAction.php
++++ b/modules/entity_share_client/src/Plugin/Action/UpdatePolicyAction.php
+@@ -104,7 +104,7 @@
+    *
+    * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+    */
+-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
++  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+     /** @var \Drupal\entity_share_client\Entity\EntityImportStatusInterface $object */
+     return $object->access('update', $account, $return_as_object);
+   }
+--- a/modules/entity_share_client/src/Service/StateInformationInterface.php
++++ b/modules/entity_share_client/src/Service/StateInformationInterface.php
+@@ -103,7 +103,7 @@
+    * @return \Drupal\entity_share_client\Entity\EntityImportStatusInterface|bool
+    *   The "Entity import status" entity or FALSE if none found.
+    */
+-  public function getImportStatusByParameters(string $uuid, string $entity_type_id, string $langcode = NULL);
++  public function getImportStatusByParameters(string $uuid, string $entity_type_id, ?string $langcode = NULL);
+ 
+   /**
+    * Gets the dedicated "Entity import status" entity for imported entity.
+@@ -124,6 +124,6 @@
+    * @param string|null $langcode
+    *   Optional language code, used when deleting only specific translations.
+    */
+-  public function deleteImportStatusOfEntity(EntityInterface $entity, string $langcode = NULL);
++  public function deleteImportStatusOfEntity(EntityInterface $entity, ?string $langcode = NULL);
+ 
+ }
+--- a/modules/entity_share_client/src/Service/StateInformation.php
++++ b/modules/entity_share_client/src/Service/StateInformation.php
+@@ -209,7 +209,7 @@
+    * @return array
+    *   The same as return value of getStatusInfo().
+    */
+-  protected function statusInfoArray(string $status_info_id, ContentEntityInterface $entity = NULL) {
++  protected function statusInfoArray(string $status_info_id, ?ContentEntityInterface $entity = NULL) {
+     $status_definition = $this->getStatusDefinition($status_info_id);
+     $status_info = [
+       'label' => $status_definition['label'],
+@@ -302,7 +302,7 @@
+   /**
+    * {@inheritdoc}
+    */
+-  public function getImportStatusByParameters(string $uuid, string $entity_type_id, string $langcode = NULL) {
++  public function getImportStatusByParameters(string $uuid, string $entity_type_id, ?string $langcode = NULL) {
+     // A content entity can be uniquely identified by entity type, UUID and
+     // language code (if entity type supports languages).
+     $search_criteria = [
+@@ -336,7 +336,7 @@
+   /**
+    * {@inheritdoc}
+    */
+-  public function deleteImportStatusOfEntity(EntityInterface $entity, string $langcode = NULL) {
++  public function deleteImportStatusOfEntity(EntityInterface $entity, ?string $langcode = NULL) {
+     // If entity is not supported by "entity import", do nothing.
+     if (!$entity instanceof ContentEntityInterface) {
+       return;
+--- a/modules/entity_share_diff/src/Service/EntityParser.php
++++ b/modules/entity_share_diff/src/Service/EntityParser.php
+@@ -219,7 +219,7 @@
+    *   Associative array, keyed by labels.
+    *   Values are strings, numbers or arrays.
+    */
+-  protected function parseEntity(ContentEntityInterface $entity, array $remote_data = NULL) {
++  protected function parseEntity(ContentEntityInterface $entity, ?array $remote_data = NULL) {
+     $result = [];
+     $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+     // Load entity of current language, otherwise fields are always compared by

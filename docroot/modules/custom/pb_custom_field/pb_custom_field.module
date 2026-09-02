@@ -16,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -26,6 +27,9 @@ use Drupal\Core\Database\Database;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\group\Entity\GroupInterface;
 use Drupal\taxonomy\TermForm;
 
 /**
@@ -35,7 +39,7 @@ use Drupal\taxonomy\TermForm;
  *   Array of target role machine names.
  */
 function _pb_custom_field_get_target_roles() {
-  return ['editor', 'se', 'sme', 'reviewer'];
+  return ['editor', 'se', 'sme', 'reviewer', 'translator'];
 }
 
 /**
@@ -86,6 +90,25 @@ function _pb_custom_field_get_user_groups_cached(?AccountInterface $user = NULL)
   catch (\Exception $e) {
     $logger->error('Error loading user groups: @message', ['@message' => $e->getMessage()]);
     return [];
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ *
+ * Core never lets the user roles field onto a view display, so the account
+ * page cannot show what a user is. Make it configurable so the default user
+ * display can list the roles.
+ */
+function pb_custom_field_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type): void {
+  if ($entity_type->id() === 'user' && isset($fields['roles'])) {
+    $fields['roles']
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'entity_reference_label',
+        'label' => 'above',
+        'settings' => ['link' => FALSE],
+      ]);
   }
 }
 
@@ -303,6 +326,9 @@ function pb_custom_field_allowed_languages_form_media_library_add_form_upload_al
  */
 function pb_custom_field_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'pb_custom_field/mylib';
+  if (\Drupal::languageManager()->getCurrentLanguage()->getDirection() === 'rtl') {
+    $variables['#attached']['library'][] = 'pb_custom_field/admin_rtl';
+  }
 }
 
 /**
@@ -311,7 +337,7 @@ function pb_custom_field_preprocess_page(&$variables) {
 function pb_custom_field_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
 
   /* To modify label changes in member remove*/
-  if ($form_id == "group_content_country-group_membership_delete_form") {
+  if ($form_id == "group_relationship_country-group_membership_delete_form") {
     $form['#title'] = strip_tags(str_replace("delete", "remove", $form['#title']));
     $form['actions']['submit']['#value'] = "Remove";
     $form['actions']['submit']['#submit'][] = 'pb_custom_field_form_submit';
@@ -884,25 +910,17 @@ function pb_custom_field_preprocess_menu(&$variables) {
   }
 
   $current_user = \Drupal::currentUser();
-  $roles = $current_user->getRoles();
 
-  // Define roles that should have access to editorial menu.
-  $editorial_roles = array_merge(
-    _pb_custom_field_get_target_roles(),
-    ['global_admin', 'administrator']
-  );
+  // The toolbar tab itself is granted by this permission, so a role that holds
+  // it keeps whatever menu_per_role left in the tree — emptying the tray for
+  // them would show a tab that opens on nothing. Everyone else only sees the
+  // menu through a group membership.
+  if ($current_user->hasPermission('view editorial_menu in toolbar')) {
+    return;
+  }
 
-  if (!array_intersect($roles, $editorial_roles)) {
-    $grps = _pb_custom_field_get_user_groups_cached($current_user);
-
-    if (empty($grps)) {
-      if (isset($variables['menu_name']) && $variables['menu_name'] === 'editorial-menu') {
-        foreach ($variables['items'] as $key => $item) {
-          // Remove menu item.
-          unset($variables['items'][$key]);
-        }
-      }
-    }
+  if (!_pb_custom_field_get_user_groups_cached($current_user)) {
+    $variables['items'] = [];
   }
 }
 
@@ -994,7 +1012,7 @@ function pb_custom_field_menu_local_tasks_alter(&$data, $route_name) {
     unset($data['tabs'][0]['group.delete_form']);
     unset($data['tabs'][0]['group.content']);
     unset($data['tabs'][0]['views_view:view.group_nodes.page_1']);
-    unset($data['tabs'][0]['views_view:view.duplicate_of_moderated_group_content.moderated_content']);
+    unset($data['tabs'][0]['views_view:view.duplicate_of_moderated_group_relationship.moderated_content']);
     unset($data['tabs'][0]['content_translation.local_tasks:entity.group.content_translation_overview']);
   }
 
@@ -1121,13 +1139,13 @@ function pb_custom_field_redirect_to_add_member_page($form, FormStateInterface $
     $nid = $entity->id();
   }
 
-  $query = \Drupal::database()->select('group_content_field_data');
+  $query = \Drupal::database()->select('group_relationship_field_data');
   if (isset($nid)) {
     $query->condition('entity_id', $nid);
   }
   $query->orderBy('id', 'DESC');
   $query->range(0, 1);
-  $query->fields('group_content_field_data');
+  $query->fields('group_relationship_field_data');
   $result = $query->execute()->fetchAll();
   if (!empty($result)) {
     $group_content_id = $result[0]->id;
@@ -1396,6 +1414,45 @@ function pb_custom_field_entity_operation_alter(array &$operations, EntityInterf
 }
 
 /**
+ * Implements hook_views_data_alter().
+ *
+ * Exposes the user's groups as a single-row field, so user listings can show
+ * group membership without joining the one-to-many membership table into the
+ * result set and listing a user once per group.
+ */
+function pb_custom_field_views_data_alter(array &$data) {
+  $data['users_field_data']['pb_user_groups'] = [
+    'title' => t('Groups'),
+    'help' => t('All groups the user belongs to, listed in a single row.'),
+    'field' => [
+      'id' => 'pb_user_groups',
+      'real field' => 'uid',
+      'click sortable' => FALSE,
+    ],
+  ];
+
+  $data['users_field_data']['pb_user_group_label'] = [
+    'title' => t('Group name (membership)'),
+    'help' => t('Filters on the name of a group the user belongs to, without listing the user once per group.'),
+    'filter' => [
+      'id' => 'pb_user_group_label',
+      'real field' => 'uid',
+      'allow empty' => TRUE,
+    ],
+  ];
+
+  $data['users_field_data']['pb_user_group_id'] = [
+    'title' => t('Group ID (membership)'),
+    'help' => t('Filters on the ID of a group the user belongs to, without listing the user once per group.'),
+    'filter' => [
+      'id' => 'pb_user_group_id',
+      'real field' => 'uid',
+      'allow empty' => TRUE,
+    ],
+  ];
+}
+
+/**
  * View query alter for cross-country content access.
  */
 function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
@@ -1427,9 +1484,9 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
 
           // If this is the part of the query filtering on title, change the
           // condition to filter on node ID.
-          if ($condition['field'] == 'groups_field_data_group_content_field_data.id') {
+          if ($condition['field'] == 'groups_field_data_group_relationship_field_data.id') {
             $condition = [
-              'field' => 'groups_field_data_group_content_field_data.id',
+              'field' => 'groups_field_data_group_relationship_field_data.id',
               'value' => $gid,
               'operator' => '=',
             ];
@@ -1490,45 +1547,6 @@ function pb_custom_field_views_query_alter(ViewExecutable $view, QueryPluginBase
         $query->setGroupOperator('AND');
         // @phpstan-ignore-next-line
         $query->addWhere(1, 'tmgmt_job.target_language', $user_lang, 'IN');
-      }
-    }
-  }
-
-  date_default_timezone_set('Asia/Kolkata');
-  if ($view->id() == 'articles' && ($view->current_display == 'rest_export_5' || $view->current_display == 'rest_export_1' || $view->current_display == 'rest_export_21' || $view->current_display == 'rest_export_3' || $view->current_display == 'rest_export_22' || $view->current_display == 'rest_export_13' || $view->current_display == 'rest_export_2')) {
-    if (isset($query->where['2'])) {
-      // @phpstan-ignore-next-line
-      foreach ($query->where['2'] as &$condition_group) {
-        if (is_array($condition_group)) {
-          foreach ($condition_group as &$condition) {
-            $date = date('Y-m-d H:i');
-            if ($view->current_display == 'rest_export_13') {
-              $aa = $view->args['2'];
-            }
-            elseif ($view->current_display == 'rest_export_2') {
-              $aa = $view->args['6'];
-            }
-            else {
-              $aa = $view->args['1'];
-            }
-            $variable = substr($aa, 0, strpos($aa, "--"));
-            if (empty($variable)) {
-              $condition['value'][':changed'] = $aa;
-              $condition['value'][':changed1'] = $date;
-              if ($view->current_display == 'rest_export_1') {
-                $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data_node__field_pinned_article.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
-              }
-              else {
-                $condition['field'] = "(DATE_FORMAT((DATE_ADD('19700101', INTERVAL node_field_data.changed SECOND) + INTERVAL 19800 SECOND), '%Y-%m-%d %H:%i')) BETWEEN :changed AND :changed1";
-              }
-
-            }
-            else {
-              $condition['value'][':changed'] = '';
-              $condition['value'][':changed1'] = '';
-            }
-          }
-        }
       }
     }
   }
@@ -1696,10 +1714,29 @@ function pb_custom_field_form_user_login_form_alter(&$form, FormStateInterface $
  * Implements hook_form_submit().
  */
 function pb_custom_field_user_login_form_submit($form, FormStateInterface $form_state) {
-
+  if (\Drupal::currentUser()->isAnonymous()) {
+    return;
+  }
   $redirect_url = Url::fromUri('internal:/dashboard');
   $form_state->setRedirectUrl($redirect_url);
+}
 
+/**
+ * Implements hook_form_FORM_ID_alter() for the TFA verify form.
+ */
+function pb_custom_field_form_email_tfa_email_tfa_verify_login_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['submit']['#submit'][] = 'pb_custom_field_user_login_form_submit';
+}
+
+/**
+ * Returns the homepage/landing page aliases that receive custom styling.
+ */
+function _pb_custom_field_homepage_paths() {
+  return [
+    "/homepage", "/about-us", "/terms-and-conditions",
+    "/privacy-policy", "/foleja", "/foleja-about-us",
+    "/foleja-privacy-policy",
+  ];
 }
 
 /**
@@ -1707,14 +1744,25 @@ function pb_custom_field_user_login_form_submit($form, FormStateInterface $form_
  */
 function pb_custom_field_preprocess_html(&$variables) {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
-  if (!$logged_in) {
-    $current_path = \Drupal::service('path.current')->getPath();
-    $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-    if ($internal == "/homepage" || $internal == "/about-us" || $internal == "/terms-and-conditions" || $internal == "/privacy-policy" || $internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
-      $variables['#attached']['library'][] = 'pb_custom_field/mylib';
-      // Replace 'the-class-to-add' with your CSS class.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $internal = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+  $homepage_paths = _pb_custom_field_homepage_paths();
+  if (in_array($internal, $homepage_paths)) {
+    // Public landing styling and the scoped Bootstrap grid load for every user
+    // so the layout renders correctly for editors viewing the node too. The
+    // grid CSS is scoped under .pb-landing and confined to grid elements, so it
+    // never touches the Gin admin chrome.
+    $variables['#attached']['library'][] = 'pb_custom_field/homepage';
+    $variables['#attached']['library'][] = 'pb_custom_field/homepage_grid';
+    // Shared content styling (and the grid scope) applies to all users.
+    $variables['attributes']['class'][] = 'pb-landing';
+    // Kiosk styling (fixed header, hidden admin chrome) is anonymous only so
+    // logged-in editors keep the Gin toolbar and local task tabs.
+    if (!$logged_in) {
       $variables['attributes']['class'][] = 'pb-main-homepage';
     }
+  }
+  if (!$logged_in) {
     if ($internal == "/foleja" || $internal == "/foleja-about-us" || $internal == "/foleja-privacy-policy") {
       $variables['head_title']['name'] = "Foleja";
       /* Load the favicon ico for kosovo landing pages */
@@ -1741,7 +1789,7 @@ function pb_custom_field_preprocess_html(&$variables) {
     }
   }
   $route_name = \Drupal::routeMatch()->getRouteName();
-  if ($route_name == "pb_custom_form.kosovo_pb_mobile") {
+  if ($route_name == "bebbo_custom_general.kosovo_pb_mobile") {
     /* Load the favicon ico for kosovo landing pages */
     $media_entity = Media::load(35386);
     if (!empty($media_entity)) {
@@ -1779,11 +1827,13 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
     // dpm($form['account']['status']['#default_value']);.
     $current_path = \Drupal::service('path.current')->getPath();
     $node_path = explode('/', $current_path);
-    $user_id = $node_path[2];
+    $user_id = (int) $node_path[2];
     $conn = Database::getConnection();
-    $query = $conn->query("SELECT status FROM users_field_data where uid = '" . $user_id . "'");
+    $query = $conn->query("SELECT status FROM {users_field_data} WHERE uid = :uid", [':uid' => $user_id]);
     $result = $query->fetchObject();
-    $form['account']['status']['#default_value'] = $result->status;
+    if (is_object($result)) {
+      $form['account']['status']['#default_value'] = $result->status;
+    }
 
     if ($user_id) {
       $database = \Drupal::database();
@@ -1837,6 +1887,30 @@ function pb_custom_field_form_user_form_alter(&$form, FormStateInterface $form_s
  * Alters user_register_form.
  */
 function pb_custom_field_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  // --- Group membership creation wizard (port of patch #2949408) ---
+  if ($form_state->has('group') && $form_state->has('store_id')) {
+    $account = \Drupal::currentUser();
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $form_state->get('group');
+    if ($group->hasPermission('create group_membership entity', $account)) {
+      // The register form hides the password unless the creator has
+      // "administer users"; group admins need it for direct account creation.
+      $form['account']['pass'] = [
+        '#type' => 'password_confirm',
+        '#size' => 25,
+        '#description' => t('Provide a password for the new account in both fields.'),
+        '#required' => TRUE,
+      ];
+      if (isset($form['account']['notify'])) {
+        $form['account']['notify']['#access'] = TRUE;
+      }
+      // Don't let browsers prefill the group admin's own data.
+      $form['#attributes']['data-user-info-from-browser'] = FALSE;
+      // Make RegisterForm::save() treat this as an admin-created account.
+      $form['administer_users']['#value'] = TRUE;
+    }
+  }
+
   $roles = Role::loadMultiple();
   $currentUser_roles = \Drupal::currentUser()->getRoles();
   $current_path = substr(\Drupal::service('path.current')->getPath(), 1);
@@ -1885,7 +1959,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     if ($val) {
       // Check cache first.
       if (!isset($user_notification_cache[$val])) {
-        $user_load = user_load_by_mail($val);
+        $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $val]);
+        $user_load = reset($user_accounts);
         if (!$user_load) {
           $user_notification_cache[$val] = FALSE;
           continue;
@@ -1948,7 +2023,7 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
     }
     $body = str_replace("[link]", $nid_with_link, $body_old);
     // Get master value from settings form.
-    $config = \Drupal::config('pb_custom_form.adminsettings');
+    $config = \Drupal::config('bebbo_custom_general.adminsettings');
     $master = $config->get('master_language');
     $master_language = explode(',', $master);
     if (in_array($node_language, $master_language)) {
@@ -1962,7 +2037,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
           if ($mail != '') {
             // Check cache.
             if (!isset($user_lang_cache[$mail])) {
-              $user_load = user_load_by_mail($mail);
+              $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $mail]);
+              $user_load = reset($user_accounts);
               if (!$user_load) {
                 $user_lang_cache[$mail] = FALSE;
                 continue;
@@ -2027,7 +2103,8 @@ function pb_custom_field_content_moderation_notification_mail_data_alter(EntityI
         if ($mail != '') {
           // Check cache.
           if (!isset($user_lang_cache[$mail])) {
-            $user_load = user_load_by_mail($mail);
+            $user_accounts = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['mail' => $mail]);
+            $user_load = reset($user_accounts);
             if (!$user_load) {
               $user_lang_cache[$mail] = FALSE;
               continue;
@@ -2089,11 +2166,11 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
       $created_at = $result->forcefull_check_update_api_created_at;
       // Get user name from uuid.
       $database = \Drupal::database();
-      $query = $database->query("SELECT uid FROM {users} WHERE uuid = '" . $forcefull_check_update_api_uuid . "'");
+      $query = $database->query("SELECT uid FROM {users} WHERE uuid = :uuid", [':uuid' => $forcefull_check_update_api_uuid]);
       $user_uid = $query->fetchAll();
 
       if (!empty($user_uid)) {
-        $uid_query = $database->query("SELECT name FROM {users_field_data} WHERE uid = '" . $user_uid[0]->uid . "'");
+        $uid_query = $database->query("SELECT name FROM {users_field_data} WHERE uid = :uid", [':uid' => $user_uid[0]->uid]);
         $user_name = $uid_query->fetchAll();
         $user_name = $user_name[0]->name;
       }
@@ -2136,7 +2213,7 @@ function pb_custom_field_views_pre_render(ViewExecutable $view) {
     }
   }
   if ($view->id() == 'country_content_listing') {
-    $view->element['#attached']['library'][] = '/js/homepage.js';
+    $view->element['#attached']['library'][] = 'pb_custom_field/homepage';
   }
 }
 
@@ -2224,7 +2301,7 @@ function _pb_custom_field_check_country_access(NodeInterface $node, AccountInter
 
     // Check if node belongs to any of user's groups.
     $entity_type_manager = \Drupal::entityTypeManager();
-    $group_content_storage = $entity_type_manager->getStorage('group_content');
+    $group_content_storage = $entity_type_manager->getStorage('group_relationship');
     $group_contents = $group_content_storage->loadByProperties([
       'entity_id' => $node->id(),
     ]);
@@ -2250,7 +2327,7 @@ function _pb_custom_field_check_country_access(NodeInterface $node, AccountInter
 
       if ($node_group_id && in_array($node_group_id, $user_group_ids)) {
         // User is assigned to the node's country - allow access.
-        return AccessResult::allowed()->cachePerUser()->addCacheTags(['group_list', 'group_content_list']);
+        return AccessResult::allowed()->cachePerUser()->addCacheTags(['group_list', 'group_relationship_list']);
       }
     }
 
@@ -2296,4 +2373,203 @@ function pb_custom_field_cross_country_validation(&$form, FormStateInterface $fo
   if (!in_array($form_language, $allowed_languages)) {
     $form_state->setErrorByName('', 'You do not have permission.');
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_admin_permissions.
+ *
+ * Attaches Gin-aligned styling overrides for the FPA (Fast Permissions
+ * Administration) page.
+ */
+function pb_custom_field_form_user_admin_permissions_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'pb_custom_field/fpa_gin_style';
+  $form['#attributes']['class'][] = 'pb-fpa-gin';
+}
+
+/**
+ * Implements hook_toolbar().
+ *
+ * Adds an admin UI language switcher dropdown to the toolbar for all
+ * authenticated users. Hidden when the site has fewer than two
+ * configurable languages.
+ */
+function pb_custom_field_toolbar() {
+  $items = [];
+  $account = \Drupal::currentUser();
+
+  if (!$account->isAuthenticated()) {
+    return $items;
+  }
+
+  $language_manager = \Drupal::languageManager();
+  $languages = $language_manager->getLanguages(LanguageInterface::STATE_CONFIGURABLE);
+
+  if (count($languages) < 2) {
+    return $items;
+  }
+
+  $current_language = $language_manager->getCurrentLanguage(LanguageInterface::TYPE_INTERFACE);
+  $native_languages = $language_manager->getNativeLanguages();
+  $standard_list = LanguageManager::getStandardLanguageList();
+
+  $current_path = '/';
+  try {
+    $current_path = \Drupal::service('path.current')->getPath();
+  }
+  catch (\Exception $e) {
+    // Fall back to front page.
+  }
+
+  $links = [];
+  foreach ($languages as $langcode => $language) {
+    if ($language->isLocked()) {
+      continue;
+    }
+    if (isset($standard_list[$langcode][1])) {
+      $native = $standard_list[$langcode][1];
+    }
+    elseif (isset($native_languages[$langcode])) {
+      $native = $native_languages[$langcode]->getName();
+    }
+    else {
+      $native = $language->getName();
+    }
+    try {
+      $link_url = Url::fromUserInput($current_path, ['language' => $language]);
+    }
+    catch (\Exception $e) {
+      $link_url = Url::fromRoute('<front>', [], ['language' => $language]);
+    }
+    $classes = ['pb-language-switcher__link'];
+    if ($langcode === $current_language->getId()) {
+      $classes[] = 'is-active';
+    }
+    $links[$langcode] = [
+      'title' => $native,
+      'url' => $link_url,
+      'attributes' => [
+        'class' => $classes,
+        'data-langcode' => $langcode,
+        'hreflang' => $langcode,
+      ],
+    ];
+  }
+
+  if (empty($links)) {
+    return $items;
+  }
+
+  $current_id = $current_language->getId();
+  if (isset($standard_list[$current_id][1])) {
+    $current_native = $standard_list[$current_id][1];
+  }
+  elseif (isset($native_languages[$current_id])) {
+    $current_native = $native_languages[$current_id]->getName();
+  }
+  else {
+    $current_native = $current_language->getName();
+  }
+
+  $items['pb_language_switcher'] = [
+    '#type' => 'toolbar_item',
+    '#wrapper_attributes' => [
+      'class' => ['pb-language-switcher-wrapper'],
+    ],
+    'tab' => [
+      '#type' => 'html_tag',
+      '#tag' => 'button',
+      '#value' => $current_native,
+      '#attributes' => [
+        'class' => ['toolbar-icon', 'pb-language-switcher__tab'],
+        'type' => 'button',
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+        'title' => t('Switch admin language'),
+      ],
+    ],
+    'tray' => [
+      '#heading' => t('Admin language'),
+      'links' => [
+        '#theme' => 'links',
+        '#links' => $links,
+        '#attributes' => [
+          'class' => ['toolbar-menu', 'pb-language-switcher__menu'],
+        ],
+      ],
+    ],
+    '#weight' => 1100,
+    '#attached' => [
+      'library' => ['pb_custom_field/toolbar_language_switcher'],
+    ],
+    '#cache' => [
+      'contexts' => [
+        'user.roles:authenticated',
+        'languages:language_interface',
+        'url.path',
+      ],
+    ],
+  ];
+
+  return $items;
+}
+
+/**
+ * Implements hook_group_relation_type_alter().
+ *
+ * Re-enables the "create new user + add as member" wizard that the Group
+ * 1.x manage-users patch (#2949408) provided. Setting entity_access to
+ * TRUE makes Group define the create/update/delete/view
+ * "group_membership entity" permissions and exposes the
+ * /group/{group}/content/create/group_membership route.
+ */
+function pb_custom_field_group_relation_type_alter(array &$definitions): void {
+  if (isset($definitions['group_membership'])) {
+    $definitions['group_membership']->set('entity_access', TRUE);
+  }
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function pb_custom_field_menu_local_actions_alter(&$local_actions): void {
+  // Disambiguate from the new "Add new member" action on the members page.
+  if (isset($local_actions['group.add_member'])) {
+    $local_actions['group.add_member']['title'] = t('Add existing member');
+  }
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function pb_custom_field_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
+  // Let group admins set the status (active/blocked) of their members
+  // when creating or editing user accounts through the group UI.
+  if ($operation === 'edit' && $field_definition->getName() === 'status' && $items !== NULL && $items->getEntity()->getEntityTypeId() === 'user') {
+    $entity = $items->getEntity();
+    // Never open up uid 1 or the editor's own account this way.
+    if ((int) $entity->id() === 1 || (int) $entity->id() === (int) $account->id()) {
+      return AccessResult::neutral();
+    }
+    if (!$entity->isNew()) {
+      $storage = \Drupal::entityTypeManager()->getStorage('group_relationship');
+      $relationships = $storage->loadByProperties([
+        'entity_id' => $entity->id(),
+        'plugin_id' => 'group_membership',
+      ]);
+      foreach ($relationships as $relationship) {
+        /** @var \Drupal\group\Entity\GroupRelationshipInterface $relationship */
+        $group = $relationship->getGroup();
+        if ($group->hasPermission('update any group_membership entity', $account)) {
+          return AccessResult::allowed()
+            ->addCacheableDependency($relationship)
+            ->cachePerUser();
+        }
+      }
+    }
+    elseif (($group = \Drupal::routeMatch()->getParameter('group')) && $group instanceof GroupInterface) {
+      return AccessResult::allowedIf($group->hasPermission('create group_membership entity', $account))
+        ->addCacheContexts(['route', 'user']);
+    }
+  }
+  return AccessResult::neutral();
 }

@@ -1,23 +1,23 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
-      pager:
-        options:
-          tags:
-            previous: ‹‹
       fields:
+        edit_user:
+          text: 'Edit member'
         name:
           label: User
         group_roles:
           label: Roles
-        view_group_content:
+        view_group_relationship:
           text: 'Manage member'
-        edit_group_content:
+        edit_group_relationship:
           text: 'Assign roles'
-        edit_user:
-          text: 'Edit member'
         dropbutton:
           label: Operations
+      pager:
+        options:
+          tags:
+            previous: ‹‹
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'

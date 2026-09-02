@@ -1,0 +1,10 @@
+adding:
+  country:
+    default: FJ
+  timezone:
+    default: Pacific/Fiji
+removing:
+  country:
+    default: CH
+  timezone:
+    default: Europe/Zurich

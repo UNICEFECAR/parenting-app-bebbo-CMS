@@ -7,21 +7,16 @@ dependencies:
 id: country-admin
 label: 'Country Admin'
 weight: 100
-internal: false
-audience: member
+admin: false
+scope: individual
+global_role: null
 group_type: country
-permissions_ui: true
 permissions:
   - 'access content overview'
   - 'access group_node overview'
-  - 'administer group'
   - 'administer members'
-  - 'create group_membership entity'
-  - 'manage redirect settings'
-  - 'update any group_membership entity'
-  - 'update own group_membership content'
-  - 'view group_membership content'
-  - 'view group_membership entity'
+  - 'update own group_membership relationship'
+  - 'view group_membership relationship'
   - 'view unpublished group_node:activities entity'
   - 'view unpublished group_node:article entity'
   - 'view unpublished group_node:child_development entity'

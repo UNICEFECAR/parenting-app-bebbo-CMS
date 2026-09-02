@@ -1,0 +1,92 @@
+/**
+ * @file
+ * RTL overrides for admin toolbar and custom admin UI elements.
+ *
+ * Fixes admin_toolbar contrib dropdown positioning in RTL mode.
+ * Only loaded on RTL language pages (e.g. Urdu/Pakistan).
+ */
+
+/* --- Core fix: dropdown anchor positioning --- */
+
+/* Make each expanded menu item the positioning context for its dropdown.
+ * Without this, position:absolute dropdowns anchor to a distant ancestor
+ * and appear misaligned in RTL. */
+[dir="rtl"] .toolbar-tray-horizontal .toolbar-menu > .menu-item--expanded {
+  position: relative;
+}
+
+/* Align first-level dropdown to the inline-start (right) edge of parent */
+[dir="rtl"] .toolbar-tray-horizontal ul li.menu-item--expanded.hover-intent > ul {
+  right: 0;
+  left: auto;
+}
+
+/* Same for :hover triggered dropdowns (custom admin.css line 1-6) */
+[dir="rtl"] .toolbar-tray-open .toolbar-tray-horizontal .toolbar-menu .menu-item--expanded:hover > ul {
+  right: 0;
+  left: auto;
+}
+
+/* --- Sub-submenu positioning --- */
+
+/* Hide deeply nested submenus off-screen */
+[dir="rtl"] .toolbar-tray-horizontal li.menu-item--expanded.hover-intent ul ul,
+[dir="rtl"] .toolbar-tray-horizontal li.menu-item--expanded.hover-intent ul ul ul,
+[dir="rtl"] .toolbar-tray-horizontal li.menu-item--expanded.hover-intent ul ul ul ul {
+  right: -999em;
+  left: auto;
+}
+
+/* Show direct child submenus when hovered */
+[dir="rtl"] .toolbar-tray-horizontal li li.menu-item--expanded.hover-intent > ul,
+[dir="rtl"] .toolbar-tray-horizontal li li li.menu-item--expanded.hover-intent > ul {
+  right: auto;
+  left: auto;
+}
+
+/* Sub-submenu opens to the left in RTL */
+[dir="rtl"] .toolbar-tray-horizontal ul li.menu-item--expanded .menu-item.hover-intent > ul {
+  margin: -40px 197px 0 0;
+}
+
+/* Level-2 nested submenus */
+[dir="rtl"] .toolbar-tray-horizontal .toolbar .level-2 > ul {
+  right: 200px;
+  left: auto;
+}
+
+/* --- Dropdown item text alignment and padding --- */
+
+/* Core toolbar inherits text-align: left on dropdown links.
+ * In RTL the text must sit on the right (start) edge so the
+ * chevron arrow on the left (end) edge stays visible. */
+[dir="rtl"] .toolbar-tray-horizontal ul li.menu-item--expanded ul li a {
+  text-align: right;
+}
+
+/* Core toolbar [dir="rtl"] rule zeroes padding-left on sub-menu
+ * .toolbar-icon links, but the chevron moves to left: 12px in RTL
+ * and needs space. Restore symmetric padding. */
+[dir="rtl"] .toolbar .toolbar-menu ul .toolbar-icon {
+  padding-left: 1.3333em;
+  padding-right: 1.3333em;
+}
+
+/* --- admin_toolbar misc RTL fixes --- */
+
+/* admin_toolbar_tools: flip local tasks float */
+[dir="rtl"] .local-tasks-toolbar-tab .toolbar-oriented .toolbar-bar,
+[dir="rtl"] .local-tasks-toolbar-tab .toolbar-horizontal .toolbar-menu {
+  float: left;
+}
+
+/* Language dropdown: flip alignment for RTL */
+[dir="rtl"] .block-lang-dropdown {
+  text-align: left;
+}
+
+/* Language dropdown select: flip padding */
+[dir="rtl"] .block-lang-dropdown .lang-dropdown-select-element {
+  padding-left: 40px;
+  padding-right: 7px;
+}

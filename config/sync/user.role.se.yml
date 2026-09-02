@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.full_html
+    - media.type.document
     - media.type.image
     - media.type.remote_video
     - media.type.video
@@ -12,6 +13,7 @@ dependencies:
     - node.type.child_development
     - node.type.child_growth
     - node.type.course
+    - node.type.courses_module
     - node.type.daily_homescreen_messages
     - node.type.faq
     - node.type.guide
@@ -20,20 +22,41 @@ dependencies:
     - node.type.page
     - node.type.pregnancy_weekly_overview
     - node.type.quiz
+    - node.type.quiz_questions
     - node.type.survey
     - node.type.vaccinations
     - node.type.video_article
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
+    - taxonomy.vocabulary.chatbot_child_age
+    - taxonomy.vocabulary.chatbot_subcategory
+    - taxonomy.vocabulary.child_age
+    - taxonomy.vocabulary.child_gender
+    - taxonomy.vocabulary.course_category
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+    - taxonomy.vocabulary.growth_introductory
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.parent_gender
+    - taxonomy.vocabulary.relationship_to_parent
+    - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.standard_deviation_category
+    - taxonomy.vocabulary.strings
+    - taxonomy.vocabulary.subcategory
+    - taxonomy.vocabulary.target_audience
+    - taxonomy.vocabulary.type_of_support
     - workflows.workflow.group_workflow
   module:
     - actions_permissions
     - allowed_languages
     - content_moderation
     - content_translation
-    - file
     - filter
     - group
     - media
     - node
+    - pb_content_analytics
     - tmgmt
     - toolbar_menu
 id: se
@@ -42,29 +65,32 @@ weight: -3
 is_admin: null
 permissions:
   - 'accept translation jobs'
+  - 'access group overview'
   - 'access media overview'
-  - 'bypass group access'
+  - 'administer users'
   - 'create activities content'
   - 'create article content'
   - 'create content translations'
   - 'create course content'
+  - 'create courses_module content'
+  - 'create daily_homescreen_messages content'
   - 'create faq content'
   - 'create guide content'
-  - 'create image media'
+  - 'create health_check_ups content'
   - 'create media'
   - 'create milestone content'
   - 'create page content'
   - 'create quiz content'
-  - 'create remote_video media'
+  - 'create quiz_questions content'
   - 'create survey content'
-  - 'create video media'
+  - 'create vaccinations content'
   - 'create video_article content'
-  - 'delete own files'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'
   - 'edit any child_growth content'
   - 'edit any course content'
+  - 'edit any courses_module content'
   - 'edit any daily_homescreen_messages content'
   - 'edit any faq content'
   - 'edit any guide content'
@@ -73,6 +99,7 @@ permissions:
   - 'edit any page content'
   - 'edit any pregnancy_weekly_overview content'
   - 'edit any quiz content'
+  - 'edit any quiz_questions content'
   - 'edit any survey content'
   - 'edit any vaccinations content'
   - 'edit any video_article content'
@@ -81,6 +108,7 @@ permissions:
   - 'edit own child_development content'
   - 'edit own child_growth content'
   - 'edit own course content'
+  - 'edit own courses_module content'
   - 'edit own daily_homescreen_messages content'
   - 'edit own faq content'
   - 'edit own guide content'
@@ -90,6 +118,7 @@ permissions:
   - 'edit own page content'
   - 'edit own pregnancy_weekly_overview content'
   - 'edit own quiz content'
+  - 'edit own quiz_questions content'
   - 'edit own remote_video media'
   - 'edit own survey content'
   - 'edit own vaccinations content'
@@ -108,6 +137,7 @@ permissions:
   - 'revert child_development revisions'
   - 'revert child_growth revisions'
   - 'revert course revisions'
+  - 'revert courses_module revisions'
   - 'revert daily_homescreen_messages revisions'
   - 'revert faq revisions'
   - 'revert guide revisions'
@@ -116,36 +146,67 @@ permissions:
   - 'revert page revisions'
   - 'revert pregnancy_weekly_overview revisions'
   - 'revert quiz revisions'
+  - 'revert quiz_questions revisions'
   - 'revert survey revisions'
   - 'revert vaccinations revisions'
   - 'revert video_article revisions'
   - 'translate activities node'
+  - 'translate activity_category taxonomy_term'
   - 'translate all languages'
   - 'translate any entity'
   - 'translate article node'
+  - 'translate category taxonomy_term'
+  - 'translate chatbot_category taxonomy_term'
+  - 'translate chatbot_child_age taxonomy_term'
+  - 'translate chatbot_subcategory taxonomy_term'
+  - 'translate child_age taxonomy_term'
   - 'translate child_development node'
+  - 'translate child_gender taxonomy_term'
   - 'translate child_growth node'
+  - 'translate course node'
+  - 'translate course_category taxonomy_term'
+  - 'translate courses_module node'
+  - 'translate daily_home_screen_message_catego taxonomy_term'
   - 'translate daily_homescreen_messages node'
+  - 'translate document media'
   - 'translate faq node'
+  - 'translate growth_introductory taxonomy_term'
+  - 'translate growth_type taxonomy_term'
+  - 'translate guide node'
   - 'translate health_check_ups node'
   - 'translate image media'
+  - 'translate keywords taxonomy_term'
   - 'translate milestone node'
   - 'translate page node'
+  - 'translate parent_gender taxonomy_term'
+  - 'translate pregnancy_weekly_overview node'
+  - 'translate quiz node'
+  - 'translate quiz_questions node'
+  - 'translate relationship_to_parent taxonomy_term'
   - 'translate remote_video media'
+  - 'translate standard_deviation taxonomy_term'
+  - 'translate standard_deviation_category taxonomy_term'
+  - 'translate strings taxonomy_term'
+  - 'translate subcategory taxonomy_term'
   - 'translate survey node'
+  - 'translate target_audience taxonomy_term'
+  - 'translate type_of_support taxonomy_term'
   - 'translate vaccinations node'
   - 'translate video media'
   - 'translate video_article node'
-  - 'update any media'
   - 'update content translations'
   - 'update media'
   - 'use group_workflow transition archive_to_draft'
+  - 'use group_workflow transition archive_to_review_after_translation'
   - 'use group_workflow transition create_new_draft'
   - 'use group_workflow transition draft_to_published'
+  - 'use group_workflow transition draft_to_review_after_translation'
+  - 'use group_workflow transition draft_to_senior_editor_review'
   - 'use group_workflow transition draft_to_sme_review'
   - 'use group_workflow transition publish_to_archive'
   - 'use group_workflow transition publish_to_draft'
   - 'use group_workflow transition published_to_published'
+  - 'use group_workflow transition published_to_review_after_translation'
   - 'use group_workflow transition reject_to_draft'
   - 'use group_workflow transition require_modification_to_published'
   - 'use group_workflow transition require_modification_to_sme_review'
@@ -155,6 +216,7 @@ permissions:
   - 'use group_workflow transition review_after_translation_to_sme_review'
   - 'use group_workflow transition senior_editor_review_to_published'
   - 'use group_workflow transition senior_editor_review_to_reject'
+  - 'use group_workflow transition senior_editor_review_to_sme_review'
   - 'use text format full_html'
   - 'view activities revisions'
   - 'view all media revisions'
@@ -162,7 +224,9 @@ permissions:
   - 'view article revisions'
   - 'view child_development revisions'
   - 'view child_growth revisions'
+  - 'view content analytics report'
   - 'view course revisions'
+  - 'view courses_module revisions'
   - 'view daily_homescreen_messages revisions'
   - 'view editorial_menu in toolbar'
   - 'view faq revisions'
@@ -174,6 +238,7 @@ permissions:
   - 'view page revisions'
   - 'view pregnancy_weekly_overview revisions'
   - 'view quiz revisions'
+  - 'view quiz_questions revisions'
   - 'view survey revisions'
   - 'view vaccinations revisions'
   - 'view video_article revisions'

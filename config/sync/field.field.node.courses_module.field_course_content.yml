@@ -4,15 +4,16 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_course_content
-    - node.type.activities
-    - node.type.article
     - node.type.courses_module
-    - node.type.quiz
-    - node.type.video_article
   module:
+    - ai_translate
     - entity_reference_validators
     - tmgmt_content
 third_party_settings:
+  ai_translate:
+    entity_reference:
+      translate_references: default
+    translate_references: default
   entity_reference_validators:
     circular_reference: false
     circular_reference_deep: false
@@ -30,16 +31,11 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      article: article
-      activities: activities
-      quiz: quiz
-      video_article: video_article
-    sort:
-      field: _none
-      direction: ASC
-    auto_create: false
-    auto_create_bundle: article
+    view:
+      view_name: filter_by_published_content
+      display_name: entity_reference_2
+      arguments:
+        - article+activities+quiz+video_article
 field_type: entity_reference

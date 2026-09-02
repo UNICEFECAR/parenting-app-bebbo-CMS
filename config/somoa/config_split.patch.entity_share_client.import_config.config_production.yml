@@ -1,0 +1,8 @@
+adding:
+  import_processor_settings:
+    revision:
+      enforce_new_revision: true
+removing:
+  import_processor_settings:
+    revision:
+      enforce_new_revision: false

@@ -1,6 +1,6 @@
 uuid: 4d8425ea-3cfb-4240-8723-d656faa4507b
 langcode: kg-ru
-status: true
+status: false
 dependencies: {  }
 id: master_any_state_to_review_after_translation
 workflow: group_workflow
@@ -17,6 +17,7 @@ roles:
   se: se
 author: false
 site_mail: false
+user_fields: {  }
 emails: ''
 subject: 'New content is in review after translation in your Master Language [language]'
 body:

@@ -18,8 +18,6 @@ adding:
       weight: 6
     field_unicef_logo:
       weight: 12
-    langcode:
-      weight: 1
     status:
       weight: 8
 removing:
@@ -42,7 +40,5 @@ removing:
       weight: 8
     field_unicef_logo:
       weight: 5
-    langcode:
-      weight: 2
     status:
       weight: 11

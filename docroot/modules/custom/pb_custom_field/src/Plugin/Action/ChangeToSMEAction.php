@@ -6,12 +6,9 @@ use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\group\Entity\GroupMembership;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
-
-/* use Drupal\node\Entity\Node;
-use Drupal\user\Entity\User;
- */
 
 /**
  * Action description.
@@ -32,13 +29,6 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
    * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected $currentUser;
-
-  /**
-   * The group membership loader service.
-   *
-   * @var \Drupal\group\GroupMembershipLoaderInterface
-   */
-  protected $groupMembershipLoader;
 
   /**
    * The messenger service.
@@ -104,13 +94,10 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
   }
 
   /**
-   * Get the group membership loader service.
+   * Load group memberships for the given user.
    */
-  protected function getGroupMembershipLoader() {
-    if (!$this->groupMembershipLoader) {
-      $this->groupMembershipLoader = \Drupal::service('group.membership_loader');
-    }
-    return $this->groupMembershipLoader;
+  protected function loadGroupMemberships(?AccountInterface $account = NULL) {
+    return GroupMembership::loadByUser($account);
   }
 
   /**
@@ -160,8 +147,7 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
     $current_user = $this->getCurrentUser();
     $uid = $current_user->id();
     $user = User::load($uid);
-    $grp_membership_service = $this->getGroupMembershipLoader();
-    $grps = $grp_membership_service->loadByUser($user);
+    $grps = $this->loadGroupMemberships($user);
     $grp_country_new_array = [];
     if (!empty($grps)) {
       // Collect languages from ALL groups the user belongs to.

@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Pregnancy Weekly Overview'
 type: pregnancy_weekly_overview
-description: null
+description: "Information about child's size and relevant content for each week of pregnancy."
 help: null
 new_revision: true
 preview_mode: 1

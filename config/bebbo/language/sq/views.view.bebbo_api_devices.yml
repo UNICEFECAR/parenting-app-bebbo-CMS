@@ -1,0 +1,18 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        status:
+          label: Status
+        created:
+          label: Created
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      filters:
+        status:
+          expose:
+            label: Status
+  page_1:
+    display_title: Faqe

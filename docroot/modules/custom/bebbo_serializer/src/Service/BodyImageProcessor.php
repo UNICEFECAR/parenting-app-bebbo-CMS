@@ -384,11 +384,9 @@ class BodyImageProcessor {
 
       $uri = $file->getFileUri();
 
-      // GIF media — preserve original URL without WebP conversion.
-      if (preg_match('/\.gif$/i', $uri)) {
-        $url = $imageStyle
-          ? $imageStyle->buildUrl($uri)
-          : $this->fileUrlGenerator->generateAbsoluteString($uri);
+      // SVG/GIF — preserve original URL without image style or WebP.
+      if (preg_match('/\.(svg|gif)$/i', $uri)) {
+        $url = $this->fileUrlGenerator->generateAbsoluteString($uri);
         $urls[] = $this->toRelativePath($url);
         continue;
       }
@@ -450,8 +448,8 @@ class BodyImageProcessor {
       $url = $this->toRelativePath($src);
       $pathOnly = parse_url($url, PHP_URL_PATH) ?? $url;
 
-      // Preserve GIFs as-is — no WebP conversion.
-      if (preg_match('/\.gif$/i', $pathOnly)) {
+      // Preserve SVGs and GIFs as-is — no image style or WebP conversion.
+      if (preg_match('/\.(svg|gif)$/i', $pathOnly)) {
         $urls[] = $url;
         continue;
       }

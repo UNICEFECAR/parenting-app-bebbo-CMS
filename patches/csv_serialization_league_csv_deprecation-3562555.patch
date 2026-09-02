@@ -1,0 +1,20 @@
+--- a/src/Encoder/CsvEncoder.php
++++ b/src/Encoder/CsvEncoder.php
+@@ -109,7 +109,7 @@
+
+     try {
+       // Instantiate CSV writer with options.
+-      $csv = Writer::createFromFileObject(new \SplTempFileObject());
++      $csv = Writer::from(new \SplTempFileObject());
+       $csv->setDelimiter($this->delimiter);
+       $csv->setEnclosure($this->enclosure);
+       $csv->setEscape($this->escapeChar);
+@@ -261,7 +261,7 @@
+    * @throws \League\Csv\Exception
+    */
+   public function decode(string $data, string $format, array $context = []): mixed {
+-    $csv = Reader::createFromString($data);
++    $csv = Reader::fromString($data);
+     $csv->setDelimiter($this->delimiter);
+     $csv->setEnclosure($this->enclosure);
+     $csv->setEscape($this->escapeChar);

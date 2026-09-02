@@ -1,0 +1,105 @@
+uuid: b8f8ce2e-90bc-4ec5-ad9b-c9a4229a4dd6
+langcode: en
+status: false
+dependencies: {  }
+id: pakistan_site
+label: 'Pakistan Site'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/pakistan
+module: {  }
+theme: {  }
+complete_list:
+  - field.field.group.country.field_app_name
+  - field.storage.group.field_app_name
+  - language.entity.ur
+  - mobile_app_links.android_packages
+  - mobile_app_links.ios
+  - bebbo_custom_general.landing_pages
+  - bebbo_custom_general.language_redirects
+  - system.site
+partial_list:
+  - ai_translate.settings
+  - core.date_format.long
+  - core.date_format.medium
+  - core.date_format.short
+  - core.entity_form_display.media.image.default
+  - core.entity_form_display.media.image.media_library
+  - core.entity_form_display.media.video.default
+  - core.entity_form_display.media.video.media_library
+  - core.entity_form_display.node.article.default
+  - core.entity_form_display.taxonomy_term.category.default
+  - core.entity_form_display.taxonomy_term.growth_period.default
+  - core.entity_view_display.node.article.default
+  - core.entity_view_display.node.article.full
+  - core.entity_view_display.node.article.rss
+  - core.entity_view_display.node.article.teaser
+  - core.entity_view_display.taxonomy_term.category.default
+  - core.entity_view_display.taxonomy_term.child_age.default
+  - core.menu.static_menu_link_overrides
+  - editor.editor.admin_full_html
+  - feeds.feed_type.taxonomy_age_period_language
+  - feeds.feed_type.taxonomy_keywords
+  - field.field.node.activities.body
+  - field.field.node.article.body
+  - field.field.node.article.field_keywords
+  - field.field.node.article.field_meta_keywords
+  - field.field.node.article.field_references_and_comments
+  - field.field.node.child_development.body
+  - field.field.node.child_development.field_milestone_instructions
+  - field.field.node.child_growth.body
+  - field.field.node.daily_homescreen_messages.body
+  - field.field.node.faq.body
+  - field.field.node.faq.field_answer_part_2
+  - field.field.node.health_check_ups.body
+  - field.field.node.milestone.body
+  - field.field.node.survey.body
+  - field.field.node.vaccinations.body
+  - field.field.node.video_article.body
+  - field.field.node.video_article.field_references_and_comments
+  - filelog.settings
+  - filter.format.admin_full_html
+  - group.role.country-admin
+  - group.role.country-editor
+  - language.content_settings.block_content.basic
+  - language.content_settings.menu_link_content.menu_link_content
+  - language.negotiation
+  - structure_sync.data
+  - system.date
+  - system.image.gd
+  - tmgmt.settings
+  - tmgmt_memsource.settings
+  - views.view.articles
+  - views.view.bebbo_v2_apis
+  - views.view.block_content
+  - views.view.content_listing
+  - views.view.country_content_listing
+  - views.view.country_listing
+  - views.view.feeds_feed
+  - views.view.files
+  - views.view.filter_by_published_content
+  - views.view.force_update_check
+  - views.view.frontpage
+  - views.view.global_content_listing_country_users
+  - views.view.glossary
+  - views.view.group_members
+  - views.view.keyword_term_count
+  - views.view.media
+  - views.view.media_library
+  - views.view.my_language_content
+  - views.view.sponsors_list
+  - views.view.standard_deviation_page
+  - views.view.tax
+  - views.view.taxonomy_export
+  - views.view.taxonomy_term
+  - views.view.tmgmt_job_items
+  - views.view.tmgmt_job_messages
+  - views.view.tmgmt_job_overview
+  - views.view.tmgmt_local_manage_translate_task
+  - views.view.tmgmt_local_task_items
+  - views.view.tmgmt_local_task_overview
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro

@@ -1,0 +1,23 @@
+uuid: 7a1c0e64-5b2f-4d81-9c33-0f6a2e5d1b40
+langcode: en
+status: true
+dependencies:
+  module:
+    - ai_tmgmt
+name: open_ai
+label: 'Open AI'
+description: ''
+auto_accept: false
+weight: -10
+plugin: ai
+settings:
+  model_selection_type: ai_translate
+  chat_model: ''
+  tokenizer_model: openai__gpt-4.1-mini
+  advanced:
+    prompt: 'Translate from %source% into %target% language'
+    max_tokens: 4096
+    rate_limit_delay: 300
+    max_attempts: 3
+    html_filter_notice: ''
+remote_languages_mappings: {  }

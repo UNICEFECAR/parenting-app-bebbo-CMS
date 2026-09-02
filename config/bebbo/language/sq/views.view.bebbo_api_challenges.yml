@@ -1,0 +1,12 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        created:
+          label: Created
+      exposed_form:
+        options:
+          reset_button_label: Reset
+  page_1:
+    display_title: Faqe

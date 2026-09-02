@@ -13,7 +13,7 @@ folder: ../config/somoa
 module: {  }
 theme: {  }
 complete_list:
-  - block.block.claro_help_search
+  - block.block.gin_logo
   - field.field.group.country.field_language_name_in_local
   - field.field.group.country.field_language_visibility_in_app
   - field.field.node.article.field_type_of_article
@@ -29,45 +29,19 @@ complete_list:
   - language.entity.ws-en
   - language.entity.ws-sm
   - entity_share_client.import_config.config_production
-  - entity_share_server.channel.content_article_mandatory_tr
-  - entity_share_server.channel.content_article_nonmandatory_tr
-  - entity_share_server.channel.content_basic_page_tr
-  - entity_share_server.channel.content_child_dev_tr
-  - entity_share_server.channel.content_child_growth_tr
-  - entity_share_server.channel.content_daily_homescreen_messages_tr
-  - entity_share_server.channel.content_faq_tr
-  - entity_share_server.channel.content_games_tr
-  - entity_share_server.channel.content_health_check_ups_tr
-  - entity_share_server.channel.content_linked_pages_tr
-  - entity_share_server.channel.content_milestone_tr
-  - entity_share_server.channel.content_vaccinations_age_tr
-  - entity_share_server.channel.content_video_article_tr
-  - entity_share_server.channel.media_image_tr
-  - entity_share_server.channel.media_video_tr
-  - entity_share_server.channel.taxonomy_age_periods_for_vacc_tr
-  - entity_share_server.channel.taxonomy_category_tr
-  - entity_share_server.channel.taxonomy_chatbot_category_tr
-  - entity_share_server.channel.taxonomy_chatbot_subcategory_tr
-  - entity_share_server.channel.taxonomy_child_s_gender_tr
-  - entity_share_server.channel.taxonomy_domain_of_activity_tr
-  - entity_share_server.channel.taxonomy_growth_introductory_tr
-  - entity_share_server.channel.taxonomy_growth_type_tr
-  - entity_share_server.channel.taxonomy_keywords_tr
-  - entity_share_server.channel.taxonomy_parent_s_gender_tr
-  - entity_share_server.channel.taxonomy_relationship_to_child_tr
-  - entity_share_server.channel.taxonomy_standard_deviation_category_tr
-  - entity_share_server.channel.taxonomy_standard_deviation_tr
-  - entity_share_server.channel.taxonomy_subcategory_tr
-  - entity_share_server.channel.taxonomy_type_of_support_tr
   - mobile_app_links.android_packages
   - mobile_app_links.ios
-  - pb_custom_form.landing_pages
-  - pb_custom_form.language_redirects
+  - bebbo_custom_general.landing_pages
+  - bebbo_custom_general.language_redirects
   - shortcut.set.default
   - system.site
   - taxonomy.vocabulary.type_of_article
   - workflows.workflow.group_workflow
 partial_list:
+  - gin.settings
+  - system.date
+  - system.theme.global
+  - ai_translate.settings
   - core.entity_form_display.block_content.basic.default
   - core.entity_form_display.group.country.default
   - core.entity_form_display.media.image.default
@@ -113,9 +87,6 @@ partial_list:
   - structure_sync.data
   - tmgmt.settings
   - tmgmt_memsource.settings
-  - user.role.authenticated
-  - user.role.global_admin
-  - user.role.reviewer
   - view_custom_table.tables
   - views.view.archive
   - views.view.articles
@@ -149,3 +120,7 @@ partial_list:
   - views.view.user_admin_people
   - views.view.users_list
   - views.view.bebbo_v2_apis
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.microsoft

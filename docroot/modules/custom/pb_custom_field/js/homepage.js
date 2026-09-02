@@ -23,7 +23,7 @@ jQuery('.field--name-field-make-available-for-mobile').nextAll('p').remove();
 
 
 jQuery(document).ready(function () {
-  var menuLinks = jQuery("#block-mainnavigation .menu-item a");
+  var menuLinks = jQuery("#block-gin-mainnavigation .menu-item a");
 
   var scrollOffset = -250;
 
@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
   var clickTimer = null;
   var clickDelay = 10; // Milliseconds delay for double-click emulation
 
-  jQuery("#block-mainnavigation .menu-item").on('click', 'a', function () {
+  jQuery("#block-gin-mainnavigation .menu-item").on('click', 'a', function () {
     var clickedElement = jQuery(this);
 
     if (clickTimer === null) {
@@ -61,8 +61,8 @@ jQuery(document).ready(function () {
       clickTimer = setTimeout(function () {
         // Single click action
         var id = clickedElement.attr('href');
-        jQuery('#block-mainnavigation li a.is-active').removeClass("is-active");
-        jQuery('#block-mainnavigation .menu-item').find('a[href="' + id + '"]').addClass('is-active');
+        jQuery('#block-gin-mainnavigation li a.is-active').removeClass("is-active");
+        jQuery('#block-gin-mainnavigation .menu-item').find('a[href="' + id + '"]').addClass('is-active');
 
         clickTimer = null; // Reset the timer
       }, clickDelay);

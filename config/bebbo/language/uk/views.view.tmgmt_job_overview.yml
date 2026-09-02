@@ -9,14 +9,13 @@ display:
         label:
           label: Мітка
         source_language_1:
+          label: From
           separator: ', '
         target_language:
           label: To
           separator: ', '
         translator:
           label: Provider
-        tags_count:
-          label: Tags
         changed:
           label: Changed
         operations:

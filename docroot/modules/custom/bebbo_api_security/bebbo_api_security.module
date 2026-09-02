@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for bebbo_api_security module.
+ */
+
+/**
+ * Implements hook_cron().
+ */
+function bebbo_api_security_cron(): void {
+  /** @var \Drupal\bebbo_api_security\Service\DeviceRegistryService $registry */
+  $registry = \Drupal::service('bebbo_api_security.device_registry');
+  $logger = \Drupal::logger('bebbo_api_security');
+
+  $stats = $registry->purgeExpired();
+  $total = array_sum($stats);
+
+  if ($total > 0) {
+    $logger->info('Cron cleanup: @challenges challenges, @revoked revoked tokens, @expired expired tokens, @logs log entries purged.', [
+      '@challenges' => $stats['challenges'],
+      '@revoked' => $stats['tokens_revoked'],
+      '@expired' => $stats['tokens_expired'],
+      '@logs' => $stats['logs'],
+    ]);
+  }
+}

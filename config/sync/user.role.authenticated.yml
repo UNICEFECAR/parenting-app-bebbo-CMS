@@ -3,19 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.admin_full_html
+    - filter.format.full_html
+    - media.type.document
     - media.type.image
     - media.type.remote_video
     - media.type.video
   module:
     - content_moderation
-    - entity_share_client
-    - file
     - filter
     - media
     - node
+    - pb_content_analytics
     - pb_custom_form
-    - search
     - shortcut
     - system
     - taxonomy
@@ -29,20 +28,23 @@ is_admin: false
 permissions:
   - 'access content'
   - 'access content overview'
+  - 'access media overview'
   - 'access shortcuts'
   - 'access taxonomy overview'
   - 'access toolbar'
-  - 'create image media'
-  - 'create remote_video media'
-  - 'create video media'
-  - 'delete own files'
-  - 'edit any image media'
-  - 'edit any remote_video media'
-  - 'edit any video media'
-  - entity_share_client_pull_content
+  - 'edit own document media'
+  - 'edit own image media'
+  - 'edit own remote_video media'
+  - 'edit own video media'
   - 'manage mobile javascript'
-  - 'search content'
-  - 'use text format admin_full_html'
+  - 'use text format full_html'
+  - 'view all media revisions'
+  - 'view any document media revisions'
+  - 'view any image media revisions'
+  - 'view any remote_video media revisions'
+  - 'view any unpublished content'
+  - 'view any video media revisions'
+  - 'view content analytics report'
   - 'view latest version'
   - 'view media'
   - 'view own unpublished content'

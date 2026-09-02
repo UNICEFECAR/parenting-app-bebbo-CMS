@@ -1,0 +1,4 @@
+adding:
+  pattern: 'l, j F Y - H:i'
+removing:
+  pattern: 'l, F j, Y - H:i'

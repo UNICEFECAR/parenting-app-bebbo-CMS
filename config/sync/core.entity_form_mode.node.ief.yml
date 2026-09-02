@@ -6,6 +6,6 @@ dependencies:
     - node
 id: node.ief
 label: 'Inline Entity Form'
-description: ''
+description: null
 targetEntityType: node
 cache: true

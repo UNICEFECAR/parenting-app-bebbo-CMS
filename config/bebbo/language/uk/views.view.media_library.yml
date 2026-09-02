@@ -23,8 +23,6 @@ display:
           sort_desc_label: Спад
       filters:
         status:
-          expose:
-            label: 'Publishing status'
           group_info:
             label: Опубліковано
             group_items:

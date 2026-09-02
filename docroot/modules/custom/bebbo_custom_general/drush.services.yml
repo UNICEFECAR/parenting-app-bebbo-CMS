@@ -1,0 +1,14 @@
+services:
+  bebbo_custom_general.editorial_menu_commands:
+    class: Drupal\bebbo_custom_general\Commands\EditorialMenuCommands
+    arguments:
+      - '@bebbo_custom_general.editorial_menu_manager'
+    tags:
+      - { name: drush.command }
+  bebbo_custom_general.warm_commands:
+    class: Drupal\bebbo_custom_general\Commands\WarmCommands
+    arguments:
+      - '@bebbo_custom_general.warmer_runner'
+      - '@lock'
+    tags:
+      - { name: drush.command }

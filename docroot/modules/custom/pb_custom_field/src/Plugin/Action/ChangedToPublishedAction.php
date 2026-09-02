@@ -7,7 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\node\NodeStorageInterface;
-use Drupal\group\GroupMembershipLoaderInterface;
+use Drupal\group\Entity\GroupMembership;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -29,13 +29,6 @@ use Drupal\user\UserStorageInterface;
 class ChangedToPublishedAction extends ViewsBulkOperationsActionBase implements ContainerFactoryPluginInterface {
 
   use StringTranslationTrait;
-
-  /**
-   * The group membership loader service.
-   *
-   * @var \Drupal\group\GroupMembershipLoaderInterface
-   */
-  protected $groupMembershipLoader;
 
   /**
    * The messenger service.
@@ -123,8 +116,6 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase implements 
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
-   *   The group membership loader service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
@@ -140,9 +131,8 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase implements 
    * @param \Drupal\node\NodeStorageInterface $node_storage
    *   The node storage.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, GroupMembershipLoaderInterface $group_membership_loader, MessengerInterface $messenger, TimeInterface $time, LoggerChannelFactoryInterface $logger_factory, RequestStack $request_stack, AccountInterface $current_user, UserStorageInterface $user_storage, NodeStorageInterface $node_storage) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MessengerInterface $messenger, TimeInterface $time, LoggerChannelFactoryInterface $logger_factory, RequestStack $request_stack, AccountInterface $current_user, UserStorageInterface $user_storage, NodeStorageInterface $node_storage) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->groupMembershipLoader = $group_membership_loader;
     $this->messenger = $messenger;
     $this->time = $time;
     $this->loggerFactory = $logger_factory;
@@ -160,7 +150,6 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase implements 
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('group.membership_loader'),
       $container->get('messenger'),
       $container->get('datetime.time'),
       $container->get('logger.factory'),
@@ -181,7 +170,7 @@ class ChangedToPublishedAction extends ViewsBulkOperationsActionBase implements 
     $grp_country_new_array = [];
 
     if ($user) {
-      $grps = $this->groupMembershipLoader->loadByUser($user);
+      $grps = GroupMembership::loadByUser($user);
       $grp_country_new_array = [];
       if (!empty($grps)) {
         // Collect languages from ALL groups the user belongs to.

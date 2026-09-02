@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Guide
 type: guide
-description: null
+description: 'Modules created for parents containing the most important age-period-specific content (eg. articles, games, health tools).'
 help: null
 new_revision: true
 preview_mode: 1

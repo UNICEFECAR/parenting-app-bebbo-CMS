@@ -1,0 +1,10 @@
+name: Bebbo Custom General
+description: 'Common Bebbo utilities that have no dedicated module (mobile-JS share pages, and more to follow).'
+type: module
+package: custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:views
+  - group:group
+  - language_visibility_control:language_visibility_control
+  - menu_per_role:menu_per_role

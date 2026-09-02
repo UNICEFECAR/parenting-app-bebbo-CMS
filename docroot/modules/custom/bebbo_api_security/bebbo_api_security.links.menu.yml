@@ -1,0 +1,6 @@
+bebbo_api_security.settings:
+  title: 'API Security'
+  route_name: bebbo_api_security.settings
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure device attestation and JWT authentication for V2 API endpoints.'
+  weight: 110

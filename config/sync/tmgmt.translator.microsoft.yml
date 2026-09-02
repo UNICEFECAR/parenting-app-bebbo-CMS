@@ -1,0 +1,15 @@
+uuid: 7a1c0e64-5b2f-4d81-9c33-0f6a2e5d1b43
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_microsoft
+name: microsoft
+label: Microsoft
+description: 'Microsoft Translator service.'
+auto_accept: false
+weight: -7
+plugin: microsoft
+settings:
+  api_key: ''
+remote_languages_mappings: {  }

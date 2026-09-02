@@ -1,6 +1,6 @@
 uuid: 137296ef-7f75-4cfb-987c-ba1a5ced9e45
 langcode: en
-status: true
+status: false
 dependencies: {  }
 id: sme_review_to_sr_editor_review_
 workflow: group_workflow
@@ -10,6 +10,7 @@ roles:
   se: se
 author: false
 site_mail: false
+user_fields: {  }
 emails: ''
 subject: 'Content changed from SME review to Sr. Editor review'
 body:

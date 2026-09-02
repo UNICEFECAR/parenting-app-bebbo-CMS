@@ -1,0 +1,138 @@
+bebbo_custom_general.mobile_app_share_link_form:
+  path: '/admin/config/parent-buddy/mobile-javascript'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\MobileAppShareLinkForm'
+    _title: 'Manage Mobile APP Javascript'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.country_users:
+  path: '/country-users'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\CountryUsersController::redirectToCountry'
+    _title: 'Country Users'
+  requirements:
+    # The member list and group overview both run their own access checks; this
+    # route only resolves which of them to send the user to.
+    _user_is_logged_in: 'TRUE'
+  options:
+    _admin_route: TRUE
+    no_cache: TRUE
+
+bebbo_custom_general.pb_mobile:
+  path: '/share/{param1}/{param2}/{param3}'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\PbMobile::render'
+    param1: ''
+    param2: ''
+    param3: ''
+    _title_callback: '\Drupal\bebbo_custom_general\Controller\PbMobile::getDynamicTitle'
+  requirements:
+    _permission: 'manage mobile javascript'
+
+bebbo_custom_general.kosovo_pb_mobile:
+  path: '/foleja/share/{param1}/{param2}/{param3}'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\PbMobile::kosovorender'
+    param1: ''
+    param2: ''
+    param3: ''
+    _title: 'Bebbo'
+  requirements:
+    _permission: 'manage mobile javascript'
+
+bebbo_custom_general.redirect_management:
+  path: '/admin/config/parent-buddy/redirect-management'
+  defaults:
+    _form: 'Drupal\bebbo_custom_general\Form\RedirectManagementForm'
+    _title: 'Redirect Management'
+  requirements:
+    _permission: 'manage redirect settings'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.admin_settings_form:
+  path: '/admin/config/parent-buddy/admin-parent-buddy'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\SettingsForm'
+    _title: 'Adminster Parent Buddy'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.app_store_redirect:
+  path: '/admin/config/parent-buddy/app-store-redirect'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\AppStoreRedirectForm'
+    _title: 'App Store Redirect Settings'
+  requirements:
+    _permission: 'manage redirect settings'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.app_store_redirect_page:
+  path: '/downloadapp.html'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\AppStoreRedirectController::render'
+    _title: 'Download App'
+  requirements:
+    # Public access: QR code landing page for anonymous app users.
+    _access: 'TRUE'
+
+bebbo_custom_general.apply_trans_related_articles_video:
+  # Open access required for internal content processing
+  path: '/admin/config/parent-buddy/apply-trans-related-articles-video'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\ApplyTransRelatedArticlesVideo'
+    _title: 'Apply related articles and video articles in English content to all translations'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.csv_export:
+  path: '/admin/content/entity_share/pull/export/csv'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\CsvExportController::download'
+    _title: 'Entity Share Pull CSV Export'
+  requirements:
+    _permission: 'entity_share_client_pull_content'
+
+bebbo_custom_general.csv_export_batch:
+  path: '/admin/content/entity_share/pull/export/csv/batch'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\CsvExportController::downloadBatch'
+    _title: 'Entity Share Pull CSV Export (Batch)'
+  requirements:
+    _permission: 'entity_share_client_pull_content'
+
+bebbo_custom_general.csv_export_download:
+  path: '/admin/content/entity_share/pull/export/csv/download'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\CsvExportController::downloadCompleted'
+    _title: 'Download CSV Export'
+  requirements:
+    _permission: 'entity_share_client_pull_content'
+
+bebbo_custom_general.warmer_settings:
+  path: '/admin/config/development/api-warmer'
+  defaults:
+    _form: '\Drupal\bebbo_custom_general\Form\WarmerSettingsForm'
+    _title: 'API cache warmer'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+bebbo_custom_general.warmer_logs:
+  path: '/admin/config/development/api-warmer/logs'
+  defaults:
+    _controller: '\Drupal\bebbo_custom_general\Controller\WarmerLogController::overview'
+    _title: 'API cache warmer'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

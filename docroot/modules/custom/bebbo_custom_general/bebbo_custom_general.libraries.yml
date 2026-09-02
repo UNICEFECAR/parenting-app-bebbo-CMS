@@ -1,0 +1,11 @@
+editorial_toolbar:
+  js:
+    js/editorial-toolbar.js: {}
+  css:
+    theme:
+      css/editorial-toolbar.css: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - toolbar/toolbar
+    - toolbar_menu/icons

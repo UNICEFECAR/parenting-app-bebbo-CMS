@@ -1,0 +1,22 @@
+uuid: 1414a821-22b2-49cd-a589-77a6f4a5d2de
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.pregnancy_weekly_overview
+id: node.pregnancy_weekly_overview.promote
+field_name: promote
+entity_type: node
+bundle: pregnancy_weekly_overview
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

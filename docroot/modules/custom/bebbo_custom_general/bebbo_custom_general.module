@@ -1,0 +1,1129 @@
+<?php
+
+/**
+ * @file
+ * Common Bebbo utilities with no dedicated module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\bebbo_custom_general\Plugin\views\sort\NaturalTitleSort;
+use Drupal\views\Plugin\views\field\FieldPluginBase;
+use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\Plugin\views\query\Sql;
+use Drupal\views\Plugin\views\style\Table;
+use Drupal\views\ViewExecutable;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
+/**
+ * Implements hook_theme().
+ *
+ * Defines the mobile app-share landing page themes. The inline share scripts
+ * are sourced from the per-site bebbo_custom_general.mobile_app_share_link_form
+ * config (managed via the Manage Mobile APP Javascript admin form).
+ */
+function bebbo_custom_general_theme($existing, $type, $theme, $path) {
+  $config = \Drupal::config('bebbo_custom_general.mobile_app_share_link_form');
+
+  return [
+    'pb-mobile' => [
+      'variables' => ['app_share_script' => $config->get('mobile_app_share_link')],
+    ],
+    'kosovo-mobile' => [
+      'variables' => [
+        'kosovo_app_share_script' => $config->get('kosovo_mobile_app_share_link'),
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * - Adds the CSV Download button to the Entity Share pull form.
+ * - Wires the category -> subcategory AJAX cascade on article edit forms.
+ */
+function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'entity_share_client_pull_form') {
+    bebbo_custom_general_add_csv_download_button($form, $form_state);
+
+    // Add after_build callback to ensure button is added after AJAX rebuilds.
+    $form['#after_build'][] = 'bebbo_custom_general_entity_share_after_build';
+  }
+
+  // Adding custom validation for the welcome page type field.
+  if ($form_id == 'group_country_edit_form') {
+    // Make readonly if offload country is enabled.
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+    $global_user = ['global_admin'];
+    if (count(array_intersect($roles, $global_user)) != 0) {
+      $mobile_default = $form['field_make_available_for_mobile']['widget']['value']['#default_value'];
+      if ($mobile_default == 1) {
+        $form['field_make_available_for_mobile']['widget']['value']['#disabled'] = 'true';
+      }
+      else {
+        $form['field_make_available_for_mobile']['widget']['value']['#default_value'] = 'true';
+      }
+    }
+    $form['#attached']['library'][] = 'pb_custom_field/mylib';
+    $form['actions']['submit']['#submit'][] = 'bebbo_custom_general_group_country_save';
+  }
+
+  if (strpos($form_id, 'edit_form') !== FALSE && strpos($form_id, 'node') !== FALSE) {
+    $form['#validate'][] = 'bebbo_custom_general_node_validate';
+  }
+
+  // node_article_edit_form //node_article_form.
+  if ($form_id == 'node_article_edit_form' || $form_id == 'node_article_form') {
+    // Attach the AJAX behavior to the 'field_subject_area'.
+    if (isset($form['field_type_of_article'])) {
+      $form['field_type_of_article']['widget']['#ajax'] = [
+        'callback' => 'bebbo_custom_general_custom_article_filter_categories',
+        'wrapper' => 'category-wrapper',
+        'event' => 'change',
+      ];
+    }
+    // Wrap the field_category field in a div so we can replace it via AJAX.
+    $form['field_content_category']['#prefix'] = '<div id="category-wrapper">';
+    $form['field_content_category']['#suffix'] = '</div>';
+    if (isset($form['field_content_category'])) {
+      $form['field_content_category']['widget']['#ajax'] = [
+        'callback' => 'bebbo_custom_general_dynamic_category_ajax_callback',
+        'wrapper' => 'subcategory-wrapper',
+        'event' => 'change',
+      ];
+    }
+    if (isset($form['field_subcategory'])) {
+      $form['field_subcategory']['#prefix'] = '<div id="subcategory-wrapper">';
+      $form['field_subcategory']['#suffix'] = '</div>';
+    }
+    $form['field_content_category']['widget']['#attributes']['disabled'] =
+      'disabled';
+    $form['field_subcategory']['widget']['#attributes']['disabled'] =
+      'disabled';
+  }
+
+  if ($form_id == 'tmgmt_overview_form') {
+    // Only modify if we're dealing with content entities (nodes).
+    $plugin = $form_state->get('plugin');
+    $item_type = $form_state->get('item_type');
+
+    if ($plugin !== 'content' || $item_type !== 'node') {
+      return;
+    }
+
+    // Add Node ID filter field to search form.
+    if (isset($form['search_wrapper']['search'])) {
+      $form['search_wrapper']['search']['node_id'] = [
+        '#type' => 'textfield',
+        '#title' => t('Node ID'),
+        '#size' => 8,
+        '#default_value' => \Drupal::request()->query->get('node_id', ''),
+      ];
+    }
+
+    // Add process callback to handle sorting after form is built.
+    $form['#process'][] = 'bebbo_custom_general_process_tmgmt_overview_form';
+
+    // Modify the items table if it exists.
+    if (isset($form['items']['#header'])) {
+      // Get current sort parameters.
+      $request = \Drupal::request();
+      $current_order = $request->query->get('order');
+      $current_sort = $request->query->get('sort', 'desc');
+      $new_sort = ($current_order === 'node_id' && $current_sort === 'asc') ? 'desc' : 'asc';
+
+      // Create sortable link for Node ID column.
+      $sort_url = Url::fromRoute('<current>', [], [
+        'query' => [
+          'order' => 'node_id',
+          'sort' => $new_sort,
+        ] + $request->query->all(),
+      ]);
+
+      // Add Node ID as the first column.
+      $header = $form['items']['#header'];
+      $new_header = [
+        'node_id' => [
+          'data' => [
+            '#type' => 'link',
+            '#title' => t('Node ID'),
+            '#url' => $sort_url,
+            '#attributes' => [
+              'title' => t('Sort by Node ID'),
+              'style' => 'color: inherit; text-decoration: none;',
+              'class' => ['node-id-header'],
+            ],
+          ],
+        ],
+      ];
+
+      // Add the rest of the headers.
+      foreach ($header as $key => $column) {
+        $new_header[$key] = $column;
+      }
+      $form['items']['#header'] = $new_header;
+
+      // Add Node ID data to each row.
+      if (isset($form['items']['#options'])) {
+        foreach ($form['items']['#options'] as $entity_id => &$row) {
+          // Create new row with Node ID first.
+          $new_row = [
+            'node_id' => [
+              'data' => [
+                '#type' => 'link',
+                '#title' => $entity_id,
+                '#url' => Url::fromRoute('entity.node.edit_form', ['node' => $entity_id]),
+                '#attributes' => ['target' => '_blank'],
+              ],
+            ],
+          ];
+
+          // Add the rest of the row data.
+          foreach ($row as $key => $value) {
+            $new_row[$key] = $value;
+          }
+          $row = $new_row;
+        }
+      }
+    }
+  }
+
+  // Add Node ID column to TMGMT Cart form.
+  if ($form_id == 'tmgmt_cart_form') {
+    // Get current sort parameters for cart.
+    $request = \Drupal::request();
+    $current_order = $request->query->get('order');
+    $current_sort = $request->query->get('sort', 'desc');
+    $new_sort = ($current_order === 'node_id' && $current_sort === 'asc') ? 'desc' : 'asc';
+
+    // Create sortable link for Node ID column in cart.
+    $cart_sort_url = Url::fromRoute('<current>', [], [
+      'query' => [
+        'order' => 'node_id',
+        'sort' => $new_sort,
+      ] + $request->query->all(),
+    ]);
+
+    // Modify the items table if it exists.
+    if (isset($form['items']['#header'])) {
+      $header = $form['items']['#header'];
+      $new_header = [
+        'node_id' => [
+          'data' => [
+            '#type' => 'link',
+            '#title' => t('Node ID'),
+            '#url' => $cart_sort_url,
+            '#attributes' => [
+              'title' => t('Sort by Node ID'),
+              'style' => 'color: inherit; text-decoration: none;',
+              'class' => ['node-id-header'],
+            ],
+          ],
+        ],
+      ];
+
+      // Add the rest of the headers.
+      foreach ($header as $key => $column) {
+        $new_header[$key] = $column;
+      }
+      $form['items']['#header'] = $new_header;
+
+      // Add Node ID data to each row if items exist.
+      if (isset($form['items']['#options']) && !empty($form['items']['#options'])) {
+        $job_item_ids = array_map('intval', array_keys($form['items']['#options']));
+        $node_map = [];
+        if (!empty($job_item_ids)) {
+          $connection = \Drupal::database();
+          $results = $connection->select('tmgmt_job_item', 'ji')
+            ->fields('ji', ['tjiid', 'item_id'])
+            ->condition('ji.tjiid', $job_item_ids, 'IN')
+            ->condition('ji.plugin', 'content')
+            ->condition('ji.item_type', 'node')
+            ->execute()
+            ->fetchAllKeyed(0, 1);
+          foreach ($results as $jid => $item_id) {
+            $node_map[(int) $jid] = (int) $item_id;
+          }
+        }
+
+        // Collect items for sorting.
+        $items_data = [];
+        foreach ($form['items']['#options'] as $job_item_id => $row) {
+          $jid = (int) $job_item_id;
+          $items_data[$job_item_id] = [
+            'entity_id' => $node_map[$jid] ?? 0,
+            'row' => $row,
+          ];
+        }
+
+        // Sort items if Node ID sorting is requested.
+        if ($current_order === 'node_id') {
+          uasort($items_data, function ($a, $b) use ($current_sort) {
+            $a_val = (int) $a['entity_id'];
+            $b_val = (int) $b['entity_id'];
+            return $current_sort === 'asc' ? $a_val <=> $b_val : $b_val <=> $a_val;
+          });
+        }
+
+        // Rebuild options with Node ID data.
+        $new_options = [];
+        foreach ($items_data as $job_item_id => $data) {
+          $entity_id = $data['entity_id'];
+          $row = $data['row'];
+
+          // Create new row with Node ID first.
+          $new_row = [
+            'node_id' => [
+              'data' => [
+                '#type' => 'link',
+                '#title' => $entity_id ?: 'N/A',
+                '#url' => $entity_id ? Url::fromRoute('entity.node.edit_form', ['node' => $entity_id]) : Url::fromRoute('<current>'),
+                '#attributes' => $entity_id ? ['target' => '_blank'] : ['class' => ['disabled']],
+              ],
+            ],
+          ];
+
+          // Add the rest of the row data.
+          foreach ($row as $key => $value) {
+            $new_row[$key] = $value;
+          }
+
+          $new_options[$job_item_id] = $new_row;
+        }
+        $form['items']['#options'] = $new_options;
+      }
+    }
+  }
+}
+
+/**
+ * AJAX callback to filter Subcategory options.
+ */
+function bebbo_custom_general_dynamic_category_ajax_callback(array &$form, FormStateInterface $form_state) {
+  $selected_category = $form_state->getValue(['field_content_category', 0, 'target_id']);
+  // Logic to fetch subcategory options based on the selected category.
+  $subcategory_options = bebbo_custom_general_get_subcategory_options($selected_category);
+  // Update the options of the subcategory select field.
+  if (count($subcategory_options) > 1) {
+    $form['field_subcategory']['widget']['#options'] = $subcategory_options;
+    $form['field_subcategory']['widget']['#attributes']['disabled'] = NULL;
+  }
+  else {
+    $form['field_subcategory']['widget']['#options'] = $subcategory_options;
+    $form['field_subcategory']['widget']['#attributes']['disabled'] = NULL;
+    $form['field_subcategory']['widget']['#default_value'] = NULL;
+  }
+  // Return the updated subcategory field element.
+  return $form['field_subcategory'];
+}
+
+/**
+ * AJAX callback to filter Category options.
+ *
+ * Based on selected, Subject Area and Type of Article.
+ */
+function bebbo_custom_general_custom_article_filter_categories(array &$form, FormStateInterface $form_state) {
+  // Get the selected subject area and type of article.
+  $type_of_article = $form_state->getValue(['field_type_of_article', 0, 'target_id']);
+  $options = bebbo_custom_general_get_content_category_option($type_of_article);
+  if (count($options) > 1) {
+    $form['field_content_category']['widget']['#options'] = $options;
+    $form['field_content_category']['widget']['#attributes']['disabled'] = NULL;
+  }
+  else {
+    $form['field_content_category']['widget']['#default_value'] = NULL;
+  }
+  return $form['field_content_category'];
+}
+
+/**
+ * Get content category options.
+ */
+function bebbo_custom_general_get_content_category_option($type_of_article) {
+  if ($type_of_article) {
+    // Load categories and filter them based on the selected subject area and
+    // type of article.
+    $categories = \Drupal::entityTypeManager()->getStorage('taxonomy_term')
+      ->loadTree('category');
+    $options = ['_none' => '- Select a value -'];
+    foreach ($categories as $category) {
+      $term = Term::load($category->tid);
+      $category_type_of_article = $term->get('field_type_of_article')->target_id;
+      // Only include categories that match  type of article.
+      if ($category_type_of_article == $type_of_article) {
+        $options[$category->tid] = $category->name;
+      }
+    }
+    return $options;
+  }
+}
+
+/**
+ * Get subcategory options.
+ */
+function bebbo_custom_general_get_subcategory_options($category_id) {
+  // This is a placeholder function; replace with actual logic.
+  $options = ['_none' => '- Select a value -'];
+  // Replace with your vocabulary machine name.
+  $vid = 'subcategory';
+  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+  $matched_terms = [];
+  foreach ($terms as $term) {
+    // Load the full term entity.
+    $term_entity = Term::load($term->tid);
+    // Check if the term has field_category with the specified ID.
+    if ($term_entity->hasField('field_category') && !$term_entity->get('field_category')->isEmpty()) {
+      $field_category = $term_entity->get('field_category')->getValue();
+      foreach ($field_category as $value) {
+        if ($value['target_id'] == $category_id) {
+          $matched_terms[] = $term->tid;
+          break;
+        }
+      }
+    }
+  }
+
+  if ($matched_terms) {
+    // Initialize an empty array to store term IDs and names.
+    $terms = Term::loadMultiple($matched_terms);
+    foreach ($terms as $term_id => $term) {
+      // Check if the term is loaded successfully.
+      if ($term) {
+        // Get the name of the term.
+        $options[$term_id] = $term->getName();
+      }
+    }
+  }
+  return $options;
+}
+
+/**
+ * Adds CSV Download button to Entity Share Pull form.
+ */
+function bebbo_custom_general_add_csv_download_button(&$form, FormStateInterface $form_state) {
+  // Add CSV Download button to the actions section if it exists.
+  if (isset($form['channel_wrapper']['entities_wrapper']['actions_bottom'])) {
+    $form['channel_wrapper']['entities_wrapper']['actions_bottom']['csv_download'] = [
+      '#type' => 'submit',
+      '#value' => t('CSV Download'),
+      '#submit' => ['bebbo_custom_general_csv_download_redirect'],
+      '#button_type' => 'primary',
+      '#limit_validation_errors' => [],
+      '#validate' => [],
+    ];
+  }
+
+  // Also add to top actions if they exist.
+  if (isset($form['channel_wrapper']['entities_wrapper']['actions_top'])) {
+    $form['channel_wrapper']['entities_wrapper']['actions_top']['csv_download'] = [
+      '#type' => 'submit',
+      '#value' => t('CSV Download'),
+      '#submit' => ['bebbo_custom_general_csv_download_redirect'],
+      '#button_type' => 'primary',
+      '#limit_validation_errors' => [],
+      '#validate' => [],
+    ];
+  }
+}
+
+/**
+ * After build callback for Entity Share Pull form.
+ */
+function bebbo_custom_general_entity_share_after_build($form, FormStateInterface $form_state) {
+  // Ensure CSV download button is added after AJAX rebuilds.
+  bebbo_custom_general_add_csv_download_button($form, $form_state);
+  return $form;
+}
+
+/**
+ * Submit handler for CSV download redirect.
+ */
+function bebbo_custom_general_csv_download_redirect($form, FormStateInterface $form_state) {
+  $route_name = 'bebbo_custom_general.csv_export';
+
+  // Get current form values to pass as query parameters
+  // The entity_share client form may nest elements in wrappers or use
+  // different keys. Try multiple strategies to retrieve values.
+  $remote_id = NULL;
+  $channel_id = NULL;
+  $import_config_id = NULL;
+
+  // Preferred direct keys.
+  if ($val = $form_state->getValue('remote')) {
+    $remote_id = $val;
+  }
+  if ($val = $form_state->getValue('channel')) {
+    $channel_id = $val;
+  }
+  if ($val = $form_state->getValue('import_config')) {
+    $import_config_id = $val;
+  }
+
+  // Sometimes the form nests values under wrappers, try common nested keys.
+  if (empty($remote_id) && $form_state->hasValue(['channel_wrapper', 'remote'])) {
+    $remote_id = $form_state->getValue(['channel_wrapper', 'remote']);
+  }
+  if (empty($channel_id) && $form_state->hasValue(['channel_wrapper', 'channel'])) {
+    $channel_id = $form_state->getValue(['channel_wrapper', 'channel']);
+  }
+
+  // Another nesting pattern: entities_wrapper -> remote/channel.
+  if (empty($remote_id) && $form_state->hasValue(['channel_wrapper', 'entities_wrapper', 'remote'])) {
+    $remote_id = $form_state->getValue(['channel_wrapper', 'entities_wrapper', 'remote']);
+  }
+  if (empty($channel_id) && $form_state->hasValue(['channel_wrapper', 'entities_wrapper', 'channel'])) {
+    $channel_id = $form_state->getValue(['channel_wrapper', 'entities_wrapper', 'channel']);
+  }
+
+  // Fallback to user input (for AJAX forms that don't store in getValues()).
+  if (empty($remote_id) || empty($channel_id)) {
+    $user_input = $form_state->getUserInput();
+    if (empty($remote_id) && !empty($user_input['remote'])) {
+      $remote_id = $user_input['remote'];
+    }
+    if (empty($channel_id) && !empty($user_input['channel'])) {
+      $channel_id = $user_input['channel'];
+    }
+    if (empty($import_config_id) && !empty($user_input['import_config'])) {
+      $import_config_id = $user_input['import_config'];
+    }
+  }
+
+  // Fallback to request query parameters (used when AJAX put values in URL).
+  if (empty($remote_id) || empty($channel_id)) {
+    $request = \Drupal::request();
+    if (empty($remote_id)) {
+      $remote_id = $request->query->get('remote');
+    }
+    if (empty($channel_id)) {
+      $channel_id = $request->query->get('channel');
+    }
+    if (empty($import_config_id)) {
+      $import_config_id = $request->query->get('import_config');
+    }
+  }
+
+  // If remote_id is empty but there's only one remote configured.
+  if (empty($remote_id)) {
+    try {
+      $remote_storage = \Drupal::entityTypeManager()->getStorage('remote');
+      $remotes = $remote_storage->loadMultiple();
+      if (count($remotes) === 1) {
+        $remote_id = array_keys($remotes)[0];
+        \Drupal::logger('bebbo_custom_general')->info('Auto-selected single remote @remote for CSV export', [
+          '@remote' => $remote_id,
+        ]);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('bebbo_custom_general')->error('Failed to auto-select remote: @error', [
+        '@error' => $e->getMessage(),
+      ]);
+    }
+  }
+
+  // Validate required parameters.
+  if (empty($channel_id) || empty($remote_id)) {
+    \Drupal::logger('bebbo_custom_general')->warning('CSV export requested but channel or remote not set. remote=@remote channel=@channel form_values=@values user_input=@input', [
+      '@remote' => $remote_id,
+      '@channel' => $channel_id,
+      '@values' => json_encode($form_state->getValues()),
+      '@input' => json_encode($form_state->getUserInput()),
+    ]);
+    \Drupal::messenger()->addError(t('Channel and Remote website are required for CSV export. Remote: @remote, Channel: @channel', [
+      '@remote' => $remote_id ?: 'empty',
+      '@channel' => $channel_id ?: 'empty',
+    ]));
+    return;
+  }
+
+  try {
+    // Ensure the route exists before attempting to build a URL for it.
+    \Drupal::service('router.route_provider')->getRouteByName($route_name);
+
+    $query_params = [
+      'remote' => $remote_id,
+      'channel' => $channel_id,
+    ];
+
+    if (!empty($import_config_id)) {
+      $query_params['import_config'] = $import_config_id;
+    }
+
+    $url = Url::fromRoute($route_name, [], [
+      'query' => $query_params,
+    ]);
+    $form_state->setRedirectUrl($url);
+  }
+  catch (RouteNotFoundException $e) {
+    // Log the problem and show a friendly message instead of throwing an
+    // exception which would break the page.
+    \Drupal::logger('bebbo_custom_general')->error('CSV export route not found: @msg', ['@msg' => $e->getMessage()]);
+    \Drupal::messenger()->addError(t('CSV export is currently unavailable. Please contact an administrator.'));
+    // Redirect back to the current page to avoid the exception interrupting the
+    // user's workflow.
+    $form_state->setRedirect('<current>');
+  }
+}
+
+/**
+ * Submit handler for the group country edit form (Country Offload).
+ *
+ * When a country group is made unavailable for mobile, batch-archives all
+ * node translations in that country's languages.
+ */
+function bebbo_custom_general_group_country_save($form, FormStateInterface $form_state) {
+  $field_make_available_for_mobiles = $form_state->getValue('field_make_available_for_mobile');
+  $field_make_available_for_mobile = $field_make_available_for_mobiles['value'];
+  if ($field_make_available_for_mobile == 1) {
+    $country_language = $form_state->getValue('field_language');
+    $country_languages_arry = [];
+    if (!empty($country_language)) {
+      foreach ($country_language as $value) {
+        $country_languages_arry[] = $value['value'];
+      }
+    }
+    $langcodess = [];
+    $resultss = \Drupal::database()->select('node_field_data', 't')
+      ->fields('t')
+      ->condition('langcode', $country_languages_arry, 'IN')
+      ->execute()
+      ->fetchAll();
+    if (!empty($resultss)) {
+      foreach ($resultss as $val) {
+        $langcode = $val->langcode;
+        $nid = $val->nid;
+        $nids[$langcode] = $val->nid;
+        $langcodess[$nid][] = $val->langcode;
+      }
+    }
+    $batch = [
+      'title' => t('change status'),
+      'operations' => [
+      [
+        '\Drupal\bebbo_custom_general\ChangeNodeStatus::offLoadCountryProcess',
+        [$langcodess],
+      ],
+      ],
+      'finished' => '\Drupal\bebbo_custom_general\ChangeNodeStatus::offLoadCountryProcessFinishedCallback',
+    ];
+    batch_set($batch);
+  }
+
+}
+
+/**
+ * Validation handler: require a revision log when non-admins archive a node.
+ */
+function bebbo_custom_general_node_validate($form, FormStateInterface $form_state) {
+  $user = \Drupal::currentUser();
+  $roles = $user->getRoles();
+
+  $roles_arr = [
+    'administrator',
+    'global_admin',
+  ];
+
+  if ($form_state->getValue('moderation_state')[0]['value'] == 'archive') {
+    if (!array_intersect($roles_arr, $roles)) {
+      if (empty($form_state->getValue('revision_log')[0]['value'])) {
+        $form_state->setErrorByName('revision_log', t('Revision log message is required when archiving.'));
+      }
+      elseif (!empty($form_state->getValue('revision_log')[0]['value']) &&
+              strlen(trim($form_state->getValue('revision_log')[0]['value'])) < 3) {
+        $form_state->setErrorByName('revision_log',
+          t('Revision log message is required when archiving.'));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter() for tmgmt_entity_get_translatable_entities.
+ */
+function bebbo_custom_general_query_tmgmt_entity_get_translatable_entities_alter($query) {
+  $request = \Drupal::request();
+  $node_id_filter = $request->query->get('node_id');
+  $order = $request->query->get('order');
+  $sort = $request->query->get('sort', 'desc');
+
+  // Add Node ID filtering.
+  if (!empty($node_id_filter) && is_numeric($node_id_filter)) {
+    $query->condition('e.nid', $node_id_filter, '=');
+  }
+
+  // Add Node ID sorting - override the default ordering.
+  if ($order === 'node_id' || $order === 'nid') {
+    // Clear existing order by clauses.
+    $order_by = &$query->getOrderBy();
+    $order_by = [];
+    // Add our Node ID ordering.
+    $query->orderBy('e.nid', strtoupper($sort));
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for tmgmt_overview_form.
+ */
+function bebbo_custom_general_form_tmgmt_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only modify if we're dealing with content entities (nodes).
+  $plugin = $form_state->get('plugin');
+  $item_type = $form_state->get('item_type');
+
+  if ($plugin !== 'content' || $item_type !== 'node') {
+    return;
+  }
+
+  // Remove inline-only bundles (e.g. quiz_questions) from the content type
+  // filter on the TMGMT sources overview (/admin/tmgmt/sources). The node
+  // bundle key is "type"; the select is only present when >1 bundle exists.
+  if (isset($form['search_wrapper']['search']['type']['#options'])) {
+    foreach (_bebbo_custom_general_hidden_node_types() as $hidden_type) {
+      unset($form['search_wrapper']['search']['type']['#options'][$hidden_type]);
+    }
+  }
+
+  // Handle manual sorting if the query alter didn't work.
+  $request = \Drupal::request();
+  $order = $request->query->get('order');
+  $sort = $request->query->get('sort', 'desc');
+
+  if (($order === 'node_id' || $order === 'nid') && isset($form['items']['#options'])) {
+    // Sort the options array by entity ID.
+    $options = $form['items']['#options'];
+    if ($sort === 'asc') {
+      ksort($options, SORT_NUMERIC);
+    }
+    else {
+      krsort($options, SORT_NUMERIC);
+    }
+    $form['items']['#options'] = $options;
+  }
+
+  // Handle Node ID filtering.
+  $node_id_filter = $request->query->get('node_id');
+  if (!empty($node_id_filter) && is_numeric($node_id_filter) && isset($form['items']['#options'])) {
+    $form['items']['#options'] = array_filter($form['items']['#options'], function ($key) use ($node_id_filter) {
+      return $key == $node_id_filter;
+    }, ARRAY_FILTER_USE_KEY);
+  }
+
+  // Force sorting to happen after form is built.
+  if (($order === 'node_id' || $order === 'nid') && isset($form['items']['#options'])) {
+    $form['#after_build'][] = 'bebbo_custom_general_after_build_tmgmt_overview_form';
+  }
+}
+
+/**
+ * After build callback for TMGMT overview form.
+ */
+function bebbo_custom_general_after_build_tmgmt_overview_form($form, FormStateInterface $form_state) {
+  $request = \Drupal::request();
+  $order = $request->query->get('order');
+  $sort = $request->query->get('sort', 'desc');
+
+  if (($order === 'node_id' || $order === 'nid') && isset($form['items']['#options'])) {
+    $options = $form['items']['#options'];
+
+    if ($sort === 'asc') {
+      ksort($options, SORT_NUMERIC);
+    }
+    else {
+      krsort($options, SORT_NUMERIC);
+    }
+
+    $form['items']['#options'] = $options;
+  }
+
+  return $form;
+}
+
+/**
+ * Process callback for TMGMT overview form to handle Node ID sorting.
+ */
+function bebbo_custom_general_process_tmgmt_overview_form($element, FormStateInterface $form_state, $form) {
+  $request = \Drupal::request();
+  $order = $request->query->get('order');
+  $sort = $request->query->get('sort', 'desc');
+
+  // Apply sorting if Node ID column is selected.
+  if (($order === 'node_id' || $order === 'nid') && isset($element['items']['#options'])) {
+    $options = $element['items']['#options'];
+
+    if ($sort === 'asc') {
+      ksort($options, SORT_NUMERIC);
+    }
+    else {
+      krsort($options, SORT_NUMERIC);
+    }
+    $element['items']['#options'] = $options;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function bebbo_custom_general_preprocess_page(&$variables) {
+  // Ensure TMGMT local tasks are always visible on TMGMT pages.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if (strpos($route_name, 'tmgmt.') === 0) {
+    $variables['#cache']['contexts'][] = 'route';
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ *
+ * The editorial menu parents are <nolink> links, which the toolbar renders
+ * without the collapse toggle core gives linked parents. The library adds it.
+ *
+ * The contextual "Edit" tab goes too: every editing route on this site is
+ * reached through the editorial menu, and only full administrators ever saw
+ * the tab, so it is one more thing to explain and nothing to gain.
+ */
+function bebbo_custom_general_toolbar_alter(array &$items): void {
+  if (isset($items['toolbar_menu_editorial_menu'])) {
+    $items['toolbar_menu_editorial_menu']['#attached']['library'][] = 'bebbo_custom_general/editorial_toolbar';
+  }
+
+  unset($items['contextual']);
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function bebbo_custom_general_menu_local_actions_alter(&$local_actions): void {
+  // Rename the "Add group" action on the group collection (/admin/group) to
+  // "Add Country" — Bebbo uses a single "country" group type on all sites.
+  if (isset($local_actions['group.add_group'])) {
+    $local_actions['group.add_group']['title'] = t('Add Country');
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function bebbo_custom_general_menu_local_tasks_alter(&$data, $route_name) {
+  // Add TMGMT local tasks to source overview pages.
+  if (in_array($route_name, ['tmgmt.source_overview', 'tmgmt.source_overview_default'])) {
+    // Manually build the local tasks for TMGMT pages.
+    $data['tabs'][0]['tmgmt.job_items'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Job Items'),
+        'url' => Url::fromRoute('view.tmgmt_translation_all_job_items.page_1'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 5,
+    ];
+
+    $data['tabs'][0]['tmgmt.jobs'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Jobs'),
+        'url' => Url::fromRoute('view.tmgmt_job_overview.page_1'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 10,
+    ];
+
+    $data['tabs'][0]['tmgmt.sources'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Sources'),
+        'url' => Url::fromRoute('tmgmt.source_overview_default'),
+      ],
+      '#active' => TRUE,
+      '#weight' => 15,
+    ];
+
+    $data['tabs'][0]['tmgmt.cart'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Cart'),
+        'url' => Url::fromRoute('tmgmt.cart'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 20,
+    ];
+
+    $data['tabs'][0]['tmgmt.translators'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Providers'),
+        'url' => Url::fromRoute('entity.tmgmt_translator.collection'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 90,
+    ];
+
+    $data['tabs'][0]['tmgmt.settings'] = [
+      '#theme' => 'menu_local_task',
+      '#link' => [
+        'title' => t('Settings'),
+        'url' => Url::fromRoute('tmgmt.settings'),
+      ],
+      '#active' => FALSE,
+      '#weight' => 100,
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ *
+ * @todo DEAD CODE — the function name does not match Drupal's
+ * "{module}_preprocess_views_view_field" pattern, so the theme registry never
+ * registers it and it never runs. Moved verbatim from pb_custom_form to
+ * preserve current (no-op) behaviour. To actually enable the revision-author /
+ * moderation-state resolution on country_content_listing/page_5, rename this to
+ * bebbo_custom_general_preprocess_views_view_field — but that is a behaviour
+ * change and should be verified against the listing output first.
+ */
+function bebbo_custom_general_pb_custom_field_preprocess_views_view_field(&$variables) {
+  if ($variables['field']->field == 'revision_uid') {
+    $langcode = $variables['row']->node_field_data_langcode;
+    $nid = $variables['row']->_entity->nid->value;
+    $storage = \Drupal::entityTypeManager()->getStorage('node');
+    /** @var \Drupal\node\NodeStorageInterface $storage */
+    $vid = $storage->getLatestRevisionId($nid);
+    if ($storage instanceof RevisionableStorageInterface) {
+      /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
+      $node = $storage->loadRevision($vid);
+    }
+    else {
+      $node = NULL;
+    }
+    if ($node instanceof NodeInterface) {
+      $storage = \Drupal::entityTypeManager()
+        ->getStorage($node->getEntityTypeId());
+      /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
+      $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
+        $langcode);
+      if ($storage instanceof RevisionableStorageInterface) {
+        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
+        $revisionNode = $storage->loadRevision($revision_id);
+      }
+      else {
+        $revisionNode = NULL;
+      }
+      /** @var \Drupal\Core\Entity\TranslatableInterface $revisionNode */
+      $revisionTransNode = $revisionNode->getTranslation($langcode);
+      /** @var \Drupal\node\NodeInterface $revisionTransNode */
+      $uid = $revisionTransNode->get('revision_uid')->target_id ?? NULL;
+      $objUser = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
+      $variables['output'] = $objUser->name->value;
+    }
+  }
+
+  $view = $variables['view'];
+  $field = $variables['field'];
+
+  if ($view->storage->id() == 'country_content_listing' && $view->current_display == 'page_5' && $field->field == 'moderation_state') {
+    // Get the row entity (in this case, assuming a node).
+    if (isset($variables['row']->_entity) && $variables['row']->_entity instanceof NodeInterface) {
+      $nid = $variables['row']->_entity->id();
+      $storage_node = \Drupal::entityTypeManager()->getStorage('node');
+      /** @var \Drupal\node\NodeStorageInterface $storage_node */
+      $vid = $storage_node->getLatestRevisionId($nid);
+
+      if ($storage_node instanceof RevisionableStorageInterface) {
+        /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage_node */
+        $node = $storage_node->loadRevision($vid);
+      }
+      else {
+        $node = NULL;
+      }
+
+      $field_language = $variables['row']->{'node_field_data_langcode'} ?? NULL;
+
+      // Get the moderation information service.
+      $moderation_information = \Drupal::service('content_moderation.moderation_information');
+
+      // Check if the node is moderated.
+      if ($moderation_information->isModeratedEntity($node)) {
+
+        if ($variables['field']->field == 'moderation_state') {
+          /** @var \Drupal\node\NodeInterface $node */
+          if ($node->hasField('moderation_state')) {
+            $storage = \Drupal::entityTypeManager()
+              ->getStorage($node->getEntityTypeId());
+            /** @var \Drupal\Core\Entity\ContentEntityStorageInterface $storage */
+            $revision_id = $storage->getLatestTranslationAffectedRevisionId($node->id(),
+              $field_language);
+            if ($storage instanceof RevisionableStorageInterface) {
+              /** @var \Drupal\Core\Entity\RevisionableStorageInterface $storage */
+              $revisionNode = $storage->loadRevision($revision_id);
+            }
+            else {
+              $revisionNode = NULL;
+            }
+            if ($revisionNode instanceof ContentEntityInterface) {
+              $info = $moderation_information->getAffectedRevisionTranslation($revisionNode);
+              if ($info instanceof ContentEntityInterface) {
+                $moderation_state = $info->get('moderation_state')->value;
+
+                $workflow = $moderation_information->getWorkflowForEntity($info);
+                $label = $workflow->getTypePlugin()
+                  ->getState($moderation_state)->label();
+                $variables['output'] = $label;
+
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+}
+
+/**
+ * Node bundles hidden from every admin listing, menu and dropdown.
+ *
+ * These bundles are content that is only ever authored inline (e.g.
+ * "Quiz questions" is created via the Quiz content type's inline entity
+ * form field_quiz_questions). They must never appear as standalone,
+ * selectable content anywhere in the admin UI.
+ *
+ * TO REVEAL a bundle again: remove it from this array (or comment out the
+ * whole block). No permission or access change is involved — this is purely
+ * visibility, so inline entity form authoring keeps working regardless.
+ *
+ * @return string[]
+ *   The node type machine names to hide.
+ */
+function _bebbo_custom_general_hidden_node_types() {
+  return [
+    'quiz_questions',
+  ];
+}
+
+/**
+ * Implements hook_preprocess_node_add_list().
+ *
+ * Removes hidden bundles from the /node/add content type selection page.
+ */
+function bebbo_custom_general_preprocess_node_add_list(&$variables) {
+  foreach (_bebbo_custom_general_hidden_node_types() as $type) {
+    unset($variables['content'][$type], $variables['types'][$type]);
+  }
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Removes hidden bundles from any "Add content" menu link, including the
+ * admin_toolbar_tools shortcuts under Content.
+ */
+function bebbo_custom_general_menu_links_discovered_alter(&$links) {
+  $hidden = _bebbo_custom_general_hidden_node_types();
+  foreach ($links as $key => $link) {
+    if (($link['route_name'] ?? '') === 'node.add') {
+      $node_type = $link['route_parameters']['node_type'] ?? '';
+      if (in_array($node_type, $hidden, TRUE)) {
+        unset($links[$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ *
+ * Removes hidden bundles from any exposed node "Type" (bundle) dropdown so
+ * they cannot be selected as a filter option. Works on every view generically
+ * (content listings, country/child-growth/global reports, etc.) by inspecting
+ * the view's exposed bundle filters rather than a hardcoded view whitelist.
+ */
+function bebbo_custom_general_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if (!$view || empty($view->filter)) {
+    return;
+  }
+  $hidden = _bebbo_custom_general_hidden_node_types();
+  foreach ($view->filter as $filter) {
+    // Only exposed bundle filters render a selectable node-type dropdown.
+    if (!$filter instanceof FilterPluginBase
+      || empty($filter->options['exposed'])
+      || $filter->getPluginId() !== 'bundle') {
+      continue;
+    }
+    $identifier = $filter->options['expose']['identifier'] ?? '';
+    if ($identifier === '' || !isset($form[$identifier]['#options'])) {
+      continue;
+    }
+    foreach ($hidden as $type) {
+      unset($form[$identifier]['#options'][$type]);
+    }
+  }
+}
+
+/**
+ * Views whose Title column header sort uses the language-neutral ordering.
+ *
+ * Keyed by view ID, valued by the title field handler IDs to cover.
+ */
+function _bebbo_custom_general_natural_title_sort_views() {
+  return [
+    'duplicate_of_moderated_group_relationship' => ['title'],
+  ];
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * A table column sort does not go through a sort handler: the table style
+ * calls the *field* handler's clickSort(), which orders on the raw column and
+ * so inherits the stored utf8mb4_general_ci collation. Rewrite that ORDER BY
+ * with the same expressions the "Title (language-neutral sort)" handler uses,
+ * so the column and the sort handler order identically.
+ *
+ * Reads the column off the table style rather than the request, so the
+ * display's default sort is covered as well as an explicit header click.
+ *
+ * @see \Drupal\bebbo_custom_general\Plugin\views\sort\NaturalTitleSort
+ */
+function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if (!$query instanceof Sql) {
+    return;
+  }
+  $covered = _bebbo_custom_general_natural_title_sort_views();
+  if (!isset($covered[$view->id()])) {
+    return;
+  }
+
+  $style = $view->style_plugin;
+  if (!$style instanceof Table || !in_array($style->active, $covered[$view->id()], TRUE)) {
+    return;
+  }
+  $handler = $view->field[$style->active] ?? NULL;
+  if (!$handler instanceof FieldPluginBase || empty($handler->tableAlias)) {
+    return;
+  }
+
+  // clickSort() orders on the select alias when the column is already in the
+  // query, and on the qualified column otherwise.
+  $qualified = $handler->tableAlias . '.' . $handler->realField;
+  $aliases = array_filter([$handler->field_alias, $qualified]);
+  foreach ($query->orderby as $delta => $orderby) {
+    if (!in_array($orderby['field'], $aliases, TRUE)) {
+      continue;
+    }
+    unset($query->orderby[$delta]);
+    $query->orderby = array_values($query->orderby);
+    NaturalTitleSort::orderBy($query, $qualified, $orderby['direction']);
+    return;
+  }
+}

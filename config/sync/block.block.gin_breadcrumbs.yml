@@ -1,0 +1,26 @@
+uuid: 6d4afd1f-7e9f-4f82-81f7-9812e5a6147e
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - gin
+_core:
+  default_config_hash: y9X3xgCsO59pQyzNLzY1D3SDJJxCHILLWkpPnmuTJ2E
+id: gin_breadcrumbs
+theme: gin
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/share\r\n/privacy-policy\r\n/homepage\r\n/about-us\r\n/foleja-privacy-policy\r\n/foleja\r\n/foleja-about-us\r\n/user/*"

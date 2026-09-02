@@ -1,0 +1,33 @@
+uuid: 04b76b5c-9b75-4d18-a330-8bfb4a659893
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:3e466a00-3228-4ee8-b5d3-40e30bb6fbd8'
+  module:
+    - block_content
+    - user
+  theme:
+    - gin
+id: gin_logo
+theme: gin
+region: header
+weight: -8
+provider: null
+plugin: 'block_content:3e466a00-3228-4ee8-b5d3-40e30bb6fbd8'
+settings:
+  id: 'block_content:3e466a00-3228-4ee8-b5d3-40e30bb6fbd8'
+  label: Logo
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      anonymous: anonymous

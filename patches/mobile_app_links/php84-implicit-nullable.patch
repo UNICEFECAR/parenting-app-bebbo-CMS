@@ -1,0 +1,15 @@
+diff --git a/src/MobileAppLinksPathProcessor.php b/src/MobileAppLinksPathProcessor.php
+index cd9a6e470ba3d5faf34033c59b85f9209654941a..6a506d0f552574f1a9ab14911f752b8b6e1583ec 100644
+--- a/src/MobileAppLinksPathProcessor.php
++++ b/src/MobileAppLinksPathProcessor.php
+@@ -29,8 +29,8 @@ class MobileAppLinksPathProcessor implements InboundPathProcessorInterface, Outb
+    * {@inheritdoc}
+    */
+   public function processOutbound($path, &$options = [],
+-                                  Request $request = NULL,
+-                                  BubbleableMetadata $bubbleable_metadata = NULL): string {
++                                  ?Request $request = NULL,
++                                  ?BubbleableMetadata $bubbleable_metadata = NULL): string {
+
+     if (strpos($path, '.well-known') > -1) {
+       $options['language'] = NULL;

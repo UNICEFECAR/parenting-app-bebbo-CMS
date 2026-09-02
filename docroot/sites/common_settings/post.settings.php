@@ -24,6 +24,12 @@ if ($ah_group && $ah_env) {
     require_once $acquia_inc;
   }
 
+  // MySQL 5.7 backport driver — must run after $databases is populated by the Acquia include.
+  $mysql57_settings = DRUPAL_ROOT . '/modules/contrib/mysql57/settings.inc';
+  if (file_exists($mysql57_settings)) {
+    require $mysql57_settings;
+  }
+
   // 2) Transaction isolation – SESSION level on all targets (default/replica/slave).
   if (!empty($databases['default']['default'])) {
     $databases['default']['default']['init_commands'] = [
@@ -63,6 +69,13 @@ $settings['config_sync_directory'] = '../config/sync';
 
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';
 $config['smtp.settings']['smtp_password'] = getenv('smtp_password') ?: '';
+
+// Cloudflare purge credentials for the API warmer. When unset, the warmer
+// skips the edge purge and only refreshes the origin caches.
+$settings['bebbo_warmer_cloudflare'] = [
+  'api_token' => getenv('CLOUDFLARE_WARMER_TOKEN') ?: '',
+  'zone_id' => getenv('CLOUDFLARE_ZONE_ID') ?: '',
+];
 
 // $config['tmgmt.translator.microsoft']['settings']['api_key'] = getenv('MS_TRANSLATE_KEY') ?: '';
 // $config['tmgmt.translator.google']['settings']['api_key'] = getenv('GOOGLE_TRANSLATE_KEY') ?: '';

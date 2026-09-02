@@ -3,12 +3,12 @@ _core:
 langcode: en
 uuid: 2a4b64b7-fa1c-4c7b-aa7d-7dc1d13fa42b
 name: 'Rerai Umntwana'
-mail: admin@reraiumtwana.app
+mail: reraiumntwana@gmail.com
 slogan: "UNICEF's parenting app"
 page:
   403: /user/login
   404: ''
-  front: /node/46
+  front: /homepage
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: en

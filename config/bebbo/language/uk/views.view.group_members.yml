@@ -1,26 +1,9 @@
 display:
   default:
-    display_title: Головне
     display_options:
-      exposed_form:
-        options:
-          submit_button: Застосувати
-          reset_button_label: Скинути
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
-      pager:
-        options:
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« Перша'
-            last: 'Остання »'
-          expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
       fields:
+        edit_user:
+          text: 'Edit member'
         name:
           label: User
           separator: ', '
@@ -32,17 +15,34 @@ display:
           separator: ', '
         created:
           separator: ', '
-        view_group_content:
+        view_group_relationship:
           text: 'Manage member'
-        edit_group_content:
+        edit_group_relationship:
           text: 'Assign roles'
-        edit_user:
-          text: 'Edit member'
         dropbutton:
           label: Операції
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« Перша'
+            last: 'Остання »'
+          expose:
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
+      exposed_form:
+        options:
+          submit_button: Застосувати
+          reset_button_label: Скинути
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
       arguments:
         gid:
           exception:
             title: Все
+    display_title: Головне
   page_1:
     display_title: Сторінка

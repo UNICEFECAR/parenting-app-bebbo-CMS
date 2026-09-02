@@ -1,0 +1,69 @@
+Fix: the contextual Edit toolbar tab is painted with the primary colour
+unconditionally, so it looks pressed even when inline edit mode is off and
+the user has never clicked it. The first selector of the Inline Edit toggle
+block carries no state; the .is-active selector that follows it is the one
+that reflects edit mode. The equivalent block in
+styles/layout/classic_toolbar.scss is correctly nested inside
+#toolbar-bar.toolbar-bar.js-settings-tray-edit-mode.
+
+Two further changes are needed for the resting state to actually look right.
+
+The unqualified selector was masking the resting icon colour: the "Overrides
+for default toolbar items" block gives the edit icon var(--gin-icon-color),
+which is dark and disappears against the dark toolbar bar. The resting state
+therefore gets the same rgba(255, 255, 255, .75) every other toolbar icon
+uses, while the mask sizing from that overrides block is left untouched.
+
+:focus becomes :focus-visible. A mouse click leaves the button focused, so
+with plain :focus the tab stayed fully highlighted after the user toggled
+edit mode back off, and only cleared once they clicked elsewhere. Clicking
+does not match :focus-visible, keyboard focus does, so the affordance is
+kept for keyboard users without the pressed look sticking after a click.
+
+The compiled dist/ counterpart is patched alongside the source, since the
+release ships pre-built CSS.
+
+--- a/styles/components/toolbar.scss
++++ b/styles/components/toolbar.scss
+@@ -87,9 +87,14 @@
+     }
+ 
+     // Inline Edit toggle
+-    .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item,
++    .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item {
++      &::before {
++        background: rgba(255, 255, 255, .75);
++      }
++    }
++
+     .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item.is-active,
+-    .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus {
++    .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus-visible {
+       color: var(--gin-bg-app);
+       background: var(--gin-color-primary);
+ 
+--- a/dist/css/components/toolbar.css
++++ b/dist/css/components/toolbar.css
+@@ -94,16 +94,18 @@
+   transform: rotate(90deg);
+ }
+ 
+-.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item, .toolbar .toolbar-bar .toolbar-tab > .toolbar-icon-edit.toolbar-item.responsive-preview-icon,
+ .toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item.is-active,
+-.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus {
++.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus-visible {
+   color: var(--gin-bg-app);
+   background: var(--gin-color-primary);
+ }
+ 
+-.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item::before, .toolbar .toolbar-bar .toolbar-tab > .toolbar-icon-edit.toolbar-item.responsive-preview-icon::before,
++.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item::before, .toolbar .toolbar-bar .toolbar-tab > .toolbar-icon-edit.toolbar-item.responsive-preview-icon::before {
++  background: rgba(255, 255, 255, .75);
++}
++
+ .toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item.is-active::before,
+-.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus::before {
++.toolbar .toolbar-bar .toolbar-tab > .toolbar-icon.toolbar-icon-edit.toolbar-item:focus-visible::before {
+   background: var(--gin-bg-app);
+ }
+ 

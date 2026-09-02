@@ -16,49 +16,6 @@ pb_custom_form.forcefull_update_check:
   options:
     _admin_route: TRUE
 
-pb_custom_form.admin_settings_form:
-  path: '/admin/config/parent-buddy/admin-parent-buddy'
-  defaults:
-    _form: '\Drupal\pb_custom_form\Form\SettingsForm'
-    _title: 'Adminster Parent Buddy'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-pb_custom_form.mobile_app_share_link_form:
-  path: '/admin/config/parent-buddy/mobile-javascript'
-  defaults:
-    _form: '\Drupal\pb_custom_form\Form\MobileAppShareLinkForm'
-    _title: 'Manage Mobile APP Javascript'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-pb_custom_form.pb_mobile:
-  path: '/share/{param1}/{param2}/{param3}'
-  defaults:
-    _controller:  '\Drupal\pb_custom_form\Controller\PbMobile::render'
-    param1: ''
-    param2: ''
-    param3: ''
-    _title_callback: '\Drupal\pb_custom_form\Controller\PbMobile::getDynamicTitle'
-  requirements:
-    _permission: 'manage mobile javascript'
-
-
-pb_custom_form.kosovo_pb_mobile:
-  path: '/foleja/share/{param1}/{param2}/{param3}'
-  defaults:
-    _controller:  '\Drupal\pb_custom_form\Controller\PbMobile::kosovorender'
-    param1: ''
-    param2: ''
-    param3: ''
-    _title: 'Bebbo'
-  requirements:
-    _permission: 'manage mobile javascript'
-
 
 pb_custom_form.ForceUpdateCheckForm:
   path: '/forcefull-update-check'
@@ -67,48 +24,3 @@ pb_custom_form.ForceUpdateCheckForm:
     _title: 'Force Update Settings'
   requirements:
     _permission: 'forcefull update check'
-
-pb_custom_form.apply_trans_related_articles_video:
-  # Open access required for internal content processing
-  path: '/admin/config/parent-buddy/apply-trans-related-articles-video'
-  defaults:
-    _form: '\Drupal\pb_custom_form\Form\ApplyTransRelatedArticlesVideo'
-    _title: 'Apply related articles and video articles in English content to all translations'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
-
-pb_custom_form.redirect_management:
-  path: '/admin/config/parent-buddy/redirect-management'
-  defaults:
-    _form: 'Drupal\pb_custom_form\Form\RedirectManagementForm'
-    _title: 'Redirect Management'
-  requirements:
-    _permission: 'manage redirect settings'
-  options:
-    _admin_route: TRUE
-
-pb_custom_form.csv_export:
-  path: '/admin/content/entity_share/pull/export/csv'
-  defaults:
-    _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::download'
-    _title: 'Entity Share Pull CSV Export'
-  requirements:
-    _permission: 'entity_share_client_pull_content'
-
-pb_custom_form.csv_export_batch:
-  path: '/admin/content/entity_share/pull/export/csv/batch'
-  defaults:
-    _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::downloadBatch'
-    _title: 'Entity Share Pull CSV Export (Batch)'
-  requirements:
-    _permission: 'entity_share_client_pull_content'
-
-pb_custom_form.csv_export_download:
-  path: '/admin/content/entity_share/pull/export/csv/download'
-  defaults:
-    _controller: '\Drupal\pb_custom_form\Controller\CsvExportController::downloadCompleted'
-    _title: 'Download CSV Export'
-  requirements:
-    _permission: 'entity_share_client_pull_content'

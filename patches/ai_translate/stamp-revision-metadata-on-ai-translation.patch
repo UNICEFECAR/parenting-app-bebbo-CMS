@@ -1,0 +1,88 @@
+diff --git a/src/EntityTranslationOrchestrator.php b/src/EntityTranslationOrchestrator.php
+index e742e4d..c7ccc3e 100644
+--- a/src/EntityTranslationOrchestrator.php
++++ b/src/EntityTranslationOrchestrator.php
+@@ -2,12 +2,16 @@
+ 
+ namespace Drupal\ai_translate;
+ 
++use Drupal\Component\Datetime\TimeInterface;
+ use Drupal\Core\Config\ConfigFactoryInterface;
+ use Drupal\Core\Entity\ContentEntityInterface;
++use Drupal\Core\Entity\EntityChangedInterface;
+ use Drupal\Core\Entity\EntityPublishedInterface;
++use Drupal\Core\Entity\RevisionLogInterface;
+ use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Language\LanguageManagerInterface;
+ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
++use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ 
+ /**
+@@ -30,6 +34,10 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+    *   The config factory.
+    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
+    *   The logger channel factory.
++   * @param \Drupal\Component\Datetime\TimeInterface $time
++   *   The time service.
++   * @param \Drupal\Core\Session\AccountInterface $currentUser
++   *   The current user.
+    */
+   public function __construct(
+     protected TextExtractorInterface $textExtractor,
+@@ -37,6 +45,8 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+     protected LanguageManagerInterface $languageManager,
+     protected ConfigFactoryInterface $configFactory,
+     protected LoggerChannelFactoryInterface $loggerFactory,
++    protected TimeInterface $time,
++    protected AccountInterface $currentUser,
+   ) {}
+ 
+   /**
+@@ -100,6 +110,7 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+     $translation = $entity->addTranslation($langTo, $entity->toArray());
+     $this->applyTranslationStatus($entity, $translation);
+     $this->textExtractor->insertTextMetadata($translation, $processedTranslations);
++    $this->stampTranslationRevision($translation, $langTo);
+ 
+     try {
+       $translation->save();
+@@ -153,6 +164,38 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+     return $this->saveTranslatedEntity($entity, $langTo, $processedTranslations, $failures);
+   }
+ 
++  /**
++   * Records who created a translation revision, when, and why.
++   *
++   * Core only sets the revision creation time, revision author, revision log
++   * message and changed time in entity forms, so a programmatic save copies
++   * those values from the source revision. Without this, an AI translation
++   * creates a revision that claims to have been made by the previous editor
++   * at the time of the previous edit, with no log entry - which also breaks
++   * any view sorted on the changed time.
++   *
++   * @param \Drupal\Core\Entity\ContentEntityInterface $translation
++   *   The unsaved translation.
++   * @param string $langcode
++   *   Language code of the translation.
++   */
++  protected function stampTranslationRevision(ContentEntityInterface $translation, string $langcode): void {
++    $request_time = $this->time->getRequestTime();
++
++    if ($translation instanceof RevisionLogInterface) {
++      $translation->setRevisionCreationTime($request_time);
++      $translation->setRevisionUserId($this->currentUser->id());
++      $language = $this->languageManager->getLanguage($langcode);
++      $translation->setRevisionLogMessage((string) $this->t('AI translated to @language.', [
++        '@language' => $language ? $language->getName() : $langcode,
++      ]));
++    }
++
++    if ($translation instanceof EntityChangedInterface) {
++      $translation->setChangedTime($request_time);
++    }
++  }
++
+   /**
+    * Applies configured publication/moderation behavior to a translation.
+    */

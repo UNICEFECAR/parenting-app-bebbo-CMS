@@ -1,21 +1,57 @@
+# Local DDEV Drush site aliases (group: ddev).
+# Each site is reachable by BOTH its short key and its site-directory name,
+# e.g. @ddev.bangla and @ddev.bangladesh resolve to the same site.
+# Keep the short keys — scripts/group_migration use bebbo/bangla/ec/pakistan/ws/tr/zw.
+
+# Default (Bebbo)
 bebbo:
   root: /var/www/html/docroot
   uri: http://bebbo.app.ddev.site
+default:
+  root: /var/www/html/docroot
+  uri: http://bebbo.app.ddev.site
+
+# Bangladesh (Babuni)
 bangla:
   root: /var/www/html/docroot
   uri: http://bangla.bebbo.app.ddev.site
+bangladesh:
+  root: /var/www/html/docroot
+  uri: http://bangla.bebbo.app.ddev.site
+
+# Ecuador (Wawamor)
 ec:
   root: /var/www/html/docroot
   uri: http://ec.bebbo.app.ddev.site
-pc:
+ecuador:
   root: /var/www/html/docroot
-  uri: http://pc.bebbo.app.ddev.site
+  uri: http://ec.bebbo.app.ddev.site
+
+# Pakistan
+pakistan:
+  root: /var/www/html/docroot
+  uri: http://pk.bebbo.app.ddev.site
+
+# Pacific Islands (Bebbo Pacific) — directory "somoa"
 ws:
   root: /var/www/html/docroot
   uri: http://ws.bebbo.app.ddev.site
+somoa:
+  root: /var/www/html/docroot
+  uri: http://ws.bebbo.app.ddev.site
+
+# Turkey (Merhaba Bebek)
 tr:
   root: /var/www/html/docroot
   uri: http://tr.bebbo.app.ddev.site
+turkey:
+  root: /var/www/html/docroot
+  uri: http://tr.bebbo.app.ddev.site
+
+# Zimbabwe (Rerai Umntwana)
 zw:
+  root: /var/www/html/docroot
+  uri: http://zw.bebbo.app.ddev.site
+zimbabwe:
   root: /var/www/html/docroot
   uri: http://zw.bebbo.app.ddev.site

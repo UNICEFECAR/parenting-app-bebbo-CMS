@@ -1,9 +1,141 @@
 uuid: fdd329c6-f2ce-4089-9018-363be8c31406
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.document
+    - node.type.activities
+    - node.type.article
+    - node.type.child_development
+    - node.type.child_growth
+    - node.type.course
+    - node.type.courses_module
+    - node.type.daily_homescreen_messages
+    - node.type.faq
+    - node.type.guide
+    - node.type.health_check_ups
+    - node.type.milestone
+    - node.type.page
+    - node.type.pregnancy_weekly_overview
+    - node.type.quiz
+    - node.type.quiz_questions
+    - node.type.survey
+    - node.type.vaccinations
+    - node.type.video_article
+    - taxonomy.vocabulary.activity_category
+    - taxonomy.vocabulary.category
+    - taxonomy.vocabulary.chatbot_category
+    - taxonomy.vocabulary.chatbot_child_age
+    - taxonomy.vocabulary.chatbot_subcategory
+    - taxonomy.vocabulary.child_age
+    - taxonomy.vocabulary.child_gender
+    - taxonomy.vocabulary.course_category
+    - taxonomy.vocabulary.daily_home_screen_message_catego
+    - taxonomy.vocabulary.growth_introductory
+    - taxonomy.vocabulary.growth_type
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.parent_gender
+    - taxonomy.vocabulary.relationship_to_parent
+    - taxonomy.vocabulary.standard_deviation
+    - taxonomy.vocabulary.standard_deviation_category
+    - taxonomy.vocabulary.strings
+    - taxonomy.vocabulary.subcategory
+    - taxonomy.vocabulary.target_audience
+    - taxonomy.vocabulary.type_of_support
+    - workflows.workflow.group_workflow
+  module:
+    - ai_translate
+    - content_moderation
+    - content_translation
+    - locale
+    - media
+    - node
+    - tmgmt
+    - toolbar_menu
 id: translator
 label: Translator
-weight: 3
+weight: -6
 is_admin: null
-permissions: {  }
+permissions:
+  - 'accept translation jobs'
+  - 'create activities content'
+  - 'create ai content translation'
+  - 'create article content'
+  - 'create content translations'
+  - 'create course content'
+  - 'create courses_module content'
+  - 'create daily_homescreen_messages content'
+  - 'create faq content'
+  - 'create guide content'
+  - 'create health_check_ups content'
+  - 'create media'
+  - 'create milestone content'
+  - 'create page content'
+  - 'create quiz content'
+  - 'create quiz_questions content'
+  - 'create survey content'
+  - 'create vaccinations content'
+  - 'create video_article content'
+  - 'translate activities node'
+  - 'translate activity_category taxonomy_term'
+  - 'translate article node'
+  - 'translate category taxonomy_term'
+  - 'translate chatbot_category taxonomy_term'
+  - 'translate chatbot_child_age taxonomy_term'
+  - 'translate chatbot_subcategory taxonomy_term'
+  - 'translate child_age taxonomy_term'
+  - 'translate child_development node'
+  - 'translate child_gender taxonomy_term'
+  - 'translate child_growth node'
+  - 'translate course node'
+  - 'translate course_category taxonomy_term'
+  - 'translate courses_module node'
+  - 'translate daily_home_screen_message_catego taxonomy_term'
+  - 'translate daily_homescreen_messages node'
+  - 'translate document media'
+  - 'translate faq node'
+  - 'translate growth_introductory taxonomy_term'
+  - 'translate growth_type taxonomy_term'
+  - 'translate guide node'
+  - 'translate health_check_ups node'
+  - 'translate interface'
+  - 'translate keywords taxonomy_term'
+  - 'translate milestone node'
+  - 'translate page node'
+  - 'translate parent_gender taxonomy_term'
+  - 'translate pregnancy_weekly_overview node'
+  - 'translate quiz node'
+  - 'translate quiz_questions node'
+  - 'translate relationship_to_parent taxonomy_term'
+  - 'translate standard_deviation taxonomy_term'
+  - 'translate standard_deviation_category taxonomy_term'
+  - 'translate strings taxonomy_term'
+  - 'translate subcategory taxonomy_term'
+  - 'translate survey node'
+  - 'translate target_audience taxonomy_term'
+  - 'translate type_of_support taxonomy_term'
+  - 'translate vaccinations node'
+  - 'translate video_article node'
+  - 'update content translations'
+  - 'use group_workflow transition review_after_translation_to_draft'
+  - 'use group_workflow transition review_after_translation_to_review_after_translation'
+  - 'use group_workflow transition review_after_translation_to_sme_review'
+  - 'view activities revisions'
+  - 'view article revisions'
+  - 'view child_development revisions'
+  - 'view child_growth revisions'
+  - 'view course revisions'
+  - 'view courses_module revisions'
+  - 'view daily_homescreen_messages revisions'
+  - 'view editorial_menu in toolbar'
+  - 'view faq revisions'
+  - 'view guide revisions'
+  - 'view health_check_ups revisions'
+  - 'view milestone revisions'
+  - 'view page revisions'
+  - 'view pregnancy_weekly_overview revisions'
+  - 'view quiz revisions'
+  - 'view quiz_questions revisions'
+  - 'view survey revisions'
+  - 'view vaccinations revisions'
+  - 'view video_article revisions'

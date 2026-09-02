@@ -1,0 +1,65 @@
+adding:
+  display:
+    default:
+      display_options:
+        filters:
+          vid:
+            expose:
+              reduce: false
+removing:
+  dependencies:
+    config:
+      - field.storage.taxonomy_term.field_sd4neg
+      - taxonomy.vocabulary.activity_category
+      - taxonomy.vocabulary.category
+      - taxonomy.vocabulary.chatbot_category
+      - taxonomy.vocabulary.chatbot_child_age
+      - taxonomy.vocabulary.chatbot_subcategory
+      - taxonomy.vocabulary.child_age
+      - taxonomy.vocabulary.child_gender
+      - taxonomy.vocabulary.daily_home_screen_message_catego
+      - taxonomy.vocabulary.growth_introductory
+      - taxonomy.vocabulary.growth_period
+      - taxonomy.vocabulary.growth_type
+      - taxonomy.vocabulary.keywords
+      - taxonomy.vocabulary.parent_gender
+      - taxonomy.vocabulary.relationship_to_parent
+      - taxonomy.vocabulary.standard_deviation_category
+      - taxonomy.vocabulary.subcategory
+      - taxonomy.vocabulary.type_of_article
+      - taxonomy.vocabulary.type_of_support
+  display:
+    default:
+      display_options:
+        fields:
+          field_sd4neg:
+            id: field_sd4neg
+            table: taxonomy_term__field_sd4neg
+            field: field_sd4neg
+            plugin_id: field
+        filters:
+          vid:
+            value:
+              growth_period: growth_period
+              category: category
+              chatbot_category: chatbot_category
+              chatbot_child_age: chatbot_child_age
+              chatbot_subcategory: chatbot_subcategory
+              child_age: child_age
+              child_gender: child_gender
+              daily_home_screen_message_catego: daily_home_screen_message_catego
+              activity_category: activity_category
+              growth_introductory: growth_introductory
+              growth_type: growth_type
+              keywords: keywords
+              parent_gender: parent_gender
+              relationship_to_parent: relationship_to_parent
+              standard_deviation_category: standard_deviation_category
+              subcategory: subcategory
+              type_of_article: type_of_article
+              type_of_support: type_of_support
+            expose:
+              reduce: true
+      cache_metadata:
+        tags:
+          - 'config:field.storage.taxonomy_term.field_sd4neg'

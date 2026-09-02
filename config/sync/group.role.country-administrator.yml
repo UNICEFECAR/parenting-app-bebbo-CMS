@@ -1,0 +1,15 @@
+uuid: 7dd05697-f40c-4338-95d4-0e1a0413dd7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.country
+    - user.role.administrator
+id: country-administrator
+label: 'Site Administrator'
+weight: -1
+admin: true
+scope: outsider
+global_role: administrator
+group_type: country
+permissions: {  }

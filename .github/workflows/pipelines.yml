@@ -27,7 +27,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
@@ -46,7 +46,7 @@ jobs:
         run: ./vendor/bin/phplint
 
   # -------------------------------
-  # 2. Deploy to Acquia Dev (feature/*)
+  # 2. Deploy to Acquia Dev (develop branch)
   # -------------------------------
   deploy-dev:
     needs: ci-checks
@@ -57,12 +57,9 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
-
-      - run: |
-          composer install --prefer-dist --no-progress --no-interaction
 
       - name: Install Acquia CLI
         run: |
@@ -92,9 +89,9 @@ jobs:
       - name: Ensure clean git state
         run: |
           git reset --hard
-          git clean -fd
+          git clean -fdx
 
-      - name: Deploy feature branch build to Dev
+      - name: Deploy develop build to Dev
         run: |
           echo "Deploying branch ${GITHUB_REF_NAME} to Dev"
           acli push:artifact @parentbuddy2.dev --no-interaction -vvv
@@ -111,14 +108,13 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           tools: composer
           extensions: mbstring, pdo, xml, gd, curl, zip, bcmath, intl
 
-      - run: |
-          composer validate --no-check-all --ansi
-          composer install --prefer-dist --no-progress --no-interaction
-
+      # No composer install here: `acli push:artifact` builds the artifact with
+      # its own `composer install --no-dev --optimize-autoloader`, and ci-checks
+      # already ran `composer validate` + install on this commit. Matches deploy-dev.
       - name: Install Acquia CLI
         run: |
           curl -fsSL https://github.com/acquia/cli/releases/latest/download/acli.phar -o acli
@@ -149,7 +145,7 @@ jobs:
           git reset --hard
           git clean -fd
 
-      - name: Deploy main build to Stage
+      - name: Deploy stage build to Stage
         run: |
-          echo "Deploying main to Stage"
+          echo "Deploying branch ${GITHUB_REF_NAME} to Stage"
           acli push:artifact @parentbuddy2.test --no-interaction

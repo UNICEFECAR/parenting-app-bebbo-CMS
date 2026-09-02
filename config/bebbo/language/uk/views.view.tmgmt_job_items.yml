@@ -25,7 +25,6 @@ display:
         word_count:
           separator: ', '
         tags_count:
-          label: Tags
           separator: ', '
         changed:
           label: Changed

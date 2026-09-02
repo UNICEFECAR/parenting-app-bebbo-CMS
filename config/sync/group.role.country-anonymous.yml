@@ -7,9 +7,9 @@ dependencies:
 id: country-anonymous
 label: Anonymous
 weight: -102
-internal: true
-audience: anonymous
 group_type: country
-permissions_ui: true
 permissions:
   - 'view group'
+admin: false
+scope: outsider
+global_role: anonymous

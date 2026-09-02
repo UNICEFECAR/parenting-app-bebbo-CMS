@@ -66,7 +66,7 @@ AddEncoding gzip svgz
   RewriteEngine on
 
   # 🔒 Block common WordPress-related and PHP attack URIs early
-  RewriteCond %{REQUEST_URI} "(wp-|wordpress/wp-admin|wp-admin|wp-includes|wp-content|xmlrpc\.php|wp-trackback\.php|wp-login\.php|wp-comments-post\.php|wp-cron\.php|wlwmanifest\.xml|setup-config\.php|info\.php|test\.php|moon\.php|shell\.php|updates\.php|sitemap\.xml)" [NC]
+  RewriteCond %{REQUEST_URI} "(/wp-|/wordpress/wp-admin|/wp-admin|/wp-includes|/wp-content|/xmlrpc\.php|/wp-trackback\.php|/wp-login\.php|/wp-comments-post\.php|/wp-cron\.php|/wlwmanifest\.xml|/setup-config\.php|/info\.php|/test\.php|/moon\.php|/shell\.php|/updates\.php|/sitemap\.xml)" [NC]
   RewriteRule .* - [F,L]
 
   # Redirect only homepage for wawamor.ec

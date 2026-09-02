@@ -1,0 +1,28 @@
+bebbo_api_security.settings_tab:
+  title: 'Settings'
+  route_name: bebbo_api_security.settings
+  base_route: bebbo_api_security.settings
+
+bebbo_api_security.devices_tab:
+  title: 'Devices'
+  route_name: view.bebbo_api_devices.page_1
+  base_route: bebbo_api_security.settings
+  weight: 1
+
+bebbo_api_security.tokens_tab:
+  title: 'Tokens'
+  route_name: view.bebbo_api_refresh_tokens.page_1
+  base_route: bebbo_api_security.settings
+  weight: 2
+
+bebbo_api_security.security_log_tab:
+  title: 'Security Log'
+  route_name: view.bebbo_api_security_log.page_1
+  base_route: bebbo_api_security.settings
+  weight: 3
+
+bebbo_api_security.challenges_tab:
+  title: 'Challenges'
+  route_name: view.bebbo_api_challenges.page_1
+  base_route: bebbo_api_security.settings
+  weight: 4

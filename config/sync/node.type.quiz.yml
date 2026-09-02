@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Quiz
 type: quiz
-description: null
+description: 'Create quizzes that appear throughout and at the end of courses.'
 help: null
 new_revision: true
 preview_mode: 1

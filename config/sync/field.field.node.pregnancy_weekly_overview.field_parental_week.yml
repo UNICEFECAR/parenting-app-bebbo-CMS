@@ -15,7 +15,7 @@ id: node.pregnancy_weekly_overview.field_parental_week
 field_name: field_parental_week
 entity_type: node
 bundle: pregnancy_weekly_overview
-label: 'Parental week'
+label: 'Pregnancy week'
 description: ''
 required: false
 translatable: true

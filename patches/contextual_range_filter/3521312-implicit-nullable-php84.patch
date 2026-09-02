@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/views/argument/DateRange.php b/src/Plugin/views/argument/DateRange.php
+index 1234567..abcdefg 100644
+--- a/src/Plugin/views/argument/DateRange.php
++++ b/src/Plugin/views/argument/DateRange.php
+@@ -22,7 +22,7 @@ class DateRange extends Formula {
+   /**
+    * Overrides Drupal\views\Plugin\views\argument\Formula::init().
+    */
+-  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
++  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
+     parent::init($view, $display, $options);
+
+     switch ($options['id']) {

@@ -546,6 +546,15 @@ if ($settings['hash_salt']) {
  */
 # $settings['file_private_path'] = '';
 
+// DDEV has no Acquia files-private mount, so private:// would be unavailable
+// and any Views data export configured to write there fails to save with
+// "invalid export filesystem scheme". Point it at the repo-level directory,
+// which sits outside the docroot. post.settings.php sets the real Acquia path
+// later in the load order, so this only ever applies locally.
+if (getenv('IS_DDEV_PROJECT') == 'true') {
+  $settings['file_private_path'] = '/var/www/html/private';
+}
+
 /**
  * Temporary file path:
  *

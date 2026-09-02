@@ -1,0 +1,4 @@
+adding:
+  pattern: 'd/m/Y - H:i'
+removing:
+  pattern: 'm/d/Y - H:i'

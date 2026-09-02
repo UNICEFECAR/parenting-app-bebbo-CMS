@@ -1,0 +1,16 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        status:
+          label: Status
+        created:
+          label: Created
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
+      filters:
+        status:
+          expose:
+            label: Status

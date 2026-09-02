@@ -1,0 +1,13 @@
+uuid: 0be6c107-9918-4239-836b-ba28246fea1e
+langcode: en
+status: true
+dependencies: {  }
+id: stage
+label: Stage
+url: 'https://stage.bebbo.app'
+auth:
+  pid: basic_auth
+  uuid: 4ff763de-f222-4b85-b30f-58af4469a473
+  data:
+    credential_provider: key
+    storage_key: entity_share_basic_auth

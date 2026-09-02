@@ -13,6 +13,7 @@ folder: ../config/turkey
 module: {  }
 theme: {  }
 complete_list:
+  - block.block.gin_logo
   - core.base_field_override.taxonomy_term.type_of_article.changed
   - system.site
   - core.base_field_override.taxonomy_term.type_of_article.description
@@ -21,11 +22,8 @@ complete_list:
   - core.base_field_override.taxonomy_term.type_of_article.path
   - core.base_field_override.taxonomy_term.type_of_article.status
   - core.base_field_override.user.user.path
-  - entity_share_client.import_config.config_stage
-  - entity_share_server.channel.content_article_pregnancy_tr_
   - field.field.taxonomy_term.subcategory.field_child_s_age
   - field.storage.taxonomy_term.field_child_s_age
-  - google_analytics.settings
   - language.entity.tr
   - language.negotiation
   - language/tr/block.block.claro_content
@@ -89,8 +87,6 @@ complete_list:
   - language/tr/node.type.article
   - language/tr/node.type.page
   - language/tr/pathauto.pattern.group_content
-  - language/tr/search.page.node_search
-  - language/tr/search.page.user_search
   - language/tr/shortcut.set.default
   - language/tr/system.action.media_delete_action
   - language/tr/system.action.media_publish_action
@@ -151,15 +147,14 @@ complete_list:
   - mobile_app_links.android_packages
   - mobile_app_links.ios
   - 'mobile_app_links.ios copy'
-  - pb_custom_form.landing_pages
-  - pb_custom_form.language_redirects
-  - pb_custom_form.mobile_app_share_link_form
-  - smtp.settings
+  - bebbo_custom_general.landing_pages
+  - bebbo_custom_general.language_redirects
+  - bebbo_custom_general.mobile_app_share_link_form
   - core.entity_form_display.taxonomy_term.subcategory.default
   - core.entity_view_display.taxonomy_term.subcategory.default
   - workflows.workflow.group_workflow
 partial_list:
-  - block.block.claro_help_search
+  - ai_translate.settings
   - block.block.languagedropdownswitcher
   - core.entity_form_display.media.image.default
   - core.entity_form_display.media.image.media_library
@@ -173,7 +168,6 @@ partial_list:
   - core.entity_view_display.user.user.default
   - core.menu.static_menu_link_overrides
   - editor.editor.admin_full_html
-  - entity_share_server.channel.content_health_check_ups
   - feeds.feed_type.taxonomy_age_period_language
   - feeds.feed_type.taxonomy_categories_serbia_serbi
   - feeds.feed_type.taxonomy_charbot_child_age_langu
@@ -244,9 +238,6 @@ partial_list:
   - taxonomy.vocabulary.type_of_article
   - tmgmt.settings
   - tmgmt_memsource.settings
-  - user.role.authenticated
-  - user.role.global_admin
-  - user.role.reviewer
   - views.view.archive
   - views.view.articles
   - views.view.block_content
@@ -280,3 +271,9 @@ partial_list:
   - views.view.user_admin_people
   - views.view.users_list
   - views.view.bebbo_v2_apis
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft
+  - tmgmt.translator.open_ai

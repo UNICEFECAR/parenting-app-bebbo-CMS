@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_cron().
@@ -63,7 +64,10 @@ function pb_content_analytics_cron(): void {
       '@ud' => $stats['skipped_up_to_date'],
     ]);
   }
-  catch (\RuntimeException $e) {
+  // Catch every Throwable so a failed analytics sync only fails itself and
+  // never aborts the rest of the cron run. Core's cron handler only catches
+  // \Exception, so an \Error escaping here would stop all remaining cron.
+  catch (\Throwable $e) {
     $sync_service->logSyncResult(
       ['processed' => 0, 'updated' => 0, 'skipped' => 0],
       'cron',
@@ -84,8 +88,23 @@ function pb_content_analytics_cron(): void {
 function pb_content_analytics_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
   if ($form_id === 'views_exposed_form') {
     $storage = $form_state->getStorage();
-    if (!empty($storage['view']) && $storage['view']->id() === 'content_analytics') {
-      $form['#attached']['library'][] = 'pb_content_analytics/csv-export-relocate';
+    if (!empty($storage['view'])) {
+      $views_with_export = [
+        'content_analytics',
+        'country_reports',
+        'content_export_csv',
+        'child_growth_reports',
+        'keyword_term_count',
+        'global_reports',
+        'global_content_listing',
+        'taxonomy_export',
+        'taxonomy_export_standard_deviation',
+        'tmgmt_translation_all_job_items',
+        'users_reports',
+      ];
+      if (in_array($storage['view']->id(), $views_with_export)) {
+        $form['#attached']['library'][] = 'pb_content_analytics/csv-export-relocate';
+      }
     }
     return;
   }
@@ -105,6 +124,44 @@ function pb_content_analytics_form_alter(&$form, FormStateInterface $form_state,
   foreach ($analytics_fields as $field_name) {
     if (isset($form[$field_name])) {
       $form[$field_name]['#disabled'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function pb_content_analytics_views_pre_render(ViewExecutable $view): void {
+  $views_with_export = [
+    'content_analytics',
+    'country_reports',
+    'content_export_csv',
+    'child_growth_reports',
+    'keyword_term_count',
+    'global_reports',
+    'global_content_listing',
+    'taxonomy_export',
+    'taxonomy_export_standard_deviation',
+    'tmgmt_translation_all_job_items',
+    'users_reports',
+  ];
+  if (in_array($view->id(), $views_with_export)) {
+    $view->element['#attached']['library'][] = 'pb_content_analytics/csv-export-relocate';
+  }
+
+  if ($view->id() === 'country_reports' && $view->current_display === 'data_export_1') {
+    $input = $view->getExposedInput();
+    if (empty($input['include_body'])) {
+      $body_fields = [
+        'type_1',
+        'field_body_rendered',
+        'field_body_rendered_1',
+        'body',
+        'field_milestone_instructions',
+      ];
+      foreach ($body_fields as $field_id) {
+        unset($view->field[$field_id]);
+      }
     }
   }
 }

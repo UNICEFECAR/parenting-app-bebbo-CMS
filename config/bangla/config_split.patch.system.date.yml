@@ -1,0 +1,10 @@
+adding:
+  country:
+    default: BD
+  timezone:
+    default: Asia/Dhaka
+removing:
+  country:
+    default: CH
+  timezone:
+    default: Europe/Zurich

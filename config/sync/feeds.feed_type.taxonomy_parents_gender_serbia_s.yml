@@ -12,6 +12,7 @@ id: taxonomy_parents_gender_serbia_s
 description: 'Parents Gender - Language'
 help: ''
 import_period: -1
+import_period_per_feed: false
 fetcher: upload
 fetcher_configuration:
   allowed_extensions: 'txt csv tsv xml opml'

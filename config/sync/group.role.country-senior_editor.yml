@@ -7,10 +7,7 @@ dependencies:
 id: country-senior_editor
 label: 'Senior Editor'
 weight: 104
-internal: false
-audience: member
 group_type: country
-permissions_ui: true
 permissions:
   - 'access group_node overview'
   - 'create group_node:activities content'
@@ -88,3 +85,5 @@ permissions:
   - 'view unpublished group_node:survey entity'
   - 'view unpublished group_node:vaccinations entity'
   - 'view unpublished group_node:video_article entity'
+admin: false
+scope: individual

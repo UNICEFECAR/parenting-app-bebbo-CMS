@@ -1,0 +1,20 @@
+--- a/src/Plugin/views/filter/JobType.php
++++ b/src/Plugin/views/filter/JobType.php
+@@ -72,4 +72,17 @@
+     return parent::access($account);
+   }
+
++  /**
++   * {@inheritdoc}
++   */
++  public function query() {
++    // When using grouped filters, $this->value is an array (e.g.
++    // ['value' => 'normal']) instead of a plain string. Unwrap it before
++    // the parent StringFilter methods call escapeLike($this->value).
++    if (is_array($this->value) && isset($this->value['value'])) {
++      $this->value = $this->value['value'];
++    }
++    parent::query();
++  }
++
+ }

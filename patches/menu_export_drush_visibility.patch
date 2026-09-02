@@ -1,0 +1,12 @@
+diff --git a/src/Form/MenuExportForm.php b/src/Form/MenuExportForm.php
+--- a/src/Form/MenuExportForm.php
++++ b/src/Form/MenuExportForm.php
+@@ -68,7 +68,7 @@
+     parent::submitForm($form, $form_state);
+   }
+
+-	protected function exportMenus(){
++	public function exportMenus(){
+ 	  $menus = $this->config('menu_export.settings')
+     	->get('menus');
+ 		if(empty($menus)){

@@ -5,11 +5,17 @@ module:
   acquia_purge: 0
   actions_permissions: 0
   admin_toolbar: 0
-  admin_toolbar_search: 0
   admin_toolbar_tools: 0
+  ai: 0
+  ai_provider_openai: 0
+  ai_tmgmt: 0
+  ai_translate: 0
   allowed_languages: 0
+  autocomplete_id: 0
   automated_cron: 0
   basic_auth: 0
+  bebbo_api_security: 0
+  bebbo_custom_general: 0
   bebbo_serializer: 0
   better_exposed_filters: 0
   big_pipe: 0
@@ -27,11 +33,12 @@ module:
   contextual: 0
   csv_serialization: 0
   custom_article: 0
-  custom_serialization: 0
   date_popup: 0
   datetime: 0
+  dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  email_tfa: 0
   entity: 0
   entity_reference_revisions: 0
   entity_reference_validators: 0
@@ -49,8 +56,10 @@ module:
   file_sanitizer: 0
   filelog: 0
   filter: 0
+  flexible_permissions: 0
+  fpa: 0
+  gin_toolbar: 0
   gnode: 0
-  google_analytics: 0
   group: 0
   group_country_field: 0
   help: 0
@@ -59,8 +68,10 @@ module:
   imageapi_optimize_binaries: 0
   imagemagick: 0
   inline_entity_form: 0
+  js_cookie: 0
   jsonapi: 0
   jsonapi_extras: 0
+  key: 0
   lang_dropdown: 0
   language: 0
   language_custom_field: 0
@@ -71,6 +82,7 @@ module:
   layout_discovery: 0
   link: 0
   locale: 0
+  mailer_transport: 0
   media: 0
   media_library: 0
   memcache: 0
@@ -87,6 +99,7 @@ module:
   migrate_upgrade: 0
   mobile_app_links: 0
   mysql: 0
+  mysql57: 0
   node: 0
   node_title_length: 0
   options: 0
@@ -97,8 +110,6 @@ module:
   pb_custom_field: 0
   pb_custom_form: 0
   pb_custom_migrate: 0
-  pb_custom_rest_api: 0
-  pb_custom_standard_deviation: 0
   pb_strings: 0
   phpass: 0
   purge: 0
@@ -111,14 +122,14 @@ module:
   redirect: 0
   rest: 0
   restui: 0
-  search: 0
   seckit: 0
   serialization: 0
   shortcut: 0
-  smtp: 0
   sophron: 0
   structure_sync: 0
   svg_image: 0
+  symfony_mailer: 0
+  symfony_mailer_office365: 0
   syslog: 0
   system: 0
   tamper: 0
@@ -141,8 +152,9 @@ module:
   toolbar: 0
   toolbar_menu: 0
   toolbar_menu_clean: 0
+  ultimate_cron: 0
+  update: 0
   user: 0
-  variationcache: 0
   video_embed_field: 0
   video_embed_media: 0
   view_custom_table: 0
@@ -159,4 +171,5 @@ module:
   standard: 1000
 theme:
   claro: 0
+  gin: 0
 profile: standard

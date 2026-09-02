@@ -14,6 +14,11 @@ services:
     tags:
       - { name: event_subscriber }
 
+  bebbo_serializer.api_vary_response_subscriber:
+    class: Drupal\bebbo_serializer\EventSubscriber\ApiVaryResponseSubscriber
+    tags:
+      - { name: event_subscriber }
+
   bebbo_serializer.body_image_processor:
     class: Drupal\bebbo_serializer\Service\BodyImageProcessor
     arguments:

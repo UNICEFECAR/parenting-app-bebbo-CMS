@@ -9,6 +9,7 @@ display:
         label:
           label: Label
         source_language_1:
+          label: From
           separator: ', '
         target_language:
           label: To

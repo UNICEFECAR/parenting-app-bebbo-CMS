@@ -1,0 +1,9 @@
+services:
+  pb_custom_field.admin_route_subscriber:
+    class: Drupal\pb_custom_field\Routing\AdminRouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  pb_custom_field.group_create_form_route_subscriber:
+    class: Drupal\pb_custom_field\Routing\GroupCreateFormRouteSubscriber
+    tags:
+      - { name: event_subscriber }

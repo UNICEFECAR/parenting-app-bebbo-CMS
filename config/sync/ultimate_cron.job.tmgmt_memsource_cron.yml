@@ -1,0 +1,17 @@
+uuid: c632d8bb-a1b3-4789-a157-df4685d81d25
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_memsource
+title: 'Default cron handler'
+id: tmgmt_memsource_cron
+weight: 0
+module: tmgmt_memsource
+callback: 'tmgmt_memsource#cron'
+scheduler:
+  id: simple
+launcher:
+  id: serial
+logger:
+  id: database

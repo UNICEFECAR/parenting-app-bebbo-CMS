@@ -1,0 +1,38 @@
+adding:
+  display:
+    articles_rest_export:
+      display_options:
+        filters:
+          field_child_age_target_id:
+            value:
+              - 20
+              - 21
+              - 22
+              - 23
+              - 24
+              - 25
+              - 26
+              - 27
+              - 28
+              - 29
+              - 30
+              - 31
+removing:
+  display:
+    articles_rest_export:
+      display_options:
+        filters:
+          field_child_age_target_id:
+            value:
+              - 43
+              - 44
+              - 45
+              - 46
+              - 47
+              - 48
+              - 49
+              - 50
+              - 51
+              - 52
+              - 57
+              - 58

@@ -37,6 +37,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -64,6 +65,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -89,6 +91,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -114,6 +117,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -140,6 +144,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -165,6 +170,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -190,6 +196,7 @@ display:
           label: Мітка
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -200,5 +207,3 @@ display:
         status:
           expose:
             label: Стан
-      tab_options:
-        title: Translate

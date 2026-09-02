@@ -1,0 +1,192 @@
+diff --git a/filelog.info.yml b/filelog.info.yml
+index ca9dfcd..950070c 100644
+--- a/filelog.info.yml
++++ b/filelog.info.yml
+@@ -1,6 +1,6 @@
+ name: File Log
+ type: module
+ description: Logs system events to a file.
+-core_version_requirement: ^9 || ^10
++core_version_requirement: ^10.1 || ^11
+ package: Logging
+ configure: system.logging_settings
+diff --git a/src/Logger/FileLog.php b/src/Logger/FileLog.php
+index fba78ce..cccfa2e 100644
+--- a/src/Logger/FileLog.php
++++ b/src/Logger/FileLog.php
+@@ -181,7 +181,7 @@ class FileLog implements LoggerInterface {
+     catch (FileLogException $error) {
+       // Log the exception, unless we were already logging a filelog error.
+       if ($context['channel'] !== 'filelog') {
+-        watchdog_exception('filelog', $error);
++        \Drupal\Component\Utility\DeprecationHelper::backwardsCompatibleCall(\Drupal::VERSION, '10.1.0', fn() => \Drupal\Core\Utility\Error::logException(\Drupal::logger('filelog'), $error), fn() => watchdog_exception('filelog', $error));
+       }
+       // Write the message directly to STDERR.
+       fwrite($this->stderr(), $entry . "\n");
+diff --git a/tests/src/Functional/FileLogSettingsTest.php b/tests/src/Functional/FileLogSettingsTest.php
+index e062b8e..9583da3 100644
+--- a/tests/src/Functional/FileLogSettingsTest.php
++++ b/tests/src/Functional/FileLogSettingsTest.php
+@@ -105,7 +105,7 @@ class FileLogSettingsTest extends BrowserTestBase {
+    * @return array
+    *   An array of test cases.
+    */
+-  public function providerTestSettingsForm(): array {
++  public static function providerTestSettingsForm(): array {
+     $default_settings = [
+       'enabled'  => TRUE,
+       'location' => 'public://logs',
+diff --git a/tests/src/Unit/FileLogRotationTest.php b/tests/src/Unit/FileLogRotationTest.php
+index f43ecda..a51fb05 100644
+--- a/tests/src/Unit/FileLogRotationTest.php
++++ b/tests/src/Unit/FileLogRotationTest.php
+@@ -56,26 +56,18 @@ class FileLogRotationTest extends FileLogTestBase {
+     // Force UTC time to avoid platform-specific effects.
+     date_default_timezone_set('UTC');
+ 
+-    $this->fileManager = $this
+-      ->getMockBuilder(LogFileManager::class)
+-      ->disableOriginalConstructor()
+-      ->getMock();
++    $this->fileManager = $this->createMock(LogFileManager::class);
+     $this->fileManager
+       ->method('getFileName')
+       ->willReturn('vfs://filelog/' . LogFileManager::FILENAME);
+ 
+-    $this->token = $this
+-      ->getMockBuilder(Token::class)
+-      ->disableOriginalConstructor()
+-      ->getMock();
++    $this->token = $this->createMock(Token::class);
+     $this->token
+       ->method('replace')
+       ->willReturnCallback([static::class, 'tokenReplace']);
+     \Drupal::getContainer()->set('token', $this->token);
+ 
+-    $this->time = $this
+-      ->getMockBuilder(TimeInterface::class)
+-      ->getMock();
++    $this->time = $this->createMock(TimeInterface::class);
+     $this->time
+       ->method('getRequestTime')
+       ->willReturn(86401);
+@@ -171,7 +163,7 @@ class FileLogRotationTest extends FileLogTestBase {
+    * @return array
+    *   All datasets for ::testRotation()
+    */
+-  public function provideRotationConfig(): array {
++  public static function provideRotationConfig(): array {
+     $config = [
+       'schedule'    => 'daily',
+       'delete'      => FALSE,
+diff --git a/tests/src/Unit/FileLogTest.php b/tests/src/Unit/FileLogTest.php
+index a1acb95..a20cd0d 100644
+--- a/tests/src/Unit/FileLogTest.php
++++ b/tests/src/Unit/FileLogTest.php
+@@ -49,9 +49,7 @@ class FileLogTest extends FileLogTestBase {
+   protected function setUp(): void {
+     parent::setUp();
+ 
+-    $this->token = $this->getMockBuilder(Token::class)
+-      ->disableOriginalConstructor()
+-      ->getMock();
++    $this->token = $this->createMock(Token::class);
+ 
+     $this->token->method('replace')
+       ->willReturnCallback([static::class, 'tokenReplace']);
+@@ -147,7 +145,7 @@ class FileLogTest extends FileLogTestBase {
+    * @return array
+    *   All datasets for ::testFileLog().
+    */
+-  public function providerFileLog(): array {
++  public static function providerFileLog(): array {
+     $config = [
+       'enabled'       => TRUE,
+       'location'      => 'vfs://filelog',
+diff --git a/tests/src/Unit/FileLogTokenTest.php b/tests/src/Unit/FileLogTokenTest.php
+index f17b344..ee917d2 100644
+--- a/tests/src/Unit/FileLogTokenTest.php
++++ b/tests/src/Unit/FileLogTokenTest.php
+@@ -67,9 +67,7 @@ class FileLogTokenTest extends UnitTestCase {
+ 
+     $this->logMessageParser = new LogMessageParser();
+ 
+-    $this->token = $this->getMockBuilder(Token::class)
+-      ->disableOriginalConstructor()
+-      ->getMock();
++    $this->token = $this->createMock(Token::class);
+ 
+     $this->dateFormatter = $this->createMock(DateFormatterInterface::class);
+     $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+@@ -149,9 +147,7 @@ class FileLogTokenTest extends UnitTestCase {
+       $tokens[$name] = 'log:' . $name;
+     }
+ 
+-    $user = $this->getMockBuilder(User::class)
+-      ->disableOriginalConstructor()
+-      ->getMock();
++    $user = $this->createMock(User::class);
+ 
+     $this->userStorage->expects(static::once())
+       ->method('load')
+@@ -170,30 +166,29 @@ class FileLogTokenTest extends UnitTestCase {
+ 
+     /** @var \Drupal\Core\Render\BubbleableMetadata $metadata */
+     $metadata = $this->createMock(BubbleableMetadata::class);
++    // Mock the token service calls.
++    $matcher = static::exactly(2);
+ 
+     // Mock the token service calls.
+-    $this->token->expects(static::exactly(2))
+-      ->method('generate')
+-      ->withConsecutive(
+-        [
+-          'user',
+-          ['token' => 'log:user:token'],
+-          ['user' => $user],
+-          $options,
+-          $metadata,
+-        ],
+-        [
+-          'date',
+-          ['format' => 'log:created:format'],
+-          ['date' => $context['timestamp']],
+-          $options,
+-          $metadata,
+-        ]
+-      )
+-      ->willReturnOnConsecutiveCalls(
+-        ['log:user:token' => 'user:token:' . $context['uid']],
+-        ['log:created:format' => 'date:format:' . $context['timestamp']]
+-      );
++    $this->token->expects($matcher)
++      ->method('generate')->willReturnCallback(function (...$parameters) use ($matcher, $user, $options, $metadata, $context) {
++        if ($matcher->getInvocationCount() === 1) {
++            $this->assertSame('user', $parameters[0]);
++            $this->assertSame(['token' => 'log:user:token'], $parameters[1]);
++            $this->assertSame(['user' => $user], $parameters[2]);
++            $this->assertSame($options, $parameters[3]);
++            $this->assertSame($metadata, $parameters[4]);
++            return ['log:user:token' => 'user:token:' . $context['uid']];
++        }
++        if ($matcher->getInvocationCount() === 2) {
++            $this->assertSame('date', $parameters[0]);
++            $this->assertSame(['format' => 'log:created:format'], $parameters[1]);
++            $this->assertSame(['date' => $context['timestamp']], $parameters[2]);
++            $this->assertSame($options, $parameters[3]);
++            $this->assertSame($metadata, $parameters[4]);
++            return ['log:created:format' => 'date:format:' . $context['timestamp']];
++        }
++    });
+ 
+     $values = filelog_tokens(
+       'log',
+@@ -218,7 +213,7 @@ class FileLogTokenTest extends UnitTestCase {
+    * @return array
+    *   The datasets for ::testTokens().
+    */
+-  public function providerMessages(): array {
++  public static function providerMessages(): array {
+     return [
+       [
+         'level'   => RfcLogLevel::EMERGENCY,

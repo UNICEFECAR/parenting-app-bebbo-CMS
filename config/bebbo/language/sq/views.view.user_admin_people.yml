@@ -24,9 +24,6 @@ display:
             group_items:
               1:
                 title: Active
-        permission:
-          expose:
-            label: Permission
   page_1:
     display_title: Faqe
     display_options:

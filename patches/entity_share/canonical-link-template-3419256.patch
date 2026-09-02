@@ -1,0 +1,36 @@
+diff --git a/modules/entity_share_client/src/Entity/ImportConfig.php b/modules/entity_share_client/src/Entity/ImportConfig.php
+index f69dde19182b3b0f05d2e99ee24236fd44cdfb4c..4c20c82291bb1c0227e250d3762441746163f4d7 100644
+--- a/modules/entity_share_client/src/Entity/ImportConfig.php
++++ b/modules/entity_share_client/src/Entity/ImportConfig.php
+@@ -38,7 +38,6 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
+  *     "import_processor_settings",
+  *   },
+  *   links = {
+- *     "canonical" = "/admin/config/services/entity_share/import_config/{import_config}",
+  *     "add-form" = "/admin/config/services/entity_share/import_config/add",
+  *     "edit-form" = "/admin/config/services/entity_share/import_config/{import_config}/edit",
+  *     "delete-form" = "/admin/config/services/entity_share/import_config/{import_config}/delete",
+diff --git a/modules/entity_share_client/src/Entity/Remote.php b/modules/entity_share_client/src/Entity/Remote.php
+index 3ca80801d4bfa167c3c3b2da20454d019abdcdb3..059480693fcaab2f80844de44792fd1b133f4804 100644
+--- a/modules/entity_share_client/src/Entity/Remote.php
++++ b/modules/entity_share_client/src/Entity/Remote.php
+@@ -39,7 +39,6 @@ use Drupal\entity_share_client\ClientAuthorization\ClientAuthorizationInterface;
+  *     "auth",
+  *   },
+  *   links = {
+- *     "canonical" = "/admin/config/services/entity_share/remote/{remote}",
+  *     "add-form" = "/admin/config/services/entity_share/remote/add",
+  *     "edit-form" = "/admin/config/services/entity_share/remote/{remote}/edit",
+  *     "delete-form" = "/admin/config/services/entity_share/remote/{remote}/delete",
+diff --git a/modules/entity_share_server/src/Entity/Channel.php b/modules/entity_share_server/src/Entity/Channel.php
+index 9630b0442226b6de5ef781edeceff3e3e7f536c3..1dfb057cbdcb37a50dfe62062b7f1910e64758ef 100644
+--- a/modules/entity_share_server/src/Entity/Channel.php
++++ b/modules/entity_share_server/src/Entity/Channel.php
+@@ -58,7 +58,6 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
+  *     "authorized_users",
+  *   },
+  *   links = {
+- *     "canonical" = "/admin/config/services/entity_share/channel/{channel}",
+  *     "add-form" = "/admin/config/services/entity_share/channel/add",
+  *     "edit-form" = "/admin/config/services/entity_share/channel/{channel}/edit",
+  *     "delete-form" = "/admin/config/services/entity_share/channel/{channel}/delete",

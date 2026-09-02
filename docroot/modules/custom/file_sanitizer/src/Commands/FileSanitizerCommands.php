@@ -85,7 +85,7 @@ class FileSanitizerCommands extends DrushCommands {
     $infected = fopen($this->fileSystem->realpath($infected_csv), 'w');
     $validation = fopen($this->fileSystem->realpath($validation_csv), 'w');
 
-    fputcsv($inventory, [
+    $this->putCsvRow($inventory, [
       'fid',
       'filename',
       'sanitized_filename',
@@ -93,7 +93,7 @@ class FileSanitizerCommands extends DrushCommands {
       'status',
     ]);
 
-    fputcsv($infected, [
+    $this->putCsvRow($infected, [
       'fid',
       'original_filename',
       'sanitized_filename',
@@ -102,7 +102,7 @@ class FileSanitizerCommands extends DrushCommands {
       'action',
     ]);
 
-    fputcsv($validation, [
+    $this->putCsvRow($validation, [
       'fid',
       'filename',
       'uri',
@@ -144,7 +144,7 @@ class FileSanitizerCommands extends DrushCommands {
     foreach ($query->execute() as $record) {
       $sanitized = $this->sanitizer->sanitize($record->filename);
 
-      fputcsv($inventory, [
+      $this->putCsvRow($inventory, [
         $record->fid,
         $record->filename,
         $sanitized,
@@ -160,7 +160,7 @@ class FileSanitizerCommands extends DrushCommands {
       $old_uri = $record->uri;
       $new_uri = dirname($old_uri) . '/' . $sanitized;
 
-      fputcsv($infected, [
+      $this->putCsvRow($infected, [
         $record->fid,
         $record->filename,
         $sanitized,
@@ -207,7 +207,7 @@ class FileSanitizerCommands extends DrushCommands {
   protected function renameFileSafely(int $fid, string $new_filename, $validation_log): bool {
     $file = $this->entityTypeManager->getStorage('file')->load($fid);
     if (!$file) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         '',
         '',
@@ -228,7 +228,7 @@ class FileSanitizerCommands extends DrushCommands {
     // ✅ PRE-FLIGHT CHECK 1: Source file exists on disk
     $source_realpath = $this->fileSystem->realpath($old_uri);
     if (!$source_realpath || !file_exists($source_realpath)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -242,7 +242,7 @@ class FileSanitizerCommands extends DrushCommands {
     // ✅ PRE-FLIGHT CHECK 2: Destination doesn't already exist
     $dest_realpath = $this->fileSystem->realpath($new_uri);
     if ($dest_realpath && file_exists($dest_realpath)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -256,7 +256,7 @@ class FileSanitizerCommands extends DrushCommands {
     // ✅ PRE-FLIGHT CHECK 3: Directory is writable
     $directory = dirname($source_realpath);
     if (!is_writable($directory)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -283,7 +283,7 @@ class FileSanitizerCommands extends DrushCommands {
       return TRUE;
     }
     catch (\Throwable $e) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -323,7 +323,7 @@ class FileSanitizerCommands extends DrushCommands {
     $mismatch = fopen($this->fileSystem->realpath($mismatch_csv), 'w');
     $validation = fopen($this->fileSystem->realpath($validation_csv), 'w');
 
-    fputcsv($mismatch, [
+    $this->putCsvRow($mismatch, [
       'fid',
       'filename',
       'current_extension',
@@ -335,7 +335,7 @@ class FileSanitizerCommands extends DrushCommands {
       'action',
     ]);
 
-    fputcsv($validation, [
+    $this->putCsvRow($validation, [
       'fid',
       'filename',
       'uri',
@@ -399,7 +399,7 @@ class FileSanitizerCommands extends DrushCommands {
       // Get real path of file.
       $realpath = $this->fileSystem->realpath($record->uri);
       if (!$realpath || !file_exists($realpath)) {
-        fputcsv($validation, [
+        $this->putCsvRow($validation, [
           $record->fid,
           $record->filename,
           $record->uri,
@@ -438,7 +438,7 @@ class FileSanitizerCommands extends DrushCommands {
         $new_filename = $baseName . '.' . $correctExtension;
         $new_uri = dirname($old_uri) . '/' . $new_filename;
 
-        fputcsv($mismatch, [
+        $this->putCsvRow($mismatch, [
           $record->fid,
           $record->filename,
           $currentExtension,
@@ -506,7 +506,7 @@ class FileSanitizerCommands extends DrushCommands {
   ): bool {
     $file = $this->entityTypeManager->getStorage('file')->load($fid);
     if (!$file) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         '',
         '',
@@ -527,7 +527,7 @@ class FileSanitizerCommands extends DrushCommands {
     // PRE-FLIGHT CHECK 1: Source file exists on disk.
     $source_realpath = $this->fileSystem->realpath($old_uri);
     if (!$source_realpath || !file_exists($source_realpath)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -541,7 +541,7 @@ class FileSanitizerCommands extends DrushCommands {
     // PRE-FLIGHT CHECK 2: Destination doesn't already exist.
     $dest_realpath = $this->fileSystem->realpath($new_uri);
     if ($dest_realpath && file_exists($dest_realpath)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -555,7 +555,7 @@ class FileSanitizerCommands extends DrushCommands {
     // PRE-FLIGHT CHECK 3: Directory is writable.
     $directory = dirname($source_realpath);
     if (!is_writable($directory)) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -586,7 +586,7 @@ class FileSanitizerCommands extends DrushCommands {
       return TRUE;
     }
     catch (\Throwable $e) {
-      fputcsv($validation_log, [
+      $this->putCsvRow($validation_log, [
         $fid,
         $file->getFilename(),
         $old_uri,
@@ -645,7 +645,7 @@ class FileSanitizerCommands extends DrushCommands {
     $report = fopen($this->fileSystem->realpath($report_csv), 'w');
     $validation = fopen($this->fileSystem->realpath($validation_csv), 'w');
 
-    fputcsv($report, [
+    $this->putCsvRow($report, [
       'nid',
       'fid',
       'original_filename',
@@ -655,7 +655,7 @@ class FileSanitizerCommands extends DrushCommands {
       'action',
     ]);
 
-    fputcsv($validation, [
+    $this->putCsvRow($validation, [
       'fid',
       'filename',
       'uri',
@@ -754,7 +754,7 @@ class FileSanitizerCommands extends DrushCommands {
         $old_uri = $file->getFileUri();
         $new_uri = dirname($old_uri) . '/' . $sanitized;
 
-        fputcsv($report, [
+        $this->putCsvRow($report, [
           $node->id(),
           $fid,
           $original,
@@ -784,6 +784,22 @@ class FileSanitizerCommands extends DrushCommands {
         'After execution you MUST run: drush image:flush --all && drush cr'
       );
     }
+  }
+
+  /**
+   * Writes a single CSV row with an explicit escape character.
+   *
+   * Passing an empty escape string opts into RFC-compliant CSV escaping and
+   * avoids the PHP 8.4 deprecation raised when fputcsv() relies on its default
+   * escape parameter.
+   *
+   * @param resource $handle
+   *   An open file handle to write to.
+   * @param array $row
+   *   The fields to write as a single CSV record.
+   */
+  private function putCsvRow($handle, array $row): void {
+    fputcsv($handle, $row, escape: '');
   }
 
 }

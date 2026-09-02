@@ -1,0 +1,37 @@
+uuid: 1ce9da8f-b6d3-4586-85a7-a6f7bf0a9fea
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - ai_translate
+_core:
+  default_config_hash: lb586EVHI6WS-Ia4BsvNy0ZYV9lPzGdOuJG9Y0qSDrA
+id: ai_translate
+label: 'AI Translation prompt'
+variables:
+  -
+    name: sourceLang
+    help_text: 'ID of source language'
+    required: false
+  -
+    name: sourceLangName
+    help_text: 'Name of source language'
+    required: false
+  -
+    name: destLang
+    help_text: 'ID of destination language'
+    required: false
+  -
+    name: destLangName
+    help_text: 'Name of destination language'
+    required: true
+  -
+    name: inputText
+    help_text: 'The input text to translate'
+    required: true
+  -
+    name: countryName
+    help_text: 'Country name set on the prompt'
+    required: false
+tokens: {  }

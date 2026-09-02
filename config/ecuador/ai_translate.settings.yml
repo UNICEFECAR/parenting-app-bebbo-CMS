@@ -1,0 +1,16 @@
+use_ai_translate: true
+reference_defaults: {  }
+prompt: ai_translate__ai_translate_default
+entity_reference_depth: 1
+language_settings:
+  en:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  ec-es:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  es:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+translation_status: create_draft
+redirect_after_create: list

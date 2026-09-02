@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: 'Courses Module'
 type: courses_module
-description: null
+description: 'Modules created by grouping content (eg. articles, games, video articles) together.'
 help: null
 new_revision: true
 preview_mode: 1

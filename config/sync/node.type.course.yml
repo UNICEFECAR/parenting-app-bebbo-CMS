@@ -11,7 +11,7 @@ third_party_settings:
     parent: 'main:'
 name: Course
 type: course
-description: null
+description: 'Learning courses for service providers, parents and caregivers created by grouping course modules.'
 help: null
 new_revision: true
 preview_mode: 1

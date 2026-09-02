@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\bebbo_custom_general\StoreUrl;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -149,8 +150,21 @@ class ForceUpdateCheckForm extends FormBase {
     $country_id = $request->query->get('country_id');
     $flag = $request->query->get('flag');
     $update_type = $request->query->get('update_type', 'content_update');
-    $google_play_url = $request->query->get('google_play_url', '');
-    $app_store_url = $request->query->get('app_store_url', '');
+    $google_play_url = trim((string) $request->query->get('google_play_url', ''));
+    $app_store_url = trim((string) $request->query->get('app_store_url', ''));
+
+    // These arrive as query parameters rather than form values, so the entry
+    // form's validation guarantees nothing about what reaches the insert.
+    // Drop anything that is not a real store listing instead of storing a
+    // link the apps cannot follow.
+    if ($google_play_url !== '' && !StoreUrl::isGooglePlay($google_play_url)) {
+      $this->messenger()->addWarning($this->t('The Google Play URL was not a store listing and has been ignored.'));
+      $google_play_url = '';
+    }
+    if ($app_store_url !== '' && !StoreUrl::isAppStore($app_store_url)) {
+      $this->messenger()->addWarning($this->t('The App Store URL was not a store listing and has been ignored.'));
+      $app_store_url = '';
+    }
 
     $user = $this->entityTypeManager->getStorage('user')->load($this->currentUser->id());
     $uuid = $user->uuid();

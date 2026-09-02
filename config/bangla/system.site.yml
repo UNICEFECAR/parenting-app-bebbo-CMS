@@ -3,12 +3,12 @@ _core:
 langcode: en
 uuid: 3a31b21d-7c72-4ddb-a1c1-18e3c7a5c21c
 name: বাবুনি
-mail: admin@babuni.app
+mail: info@babuni.app
 slogan: ''
 page:
   403: /user/login
   404: ''
-  front: /node/16
+  front: /homepage
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: en

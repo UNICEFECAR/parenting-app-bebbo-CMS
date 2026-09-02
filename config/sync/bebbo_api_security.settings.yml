@@ -1,0 +1,17 @@
+_core:
+  default_config_hash: EcW22nkTrqZFTvCyKHGOjHd0n72N78muzkWvNhAyfAQ
+enforcement_mode: disabled
+dev_bypass_enabled: false
+dev_bypass_ips: ''
+google_package_name: ''
+google_project_number: ''
+google_verdict_freshness_seconds: 600
+google_allow_unrecognized_version: false
+apple_team_id: ''
+apple_bundle_id: ''
+apple_production_mode: true
+jwt_expiry_seconds: 3600
+refresh_expiry_seconds: 2592000
+refresh_rotation_enabled: true
+register_rate_limit: 10
+refresh_rate_limit: 30

@@ -3,12 +3,12 @@ _core:
 langcode: en
 uuid: 4a9b7ec0-1bd1-4eac-b68f-ba685ba97ba0
 name: 'Pacific Islands'
-mail: deepak.mali@datamatics.com
+mail: admin@bebbopacific.app
 slogan: ''
 page:
   403: /user/login
   404: ''
-  front: /node
+  front: /homepage
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: en

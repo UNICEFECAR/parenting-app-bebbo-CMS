@@ -1,0 +1,135 @@
+bebbo_custom_general.mobile_app_share_link_form:
+  type: config_object
+  label: 'Mobile APP share link JavaScript'
+  mapping:
+    mobile_app_share_link:
+      type: text
+      label: 'Mobile APP share link JavaScript'
+    kosovo_mobile_app_share_link:
+      type: text
+      label: 'Kosovo mobile APP share link JavaScript'
+
+bebbo_custom_general.language_redirects:
+  type: config_object
+  label: 'Language Redirect URLs'
+  mapping:
+    redirect_urls:
+      type: text
+      label: 'Language redirect URLs configuration'
+
+bebbo_custom_general.landing_pages:
+  type: config_object
+  label: 'Landing Pages Configuration'
+  mapping:
+    landing_pages:
+      type: text
+      label: 'Landing pages that bypass redirects'
+
+bebbo_custom_general.app_store_redirect:
+  type: config_object
+  label: 'App Store Redirect URLs'
+  mapping:
+    app_store_url:
+      type: string
+      label: 'App Store listing URL'
+    google_play_url:
+      type: string
+      label: 'Google Play listing URL'
+
+bebbo_custom_general.adminsettings:
+  type: config_object
+  label: 'Administer Parent Buddy settings'
+  mapping:
+    master_language:
+      type: string
+      label: 'Master language for the countries'
+
+bebbo_custom_general.editorial_menu:
+  type: config_object
+  label: 'Canonical editorial menu'
+  mapping:
+    links:
+      type: sequence
+      label: 'Menu links keyed by UUID'
+      sequence:
+        type: mapping
+        label: 'Menu link'
+        mapping:
+          title:
+            type: label
+            label: 'Title'
+          description:
+            type: text
+            label: 'Description'
+          uri:
+            type: string
+            label: 'Link URI'
+          options:
+            type: sequence
+            label: 'Link options'
+            sequence:
+              type: ignore
+              label: 'Option'
+          weight:
+            type: integer
+            label: 'Weight'
+          expanded:
+            type: boolean
+            label: 'Show as expanded'
+          enabled:
+            type: boolean
+            label: 'Enabled'
+          parent:
+            type: string
+            label: 'Parent link'
+          langcode:
+            type: string
+            label: 'Language code'
+          show_role:
+            type: sequence
+            label: 'Roles the link is shown to'
+            sequence:
+              type: string
+              label: 'Role ID'
+          hide_role:
+            type: sequence
+            label: 'Roles the link is hidden from'
+            sequence:
+              type: string
+              label: 'Role ID'
+
+bebbo_custom_general.warmer:
+  type: config_object
+  label: 'API cache warmer'
+  mapping:
+    concurrency:
+      type: integer
+      label: 'Concurrent requests'
+    request_timeout:
+      type: integer
+      label: 'Request timeout in seconds'
+    paths:
+      type: sequence
+      label: 'Paths to warm'
+      sequence:
+        type: string
+        label: 'Path'
+    sites:
+      type: sequence
+      label: 'Per-site settings keyed by site directory'
+      sequence:
+        type: mapping
+        label: 'Site'
+        mapping:
+          hosts:
+            type: sequence
+            label: 'Hostname per environment'
+            sequence:
+              type: string
+              label: 'Hostname'
+          languages:
+            type: sequence
+            label: 'Languages to warm'
+            sequence:
+              type: string
+              label: 'Langcode'

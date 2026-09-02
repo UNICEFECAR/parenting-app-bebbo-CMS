@@ -13,9 +13,8 @@ folder: ../config/bangla
 module: {  }
 theme: {  }
 complete_list:
-  - block.block.claro_logo
+  - block.block.gin_logo
   - system.site
-  - entity_share_client.import_config.config_stage
   - taxonomy.vocabulary.subcategory
   - taxonomy.vocabulary.type_of_article
   - field.field.group.country.field_app_name
@@ -30,7 +29,6 @@ complete_list:
   - language/ar/metatag.metatag_defaults.node
   - language/ar/metatag.metatag_defaults.user
   - language/ar/pathauto.pattern.group_content
-  - language/ar/search.page.node_search
   - language/ar/shortcut.set.default
   - language/ar/views.view.archive
   - language/ar/views.view.block_content
@@ -85,13 +83,12 @@ complete_list:
   - language/uk/filter.format.plain_text
   - mobile_app_links.android_packages
   - mobile_app_links.ios
-  - pb_custom_form.landing_pages
-  - pb_custom_form.language_redirects
-  - views.view.duplicate_of_tax_test
+  - bebbo_custom_general.landing_pages
+  - bebbo_custom_general.language_redirects
 partial_list:
-  - block.block.claro_help_search
+  - ai_translate.settings
+  - system.date
   - block.block.languagedropdownswitcher
-  - block.block.mainnavigation
   - core.entity_form_display.group.country.default
   - core.entity_form_display.media.image.default
   - core.entity_form_display.media.image.media_library
@@ -189,7 +186,6 @@ partial_list:
   - metatag.metatag_defaults.node__page
   - metatag.settings
   - pathauto.pattern.group_content
-  - search.settings
   - system.action.pathauto_update_alias_node
   - system.action.pathauto_update_alias_user
   - system.menu.footer
@@ -211,13 +207,6 @@ partial_list:
   - taxonomy.vocabulary.type_of_support
   - tmgmt.settings
   - tmgmt_memsource.settings
-  - user.role.anonymous
-  - user.role.authenticated
-  - user.role.editor
-  - user.role.global_admin
-  - user.role.reviewer
-  - user.role.se
-  - user.role.sme
   - views.view.articles
   - views.view.block_content
   - views.view.country_content_listing
@@ -225,3 +214,7 @@ partial_list:
   - views.view.country_reports
   - views.view.keyword_term_count
   - views.view.tmgmt_translation_all_job_items
+  - tmgmt.translator.deepl_free
+  - tmgmt.translator.google
+  - tmgmt.translator.memsource
+  - tmgmt.translator.microsoft

@@ -1,0 +1,13 @@
+uuid: e19e8c5a-cf1d-4936-b799-94574f883571
+langcode: en
+status: true
+dependencies: {  }
+id: prod
+label: Prod
+url: 'https://bebbo.app'
+auth:
+  pid: basic_auth
+  uuid: 9e9d5545-ba6c-426d-a7e7-4824720e705d
+  data:
+    credential_provider: key
+    storage_key: entity_share_basic_auth

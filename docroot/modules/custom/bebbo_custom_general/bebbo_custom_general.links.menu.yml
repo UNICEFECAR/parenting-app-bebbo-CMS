@@ -1,0 +1,36 @@
+bebbo_custom_general.mobile_app_share_link_form:
+  title: 'Manage Mobile APP Javascript'
+  route_name: bebbo_custom_general.mobile_app_share_link_form
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the Mobile APP share link javascript.'
+  weight: 101
+bebbo_custom_general.redirect_management:
+  title: 'Redirect Management'
+  route_name: bebbo_custom_general.redirect_management
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Manage language redirects and landing pages'
+  weight: 105
+bebbo_custom_general.admin_settings_form:
+  title: 'Adminster Parent Buddy'
+  route_name: bebbo_custom_general.admin_settings_form
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure the Master langauage for notification.'
+  weight: 103
+bebbo_custom_general.apply_trans_related_articles_video:
+  title: 'Updating translations for articles and video articles'
+  route_name: bebbo_custom_general.apply_trans_related_articles_video
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Apply related articles and video articles in English content to all translations'
+  weight: 104
+bebbo_custom_general.app_store_redirect:
+  title: 'App Store Redirect Settings'
+  route_name: bebbo_custom_general.app_store_redirect
+  parent: pb_custom_form.admin_config_parent_buddy
+  description: 'Configure app store URLs for QR code redirect page'
+  weight: 106
+bebbo_custom_general.warmer_settings:
+  title: 'API cache warmer'
+  route_name: bebbo_custom_general.warmer_settings
+  parent: system.admin_config_development
+  description: 'Settings, manual run and run log for the v1 API cache warmer.'
+  weight: 10

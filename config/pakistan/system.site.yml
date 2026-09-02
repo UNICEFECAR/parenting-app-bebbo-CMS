@@ -1,0 +1,13 @@
+uuid: 3a31b21d-7c72-4ddb-a1c1-18e3c7a5c21c
+langcode: en
+name: Pakistan
+mail: admin@bebbo.app
+slogan: "UNICEF's parenting app"
+page:
+  403: /user/login
+  404: ''
+  front: /user/login
+admin_compact_mode: false
+weight_select_max: 100
+default_langcode: en
+mail_notification: admin@bebbo.app

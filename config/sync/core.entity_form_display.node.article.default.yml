@@ -62,7 +62,7 @@ content:
     third_party_settings: {  }
   field_analytics_updated:
     type: datetime_timestamp
-    weight: 29
+    weight: 33
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -124,7 +124,7 @@ content:
     third_party_settings: {  }
   field_like_count:
     type: number
-    weight: 27
+    weight: 32
     region: content
     settings:
       placeholder: ''
@@ -166,7 +166,7 @@ content:
     third_party_settings: {  }
   field_read_count:
     type: number
-    weight: 28
+    weight: 31
     region: content
     settings:
       placeholder: ''

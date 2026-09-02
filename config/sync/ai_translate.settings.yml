@@ -1,0 +1,93 @@
+_core:
+  default_config_hash: IaNiyCLAJBz5QfQqeZ_MxVRVs4KYTOMlVpf9wFrIVKk
+use_ai_translate: true
+reference_defaults: {  }
+prompt: ai_translate__ai_translate_default
+entity_reference_depth: 1
+language_settings:
+  en:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  ru:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  sq:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  al-sq:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  by-be:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  by-ru:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  bg-bg:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  gr-el:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  xk-sq:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  xk-rs:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  kg-ky:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  kg-ru:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  md-ro:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  me-cnr:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  mk-mk:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  mk-sq:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  ro:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  ro-ro:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  sr:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  rs-sr:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  rs-en:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  sk:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  tj-tg:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  tj-ru:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  uk:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  uz-uz:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  uz-ru:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+  uz-kaa:
+    model: ''
+    prompt: ai_translate__ai_translate_default
+translation_status: create_draft
+redirect_after_create: list

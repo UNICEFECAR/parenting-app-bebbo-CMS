@@ -1,0 +1,50 @@
+services:
+  logger.channel.bebbo_api_security:
+    parent: logger.channel_base
+    arguments: ['bebbo_api_security']
+
+  bebbo_api_security.device_registry:
+    class: Drupal\bebbo_api_security\Service\DeviceRegistryService
+    arguments:
+      - '@database'
+      - '@logger.channel.bebbo_api_security'
+      - '@config.factory'
+
+  bebbo_api_security.jwt_service:
+    class: Drupal\bebbo_api_security\Service\JwtService
+    arguments:
+      - '@key.repository'
+      - '@database'
+      - '@config.factory'
+      - '@logger.channel.bebbo_api_security'
+
+  bebbo_api_security.google_play_integrity:
+    class: Drupal\bebbo_api_security\Service\GooglePlayIntegrityService
+    arguments:
+      - '@http_client'
+      - '@key.repository'
+      - '@config.factory'
+      - '@logger.channel.bebbo_api_security'
+
+  bebbo_api_security.apple_app_attest:
+    class: Drupal\bebbo_api_security\Service\AppleAppAttestService
+    arguments:
+      - '@database'
+      - '@config.factory'
+      - '@logger.channel.bebbo_api_security'
+
+  bebbo_api_security.sideloaded_verification:
+    class: Drupal\bebbo_api_security\Service\SideloadedVerificationService
+    arguments:
+      - '@database'
+      - '@logger.channel.bebbo_api_security'
+      - '@config.factory'
+
+  bebbo_api_security.request_subscriber:
+    class: Drupal\bebbo_api_security\EventSubscriber\ApiSecuritySubscriber
+    arguments:
+      - '@bebbo_api_security.jwt_service'
+      - '@config.factory'
+      - '@logger.channel.bebbo_api_security'
+    tags:
+      - { name: event_subscriber }

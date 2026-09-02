@@ -1,0 +1,12 @@
+uuid: c13d5985-ad8d-4b7a-b94a-dfd70718f0bc
+langcode: en
+status: true
+dependencies:
+  module:
+    - symfony_mailer_office365
+id: office_365_oauth
+label: 'Office 365 - OAuth'
+plugin: office365_oauth
+configuration:
+  smtp_host: smtp.office365.com
+  smtp_port: '587'

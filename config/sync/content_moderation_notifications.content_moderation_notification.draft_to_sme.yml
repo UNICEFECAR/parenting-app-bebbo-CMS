@@ -1,6 +1,6 @@
 uuid: 002dfaf0-bff1-4925-932b-bbbcb161ab6b
 langcode: en
-status: true
+status: false
 dependencies: {  }
 id: draft_to_sme
 workflow: group_workflow
@@ -10,6 +10,7 @@ roles:
   sme: sme
 author: false
 site_mail: false
+user_fields: {  }
 emails: ''
 subject: 'Content changed from Draft to SME Review'
 body:

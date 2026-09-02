@@ -1,0 +1,20 @@
+uuid: 63dafccb-9b67-4ab2-a75a-432efb7e01f8
+langcode: en
+status: true
+dependencies:
+  module:
+    - pb_content_analytics
+title: 'Default cron handler'
+id: pb_content_analytics_cron
+weight: 0
+module: pb_content_analytics
+callback: 'pb_content_analytics#cron'
+scheduler:
+  id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
+launcher:
+  id: serial
+logger:
+  id: database

@@ -1,7 +1,7 @@
 name: bebbo.app
-type: drupal10
+type: drupal11
 docroot: docroot
-php_version: "8.3"
+php_version: "8.4"
 webserver_type: apache-fpm
 xdebug_enabled: false
 additional_hostnames: []
@@ -12,6 +12,10 @@ database:
 use_dns_when_possible: true
 composer_version: "2"
 web_environment: []
+# To enable bebbo_api_security JWT signing, replace the line above with:
+# web_environment:
+#   - BEBBO_JWT_PRIVATE_KEY=<base64-encoded-rsa-private-key>
+# Generate: openssl genrsa 2048 | base64 | tr -d '\n'
 corepack_enable: false
 
 # Key features of DDEV's config.yaml:

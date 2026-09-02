@@ -1,0 +1,20 @@
+uuid: 501ad3bc-13f3-4211-9873-5c3baa8e4a95
+langcode: en
+status: true
+dependencies:
+  module:
+    - bebbo_api_security
+title: 'Default cron handler'
+id: bebbo_api_security_cron
+weight: 0
+module: bebbo_api_security
+callback: 'bebbo_api_security#cron'
+scheduler:
+  id: simple
+  configuration:
+    rules:
+      - '0+@ 0 * * *'
+launcher:
+  id: serial
+logger:
+  id: database

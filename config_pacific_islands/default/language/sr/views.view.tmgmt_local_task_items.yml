@@ -1,8 +1,0 @@
-display:
-  default:
-    display_options:
-      fields:
-        item_type:
-          label: Tип
-        operations:
-          label: Operations

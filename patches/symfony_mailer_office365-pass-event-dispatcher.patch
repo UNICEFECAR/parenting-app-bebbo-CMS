@@ -1,0 +1,25 @@
+diff --git a/src/Office365EsmtpTransportFactory.php b/src/Office365EsmtpTransportFactory.php
+index 1234567..abcdefg 100644
+--- a/src/Office365EsmtpTransportFactory.php
++++ b/src/Office365EsmtpTransportFactory.php
+@@ -48,6 +48,7 @@ final class Office365EsmtpTransportFactory extends AbstractTransportFactory {
+     $transport = new EsmtpTransport(
+       host: $dsn->getHost(),
+       port: $dsn->getPort(),
++      dispatcher: $this->dispatcher,
+       authenticators: [$this->authenticator],
+     );
+     $transport->setUsername($dsn->getOption('user'));
+diff --git a/symfony_mailer_office365.services.yml b/symfony_mailer_office365.services.yml
+index 2345678..bcdefgh 100644
+--- a/symfony_mailer_office365.services.yml
++++ b/symfony_mailer_office365.services.yml
+@@ -1,7 +1,7 @@
+ services:
+   symfony_mailer_office365.esmtp_transport_factory:
+     class: Drupal\symfony_mailer_office365\Office365EsmtpTransportFactory
+-    arguments: ['@symfony_mailer_office365.xoauth2_authenticator']
++    arguments: ['@symfony_mailer_office365.xoauth2_authenticator', '@event_dispatcher']
+     tags:
+       - { name: mailer.transport_factory }
+

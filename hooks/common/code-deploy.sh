@@ -10,8 +10,7 @@
 # Usage: post-code-update site target-env source-branch deployed-tag repo-url
 #                         repo-type
 
-# Set the -e option to exit on failure.
-set -ev
+set -e
 
 site="$1"
 target_env="$2"
@@ -21,35 +20,49 @@ repo_url="$5"
 repo_type="$6"
 
 if [ "$target_env" != 'prod' ]; then
-  # Go to the deployment directory.
   echo "$site.$target_env: The $source_branch branch has been updated on $target_env."
   cd /var/www/html/$site.$target_env
 
-  # Get the list of sites.
   . `dirname $0`/../../sites.sh
 
+  total=${#SITES[@]}
+  current=0
 
-  # Run deploymnet steps for each site.
   for site_name in ${SITES[@]}; do
-    echo "-------------Running for site: $site_name--------------"
-    DRUSH="php -d memory_limit=1024M vendor/bin/drush @$site.$target_env -l $site_name"
+    current=$((current + 1))
+    echo ""
+    echo "=============================================="
+    echo "  Site $current/$total: $site_name"
+    echo "=============================================="
+    DRUSH="php -d memory_limit=1024M vendor/drush/drush/drush.php @$site.$target_env -l $site_name"
+
+    echo "[1/6] Cache rebuild..."
     $DRUSH cr
-    echo "Running updb."
+
+    echo "[2/6] Database updates..."
     $DRUSH updb -y
-    echo "Running config import."
+
+    echo "[3/6] Config import (pass 1)..."
     $DRUSH cim -y
+
+    echo "[4/6] Cache rebuild + config import (pass 2)..."
     $DRUSH cr
     $DRUSH cim -y
-    echo "Running cache clear."
+
+    # Menu links are content entities, so config import never applies menu
+    # changes. This runs after cim so it reads the freshly imported canon.
+    echo "[5/6] Editorial menu sync..."
+    $DRUSH bebbo:menu-sync
+
+    echo "[6/6] Final cache rebuild..."
     $DRUSH cr
-    echo "Running cache clear."
-    $DRUSH cr
-    echo "-----------Update complete for site $site_name----------"
+
+    echo "--- Done: $site_name ---"
   done
-  echo "Update complete."
+
+  echo ""
+  echo "All $total sites updated successfully."
 
 else
   echo "Manually do the deployment activity."
 fi
-
-set +v

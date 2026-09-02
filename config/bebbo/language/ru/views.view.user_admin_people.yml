@@ -43,9 +43,6 @@ display:
         roles_target_id:
           expose:
             label: Role
-        permission:
-          expose:
-            label: Permission
   page_1:
     display_title: Страница
     display_options:

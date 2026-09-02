@@ -547,7 +547,7 @@ display:
         options:
           perm: 'manage content analytics sync'
       cache:
-        type: tag
+        type: none
         options: {  }
       empty: {  }
       sorts:
@@ -747,6 +747,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:

@@ -9,7 +9,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\group\GroupMembershipLoaderInterface;
+use Drupal\group\Entity\GroupMembership;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Psr\Log\LoggerInterface;
@@ -62,13 +62,6 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
   protected $currentUser;
 
   /**
-   * The group membership loader service.
-   *
-   * @var \Drupal\group\GroupMembershipLoaderInterface
-   */
-  protected $groupMembershipLoader;
-
-  /**
    * The time service.
    *
    * @var \Drupal\Component\Datetime\TimeInterface
@@ -107,8 +100,6 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
    *   The plugin implementation definition.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user service.
-   * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
-   *   The group membership loader service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
@@ -118,10 +109,9 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxyInterface $current_user, GroupMembershipLoaderInterface $group_membership_loader, TimeInterface $time, MessengerInterface $messenger, LoggerInterface $logger, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxyInterface $current_user, TimeInterface $time, MessengerInterface $messenger, LoggerInterface $logger, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
-    $this->groupMembershipLoader = $group_membership_loader;
     $this->time = $time;
     $this->messenger = $messenger;
     $this->logger = $logger;
@@ -137,7 +127,6 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
       $plugin_id,
       $plugin_definition,
       $container->get('current_user'),
-      $container->get('group.membership_loader'),
       $container->get('datetime.time'),
       $container->get('messenger'),
       $container->get('logger.factory')->get('Content Bulk updated'),
@@ -151,8 +140,7 @@ class MovefrompublishtosenioreditorAction extends ViewsBulkOperationsActionBase 
   public function execute(?ContentEntityInterface $entity = NULL) {
     $uid = $this->currentUser->id();
     $user = $this->entityTypeManager->getStorage('user')->load($uid);
-    // $groups = array();
-    $grps = $this->groupMembershipLoader->loadByUser($user);
+    $grps = GroupMembership::loadByUser($user);
     $grp_country_new_array = [];
     if (!empty($grps)) {
       // Collect languages from ALL groups the user belongs to.

@@ -47,7 +47,7 @@ Structure code in a way that groups related functionality. Adhere to Drupal’s 
 
 Testing is critical to maintain the quality and stability of the Unicef Bebbo CMS codebase. In order to maintain this, all contributors must follow the guidelines below.
 
-- **Write tests for every module**: Every new module should include Behat tests covering core functionality, in line with [Drupal testing standards](https://www.drupal.org/docs/7/automated-testing-for-drupal-7).
+- **Write tests for every module**: New functionality should include PHPUnit tests (Unit and/or Kernel) under the module's `tests/src/`, in line with [Drupal testing standards](https://www.drupal.org/docs/develop/automated-testing) — see `bebbo_api_security/tests/` for the in-repo example.
 - **Descriptive test names**: Use meaningful test names that describe what is being tested and the expected outcome.
 - **Error cases**: Include tests for edge cases and possible errors to confirm that the code handles them as expected.
 
@@ -88,16 +88,18 @@ When naming branches, use the following format based on the type of work:
 - **Features**: `feature/{branch_name}`  
   For new features or enhancements. Example: `feature/add-user-profile-page`
 
-### Commit Message: 
-When committing changes to any of the Git submodules, follow these guidelines for commit messages:
+### Commit Message:
+This repository uses the [Conventional Commits](https://www.conventionalcommits.org/) format: `type(scope): subject` — subject in imperative mood, under 72 characters; the body (when needed) explains *why*, not *what*.
 
-#### Prefixes: 
-Use one of the following prefixes to indicate the type of change:
+#### Types:
+Use one of the following types to indicate the kind of change:
 
-- **Create**: `[commit message]` – For creating a new component. Example: `Create: user authentication module`
-- **Add**: `[commit message]` – For additions to an existing component. Example: `Add: email validation to login form`
-- **Fix**: `[commit message]` – For fixing a bug in an existing component. Example: `Fix: issue with session persistence during login`
-- **Refactor**: `[commit message]` – For refactoring an existing component. Example: `Refactor: API service for improved performance`
+- **feat**: a new feature or capability. Example: `feat(bebbo_serializer): add guide endpoint transform`
+- **fix**: a bug fix. Example: `fix(config): set per-site timezones for all 7 Bebbo sites`
+- **chore**: maintenance work (config sync, dependency bumps). Example: `chore(views): rename keyword_term_count displays`
+- **docs**: documentation only. Example: `docs: refresh API reference for check-update endpoint`
+- **refactor**: code restructuring without behavior change. Example: `refactor(entity_share): standardize channels across all sites`
+- **test**: adding or fixing tests. Example: `test(bebbo_api_security): cover refresh-token replay detection`
 
 ## Accessibility
 

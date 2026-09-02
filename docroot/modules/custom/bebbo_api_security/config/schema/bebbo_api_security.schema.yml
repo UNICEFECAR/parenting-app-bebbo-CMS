@@ -1,0 +1,79 @@
+bebbo_api_security.settings:
+  type: config_object
+  label: 'Bebbo API Security Settings'
+  mapping:
+    enforcement_mode:
+      type: string
+      label: 'Enforcement mode (disabled, grace_period, enforced)'
+    dev_bypass_enabled:
+      type: boolean
+      label: 'Developer bypass enabled'
+    dev_bypass_ips:
+      type: string
+      label: 'Developer bypass IPs (newline-separated)'
+    google_package_name:
+      type: string
+      label: 'Google Play package name'
+    google_project_number:
+      type: string
+      label: 'Google Cloud project number'
+    google_verdict_freshness_seconds:
+      type: integer
+      label: 'Google verdict freshness window (seconds)'
+    apple_team_id:
+      type: string
+      label: 'Apple Team ID'
+    apple_bundle_id:
+      type: string
+      label: 'Apple Bundle ID'
+    apple_production_mode:
+      type: boolean
+      label: 'Apple production mode'
+    jwt_expiry_seconds:
+      type: integer
+      label: 'JWT expiry in seconds'
+    refresh_expiry_seconds:
+      type: integer
+      label: 'Refresh token expiry in seconds'
+    refresh_rotation_enabled:
+      type: boolean
+      label: 'Refresh token rotation enabled'
+    register_rate_limit:
+      type: integer
+      label: 'Registration rate limit per device per hour'
+    refresh_rate_limit:
+      type: integer
+      label: 'Refresh rate limit per device per hour'
+    apple_root_ca_pem:
+      type: text
+      label: 'Apple App Attestation Root CA PEM certificate'
+    debug_logging:
+      type: boolean
+      label: 'Enable debug logging for API security'
+    challenge_expiry_seconds:
+      type: integer
+      label: 'Challenge expiry in seconds'
+    google_api_timeout:
+      type: integer
+      label: 'Google API HTTP timeout in seconds'
+    google_allow_unrecognized_version:
+      type: boolean
+      label: 'Accept UNRECOGNIZED_VERSION app verdict (dev/testing only)'
+    device_register_ip_rate_limit:
+      type: integer
+      label: 'Device registration rate limit per IP per hour'
+    verify_rate_limit:
+      type: integer
+      label: 'Verification rate limit per device per hour'
+    revoked_token_retention_days:
+      type: integer
+      label: 'Revoked token retention in days'
+    security_log_max_entries:
+      type: integer
+      label: 'Maximum security log entries to keep'
+    protected_api_patterns:
+      type: string
+      label: 'Protected API route patterns (newline-separated)'
+    excluded_api_patterns:
+      type: string
+      label: 'Excluded API route patterns (newline-separated)'

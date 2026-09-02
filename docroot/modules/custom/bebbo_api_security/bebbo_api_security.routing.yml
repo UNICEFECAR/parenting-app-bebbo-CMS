@@ -1,0 +1,64 @@
+bebbo_api_security.settings:
+  path: '/admin/config/parent-buddy/api-security'
+  defaults:
+    _form: '\Drupal\bebbo_api_security\Form\ApiSecuritySettingsForm'
+    _title: 'API Security Settings'
+  requirements:
+    _permission: 'administer bebbo api security'
+  options:
+    _admin_route: TRUE
+
+bebbo_api_security.register:
+  path: '/api/security/register'
+  defaults:
+    _controller: '\Drupal\bebbo_api_security\Controller\SecurityController::register'
+  requirements:
+    # Public endpoint: unauthenticated devices call this to begin attestation.
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+bebbo_api_security.device_register:
+  path: '/api/security/device/register'
+  defaults:
+    _controller: '\Drupal\bebbo_api_security\Controller\SecurityController::deviceRegister'
+  requirements:
+    # Public endpoint: sideloaded devices submit their EC public key here.
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+bebbo_api_security.device_verify:
+  path: '/api/security/device/verify'
+  defaults:
+    _controller: '\Drupal\bebbo_api_security\Controller\SecurityController::deviceVerify'
+  requirements:
+    # Public endpoint: devices present signed challenge to complete verification.
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+bebbo_api_security.refresh:
+  path: '/api/security/refresh'
+  defaults:
+    _controller: '\Drupal\bebbo_api_security\Controller\SecurityController::refresh'
+  requirements:
+    # Public endpoint: clients exchange a refresh token for new access token.
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+bebbo_api_security.revoke:
+  path: '/api/security/revoke'
+  defaults:
+    _controller: '\Drupal\bebbo_api_security\Controller\SecurityController::revoke'
+  requirements:
+    # Public endpoint: clients revoke their own device tokens on logout/uninstall.
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE

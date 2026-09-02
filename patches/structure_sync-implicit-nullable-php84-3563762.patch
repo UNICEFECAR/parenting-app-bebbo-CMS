@@ -1,0 +1,201 @@
+diff --color --color=auto -ruN a/src/Controller/BlocksController.php b/src/Controller/BlocksController.php
+--- a/src/Controller/BlocksController.php	2026-07-10 11:16:49
++++ b/src/Controller/BlocksController.php	2026-07-10 11:16:49
+@@ -40,7 +40,7 @@
+   /**
+    * Function to export custom blocks.
+    */
+-  public function exportBlocks(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public function exportBlocks(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Custom blocks export started');
+ 
+     if (is_object($form_state) && $form_state->hasValue('export_block_list')) {
+@@ -109,7 +109,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public function importBlocks(array $form, FormStateInterface $form_state = NULL) {
++  public function importBlocks(array $form, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Custom blocks import started');
+ 
+     // Check if the import style has been defined in the form (state) and else
+diff --color --color=auto -ruN a/src/Controller/MenuLinksController.php b/src/Controller/MenuLinksController.php
+--- a/src/Controller/MenuLinksController.php	2026-07-10 11:16:49
++++ b/src/Controller/MenuLinksController.php	2026-07-10 11:16:49
+@@ -63,7 +63,7 @@
+   /**
+    * Function to export menu links.
+    */
+-  public function exportMenuLinks(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public function exportMenuLinks(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Menu links export started');
+ 
+     if (is_object($form_state) && $form_state->hasValue('export_menu_list')) {
+@@ -166,7 +166,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public function importMenuLinks(array $form, FormStateInterface $form_state = NULL) {
++  public function importMenuLinks(array $form, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Menu links import started');
+ 
+     // Check if the there is a selection made in a form for what menus need to
+diff --color --color=auto -ruN a/src/Controller/TaxonomiesController.php b/src/Controller/TaxonomiesController.php
+--- a/src/Controller/TaxonomiesController.php	2026-07-10 11:16:49
++++ b/src/Controller/TaxonomiesController.php	2026-07-10 11:16:49
+@@ -40,7 +40,7 @@
+   /**
+    * Function to export taxonomy terms.
+    */
+-  public function exportTaxonomies(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public function exportTaxonomies(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Taxonomies export started');
+ 
+     if (is_object($form_state) && $form_state->hasValue('export_voc_list')) {
+@@ -163,7 +163,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public function importTaxonomies(array $form, FormStateInterface $form_state = NULL) {
++  public function importTaxonomies(array $form, ?FormStateInterface $form_state = NULL) {
+     StructureSyncHelper::logMessage('Taxonomy import started');
+ 
+     // Check if the import style has been defined in the form (state) and else
+diff --color --color=auto -ruN a/src/StructureSyncHelper.php b/src/StructureSyncHelper.php
+--- a/src/StructureSyncHelper.php	2026-07-10 11:16:49
++++ b/src/StructureSyncHelper.php	2026-07-10 11:16:49
+@@ -15,7 +15,7 @@
+   /**
+    * Function to export taxonomy terms.
+    */
+-  public static function exportTaxonomies(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public static function exportTaxonomies(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     $taxonomiesController = new TaxonomiesController();
+     $taxonomiesController->exportTaxonomies($form, $form_state);
+   }
+@@ -23,7 +23,7 @@
+   /**
+    * Function to export custom blocks.
+    */
+-  public static function exportCustomBlocks(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public static function exportCustomBlocks(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     $blocksController = new BlocksController();
+     $blocksController->exportBlocks($form, $form_state);
+   }
+@@ -31,7 +31,7 @@
+   /**
+    * Function to export menu links.
+    */
+-  public static function exportMenuLinks(array $form = NULL, FormStateInterface $form_state = NULL) {
++  public static function exportMenuLinks(?array $form = NULL, ?FormStateInterface $form_state = NULL) {
+     $menuLinksController = MenuLinksController::create(\Drupal::getContainer());
+     $menuLinksController->exportMenuLinks($form, $form_state);
+   }
+@@ -43,7 +43,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public static function importTaxonomies(array $form, FormStateInterface $form_state = NULL) {
++  public static function importTaxonomies(array $form, ?FormStateInterface $form_state = NULL) {
+     $taxonomiesController = new TaxonomiesController();
+     $taxonomiesController->importTaxonomies($form, $form_state);
+   }
+@@ -55,7 +55,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public static function importCustomBlocks(array $form, FormStateInterface $form_state = NULL) {
++  public static function importCustomBlocks(array $form, ?FormStateInterface $form_state = NULL) {
+     $customBlocksController = new BlocksController();
+     $customBlocksController->importBlocks($form, $form_state);
+   }
+@@ -67,7 +67,7 @@
+    * an array with a key value pair for form with key 'style' and value 'full',
+    * 'safe' or 'force' to apply that import style.
+    */
+-  public static function importMenuLinks(array $form, FormStateInterface $form_state = NULL) {
++  public static function importMenuLinks(array $form, ?FormStateInterface $form_state = NULL) {
+     $menuLinksController = MenuLinksController::create(\Drupal::getContainer());
+     $menuLinksController->importMenuLinks($form, $form_state);
+   }
+@@ -100,7 +100,7 @@
+   /**
+    * Function to start importing taxonomies with the 'full' style.
+    */
+-  public static function importTaxonomiesFull(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importTaxonomiesFull(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'full';
+ 
+     StructureSyncHelper::importTaxonomies($form, $form_state);
+@@ -109,7 +109,7 @@
+   /**
+    * Function to start importing taxonomies with the 'safe' style.
+    */
+-  public static function importTaxonomiesSafe(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importTaxonomiesSafe(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'safe';
+ 
+     StructureSyncHelper::importTaxonomies($form, $form_state);
+@@ -118,7 +118,7 @@
+   /**
+    * Function to start importing taxonomies with the 'force' style.
+    */
+-  public static function importTaxonomiesForce(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importTaxonomiesForce(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'force';
+ 
+     StructureSyncHelper::importTaxonomies($form, $form_state);
+@@ -127,7 +127,7 @@
+   /**
+    * Function to start importing custom blocks with the 'full' style.
+    */
+-  public static function importCustomBlocksFull(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importCustomBlocksFull(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'full';
+ 
+     StructureSyncHelper::importCustomBlocks($form, $form_state);
+@@ -136,7 +136,7 @@
+   /**
+    * Function to start importing custom blocks with the 'safe' style.
+    */
+-  public static function importCustomBlocksSafe(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importCustomBlocksSafe(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'safe';
+ 
+     StructureSyncHelper::importCustomBlocks($form, $form_state);
+@@ -145,7 +145,7 @@
+   /**
+    * Function to start importing custom blocks with the 'force' style.
+    */
+-  public static function importCustomBlocksForce(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importCustomBlocksForce(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'force';
+ 
+     StructureSyncHelper::importCustomBlocks($form, $form_state);
+@@ -154,7 +154,7 @@
+   /**
+    * Function to start importing menu links with the 'full' style.
+    */
+-  public static function importMenuLinksFull(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importMenuLinksFull(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'full';
+ 
+     StructureSyncHelper::importMenuLinks($form, $form_state);
+@@ -163,7 +163,7 @@
+   /**
+    * Function to start importing menu links with the 'safe' style.
+    */
+-  public static function importMenuLinksSafe(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importMenuLinksSafe(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'safe';
+ 
+     StructureSyncHelper::importMenuLinks($form, $form_state);
+@@ -172,7 +172,7 @@
+   /**
+    * Function to start importing menu links with the 'force' style.
+    */
+-  public static function importMenuLinksForce(array &$form, FormStateInterface $form_state = NULL) {
++  public static function importMenuLinksForce(array &$form, ?FormStateInterface $form_state = NULL) {
+     $form['style'] = 'force';
+ 
+     StructureSyncHelper::importMenuLinks($form, $form_state);

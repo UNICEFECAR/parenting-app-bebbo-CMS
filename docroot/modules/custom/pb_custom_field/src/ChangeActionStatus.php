@@ -2,6 +2,7 @@
 
 namespace Drupal\pb_custom_field;
 
+use Drupal\group\Entity\GroupMembership;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 
@@ -27,8 +28,7 @@ class ChangeActionStatus {
     $results = [];
     $uid = \Drupal::currentUser()->id();
     $user = User::load($uid);
-    $grp_membership_service = \Drupal::service('group.membership_loader');
-    $grps = $grp_membership_service->loadByUser($user);
+    $grps = GroupMembership::loadByUser($user);
     $success_msg = 0;
     $country_error = 0;
     $same_status_error = 0;

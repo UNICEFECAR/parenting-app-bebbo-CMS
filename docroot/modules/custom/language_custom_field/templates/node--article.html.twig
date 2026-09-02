@@ -11,7 +11,7 @@
       </div>
     {% else %}
       <div class="node-summary">
-        {{ node.body.value|striptags|truncate(200, true) }}
+        {{ node.body.value|striptags|slice(0, 200) ~ '...' }}
       </div>
     {% endif %}
     {# Render the full body content #}

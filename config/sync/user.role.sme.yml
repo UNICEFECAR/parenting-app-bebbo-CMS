@@ -12,6 +12,7 @@ dependencies:
     - node.type.child_development
     - node.type.child_growth
     - node.type.course
+    - node.type.courses_module
     - node.type.daily_homescreen_messages
     - node.type.faq
     - node.type.guide
@@ -20,6 +21,7 @@ dependencies:
     - node.type.page
     - node.type.pregnancy_weekly_overview
     - node.type.quiz
+    - node.type.quiz_questions
     - node.type.survey
     - node.type.vaccinations
     - node.type.video_article
@@ -28,25 +30,40 @@ dependencies:
     - actions_permissions
     - content_moderation
     - content_translation
-    - file
     - filter
-    - group
     - media
     - node
+    - pb_content_analytics
+    - tmgmt
     - toolbar_menu
 id: sme
 label: SME
 weight: -4
 is_admin: null
 permissions:
+  - 'accept translation jobs'
   - 'access media overview'
-  - 'bypass group access'
-  - 'delete own files'
+  - 'create activities content'
+  - 'create article content'
+  - 'create course content'
+  - 'create courses_module content'
+  - 'create daily_homescreen_messages content'
+  - 'create faq content'
+  - 'create guide content'
+  - 'create health_check_ups content'
+  - 'create milestone content'
+  - 'create page content'
+  - 'create quiz content'
+  - 'create quiz_questions content'
+  - 'create survey content'
+  - 'create vaccinations content'
+  - 'create video_article content'
   - 'edit any activities content'
   - 'edit any article content'
   - 'edit any child_development content'
   - 'edit any child_growth content'
   - 'edit any course content'
+  - 'edit any courses_module content'
   - 'edit any daily_homescreen_messages content'
   - 'edit any faq content'
   - 'edit any guide content'
@@ -55,6 +72,7 @@ permissions:
   - 'edit any page content'
   - 'edit any pregnancy_weekly_overview content'
   - 'edit any quiz content'
+  - 'edit any quiz_questions content'
   - 'edit any survey content'
   - 'edit any vaccinations content'
   - 'edit any video_article content'
@@ -63,6 +81,7 @@ permissions:
   - 'edit own child_development content'
   - 'edit own child_growth content'
   - 'edit own course content'
+  - 'edit own courses_module content'
   - 'edit own daily_homescreen_messages content'
   - 'edit own faq content'
   - 'edit own guide content'
@@ -72,6 +91,7 @@ permissions:
   - 'edit own page content'
   - 'edit own pregnancy_weekly_overview content'
   - 'edit own quiz content'
+  - 'edit own quiz_questions content'
   - 'edit own remote_video media'
   - 'edit own survey content'
   - 'edit own vaccinations content'
@@ -80,6 +100,7 @@ permissions:
   - 'execute pb_custom_field_assign_action node'
   - 'translate any entity'
   - 'use group_workflow transition _sme_review_to_require_modification'
+  - 'use group_workflow transition require_modification_to_senior_editor_review'
   - 'use group_workflow transition sme_review_to_senior_editor_review'
   - 'use group_workflow transition sme_review_to_sme_review'
   - 'use text format full_html'
@@ -89,7 +110,9 @@ permissions:
   - 'view article revisions'
   - 'view child_development revisions'
   - 'view child_growth revisions'
+  - 'view content analytics report'
   - 'view course revisions'
+  - 'view courses_module revisions'
   - 'view daily_homescreen_messages revisions'
   - 'view editorial_menu in toolbar'
   - 'view faq revisions'
@@ -100,6 +123,7 @@ permissions:
   - 'view page revisions'
   - 'view pregnancy_weekly_overview revisions'
   - 'view quiz revisions'
+  - 'view quiz_questions revisions'
   - 'view survey revisions'
   - 'view vaccinations revisions'
   - 'view video_article revisions'

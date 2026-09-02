@@ -1,0 +1,10 @@
+adding:
+  country:
+    default: ZW
+  timezone:
+    default: Africa/Harare
+removing:
+  country:
+    default: CH
+  timezone:
+    default: Europe/Zurich

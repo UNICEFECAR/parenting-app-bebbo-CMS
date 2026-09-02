@@ -1,0 +1,10 @@
+adding:
+  country:
+    default: PK
+  timezone:
+    default: Asia/Karachi
+removing:
+  country:
+    default: CH
+  timezone:
+    default: Europe/Zurich

@@ -36,6 +36,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -72,6 +73,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -108,6 +110,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -137,6 +140,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -169,6 +173,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To
@@ -196,6 +201,7 @@ display:
           label: Title
           separator: ', '
         source_language:
+          label: From
           separator: ', '
         target_language:
           label: To

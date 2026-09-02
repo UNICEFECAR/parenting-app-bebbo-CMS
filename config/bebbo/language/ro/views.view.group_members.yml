@@ -1,26 +1,9 @@
 display:
   default:
-    display_title: Master
     display_options:
-      exposed_form:
-        options:
-          submit_button: Apply
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        options:
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page_label: 'Items per page'
-            items_per_page_options_all_label: '- All -'
-            offset_label: Offset
       fields:
+        edit_user:
+          text: 'Edit member'
         name:
           label: User
           separator: ', '
@@ -32,17 +15,34 @@ display:
           separator: ', '
         created:
           separator: ', '
-        view_group_content:
+        view_group_relationship:
           text: 'Manage member'
-        edit_group_content:
+        edit_group_relationship:
           text: 'Assign roles'
-        edit_user:
-          text: 'Edit member'
         dropbutton:
           label: Operations
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       arguments:
         gid:
           exception:
             title: All
+    display_title: Master
   page_1:
     display_title: Page

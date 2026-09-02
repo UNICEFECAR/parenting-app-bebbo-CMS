@@ -1,0 +1,156 @@
+/**
+ * @file
+ * Admin toolbar language switcher dropdown styling.
+ */
+
+/* Force flex layout so auto margin can push our item to the end. */
+#toolbar-bar.toolbar-bar,
+#gin-toolbar-bar.toolbar-bar,
+.toolbar .toolbar-bar,
+.toolbar-oriented .toolbar-bar {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Stop user-menu from filling remaining space so our switcher can sit
+ * in the absolute corner. */
+.toolbar .toolbar-bar .toolbar-tab.user-menu,
+.toolbar-oriented .toolbar-bar .toolbar-tab.user-menu {
+  flex-grow: 0;
+}
+
+/* Cancel the core float and push to end of bar. */
+.toolbar .toolbar-bar .toolbar-tab.pb-language-switcher-wrapper,
+.toolbar-oriented .toolbar-bar .toolbar-tab.pb-language-switcher-wrapper {
+  float: none;
+  display: block;
+  position: relative;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.pb-language-switcher__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0 1rem;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.pb-language-switcher__tab::before {
+  content: "\1F310";
+  font-size: 1em;
+  opacity: 0.85;
+}
+
+.pb-language-switcher__tab:hover,
+.pb-language-switcher__tab:focus,
+.pb-language-switcher__tab[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+
+.toolbar-tray.pb-language-switcher__tray-open,
+#toolbar-item-pb-language-switcher-tray.is-active {
+  display: block;
+}
+
+/* Override core toolbar-tray-horizontal float/inline layout for our menu. */
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__menu,
+#toolbar-item-pb-language-switcher-tray ul.pb-language-switcher__menu {
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding: 0.5rem 0;
+  min-width: 12rem;
+  background: #2c2c2c;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__menu > li {
+  display: block;
+  float: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 0;
+}
+
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__link,
+#toolbar-item-pb-language-switcher-tray a.pb-language-switcher__link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  background: transparent;
+  border: 0;
+}
+
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__link:hover,
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__link:focus,
+#toolbar-item-pb-language-switcher-tray a.pb-language-switcher__link:hover,
+#toolbar-item-pb-language-switcher-tray a.pb-language-switcher__link:focus {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  outline: none;
+  text-decoration: none;
+}
+
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__link.is-active,
+#toolbar-item-pb-language-switcher-tray a.pb-language-switcher__link.is-active {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-weight: 600;
+}
+
+#toolbar-item-pb-language-switcher-tray .pb-language-switcher__link.is-active::after {
+  content: " \2713";
+  opacity: 0.7;
+}
+
+/* Position tray below tab. Uses logical properties for RTL flip. */
+#toolbar-item-pb-language-switcher-tray.toolbar-tray,
+#toolbar-item-pb-language-switcher-tray {
+  position: absolute;
+  top: 100%;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+  width: auto;
+  min-width: 12rem;
+  max-width: 20rem;
+  display: none;
+  background: #2c2c2c;
+  z-index: 1300;
+}
+
+#toolbar-item-pb-language-switcher-tray.toolbar-tray .toolbar-lining {
+  padding: 0;
+  background: transparent;
+}
+
+#toolbar-item-pb-language-switcher-tray .toolbar-toggle-orientation {
+  display: none;
+}
+
+#toolbar-item-pb-language-switcher-tray.is-active {
+  display: block;
+}
+
+#toolbar-item-pb-language-switcher-tray .toolbar-lining {
+  padding: 0;
+}
+
+#toolbar-item-pb-language-switcher-tray h3.toolbar-tray__heading,
+#toolbar-item-pb-language-switcher-tray h3 {
+  display: none;
+}

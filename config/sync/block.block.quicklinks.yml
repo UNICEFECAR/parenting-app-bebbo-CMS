@@ -7,9 +7,9 @@ dependencies:
   module:
     - system
   theme:
-    - claro
+    - gin
 id: quicklinks
-theme: claro
+theme: gin
 region: content
 weight: -8
 provider: null
@@ -20,7 +20,7 @@ settings:
   label_display: visible
   provider: system
   level: 1
-  depth: 0
+  depth: null
   expand_all_items: false
 visibility:
   request_path:

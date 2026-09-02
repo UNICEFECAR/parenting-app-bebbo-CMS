@@ -7,6 +7,6 @@ adding:
 removing:
   first_day: 0
   country:
-    default: RS
+    default: CH
   timezone:
-    default: Europe/Belgrade
+    default: Europe/Zurich

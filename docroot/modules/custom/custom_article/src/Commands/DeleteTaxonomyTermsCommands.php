@@ -41,9 +41,9 @@ class DeleteTaxonomyTermsCommands extends DrushCommands {
   /**
    * Delete specific taxonomy terms by TID.
    *
-   * @command custom_article:delete-terms
+   * @command custom-article:delete-terms
    * @aliases dlt
-   * @usage custom_article:delete-terms
+   * @usage custom-article:delete-terms
    *   Deletes the taxonomy terms with the specified TIDs.
    */
   public function deleteTerms() {

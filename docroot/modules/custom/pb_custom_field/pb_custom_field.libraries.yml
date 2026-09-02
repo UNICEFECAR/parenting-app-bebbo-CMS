@@ -2,6 +2,35 @@ mylib:
   css:
     theme:
       css/admin.css: {}
- 
+
+homepage:
+  css:
+    theme:
+      css/homepage.css: {}
   js:
-     js/homepage.js: {}
+    js/homepage.js: {}
+
+homepage_grid:
+  css:
+    theme:
+      css/homepage-grid.css: {}
+
+admin_rtl:
+  css:
+    theme:
+      css/admin-rtl.css: {}
+
+toolbar_language_switcher:
+  css:
+    theme:
+      css/toolbar-language-switcher.css: {}
+  js:
+    js/toolbar-language-switcher.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+fpa_gin_style:
+  css:
+    theme:
+      css/fpa-gin-style.css: {}

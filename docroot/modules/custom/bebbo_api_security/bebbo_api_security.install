@@ -1,0 +1,227 @@
+<?php
+
+/**
+ * @file
+ * Install, schema, and update hooks for bebbo_api_security module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function bebbo_api_security_schema(): array {
+  $schema['bebbo_api_devices'] = [
+    'description' => 'Registered devices for API authentication.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'device_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'platform' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+      ],
+      'auth_method' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ],
+      'public_key' => [
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => FALSE,
+      ],
+      'apple_key_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'apple_receipt' => [
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'apple_counter' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => 'active',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'device_id' => ['device_id'],
+    ],
+    'indexes' => [
+      'idx_device_platform' => ['device_id', 'platform'],
+      'idx_apple_key_id' => ['apple_key_id'],
+      'idx_status' => ['status'],
+    ],
+  ];
+
+  $schema['bebbo_api_refresh_tokens'] = [
+    'description' => 'Hashed refresh tokens with family-based rotation.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'device_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'token_hash' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'token_family' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'expires' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'revoked' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'token_hash' => ['token_hash'],
+    ],
+    'indexes' => [
+      'idx_device_expires' => ['device_id', 'expires'],
+      'idx_family' => ['token_family'],
+    ],
+  ];
+
+  $schema['bebbo_api_challenges'] = [
+    'description' => 'Challenge nonces for device verification.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'device_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'challenge' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'purpose' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ],
+      'expires' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'used' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'challenge' => ['challenge'],
+    ],
+    'indexes' => [
+      'idx_device_purpose' => ['device_id', 'purpose'],
+    ],
+  ];
+
+  $schema['bebbo_api_security_log'] = [
+    'description' => 'Security event audit trail.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'device_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'event_type' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ],
+      'details' => [
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => FALSE,
+      ],
+      'ip_address' => [
+        'type' => 'varchar',
+        'length' => 45,
+        'not null' => TRUE,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'idx_event_type' => ['event_type'],
+      'idx_created' => ['created'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Install API security admin Views configuration.
+ */
+function bebbo_api_security_update_10001(): string {
+  \Drupal::service('config.installer')
+    ->installDefaultConfig('module', 'bebbo_api_security');
+  return 'Installed API security admin Views.';
+}
