@@ -7,6 +7,9 @@ dependencies:
 id: country-sme
 label: SME
 weight: 102
+admin: false
+scope: individual
+global_role: null
 group_type: country
 permissions:
   - 'update any group_node:activities entity'
@@ -37,5 +40,3 @@ permissions:
   - 'view unpublished group_node:survey entity'
   - 'view unpublished group_node:vaccinations entity'
   - 'view unpublished group_node:video_article entity'
-admin: false
-scope: individual
