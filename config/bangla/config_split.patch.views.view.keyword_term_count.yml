@@ -186,13 +186,6 @@ adding:
               multiple: false
               remember_roles:
                 authenticated: authenticated
-                anonymous: '0'
-                global_admin: '0'
-                reviewer: '0'
-                editor: '0'
-                sme: '0'
-                se: '0'
-                administrator: '0'
               min_placeholder: ''
               max_placeholder: ''
               placeholder: ''
@@ -292,13 +285,6 @@ removing:
               multiple: false
               remember_roles:
                 authenticated: authenticated
-                anonymous: '0'
-                global_admin: '0'
-                reviewer: '0'
-                editor: '0'
-                sme: '0'
-                se: '0'
-                administrator: '0'
               min_placeholder: ''
               max_placeholder: ''
               placeholder: ''

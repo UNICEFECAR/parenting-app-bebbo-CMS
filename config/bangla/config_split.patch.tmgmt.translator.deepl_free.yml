@@ -1,5 +1,11 @@
 adding:
+  plugin: deepl_api
   remote_languages_mappings:
     en: EN
     bn: ''
-removing: {  }
+removing:
+  plugin: deepl_free
+  settings:
+    url: 'https://api-free.deepl.com/v2/translate'
+    url_usage: 'https://api-free.deepl.com/v2/usage'
+    auth_key: ''

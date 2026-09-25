@@ -4,12 +4,10 @@ adding:
       ckeditor5_sourceEditing:
         allowed_tags:
           - '<a hreflang>'
-          - '<ul type>'
 removing:
   settings:
     plugins:
       ckeditor5_sourceEditing:
         allowed_tags:
           - '<a hreflang target>'
-          - '<ul type class>'
           - '<li class>'
