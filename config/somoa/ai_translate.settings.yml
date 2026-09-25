@@ -1,4 +1,5 @@
 use_ai_translate: true
+cache_translations: false
 reference_defaults: {  }
 prompt: ai_translate__ai_translate_default
 entity_reference_depth: 1
@@ -6,16 +7,19 @@ language_settings:
   en:
     model: ''
     prompt: ai_translate__ai_translate_default
+  fj-fj:
+    model: ''
+    prompt: ai_translate__itaukei_fijian_ai_translation_prompt
+  hi:
+    model: ''
+    prompt: ai_translate__hindi_latin_script_prompt
   fj-en:
     model: ''
     prompt: ai_translate__ai_translate_default
-  fj-fj:
-    model: ''
-    prompt: ai_translate__ai_translate_default
-  ws-en:
-    model: ''
-    prompt: ai_translate__ai_translate_default
   ws-sm:
+    model: ''
+    prompt: ai_translate__samoan_ai_translation_prompt
+  ws-en:
     model: ''
     prompt: ai_translate__ai_translate_default
 translation_status: create_draft

@@ -1,0 +1,9 @@
+uuid: 94edca03-4992-4ee5-9871-c7069213cec6
+langcode: en
+status: true
+dependencies: {  }
+id: hi
+label: Fiji-Hindi
+direction: ltr
+weight: -8
+locked: false

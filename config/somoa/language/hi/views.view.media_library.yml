@@ -1,0 +1,92 @@
+display:
+  default:
+    display_title: डीफॉल्ट
+    display_options:
+      title: मीडिया
+      fields:
+        media_bulk_form:
+          action_title: कार्रवाई
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'विषय प्रति पृष्ठ'
+            items_per_page_options_all_label: '-सभी-'
+      exposed_form:
+        options:
+          reset_button_label: 'दोबारा से स्थापित करें|'
+          exposed_sorts_label: 'क्रमबद्ध द्वारा'
+          sort_desc_label: अवरोही
+      empty:
+        area_text_custom:
+          content: 'कोई मीडिया उपलब्ध नहीं है।'
+      sorts:
+        created:
+          expose:
+            label: 'पहले सबसे नया'
+      filters:
+        status:
+          group_info:
+            label: प्रकाशित
+            group_items:
+              1:
+                title: प्रकाशित
+              2:
+                title: अप्रकाशित
+        name:
+          expose:
+            label: नाम
+        langcode:
+          expose:
+            label: भाषा
+  page:
+    display_title: पृष्ठ
+    display_options:
+      fields:
+        media_bulk_form:
+          action_title: कार्रवाई
+        name:
+          separator: ', '
+        edit_media:
+          text: 'संपादित करें'
+        delete_media:
+          text: मिटायें
+  widget:
+    display_options:
+      arguments:
+        bundle:
+          exception:
+            title: सभी
+      filters:
+        name:
+          expose:
+            label: नाम
+      header:
+        display_link_grid:
+          label: ढांचा
+        display_link_table:
+          label: तालिका
+  widget_table:
+    display_options:
+      fields:
+        name:
+          label: नाम
+        uid:
+          label: लेखक
+        changed:
+          label: अद्यतित
+      arguments:
+        bundle:
+          exception:
+            title: सभी
+      filters:
+        name:
+          expose:
+            label: नाम
+      header:
+        display_link_grid:
+          label: ढांचा
+        display_link_table:
+          label: तालिका
