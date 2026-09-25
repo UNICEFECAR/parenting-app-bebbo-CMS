@@ -2,20 +2,11 @@ adding:
   display:
     default:
       display_options:
-        cache:
-          type: none
-          options: {  }
         style:
           options:
             columns:
-              views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
               revision_uid: revision_uid
             info:
-              views_bulk_operations_bulk_form:
-                align: ''
-                separator: ''
-                empty_column: false
-                responsive: ''
               revision_uid:
                 sortable: false
                 default_sort_order: asc
@@ -23,12 +14,11 @@ adding:
                 separator: ''
                 empty_column: false
                 responsive: ''
+            sticky: false
 removing:
   display:
     default:
       display_options:
-        cache:
-          type: tag
         style:
           options:
             columns:
@@ -41,9 +31,4 @@ removing:
                 separator: ''
                 empty_column: false
                 responsive: priority-low
-    page_5:
-      display_options:
-        cache:
-          type: none
-        defaults:
-          cache: false
+            sticky: true
