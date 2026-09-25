@@ -3,10 +3,14 @@ _core:
 quick_checkout: false
 anonymous_access: true
 purge_finished: _never
+purge_continuous: _never
+purge_continuous_aborted: false
 respect_text_format: true
 allowed_formats: {  }
 word_count_exclude_tags: true
 source_list_limit: 50
+field_length_overflow_policy: needs_review
 submit_job_item_on_cron: false
 job_items_cron_limit: 50
 file_mimetypes: {  }
+purge_stale: false

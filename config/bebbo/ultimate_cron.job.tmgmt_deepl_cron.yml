@@ -1,0 +1,17 @@
+uuid: 75421a92-5d89-4250-a616-17f950bac653
+langcode: en
+status: true
+dependencies:
+  module:
+    - tmgmt_deepl
+title: 'Default cron handler'
+id: tmgmt_deepl_cron
+weight: 0
+module: tmgmt_deepl
+callback: 'tmgmt_deepl#cron'
+scheduler:
+  id: simple
+launcher:
+  id: serial
+logger:
+  id: database
