@@ -144,6 +144,7 @@ complete_list:
   - views.view.bebbo_v2_apis
   - key.key.deepl_api_authentication_key
   - ultimate_cron.job.tmgmt_deepl_cron
+  - ai.ai_prompt.ai_translate__test_3_ai_prompt_black
 partial_list:
   - ai_translate.settings
   - system.date
