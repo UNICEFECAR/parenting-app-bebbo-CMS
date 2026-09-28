@@ -1,0 +1,68 @@
+label: मीडिया
+display:
+  default:
+    display_title: डीफॉल्ट
+    display_options:
+      title: मीडिया
+      fields:
+        thumbnail__target_id:
+          separator: ', '
+        name:
+          separator: ', '
+        bundle:
+          label: प्रकार
+          separator: ', '
+        uid:
+          label: लेखक
+          separator: ', '
+        status:
+          label: अवस्था
+          settings:
+            format_custom_false: अप्रकाशित
+            format_custom_true: प्रकाशित
+          separator: ', '
+        changed:
+          label: अद्यतित
+          separator: ', '
+        operations:
+          label: कार्यवाही
+      pager:
+        options:
+          tags:
+            next: 'अगला ›'
+            previous: '‹ पिछला'
+            first: '« पहला'
+            last: 'आखरी »'
+          expose:
+            items_per_page_label: 'विषय प्रति पृष्ठ'
+            items_per_page_options_all_label: '-सभी-'
+      exposed_form:
+        options:
+          submit_button: फिल्टर
+          reset_button_label: 'दोबारा से स्थापित करें|'
+          exposed_sorts_label: 'क्रमबद्ध द्वारा'
+          sort_desc_label: अवरोही
+      empty:
+        area_text_custom:
+          content: 'कोई मीडिया उपलब्ध नहीं है।'
+      filters:
+        bundle:
+          expose:
+            label: प्रकार
+        status:
+          expose:
+            label: सही
+          group_info:
+            group_items:
+              1:
+                title: प्रकाशित
+              2:
+                title: अप्रकाशित
+        langcode:
+          expose:
+            label: भाषा
+  media_page_list:
+    display_title: मीडिया
+    display_options:
+      menu:
+        title: मीडिया

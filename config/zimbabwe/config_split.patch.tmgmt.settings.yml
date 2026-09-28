@@ -1,0 +1,6 @@
+adding: {  }
+removing:
+  purge_continuous: _never
+  purge_continuous_aborted: false
+  field_length_overflow_policy: needs_review
+  purge_stale: false

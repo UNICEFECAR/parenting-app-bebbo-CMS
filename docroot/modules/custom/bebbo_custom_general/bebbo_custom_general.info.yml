@@ -8,3 +8,5 @@ dependencies:
   - group:group
   - language_visibility_control:language_visibility_control
   - menu_per_role:menu_per_role
+  - tmgmt:tmgmt
+  - views_bulk_operations:views_bulk_operations

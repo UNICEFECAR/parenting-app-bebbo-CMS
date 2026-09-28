@@ -1,4 +1,8 @@
 adding:
   source_list_limit: 20
 removing:
+  purge_continuous: _never
+  purge_continuous_aborted: false
   source_list_limit: 50
+  field_length_overflow_policy: needs_review
+  purge_stale: false

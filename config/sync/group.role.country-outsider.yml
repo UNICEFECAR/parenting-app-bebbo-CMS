@@ -7,6 +7,9 @@ dependencies:
 id: country-outsider
 label: Outsider
 weight: -101
+admin: false
+scope: outsider
+global_role: authenticated
 group_type: country
 permissions:
   - 'view group'
@@ -22,6 +25,3 @@ permissions:
   - 'view group_node:survey entity'
   - 'view group_node:vaccinations entity'
   - 'view group_node:video_article entity'
-admin: false
-scope: outsider
-global_role: authenticated

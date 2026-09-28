@@ -489,6 +489,9 @@ complete_list:
   - mobile_app_links.android_packages
   - mobile_app_links.ios
   - system.site
+  - key.key.deepl_api_authentication_key
+  - ultimate_cron.job.tmgmt_deepl_cron
+  - ai.ai_prompt.ai_translate__test_3_ai_prompt_black
 partial_list:
   - ai_translate.settings
   - language.negotiation

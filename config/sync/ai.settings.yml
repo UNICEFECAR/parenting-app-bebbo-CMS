@@ -37,7 +37,7 @@ default_providers:
     provider_id: chat_translation
     model_id: gpt-5.6-sol
 default_vdb_provider: ''
-request_timeout: 60
+request_timeout: 300
 allowed_hosts: {  }
 allowed_hosts_rewrite_links: false
 global_guardrails: {  }

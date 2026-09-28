@@ -1,0 +1,13 @@
+display:
+  default:
+    display_title: डीफॉल्ट
+    display_options:
+      exposed_form:
+        options:
+          submit_button: 'लागू करें'
+          reset_button_label: 'दोबारा से स्थापित करें|'
+          exposed_sorts_label: 'क्रमबद्ध द्वारा'
+          sort_desc_label: अवरोही
+  block_1:
+    display_options:
+      block_category: प्रयोक्ता

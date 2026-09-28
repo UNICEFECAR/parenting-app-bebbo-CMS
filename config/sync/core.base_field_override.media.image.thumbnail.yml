@@ -12,7 +12,7 @@ third_party_settings:
     translation_sync:
       alt: alt
       title: title
-      file: 0
+      file: '0'
 id: media.image.thumbnail
 field_name: thumbnail
 entity_type: media
