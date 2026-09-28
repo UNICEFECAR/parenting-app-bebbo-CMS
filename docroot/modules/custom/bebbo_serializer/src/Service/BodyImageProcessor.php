@@ -458,14 +458,19 @@ class BodyImageProcessor {
       $url = $this->toRelativePath($src);
       $pathOnly = parse_url($url, PHP_URL_PATH) ?? $url;
 
-      // Preserve SVGs and GIFs as-is — no image style or WebP conversion.
-      if (preg_match('/\.(svg|gif)$/i', $pathOnly)) {
-        $urls[] = $url;
-        continue;
+      // External URLs — keep as-is without WebP conversion. The host is part
+      // of the URL: without it the path points at this site, where the image
+      // is not. A full URL to one of this site's own files is not external.
+      if (strpos($src, '//') === 0 || $this->isExternalUrl($src)) {
+        $fileUri = $this->urlToFileUri($url, $publicBasePath);
+        if (!$fileUri || !file_exists($fileUri)) {
+          $urls[] = strpos($src, '//') === 0 ? 'https:' . $src : $src;
+          continue;
+        }
       }
 
-      // External URLs — keep as-is without WebP conversion.
-      if ($this->isExternalUrl($src)) {
+      // Preserve SVGs and GIFs as-is — no image style or WebP conversion.
+      if (preg_match('/\.(svg|gif)$/i', $pathOnly)) {
         $urls[] = $url;
         continue;
       }
@@ -490,15 +495,10 @@ class BodyImageProcessor {
         }
       }
 
-      // A legacy /sites/default/files image that is not in this site's
-      // folder is served from the default site's folder as it is.
-      if ($publicBasePath !== 'sites/default/files' && strpos($url, '/sites/default/files/') === 0) {
-        $urls[] = $url;
-        continue;
-      }
-
-      // Fallback: swap extension for internal images without style.
-      $urls[] = $this->swapExtensionToWebp($url);
+      // No image style can be built for it (e.g. a legacy /sites/default/files
+      // image that is not in this site's folder): keep the URL as it is, since
+      // no .webp file exists at that path.
+      $urls[] = $url;
     }
 
     return $urls;
