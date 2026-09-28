@@ -142,6 +142,9 @@ complete_list:
   - bebbo_custom_general.language_redirects
   - bebbo_custom_general.mobile_app_share_link_form
   - views.view.bebbo_v2_apis
+  - key.key.deepl_api_authentication_key
+  - ultimate_cron.job.tmgmt_deepl_cron
+  - ai.ai_prompt.ai_translate__test_3_ai_prompt_black
 partial_list:
   - ai_translate.settings
   - system.date
@@ -262,3 +265,6 @@ partial_list:
   - tmgmt.translator.memsource
   - tmgmt.translator.microsoft
   - tmgmt.translator.open_ai
+  - user.role.anonymous
+  - user.role.reviewer
+  - user.role.se

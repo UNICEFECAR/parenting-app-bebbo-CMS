@@ -11,7 +11,7 @@ dependencies:
     - tmgmt_content
 third_party_settings:
   tmgmt_content:
-    excluded: false
+    excluded: true
 id: node.page.field_body_rendered
 field_name: field_body_rendered
 entity_type: node

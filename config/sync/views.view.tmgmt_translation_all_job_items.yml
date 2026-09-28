@@ -2486,10 +2486,10 @@ display:
         block_1: '0'
       filename: ''
       automatic_download: true
+      export_filesystem: private
       custom_redirect_path: false
       redirect_to_display: none
       include_query_params: false
-      export_filesystem: private
     cache_metadata:
       max-age: -1
       contexts:

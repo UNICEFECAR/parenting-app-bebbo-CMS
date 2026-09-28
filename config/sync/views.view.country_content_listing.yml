@@ -857,7 +857,6 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             nid: nid
             title: title
             type: type
@@ -869,11 +868,6 @@ display:
             operations: operations
           default: changed
           info:
-            views_bulk_operations_bulk_form:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
             nid:
               sortable: true
               default_sort_order: asc
@@ -936,7 +930,7 @@ display:
               empty_column: false
               responsive: ''
           override: true
-          sticky: true
+          sticky: false
           summary: ''
           empty_table: true
           caption: ''

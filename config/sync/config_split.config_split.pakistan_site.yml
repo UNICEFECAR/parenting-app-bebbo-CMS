@@ -21,6 +21,9 @@ complete_list:
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
   - system.site
+  - key.key.deepl_api_authentication_key
+  - ultimate_cron.job.tmgmt_deepl_cron
+  - ai.ai_prompt.ai_translate__test_3_ai_prompt_black
 partial_list:
   - ai_translate.settings
   - core.date_format.long
@@ -103,3 +106,5 @@ partial_list:
   - views.view.tmgmt_local_task_overview
   - tmgmt.translator.deepl_free
   - tmgmt.translator.deepl_pro
+  - tmgmt.translator.google
+  - feeds.feed_type.taxonomy_strings_language

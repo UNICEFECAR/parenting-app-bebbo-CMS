@@ -186,13 +186,6 @@ adding:
               multiple: false
               remember_roles:
                 authenticated: authenticated
-                anonymous: '0'
-                global_admin: '0'
-                reviewer: '0'
-                editor: '0'
-                sme: '0'
-                se: '0'
-                administrator: '0'
               min_placeholder: ''
               max_placeholder: ''
               placeholder: ''
@@ -246,7 +239,6 @@ removing:
               use_operator: false
               operator: ''
               operator_limit_selection: false
-              operator_list: {  }
               identifier: ''
               required: false
               remember: false
@@ -264,8 +256,6 @@ removing:
               multiple: false
               remember: false
               default_group: All
-              default_group_multiple: {  }
-              group_items: {  }
           tid_raw:
             id: tid_raw
             table: taxonomy_term_field_data
@@ -289,20 +279,12 @@ removing:
               use_operator: false
               operator: tid_raw_op
               operator_limit_selection: false
-              operator_list: {  }
               identifier: tid_raw
               required: false
               remember: false
               multiple: false
               remember_roles:
                 authenticated: authenticated
-                anonymous: '0'
-                global_admin: '0'
-                reviewer: '0'
-                editor: '0'
-                sme: '0'
-                se: '0'
-                administrator: '0'
               min_placeholder: ''
               max_placeholder: ''
               placeholder: ''
@@ -316,12 +298,10 @@ removing:
               multiple: false
               remember: false
               default_group: All
-              default_group_multiple: {  }
-              group_items: {  }
         filter_groups:
           operator: AND
           groups:
-            1: AND
+            - AND
       cache_metadata:
         contexts:
           - url
