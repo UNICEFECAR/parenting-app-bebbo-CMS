@@ -127,6 +127,16 @@ class EmbeddedImagesCommands extends DrushCommands {
           continue;
         }
 
+        // Same 255 character limit as the node presave hook: a longer URL
+        // aborts the save with an SQL truncation error.
+        $urls = array_values(array_filter($urls, static fn(string $url): bool => mb_strlen($url) <= 255));
+
+        // Nothing to do when the stored value is already correct: saving
+        // anyway would spend a revision on every node on every run.
+        if ($urls === array_column($translation->get('field_embedded_images')->getValue(), 'value')) {
+          continue;
+        }
+
         $translation->set('field_embedded_images', $urls);
         $translationUpdated = TRUE;
       }
@@ -143,7 +153,7 @@ class EmbeddedImagesCommands extends DrushCommands {
       $updated++;
     }
 
-    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (no body/images), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
+    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (no body/images or nothing to update), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
   }
 
 }

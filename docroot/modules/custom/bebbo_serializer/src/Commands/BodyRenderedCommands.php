@@ -57,6 +57,9 @@ class BodyRenderedCommands extends DrushCommands {
   /**
    * Populate field_body_rendered from body HTML for a content type.
    *
+   * Absolute image URLs are built with the drush site URI, so pass the site's
+   * public domain with -l.
+   *
    * @param string $content_type
    *   The machine name of the content type to process.
    * @param array $options
@@ -66,7 +69,7 @@ class BodyRenderedCommands extends DrushCommands {
    * @aliases brp
    * @option limit Process only this many nodes.
    * @option dry-run Report counts without saving.
-   * @usage drush body-rendered:populate article
+   * @usage drush -l https://SITE-DOMAIN body-rendered:populate article
    *   Populate rendered body for all articles, in any moderation state.
    * @usage drush brp activities --limit=10 --dry-run
    *   Dry-run for first 10 activities nodes.
