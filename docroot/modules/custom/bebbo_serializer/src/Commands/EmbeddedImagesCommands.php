@@ -55,7 +55,8 @@ class EmbeddedImagesCommands extends DrushCommands {
    * @option limit Process only this many nodes.
    * @option dry-run Report counts without saving.
    * @usage drush embedded-images:populate activities
-   *   Populate embedded images for all activities nodes.
+   *   Populate embedded images for all activities nodes, in any moderation
+   *   state.
    * @usage drush eip article --limit=10 --dry-run
    *   Dry-run for first 10 article nodes.
    */
@@ -77,8 +78,7 @@ class EmbeddedImagesCommands extends DrushCommands {
 
     $query = $storage->getQuery()
       ->accessCheck(FALSE)
-      ->condition('type', $content_type)
-      ->condition('status', 1);
+      ->condition('type', $content_type);
 
     if (!empty($options['limit'])) {
       $query->range(0, (int) $options['limit']);
@@ -86,13 +86,14 @@ class EmbeddedImagesCommands extends DrushCommands {
 
     $nids = $query->execute();
     if (empty($nids)) {
-      $this->logger()->notice("No published nodes found for '{$content_type}'.");
+      $this->logger()->notice("No nodes found for '{$content_type}'.");
       return;
     }
 
     $total = count($nids);
     $updated = 0;
     $skipped = 0;
+    $pending = 0;
     $dry_run = $options['dry-run'];
 
     $this->logger()->notice("Processing {$total} '{$content_type}' nodes" . ($dry_run ? ' (dry-run)' : '') . '...');
@@ -104,30 +105,41 @@ class EmbeddedImagesCommands extends DrushCommands {
         continue;
       }
 
+      // Saving the default revision of a node that has a pending revision
+      // would push that pending revision out of the latest-revision slot and
+      // lose the editor's work in progress. Leave those nodes alone.
+      if ($storage->getLatestRevisionId($node->id()) != $node->getRevisionId()) {
+        $pending++;
+        continue;
+      }
+
       $translationUpdated = FALSE;
 
       foreach ($node->getTranslationLanguages() as $langcode => $language) {
         $translation = $node->getTranslation($langcode);
         $body = $translation->get('body')->value ?? '';
 
-        // Skip if body is empty or has no embedded images.
-        if (empty($body) || (strpos($body, '<drupal-media') === FALSE && stripos($body, '<img') === FALSE)) {
-          continue;
+        // A body without images leaves an empty list, which clears a stale
+        // value, as the node presave hook does.
+        $urls = [];
+        if (strpos($body, '<drupal-media') !== FALSE || stripos($body, '<img') !== FALSE) {
+          // Same 255 character limit as the node presave hook: a longer URL
+          // aborts the save with an SQL truncation error.
+          $urls = array_values(array_filter($this->processor->extractImageUrls($body), static fn(string $url): bool => mb_strlen($url) <= 255));
         }
 
-        $urls = $this->processor->extractImageUrls($body);
-
-        if (empty($urls)) {
+        // Nothing to do when the stored value is already correct: saving
+        // anyway would spend a revision on every node on every run.
+        if ($urls === array_column($translation->get('field_embedded_images')->getValue(), 'value')) {
           continue;
         }
 
         if ($dry_run) {
-          $this->logger()->notice("  Node {$node->id()} ({$langcode}): found " . count($urls) . " image(s)");
-          $translationUpdated = TRUE;
-          continue;
+          $this->logger()->notice("  Node {$node->id()} ({$langcode}): " . count($urls) . " image(s)");
         }
-
-        $translation->set('field_embedded_images', $urls);
+        else {
+          $translation->set('field_embedded_images', $urls);
+        }
         $translationUpdated = TRUE;
       }
 
@@ -143,7 +155,7 @@ class EmbeddedImagesCommands extends DrushCommands {
       $updated++;
     }
 
-    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (no body/images), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
+    $this->logger()->success("{$content_type}: {$updated} updated, {$skipped} skipped (nothing to update), {$pending} skipped (pending revision), {$total} total" . ($dry_run ? ' [DRY-RUN]' : ''));
   }
 
 }

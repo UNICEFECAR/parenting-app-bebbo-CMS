@@ -2152,10 +2152,10 @@ display:
       automatic_download: true
       export_method: batch
       export_batch_size: 100
+      export_filesystem: public
       custom_redirect_path: false
       redirect_to_display: page_4
       include_query_params: false
-      export_filesystem: public
     cache_metadata:
       max-age: -1
       contexts:

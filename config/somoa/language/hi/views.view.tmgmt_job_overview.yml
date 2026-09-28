@@ -1,0 +1,43 @@
+display:
+  default:
+    display_options:
+      fields:
+        state:
+          label: अवस्था
+          separator: ', '
+        label:
+          label: लेबल
+        source_language_1:
+          label: से
+          separator: ', '
+        target_language:
+          label: को
+          separator: ', '
+        translator:
+          label: प्रदाता
+        tags_count:
+          label: उपनाम
+        changed:
+          label: 'बदल गया'
+        operations:
+          label: कार्यवाही
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'विषय प्रति पृष्ठ'
+            items_per_page_options_all_label: '-सभी-'
+      exposed_form:
+        options:
+          submit_button: 'लागू करें'
+          reset_button_label: 'दोबारा से स्थापित करें|'
+          exposed_sorts_label: 'क्रमबद्ध द्वारा'
+          sort_desc_label: अवरोही
+      filters:
+        state:
+          expose:
+            label: अवस्था
+        translator:
+          expose:
+            label: प्रदाता
+  page_1:
+    display_title: पृष्ठ

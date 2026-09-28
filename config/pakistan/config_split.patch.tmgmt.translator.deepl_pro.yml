@@ -1,5 +1,21 @@
 adding:
+  plugin: deepl_api
+  settings:
+    auth_key_entity: deepl_api_authentication_key
+    tag_handling_version: v1
+    enable_context: false
+    model_type: latency_optimized
+    translate_documents: false
+    enable_document_minification: false
+    omit_partner_id: false
+    log_api_requests: false
+    max_queries: 20
   remote_languages_mappings:
     en: EN
     ur: ''
-removing: {  }
+removing:
+  plugin: deepl_pro
+  settings:
+    url: 'https://api.deepl.com/v2/translate'
+    url_usage: 'https://api.deepl.com/v2/usage'
+    auth_key: ''

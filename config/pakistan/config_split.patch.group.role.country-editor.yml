@@ -1,4 +1,5 @@
-adding: {  }
+adding:
+  global_role: null
 removing:
   permissions:
     - 'use editorial transition archived_draft'

@@ -243,9 +243,19 @@ class BodyImageProcessor {
     // 1. Absolutise file src paths using the current site's public path.
     $publicBasePath = PublicStream::basePath();
     $html = str_replace('src="/' . $publicBasePath . '/', 'src="' . $baseUrl . '/' . $publicBasePath . '/', $html);
-    // Handle legacy /sites/default/files/ references on non-default sites.
+    // Handle legacy /sites/default/files/ references on non-default sites:
+    // point them at this site's folder only when the file is there, and keep
+    // the default site's URL otherwise, since that is where the file lives.
     if ($publicBasePath !== 'sites/default/files') {
-      $html = str_replace('src="/sites/default/files/', 'src="' . $baseUrl . '/' . $publicBasePath . '/', $html);
+      $html = preg_replace_callback(
+        '#src="/sites/default/files/([^"]*)"#',
+        function (array $matches) use ($baseUrl, $publicBasePath): string {
+          $relative = strtok($matches[1], '?') ?: $matches[1];
+          $folder = file_exists('public://' . rawurldecode($relative)) ? $publicBasePath : 'sites/default/files';
+          return 'src="' . $baseUrl . '/' . $folder . '/' . $matches[1] . '"';
+        },
+        $html
+      ) ?? $html;
     }
     // 2. Absolutise oEmbed src paths.
     $html = str_replace('src="/media/oembed', 'src="' . $baseUrl . '/media/oembed', $html);
@@ -448,14 +458,19 @@ class BodyImageProcessor {
       $url = $this->toRelativePath($src);
       $pathOnly = parse_url($url, PHP_URL_PATH) ?? $url;
 
-      // Preserve SVGs and GIFs as-is — no image style or WebP conversion.
-      if (preg_match('/\.(svg|gif)$/i', $pathOnly)) {
-        $urls[] = $url;
-        continue;
+      // External URLs — keep as-is without WebP conversion. The host is part
+      // of the URL: without it the path points at this site, where the image
+      // is not. A full URL to one of this site's own files is not external.
+      if (strpos($src, '//') === 0 || $this->isExternalUrl($src)) {
+        $fileUri = $this->urlToFileUri($url, $publicBasePath);
+        if (!$fileUri || !file_exists($fileUri)) {
+          $urls[] = strpos($src, '//') === 0 ? 'https:' . $src : $src;
+          continue;
+        }
       }
 
-      // External URLs — keep as-is without WebP conversion.
-      if ($this->isExternalUrl($src)) {
+      // Preserve SVGs and GIFs as-is — no image style or WebP conversion.
+      if (preg_match('/\.(svg|gif)$/i', $pathOnly)) {
         $urls[] = $url;
         continue;
       }
@@ -480,8 +495,10 @@ class BodyImageProcessor {
         }
       }
 
-      // Fallback: swap extension for internal images without style.
-      $urls[] = $this->swapExtensionToWebp($url);
+      // No image style can be built for it (e.g. a legacy /sites/default/files
+      // image that is not in this site's folder): keep the URL as it is, since
+      // no .webp file exists at that path.
+      $urls[] = $url;
     }
 
     return $urls;
@@ -570,15 +587,21 @@ class BodyImageProcessor {
     }
     // Strip query string.
     $path = strtok($path, '?') ?: $path;
+    // A src is URL-encoded ("Clean%20eyes.jpg" for "Clean eyes.jpg"), a file
+    // URI is not: image style URLs are built from the URI and encode it again.
+    $path = rawurldecode($path);
     // Check if path matches the public files directory.
     $prefix = '/' . $publicBasePath . '/';
     if (strpos($path, $prefix) === 0) {
       return 'public://' . substr($path, strlen($prefix));
     }
-    // Fallback: match /sites/default/files/ on non-default sites.
+    // Fallback: match /sites/default/files/ on non-default sites. Most of
+    // these files live only in the default site's folder, and an image style
+    // cannot be generated from a file that is not there.
     $defaultPrefix = '/sites/default/files/';
     if ($publicBasePath !== 'sites/default/files' && strpos($path, $defaultPrefix) === 0) {
-      return 'public://' . substr($path, strlen($defaultPrefix));
+      $uri = 'public://' . substr($path, strlen($defaultPrefix));
+      return file_exists($uri) ? $uri : NULL;
     }
     return NULL;
   }

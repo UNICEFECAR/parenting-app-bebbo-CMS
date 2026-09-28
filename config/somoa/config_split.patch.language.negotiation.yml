@@ -5,9 +5,11 @@ adding:
       fj-fj: fj-fj
       fj-en: fj-en
       ws-en: ws-en
+      hi: hi
     domains:
       ws-sm: ''
       fj-fj: ''
       fj-en: ''
       ws-en: ''
+      hi: ''
 removing: {  }

@@ -35,7 +35,6 @@ module:
   custom_article: 0
   date_popup: 0
   datetime: 0
-  dblog: 0
   dynamic_page_cache: 0
   editor: 0
   email_tfa: 0
@@ -153,7 +152,6 @@ module:
   toolbar_menu: 0
   toolbar_menu_clean: 0
   ultimate_cron: 0
-  update: 0
   user: 0
   video_embed_field: 0
   video_embed_media: 0

@@ -24,6 +24,9 @@ complete_list:
   - bebbo_custom_general.landing_pages
   - bebbo_custom_general.language_redirects
   - workflows.workflow.group_workflow
+  - key.key.deepl_api_authentication_key
+  - ultimate_cron.job.tmgmt_deepl_cron
+  - ai.ai_prompt.ai_translate__test_3_ai_prompt_black
 partial_list:
   - gin.settings
   - system.date
@@ -80,3 +83,5 @@ partial_list:
   - tmgmt.translator.google
   - tmgmt.translator.microsoft
   - tmgmt.translator.open_ai
+  - tmgmt.settings
+  - views.view.global_content_listing
