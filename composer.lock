@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "603f6f3632e655a406884fda5f5332ef",
+    "content-hash": "02c3199a835fa3abe4a99db12d819b38",
     "packages": [
         {
             "name": "acquia/drupal-spec-tool",
@@ -7870,6 +7870,90 @@
             "homepage": "https://www.drupal.org/project/purge",
             "support": {
                 "source": "https://git.drupalcode.org/project/purge"
+            }
+        },
+        {
+            "name": "drupal/queue_ui",
+            "version": "3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/queue_ui.git",
+                "reference": "3.2.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/queue_ui-3.2.3.zip",
+                "reference": "3.2.3",
+                "shasum": "320f7e3bf8390ed558a5127f33351c3efcc68dc7"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11.0"
+            },
+            "require-dev": {
+                "drupal/queue_order": "^2",
+                "drush/drush": "^12.0 || ^13.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.2.3",
+                    "datestamp": "1766588442",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^12.0 || ^13.0"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "floretan",
+                    "homepage": "https://www.drupal.org/user/2743951",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "coltrane",
+                    "homepage": "https://www.drupal.org/user/91990",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "tsphethean",
+                    "homepage": "https://www.drupal.org/user/66163",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "bceyssens",
+                    "homepage": "https://www.drupal.org/user/2811585",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "voleger",
+                    "homepage": "https://www.drupal.org/user/881620",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "voleger",
+                    "homepage": "https://www.drupal.org/user/3260314"
+                }
+            ],
+            "description": "Interface and manager for Drupal queues.",
+            "homepage": "https://www.drupal.org/project/queue_ui",
+            "keywords": [
+                "drupal",
+                "php",
+                "queue"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/queue_ui",
+                "issues": "https://www.drupal.org/project/issues/queue_ui"
             }
         },
         {

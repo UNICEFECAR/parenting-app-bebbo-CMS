@@ -85,6 +85,7 @@
         "drupal/mysql57": "^1.0",
         "drupal/paragraphs": "^1.20",
         "drupal/pathauto": "^1.15",
+        "drupal/queue_ui": "^3.2",
         "drupal/quickedit": "^2.0",
         "drupal/rdf": "^3.0@beta",
         "drupal/redirect": "^1.13",
@@ -213,6 +214,9 @@
             "drupal/ai": {
                 "Preserve HTML in streamed output - hold flush buffer until tags balance (3586558, MR !1734)": "patches/ai/preserve-html-in-streamed-output-3586558-mr1734.patch"
             },
+            "drupal/ai_tmgmt": {
+                "Batch: a failing item is logged and returned to the queue instead of aborting the whole batch": "patches/ai_tmgmt/batch-continue-on-item-failure.patch"
+            },
             "drupal/csv_serialization": {
                 "Fix league/csv 9.27 deprecations: createFromFileObject/createFromString (3562555)": "patches/csv_serialization_league_csv_deprecation-3562555.patch"
             },
@@ -291,7 +295,8 @@
                 "Fix drush command calling protected exportMenus method": "patches/menu_export_drush_visibility.patch"
             },
             "drupal/ai_translate": {
-                "Stamp revision date, author and log message on AI generated translations": "patches/ai_translate/stamp-revision-metadata-on-ai-translation.patch"
+                "Stamp revision date, author and log message on AI generated translations": "patches/ai_translate/stamp-revision-metadata-on-ai-translation.patch",
+                "Skip OpenAI moderation on translation chat calls: it flags ordinary parenting content and aborts the translation": "patches/ai_translate/skip-moderation-on-translation-chat.patch"
             },
             "drupal/contextual_range_filter": {
                 "Fix PHP 8.4 implicit nullable deprecation in DateRange::init() (https://www.drupal.org/i/3521312)": "patches/contextual_range_filter/3521312-implicit-nullable-php84.patch"
