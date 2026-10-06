@@ -83,6 +83,13 @@ Also shipped: `request_timeout: 60`, `prompt_logging: false`, the prompt type `a
 
 `ai_tmgmt` supplies a TMGMT translator plugin with the id **`ai`**. On this stage database it is configured as the translator **`open_ai`** ("Open AI") with settings `model_selection_type`, `chat_model`, `tokenizer_model`, `advanced`.
 
+How an AI translation job runs:
+
+- Submitting a job puts one item per field chunk on the `ai_translator_worker` queue and processes them in a browser batch. Items the batch does not reach (for example when the progress page is closed) are processed by cron through the same queue.
+- Translation chat calls skip the OpenAI moderation check (`ai_translate` is patched to send the `skip_moderation` tag); other AI calls remain moderated per `ai_provider_openai.settings` `moderation: true`.
+- If a single item fails inside the batch, the batch continues: the failure is logged on the `ai_tmgmt` channel, shown as an error message on the job item, and the item is released back to the queue for cron to retry. Cron retries an item up to `max_attempts` times and then marks the job item **Aborted**.
+- The queue can be inspected at **Configuration → System → Queue manager** → `/admin/config/system/queue-ui` (`queue_ui`, enabled on every site).
+
 **Every `tmgmt.translator.*` entity is `config_ignore`d**, so no translator — AI or otherwise — arrives via `cim`. On a new site you must create them by hand:
 
 1. Go to **Translation → Providers** → `/admin/tmgmt/translators`.
