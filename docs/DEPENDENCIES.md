@@ -18,8 +18,8 @@
 | Locked runtime packages | **270** (incl. transitive) | `composer.lock` `packages` |
 | Locked dev packages | **52** (incl. transitive) | `composer.lock` `packages-dev` |
 | Stability | `minimum-stability: dev`, `prefer-stable: true` | `composer.json` |
-| Patches applied | **45** entries (37 local files + 8 remote URLs) | `composer.json` `extra.patches` |
-| Content hash | `02c3199a835fa3abe4a99db12d819b38` | `composer.lock` |
+| Patches applied | **46** entries (38 local files + 8 remote URLs) | `composer.json` `extra.patches` |
+| Content hash | `f2f203559d5c23889a9a8f35178015ad` | `composer.lock` |
 
 > **Counts are total locked packages** (direct + transitive dependencies), not the count of `require` entries. `composer.json` directly declares 123 runtime + 11 dev packages; Composer resolves the rest.
 
@@ -330,7 +330,7 @@ The CI quality gate (`.github/workflows/pipelines.yml`) runs `composer validate`
 
 ## 6. Patches (`extra.patches`)
 
-Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` — a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 37 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
+Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` — a failed patch aborts install. `patchLevel` for `drupal/core` is `-p2`. **All 38 local patch files were confirmed present on disk**; 8 patches are fetched from drupal.org URLs.
 
 | Target package | Fix | Source |
 |----------------|-----|--------|
@@ -372,6 +372,7 @@ Applied by `cweagans/composer-patches`. `composer-exit-on-patch-failure: true` �
 | `drupal/ai_translate` | Stamp revision date, author and log message on AI-generated translations | local |
 | `drupal/ai_translate` | Skip OpenAI moderation on translation chat calls (adds the `skip_moderation` tag); other AI calls stay moderated | local |
 | `drupal/ai_tmgmt` | Browser batch: a failing item is logged, recorded on the job item and released back to the `ai_translator_worker` queue for cron to retry, instead of aborting the batch | local |
+| `drupal/ai_tmgmt` | Wrap `TranslationException` with valid `TMGMTException` arguments, so translation errors reach the queue worker's retry/abort handling instead of a `TypeError` | local |
 | `drupal/gin` | Contextual Edit toolbar tab always rendered highlighted (unqualified selector) | local |
 | `drupal/migrate_source_csv` | league/csv 9.27 `createFromStream` deprecation fix | local |
 | `drupal/structure_sync` | PHP 8.4 implicit-nullable params (3563762) | local |
