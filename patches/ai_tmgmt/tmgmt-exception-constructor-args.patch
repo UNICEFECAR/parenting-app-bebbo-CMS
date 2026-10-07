@@ -1,0 +1,15 @@
+diff --git a/src/Plugin/tmgmt/Translator/AiTranslator.php b/src/Plugin/tmgmt/Translator/AiTranslator.php
+index 77afae8..c228a65 100755
+--- a/src/Plugin/tmgmt/Translator/AiTranslator.php
++++ b/src/Plugin/tmgmt/Translator/AiTranslator.php
+@@ -328,7 +328,9 @@ class AiTranslator extends TranslatorPluginBase implements ContainerFactoryPlugi
+             );
+         }
+         catch (TranslationException $e) {
+-          throw new TMGMTException($e->getMessage(), $e->getCode(), $e);
++          // TMGMTException takes (message, replacement data, code); passing
++          // the code as the data argument makes strtr() throw a TypeError.
++          throw new TMGMTException($e->getMessage(), [], $e->getCode());
+         }
+ 
+       case 'ai_tmgmt':

@@ -215,7 +215,8 @@
                 "Preserve HTML in streamed output - hold flush buffer until tags balance (3586558, MR !1734)": "patches/ai/preserve-html-in-streamed-output-3586558-mr1734.patch"
             },
             "drupal/ai_tmgmt": {
-                "Batch: a failing item is logged and returned to the queue instead of aborting the whole batch": "patches/ai_tmgmt/batch-continue-on-item-failure.patch"
+                "Batch: a failing item is logged and returned to the queue instead of aborting the whole batch": "patches/ai_tmgmt/batch-continue-on-item-failure.patch",
+                "Wrap TranslationException with valid TMGMTException arguments (the int code was passed as strtr data and threw a TypeError)": "patches/ai_tmgmt/tmgmt-exception-constructor-args.patch"
             },
             "drupal/csv_serialization": {
                 "Fix league/csv 9.27 deprecations: createFromFileObject/createFromString (3562555)": "patches/csv_serialization_league_csv_deprecation-3562555.patch"
