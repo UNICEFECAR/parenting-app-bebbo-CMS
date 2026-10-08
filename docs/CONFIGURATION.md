@@ -945,7 +945,7 @@ This table reflects the languages **actually enabled in each site's live databas
 
 | File | Settings |
 |---|---|
-| `tmgmt_content.settings` | embedded_fields empty; default_moderation_states `group_workflow: ''` |
+| `tmgmt_content.settings` | embedded_fields empty; default_moderation_states `group_workflow: review_after_translation` — translations saved through TMGMT default to Review_after_translation (editors can still pick another valid state on the job item review form) |
 | `tmgmt_local.settings` | use_admin_theme `true`; allow_all `false` |
 | `tmgmt_memsource.settings` | debug `true`; token is empty in config, and `tmgmt_memsource.settings:memsource_token` is a key-level `config_ignore` entry so each environment keeps its own |
 
