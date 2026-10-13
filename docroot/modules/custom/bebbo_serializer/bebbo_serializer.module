@@ -282,16 +282,19 @@ function bebbo_serializer_node_presave(NodeInterface $node): void {
   }
 
   $body = $node->get('body')->value ?? '';
+  // Compare against the same translation: the original entity is loaded in
+  // the default language, and a translation whose body matches the default
+  // language body would otherwise look unchanged and keep stale values.
   $original_body = '';
-  if (!$node->isNew() && isset($node->original)) {
-    $original_body = $node->original->get('body')->value ?? '';
+  $original = $node->isNew() ? NULL : $node->getOriginal();
+  $langcode = $node->language()->getId();
+  if ($original && $original->hasTranslation($langcode)) {
+    $original_body = $original->getTranslation($langcode)->get('body')->value ?? '';
   }
 
-  // Embedded images are only consumed by the API, which serves published
-  // content, so there is nothing to gain from extracting them on drafts.
-  if ($node->isPublished()) {
-    _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
-  }
+  // Extract on drafts too: publishing a draft does not change the body, so
+  // the publish save would skip extraction and keep the old images.
+  _bebbo_serializer_populate_embedded_images($node, $body, $original_body);
   _bebbo_serializer_populate_body_rendered($node, $body, $original_body);
 }
 
