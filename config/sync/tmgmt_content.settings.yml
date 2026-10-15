@@ -2,4 +2,4 @@ _core:
   default_config_hash: Yx-6uSwgH5itKuJtsVkruGtgxz3SFbDHST6V6qzlKxw
 embedded_fields: {  }
 default_moderation_states:
-  group_workflow: ''
+  group_workflow: review_after_translation
