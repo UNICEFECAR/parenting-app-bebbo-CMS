@@ -1450,6 +1450,19 @@ function pb_custom_field_views_data_alter(array &$data) {
       'allow empty' => TRUE,
     ],
   ];
+
+  // TMGMT replaces the job state entity field with an icon-only handler, so
+  // job listings cannot show a readable state without this extra field.
+  if (isset($data['tmgmt_job'])) {
+    $data['tmgmt_job']['pb_state_label'] = [
+      'title' => t('State (label)'),
+      'help' => t('The job state as a text label instead of the TMGMT state icon.'),
+      'field' => [
+        'id' => 'pb_tmgmt_job_state_label',
+        'real field' => 'state',
+      ],
+    ];
+  }
 }
 
 /**

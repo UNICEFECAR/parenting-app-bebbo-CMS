@@ -1,0 +1,37 @@
+diff --git a/src/Plugin/tmgmt/Translator/AiTranslator.php b/src/Plugin/tmgmt/Translator/AiTranslator.php
+index 77afae8..5603f66 100755
+--- a/src/Plugin/tmgmt/Translator/AiTranslator.php
++++ b/src/Plugin/tmgmt/Translator/AiTranslator.php
+@@ -526,7 +526,31 @@ class AiTranslator extends TranslatorPluginBase implements ContainerFactoryPlugi
+       'item_type' => $jobItem->getItemType(),
+       'item_id' => $jobItem->getItemId(),
+     ];
+-    $result = static::doRequest($translator, 'translate', $query_params);
++    try {
++      $result = static::doRequest($translator, 'translate', $query_params);
++    }
++    catch (\Throwable $exception) {
++      // The queue worker passes no queue item and relies on the exception for
++      // its retry and abort handling.
++      if (!$queue_item) {
++        throw $exception;
++      }
++      // In the batch, one failing item must not abort the whole batch. Record
++      // the failure and hand the item back to the queue so cron retries it.
++      \Drupal::logger('ai_tmgmt')->error('Translation of job item @id (@key) failed and was returned to the queue for cron to retry: @message', [
++        '@id' => $job_item_id,
++        '@key' => $key,
++        '@message' => $exception->getMessage(),
++      ]);
++      $jobItem->addMessage('Translation of @key failed and was returned to the queue for cron to retry: @message', [
++        '@key' => $key,
++        '@message' => $exception->getMessage(),
++      ], 'error');
++      if (isset($queue_item->item_id) && $queue_item->item_id) {
++        \Drupal::service('queue')->get('ai_translator_worker', TRUE)->releaseItem($queue_item);
++      }
++      return;
++    }
+     if (!isset($context['results'][$job_item_id]['translation'])) {
+       $context['results'][$job_item_id]['translation'] = [];
+     }
