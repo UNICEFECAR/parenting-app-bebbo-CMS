@@ -1,0 +1,61 @@
+display:
+  default:
+    display_title: डीफॉल्ट
+    display_options:
+      fields:
+        bundle:
+          label: प्रकार
+          separator: ', '
+        created:
+          label: तारीख
+          separator: ', '
+        prompt:
+          separator: ', '
+        output_text:
+          separator: ', '
+        extra_data:
+          separator: ', '
+        provider:
+          label: प्रदाता
+          separator: ', '
+        model:
+          separator: ', '
+        tags_value:
+          label: उपनाम
+          separator: ', '
+        view_ai_log:
+          text: देखें
+        edit_ai_log:
+          text: 'संपादित करें'
+        delete_ai_log:
+          text: मिटायें
+        dropbutton:
+          label: क्रियाएँ
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« पहला'
+            last: 'आखरी »'
+          expose:
+            items_per_page_label: 'विषय प्रति पृष्ठ'
+            items_per_page_options_all_label: '-सभी-'
+      exposed_form:
+        options:
+          submit_button: 'लागू करें'
+          reset_button_label: 'दोबारा से स्थापित करें|'
+          exposed_sorts_label: 'क्रमबद्ध द्वारा'
+          sort_desc_label: अवरोही
+      filters:
+        bundle:
+          expose:
+            label: प्रकार
+        created_1:
+          expose:
+            label: को
+        provider:
+          expose:
+            label: प्रदाता
+  page_1:
+    display_title: पृष्ठ
