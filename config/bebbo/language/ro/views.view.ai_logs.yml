@@ -1,0 +1,63 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Type
+          separator: ', '
+        created:
+          label: Data
+          separator: ', '
+        prompt:
+          separator: ', '
+        output_text:
+          separator: ', '
+        extra_data:
+          separator: ', '
+        provider:
+          label: Provider
+          separator: ', '
+        model:
+          separator: ', '
+        tags_value:
+          label: Tags
+          separator: ', '
+        view_ai_log:
+          text: Afișează
+        edit_ai_log:
+          text: Edit
+        delete_ai_log:
+          text: Delete
+        dropbutton:
+          label: Acţiuni
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      filters:
+        bundle:
+          expose:
+            label: Type
+        created_1:
+          expose:
+            label: To
+        provider:
+          expose:
+            label: Provider
+  page_1:
+    display_title: Page
