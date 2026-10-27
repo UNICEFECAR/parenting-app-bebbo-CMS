@@ -271,8 +271,9 @@ class BodyImageProcessor {
     // 7. Remove remote-video dimension attributes.
     $html = str_replace('width="640"', '', $html);
     $html = str_replace('height="480"', '', $html);
-    // 8. Remove CKEditor image label div.
+    // 8. Remove CKEditor image and video file label divs.
     $html = str_replace('<div class="field__label visually-hidden">Image</div>', '', $html);
+    $html = str_replace('<div class="field__label visually-hidden">Video file</div>', '', $html);
     // 9. Decode HTML entities.
     $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
@@ -326,13 +327,13 @@ class BodyImageProcessor {
   }
 
   /**
-   * Extract image URLs from <drupal-media> tags.
+   * Extract image and video URLs from <drupal-media> tags.
    *
    * @param string $html
    *   The raw body HTML content.
    *
    * @return string[]
-   *   Array of styled WebP image URLs.
+   *   Array of styled WebP image URLs and video URLs, in body order.
    */
   protected function extractFromDrupalMedia(string $html): array {
     // Extract UUIDs from <drupal-media> tags in body order.
@@ -379,6 +380,24 @@ class BodyImageProcessor {
     foreach (array_keys($orderedUuids) as $uuid) {
       $media = $uuidMap[$uuid] ?? NULL;
       if (!$media) {
+        continue;
+      }
+
+      // Remote video — keep the source URL as entered (e.g. YouTube link).
+      if ($media->bundle() === 'remote_video') {
+        $videoUrl = (string) $media->getSource()->getSourceFieldValue($media);
+        if ($videoUrl !== '') {
+          $urls[] = $videoUrl;
+        }
+        continue;
+      }
+
+      // Uploaded video — use the file URL as a relative path.
+      if ($media->bundle() === 'video' && $media->hasField('field_media_video_file')) {
+        $file = $media->get('field_media_video_file')->entity;
+        if ($file instanceof FileInterface) {
+          $urls[] = $this->toRelativePath($this->fileUrlGenerator->generateAbsoluteString($file->getFileUri()));
+        }
         continue;
       }
 

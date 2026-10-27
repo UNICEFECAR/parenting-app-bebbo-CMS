@@ -108,6 +108,9 @@ settings:
         - '<h5 id>'
         - '<h6 id>'
         - '<drupal-media title>'
+        - '<iframe width height src allow title allowfullscreen>'
+        - '<video controls>'
+        - '<source src type>'
     media_media:
       allow_view_mode_override: true
 image_upload:
