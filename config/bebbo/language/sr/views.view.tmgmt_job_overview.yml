@@ -8,8 +8,6 @@ display:
           label: Label
         translator:
           label: Provider
-        changed:
-          label: Changed
         operations:
           label: Operations
       exposed_form:
