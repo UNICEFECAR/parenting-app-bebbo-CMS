@@ -118,6 +118,7 @@ complete_list:
   - language/hi/user.role.anonymous
   - language/hi/user.role.authenticated
   - language/hi/user.settings
+  - language/hi/views.view.ai_logs
   - language/hi/views.view.archive
   - language/hi/views.view.bebbo_api_challenges
   - language/hi/views.view.bebbo_api_devices

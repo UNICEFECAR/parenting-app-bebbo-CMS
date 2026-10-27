@@ -150,6 +150,7 @@ complete_list:
   - language/ro/user.role.anonymous
   - language/ro/user.role.authenticated
   - language/ro/user.settings
+  - language/ro/views.view.ai_logs
   - language/ro/views.view.archive
   - language/ro/views.view.bebbo_api_challenges
   - language/ro/views.view.bebbo_api_devices
@@ -210,6 +211,7 @@ complete_list:
   - language/ru/system.action.pathauto_update_alias_user
   - language/ru/system.menu.admin
   - language/ru/user.settings
+  - language/ru/views.view.ai_logs
   - language/ru/views.view.archive
   - language/ru/views.view.bebbo_api_challenges
   - language/ru/views.view.bebbo_api_devices
@@ -311,6 +313,7 @@ complete_list:
   - language/sk/user.role.anonymous
   - language/sk/user.role.authenticated
   - language/sk/user.settings
+  - language/sk/views.view.ai_logs
   - language/sk/views.view.archive
   - language/sk/views.view.bebbo_api_challenges
   - language/sk/views.view.bebbo_api_devices
@@ -354,6 +357,7 @@ complete_list:
   - language/sq/shortcut.set.default
   - language/sq/system.menu.admin
   - language/sq/user.settings
+  - language/sq/views.view.ai_logs
   - language/sq/views.view.archive
   - language/sq/views.view.bebbo_api_challenges
   - language/sq/views.view.bebbo_api_devices
@@ -397,6 +401,7 @@ complete_list:
   - language/sr/pathauto.pattern.group_content
   - language/sr/shortcut.set.default
   - language/sr/user.settings
+  - language/sr/views.view.ai_logs
   - language/sr/views.view.archive
   - language/sr/views.view.bebbo_api_challenges
   - language/sr/views.view.bebbo_api_devices
@@ -453,6 +458,7 @@ complete_list:
   - language/uk/system.action.pathauto_update_alias_user
   - language/uk/system.menu.admin
   - language/uk/user.settings
+  - language/uk/views.view.ai_logs
   - language/uk/views.view.archive
   - language/uk/views.view.bebbo_api_challenges
   - language/uk/views.view.bebbo_api_devices

@@ -1,9 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          reset_button_label: Reset
       fields:
         type:
           label: Type
@@ -15,8 +12,15 @@ display:
           label: Tags
         operations:
           label: Operations
+      exposed_form:
+        options:
+          reset_button_label: Reset
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
+      filters:
+        job_type:
+          expose:
+            label: 'Job Type (Custom)'
   page_1:
     display_title: Faqe

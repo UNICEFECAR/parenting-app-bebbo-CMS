@@ -1,9 +1,6 @@
 display:
   default:
     display_options:
-      exposed_form:
-        options:
-          exposed_sorts_label: 'Sort by'
       fields:
         state:
           label: State
@@ -11,14 +8,18 @@ display:
           label: Label
         type:
           label: Type
-        changed:
-          label: Changed
         operations:
           label: Operations
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
+      empty:
+        area_text_custom:
+          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
       filters:
         state:
           group_info:
             label: State
-      empty:
-        area_text_custom:
-          content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
+        job_type:
+          expose:
+            label: 'Job Type (Custom)'

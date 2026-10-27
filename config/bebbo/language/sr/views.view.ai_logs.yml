@@ -1,0 +1,25 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Type
+        provider:
+          label: Provider
+        view_ai_log:
+          text: Преглед
+        edit_ai_log:
+          text: Edit
+        delete_ai_log:
+          text: Delete
+      exposed_form:
+        options:
+          exposed_sorts_label: 'Sort by'
+      filters:
+        bundle:
+          expose:
+            label: Type
+        provider:
+          expose:
+            label: Provider

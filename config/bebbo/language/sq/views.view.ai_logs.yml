@@ -1,0 +1,27 @@
+display:
+  default:
+    display_title: Default
+    display_options:
+      fields:
+        bundle:
+          label: Type
+        tags_value:
+          label: Tags
+        view_ai_log:
+          text: Shfaq
+        edit_ai_log:
+          text: Edit
+        delete_ai_log:
+          text: Delete
+      exposed_form:
+        options:
+          reset_button_label: Reset
+      filters:
+        bundle:
+          expose:
+            label: Type
+        created_1:
+          expose:
+            label: To
+  page_1:
+    display_title: Faqe

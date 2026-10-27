@@ -1,6 +1,7 @@
 _core:
   default_config_hash: IaNiyCLAJBz5QfQqeZ_MxVRVs4KYTOMlVpf9wFrIVKk
 use_ai_translate: true
+cache_translations: false
 reference_defaults: {  }
 prompt: ai_translate__ai_translate_default
 entity_reference_depth: 1
