@@ -27,9 +27,6 @@ display:
           label: Мітка
         item_type:
           label: Тип
-          separator: ', '
-        word_count:
-          separator: ', '
         operations:
           label: Операції
       arguments:

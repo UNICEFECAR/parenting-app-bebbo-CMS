@@ -1,25 +1,20 @@
 display:
   default:
-    display_title: Головне
     display_options:
-      exposed_form:
-        options:
-          submit_button: Застосувати
-          reset_button_label: Скинути
-          exposed_sorts_label: 'Впорядкувати за'
-          sort_asc_label: Зрост
-          sort_desc_label: Спад
-      pager:
-        options:
+      filters:
+        job_type:
+          group_info:
+            group_items:
+              1:
+                title: Normal
           expose:
-            items_per_page_label: 'Елементів на сторінку'
-            items_per_page_options_all_label: '- Усе -'
-            offset_label: Зміщення
-          tags:
-            previous: '‹ Попередня'
-            next: 'Наступна ›'
-            first: '« Перша'
-            last: 'Остання »'
+            label: 'Job Type (Custom)'
+        state:
+          group_info:
+            label: Стан
+        source_language:
+          expose:
+            label: 'Вихідна мова'
       fields:
         state:
           label: Стан
@@ -29,33 +24,31 @@ display:
           label: Тип
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        word_count:
-          separator: ', '
-        tags_count:
-          separator: ', '
-        changed:
-          label: Changed
-          separator: ', '
         operations:
           label: Операції
-      filters:
-        state:
-          group_info:
-            label: Стан
-        source_language:
+      pager:
+        options:
+          tags:
+            next: 'Наступна ›'
+            previous: '‹ Попередня'
+            first: '« Перша'
+            last: 'Остання »'
           expose:
-            label: 'Вихідна мова'
-        job_type:
-          group_info:
-            group_items:
-              1:
-                title: Normal
+            items_per_page_label: 'Елементів на сторінку'
+            items_per_page_options_all_label: '- Усе -'
+            offset_label: Зміщення
+      exposed_form:
+        options:
+          submit_button: Застосувати
+          reset_button_label: Скинути
+          exposed_sorts_label: 'Впорядкувати за'
+          sort_asc_label: Зрост
+          sort_desc_label: Спад
       empty:
         area_text_custom:
           content: "<p style=\"text-align:center\">No Data Available</p>\r\n"
+    display_title: Головне
   page_1:
     display_title: Сторінка

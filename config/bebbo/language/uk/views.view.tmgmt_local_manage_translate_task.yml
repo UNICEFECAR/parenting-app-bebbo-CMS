@@ -23,35 +23,23 @@ display:
       fields:
         title:
           label: Title
-          separator: ', '
   assigned:
     display_options:
       fields:
         status:
           label: Стан
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції
       filters:
         source_language:
           expose:
             label: 'Вихідна мова'
-        uid:
-          expose:
-            label: Provider
         title:
           expose:
             label: Title
@@ -63,32 +51,20 @@ display:
       fields:
         status:
           label: Стан
-          separator: ', '
         created:
           label: Created
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції
       filters:
         source_language:
           expose:
             label: 'Вихідна мова'
-        uid:
-          expose:
-            label: Provider
         title:
           expose:
             label: Title
@@ -97,32 +73,20 @@ display:
       fields:
         status:
           label: Стан
-          separator: ', '
         created:
           label: Created
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції
       filters:
         source_language:
           expose:
             label: 'Вихідна мова'
-        uid:
-          expose:
-            label: Provider
         title:
           expose:
             label: Title
@@ -131,28 +95,18 @@ display:
       fields:
         status:
           label: Стан
-        tuid:
-          separator: ', '
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції
       filters:
         source_language:
           expose:
             label: 'Вихідна мова'
-        uid:
-          expose:
-            label: Provider
         title:
           expose:
             label: Title
@@ -163,29 +117,18 @@ display:
           label: Стан
         created:
           label: Created
-          separator: ', '
-        tuid:
-          separator: ', '
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції
       filters:
         source_language:
           expose:
             label: 'Вихідна мова'
-        uid:
-          expose:
-            label: Provider
         title:
           expose:
             label: Title
@@ -196,14 +139,9 @@ display:
           label: Стан
         title:
           label: Title
-          separator: ', '
         source_language:
           label: From
-          separator: ', '
         target_language:
           label: To
-          separator: ', '
-        loop_count:
-          separator: ', '
         operations:
           label: Операції

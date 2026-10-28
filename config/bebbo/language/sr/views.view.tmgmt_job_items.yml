@@ -11,8 +11,6 @@ display:
           label: Label
         type:
           label: Type
-        changed:
-          label: Changed
         operations:
           label: Operations
   checkout:
@@ -22,5 +20,3 @@ display:
           label: Label
         type:
           label: Type
-        changed:
-          label: Changed
