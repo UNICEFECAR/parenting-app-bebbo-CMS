@@ -147,13 +147,28 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
         ] + $request->query->all(),
       ]);
 
+      // Mark the Node ID column as sortable so the admin theme shows the sort
+      // icon, mirroring core's TableSort::header() output.
+      $node_id_title = ['#markup' => t('Node ID')];
+      $node_id_cell_classes = ['sortable-heading'];
+      if ($current_order === 'node_id') {
+        $node_id_cell_classes[] = 'is-active';
+        $node_id_title = [
+          'label' => $node_id_title,
+          'indicator' => [
+            '#theme' => 'tablesort_indicator',
+            '#style' => $new_sort,
+          ],
+        ];
+      }
+
       // Add Node ID as the first column.
       $header = $form['items']['#header'];
       $new_header = [
         'node_id' => [
           'data' => [
             '#type' => 'link',
-            '#title' => t('Node ID'),
+            '#title' => $node_id_title,
             '#url' => $sort_url,
             '#attributes' => [
               'title' => t('Sort by Node ID'),
@@ -161,6 +176,7 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
               'class' => ['node-id-header'],
             ],
           ],
+          'class' => $node_id_cell_classes,
         ],
       ];
 
@@ -1126,4 +1142,25 @@ function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPlugi
     NaturalTitleSort::orderBy($query, $qualified, $orderby['direction']);
     return;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for tmgmt_job_item_edit_form.
+ *
+ * Shows "Draft" as the current state of a new translation job item until a
+ * moderation state has been saved on the item.
+ */
+function bebbo_custom_general_form_tmgmt_job_item_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!isset($form['moderation_state']['current'])) {
+    return;
+  }
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\tmgmt\JobItemInterface $item */
+  $item = $form_object->getEntity();
+  // A state already saved on the job item is shown as is.
+  if ($item->getData(['#moderation_state'])) {
+    return;
+  }
+  $form['moderation_state']['current']['#markup'] = t('Draft');
 }
