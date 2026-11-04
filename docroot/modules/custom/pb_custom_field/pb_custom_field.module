@@ -31,6 +31,10 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\taxonomy\TermForm;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Markup;
+use Drupal\pb_custom_field\TmgmtJobItemsForm;
 
 /**
  * Get target roles for cross-country editing.
@@ -110,6 +114,52 @@ function pb_custom_field_entity_base_field_info_alter(array &$fields, EntityType
         'settings' => ['link' => FALSE],
       ]);
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for tmgmt_job_edit_form.
+ *
+ * The job items view (checkout display) is rendered inside the job form, and
+ * its bulk operations form would be nested in it. Browsers drop a nested
+ * form, so add an empty form after the job form for the view's form controls
+ * to belong to instead.
+ *
+ * @see pb_custom_field_form_views_form_tmgmt_job_items_checkout_alter()
+ */
+function pb_custom_field_form_tmgmt_job_edit_form_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+  if (!isset($form['job_items_wrapper'])) {
+    return;
+  }
+  $form['#suffix'] = Markup::create(($form['#suffix'] ?? '') . sprintf(
+    '<form id="%s" action="%s" method="post" accept-charset="UTF-8"></form>',
+    TmgmtJobItemsForm::FORM_ID,
+    Html::escape(\Drupal::request()->getRequestUri())
+  ));
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for the job items checkout view.
+ *
+ * Renders the view form without its own <form> tag (it would be nested in the
+ * job form) and links its controls to the empty form added after the job form
+ * by the HTML "form" attribute, so each form submits only its own values.
+ */
+function pb_custom_field_form_views_form_tmgmt_job_items_checkout_alter(array &$form, FormStateInterface $form_state, $form_id): void {
+  $form['#theme_wrappers'] = ['container'];
+  $form['#after_build'][] = 'pb_custom_field_job_items_form_after_build';
+}
+
+/**
+ * After build callback: links the job items view form controls to their form.
+ */
+function pb_custom_field_job_items_form_after_build(array $element, FormStateInterface $form_state): array {
+  foreach (Element::children($element) as $key) {
+    $element[$key] = pb_custom_field_job_items_form_after_build($element[$key], $form_state);
+  }
+  if (!empty($element['#input']) && !Element::children($element)) {
+    $element['#attributes']['form'] = TmgmtJobItemsForm::FORM_ID;
+  }
+  return $element;
 }
 
 /**
