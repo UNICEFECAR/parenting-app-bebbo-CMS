@@ -91,6 +91,7 @@ function pb_content_analytics_form_alter(&$form, FormStateInterface $form_state,
     if (!empty($storage['view'])) {
       $views_with_export = [
         'content_analytics',
+        'country_content_listing',
         'country_reports',
         'content_export_csv',
         'child_growth_reports',
@@ -134,6 +135,7 @@ function pb_content_analytics_form_alter(&$form, FormStateInterface $form_state,
 function pb_content_analytics_views_pre_render(ViewExecutable $view): void {
   $views_with_export = [
     'content_analytics',
+    'country_content_listing',
     'country_reports',
     'content_export_csv',
     'child_growth_reports',
