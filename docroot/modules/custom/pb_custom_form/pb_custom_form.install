@@ -69,6 +69,13 @@ function pb_custom_form_schema(): array {
         'default' => NULL,
         'description' => 'Apple App Store URL for app update.',
       ],
+      'app_name' => [
+        'type' => 'varchar',
+        'length' => 512,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'Name and details of the new app for app update.',
+      ],
     ],
     'primary key' => ['id'],
   ];
@@ -211,6 +218,25 @@ function pb_custom_form_update_70018(): void {
       'not null' => FALSE,
       'default' => NULL,
       'description' => 'Apple App Store URL for app update.',
+    ]);
+  }
+}
+
+/**
+ * Update #70019: Add app_name column.
+ *
+ * Optional free-text name/details of the new app for app update records.
+ */
+function pb_custom_form_update_70019(): void {
+  $schema = _pb_custom_form_db()->schema();
+
+  if (!$schema->fieldExists('forcefull_check_update_api', 'app_name')) {
+    $schema->addField('forcefull_check_update_api', 'app_name', [
+      'type' => 'varchar',
+      'length' => 512,
+      'not null' => FALSE,
+      'default' => NULL,
+      'description' => 'Name and details of the new app for app update.',
     ]);
   }
 }
