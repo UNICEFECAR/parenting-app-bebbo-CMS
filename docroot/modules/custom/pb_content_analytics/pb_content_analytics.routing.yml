@@ -25,5 +25,6 @@ pb_content_analytics.sync_now:
     _title: 'Sync Now'
   requirements:
     _permission: 'manage content analytics sync'
+    _csrf_token: 'TRUE'
   options:
     _admin_route: TRUE

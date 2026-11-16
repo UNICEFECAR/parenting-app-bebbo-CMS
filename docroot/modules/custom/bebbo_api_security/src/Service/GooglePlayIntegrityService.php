@@ -117,6 +117,10 @@ class GooglePlayIntegrityService {
       $expected_request_hash = $device_id;
     }
 
+    // Standard requests bind requestHash; classic requests bind nonce.
+    if (isset($payload['tokenPayloadExternal']['requestDetails']['requestHash'])) {
+      $expected_request_hash = rtrim(strtr(base64_encode(hash('sha256', $expected_request_hash, TRUE)), '+/', '-_'), '=');
+    }
     $this->verifyVerdicts($payload, $device_id, $expected_request_hash);
 
     return $payload;
@@ -143,15 +147,16 @@ class GooglePlayIntegrityService {
     $details = $payload['tokenPayloadExternal'] ?? [];
 
     // Verify nonce — binds integrity token to this request.
-    $actual_nonce = $details['requestDetails']['nonce'] ?? '';
+    $binding_field = isset($details['requestDetails']['nonce']) ? 'nonce' : 'requestHash';
+    $actual_nonce = $details['requestDetails'][$binding_field] ?? '';
     if ((bool) $config->get('debug_logging')) {
       $this->logger->debug('Nonce comparison — expected: @expected | actual nonce: @actual', [
         '@expected' => $expected_request_hash,
         '@actual' => $actual_nonce,
       ]);
     }
-    if (!hash_equals($expected_request_hash, $actual_nonce)) {
-      throw new \RuntimeException('Nonce mismatch: integrity token not bound to this request.');
+    if (!is_string($actual_nonce) || !hash_equals($expected_request_hash, $actual_nonce)) {
+      throw new \RuntimeException($binding_field . ' mismatch: integrity token not bound to this request.');
     }
 
     // Verify package name.

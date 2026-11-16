@@ -158,8 +158,30 @@ class AnalyticsSyncService {
     $skipped_not_found = 0;
     $skipped_up_to_date = 0;
     $updated_nids = [];
+    $skipped_invalid_data = 0;
 
     foreach ($data as $nid_string => $item) {
+      // Reject incomplete/malformed records before casting them to zero or
+      // writing any tables. An upstream error must not reset valid counters.
+      $valid = is_array($item) && ctype_digit((string) $nid_string) && (int) $nid_string > 0
+        && is_string($item['content_type'] ?? NULL)
+        && is_string($item['last_updated'] ?? NULL)
+        && trim($item['last_updated']) !== '' && strtotime($item['last_updated']) !== FALSE;
+      foreach (['total_likes', 'total_reads'] as $count_field) {
+        $count = $item[$count_field] ?? NULL;
+        $valid = $valid && (is_int($count) || is_string($count))
+          && filter_var($count, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 2147483647]]) !== FALSE;
+      }
+      if (!$valid) {
+        $skipped++;
+        $skipped_invalid_data++;
+        $processed++;
+        $this->logger->warning('Skipped malformed analytics record for node @nid.', ['@nid' => $nid_string]);
+        if ($progressCallback) {
+          ($progressCallback)([$processed, $total, $updated, $skipped]);
+        }
+        continue;
+      }
       $nid = (int) $nid_string;
       $raw_type = $item['content_type'] ?? '';
 
@@ -252,6 +274,7 @@ class AnalyticsSyncService {
       'skipped_unknown_type' => $skipped_unknown_type,
       'skipped_not_found' => $skipped_not_found,
       'skipped_up_to_date' => $skipped_up_to_date,
+      'skipped_invalid_data' => $skipped_invalid_data,
     ];
   }
 
@@ -279,48 +302,54 @@ class AnalyticsSyncService {
       'node_revision__field_analytics_updated' => ['field_analytics_updated_value' => $updated_ts],
     ];
 
-    foreach (array_merge($field_updates, $revision_updates) as $table => $fields) {
-      // Upsert: update if row exists, insert otherwise.
-      $exists = $this->database->select($table, 't')
-        ->fields('t', ['entity_id'])
-        ->condition('t.entity_id', $nid)
-        ->execute()
-        ->fetchField();
+    $vid = $this->database->select('node', 'n')->fields('n', ['vid'])
+      ->condition('n.nid', $nid)->execute()->fetchField();
+    $transaction = $this->database->startTransaction();
+    try {
+      foreach (array_merge($field_updates, $revision_updates) as $table => $fields) {
+        // Upsert: update if row exists, insert otherwise.
+        $select = $this->database->select($table, 't')
+          ->fields('t', ['entity_id'])->condition('t.entity_id', $nid)->condition('t.deleted', 0);
+        if (str_starts_with($table, 'node_revision__')) {
+          $select->condition('t.revision_id', $vid);
+        }
+        $exists = $select->execute()->fetchField();
 
-      if ($exists) {
-        $this->database->update($table)
-          ->fields($fields)
-          ->condition('entity_id', $nid)
-          ->execute();
+        if ($exists) {
+          $update = $this->database->update($table)->fields($fields)
+            ->condition('entity_id', $nid)->condition('deleted', 0);
+          if (str_starts_with($table, 'node_revision__')) {
+            $update->condition('revision_id', $vid);
+          }
+          $update->execute();
+        }
+        else {
+          // Non-translatable fields store one row per entity using the default
+          // language langcode. Always insert with default_langcode = 1.
+          $langcode = $this->database->select('node_field_data', 'n')
+            ->fields('n', ['langcode'])
+            ->condition('n.nid', $nid)
+            ->condition('n.default_langcode', 1)
+            ->execute()
+            ->fetchField() ?: 'en';
+
+          $insert_fields = array_merge($fields, [
+            'bundle' => $this->getBundle($nid),
+            'deleted' => 0,
+            'entity_id' => $nid,
+            'revision_id' => $vid ?: $nid,
+            'langcode' => $langcode,
+            'delta' => 0,
+          ]);
+          $this->database->insert($table)
+            ->fields($insert_fields)
+            ->execute();
+        }
       }
-      else {
-        // Non-translatable fields store one row per entity using the default
-        // language langcode. Always insert with default_langcode = 1.
-        $langcode = $this->database->select('node_field_data', 'n')
-          ->fields('n', ['langcode'])
-          ->condition('n.nid', $nid)
-          ->condition('n.default_langcode', 1)
-          ->execute()
-          ->fetchField() ?: 'en';
-
-        $vid = $this->database->select('node', 'n')
-          ->fields('n', ['vid'])
-          ->condition('n.nid', $nid)
-          ->execute()
-          ->fetchField();
-
-        $insert_fields = array_merge($fields, [
-          'bundle' => $this->getBundle($nid),
-          'deleted' => 0,
-          'entity_id' => $nid,
-          'revision_id' => $vid ?: $nid,
-          'langcode' => $langcode,
-          'delta' => 0,
-        ]);
-        $this->database->insert($table)
-          ->fields($insert_fields)
-          ->execute();
-      }
+    }
+    catch (\Throwable $e) {
+      $transaction->rollBack();
+      throw $e;
     }
   }
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="docroot/core/tests/bootstrap.php" colors="true" cacheDirectory="build/phpunit">
+  <php>
+    <ini name="memory_limit" value="1G"/>
+    <ini name="zend.assertions" value="1"/>
+  </php>
+  <testsuites>
+    <testsuite name="custom">
+      <directory>docroot/modules/custom</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

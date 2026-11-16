@@ -284,7 +284,7 @@ class ApiSecuritySubscriberIntegrationTest extends KernelTestBase {
       ->set('enforcement_mode', 'enforced')
       ->save();
 
-    $event = $this->buildEvent('/api/check-update/bangladesh');
+    $event = $this->buildEvent('/v2/api/check-update/1');
     $this->getSubscriber()->onRequest($event);
 
     $response = $event->getResponse();
@@ -302,7 +302,7 @@ class ApiSecuritySubscriberIntegrationTest extends KernelTestBase {
       ->set('enforcement_mode', 'enforced')
       ->save();
 
-    $event = $this->buildEvent('/api/check-update/bangladesh', '127.0.0.1', $this->validJwt);
+    $event = $this->buildEvent('/v2/api/check-update/1', '127.0.0.1', $this->validJwt);
     $this->getSubscriber()->onRequest($event);
 
     $this->assertNull($event->getResponse());

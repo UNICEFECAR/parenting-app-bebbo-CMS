@@ -151,7 +151,7 @@ class AppleAppAttestServiceTest extends TestCase {
   public function testVerifyAttestationRejectsInvalidBase64(): void {
     $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage('Invalid base64');
-    $this->service->verifyAttestation('!!!not-base64!!!', 'key', 'hash', 'dev');
+    $this->service->verifyAttestation('!!!not-base64!!!', 'key', str_repeat('a', 64), 'dev');
   }
 
   /**
@@ -165,7 +165,7 @@ class AppleAppAttestServiceTest extends TestCase {
     $this->service->verifyAttestation(
       base64_encode("\xFF\xFE\xFD"),
       'key',
-      'hash',
+      str_repeat('a', 64),
       'dev',
     );
   }
@@ -186,7 +186,7 @@ class AppleAppAttestServiceTest extends TestCase {
     $this->service->verifyAttestation(
       base64_encode((string) $cbor),
       'key',
-      'hash',
+      str_repeat('a', 64),
       'dev',
     );
   }
@@ -207,7 +207,7 @@ class AppleAppAttestServiceTest extends TestCase {
     $this->service->verifyAttestation(
       base64_encode((string) $cbor),
       'key',
-      'hash',
+      str_repeat('a', 64),
       'dev',
     );
   }
@@ -220,7 +220,7 @@ class AppleAppAttestServiceTest extends TestCase {
   public function testVerifyAssertionRejectsInvalidBase64(): void {
     $this->expectException(\RuntimeException::class);
     $this->expectExceptionMessage('Invalid base64 assertion');
-    $this->service->verifyAssertion('!!!bad!!!', 'hash', 'key', 'pubkey', 0);
+    $this->service->verifyAssertion('!!!bad!!!', str_repeat('a', 64), 'key', 'pubkey', 0);
   }
 
   /**
@@ -237,7 +237,7 @@ class AppleAppAttestServiceTest extends TestCase {
     $this->expectExceptionMessage('authenticatorData too short');
     $this->service->verifyAssertion(
       base64_encode((string) $cbor),
-      'aabb',
+      str_repeat('a', 64),
       'key',
       'pubkey',
       0,
@@ -265,6 +265,26 @@ class AppleAppAttestServiceTest extends TestCase {
         $pem,
       ),
     ));
+  }
+
+  /**
+   * The COSE key must match the leaf certificate, and its hash the key ID.
+   */
+  public function testCertificateKeyBinding(): void {
+    $key = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]);
+    $csr = openssl_csr_new(['commonName' => 'test.invalid'], $key);
+    $certificate = openssl_csr_sign($csr, NULL, $key, 1);
+    openssl_x509_export($certificate, $pem);
+    $der = base64_decode(preg_replace('/-----[^-]+-----|\s/', '', $pem));
+    $details = openssl_pkey_get_details($key);
+    $key_id = base64_encode(hash('sha256', "\x04" . $details['ec']['x'] . $details['ec']['y'], TRUE));
+    $method = new \ReflectionMethod($this->service, 'verifyAttestedKey');
+    $method->invoke($this->service, $der, $details['key'], $key_id);
+    $this->addToAssertionCount(1);
+    $other = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]);
+    $this->expectException(\RuntimeException::class);
+    $this->expectExceptionMessage('does not match certificate');
+    $method->invoke($this->service, $der, openssl_pkey_get_details($other)['key'], $key_id);
   }
 
 }

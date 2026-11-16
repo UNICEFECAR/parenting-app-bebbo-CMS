@@ -2,6 +2,8 @@
 
 namespace Drupal\pb_custom_field\Plugin\Action;
 
+use Drupal\node\NodeInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -395,13 +397,13 @@ class AssigncontentAction extends ViewsBulkOperationsActionBase {
    * {@inheritdoc}
    */
   public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
-    if ($object->getEntityType() === 'node') {
+    $access = AccessResult::forbidden();
+    if ($object instanceof NodeInterface) {
+      $account ??= $this->currentUser;
       $access = $object->access('update', $account, TRUE)
-        ->andIf($object->status->access('edit', $account, TRUE));
-      return $return_as_object ? $access : $access->isAllowed();
+        ->andIf($object->get('status')->access('edit', $account, TRUE));
     }
-
-    return TRUE;
+    return $return_as_object ? $access : $access->isAllowed();
   }
 
 }

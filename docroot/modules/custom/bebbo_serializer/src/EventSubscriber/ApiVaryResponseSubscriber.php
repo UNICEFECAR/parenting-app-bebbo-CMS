@@ -9,25 +9,10 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Drops Cookie from the Vary header on the API responses.
+ * Drops Cookie variation only for explicitly public, anonymous API responses.
  *
- * Core marks every cacheable response Vary: Cookie, which is right for HTML:
- * an editor with a session and an anonymous visitor request the same URL and
- * must not share a cached copy. The API endpoints are anonymous JSON whose
- * body does not depend on any cookie, so there the header states a dependency
- * that does not exist.
- *
- * Shared caches believe it. Varnish and Fastly key on the declared headers, so
- * a request carrying any cookie cannot reuse the copy stored for a cookie-less
- * one - a miss, and a full origin render, for a byte-identical response. The
- * mobile app sends no cookies today, which is the only reason the current hit
- * rate survives; anything that starts attaching one would fork the cache
- * silently.
- *
- * Only Cookie is removed. Accept-Encoding and anything else an edge added stay,
- * and the HTML responses keep Vary: Cookie untouched.
- *
- * @see \Drupal\Core\EventSubscriber\FinishResponseSubscriber::setResponseCacheable()
+ * Cookie-bearing, authenticated, private, token and error responses retain
+ * their variation. Accept-Encoding and other Vary headers always remain.
  */
 final class ApiVaryResponseSubscriber implements EventSubscriberInterface {
 
@@ -49,12 +34,24 @@ final class ApiVaryResponseSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $path = $event->getRequest()->getPathInfo();
+    $request = $event->getRequest();
+    $path = $request->getPathInfo();
     if (!preg_match(self::API_PATH_PATTERN, $path)) {
       return;
     }
 
     $response = $event->getResponse();
+    // Only anonymous, explicitly public content can safely share a cookie-less
+    // cache entry. Authentication endpoints and personalised/error responses
+    // must retain their original cache variation.
+    if (!$request->isMethodSafe() || $request->headers->has('Cookie')
+      || $request->headers->has('Authorization') || !$response->isSuccessful()
+      || !$response->headers->hasCacheControlDirective('public')
+      || $response->headers->hasCacheControlDirective('private')
+      || $response->headers->hasCacheControlDirective('no-store')
+      || $response->headers->getCookies() || str_starts_with($path, '/api/security/')) {
+      return;
+    }
     $vary = $response->getVary();
     if (!$vary) {
       return;

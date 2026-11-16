@@ -46,5 +46,12 @@ services:
       - '@bebbo_api_security.jwt_service'
       - '@config.factory'
       - '@logger.channel.bebbo_api_security'
+      - '@path.current'
+    tags:
+      - { name: event_subscriber }
+
+  bebbo_api_security.device_token_routes:
+    class: Drupal\bebbo_api_security\Routing\DeviceTokenRouteSubscriber
+    arguments: ['@config.factory']
     tags:
       - { name: event_subscriber }

@@ -352,6 +352,9 @@ class SecurityController extends ControllerBase {
    *   Decoded body array, or error response.
    */
   private function validateRequestBody(Request $request, array $required): array|JsonResponse {
+    if (strlen($request->getContent()) > 65536) {
+      return new JsonResponse(['error' => 'request_too_large'], 413);
+    }
     $body = json_decode($request->getContent(), TRUE);
     if (!is_array($body)) {
       return new JsonResponse([
@@ -366,6 +369,35 @@ class SecurityController extends ControllerBase {
           'error' => 'missing_field',
           'message' => "Field '{$field}' is required.",
         ], 400);
+      }
+    }
+
+    // JSON arrays/objects must never reach string-typed service arguments.
+    $limits = [
+      'platform' => 16,
+      'device_id' => 255,
+      'public_key' => 8192,
+      'integrity_token' => 32768,
+      'nonce' => 1024,
+      'key_id' => 128,
+      'attestation_object' => 32768,
+      'client_data_hash' => 64,
+      'challenge' => 64,
+      'signature' => 8192,
+      'refresh_token' => 1024,
+    ];
+    foreach ($limits as $field => $limit) {
+      if (array_key_exists($field, $body) && (!is_string($body[$field])
+        || trim($body[$field]) === '' || strlen($body[$field]) > $limit)) {
+        return new JsonResponse([
+          'error' => 'invalid_field',
+          'message' => "Field '{$field}' must be a non-empty string of at most {$limit} bytes.",
+        ], 400);
+      }
+    }
+    foreach (['client_data_hash', 'challenge'] as $field) {
+      if (isset($body[$field]) && !preg_match('/\A[0-9a-fA-F]{64}\z/', $body[$field])) {
+        return new JsonResponse(['error' => 'invalid_field', 'message' => "Invalid {$field}."], 400);
       }
     }
 

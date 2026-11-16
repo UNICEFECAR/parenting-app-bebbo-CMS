@@ -54,17 +54,31 @@ class SideloadedVerificationService {
       throw new \InvalidArgumentException('Public key must be EC P-256 (prime256v1).');
     }
 
-    $this->database->merge('bebbo_api_devices')
-      ->keys(['device_id' => $device_id])
-      ->fields([
+    // Pin the first public key. Knowing a device ID must not allow an
+    // unauthenticated caller to replace its key or reactivate a revoked device.
+    $device = $this->database->select('bebbo_api_devices', 'd')
+      ->fields('d')
+      ->condition('device_id', $device_id)
+      ->execute()->fetchObject();
+    if ($device) {
+      $stored_key = openssl_pkey_get_public($device->public_key ?? '');
+      $stored_details = $stored_key ? openssl_pkey_get_details($stored_key) : FALSE;
+      if ($device->platform !== 'sideloaded' || $device->status === 'revoked'
+        || !$stored_details || !hash_equals($stored_details['key'], $details['key'])) {
+        throw new \InvalidArgumentException('Device identity cannot be replaced.');
+      }
+    }
+    else {
+      $this->database->insert('bebbo_api_devices')->fields([
+        'device_id' => $device_id,
         'platform' => 'sideloaded',
         'auth_method' => 'challenge_response',
-        'public_key' => $public_key_pem,
+        'public_key' => $details['key'],
         'status' => 'pending',
         'created' => time(),
         'updated' => time(),
-      ])
-      ->execute();
+      ])->execute();
+    }
 
     $challenge = bin2hex(random_bytes(32));
     $this->database->insert('bebbo_api_challenges')->fields([
@@ -110,17 +124,17 @@ class SideloadedVerificationService {
     if ((int) $row->used === 1) {
       throw new \RuntimeException('Challenge already used.');
     }
-    if ((int) $row->expires < time()) {
+    if ((int) $row->expires <= time()) {
       throw new \RuntimeException('Challenge expired.');
     }
 
     $device = $this->database->select('bebbo_api_devices', 'd')
-      ->fields('d', ['public_key'])
+      ->fields('d', ['public_key', 'status', 'platform'])
       ->condition('d.device_id', $device_id)
       ->execute()
       ->fetchObject();
 
-    if (!$device || empty($device->public_key)) {
+    if (!$device || empty($device->public_key) || ($device->status ?? '') === 'revoked' || ($device->platform ?? '') !== 'sideloaded') {
       throw new \RuntimeException('Device public key not found.');
     }
 
@@ -129,6 +143,9 @@ class SideloadedVerificationService {
       throw new \RuntimeException('Invalid base64 signature.');
     }
 
+    if (!preg_match('/\A[0-9a-fA-F]{64}\z/', $challenge)) {
+      throw new \RuntimeException('Invalid challenge format.');
+    }
     $challenge_bytes = hex2bin($challenge);
     $result = openssl_verify(
       $challenge_bytes,
@@ -138,10 +155,15 @@ class SideloadedVerificationService {
     );
 
     // Mark challenge as used regardless of outcome.
-    $this->database->update('bebbo_api_challenges')
+    $claimed = $this->database->update('bebbo_api_challenges')
       ->fields(['used' => 1])
       ->condition('id', $row->id)
+      ->condition('used', 0)
+      ->condition('expires', time(), '>')
       ->execute();
+    if (!$claimed) {
+      throw new \RuntimeException('Challenge already used or expired.');
+    }
 
     if ($result !== 1) {
       return FALSE;

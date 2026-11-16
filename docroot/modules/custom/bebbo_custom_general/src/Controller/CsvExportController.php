@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Drupal\entity_share\EntityShareUtility;
 use Drupal\Core\Messenger\MessengerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -249,7 +250,7 @@ class CsvExportController extends ControllerBase {
       batch_set($batch_builder->toArray());
 
       // Redirect to batch processing page.
-      return batch_process('bebbo_custom_general.csv_export_download');
+      return batch_process(Url::fromRoute('bebbo_custom_general.csv_export_download')->toString());
 
     }
     catch (\Exception $e) {
@@ -599,7 +600,7 @@ class CsvExportController extends ControllerBase {
         $csv_row = [];
         foreach ($row as $value) {
           // Escape quotes and wrap in quotes.
-          $csv_row[] = '"' . str_replace('"', '""', (string) $value) . '"';
+          $csv_row[] = $this->encodeCsvCell((string) $value);
         }
         $csv_content .= implode(',', $csv_row) . "\r\n";
       }
@@ -781,14 +782,14 @@ class CsvExportController extends ControllerBase {
       }
 
       $context['message'] = $this->t('Processed page @page', ['@page' => $page]);
-      $context['finished'] = 0;
+      $context['finished'] = 1;
     }
     catch (\Exception $e) {
       $this->logger->error('Batch fetch failed for page @page: @error', [
         '@page' => $page,
         '@error' => $e->getMessage(),
       ]);
-      $context['finished'] = 1;
+      throw $e;
     }
   }
 
@@ -962,12 +963,22 @@ class CsvExportController extends ControllerBase {
       $csv_row = [];
       foreach ($row as $value) {
         // Escape quotes and wrap in quotes.
-        $csv_row[] = '"' . str_replace('"', '""', (string) $value) . '"';
+        $csv_row[] = $this->encodeCsvCell((string) $value);
       }
       $csv_content .= implode(',', $csv_row) . "\r\n";
     }
 
     file_put_contents($temp_file_path, $csv_content, FILE_APPEND | LOCK_EX);
+  }
+
+  /**
+   * Quotes CSV cells and prevents spreadsheet formula execution.
+   */
+  protected function encodeCsvCell(string $value): string {
+    if (preg_match('/^[\x00-\x20]*[=+@-]|^[\t\r\n]/', $value)) {
+      $value = "'" . $value;
+    }
+    return '"' . str_replace('"', '""', $value) . '"';
   }
 
   /**

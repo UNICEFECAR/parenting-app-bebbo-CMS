@@ -6,7 +6,7 @@
  * Includes config post.settings.php (runs last).
  */
 
-ini_set('memory_limit', '-1');
+// Honour the PHP/hosting memory limit; CLI jobs can request their own limit.
 // Helper to read env consistently on Acquia/CLI.
 $ah_group = getenv('AH_SITE_GROUP') ?: ($_ENV['AH_SITE_GROUP'] ?? null);
 $ah_env   = getenv('AH_SITE_ENVIRONMENT') ?: ($_ENV['AH_SITE_ENVIRONMENT'] ?? null);
@@ -64,7 +64,16 @@ if ($ah_group && $ah_env) {
 }
 
 // Hash salt, config sync, and app config (non-Acquia specific).
-$settings['hash_salt'] = hash('sha256', $app_root . '/' . $site_path);
+// Preserve a secret supplied by the hosting platform; never derive one from
+// the public installation path. Provision BEBBO_HASH_SALT before deployment
+// on hosts which do not supply their own salt.
+$bebbo_hash_salt = getenv('BEBBO_HASH_SALT');
+if (is_string($bebbo_hash_salt) && $bebbo_hash_salt !== '') {
+  $settings['hash_salt'] = hash_hmac('sha256', $site_path, $bebbo_hash_salt);
+}
+if (empty($settings['hash_salt'])) {
+  throw new \RuntimeException('A secret hash salt is required. Configure BEBBO_HASH_SALT or the hosting platform hash_salt.');
+}
 $settings['config_sync_directory'] = '../config/sync';
 
 $config['smtp.settings']['smtp_username'] = getenv('smtp_username') ?: '';

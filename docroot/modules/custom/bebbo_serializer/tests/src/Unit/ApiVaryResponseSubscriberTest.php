@@ -33,6 +33,7 @@ class ApiVaryResponseSubscriberTest extends UnitTestCase {
    */
   private function vary(string $path, ?string $vary, int $requestType = HttpKernelInterface::MAIN_REQUEST): ?string {
     $response = new Response();
+    $response->setPublic();
     if ($vary !== NULL) {
       $response->headers->set('Vary', $vary);
     }
@@ -88,6 +89,33 @@ class ApiVaryResponseSubscriberTest extends UnitTestCase {
    */
   public function testSubRequestIgnored(): void {
     $this->assertSame('Cookie', $this->vary('/api/articles/en', 'Cookie', HttpKernelInterface::SUB_REQUEST));
+  }
+
+  /**
+   * Cookie variation survives authenticated, private and token responses.
+   */
+  public function testSensitiveResponsesKeepCookie(): void {
+    foreach (['cookie', 'authorization', 'private', 'error', 'security'] as $case) {
+      $request = Request::create($case === 'security' ? '/api/security/refresh' : '/v2/api/articles/en');
+      $response = new Response();
+      $response->setPublic();
+      $response->setVary(['Cookie']);
+      if ($case === 'cookie') {
+        $request->headers->set('Cookie', 'session=example');
+      }
+      if ($case === 'authorization') {
+        $request->headers->set('Authorization', 'Bearer example');
+      }
+      if ($case === 'private') {
+        $response->setPrivate();
+      }
+      if ($case === 'error') {
+        $response->setStatusCode(403);
+      }
+      $event = new ResponseEvent($this->createMock(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST, $response);
+      (new ApiVaryResponseSubscriber())->onResponse($event);
+      $this->assertSame('Cookie', $response->headers->get('Vary'));
+    }
   }
 
 }

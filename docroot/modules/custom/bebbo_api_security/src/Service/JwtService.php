@@ -65,7 +65,14 @@ class JwtService {
   public function validateToken(string $token): ?array {
     try {
       $decoded = JWT::decode($token, new Key($this->getPublicKey(), 'RS256'));
-      return (array) $decoded;
+      $payload = (array) $decoded;
+      if (($payload['iss'] ?? NULL) !== 'bebbo-cms'
+        || !is_string($payload['sub'] ?? NULL) || trim($payload['sub']) === ''
+        || strlen($payload['sub']) > 255 || !is_int($payload['exp'] ?? NULL)
+        || !is_int($payload['iat'] ?? NULL) || $payload['exp'] <= $payload['iat']) {
+        return NULL;
+      }
+      return $payload;
     }
     catch (ExpiredException) {
       return NULL;
@@ -145,7 +152,7 @@ class JwtService {
       return NULL;
     }
 
-    if ((int) $row->expires < time()) {
+    if ((int) $row->expires <= time()) {
       return NULL;
     }
 
@@ -155,44 +162,64 @@ class JwtService {
     // Look up the device first so a missing device cannot leave a rotated
     // token orphaned (old revoked, new issued, but no response returned).
     $device = $this->database->select('bebbo_api_devices', 'd')
-      ->fields('d', ['platform', 'auth_method'])
+      ->fields('d', ['platform', 'auth_method', 'status'])
       ->condition('d.device_id', $row->device_id)
       ->execute()
       ->fetchObject();
 
-    if (!$device) {
+    if (!$device || $device->status !== 'active') {
       return NULL;
     }
 
-    if ($rotation_enabled) {
-      // Rotate: revoke the presented token and issue a new one in the same
-      // family.
-      $this->database->update('bebbo_api_refresh_tokens')
-        ->fields(['revoked' => 1])
-        ->condition('id', $row->id)
-        ->execute();
-
-      $expiry = (int) $config->get('refresh_expiry_seconds') ?: 2592000;
-      $new_raw = bin2hex(random_bytes(32));
-      $new_hash = hash('sha256', $new_raw);
-
-      $this->database->insert('bebbo_api_refresh_tokens')->fields([
-        'device_id' => $row->device_id,
-        'token_hash' => $new_hash,
-        'token_family' => $row->token_family,
-        'expires' => time() + $expiry,
-        'revoked' => 0,
-        'created' => time(),
-      ])->execute();
-
-      $refresh_token = $new_raw;
-    }
-    else {
-      // Rotation disabled: reuse the presented refresh token unchanged.
-      $refresh_token = $raw_refresh_token;
-    }
-
+    // Sign before changing token state. A missing/broken signing key must not
+    // strand the caller with a revoked token and no replacement.
     $jwt = $this->createToken($row->device_id, $device->platform, $device->auth_method);
+    $transaction = $this->database->startTransaction();
+    try {
+      if ($rotation_enabled) {
+        // Rotate: revoke the presented token and issue a new one in the same
+        // family.
+        $claimed = $this->database->update('bebbo_api_refresh_tokens')
+          ->fields(['revoked' => 1])
+          ->condition('id', $row->id)
+          ->condition('revoked', 0)
+          ->condition('expires', time(), '>')
+          ->execute();
+        if (!$claimed) {
+          // Only one concurrent request may rotate a token. Treat a losing
+          // request exactly like a replay and revoke this session family.
+          $this->database->update('bebbo_api_refresh_tokens')
+            ->fields(['revoked' => 1])
+            ->condition('token_family', $row->token_family)
+            ->execute();
+          return NULL;
+        }
+
+        $expiry = (int) $config->get('refresh_expiry_seconds') ?: 2592000;
+        $new_raw = bin2hex(random_bytes(32));
+        $new_hash = hash('sha256', $new_raw);
+
+        $this->database->insert('bebbo_api_refresh_tokens')->fields([
+          'device_id' => $row->device_id,
+          'token_hash' => $new_hash,
+          'token_family' => $row->token_family,
+          'expires' => time() + $expiry,
+          'revoked' => 0,
+          'created' => time(),
+        ])->execute();
+
+        $refresh_token = $new_raw;
+      }
+      else {
+        // Rotation disabled: reuse the presented refresh token unchanged.
+        $refresh_token = $raw_refresh_token;
+      }
+
+    }
+    catch (\Throwable $e) {
+      $transaction->rollBack();
+      throw $e;
+    }
 
     return [
       'access_token' => $jwt,

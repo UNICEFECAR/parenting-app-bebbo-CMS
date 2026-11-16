@@ -2,6 +2,7 @@
 
 namespace Drupal\pb_strings\Form;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\PagerSelectExtender;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -96,13 +97,17 @@ class StringsTranslateForm extends FormBase {
     $langcode = $filter['langcode'];
     $search = $filter['string'];
 
+    if ($langcode === '') {
+      $form['empty'] = ['#plain_text' => $this->t('No translation languages are assigned to your account.')];
+      return $form;
+    }
     $language = $this->languageManager->getLanguage($langcode);
     $language_name = $language ? $language->getName() : $langcode;
 
     $query = $this->database->select('taxonomy_term_field_data', 'td');
     $query->leftJoin('taxonomy_term__field_unique_name', 'un', 'td.tid = un.entity_id AND un.deleted = 0');
     $query->leftJoin('taxonomy_term_field_data', 'td_trans', 'td.tid = td_trans.tid AND td_trans.langcode = :td_trans_lang AND td_trans.default_langcode = 0', [':td_trans_lang' => $langcode]);
-    $query->fields('td', ['tid', 'name']);
+    $query->fields('td', ['tid', 'name', 'langcode']);
     $query->addField('un', 'field_unique_name_value', 'unique_name');
     $query->condition('td.vid', 'strings');
     $query->condition('td.default_langcode', 1);
@@ -164,7 +169,8 @@ class StringsTranslateForm extends FormBase {
 
       $form['strings'][$tid]['translation'] = [
         '#type' => 'textarea',
-        '#default_value' => $translations[$tid] ?? '',
+        '#default_value' => $row->langcode === $langcode ? $row->name : ($translations[$tid] ?? ''),
+        '#disabled' => $row->langcode === $langcode,
         '#rows' => 2,
       ];
 
@@ -209,7 +215,10 @@ class StringsTranslateForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $langcode = $form_state->getValue('langcode');
-    $strings = $form_state->getValue('strings');
+    if (!isset(StringsFilterForm::getAllowedLanguages()[$langcode])) {
+      throw new AccessDeniedHttpException();
+    }
+    $strings = $form_state->getValue('strings') ?? [];
     $term_storage = $this->entityTypeManager->getStorage('taxonomy_term');
     $saved_count = 0;
 
@@ -223,20 +232,23 @@ class StringsTranslateForm extends FormBase {
 
       /** @var \Drupal\taxonomy\TermInterface|null $term */
       $term = $term_storage->load($tid);
-      if ($term === NULL) {
+      // This form translates strings; it must never overwrite a source label,
+      // delete a source translation, or edit terms from another vocabulary.
+      if ($term === NULL || $term->bundle() !== 'strings'
+        || $term->getUntranslated()->language()->getId() === $langcode) {
         continue;
       }
 
       if ($term->hasTranslation($langcode)) {
         $translation = $term->getTranslation($langcode);
-        if (empty($new_translation)) {
+        if ($new_translation === '') {
           $term->removeTranslation($langcode);
         }
         else {
           $translation->set('name', $new_translation);
         }
       }
-      elseif (!empty($new_translation)) {
+      elseif ($new_translation !== '') {
         $translation = $term->addTranslation($langcode, ['name' => $new_translation]);
       }
       else {
@@ -273,7 +285,7 @@ class StringsTranslateForm extends FormBase {
     }
 
     $query = $this->database->select('taxonomy_term_field_data', 'td');
-    $query->fields('td', ['tid', 'name']);
+    $query->fields('td', ['tid', 'name', 'langcode']);
     $query->condition('td.tid', $tids, 'IN');
     $query->condition('td.langcode', $langcode);
     $query->condition('td.default_langcode', 0);
