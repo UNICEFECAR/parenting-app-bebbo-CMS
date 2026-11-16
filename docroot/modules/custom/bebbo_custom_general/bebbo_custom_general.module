@@ -135,7 +135,9 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
     if (isset($form['items']['#header'])) {
       // Get current sort parameters.
       $request = \Drupal::request();
-      $current_order = $request->query->get('order');
+      // The list is ordered by Node ID descending by default, so treat a
+      // missing order as Node ID to show the active sort arrow on load.
+      $current_order = $request->query->get('order', 'node_id');
       $current_sort = $request->query->get('sort', 'desc');
       $new_sort = ($current_order === 'node_id' && $current_sort === 'asc') ? 'desc' : 'asc';
 
@@ -208,6 +210,52 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
           $row = $new_row;
         }
       }
+    }
+
+    // Match the Global/Country content lists: "Total Count - N" above the
+    // filters and the admin theme's bulk actions bar with the selected count.
+    $pager = \Drupal::service('pager.manager')->getPager();
+    $form['total_count'] = [
+      '#type' => 'container',
+      '#markup' => t('<strong>Total Count -</strong> @total', ['@total' => $pager ? $pager->getTotalItems() : 0]),
+      '#attributes' => ['class' => ['view-header']],
+      // Above the "Choose source" selector (-100).
+      '#weight' => -101,
+    ];
+    if (!empty($form['items']['#options']) && $pager && $pager->getTotalItems() > 0) {
+      // The admin theme's bulk actions styles target this class on a form
+      // directly inside the main content block.
+      $form['#attributes']['class'][] = 'views-form';
+
+      // Bulk actions bar with the status label (same markup as ClaroFormHooks
+      // for Views forms), driven by tmgmt-sources-bulk-actions.js.
+      $bulk_actions = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['views-bulk-actions'],
+          'data-bebbo-tmgmt-bulk-actions' => '',
+        ],
+        '#attached' => [
+          'library' => ['bebbo_custom_general/tmgmt_sources_bulk_actions'],
+        ],
+        'status' => [
+          '#type' => 'container',
+          '#markup' => t('No items selected'),
+          '#attributes' => [
+            'class' => [
+              'js-views-bulk-actions-status',
+              'views-bulk-actions__item',
+              'views-bulk-actions__item--status',
+              'js-show',
+            ],
+            'data-drupal-views-bulk-actions-status' => '',
+          ],
+        ],
+      ];
+      $position = array_search('items', array_keys($form), TRUE) + 1;
+      $form = array_slice($form, 0, $position, TRUE)
+        + ['bulk_actions_container' => $bulk_actions]
+        + array_slice($form, $position, NULL, TRUE);
     }
   }
 
