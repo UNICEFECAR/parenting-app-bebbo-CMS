@@ -188,4 +188,38 @@ class SideloadedVerificationServiceTest extends KernelTestBase {
     $this->service->registerDevice('test-device-rsa', $rsa_pub);
   }
 
+  /**
+   * A caller knowing an ID cannot overwrite its registered public key.
+   */
+  public function testRejectsReplacementKey(): void {
+    $this->service->registerDevice('pinned-device', $this->publicKeyPem);
+    $other = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]);
+    $this->expectException(\InvalidArgumentException::class);
+    $this->service->registerDevice('pinned-device', openssl_pkey_get_details($other)['key']);
+  }
+
+  /**
+   * Re-registration with the original key preserves an active device.
+   */
+  public function testSameKeyKeepsActiveDevice(): void {
+    $first = $this->service->registerDevice('same-device', $this->publicKeyPem);
+    openssl_sign(hex2bin($first), $signature, $this->privateKeyPem, OPENSSL_ALGO_SHA256);
+    $this->service->verify('same-device', $first, base64_encode($signature));
+    $next = $this->service->registerDevice('same-device', $this->publicKeyPem);
+    $this->assertNotSame($first, $next);
+    $this->assertSame('active', \Drupal::database()->select('bebbo_api_devices', 'd')
+      ->fields('d', ['status'])->condition('device_id', 'same-device')->execute()->fetchField());
+  }
+
+  /**
+   * A revoked identity cannot be reactivated using a new challenge.
+   */
+  public function testRevokedDeviceCannotRegister(): void {
+    $this->service->registerDevice('revoked-device', $this->publicKeyPem);
+    \Drupal::database()->update('bebbo_api_devices')->fields(['status' => 'revoked'])
+      ->condition('device_id', 'revoked-device')->execute();
+    $this->expectException(\InvalidArgumentException::class);
+    $this->service->registerDevice('revoked-device', $this->publicKeyPem);
+  }
+
 }

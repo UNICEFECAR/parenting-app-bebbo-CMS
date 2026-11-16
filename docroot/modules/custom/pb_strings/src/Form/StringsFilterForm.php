@@ -51,7 +51,7 @@ class StringsFilterForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $filter = $this->getFilterValues();
 
-    $languages = $this->languageManager->getLanguages();
+    $languages = static::getAllowedLanguages();
     $language_options = [];
     foreach ($languages as $langcode => $language) {
       $language_options[$langcode] = $language->getName();
@@ -132,10 +132,29 @@ class StringsFilterForm extends FormBase {
     $session = \Drupal::request()->getSession();
     $filter = $session->get('pb_strings_filter', []);
 
+    $allowed = static::getAllowedLanguages();
+    $langcode = $filter['langcode'] ?? \Drupal::languageManager()->getCurrentLanguage()->getId();
+    if (!isset($allowed[$langcode])) {
+      $langcode = array_key_first($allowed) ?? '';
+    }
     return [
-      'langcode' => $filter['langcode'] ?? \Drupal::languageManager()->getCurrentLanguage()->getId(),
+      'langcode' => $langcode,
       'string' => $filter['string'] ?? '',
     ];
+  }
+
+  /**
+   * Returns languages this account may edit through the strings interface.
+   */
+  public static function getAllowedLanguages(): array {
+    $languages = \Drupal::languageManager()->getLanguages();
+    $account = \Drupal::currentUser();
+    if ($account->hasPermission('administer strings') || $account->hasPermission('translate all languages')
+      || !\Drupal::hasService('allowed_languages.allowed_languages_manager')) {
+      return $languages;
+    }
+    $assigned = \Drupal::service('allowed_languages.allowed_languages_manager')->assignedLanguages($account);
+    return array_intersect_key($languages, array_flip($assigned));
   }
 
 }

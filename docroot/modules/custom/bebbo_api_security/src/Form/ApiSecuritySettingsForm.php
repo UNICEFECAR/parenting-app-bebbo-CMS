@@ -7,6 +7,7 @@ namespace Drupal\bebbo_api_security\Form;
 use Drupal\bebbo_api_security\Service\DeviceRegistryService;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteBuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,11 +23,19 @@ class ApiSecuritySettingsForm extends ConfigFormBase {
   protected DeviceRegistryService $registry;
 
   /**
+   * The route builder.
+   *
+   * @var \Drupal\Core\Routing\RouteBuilderInterface
+   */
+  protected RouteBuilderInterface $routeBuilder;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
     $instance = parent::create($container);
     $instance->registry = $container->get('bebbo_api_security.device_registry');
+    $instance->routeBuilder = $container->get('router.builder');
     return $instance;
   }
 
@@ -354,6 +363,8 @@ class ApiSecuritySettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    // Route OAuth opt-outs must follow changes to protected path patterns.
+    $this->routeBuilder->setRebuildNeeded();
     parent::submitForm($form, $form_state);
 
     $this->config('bebbo_api_security.settings')

@@ -58,6 +58,9 @@ class AppleAppAttestService {
    *   On verification failure.
    */
   public function verifyAttestation(string $attestation_b64, string $key_id, string $client_data_hash, string $device_id): string {
+    if (!preg_match('/\A[0-9a-fA-F]{64}\z/', $client_data_hash)) {
+      throw new \RuntimeException('Invalid client data hash.');
+    }
     $attestation_raw = base64_decode($attestation_b64, TRUE);
     if ($attestation_raw === FALSE) {
       throw new \RuntimeException('Invalid base64 attestation object.');
@@ -113,8 +116,8 @@ class AppleAppAttestService {
 
     // Extract and verify certificate chain.
     $att_stmt = $map['attStmt'] ?? [];
-    $x5c = $att_stmt['x5c'] ?? [];
-    if (count($x5c) < 2) {
+    $x5c = is_array($att_stmt) ? ($att_stmt['x5c'] ?? []) : [];
+    if (!is_array($x5c) || count($x5c) < 2 || !is_string($x5c[0] ?? NULL) || !is_string($x5c[1] ?? NULL)) {
       throw new \RuntimeException('Attestation missing x5c certificate chain.');
     }
 
@@ -138,8 +141,29 @@ class AppleAppAttestService {
 
     // Extract public key from COSE key in authData.
     $public_key_pem = $this->coseKeyToPem($parsed['cose_key_bytes']);
+    $this->verifyAttestedKey($leaf_der, $public_key_pem, $key_id);
 
     return $public_key_pem;
+  }
+
+  /**
+   * Binds the stored COSE key and key identifier to Apple's signed certificate.
+   */
+  private function verifyAttestedKey(string $leaf_der, string $public_key_pem, string $key_id): void {
+    $certificate_key = openssl_pkey_get_public($this->derToPem($leaf_der, 'CERTIFICATE'));
+    $cose_key = openssl_pkey_get_public($public_key_pem);
+    $certificate_details = $certificate_key ? openssl_pkey_get_details($certificate_key) : FALSE;
+    $cose_details = $cose_key ? openssl_pkey_get_details($cose_key) : FALSE;
+    if (!$certificate_details || !$cose_details
+      || ($certificate_details['ec']['curve_name'] ?? '') !== 'prime256v1'
+      || !hash_equals($certificate_details['key'], $cose_details['key'])) {
+      throw new \RuntimeException('Attested public key does not match certificate.');
+    }
+    $point = "\x04" . $certificate_details['ec']['x'] . $certificate_details['ec']['y'];
+    $identifier = base64_decode($key_id, TRUE);
+    if (!is_string($identifier) || !hash_equals(hash('sha256', $point, TRUE), $identifier)) {
+      throw new \RuntimeException('Key identifier does not match certificate public key.');
+    }
   }
 
   /**
@@ -163,6 +187,9 @@ class AppleAppAttestService {
    *   On verification failure.
    */
   public function verifyAssertion(string $assertion_b64, string $client_data_hash, string $key_id, string $stored_public_key, int $stored_counter): int {
+    if (!preg_match('/\A[0-9a-fA-F]{64}\z/', $client_data_hash)) {
+      throw new \RuntimeException('Invalid client data hash.');
+    }
     $assertion_raw = base64_decode($assertion_b64, TRUE);
     if ($assertion_raw === FALSE) {
       throw new \RuntimeException('Invalid base64 assertion.');
@@ -244,11 +271,17 @@ class AppleAppAttestService {
    *   cose_key_bytes.
    */
   private function parseAuthData(string $auth_data): array {
+    if (strlen($auth_data) < 55) {
+      throw new \RuntimeException('authData too short.');
+    }
     $rp_id_hash = substr($auth_data, 0, 32);
     $flags = ord($auth_data[32]);
     $counter = unpack('N', substr($auth_data, 33, 4))[1];
     $aaguid = substr($auth_data, 37, 16);
     $cred_id_len = unpack('n', substr($auth_data, 53, 2))[1];
+    if (strlen($auth_data) <= 55 + $cred_id_len) {
+      throw new \RuntimeException('Truncated credential data.');
+    }
     $credential_id = substr($auth_data, 55, $cred_id_len);
     $cose_key_bytes = substr($auth_data, 55 + $cred_id_len);
 
@@ -307,6 +340,14 @@ class AppleAppAttestService {
         '@err' => openssl_error_string() ?: 'none',
       ]);
       throw new \RuntimeException('Failed to parse Apple Root CA certificate from config.');
+    }
+
+    foreach ([$leaf_cert, $intermediate_cert, $root_cert] as $certificate) {
+      $validity = openssl_x509_parse($certificate);
+      if (!$validity || ($validity['validFrom_time_t'] ?? PHP_INT_MAX) > time()
+        || ($validity['validTo_time_t'] ?? 0) <= time()) {
+        throw new \RuntimeException('Attestation certificate is outside its validity period.');
+      }
     }
 
     if ($debug) {

@@ -303,4 +303,45 @@ class JwtServiceTest extends KernelTestBase {
     ])->execute();
   }
 
+  /**
+   * A correctly signed token still needs the expected issuer and claims.
+   */
+  public function testRejectsInvalidClaims(): void {
+    $valid = ['iss' => 'bebbo-cms', 'sub' => 'device', 'iat' => time(), 'exp' => time() + 3600];
+    foreach ([['iss' => 'other'], ['sub' => []], ['sub' => ''], ['exp' => NULL], ['iat' => NULL]] as $change) {
+      $token = JWT::encode(array_replace($valid, $change), $this->privateKeyPem, 'RS256');
+      $this->assertNull($this->service->validateToken($token));
+    }
+  }
+
+  /**
+   * A revoked device cannot obtain a new access token.
+   */
+  public function testRevokedDeviceCannotRefresh(): void {
+    $this->insertDevice('revoked', 'android', 'play_integrity');
+    $token = $this->service->createRefreshToken('revoked');
+    $this->container->get('database')->update('bebbo_api_devices')->fields(['status' => 'revoked'])
+      ->condition('device_id', 'revoked')->execute();
+    $this->assertNull($this->service->refreshTokens($token['token']));
+  }
+
+  /**
+   * Signing failure leaves the caller's refresh token usable.
+   */
+  public function testSigningFailureDoesNotConsumeRefreshToken(): void {
+    $this->insertDevice('signing-failure', 'android', 'play_integrity');
+    $token = $this->service->createRefreshToken('signing-failure');
+    $keys = $this->createMock(KeyRepositoryInterface::class);
+    $keys->method('getKey')->willReturn(NULL);
+    $broken = new JwtService($keys, $this->container->get('database'),
+      $this->container->get('config.factory'), $this->container->get('logger.channel.bebbo_api_security'));
+    try {
+      $broken->refreshTokens($token['token']);
+      $this->fail('Expected signing configuration error.');
+    }
+    catch (\RuntimeException) {
+      $this->assertNotNull($this->service->refreshTokens($token['token']));
+    }
+  }
+
 }

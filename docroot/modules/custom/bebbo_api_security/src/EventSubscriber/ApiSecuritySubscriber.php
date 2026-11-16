@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\bebbo_api_security\EventSubscriber;
 
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\bebbo_api_security\Service\JwtService;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Path\CurrentPathStack;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -22,13 +26,17 @@ class ApiSecuritySubscriber implements EventSubscriberInterface {
     protected readonly JwtService $jwtService,
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly LoggerInterface $logger,
+    protected readonly ?CurrentPathStack $currentPath = NULL,
   ) {}
 
   /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
-    return [KernelEvents::REQUEST => ['onRequest', 300]];
+    return [
+      KernelEvents::REQUEST => ['onRequest', 30],
+      KernelEvents::RESPONSE => ['onResponse', -100],
+    ];
   }
 
   /**
@@ -36,7 +44,7 @@ class ApiSecuritySubscriber implements EventSubscriberInterface {
    */
   public function onRequest(RequestEvent $event): void {
     $request = $event->getRequest();
-    $path = $request->getPathInfo();
+    $path = $this->currentPath?->getPath($request) ?? $request->getPathInfo();
 
     if (!$this->isProtectedPath($path)) {
       return;
@@ -79,6 +87,22 @@ class ApiSecuritySubscriber implements EventSubscriberInterface {
     }
 
     $request->attributes->set('bebbo_device_id', $payload['sub']);
+  }
+
+  /**
+   * Prevents caches from serving tokens or bypassing enforced JWT validation.
+   */
+  public function onResponse(ResponseEvent $event): void {
+    $path = $this->currentPath?->getPath($event->getRequest()) ?? $event->getRequest()->getPathInfo();
+    $mode = $this->configFactory->get('bebbo_api_security.settings')->get('enforcement_mode');
+    if (str_starts_with($path, '/api/security/')
+      || ($mode === 'enforced' && $this->isProtectedPath($path))) {
+      $response = $event->getResponse();
+      $response->headers->set('Cache-Control', 'private, no-store');
+      if ($response instanceof CacheableResponseInterface) {
+        $response->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
+      }
+    }
   }
 
   /**

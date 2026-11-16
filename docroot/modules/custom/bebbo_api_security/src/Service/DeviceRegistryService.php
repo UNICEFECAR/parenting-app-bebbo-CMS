@@ -56,7 +56,7 @@ class DeviceRegistryService {
     return (int) $this->database->merge('bebbo_api_devices')
       ->keys(['device_id' => $device_id])
       ->fields($update_fields)
-      ->insertFields(['created' => $fields['created'] ?? time()])
+      ->insertFields($fields + ['created' => time()])
       ->execute();
   }
 

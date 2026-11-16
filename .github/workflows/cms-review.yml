@@ -1,0 +1,35 @@
+name: CMS review checks
+on:
+  push:
+    branches: ['codex/cms-security-review-*']
+  pull_request:
+    branches: ['main']
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SIMPLETEST_DB: sqlite://localhost//tmp/bebbo-cms-test.sqlite
+      BROWSERTEST_OUTPUT_DIRECTORY: /tmp/bebbo-cms-test-output
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@d52fc211a0436f8839a587b3b5b8efddab4744ea # v2
+        with:
+          php-version: '8.4'
+          tools: composer
+          extensions: mbstring, pdo_sqlite, xml, gd, curl, zip, bcmath, intl
+          ini-values: zend.assertions=1, memory_limit=1G
+          coverage: none
+      - run: composer validate --no-check-publish
+      - run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+      - run: composer audit --locked --abandoned=report
+      - name: Lint all custom PHP sources
+        run: find docroot/modules/custom -type f \( -name '*.php' -o -name '*.module' -o -name '*.install' \) -print0 | xargs -0 -n1 php -l
+      - run: vendor/bin/phpcs
+      - run: vendor/bin/drupal-check --no-progress --memory-limit=1G docroot/modules/custom
+      - run: mkdir -p "$BROWSERTEST_OUTPUT_DIRECTORY"
+      - run: vendor/bin/phpunit

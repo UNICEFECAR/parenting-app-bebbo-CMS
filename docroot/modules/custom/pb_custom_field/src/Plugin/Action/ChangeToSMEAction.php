@@ -2,6 +2,8 @@
 
 namespace Drupal\pb_custom_field\Plugin\Action;
 
+use Drupal\node\NodeInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -245,12 +247,26 @@ class ChangeToSMEAction extends ViewsBulkOperationsActionBase {
    * {@inheritdoc}
    */
   public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
-    if ($object->getEntityType() === 'node') {
+    $access = AccessResult::forbidden();
+    if ($object instanceof NodeInterface) {
+      if (!\Drupal::service('content_moderation.moderation_information')->isModeratedEntity($object)) {
+        return $return_as_object ? $access : FALSE;
+      }
+      $account ??= $this->currentUser;
       $access = $object->access('update', $account, TRUE)
-        ->andIf($object->status->access('edit', $account, TRUE));
-      return $return_as_object ? $access : $access->isAllowed();
+        ->andIf($object->get('status')->access('edit', $account, TRUE));
+      $transition_allowed = FALSE;
+      foreach (\Drupal::service('content_moderation.state_transition_validation')->getValidTransitions($object, $account) as $transition) {
+        if ($transition->to()->id() === 'sme_review') {
+          $transition_allowed = TRUE;
+          break;
+        }
+      }
+      $transition_access = AccessResult::allowedIf($transition_allowed)
+        ->cachePerPermissions()->addCacheableDependency($object);
+      $access = $access->andIf($transition_access);
     }
-    return TRUE;
+    return $return_as_object ? $access : $access->isAllowed();
   }
 
 }

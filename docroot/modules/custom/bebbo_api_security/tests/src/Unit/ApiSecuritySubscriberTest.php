@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\bebbo_api_security\Unit;
 
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\bebbo_api_security\EventSubscriber\ApiSecuritySubscriber;
 use Drupal\bebbo_api_security\Service\JwtService;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -27,6 +31,16 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @var \Drupal\bebbo_api_security\EventSubscriber\ApiSecuritySubscriber
    */
   private ApiSecuritySubscriber $subscriber;
+
+  /**
+   * Configured route patterns and mode for this test.
+   *
+   * @var array
+   */
+  private array $settings = [
+    'protected_api_patterns' => '/v2/api/',
+    'excluded_api_patterns' => '/api/security/',
+  ];
 
   /**
    * Mock JWT service.
@@ -57,6 +71,7 @@ class ApiSecuritySubscriberTest extends TestCase {
 
     $this->jwtService = $this->createMock(JwtService::class);
     $this->config = $this->createMock(ImmutableConfig::class);
+    $this->config->method('get')->willReturnCallback(fn($key) => $this->settings[$key] ?? NULL);
     $this->logger = $this->createMock(LoggerInterface::class);
 
     $configFactory = $this->createMock(ConfigFactoryInterface::class);
@@ -123,7 +138,7 @@ class ApiSecuritySubscriberTest extends TestCase {
       '/v2/api/surveys/en' => ['/v2/api/surveys/en'],
       '/v2/api/video-articles/en/1' => ['/v2/api/video-articles/en/1'],
       '/v2/api/archive/en/1' => ['/v2/api/archive/en/1'],
-      '/api/check-update/bangladesh' => ['/api/check-update/bangladesh'],
+
     ];
   }
 
@@ -144,6 +159,7 @@ class ApiSecuritySubscriberTest extends TestCase {
       '/' => ['/'],
       '/node/1' => ['/node/1'],
       '/api/articles/en' => ['/api/articles/en'],
+      '/api/check-update/1' => ['/api/check-update/1'],
     ];
   }
 
@@ -167,10 +183,10 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testDisabledModeAllowsEverything(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'disabled'],
-      ['dev_bypass_enabled', FALSE],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'disabled',
+      'dev_bypass_enabled' => FALSE,
+    ] + $this->settings;
 
     $event = $this->buildEvent('/v2/api/articles/en');
     $this->subscriber->onRequest($event);
@@ -182,11 +198,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testGracePeriodAllowsWithoutToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'grace_period'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'grace_period',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
 
     $event = $this->buildEvent('/v2/api/articles/en');
     $this->subscriber->onRequest($event);
@@ -198,11 +214,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testGracePeriodSetsDeviceIdWithValidToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'grace_period'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'grace_period',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
     $this->jwtService->method('validateToken')
       ->willReturn(['sub' => 'device-123']);
 
@@ -220,11 +236,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testGracePeriodLogsInvalidToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'grace_period'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'grace_period',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
     $this->jwtService->method('validateToken')->willReturn(NULL);
     $this->logger->expects($this->once())->method('warning');
 
@@ -238,11 +254,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testEnforcedModeBlocksWithoutToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'enforced'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'enforced',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
 
     $event = $this->buildEvent('/v2/api/articles/en');
     $this->subscriber->onRequest($event);
@@ -260,11 +276,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testEnforcedModeBlocksInvalidToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'enforced'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'enforced',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
     $this->jwtService->method('validateToken')->willReturn(NULL);
 
     $event = $this->buildEvent('/v2/api/articles/en', 'Bearer bad-jwt');
@@ -282,11 +298,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testEnforcedModeAllowsValidToken(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'enforced'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', ''],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'enforced',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => '',
+    ] + $this->settings;
     $this->jwtService->method('validateToken')
       ->willReturn(['sub' => 'device-abc']);
 
@@ -304,11 +320,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testDevBypassSkipsValidation(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'enforced'],
-      ['dev_bypass_enabled', TRUE],
-      ['dev_bypass_ips', "127.0.0.1\n"],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'enforced',
+      'dev_bypass_enabled' => TRUE,
+      'dev_bypass_ips' => "127.0.0.1\n",
+    ] + $this->settings;
 
     $event = $this->buildEvent(
       '/v2/api/articles/en',
@@ -324,11 +340,11 @@ class ApiSecuritySubscriberTest extends TestCase {
    * @covers ::onRequest
    */
   public function testDevBypassDisabledDoesNotSkip(): void {
-    $this->config->method('get')->willReturnMap([
-      ['enforcement_mode', 'enforced'],
-      ['dev_bypass_enabled', FALSE],
-      ['dev_bypass_ips', "127.0.0.1\n"],
-    ]);
+    $this->settings = [
+      'enforcement_mode' => 'enforced',
+      'dev_bypass_enabled' => FALSE,
+      'dev_bypass_ips' => "127.0.0.1\n",
+    ] + $this->settings;
 
     $event = $this->buildEvent(
       '/v2/api/articles/en',
@@ -347,7 +363,8 @@ class ApiSecuritySubscriberTest extends TestCase {
    */
   public function testNonProtectedPathIgnoredInEnforcedMode(): void {
     // Config should never be consulted for unprotected paths.
-    $this->config->expects($this->never())->method('get');
+    $this->settings['enforcement_mode'] = 'enforced';
+    $this->jwtService->expects($this->never())->method('validateToken');
 
     $event = $this->buildEvent('/node/1');
     $this->subscriber->onRequest($event);
@@ -360,7 +377,8 @@ class ApiSecuritySubscriberTest extends TestCase {
    */
   public function testSecurityEndpointExcludedInEnforcedMode(): void {
     // Config should never be consulted for excluded security paths.
-    $this->config->expects($this->never())->method('get');
+    $this->settings['enforcement_mode'] = 'enforced';
+    $this->jwtService->expects($this->never())->method('validateToken');
 
     $event = $this->buildEvent('/api/security/register');
     $this->subscriber->onRequest($event);
@@ -375,7 +393,38 @@ class ApiSecuritySubscriberTest extends TestCase {
     $events = ApiSecuritySubscriber::getSubscribedEvents();
 
     $this->assertArrayHasKey(KernelEvents::REQUEST, $events);
-    $this->assertSame(['onRequest', 300], $events[KernelEvents::REQUEST]);
+    $this->assertSame(['onRequest', 30], $events[KernelEvents::REQUEST]);
+  }
+
+  /**
+   * Language prefixes and aliases use the resolved system path for protection.
+   */
+  public function testResolvedPathCannotBypassProtection(): void {
+    $this->settings['enforcement_mode'] = 'enforced';
+    $event = $this->buildEvent('/ar/v2/api/articles/ar');
+    $paths = new CurrentPathStack(new RequestStack());
+    $paths->setPath('/v2/api/articles/ar', $event->getRequest());
+    $factory = $this->createMock(ConfigFactoryInterface::class);
+    $factory->method('get')->willReturn($this->config);
+    $subscriber = new ApiSecuritySubscriber($this->jwtService, $factory, $this->logger, $paths);
+    $subscriber->onRequest($event);
+    $this->assertSame(401, $event->getResponse()->getStatusCode());
+  }
+
+  /**
+   * Authentication and enforced API responses must never enter shared caches.
+   */
+  public function testSensitiveResponsesAreNotCacheable(): void {
+    $this->settings['enforcement_mode'] = 'enforced';
+    foreach (['/api/security/refresh', '/v2/api/articles/en'] as $path) {
+      $response = new Response();
+      $response->setPublic();
+      $event = new ResponseEvent(
+        $this->createMock(HttpKernelInterface::class), Request::create($path), HttpKernelInterface::MAIN_REQUEST, $response);
+      $this->subscriber->onResponse($event);
+      $this->assertTrue($response->headers->hasCacheControlDirective('no-store'));
+      $this->assertFalse($response->headers->hasCacheControlDirective('public'));
+    }
   }
 
 }

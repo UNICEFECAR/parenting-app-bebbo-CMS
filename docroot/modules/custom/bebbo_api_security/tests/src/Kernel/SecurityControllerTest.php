@@ -340,4 +340,22 @@ class SecurityControllerTest extends KernelTestBase {
     $this->assertEquals(400, $response->getStatusCode());
   }
 
+  /**
+   * Malformed JSON field types return 400 instead of causing PHP TypeErrors.
+   */
+  public function testRejectsMalformedFields(): void {
+    foreach ([
+      ['device_id' => ['nested']],
+      ['device_id' => 17],
+      ['device_id' => str_repeat('x', 256)],
+      ['platform' => []],
+    ] as $invalid) {
+      $body = array_replace(['device_id' => 'test', 'platform' => 'android'], $invalid);
+      $request = Request::create('/api/security/register', 'POST', [], [], [], [], json_encode($body));
+      $this->assertSame(400, $this->getController()->register($request)->getStatusCode());
+    }
+    $request = Request::create('/api/security/register', 'POST', [], [], [], [], str_repeat(' ', 65537));
+    $this->assertSame(413, $this->getController()->register($request)->getStatusCode());
+  }
+
 }
