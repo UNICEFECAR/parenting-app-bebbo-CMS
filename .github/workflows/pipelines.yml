@@ -94,7 +94,7 @@ jobs:
       - name: Deploy develop build to Dev
         run: |
           echo "Deploying branch ${GITHUB_REF_NAME} to Dev"
-          acli push:artifact @parentbuddy2.dev --no-interaction -vvv
+          acli push:artifact devcloud:parentbuddy2.dev --no-interaction -vvv
 
   # -------------------------------
   # 3. Deploy to Acquia Stage
@@ -148,4 +148,4 @@ jobs:
       - name: Deploy stage build to Stage
         run: |
           echo "Deploying branch ${GITHUB_REF_NAME} to Stage"
-          acli push:artifact @parentbuddy2.test --no-interaction
+          acli push:artifact devcloud:parentbuddy2.test --no-interaction
