@@ -18,3 +18,10 @@ tmgmt_sources_bulk_actions:
     - core/jquery
     - core/once
     - core/drupal.tableselect
+
+tmgmt_sources_search:
+  js:
+    js/tmgmt-sources-search.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
