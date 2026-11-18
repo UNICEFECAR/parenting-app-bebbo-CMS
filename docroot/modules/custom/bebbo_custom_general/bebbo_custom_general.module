@@ -126,6 +126,8 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
         '#size' => 8,
         '#default_value' => \Drupal::request()->query->get('node_id', ''),
       ];
+      // Enter in a filter field should run Search, not the hidden "Choose".
+      $form['#attached']['library'][] = 'bebbo_custom_general/tmgmt_sources_search';
     }
 
     // Add process callback to handle sorting after form is built.
