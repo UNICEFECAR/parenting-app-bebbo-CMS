@@ -469,6 +469,29 @@ function bebbo_serializer_form_alter(array &$form, FormStateInterface $form_stat
     if (isset($form['field_course_expiry']['widget'][0]['value'])) {
       $form['field_course_expiry']['widget'][0]['value']['#value_callback'] = '_bebbo_serializer_course_expiry_value';
     }
+
+    // Only modules created through "Add new Course module" in this course are
+    // editable here; modules added through "Add existing" are not.
+    if (isset($form['field_course_modules']['widget']['entities'])) {
+      $form_object = $form_state->getFormObject();
+      $course_id = $form_object instanceof EntityFormInterface ? $form_object->getEntity()->id() : NULL;
+      $rows = &$form['field_course_modules']['widget']['entities'];
+      $module_ids = [];
+      foreach (Element::children($rows) as $delta) {
+        if (!$rows[$delta]['#entity']->isNew()) {
+          $module_ids[] = $rows[$delta]['#entity']->id();
+        }
+      }
+      $origins = $module_ids ? \Drupal::keyValue('bebbo_serializer.course_module_origin')->getMultiple($module_ids) : [];
+      foreach (Element::children($rows) as $delta) {
+        $module = $rows[$delta]['#entity'];
+        if (!$module->isNew() && (!$course_id || ($origins[$module->id()] ?? NULL) != $course_id)) {
+          unset($rows[$delta]['actions']['ief_entity_edit']);
+        }
+      }
+      $form['#validate'][] = '_bebbo_serializer_course_new_modules_validate';
+      $form['actions']['submit']['#submit'][] = '_bebbo_serializer_course_new_modules_submit';
+    }
   }
 
   // Pregnancy weekly overview: restrict.
@@ -696,6 +719,45 @@ function _bebbo_serializer_course_link_validate(array &$form, FormStateInterface
       t('Please enter a valid URL for the course link, starting with http:// or https:// (e.g. https://example.com).')
     );
   }
+}
+
+/**
+ * Remembers which course modules are new before IEF saves them.
+ */
+function _bebbo_serializer_course_new_modules_validate(array &$form, FormStateInterface $form_state): void {
+  $ief_id = $form['field_course_modules']['widget']['#ief_id'] ?? NULL;
+  $uuids = [];
+  foreach ($form_state->get(['inline_entity_form', $ief_id, 'entities']) ?? [] as $item) {
+    if (!empty($item['entity']) && $item['entity']->isNew()) {
+      $uuids[] = $item['entity']->uuid();
+    }
+  }
+  $form_state->set('bebbo_serializer_new_module_uuids', $uuids);
+}
+
+/**
+ * Records the saved course as the origin of modules created in its form.
+ */
+function _bebbo_serializer_course_new_modules_submit(array &$form, FormStateInterface $form_state): void {
+  $uuids = $form_state->get('bebbo_serializer_new_module_uuids') ?? [];
+  if (!$uuids) {
+    return;
+  }
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+  $course = $form_object->getEntity();
+  if (!$course instanceof NodeInterface) {
+    return;
+  }
+  $origins = [];
+  foreach ($course->get('field_course_modules')->referencedEntities() as $module) {
+    if (in_array($module->uuid(), $uuids, TRUE)) {
+      $origins[$module->id()] = $course->id();
+    }
+  }
+  \Drupal::keyValue('bebbo_serializer.course_module_origin')->setMultiple($origins);
 }
 
 /**
