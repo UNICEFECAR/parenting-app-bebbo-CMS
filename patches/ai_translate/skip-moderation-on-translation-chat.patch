@@ -1,17 +1,20 @@
 diff --git a/src/Plugin/AiProvider/ChatTranslationProvider.php b/src/Plugin/AiProvider/ChatTranslationProvider.php
-index ae44564..a482660 100644
+index a61225b..7ba053f 100644
 --- a/src/Plugin/AiProvider/ChatTranslationProvider.php
 +++ b/src/Plugin/AiProvider/ChatTranslationProvider.php
-@@ -229,8 +229,11 @@ class ChatTranslationProvider extends AiProviderClientBase implements
-       $messages->setSystemPrompt('You are a helpful translator.');
+@@ -274,11 +274,14 @@ class ChatTranslationProvider extends AiProviderClientBase implements
+       }
  
-       $this->loadTranslator($messages);
+       $this->loadTranslator($messages, $model_id, $targetLanguage);
 +      // Skip the provider moderation check: it flags ordinary source content
 +      // (e.g. parenting articles about hitting or pregnancy) and the resulting
 +      // exception aborts the whole translation.
        /** @var /Drupal\ai\OperationType\Chat\ChatOutput $message */
--      $message = $this->realTranslator->chat($messages, $this->chatConfiguration['model_id'], ['ai_translate']);
-+      $message = $this->realTranslator->chat($messages, $this->chatConfiguration['model_id'], ['ai_translate', 'skip_moderation']);
+       $message = $this->realTranslator->chat(
+         $messages,
+         $this->chatConfiguration['model_id'],
+-        AiTranslateRequestTags::forChat(),
++        [...AiTranslateRequestTags::forChat(), 'skip_moderation'],
+       );
      }
      catch (GuzzleException $exception) {
-       // Error handling for the API call.

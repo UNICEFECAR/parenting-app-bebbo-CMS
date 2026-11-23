@@ -1,54 +1,54 @@
 diff --git a/src/EntityTranslationOrchestrator.php b/src/EntityTranslationOrchestrator.php
-index e742e4d..c7ccc3e 100644
+index 3f7335e..a9adbd1 100644
 --- a/src/EntityTranslationOrchestrator.php
 +++ b/src/EntityTranslationOrchestrator.php
-@@ -2,12 +2,16 @@
+@@ -2,13 +2,16 @@
  
  namespace Drupal\ai_translate;
  
 +use Drupal\Component\Datetime\TimeInterface;
+ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+ use Drupal\Core\Access\AccessResult;
+ use Drupal\Core\Access\AccessResultInterface;
  use Drupal\Core\Config\ConfigFactoryInterface;
  use Drupal\Core\Entity\ContentEntityInterface;
 +use Drupal\Core\Entity\EntityChangedInterface;
  use Drupal\Core\Entity\EntityPublishedInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
 +use Drupal\Core\Entity\RevisionLogInterface;
  use Drupal\Core\Language\LanguageInterface;
  use Drupal\Core\Language\LanguageManagerInterface;
  use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-+use Drupal\Core\Session\AccountInterface;
- use Drupal\Core\StringTranslation\StringTranslationTrait;
- 
- /**
-@@ -30,6 +34,10 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
-    *   The config factory.
-    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $loggerFactory
-    *   The logger channel factory.
-+   * @param \Drupal\Component\Datetime\TimeInterface $time
+@@ -42,6 +45,10 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+    *   The content translation manager.
+    * @param \Drupal\ai_translate\TranslationDisclosureInterface|null $disclosure
+    *   Records the AI disclosure on new translations.
++   * @param \Drupal\Component\Datetime\TimeInterface|null $time
 +   *   The time service.
-+   * @param \Drupal\Core\Session\AccountInterface $currentUser
++   * @param \Drupal\Core\Session\AccountInterface|null $currentUser
 +   *   The current user.
     */
    public function __construct(
      protected TextExtractorInterface $textExtractor,
-@@ -37,6 +45,8 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
-     protected LanguageManagerInterface $languageManager,
-     protected ConfigFactoryInterface $configFactory,
-     protected LoggerChannelFactoryInterface $loggerFactory,
-+    protected TimeInterface $time,
-+    protected AccountInterface $currentUser,
+@@ -52,6 +59,8 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+     protected EntityTypeManagerInterface $entityTypeManager,
+     protected ContentTranslationManagerInterface $contentTranslationManager,
+     protected ?TranslationDisclosureInterface $disclosure = NULL,
++    protected ?TimeInterface $time = NULL,
++    protected ?AccountInterface $currentUser = NULL,
    ) {}
  
    /**
-@@ -100,6 +110,7 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
-     $translation = $entity->addTranslation($langTo, $entity->toArray());
+@@ -161,6 +170,7 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
      $this->applyTranslationStatus($entity, $translation);
      $this->textExtractor->insertTextMetadata($translation, $processedTranslations);
+     $this->disclosure?->apply($translation, $entity->language(), $entity);
 +    $this->stampTranslationRevision($translation, $langTo);
  
      try {
        $translation->save();
-@@ -153,6 +164,38 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
-     return $this->saveTranslatedEntity($entity, $langTo, $processedTranslations, $failures);
+@@ -242,6 +252,43 @@ class EntityTranslationOrchestrator implements EntityTranslationOrchestratorInte
+       ->setSource($entity->getUntranslated()->language()->getId());
    }
  
 +  /**
@@ -67,11 +67,16 @@ index e742e4d..c7ccc3e 100644
 +   *   Language code of the translation.
 +   */
 +  protected function stampTranslationRevision(ContentEntityInterface $translation, string $langcode): void {
-+    $request_time = $this->time->getRequestTime();
++    if (!$translation instanceof RevisionLogInterface && !$translation instanceof EntityChangedInterface) {
++      return;
++    }
++    // The time and current user services are optional constructor arguments
++    // so that callers constructing this class positionally keep working.
++    $request_time = ($this->time ?? \Drupal::time())->getRequestTime();
 +
 +    if ($translation instanceof RevisionLogInterface) {
 +      $translation->setRevisionCreationTime($request_time);
-+      $translation->setRevisionUserId($this->currentUser->id());
++      $translation->setRevisionUserId(($this->currentUser ?? \Drupal::currentUser())->id());
 +      $language = $this->languageManager->getLanguage($langcode);
 +      $translation->setRevisionLogMessage((string) $this->t('AI translated to @language.', [
 +        '@language' => $language ? $language->getName() : $langcode,
