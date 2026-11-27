@@ -1951,7 +1951,7 @@ display:
       filename: 'users_reports-[date:custom:Y-m-d_H-i].csv'
       export_method: batch
       export_batch_size: 100
-      export_filesystem: public
+      export_filesystem: private
       custom_redirect_path: false
       redirect_to_display: page_2
     cache_metadata:
