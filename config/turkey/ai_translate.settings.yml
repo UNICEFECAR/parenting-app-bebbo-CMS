@@ -1,4 +1,6 @@
 use_ai_translate: true
+show_model_name: false
+ai_disclosure_apply: false
 reference_defaults: {  }
 prompt: ai_translate__ai_translate_default
 entity_reference_depth: 1

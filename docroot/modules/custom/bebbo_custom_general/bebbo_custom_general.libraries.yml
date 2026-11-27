@@ -9,3 +9,19 @@ editorial_toolbar:
     - core/once
     - toolbar/toolbar
     - toolbar_menu/icons
+
+tmgmt_sources_bulk_actions:
+  js:
+    js/tmgmt-sources-bulk-actions.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+    - core/drupal.tableselect
+
+tmgmt_sources_search:
+  js:
+    js/tmgmt-sources-search.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

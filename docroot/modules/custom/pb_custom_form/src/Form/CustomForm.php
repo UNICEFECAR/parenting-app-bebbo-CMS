@@ -2,6 +2,9 @@
 
 namespace Drupal\pb_custom_form\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InvokeCommand;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -31,13 +34,23 @@ class CustomForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * Constructs a CustomForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, Connection $database) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->database = $database;
   }
 
   /**
@@ -45,7 +58,8 @@ class CustomForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('database')
     );
   }
 
@@ -77,6 +91,9 @@ class CustomForm extends FormBase {
       '#title' => $this->t('Country'),
       '#options' => $country_group,
       '#required' => TRUE,
+      '#ajax' => [
+        'callback' => '::prefillAppUpdateFields',
+      ],
     ];
 
     if (count($country_group) === 1) {
@@ -92,6 +109,9 @@ class CustomForm extends FormBase {
         'app_update' => $this->t('Force App Update'),
       ],
       '#required' => TRUE,
+      '#ajax' => [
+        'callback' => '::prefillAppUpdateFields',
+      ],
     ];
 
     $form['flag'] = [
@@ -130,6 +150,19 @@ class CustomForm extends FormBase {
       ],
     ];
 
+    $form['app_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('App Name / Details'),
+      '#description' => $this->t('Enter the name of the new app, along with any other details.'),
+      '#maxlength' => 512,
+      '#states' => [
+        'visible' => [
+          ':input[name="update_type"]' => ['value' => 'app_update'],
+          ':input[name="flag"]' => ['value' => '1'],
+        ],
+      ],
+    ];
+
     $form['actions'] = [
       '#type' => 'actions',
     ];
@@ -141,6 +174,43 @@ class CustomForm extends FormBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Ajax callback: prefills the app update fields for the selected country.
+   *
+   * Uses the latest app_update record of the selected country. Does nothing
+   * unless "Force App Update" is selected.
+   */
+  public function prefillAppUpdateFields(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $country_id = $form_state->getValue('country_select');
+    if ($form_state->getValue('update_type') !== 'app_update' || $country_id === NULL || $country_id === '') {
+      return $response;
+    }
+
+    $record = $this->database->select('forcefull_check_update_api', 'f')
+      ->fields('f', ['flag_status', 'google_play_url', 'app_store_url', 'app_name'])
+      ->condition('countries_id', $country_id)
+      ->condition('update_type', 'app_update')
+      ->orderBy('id', 'DESC')
+      ->range(0, 1)
+      ->execute()
+      ->fetchObject();
+
+    $values = [
+      'flag' => $record ? (string) $record->flag_status : (string) array_key_first($form['flag']['#options']),
+      'google_play_url' => $record->google_play_url ?? '',
+      'app_store_url' => $record->app_store_url ?? '',
+      'app_name' => $record->app_name ?? '',
+    ];
+    foreach ($values as $name => $value) {
+      $selector = ':input[name="' . $name . '"]';
+      $response->addCommand(new InvokeCommand($selector, 'val', [$value]));
+      $response->addCommand(new InvokeCommand($selector, 'trigger', ['change']));
+    }
+
+    return $response;
   }
 
   /**
@@ -177,6 +247,12 @@ class CustomForm extends FormBase {
     $update_type = $form_state->getValue('update_type');
     $google_play_url = $form_state->getValue('google_play_url') ?? '';
     $app_store_url = $form_state->getValue('app_store_url') ?? '';
+    $app_name = $form_state->getValue('app_name') ?? '';
+    // The store fields are only hidden (not cleared) when they do not apply,
+    // so prefilled values would still be submitted. Save them empty instead.
+    if ($update_type !== 'app_update' || $flag !== '1') {
+      $google_play_url = $app_store_url = $app_name = '';
+    }
     $country_label = $form['country_select']['#options'][$country_id];
 
     $query_params = http_build_query([
@@ -186,6 +262,7 @@ class CustomForm extends FormBase {
       'update_type' => $update_type,
       'google_play_url' => $google_play_url,
       'app_store_url' => $app_store_url,
+      'app_name' => $app_name,
     ]);
 
     $path = $base_url . '/forcefull-update-check?' . $query_params;

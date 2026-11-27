@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Hooks for the Custom Article module.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Stores 0 when "Do not feature" is empty, so restored revisions, imports
+ * and scripts never save an empty value.
+ */
+function custom_article_node_presave(NodeInterface $node): void {
+  if ($node->bundle() === 'article'
+    && $node->hasField('field_do_not_feature')
+    && $node->get('field_do_not_feature')->isEmpty()) {
+    $node->set('field_do_not_feature', 0);
+  }
+}

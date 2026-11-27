@@ -126,6 +126,8 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
         '#size' => 8,
         '#default_value' => \Drupal::request()->query->get('node_id', ''),
       ];
+      // Enter in a filter field should run Search, not the hidden "Choose".
+      $form['#attached']['library'][] = 'bebbo_custom_general/tmgmt_sources_search';
     }
 
     // Add process callback to handle sorting after form is built.
@@ -135,7 +137,9 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
     if (isset($form['items']['#header'])) {
       // Get current sort parameters.
       $request = \Drupal::request();
-      $current_order = $request->query->get('order');
+      // The list is ordered by Node ID descending by default, so treat a
+      // missing order as Node ID to show the active sort arrow on load.
+      $current_order = $request->query->get('order', 'node_id');
       $current_sort = $request->query->get('sort', 'desc');
       $new_sort = ($current_order === 'node_id' && $current_sort === 'asc') ? 'desc' : 'asc';
 
@@ -147,13 +151,28 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
         ] + $request->query->all(),
       ]);
 
+      // Mark the Node ID column as sortable so the admin theme shows the sort
+      // icon, mirroring core's TableSort::header() output.
+      $node_id_title = ['#markup' => t('Node ID')];
+      $node_id_cell_classes = ['sortable-heading'];
+      if ($current_order === 'node_id') {
+        $node_id_cell_classes[] = 'is-active';
+        $node_id_title = [
+          'label' => $node_id_title,
+          'indicator' => [
+            '#theme' => 'tablesort_indicator',
+            '#style' => $new_sort,
+          ],
+        ];
+      }
+
       // Add Node ID as the first column.
       $header = $form['items']['#header'];
       $new_header = [
         'node_id' => [
           'data' => [
             '#type' => 'link',
-            '#title' => t('Node ID'),
+            '#title' => $node_id_title,
             '#url' => $sort_url,
             '#attributes' => [
               'title' => t('Sort by Node ID'),
@@ -161,6 +180,7 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
               'class' => ['node-id-header'],
             ],
           ],
+          'class' => $node_id_cell_classes,
         ],
       ];
 
@@ -192,6 +212,52 @@ function bebbo_custom_general_form_alter(&$form, FormStateInterface $form_state,
           $row = $new_row;
         }
       }
+    }
+
+    // Match the Global/Country content lists: "Total Count - N" above the
+    // filters and the admin theme's bulk actions bar with the selected count.
+    $pager = \Drupal::service('pager.manager')->getPager();
+    $form['total_count'] = [
+      '#type' => 'container',
+      '#markup' => t('<strong>Total Count -</strong> @total', ['@total' => $pager ? $pager->getTotalItems() : 0]),
+      '#attributes' => ['class' => ['view-header']],
+      // Above the "Choose source" selector (-100).
+      '#weight' => -101,
+    ];
+    if (!empty($form['items']['#options']) && $pager && $pager->getTotalItems() > 0) {
+      // The admin theme's bulk actions styles target this class on a form
+      // directly inside the main content block.
+      $form['#attributes']['class'][] = 'views-form';
+
+      // Bulk actions bar with the status label (same markup as ClaroFormHooks
+      // for Views forms), driven by tmgmt-sources-bulk-actions.js.
+      $bulk_actions = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => ['views-bulk-actions'],
+          'data-bebbo-tmgmt-bulk-actions' => '',
+        ],
+        '#attached' => [
+          'library' => ['bebbo_custom_general/tmgmt_sources_bulk_actions'],
+        ],
+        'status' => [
+          '#type' => 'container',
+          '#markup' => t('No items selected'),
+          '#attributes' => [
+            'class' => [
+              'js-views-bulk-actions-status',
+              'views-bulk-actions__item',
+              'views-bulk-actions__item--status',
+              'js-show',
+            ],
+            'data-drupal-views-bulk-actions-status' => '',
+          ],
+        ],
+      ];
+      $position = array_search('items', array_keys($form), TRUE) + 1;
+      $form = array_slice($form, 0, $position, TRUE)
+        + ['bulk_actions_container' => $bulk_actions]
+        + array_slice($form, $position, NULL, TRUE);
     }
   }
 
@@ -1126,4 +1192,25 @@ function bebbo_custom_general_views_query_alter(ViewExecutable $view, QueryPlugi
     NaturalTitleSort::orderBy($query, $qualified, $orderby['direction']);
     return;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for tmgmt_job_item_edit_form.
+ *
+ * Shows "Draft" as the current state of a new translation job item until a
+ * moderation state has been saved on the item.
+ */
+function bebbo_custom_general_form_tmgmt_job_item_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (!isset($form['moderation_state']['current'])) {
+    return;
+  }
+  /** @var \Drupal\Core\Entity\EntityFormInterface $form_object */
+  $form_object = $form_state->getFormObject();
+  /** @var \Drupal\tmgmt\JobItemInterface $item */
+  $item = $form_object->getEntity();
+  // A state already saved on the job item is shown as is.
+  if ($item->getData(['#moderation_state'])) {
+    return;
+  }
+  $form['moderation_state']['current']['#markup'] = t('Draft');
 }

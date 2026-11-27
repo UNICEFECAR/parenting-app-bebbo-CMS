@@ -152,6 +152,7 @@ class ForceUpdateCheckForm extends FormBase {
     $update_type = $request->query->get('update_type', 'content_update');
     $google_play_url = trim((string) $request->query->get('google_play_url', ''));
     $app_store_url = trim((string) $request->query->get('app_store_url', ''));
+    $app_name = trim((string) $request->query->get('app_name', ''));
 
     // These arrive as query parameters rather than form values, so the entry
     // form's validation guarantees nothing about what reaches the insert.
@@ -182,6 +183,7 @@ class ForceUpdateCheckForm extends FormBase {
             : 'content_update',
           'google_play_url' => $google_play_url ?: NULL,
           'app_store_url' => $app_store_url ?: NULL,
+          'app_name' => $app_name !== '' ? mb_substr($app_name, 0, 512) : NULL,
         ]
       )->execute();
       drupal_flush_all_caches();

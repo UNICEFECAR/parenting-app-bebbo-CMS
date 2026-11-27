@@ -105,12 +105,13 @@ class CheckUpdateController extends ControllerBase {
       'updated_at' => $content_update->created_at,
     ] : NULL;
 
-    // Structured app_update block including optional store URLs.
+    // Structured app_update block including optional store URLs and app name.
     $data['app_update'] = $app_update !== NULL ? [
       'flag' => (int) $app_update->flag_status,
       'updated_at' => $app_update->created_at,
       'google_play_url' => $app_update->google_play_url ?: NULL,
       'app_store_url' => $app_update->app_store_url ?: NULL,
+      'app_name' => ($app_update->app_name ?? NULL) ?: NULL,
     ] : NULL;
 
     $response = new CacheableJsonResponse($data);
