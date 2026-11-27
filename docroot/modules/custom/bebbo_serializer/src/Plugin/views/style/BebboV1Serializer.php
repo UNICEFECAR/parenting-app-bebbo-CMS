@@ -422,7 +422,7 @@ class BebboV1Serializer extends Serializer {
    * string array, decodes HTML entities in the title, and assembles
    * cover_image from the view-provided {mid, url, name, alt} fields (with
    * WebP conversion). Unlike V2, it omits love_count/read_count/
-   * target_audience and leaves do_not_feature as the raw string the legacy
+   * target_audience and keeps do_not_feature as the "0"/"1" string the legacy
    * API returned.
    *
    * @param array $rows
@@ -454,6 +454,8 @@ class BebboV1Serializer extends Serializer {
       // empty meta_keywords as "" rather than a boolean false.
       $this->cleanSummary($row);
       $row['meta_keywords'] = (string) ($row['meta_keywords'] ?? '');
+      // An empty do_not_feature renders as false; return "0" like the rest.
+      $row['do_not_feature'] = (string) (int) ($row['do_not_feature'] ?? 0);
 
       $mid = (int) ($row['cover_image_mid'] ?? 0);
       $url = (string) ($row['cover_image_url'] ?? '');
