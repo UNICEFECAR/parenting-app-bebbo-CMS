@@ -559,6 +559,8 @@ class BebboSerializer extends Serializer {
       ]);
       $this->toStringArray($row, ['embedded_images']);
       $this->decodeHtmlEntities($row, ['title']);
+      // An empty do_not_feature renders as false; return "0" like the rest.
+      $row['do_not_feature'] = (string) (int) ($row['do_not_feature'] ?? 0);
 
       $mid = (int) ($row['cover_image_mid'] ?? 0);
       $url = (string) ($row['cover_image_url'] ?? '');
