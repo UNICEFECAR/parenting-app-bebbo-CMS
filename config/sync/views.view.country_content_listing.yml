@@ -2807,7 +2807,7 @@ display:
       automatic_download: true
       export_method: batch
       export_batch_size: 100
-      export_filesystem: public
+      export_filesystem: private
       custom_redirect_path: false
       redirect_to_display: page_5
       include_query_params: false
